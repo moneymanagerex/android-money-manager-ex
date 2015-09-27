@@ -17,7 +17,7 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="September 21, 2015" versionName="2.20.4">
+    <changelogversion changeDate="September 27, 2015" versionName="2.20.5">
         <changelogtext>Corrected the logic for fetching the last used Payee.</changelogtext>
         <changelogtext>Using Retrofit and GSON libraries for faster performance during price update.</changelogtext>
         <changelogtext>First day of the week in calendar picker used from the currently selected locale.</changelogtext>
