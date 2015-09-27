@@ -17,6 +17,7 @@
  */
 package com.money.manager.ex.reports;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -186,7 +187,10 @@ public class IncomeVsExpensesListFragment
         // fix menu char
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
-            itemChart.setVisible(!((IncomeVsExpensesActivity) getActivity()).mIsDualPanel);
+            Activity activity = getActivity();
+            if (activity instanceof IncomeVsExpensesActivity) {
+                itemChart.setVisible(!((IncomeVsExpensesActivity) activity).mIsDualPanel);
+            }
         }
     }
 
