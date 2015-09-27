@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.widget.ListAdapter;
 
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.businessobjects.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -73,17 +74,17 @@ public class PriceCsvExport
     private String getContent(ListAdapter adapter) {
         StringBuilder builder = new StringBuilder();
         char separator = ',';
-        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext.getApplicationContext());
+        StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
 
         int itemCount = adapter.getCount();
+        Stock stock = new Stock();
 
         for(int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) adapter.getItem(i);
+            stock.loadFromCursor(cursor);
 
-            // symbol.
-            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
             // use the latest price date here.
-            StockHistory latestPrice = historyRepository.getLatestPriceFor(symbol);
+            StockHistory latestPrice = historyRepository.getLatestPriceFor(stock.getSymbol());
             if (latestPrice == null) continue;
 
             Date date = latestPrice.getDate();
@@ -92,14 +93,13 @@ public class PriceCsvExport
             }
             // format date
             String csvDate = getDateInCsvFormat(date);
-            // price.
-            String price = cursor.getString(cursor.getColumnIndex(TableStock.CURRENTPRICE));
+
 
             // code
-            builder.append(symbol);
+            builder.append(stock.getSymbol());
             builder.append(separator);
             // price
-            builder.append(price);
+            builder.append(stock.getCurrentPrice());
             builder.append(separator);
             // date
             builder.append(csvDate);
