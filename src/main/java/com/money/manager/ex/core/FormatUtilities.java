@@ -26,6 +26,8 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.settings.AppSettings;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -111,9 +113,7 @@ public class FormatUtilities {
     }
 
     public String getDecimalSeparatorForAppLocale() {
-//        Locale locale = this.context.getResources().getConfiguration().locale;
-        String language = this.settings.getGeneralSettings().getApplicationLanguage();
-        Locale locale = Locale.forLanguageTag(language);
+        Locale locale = getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
@@ -124,9 +124,7 @@ public class FormatUtilities {
     }
 
     public String getGroupingSeparatorForAppLocale() {
-//        Locale locale = mContext.getResources().getConfiguration().locale;
-        String language = this.settings.getGeneralSettings().getApplicationLanguage();
-        Locale locale = Locale.forLanguageTag(language);
+        Locale locale = getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();
@@ -136,4 +134,19 @@ public class FormatUtilities {
         return separator;
     }
 
+    public Locale getAppLocale() {
+        Locale locale;
+
+        String language = this.settings.getGeneralSettings().getApplicationLanguage();
+
+        if(StringUtils.isEmpty(language)) {
+            // use the default locale.
+            locale = this.context.getResources().getConfiguration().locale;
+
+        } else {
+            locale = Locale.forLanguageTag(language);
+        }
+
+        return locale;
+    }
 }
