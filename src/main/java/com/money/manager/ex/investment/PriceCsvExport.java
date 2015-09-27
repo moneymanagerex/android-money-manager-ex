@@ -43,13 +43,12 @@ import java.util.Locale;
  */
 public class PriceCsvExport
         extends TextFileExport {
+    
     public PriceCsvExport(Context context) {
         super(context);
 
         mContext = context;
     }
-
-    private final String LOGCAT = this.getClass().getSimpleName();
 
     private Context mContext;
 
@@ -115,26 +114,6 @@ public class PriceCsvExport
 
         return builder.toString();
     }
-
-//    /**
-//     * Convert between different date formats.
-//     * @param listDate The string of date as stored in the database.
-//     * @return The string of date the way it is to be stored in the CSV file.
-//     */
-//    private String getDateInCsvFormat(String listDate) {
-//        SimpleDateFormat listFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
-//        Date priceDate;
-//        try {
-//            priceDate = listFormat.parse(listDate);
-//        } catch (ParseException ex) {
-//            Log.e(LOGCAT, "Error converting list date: " + ex.getMessage());
-//            return "error";
-//        }
-//
-//        // now convert this date into the CSV format date.
-//        String result = getDateInCsvFormat(priceDate);
-//        return result;
-//    }
 
     public String getDateInCsvFormat(Date date) {
         // todo: make this configurable.
