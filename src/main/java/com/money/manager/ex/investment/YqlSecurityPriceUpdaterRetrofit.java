@@ -22,6 +22,7 @@ import android.content.Context;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -179,7 +180,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         // Price
 
         JsonElement priceElement = quote.get("LastTradePriceOnly");
-        if (priceElement == null) {
+        if (priceElement == JsonNull.INSTANCE) {
             handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
                 priceModel.symbol);
             return null;
