@@ -141,7 +141,7 @@ public class FormatUtilities {
 
         if(StringUtils.isNotEmpty(language)) {
             try {
-                locale = Locale.forLanguageTag(language);
+                locale = new Locale(language);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(this.context, this);
                 handler.handle(e, "parsing locale: " + language);
