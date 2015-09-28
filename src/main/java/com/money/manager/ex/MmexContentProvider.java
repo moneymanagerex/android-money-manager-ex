@@ -321,16 +321,14 @@ public class MmexContentProvider
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Context context = null;
-
         try {
-            context = getContext();
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
         } catch (IllegalStateException | SQLiteDiskIOException | IllegalArgumentException ex) {
             // This happens when the database is changed by all the asynchronous loaders still
             // have references to the already-closed database helper.
             // Just log for now. The reload is done automatically so should be no harm.
 
+            Context context = getContext();
             ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.handle(ex, "content provider.query " + uri);
         }
@@ -343,7 +341,8 @@ public class MmexContentProvider
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
         // take a database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        Context context = getContext();
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(context);
 
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         if (database == null) {
@@ -381,7 +380,7 @@ public class MmexContentProvider
         }
 
         // notify listeners waiting for the data is ready
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        cursor.setNotificationUri(context.getContentResolver(), uri);
 
         if (BuildConfig.DEBUG && !cursor.isClosed()) {
             Log.d(LOGCAT, "Rows returned: " + cursor.getCount());

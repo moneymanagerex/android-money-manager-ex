@@ -62,6 +62,12 @@ public class MoneyManagerOpenHelper
         return mInstance;
     }
 
+    public static synchronized void closeDatabase() {
+        if (mInstance == null) return;
+
+        mInstance.close();
+    }
+
     private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
     // The version corresponds to the user version in info table, used by the desktop app.
     private static final int databaseCurrentVersion = 3;

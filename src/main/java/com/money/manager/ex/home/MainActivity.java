@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -58,6 +59,7 @@ import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
@@ -232,6 +234,9 @@ public class MainActivity
                 isInAuthentication = true;
             }
         }
+
+        // todo: mark the active database file in the navigation panel.
+        // mDrawer
     }
 
     @Override
@@ -337,9 +342,6 @@ public class MainActivity
             case R.id.menu_open_database:
                 pickFile(Environment.getExternalStorageDirectory());
                 break;
-//            case R.id.menu_group_main:
-//                showToolsSelector(isDarkTheme, item.getText());
-//                break;
             case R.id.menu_account:
                 showFragment(AccountListFragment.class);
                 break;
@@ -475,6 +477,9 @@ public class MainActivity
         if (notificationManager != null)
             notificationManager.cancelAll();
         super.onDestroy();
+
+        // close database
+        MoneyManagerOpenHelper.closeDatabase();
     }
 
     /**
@@ -626,25 +631,6 @@ public class MainActivity
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
     }
 
-    /**
-     * Change database applications
-     *
-     * @param dbFilePath new path of databases
-     */
-    public void changeDatabase(String dbFilePath) {
-        Log.v(LOGCAT, "Change database: " + dbFilePath);
-
-        Core core = new Core(getApplicationContext());
-        core.changeDatabase(dbFilePath);
-
-        // Store the name into the recent files list.
-        this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
-
-        // restart this activity
-        setRestartActivity(true);
-        restartActivity();
-    }
-
     private void initializeAfterTutorial() {
         // show change log dialog
 
@@ -746,14 +732,22 @@ public class MainActivity
      */
     public void restartActivity() {
         if (mRestartActivity) {
-            Intent intent = getIntent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            // finish this activity
-            finish();
-            // restart
-            startActivity(intent);
-            // kill process
-            android.os.Process.killProcess(android.os.Process.myPid());
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
+                // this is for APIs < 11.
+                Intent intent = getIntent();
+                overridePendingTransition(0, 0);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                // finish this activity
+                finish();
+                overridePendingTransition(0, 0);
+                // restart
+                startActivity(intent);
+//            // kill process
+//            android.os.Process.killProcess(android.os.Process.myPid());
+            } else {
+                // new api:
+                this.recreate();
+            }
         }
         // set state a false
         setRestartActivity(false);
@@ -1138,18 +1132,43 @@ public class MainActivity
         return menuItems;
     }
 
-    private void openDatabase(RecentDatabaseEntry recentDb) {
-        // use this database
-        Core core = new Core(getApplicationContext());
-        core.changeDatabase(recentDb.filePath);
+    /**
+     * Change application database.
+     *
+     * @param dbFilePath new path of databases
+     */
+    private void changeDatabase(String dbFilePath) {
+        Log.v(LOGCAT, "Change database: " + dbFilePath);
 
-        // set the Dropbox file, if any.
-        if (recentDb.linkedToDropbox) {
-            mDropboxHelper.setLinkedRemoteFile(recentDb.dropboxFileName);
+        Core core = new Core(getApplicationContext());
+        core.changeDatabase(dbFilePath);
+
+        // Store the name into the recent files list.
+        if (!this.recentDbs.contains(dbFilePath)) {
+            this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
 
+        // restart this activity
         setRestartActivity(true);
         restartActivity();
+    }
+
+    /**
+     * called when quick-switching the recent databases from the navigation menu.
+     * @param recentDb selected recent database entry
+     */
+    private void openDatabase(RecentDatabaseEntry recentDb) {
+        // do nothing if selecting the currently open database
+        String currentDb = MoneyManagerApplication.getDatabasePath(this);
+        if (recentDb.filePath.equals(currentDb)) return;
+
+        // set the Dropbox file, if any.
+        String dropboxPath = recentDb.linkedToDropbox
+            ? recentDb.dropboxFileName
+            : "";
+        mDropboxHelper.setLinkedRemoteFile(dropboxPath);
+
+        changeDatabase(recentDb.filePath);
     }
 
     private void showFragment_Internal(Fragment fragment, String tagFragment) {

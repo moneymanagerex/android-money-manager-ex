@@ -558,7 +558,7 @@ public class Core {
         }
 
         // close existing connection.
-        MoneyManagerOpenHelper.getInstance(mContext).close();
+        MoneyManagerOpenHelper.closeDatabase();
 
         // change database
 //        MoneyManagerApplication.setDatabasePath(mContext, path);

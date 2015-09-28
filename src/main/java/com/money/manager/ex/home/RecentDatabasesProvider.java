@@ -106,6 +106,10 @@ public class RecentDatabasesProvider {
         return false;
     }
 
+    public boolean contains(String path) {
+        return this.map.containsKey(path);
+    }
+
     public boolean contains(RecentDatabaseEntry entry) {
         boolean found = false;
 
