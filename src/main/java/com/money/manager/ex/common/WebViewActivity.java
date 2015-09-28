@@ -33,7 +33,6 @@ import com.money.manager.ex.core.HttpMethods;
 import com.money.manager.ex.core.MyWebChromeClient;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.util.EncodingUtils;
 
 import java.util.HashMap;
 
@@ -153,17 +152,23 @@ public class WebViewActivity
         String url = intent.getStringExtra(URL);
         HashMap<String, String> postParams = (HashMap<String, String>) intent.getSerializableExtra(POST_VALUES);
         if (postParams != null) {
-            String postData = "";
+            String postDataString = "";
             for (String key : postParams.keySet()) {
-                if (!StringUtils.isEmpty(postData)) {
-                    postData += "&";
+                if (!StringUtils.isEmpty(postDataString)) {
+                    postDataString += "&";
                 }
-                postData += key + "=" + postParams.get(key);
+                postDataString += key + "=" + postParams.get(key);
             }
 
             // send a POST request
-            // "UTF-8"
-            webView.postUrl(url, EncodingUtils.getBytes(postData, "BASE64"));
+            byte[] postData;
+            try {
+                postData = postDataString.getBytes("BASE64");
+            } catch (Exception e) {
+                postData = postDataString.getBytes();
+            }
+
+            webView.postUrl(url, postData);
         }
 
     }

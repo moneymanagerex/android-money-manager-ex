@@ -150,11 +150,11 @@ dependencies {
         // Replacing lib files with maven repositories
         'com.opencsv:opencsv:3.5',
         'net.objecthunter:exp4j:0.4.5',
-        'org.apache.httpcomponents:httpcore:4.4.*',
-        //    compile 'org.apache.commons:commons-lang3:3.4'
-        //    compile 'org.apache.httpcomponents:httpclient:4.5'
+        // 'org.apache.httpcomponents:httpcore:4.4.*',
+        // 'org.apache.commons:commons-lang3:3.4'
+        // 'org.apache.httpcomponents:httpclient:4.5'
         'com.google.android.apps.dashclock:dashclock-api:2.0.0',
-        //    compile 'org.bouncycastle:bcprov-jdk16:1.46'
+        // 'org.bouncycastle:bcprov-jdk16:1.46'
         // Dropbox
         'com.googlecode.json-simple:json-simple:1.1.1',
         // other
