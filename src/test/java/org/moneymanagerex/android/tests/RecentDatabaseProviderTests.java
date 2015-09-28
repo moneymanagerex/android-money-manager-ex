@@ -89,7 +89,7 @@ public class RecentDatabaseProviderTests {
 
     @Test
     public void testInsert() {
-        RecentDatabaseEntry entry = getEntry();
+        RecentDatabaseEntry entry = getEntry(false);
         String expected = "{\"filename.mmb\":{\"filePath\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}}";
 
         _testObject.add(entry);
@@ -105,19 +105,21 @@ public class RecentDatabaseProviderTests {
         LinkedHashMap<String, RecentDatabaseEntry> map = new LinkedHashMap<>();
 
         for(int i = 0; i < 3; i++) {
-            RecentDatabaseEntry entry = getEntry();
+            RecentDatabaseEntry entry = getEntry(true);
             map.put(entry.filePath, entry);
         }
 
         return map;
     }
 
-    private RecentDatabaseEntry getEntry() {
+    private RecentDatabaseEntry getEntry(boolean useRandomPath) {
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
+
+        String unique = useRandomPath ? Double.toString(Math.random()) : "";
 
         entry.dropboxFileName = "";
         entry.linkedToDropbox = false;
-        entry.filePath = "filename" + Math.random() + ".mmb";
+        entry.filePath = "filename" + unique + ".mmb";
 
         return entry;
     }
