@@ -177,7 +177,7 @@ public class TableBudgetSplitTransactions
         setCategId(source.readInt());
         setSubCategId(source.readInt());
         String amount = source.readString();
-        if (StringUtils.isNotEmpty(amount) {
+        if (StringUtils.isNotEmpty(amount)) {
             setSplitTransAmount(MoneyFactory.fromString(amount));
         }
     }
