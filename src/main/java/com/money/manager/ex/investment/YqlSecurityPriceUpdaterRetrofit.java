@@ -95,13 +95,13 @@ public class YqlSecurityPriceUpdaterRetrofit
             public void onFailure(Throwable t) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
                 handler.handle(t, "fetching price");
+                closeProgressDialog();
             }
         };
 
         try {
             // This would be the synchronous call.
 //            prices = yql.getPrices(query).execute().body();
-
             yql.getPrices(query).enqueue(callback);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
@@ -125,7 +125,14 @@ public class YqlSecurityPriceUpdaterRetrofit
             mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
         }
 
-        // Close dialog.
+        closeProgressDialog();
+
+        // Notify user that all the prices have been downloaded.
+        ExceptionHandler handler = new ExceptionHandler(mContext, this);
+        handler.showMessage(mContext.getString(R.string.download_complete));
+    }
+
+    private void closeProgressDialog() {
         try {
             if (mDialog != null) {
                 DialogUtils.closeProgressDialog(mDialog);
@@ -134,10 +141,6 @@ public class YqlSecurityPriceUpdaterRetrofit
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "closing dialog");
         }
-
-        // Notify user that all the prices have been downloaded.
-        ExceptionHandler handler = new ExceptionHandler(mContext, this);
-        handler.showMessage(mContext.getString(R.string.download_complete));
     }
 
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
