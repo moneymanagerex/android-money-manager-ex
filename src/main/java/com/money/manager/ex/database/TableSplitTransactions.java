@@ -25,6 +25,8 @@ import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
 
+import org.apache.commons.lang3.StringUtils;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -167,7 +169,7 @@ public class TableSplitTransactions
 		dest.writeInt(getTransId());
 		dest.writeInt(getCategId());
 		dest.writeInt(getSubCategId());
-		dest.writeValue(getSplitTransAmount());
+		dest.writeString(getSplitTransAmount().toString());
 	}
 	
 	public void readToParcel(Parcel source) {
@@ -175,7 +177,10 @@ public class TableSplitTransactions
 		setTransId(source.readInt());
 		setCategId(source.readInt());
 		setSubCategId(source.readInt());
-		setSplitTransAmount((Money) source.readValue(Money.class.getClassLoader()));
+        String amount = source.readString();
+        if (StringUtils.isNotEmpty(amount)) {
+            setSplitTransAmount(MoneyFactory.fromString(amount));
+        }
 	}
 	
 	public final static Parcelable.Creator<TableSplitTransactions> CREATOR = new Parcelable.Creator<TableSplitTransactions>() {

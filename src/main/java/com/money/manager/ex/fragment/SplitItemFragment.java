@@ -152,13 +152,14 @@ public class SplitItemFragment
             // amount
             txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
             Money splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
-            if (!(splitTransactionAmount.equals(MoneyFactory.fromString("0")))) {
+            if (!(splitTransactionAmount.compareTo(MoneyFactory.fromString("0")) == 0)) {
                 // Change the sign to positive.
                 if(splitTransactionAmount.toDouble() < 0) {
                     splitTransactionAmount = splitTransactionAmount.negate();
                 }
 
-                FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount);
+                FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount,
+                        this.currencyId);
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
