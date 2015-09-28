@@ -38,7 +38,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.shamanland.fonticon.FontIconView;
 
-import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.lang3.StringUtils;
@@ -112,11 +111,13 @@ public class InputAmountDialog
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (getActivity() instanceof IInputAmountDialogListener) {
-            mListener = (IInputAmountDialogListener) getActivity();
-        }
+        // First check the calling fragment.
         if (getTargetFragment() instanceof IInputAmountDialogListener) {
             mListener = (IInputAmountDialogListener) getTargetFragment();
+        }
+        // then the activity.
+        if (mListener == null && getActivity() instanceof IInputAmountDialogListener) {
+            mListener = (IInputAmountDialogListener) getActivity();
         }
 
         if (mListener == null) {
@@ -168,11 +169,9 @@ public class InputAmountDialog
         OnClickListener numberClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Remove the default 0 value to avoid leading zero "01" numbers.
-                // Reset prior value/text if nothing was entered (and there is no prior value?).
+                // Reset prior value/text (in some cases only).
                 String existingValue = txtMain.getText().toString();
                 if (!mStartedTyping) {
-                    // && mAmount.compareTo(BigDecimal.ZERO) == 0 ?
                     existingValue = "";
                     mStartedTyping = true;
                 }
@@ -232,7 +231,7 @@ public class InputAmountDialog
                     mStartedTyping = true;
 
                     String currentNumber = txtMain.getText().toString();
-                    currentNumber = deleteLastDigitFrom(currentNumber);
+                    currentNumber = deleteLastCharacterFrom(currentNumber);
                     txtMain.setText(currentNumber);
 
                     evalExpression();
@@ -305,6 +304,8 @@ public class InputAmountDialog
         savedInstanceState.putString(KEY_EXPRESSION, mExpression);
     }
 
+    // methods
+
     /**
      * Displays the expression result in the top text box. This is a formatted number in the
      * given currency.
@@ -327,10 +328,8 @@ public class InputAmountDialog
 
         if (exp.length() > 0) {
             try {
-//                Expression e = new ExpressionBuilder(exp).build();
-//                mAmount = BigDecimal.valueOf(e.evaluate());
                 Double result = new ExpressionBuilder(exp).build().evaluate();
-                // Truncate to max precision immediately.
+                // Truncate the result to the default precision.
                 mAmount = MoneyFactory.fromString(Double.toString(result))
                         .truncate(Constants.DEFAULT_PRECISION);
             } catch (IllegalArgumentException ex) {
@@ -358,12 +357,9 @@ public class InputAmountDialog
      * @return String Amount formatted in the given currency.
      */
     public String getFormattedAmount() {
-//        double amount = mAmount.toDouble();
-
         String result;
 
         if (mDisplayCurrencyId == null) {
-//            result = mCurrencyService.getBaseCurrencyFormatted(mAmount);
             FormatUtilities format = new FormatUtilities(getActivity());
             result = format.formatWithLocale(mAmount);
         } else {
@@ -373,7 +369,9 @@ public class InputAmountDialog
         return result;
     }
 
-    private String deleteLastDigitFrom(String number) {
+    // private
+
+    private String deleteLastCharacterFrom(String number) {
         // check length
         if (number.length() <= 0) return number;
 
@@ -392,7 +390,6 @@ public class InputAmountDialog
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_AMOUNT)) {
-//            mAmount = BigDecimal.valueOf(savedInstanceState.getDouble(KEY_AMOUNT));
             mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
         }
         if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
@@ -429,7 +426,6 @@ public class InputAmountDialog
             int decimals = numericHelper.getNumberOfDecimals(
                     mCurrencyService.getCurrency(mDisplayCurrencyId).getScale());
 
-//            result = numericHelper.roundNumber(mAmount.doubleValue(), decimals);
             result = mAmount.truncate(decimals);
         } else {
             result = mAmount;

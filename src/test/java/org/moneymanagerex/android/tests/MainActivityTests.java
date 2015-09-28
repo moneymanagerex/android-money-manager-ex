@@ -55,12 +55,12 @@ import static org.robolectric.Shadows.shadowOf;
 public class MainActivityTests {
 
     private ActivityController<MainActivity> controller;
-    private MainActivity mainActivity;
+    private MainActivity activity;
 
     @Before
     public void setUp() {
         this.controller = UnitTestHelper.getController(MainActivity.class);
-        this.mainActivity = UnitTestHelper.getActivity(this.controller);
+        this.activity = UnitTestHelper.getActivity(this.controller);
     }
 
     @After
@@ -80,13 +80,13 @@ public class MainActivityTests {
         Fragment homeFragment;
         Intent expectedIntent;
 
-        homeFragment = UnitTestHelper.getFragment(mainActivity, HomeFragment.class.getSimpleName());
+        homeFragment = UnitTestHelper.getFragment(activity, HomeFragment.class.getSimpleName());
         assertThat(homeFragment).isNotNull();
 
         // Confirm Tutorial is shown.
-        ShadowActivity shadowActivity = Shadows.shadowOf(mainActivity);
+        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         expectedIntent = shadowActivity.peekNextStartedActivityForResult().intent;
-        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(mainActivity, TutorialActivity.class));
+        assertThat(expectedIntent.getComponent()).isEqualTo(new ComponentName(activity, TutorialActivity.class));
         assertThat(shadowActivity.getNextStartedActivity()).isEqualTo(expectedIntent);
 
         TutorialActivity tutorialActivity = Robolectric.buildActivity(TutorialActivity.class)
@@ -108,14 +108,14 @@ public class MainActivityTests {
         view.performClick();
 
         // Add Account opens up.
-        expectedIntent = new Intent(mainActivity, AccountEditActivity.class);
+        expectedIntent = new Intent(activity, AccountEditActivity.class);
         expectedIntent.setAction(Intent.ACTION_INSERT);
-        assertThat(shadowOf(mainActivity).getNextStartedActivity()).isEqualTo(expectedIntent);
+        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
     }
 
     @Test
     public void pauseAndResume() {
-        Fragment homeFragment = UnitTestHelper.getFragment(mainActivity, HomeFragment.class.getSimpleName());
+        Fragment homeFragment = UnitTestHelper.getFragment(activity, HomeFragment.class.getSimpleName());
 
         testHomeFragment(homeFragment);
 

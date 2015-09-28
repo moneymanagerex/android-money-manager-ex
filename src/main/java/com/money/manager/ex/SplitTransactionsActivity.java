@@ -31,8 +31,8 @@ import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
-import com.money.manager.ex.fragment.SplitItemFragment;
-import com.money.manager.ex.fragment.SplitItemFragment.SplitItemFragmentCallbacks;
+import com.money.manager.ex.transactions.ISplitItemFragmentCallbacks;
+import com.money.manager.ex.transactions.SplitItemFragment;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
 import java.util.ArrayList;
@@ -42,8 +42,9 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class SplitTransactionsActivity
-        extends BaseFragmentActivity
-        implements SplitItemFragmentCallbacks, IInputAmountDialogListener {
+    extends BaseFragmentActivity
+    implements ISplitItemFragmentCallbacks {
+    // IInputAmountDialogListener
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
@@ -58,7 +59,7 @@ public class SplitTransactionsActivity
 
     public TransactionTypes mParentTransactionType;
 
-    private SplitItemFragment mFragmentInputAmountClick;
+//    private SplitItemFragment mInputAmountClickHandler;
 
     /**
      * The name of the entity to create when adding split transactions.
@@ -179,13 +180,13 @@ public class SplitTransactionsActivity
             outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        SplitItemFragment fragment = getFragmentInputAmountClick();
-        if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
-            fragment.onFinishedInputAmountDialog(id, amount);
-        }
-    }
+//    @Override
+//    public void onFinishedInputAmountDialog(int id, Money amount) {
+//        SplitItemFragment fragment = getInputAmountClickHandler();
+//        if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
+//            fragment.onFinishedInputAmountDialog(id, amount);
+//        }
+//    }
 
     /**
      * Returns all split categories created on the form.
@@ -205,13 +206,13 @@ public class SplitTransactionsActivity
         return splitCategories;
     }
 
-    public SplitItemFragment getFragmentInputAmountClick() {
-        return mFragmentInputAmountClick;
-    }
+//    public SplitItemFragment getInputAmountClickHandler() {
+//        return mInputAmountClickHandler;
+//    }
 
-    public void setFragmentInputAmountClick(SplitItemFragment mFragmentInputAmountClick) {
-        this.mFragmentInputAmountClick = mFragmentInputAmountClick;
-    }
+//    public void setInputAmountClickHandler(SplitItemFragment mFragmentInputAmountClick) {
+//        this.mInputAmountClickHandler = mFragmentInputAmountClick;
+//    }
 
     /**
      * Set the visibility of the floating button.
@@ -254,10 +255,10 @@ public class SplitTransactionsActivity
     }
 
     private void addFragmentChild(ISplitTransactionsDataset object) {
-        String fragmentName = SplitItemFragment.class.getSimpleName() + "_" +
-                Integer.toString(object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId());
+        int tagNumber = object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId();
+        String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
 
-        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentName);
+        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
 
         if (fragment == null) {
             fragment = SplitItemFragment.newInstance(object, this.currencyId);
@@ -267,7 +268,7 @@ public class SplitTransactionsActivity
             // transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack
-            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentName);
+            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
             transaction.commit();
         }
     }

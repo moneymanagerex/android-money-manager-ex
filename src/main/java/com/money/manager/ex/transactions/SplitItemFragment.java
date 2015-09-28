@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.money.manager.ex.fragment;
+package com.money.manager.ex.transactions;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -42,8 +42,6 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
-import java.math.BigDecimal;
-
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -61,62 +59,13 @@ public class SplitItemFragment
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
 
     private static final int REQUEST_PICK_CATEGORY = 1;
+    private static final int REQUEST_AMOUNT = 2;
 
     private ISplitTransactionsDataset mSplitTransaction;
-    private SplitItemFragmentCallbacks mOnSplitItemCallback;
+    private ISplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtAmount;
     private Spinner spinTransCode;
     private Integer currencyId;
-
-    /**
-     * @return the splitItemCallback
-     */
-    public SplitItemFragmentCallbacks getOnSplitItemCallback() {
-        return mOnSplitItemCallback;
-    }
-
-    /**
-     * @param splitItemCallback the splitItemCallback to set
-     */
-    public void setOnSplitItemCallback(SplitItemFragmentCallbacks splitItemCallback) {
-        this.mOnSplitItemCallback = splitItemCallback;
-    }
-
-    /**
-     * Returns the Split Transaction created. Called from the activity that holds multiple
-     * split-fragments.
-     * @param parentTransactionType Parent transaction type. Required to determine the amount sign.
-     *                              If the parent is Deposit then Deposit here is +,
-     *                              Withdrawal is -.
-     * @return Split Transaction
-     */
-    public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
-        Object tag = txtAmount.getTag();
-
-        if (tag == null) {
-            // handle 0 values.
-            mSplitTransaction.setSplitTransAmount(MoneyFactory.fromString("0"));
-            return mSplitTransaction;
-        }
-
-        // otherwise figure out which sign to use for the amount.
-
-        Money amount = MoneyFactory.fromString(tag.toString());
-
-        // toString takes the localized text! Use value.
-        int position = spinTransCode.getSelectedItemPosition();
-        TransactionTypes transactionType = TransactionTypes.values()[position];
-
-        if(!parentTransactionType.equals(transactionType)){
-            // parent transaction type is different. Invert the amount. What if the amount is already negative?
-//            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
-            mSplitTransaction.setSplitTransAmount(amount.negate());
-        } else {
-            mSplitTransaction.setSplitTransAmount(amount);
-        }
-
-        return mSplitTransaction;
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -173,13 +122,14 @@ public class SplitItemFragment
                         amount = MoneyFactory.fromString(tag.toString());
                     }
 
-                    if (getActivity() instanceof SplitTransactionsActivity) {
-                        SplitTransactionsActivity activity = (SplitTransactionsActivity) getActivity();
-                        activity.setFragmentInputAmountClick(SplitItemFragment.this);
-                    }
+//                    if (getActivity() instanceof SplitTransactionsActivity) {
+//                        SplitTransactionsActivity activity = (SplitTransactionsActivity) getActivity();
+//                        activity.setInputAmountClickHandler(SplitItemFragment.this);
+//                    }
 
                     InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
                             amount, SplitItemFragment.this.currencyId);
+                    dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
@@ -261,15 +211,65 @@ public class SplitItemFragment
 
     @Override
     public void onFinishedInputAmountDialog(int id, Money amount) {
-//        Core core = new Core(getActivity().getApplicationContext());
         if (txtAmount.getId() == id) {
-            txtAmount.setTag(amount.toString());
             mSplitTransaction.setSplitTransAmount(amount);
+
             FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount, currencyId);
+
+            // assign the tag *after* the text to overwrite the amount object with string.
+            String amountTag = amount.toString();
+            txtAmount.setTag(amountTag);
         }
     }
 
-    public interface SplitItemFragmentCallbacks {
-        void onRemoveItem(ISplitTransactionsDataset object);
+    /**
+     * @return the splitItemCallback
+     */
+    public ISplitItemFragmentCallbacks getOnSplitItemCallback() {
+        return mOnSplitItemCallback;
     }
+
+    /**
+     * @param splitItemCallback the splitItemCallback to set
+     */
+    public void setOnSplitItemCallback(ISplitItemFragmentCallbacks splitItemCallback) {
+        this.mOnSplitItemCallback = splitItemCallback;
+    }
+
+    /**
+     * Returns the Split Transaction created. Called from the activity that holds multiple
+     * split-fragments.
+     * @param parentTransactionType Parent transaction type. Required to determine the amount sign.
+     *                              If the parent is Deposit then Deposit here is +,
+     *                              Withdrawal is -.
+     * @return Split Transaction
+     */
+    public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
+        Object tag = txtAmount.getTag();
+
+        if (tag == null) {
+            // handle 0 values.
+            mSplitTransaction.setSplitTransAmount(MoneyFactory.fromString("0"));
+            return mSplitTransaction;
+        }
+
+        // otherwise figure out which sign to use for the amount.
+
+        Money amount = MoneyFactory.fromString(tag.toString());
+
+        // toString takes the localized text! Use value.
+        int position = spinTransCode.getSelectedItemPosition();
+        TransactionTypes transactionType = TransactionTypes.values()[position];
+
+        if(!parentTransactionType.equals(transactionType)){
+            // parent transaction type is different. Invert the amount. What if the amount is already negative?
+//            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
+            mSplitTransaction.setSplitTransAmount(amount.negate());
+        } else {
+            mSplitTransaction.setSplitTransAmount(amount);
+        }
+
+        return mSplitTransaction;
+    }
+
 }

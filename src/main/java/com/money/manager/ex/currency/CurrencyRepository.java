@@ -78,11 +78,6 @@ public class CurrencyRepository
         TableCurrencyFormats currency = new TableCurrencyFormats();
 
         Cursor cursor = this.openCursor(currency.getAllColumns(), selection, selectionArgs);
-//        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
-//                currency.getAllColumns(),
-//                selection,
-//                selectionArgs,
-//                null);
         if (cursor == null) return null;
 
         if (cursor.moveToNext()) {

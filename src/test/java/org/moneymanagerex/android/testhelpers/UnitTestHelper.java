@@ -19,15 +19,21 @@ package org.moneymanagerex.android.testhelpers;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ContentProvider;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowContentProvider;
+import org.robolectric.shadows.ShadowContentResolver;
 import org.robolectric.util.ActivityController;
+
+import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Additionally simplify and standardize certain calls to assist when setting up and running
@@ -76,5 +82,14 @@ public class UnitTestHelper {
         result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, subCategoryName);
 
         return result;
+    }
+
+    public static ContentProvider initializeContentProvider() {
+        ContentProvider contentProvider = new MmexContentProvider();
+//        shadowOf(contentProvider).getContext();
+        contentProvider.onCreate();
+        ShadowContentResolver.registerProvider(MmexContentProvider.getAuthority(), contentProvider);
+
+        return contentProvider;
     }
 }

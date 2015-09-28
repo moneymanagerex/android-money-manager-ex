@@ -75,7 +75,7 @@ import java.util.Map;
  * @version 1.1.0
  */
 public class MmexContentProvider
-        extends ContentProvider {
+    extends ContentProvider {
 
     private static final String LOGCAT = MmexContentProvider.class.getSimpleName();
     // object definition for the call to check the content
