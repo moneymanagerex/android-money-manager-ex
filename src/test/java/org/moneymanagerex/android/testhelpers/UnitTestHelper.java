@@ -50,7 +50,7 @@ public class UnitTestHelper {
         return controller.create().visible().start().get();
     }
 
-    public static Application getApplication() {
+    public static Application getContext() {
         return RuntimeEnvironment.application;
     }
 

@@ -17,6 +17,7 @@
  */
 package org.moneymanagerex.android.tests;
 
+import com.google.gson.Gson;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
@@ -31,9 +32,9 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayDeque;
 import java.util.LinkedHashMap;
-import java.util.Queue;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for Recent Database Provider.
@@ -48,7 +49,6 @@ public class RecentDatabaseProviderTests {
 
     @Before
     public void setUp() throws Exception {
-//        MockContext context = new MockContext();
         _testObject = new RecentDatabasesProvider(RuntimeEnvironment.application);
     }
 
@@ -58,30 +58,39 @@ public class RecentDatabaseProviderTests {
     }
 
     @Test
-    public void testLoad() throws Exception {
-        Queue<RecentDatabaseEntry> expected = getQueue();
-
-        LinkedHashMap<String, RecentDatabaseEntry> actual = _testObject.map;
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testSave() {
-//        Queue<RecentDatabaseEntry> queue = getQueue();
-        String expected = "todo";
+    public void testSaveAndLoad() {
+        // Save empty collection.
 
         _testObject.save();
+        // test
+        String preference = _testObject.readPreference();
+        Assert.assertEquals("{}", preference);
 
-        String actual = _testObject.readPreference();
+        // save full collection
 
-        Assert.assertEquals(expected, actual);
+        LinkedHashMap<String, RecentDatabaseEntry> testEntries = getEntries();
+        _testObject.map = testEntries;
+        _testObject.save();
+
+        // Load
+
+        _testObject.load();
+        LinkedHashMap<String, RecentDatabaseEntry> actual = _testObject.map;
+        Gson gson = new Gson();
+
+        // compare individual elements.
+        
+        for (RecentDatabaseEntry entry : actual.values()) {
+            RecentDatabaseEntry expected = testEntries.get(entry.filePath);
+            assertThat(gson.toJson(entry))
+                    .isEqualTo(gson.toJson(expected));
+        }
     }
 
     @Test
     public void testInsert() {
         RecentDatabaseEntry entry = getEntry();
-        String expected = "[{\"filePath\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}]";
+        String expected = "{\"filename.mmb\":{\"filePath\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}}";
 
         _testObject.add(entry);
 
@@ -92,14 +101,15 @@ public class RecentDatabaseProviderTests {
 
     // Private
 
-    private Queue<RecentDatabaseEntry> getQueue() {
-        Queue<RecentDatabaseEntry> list = new ArrayDeque<>();
+    private LinkedHashMap<String, RecentDatabaseEntry> getEntries() {
+        LinkedHashMap<String, RecentDatabaseEntry> map = new LinkedHashMap<>();
 
-        list.add(getEntry());
-        list.add(getEntry());
-        list.add(getEntry());
+        for(int i = 0; i < 3; i++) {
+            RecentDatabaseEntry entry = getEntry();
+            map.put(entry.filePath, entry);
+        }
 
-        return list;
+        return map;
     }
 
     private RecentDatabaseEntry getEntry() {
@@ -107,7 +117,7 @@ public class RecentDatabaseProviderTests {
 
         entry.dropboxFileName = "";
         entry.linkedToDropbox = false;
-        entry.filePath = "filename.mmb";
+        entry.filePath = "filename" + Math.random() + ".mmb";
 
         return entry;
     }

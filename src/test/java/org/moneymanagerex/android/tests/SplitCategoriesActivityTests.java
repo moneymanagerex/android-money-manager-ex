@@ -1,7 +1,5 @@
 package org.moneymanagerex.android.tests;
 
-import android.app.Activity;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -9,14 +7,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MmexContentProvider;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.view.RobotoTextView;
 
@@ -28,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowContentResolver;
 import org.robolectric.util.ActivityController;
 
 import java.util.ArrayList;
@@ -37,7 +31,6 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * Unit tests for Split Categories activity.
@@ -131,7 +124,7 @@ public class SplitCategoriesActivityTests {
         ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
         int currencyId = 2;
 
-        Context context = UnitTestHelper.getApplication();
+        Context context = UnitTestHelper.getContext();
 
         // this is a copy of production intent code
 

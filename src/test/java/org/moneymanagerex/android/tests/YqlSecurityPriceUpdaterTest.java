@@ -34,11 +34,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.FakePriceListener;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,17 +44,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.http.Query;
 
-import static com.jayway.awaitility.Awaitility.await;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for YQL security downloader.
@@ -136,16 +132,11 @@ public class YqlSecurityPriceUpdaterTest {
         date.set(Calendar.DATE, 29);
         date.set(Calendar.MONTH, 9-1);
         date.set(Calendar.YEAR, 2015);
-        date.set(Calendar.HOUR, 0);
+        date.set(Calendar.HOUR_OF_DAY, 0);
         date.set(Calendar.MINUTE, 0);
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
-        assertEquals(date.getTime(), listener.date);
-    }
-
-    @Test
-    public void handle() {
-
+        assertThat(listener.date).isEqualTo(date.getTime());
     }
 
     // Helpers
