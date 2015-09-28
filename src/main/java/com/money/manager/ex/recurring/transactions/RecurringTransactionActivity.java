@@ -432,7 +432,6 @@ public class RecurringTransactionActivity
         }
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
-
         ContentValues values = getContentValues(isTransfer);
 
         // Insert or update
@@ -458,6 +457,7 @@ public class RecurringTransactionActivity
                 return false;
             }
         }
+
         // has split transaction
         boolean hasSplitTransaction = mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0;
         if (hasSplitTransaction) {
@@ -465,7 +465,8 @@ public class RecurringTransactionActivity
                 values.clear();
                 values.put(TableBudgetSplitTransactions.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
                 values.put(TableBudgetSplitTransactions.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
-                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount());
+                values.put(TableBudgetSplitTransactions.SPLITTRANSAMOUNT,
+                        mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount().toString());
                 values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
                 if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == Constants.NOT_SET) {
@@ -494,7 +495,8 @@ public class RecurringTransactionActivity
             for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
+                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 
                 // update data
                 if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),

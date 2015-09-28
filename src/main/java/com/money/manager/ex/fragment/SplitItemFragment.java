@@ -95,7 +95,7 @@ public class SplitItemFragment
 
         if (tag == null) {
             // handle 0 values.
-            mSplitTransaction.setSplitTransAmount(0);
+            mSplitTransaction.setSplitTransAmount(MoneyFactory.fromString("0"));
             return mSplitTransaction;
         }
 
@@ -110,9 +110,9 @@ public class SplitItemFragment
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
 //            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
-            mSplitTransaction.setSplitTransAmount(amount.negate().toDouble());
+            mSplitTransaction.setSplitTransAmount(amount.negate());
         } else {
-            mSplitTransaction.setSplitTransAmount(amount.toDouble());
+            mSplitTransaction.setSplitTransAmount(amount);
         }
 
         return mSplitTransaction;
@@ -151,13 +151,14 @@ public class SplitItemFragment
         if (layout != null) {
             // amount
             txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
-            double splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
-            if (!(splitTransactionAmount == 0)) {
+            Money splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
+            if (!(splitTransactionAmount.equals(MoneyFactory.fromString("0")))) {
                 // Change the sign to positive.
-                if(splitTransactionAmount < 0) splitTransactionAmount = Math.abs(splitTransactionAmount);
+                if(splitTransactionAmount.toDouble() < 0) {
+                    splitTransactionAmount = splitTransactionAmount.negate();
+                }
 
-                FormatUtilities.formatAmountTextView(getActivity(), txtAmount,
-                    MoneyFactory.fromDouble(splitTransactionAmount));
+                FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount);
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
@@ -231,21 +232,19 @@ public class SplitItemFragment
     private int getTransactionTypeSelection(){
         // define the transaction type based on the amount and the parent type.
 
-        // 0 = withdrawal, 1 = deposit.
         int transactionTypeSelection;
 
         SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
-//        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(getString(R.string.withdrawal));
         boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
-        double amount = mSplitTransaction.getSplitTransAmount();
+        Money amount = mSplitTransaction.getSplitTransAmount();
         if(parentIsWithdrawal){
             // parent is Withdrawal.
-            transactionTypeSelection = amount >= 0
+            transactionTypeSelection = amount.toDouble() >= 0
                     ? TransactionTypes.Withdrawal.getCode() // 0
                     : TransactionTypes.Deposit.getCode(); // 1;
         } else {
             // parent is Deposit.
-            transactionTypeSelection = amount >= 0
+            transactionTypeSelection = amount.toDouble() >= 0
                     ? TransactionTypes.Deposit.getCode() // 1
                     : TransactionTypes.Withdrawal.getCode(); // 0;
         }
@@ -264,8 +263,8 @@ public class SplitItemFragment
 //        Core core = new Core(getActivity().getApplicationContext());
         if (txtAmount.getId() == id) {
             txtAmount.setTag(amount.toString());
-            mSplitTransaction.setSplitTransAmount(amount.toDouble());
-            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount);
+            mSplitTransaction.setSplitTransAmount(amount);
+            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount, currencyId);
         }
     }
 

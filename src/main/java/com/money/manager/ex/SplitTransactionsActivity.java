@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 public class SplitTransactionsActivity
         extends BaseFragmentActivity
@@ -131,7 +132,7 @@ public class SplitTransactionsActivity
     @Override
     public boolean onActionDoneClick() {
         ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllSplitCategories();
-        double total = 0;
+        Money total = MoneyFactory.fromString("0");
 
         // check data
         for (int i = 0; i < allSplitTransactions.size(); i++) {
@@ -141,11 +142,11 @@ public class SplitTransactionsActivity
                 return false;
             }
 
-            total += splitTransactions.getSplitTransAmount();
+            total = total.add(splitTransactions.getSplitTransAmount());
         }
 
         // total amount must not be negative.
-        if (total < 0) {
+        if (total.toDouble() < 0) {
             Core.alertDialog(this, R.string.split_amount_negative);
             return false;
         }

@@ -17,13 +17,19 @@
  */
 package com.money.manager.ex.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
 
-public class TableBudgetSplitTransactions extends Dataset
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
+public class TableBudgetSplitTransactions
+        extends Dataset
         implements Parcelable, ISplitTransactionsDataset {
 
 	// FIELDS
@@ -42,11 +48,15 @@ public class TableBudgetSplitTransactions extends Dataset
     @DatabaseField(columnName = SUBCATEGID)
     private int subCategId = -1;
     @DatabaseField(columnName = SPLITTRANSAMOUNT)
-    private double splitTransAmount = 0;
+    private Money splitTransAmount = MoneyFactory.fromString("0");
+
+    ContentValues contentValues;
 
     // CONSTRUCTOR
 	public TableBudgetSplitTransactions() {
 		super("budgetsplittransactions_v1", DatasetType.TABLE, "budgetsplittransactions");
+
+        this.contentValues = new ContentValues();
 	}
 	
 	@Override
@@ -64,7 +74,7 @@ public class TableBudgetSplitTransactions extends Dataset
     /**
      * @return the splitTransAmount
      */
-    public double getSplitTransAmount() {
+    public Money getSplitTransAmount() {
         return splitTransAmount;
     }
 
@@ -99,7 +109,7 @@ public class TableBudgetSplitTransactions extends Dataset
     /**
      * @param splitTransAmount the splitTransAmount to set
      */
-    public void setSplitTransAmount(double splitTransAmount) {
+    public void setSplitTransAmount(Money splitTransAmount) {
         this.splitTransAmount = splitTransAmount;
     }
 
@@ -126,8 +136,10 @@ public class TableBudgetSplitTransactions extends Dataset
 	
 	@Override
 	public void setValueFromCursor(Cursor c) {
-		if (c == null) 
-			return;
+		if (c == null) return;
+
+        // todo: DatabaseUtils.cursorRowToContentValues(c, this.contentValues);
+
 		// set values
 		if (c.getColumnIndex(SPLITTRANSID) != -1) 
 			setSplitTransId(c.getInt(c.getColumnIndex(SPLITTRANSID)));
@@ -137,8 +149,10 @@ public class TableBudgetSplitTransactions extends Dataset
 			setCategId(c.getInt(c.getColumnIndex(CATEGID)));
 		if (c.getColumnIndex(SUBCATEGID) != -1) 
 			setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
-		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) 
-			setSplitTransAmount(c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT)));
+		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) {
+            double amount = c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT));
+            setSplitTransAmount(MoneyFactory.fromDouble(amount));
+        }
 	}
 
     @Override
@@ -152,7 +166,7 @@ public class TableBudgetSplitTransactions extends Dataset
         dest.writeInt(getTransId());
         dest.writeInt(getCategId());
         dest.writeInt(getSubCategId());
-        dest.writeDouble(getSplitTransAmount());
+        dest.writeValue(getSplitTransAmount());
     }
 
     public void readToParcel(Parcel source) {
@@ -160,7 +174,7 @@ public class TableBudgetSplitTransactions extends Dataset
         setTransId(source.readInt());
         setCategId(source.readInt());
         setSubCategId(source.readInt());
-        setSplitTransAmount(source.readDouble());
+        setSplitTransAmount((Money) source.readValue(Money.class.getClassLoader()));
     }
 
     public final static Parcelable.Creator<TableBudgetSplitTransactions> CREATOR = new Parcelable.Creator<TableBudgetSplitTransactions>() {

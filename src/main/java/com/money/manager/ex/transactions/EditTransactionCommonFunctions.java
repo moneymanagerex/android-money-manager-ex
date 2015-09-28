@@ -807,11 +807,11 @@ public class EditTransactionCommonFunctions {
 
                 mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
                 if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
-                    double splitSum = 0;
+                    Money splitSum = MoneyFactory.fromString("0");
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
-                        splitSum += mSplitTransactions.get(i).getSplitTransAmount();
+                        splitSum = splitSum.add(mSplitTransactions.get(i).getSplitTransAmount());
                     }
-                    displayAmountFormatted(txtAmount, MoneyFactory.fromDouble(splitSum),
+                    displayAmountFormatted(txtAmount, splitSum,
                             !transactionType.equals(TransactionTypes.Transfer)
                                     ? accountId
                                     : toAccountId);

@@ -683,7 +683,8 @@ public class EditTransactionActivity
                 //put value
                 values.put(TableSplitTransactions.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
                 values.put(TableSplitTransactions.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
+                        mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount().toString());
                 values.put(TableSplitTransactions.TRANSID, mTransId);
 
                 if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == -1) {
@@ -710,7 +711,8 @@ public class EditTransactionActivity
             for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT, mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount());
+                values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
+                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 
                 // update data
                 if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),

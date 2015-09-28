@@ -44,7 +44,7 @@ public class FormatUtilities {
     private static final String LOGCAT = FormatUtilities.class.getSimpleName();
 
     /**
-     * Method, which formats the default currency amount in TextView
+     * Method, which formats the amount in TextView with base currency settings.
      *
      * @param view   TextView to set the amount
      * @param amount to be formatted
@@ -54,7 +54,7 @@ public class FormatUtilities {
     }
 
     /**
-     * Method, which formats the default currency amount in TextView
+     * Method, which formats the amount in TextView with the given currency settings.
      *
      * @param view       TextView to set the amount
      * @param amount     to be formatted

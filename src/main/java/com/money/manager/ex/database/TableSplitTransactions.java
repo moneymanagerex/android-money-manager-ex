@@ -17,14 +17,20 @@
  */
 package com.money.manager.ex.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
 
-public class TableSplitTransactions extends Dataset
-        implements Parcelable, ISplitTransactionsDataset {
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
+public class TableSplitTransactions
+	extends Dataset
+	implements Parcelable, ISplitTransactionsDataset {
 
 	// FIELD NAMES
 	public static final String SPLITTRANSID = "SPLITTRANSID";
@@ -32,7 +38,7 @@ public class TableSplitTransactions extends Dataset
 	public static final String CATEGID = "CATEGID";
 	public static final String SUBCATEGID = "SUBCATEGID";
 	public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
-	// definizione dei campi
+
 	@DatabaseField(columnName = SPLITTRANSID)
 	private int splitTransId = -1;
 	@DatabaseField(columnName = TRANSID)
@@ -42,9 +48,10 @@ public class TableSplitTransactions extends Dataset
 	@DatabaseField(columnName = SUBCATEGID)
 	private int subCategId = -1;
 	@DatabaseField(columnName = SPLITTRANSAMOUNT)
-	private double splitTransAmount = 0;
-	
-	// CONSTRUCTOR
+	private Money splitTransAmount = MoneyFactory.fromString("0");
+
+    ContentValues contentValues = new ContentValues();
+
 	public TableSplitTransactions() {
 		super(TABLE_NAME, DatasetType.TABLE, "splittransaction");
 	}
@@ -67,7 +74,7 @@ public class TableSplitTransactions extends Dataset
 	/**
 	 * @return the splitTransAmount
 	 */
-	public double getSplitTransAmount() {
+	public Money getSplitTransAmount() {
 		return splitTransAmount;
 	}
 
@@ -102,7 +109,7 @@ public class TableSplitTransactions extends Dataset
     /**
      * @param splitTransAmount the splitTransAmount to set
      */
-    public void setSplitTransAmount(double splitTransAmount) {
+    public void setSplitTransAmount(Money splitTransAmount) {
         this.splitTransAmount = splitTransAmount;
     }
 
@@ -129,10 +136,12 @@ public class TableSplitTransactions extends Dataset
 	
 	@Override
 	public void setValueFromCursor(Cursor c) {
-		if (c == null) 
-			return;
-		// set values
-		if (c.getColumnIndex(SPLITTRANSID) != -1) 
+		if (c == null) return;
+
+        DatabaseUtils.cursorRowToContentValues(c, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, SPLITTRANSAMOUNT, this.contentValues);
+
+		if (c.getColumnIndex(SPLITTRANSID) != -1)
 			setSplitTransId(c.getInt(c.getColumnIndex(SPLITTRANSID)));
 		if (c.getColumnIndex(TRANSID) != -1) 
 			setTransId(c.getInt(c.getColumnIndex(TRANSID)));
@@ -140,8 +149,11 @@ public class TableSplitTransactions extends Dataset
 			setCategId(c.getInt(c.getColumnIndex(CATEGID)));
 		if (c.getColumnIndex(SUBCATEGID) != -1) 
 			setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
-		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) 
-			setSplitTransAmount(c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT)));
+		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) {
+//            double amount = c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT));
+            String amount = this.contentValues.getAsString(SPLITTRANSAMOUNT);
+            setSplitTransAmount(MoneyFactory.fromString(amount));
+        }
 	}
 
 	@Override
@@ -155,7 +167,7 @@ public class TableSplitTransactions extends Dataset
 		dest.writeInt(getTransId());
 		dest.writeInt(getCategId());
 		dest.writeInt(getSubCategId());
-		dest.writeDouble(getSplitTransAmount());
+		dest.writeValue(getSplitTransAmount());
 	}
 	
 	public void readToParcel(Parcel source) {
@@ -163,7 +175,7 @@ public class TableSplitTransactions extends Dataset
 		setTransId(source.readInt());
 		setCategId(source.readInt());
 		setSubCategId(source.readInt());
-		setSplitTransAmount(source.readDouble());
+		setSplitTransAmount((Money) source.readValue(Money.class.getClassLoader()));
 	}
 	
 	public final static Parcelable.Creator<TableSplitTransactions> CREATOR = new Parcelable.Creator<TableSplitTransactions>() {

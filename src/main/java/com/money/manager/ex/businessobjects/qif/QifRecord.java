@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import info.javaperformance.money.Money;
+
 /**
  * A .qif file record. Represents a single transaction or account header record.
  * References:
@@ -168,10 +170,10 @@ public class QifRecord {
         builder.append(System.lineSeparator());
 
         // amount
-        double amount = split.getSplitTransAmount();
+        Money amount = split.getSplitTransAmount();
         // handle sign
         if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Withdrawal)) {
-            amount = amount * (-1);
+            amount = amount.negate();
         }
         if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
             // leave positive?
