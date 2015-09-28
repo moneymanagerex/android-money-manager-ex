@@ -35,6 +35,11 @@
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_clear_recent_files"
+        android:title="@string/clear_recent_files_list" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_database_backup"
         android:title="@string/menu_move_database_to_external_storage" />
 

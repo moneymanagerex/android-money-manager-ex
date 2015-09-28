@@ -39,44 +39,28 @@ public class RecentDatabasesProvider {
 
     public RecentDatabasesProvider(Context context) {
         this.context = context.getApplicationContext();
-//        this.queue = new ArrayDeque<>(5);
 
         this.load();
     }
 
-//    public Queue<RecentDatabaseEntry> queue;
     public LinkedHashMap<String, RecentDatabaseEntry> map;
 
     private Context context;
 
     public boolean add(String key, RecentDatabaseEntry value) {
-        boolean result = false;
+        boolean result;
 
         // check if this item already exist.
         if (contains(value)) {
             // Put as the last if it does.
             remove(value);
-//            this.queue.offer(entry);
         }
-
-//        if (this.queue.add(value)){
-//            // If we have more than 5 elements, remove one.
-//            if (this.queue.size() > 5) {
-//                this.queue.remove();
-//                this.queue.offer(value);
-//            }
-//
-//            this.save();
-//
-//            result = true;
-//        }
 
         this.map.put(key, value);
 
         // If we have more than 5 elements, remove one.
         if (this.map.size() > 5) {
             this.removeOldest();
-//            this.map.offer(value);
         }
 
         this.save();
@@ -90,25 +74,17 @@ public class RecentDatabasesProvider {
         return add(entry.filePath, entry);
     }
 
-//    /**
-//     * Finds the object by comparing the properties, not equating the Java objects.
-//     * @param entry Entry with properties we are searching for.
-//     * @return The entry that is inside the queue. Can be used for removal.
-//     */
-//    public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
-//        Queue<RecentDatabaseEntry> queue = this.queue;
-//        Iterator<RecentDatabaseEntry> iterator = queue.iterator();
-//        RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
-//
-//        while (iterator.hasNext()) {
-//            RecentDatabaseEntry existing = iterator.next();
-//            if (comparator.compare(existing, entry) == 0) {
-//                return existing;
-//            }
-//        }
-//
-//        return null;
-//    }
+    /**
+     * Clears the recent files list.
+     * @return boolean indicator of success.
+     */
+    public boolean clear() {
+        this.map.clear();
+
+        this.save();
+
+        return true;
+    }
 
     public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
         RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
@@ -124,7 +100,6 @@ public class RecentDatabasesProvider {
     public boolean remove(RecentDatabaseEntry entry) {
         RecentDatabaseEntry existing = find(entry);
         if (existing != null) {
-//            return this.queue.remove(existing);
             this.map.remove(existing);
             return true;
         }
@@ -141,10 +116,6 @@ public class RecentDatabasesProvider {
 
         return found;
     }
-
-//    public Queue<RecentDatabaseEntry> this.queue {
-//        return this.queue;
-//    }
 
     public SharedPreferences getPreferences() {
         SharedPreferences prefs = this.context.getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
@@ -193,7 +164,6 @@ public class RecentDatabasesProvider {
 
     public String toJson() {
         Gson gson = new Gson();
-//        Queue<RecentDatabaseEntry> queue = this.queue;
 
         String value = gson.toJson(this.map);
 

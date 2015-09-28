@@ -18,6 +18,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion changeDate="September 27, 2015" versionName="2.20.7">
+        <changelogtext>Ability to clear the recent databases list from Database Settings screen.</changelogtext>
         <changelogtext>Handling security prices updates for prices without dates.</changelogtext>
         <changelogtext>Corrected Locale parsing for Android 4.1.x.</changelogtext>
         <changelogtext>Corrected the logic for fetching the last used Payee.</changelogtext>

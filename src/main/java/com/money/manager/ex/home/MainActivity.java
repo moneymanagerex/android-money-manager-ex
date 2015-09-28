@@ -930,8 +930,6 @@ public class MainActivity
     private ArrayList<DrawerMenuItem> getRecentDatabases() {
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
 
-//        Queue<RecentDatabaseEntry> recentList = provider.queue;
-
         if (this.recentDbs.map != null) {
             for (RecentDatabaseEntry entry : this.recentDbs.map.values()) {
                 String title = entry.getFileName();
@@ -969,11 +967,9 @@ public class MainActivity
         // Home
         childItems.add(null);
 
-        // open database
-        // display the recent db list.
+        // Open Database. Display the recent db list.
         ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
         childItems.add(childDatabases);
-//        childItems.add(null);
 
         // Dropbox
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {

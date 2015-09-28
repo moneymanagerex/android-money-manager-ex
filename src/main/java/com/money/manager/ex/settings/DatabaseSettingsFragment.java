@@ -59,6 +59,8 @@ public class DatabaseSettingsFragment
         // Database path.
         refreshDbPath();
 
+        initClearRecentFiles();
+
         refreshDbVersion();
 
         // Check schema
@@ -83,6 +85,34 @@ public class DatabaseSettingsFragment
 
         // Create database
         initCreateDatabaseOption();
+    }
+
+    private void initClearRecentFiles() {
+        Preference preference = findPreference(getString(R.string.pref_clear_recent_files));
+        if (preference == null) return;
+
+        final RecentDatabasesProvider recents = new RecentDatabasesProvider(getActivity());
+
+        // show how many items are in the list.
+        preference.setSummary(Integer.toString(recents.map.size()));
+
+        preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                // clear recent files list
+                boolean success = recents.clear();
+                // update display value.
+                preference.setSummary(Integer.toString(recents.map.size()));
+
+                // notification
+                ExceptionHandler handler = new ExceptionHandler(getActivity(), DatabaseSettingsFragment.this);
+                String message = success
+                        ? getString(R.string.cleared)
+                        : getString(R.string.error);
+                handler.showMessage(message);
+                return false;
+            }
+        });
     }
 
     private void refreshDbVersion() {

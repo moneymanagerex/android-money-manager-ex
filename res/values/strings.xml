@@ -570,6 +570,7 @@
     <string name="database_migrate_14_to_20_success">Database migration succeeded.</string>
     <string name="database_migrate_14_to_20_complete">Migration completed. Please close the settings to start using this database.</string>
     <string name="database_migrate_14_to_20_intro">A database has been detected at the old location. Tap the button below to migrate to SD card and use.</string>
+    <string name="clear_recent_files_list">Clear recent files</string>
     <string name="export_prices">Export prices</string>
     <string name="purge_history">Purge price history</string>
     <string name="purge_history_confirmation">Do you want to delete the complete price history for all accounts?</string>
@@ -642,4 +643,5 @@
     <string name="view_transactions">View transactions</string>
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
     <string name="other">Other</string>
+    <string name="cleared">Cleared</string>
 </resources>
