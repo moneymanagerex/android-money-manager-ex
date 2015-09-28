@@ -115,6 +115,17 @@ android {
         }
     }
 
+    // adding this currently breaks the build beacuse of analytics dependencies?
+    productFlavors {
+//        beta {
+//            applicationId "com.money.manager.ex.beta"
+//            versionName "latestBeta"
+//        }
+//        stable {
+//            applicationId "com.money.manager.ex"
+//        }
+    }
+
     lintOptions {
         // if true, stop the gradle build if errors are found
         abortOnError false
