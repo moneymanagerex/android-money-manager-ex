@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.home;
 
@@ -648,15 +647,17 @@ public class MainActivity
 
     private void initializeAfterTutorial() {
         // show change log dialog
+
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
 
         // start notification for recurring transaction
+
         if (!isRecurringTransactionStarted) {
             AppSettings settings = new AppSettings(this);
             boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
             if (showNotification) {
-                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(this);
                 notifications.notifyRepeatingTransaction();
                 isRecurringTransactionStarted = true;
             }

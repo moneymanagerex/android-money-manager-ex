@@ -343,7 +343,7 @@ public class MmexContentProvider
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
         // take a database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
 
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         if (database == null) {

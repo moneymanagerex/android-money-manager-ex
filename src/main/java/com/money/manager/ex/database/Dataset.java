@@ -138,7 +138,7 @@ public abstract class Dataset
     }
 
 	/**
-	 * 
+	 * All columns of the dataset.
 	 * @return the all columns of the dataset
 	 */
 	public String[] getAllColumns() {

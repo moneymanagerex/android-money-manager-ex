@@ -40,37 +40,38 @@ import com.money.manager.ex.recurring.transactions.RecurringTransactionListActiv
 import info.javaperformance.money.MoneyFactory;
 
 public class RepeatingTransactionNotifications {
-    private static final String LOGCAT = RepeatingTransactionNotifications.class.getSimpleName();
+
     private static final int ID_NOTIFICATION = 0x000A;
-    private Context mContext;
 
     public RepeatingTransactionNotifications(Context context) {
         super();
-        mContext = context;
+        mContext = context.getApplicationContext();
     }
+
+    private Context mContext;
 
     public void notifyRepeatingTransaction() {
         try {
             notifyRepeatingTransaction_Internal();
         } catch (Exception ex) {
-            String error = "Error showing notification about recurring transactions";
-            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
-            Toast.makeText(mContext, error, Toast.LENGTH_SHORT).show();
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "showing notification about recurring transactions");
         }
     }
 
     private void notifyRepeatingTransaction_Internal() {
-        // select data
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
 
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(mContext);
-        if (databaseHelper == null) return;
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        if(db == null) return;
+        /*
+        In this query, the 0 days diff parameter HAS to be set in the query. Adding it in
+        the parameters will not work (for whatever reason).
+        */
 
-        Cursor cursor = db.rawQuery(billDeposits.getSource() + " AND " +
-                        QueryBillDeposits.DAYSLEFT + "<=0 ORDER BY " + QueryBillDeposits.NEXTOCCURRENCEDATE,
-                null);
+        Cursor cursor = mContext.getContentResolver().query(billDeposits.getUri(),
+                null,
+                QueryBillDeposits.DAYSLEFT + "<=0",
+                null,
+                QueryBillDeposits.NEXTOCCURRENCEDATE);
         if (cursor == null) return;
 
         if (cursor.getCount() > 0) {
