@@ -16,6 +16,7 @@ import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.view.RobotoTextView;
 
@@ -48,7 +49,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class SplitCategoriesActivityTests {
 
     private ActivityController<SplitTransactionsActivity> controller;
-    private SplitTransactionsActivity activity;
+//    private SplitTransactionsActivity activity;
 
     @BeforeClass
     public static void suiteSetup() {
@@ -62,17 +63,20 @@ public class SplitCategoriesActivityTests {
         // todo: insert any data here, if needed.
 
         this.controller = UnitTestHelper.getController(SplitTransactionsActivity.class);
-//        this.activity = UnitTestHelper.getActivity(this.controller);
     }
 
     @After
     public void tearDown() {
         this.controller.destroy();
+
+        // destroy db helper
+        UnitTestHelper.resetDatabase();
     }
 
     @Test
     public void activityRunsStandalone() {
-        assertThat(this.activity).isNotNull();
+        SplitTransactionsActivity activity = UnitTestHelper.getActivity(this.controller);
+        assertThat(activity).isNotNull();
     }
 
     /**
@@ -88,7 +92,7 @@ public class SplitCategoriesActivityTests {
 
         // run
 
-        this.activity = this.controller
+        SplitTransactionsActivity activity = this.controller
                 .withIntent(intent)
                 .create().visible().start().get();
 
@@ -97,7 +101,6 @@ public class SplitCategoriesActivityTests {
                 .isEqualTo(TableSplitTransactions.class.getSimpleName());
 
         // enter number
-        // get the id of the first visible split fragment.
         Fragment fragment = activity.getSupportFragmentManager().getFragments().get(0);
         assertThat(fragment).isNotNull();
         // get amount text box.

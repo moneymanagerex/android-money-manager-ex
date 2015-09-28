@@ -26,14 +26,14 @@ import android.support.v4.app.Fragment;
 import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowContentProvider;
 import org.robolectric.shadows.ShadowContentResolver;
 import org.robolectric.util.ActivityController;
 
-import static org.robolectric.Shadows.shadowOf;
+import java.lang.reflect.Field;
 
 /**
  * Additionally simplify and standardize certain calls to assist when setting up and running
@@ -91,5 +91,23 @@ public class UnitTestHelper {
         ShadowContentResolver.registerProvider(MmexContentProvider.getAuthority(), contentProvider);
 
         return contentProvider;
+    }
+
+    private static void resetSingleton(Class clazz, String fieldName) {
+        Field instance;
+        try {
+            instance = clazz.getDeclaredField(fieldName);
+            instance.setAccessible(true);
+            instance.set(null, null);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Reset database helper instance. Use after every test on @After.
+     */
+    public static void resetDatabase() {
+        resetSingleton(MoneyManagerOpenHelper.class, "mInstance");
     }
 }

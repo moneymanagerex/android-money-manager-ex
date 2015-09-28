@@ -379,7 +379,8 @@ public class Core {
      * @return category : sub-category
      */
     public String getCategSubName(int categoryId, int subCategoryId) {
-        String categoryName, subCategoryName, ret;
+        String categoryName = null;
+        String subCategoryName, ret;
         TableCategory category = new TableCategory();
         TableSubCategory subCategory = new TableSubCategory();
         // category
@@ -392,8 +393,6 @@ public class Core {
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
             categoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
-        } else {
-            categoryName = null;
         }
         if (cursor != null) {
             cursor.close();
