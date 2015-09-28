@@ -207,11 +207,15 @@ public class YqlSecurityPriceUpdaterRetrofit
         // Date
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = null;
-        try {
-            date = dateFormat.parse(quote.get("LastTradeDate").getAsString());
-        } catch (ParseException e) {
-            handler.handle(e, "parsing date from CSV");
+        JsonElement dateElement = quote.get("LastTradeDate");
+        Date date = new Date();
+        if (dateElement != JsonNull.INSTANCE) {
+            // Sometimes the date is not available. For now we will use today's date.
+            try {
+                date = dateFormat.parse(dateElement.getAsString());
+            } catch (ParseException e) {
+                handler.handle(e, "parsing date from CSV");
+            }
         }
         priceModel.date = date;
 
