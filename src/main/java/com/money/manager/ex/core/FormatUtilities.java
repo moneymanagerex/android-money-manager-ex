@@ -44,16 +44,6 @@ public class FormatUtilities {
     private static final String LOGCAT = FormatUtilities.class.getSimpleName();
 
     /**
-     * Method, which formats the amount in TextView with base currency settings.
-     *
-     * @param view   TextView to set the amount
-     * @param amount to be formatted
-     */
-    public static void formatAmountTextView(Context context, TextView view, Money amount) {
-        formatAmountTextView(context, view, amount, null);
-    }
-
-    /**
      * Method, which formats the amount in TextView with the given currency settings.
      *
      * @param view       TextView to set the amount
@@ -63,6 +53,8 @@ public class FormatUtilities {
     public static void formatAmountTextView(Context context, TextView view, Money amount,
                                             Integer currencyId) {
         if (amount == null) {
+            ExceptionHandler handler = new ExceptionHandler(context, null);
+            handler.showMessage("Amount for formatting is null.");
             Log.w(LOGCAT, "Amount for formatting is null.");
             return;
         }
@@ -81,12 +73,10 @@ public class FormatUtilities {
     public FormatUtilities(Context context) {
         this.context = context;
         this.numericHelper = new NumericHelper(context);
-//        this.settings = new AppSettings(context);
     }
 
     private Context context;
     private NumericHelper numericHelper;
-//    private AppSettings settings;
 
     public String formatWithLocale(Money amount) {
         // Use the number of decimals from the base currency.
