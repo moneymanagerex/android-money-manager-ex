@@ -37,8 +37,9 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.RecurringTransactionService;
-import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.RecurringTransactionRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.NumericHelper;
@@ -53,7 +54,6 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.transactions.YesNoDialogListener;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import info.javaperformance.money.Money;
@@ -513,14 +513,14 @@ public class RecurringTransactionActivity
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
-            values.put(TablePayee.CATEGID, mCommonFunctions.categoryId);
-            values.put(TablePayee.SUBCATEGID, mCommonFunctions.subCategoryId);
+            values.put(Payee.CATEGID, mCommonFunctions.categoryId);
+            values.put(Payee.SUBCATEGID, mCommonFunctions.subCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
             if (getContentResolver().update(payee.getUri(),
                     values,
-                    TablePayee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId),
+                    Payee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId),
                     null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");

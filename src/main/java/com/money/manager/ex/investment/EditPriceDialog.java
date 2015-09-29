@@ -18,7 +18,6 @@
 package com.money.manager.ex.investment;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -35,17 +34,15 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.StockRepository;
-import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.DateUtils;
@@ -54,7 +51,6 @@ import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

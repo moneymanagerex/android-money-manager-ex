@@ -82,7 +82,7 @@ public class YahooDownloadAllPricesTask
             // todo: check what this does.
 //            if (mCurrencyFormat != null) {
 //                mDialog.setMessage(mCore.highlight(mCurrencyFormat.getCurrencyName(),
-//                        mContext.getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
+//                        context.getString(R.string.update_currency_exchange_rates, mCurrencyFormat.getCurrencyName())));
 //            }
         }
     }

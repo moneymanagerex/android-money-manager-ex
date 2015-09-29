@@ -62,7 +62,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryBillDeposits;

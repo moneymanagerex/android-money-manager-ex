@@ -6,12 +6,10 @@ import android.database.Cursor;
 
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.RepositoryBase;
+import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Currency;
-
-import java.math.BigDecimal;
 
 import info.javaperformance.money.Money;
 
@@ -53,7 +51,7 @@ public class CurrencyRepository
         ContentValues contentValues = new ContentValues();
         contentValues.put(TableCurrencyFormats.BASECONVRATE, exchangeRate.toString());
 
-        int result = mContext.getContentResolver().update(this.getUri(),
+        int result = context.getContentResolver().update(this.getUri(),
                 contentValues,
                 TableCurrencyFormats.CURRENCYID + "=?",
                 new String[] { Integer.toString(currencyId) });
@@ -68,7 +66,7 @@ public class CurrencyRepository
         try {
             result = loadCurrencyInternal(selection, selectionArgs);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.handle(e, "loading currency");
         }
         return result;

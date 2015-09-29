@@ -209,8 +209,8 @@ public class BudgetAdapter
                 ViewMobileData.SubcategID + ", " + ViewMobileData.Subcategory;
 
         String having = null;
-//        if (!TextUtils.isEmpty(((CategoriesReportActivity) mContext).mFilter)) {
-//            String filter = ((CategoriesReportActivity) mContext).mFilter;
+//        if (!TextUtils.isEmpty(((CategoriesReportActivity) context).mFilter)) {
+//            String filter = ((CategoriesReportActivity) context).mFilter;
 //            if (TransactionTypes.valueOf(filter).equals(TransactionTypes.Withdrawal)) {
 //                having = "SUM(" + ViewMobileData.AmountBaseConvRate + ") < 0";
 //            } else {

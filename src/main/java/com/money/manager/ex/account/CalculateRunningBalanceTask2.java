@@ -27,7 +27,7 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 

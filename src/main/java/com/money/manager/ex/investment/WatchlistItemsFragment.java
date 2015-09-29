@@ -40,13 +40,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.StockRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.database.TableStock;
 
 import java.lang.reflect.Field;

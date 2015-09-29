@@ -79,7 +79,7 @@ public class AccountListFragment
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
                 layout, null,
-                new String[]{TableAccountList.ACCOUNTNAME},
+                new String[]{ Account.ACCOUNTNAME },
                 new int[]{android.R.id.text1}, 0);
         setListAdapter(adapter);
 
@@ -106,14 +106,14 @@ public class AccountListFragment
 
         switch (item.getItemId()) {
             case 0: //EDIT
-                startAccountListEditActivity(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
+                startAccountListEditActivity(cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
                 break;
 
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(TableAccountList.ACCOUNTID, cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
+                contentValues.put(Account.ACCOUNTID, cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
-                    showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
+                    showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
                 } else {
 //                    Core core = new Core(getActivity());
 //                    int icon = core.usingDarkTheme()
@@ -146,7 +146,7 @@ public class AccountListFragment
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
 
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
 
         String[] menuItems = getResources().getStringArray(R.array.context_menu);
         for (int i = 0; i < menuItems.length; i++) {
@@ -163,11 +163,11 @@ public class AccountListFragment
                 String whereClause = null;
                 String selectionArgs[] = null;
                 if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = TableAccountList.ACCOUNTNAME + " LIKE ?";
+                    whereClause = Account.ACCOUNTNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
                 return new MmexCursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(),
-                        whereClause, selectionArgs, "upper(" + TableAccountList.ACCOUNTNAME + ")");
+                        whereClause, selectionArgs, "upper(" + Account.ACCOUNTNAME + ")");
         }
 
         return null;
@@ -225,9 +225,9 @@ public class AccountListFragment
                     cursor.moveToPosition(i);
                     result = new Intent();
                     result.putExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID,
-                            cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID)));
+                            cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
                     result.putExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME,
-                            cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME)));
+                            cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
                     getActivity().setResult(Activity.RESULT_OK, result);
                     return;
                 }

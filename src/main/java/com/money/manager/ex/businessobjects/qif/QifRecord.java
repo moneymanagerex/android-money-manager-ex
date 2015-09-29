@@ -24,9 +24,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.SplitCategoriesRepository;
-import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import java.text.ParseException;

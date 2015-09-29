@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -39,11 +40,13 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.businessobjects.StockHistoryRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.StockRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableStock;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -74,7 +77,8 @@ public class WatchlistFragment
     private Integer mAccountId = null;
     private String mAccountName;
 
-    private TableAccountList mAccount;
+//    private TableAccountList mAccount;
+    private Account mAccount;
 
     private ImageView imgAccountFav, imgGotoAccount;
 
@@ -143,8 +147,10 @@ public class WatchlistFragment
         View view = inflater.inflate(R.layout.account_fragment, container, false);
 
         if (mAccount == null) {
-            AccountService service = new AccountService(getActivity().getApplicationContext());
-            mAccount = service.getTableAccountList(mAccountId);
+//            AccountService service = new AccountService(getActivity().getApplicationContext());
+//            mAccount = service.getTableAccountList(mAccountId);
+            AccountRepository repo = new AccountRepository(getActivity());
+            mAccount = repo.load(mAccountId);
         }
 
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
@@ -155,12 +161,17 @@ public class WatchlistFragment
         imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 // set status account
-                mAccount.setFavoriteAcct(!(mAccount.isFavoriteAcct()));
+//                mAccount.setFavoriteAcct(!(mAccount.isFavoriteAcct()));
+                mAccount.setFavorite(!mAccount.getFavorite());
                 // populate content values for update
                 ContentValues values = new ContentValues();
-                values.put(TableAccountList.FAVORITEACCT, mAccount.getFavoriteAcct());
+                values.put(Account.FAVORITEACCT, mAccount.getFavorite());
+                // used only for .Uri here.
+                AccountRepository repo = new AccountRepository(getActivity());
+
                 // update
-                if (mContext.getContentResolver().update(mAccount.getUri(), values, TableAccountList.ACCOUNTID + "=?",
+                if (mContext.getContentResolver().update(repo.getUri(), values,
+                        Account.ACCOUNTID + "=?",
                         new String[]{Integer.toString(mAccountId)}) != 1) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
                 } else {
@@ -196,7 +207,7 @@ public class WatchlistFragment
 
         // refresh user interface
         if (mAccount != null) {
-            mAccountName = mAccount.getAccountName();
+            mAccountName = mAccount.getName();
             setImageViewFavorite();
         }
         // set has option menu
@@ -254,7 +265,7 @@ public class WatchlistFragment
      * refresh UI, show favorite icon
      */
     private void setImageViewFavorite() {
-        if (mAccount.isFavoriteAcct()) {
+        if (mAccount.getFavorite()) {
             imgAccountFav.setBackgroundResource(R.drawable.ic_star);
         } else {
             imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);

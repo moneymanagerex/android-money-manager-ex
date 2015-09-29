@@ -156,10 +156,10 @@ public class ExceptionHandler
         errorReport.append(Build.VERSION.INCREMENTAL);
         errorReport.append(LINE_SEPARATOR);
 
-//        Intent intent = new Intent(mContext, ExceptionHandlerActivity.class);
+//        Intent intent = new Intent(context, ExceptionHandlerActivity.class);
 //        intent.putExtra("error", errorReport.toString());
 //        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
-//        mContext.startActivity(intent);
+//        context.startActivity(intent);
 
 //        Log.e(getLogcat(), errorReport.toString());
 //        showMessage(errorReport.toString());
@@ -167,7 +167,7 @@ public class ExceptionHandler
 //        Intent intent = new Intent ();
 //        intent.setAction ("com.mydomain.SEND_LOG"); // see step 5.
 //        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
-//        mContext.startActivity(intent);
+//        context.startActivity(intent);
 
         sendEmail(errorReport.toString());
 
@@ -185,7 +185,7 @@ public class ExceptionHandler
         intent.putExtra(Intent.EXTRA_TEXT, text); // do this so some email clients don't complain about empty body.
         // Title for the app selector
 //        intent.putExtra(Intent.EXTRA_TITLE, "The app has crashed");
-//        mContext.startActivity(intent);
+//        context.startActivity(intent);
 
         Intent chooser = Intent.createChooser(intent, mContext.getString(R.string.unhandled_crash));
         mContext.startActivity(chooser);

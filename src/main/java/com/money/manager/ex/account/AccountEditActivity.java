@@ -46,7 +46,7 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -97,9 +97,9 @@ public class AccountEditActivity
 
     // Activity members
 //    private int mAccountId = -1;
-    // mAccountName
+    // mAccountName, mFavoriteAcct
     private String mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo,
-            mStatus, mNotes, mFavoriteAcct, mCurrencyName;
+            mStatus, mNotes, mCurrencyName;
     private Money mInitialBal = MoneyFactory.fromString("0");
     private Integer mCurrencyId = null;
     private String[] mAccountTypeValues;
@@ -237,13 +237,15 @@ public class AccountEditActivity
         if (!(TextUtils.isEmpty(mNotes))) {
             edtNotes.setText(mNotes);
         }
-        if (TextUtils.isEmpty(mFavoriteAcct)) {
-            // TODO should be done better with enumeration for TRUE and FALSE
-            mFavoriteAcct = String.valueOf(Boolean.FALSE);
-        }
-        imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(mFavoriteAcct)
-                ? R.drawable.ic_star : R.drawable.ic_star_outline);
-        imgbFavouriteAccount.setTag(mFavoriteAcct);
+//        if (TextUtils.isEmpty(mFavoriteAcct)) {
+//            // TODO should be done better with enumeration for TRUE and FALSE
+//            mFavoriteAcct = String.valueOf(Boolean.FALSE);
+//        }
+//        imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(mFavoriteAcct)
+//                ? R.drawable.ic_star : R.drawable.ic_star_outline);
+        imgbFavouriteAccount.setBackgroundResource(mAccount.getFavorite()
+            ? R.drawable.ic_star : R.drawable.ic_star_outline);
+        imgbFavouriteAccount.setTag(mAccount.getFavorite().toString());
 
         // spinAccountType adapters and values
         String[] mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
@@ -385,7 +387,8 @@ public class AccountEditActivity
         outState.putString(KEY_STATUS, mStatus);
         outState.putString(KEY_INITIAL_BAL, txtInitialBalance.getTag().toString());
         outState.putString(KEY_NOTES, mNotes);
-        outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
+//        outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
+        outState.putBoolean(KEY_FAVORITE_ACCT, mAccount.getFavorite());
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
         outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
         outState.putString(KEY_ACTION, mIntentAction);
@@ -449,19 +452,19 @@ public class AccountEditActivity
         // content value for insert or update data
         // todo: replace with mAccount.contentValues. What about Id field?
         ContentValues values = new ContentValues();
-        values.put(TableAccountList.ACCOUNTNAME, mAccount.getName());
-        values.put(TableAccountList.ACCOUNTTYPE, mAccountType);
-        values.put(TableAccountList.ACCOUNTNUM, mAccountNum);
-        values.put(TableAccountList.STATUS, mStatus);
-        values.put(TableAccountList.NOTES, mNotes);
-        values.put(TableAccountList.HELDAT, mHeldAt);
-        values.put(TableAccountList.WEBSITE, mWebsite);
-        values.put(TableAccountList.CONTACTINFO, mContactInfo);
-        values.put(TableAccountList.ACCESSINFO, mAccessInfo);
-        values.put(TableAccountList.INITIALBAL, MoneyFactory.fromString(txtInitialBalance.getTag().toString()).toDouble() *
+        values.put(Account.ACCOUNTNAME, mAccount.getName());
+        values.put(Account.ACCOUNTTYPE, mAccountType);
+        values.put(Account.ACCOUNTNUM, mAccountNum);
+        values.put(Account.STATUS, mStatus);
+        values.put(Account.NOTES, mNotes);
+        values.put(Account.HELDAT, mHeldAt);
+        values.put(Account.WEBSITE, mWebsite);
+        values.put(Account.CONTACTINFO, mContactInfo);
+        values.put(Account.ACCESSINFO, mAccessInfo);
+        values.put(Account.INITIALBAL, MoneyFactory.fromString(txtInitialBalance.getTag().toString()).toDouble() *
                 (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
-        values.put(TableAccountList.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
-        values.put(TableAccountList.CURRENCYID, mCurrencyId);
+        values.put(Account.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
+        values.put(Account.CURRENCYID, mCurrencyId);
 
         TableAccountList mAccountList = new TableAccountList();
 
@@ -470,7 +473,7 @@ public class AccountEditActivity
             // insert
             Uri insertUri = getContentResolver().insert(mAccountList.getUri(), values);
             long id = ContentUris.parseId(insertUri);
-            if (insertUri == null) {
+            if (id == Constants.NOT_SET) {
                 Core.alertDialog(this, R.string.db_account_insert_failed);
                 Log.w(LOGCAT, "Error inserting account!");
                 return false;
@@ -479,7 +482,7 @@ public class AccountEditActivity
             // update
             int updateCount = getContentResolver().update(mAccountList.getUri(),
                     values,
-                    TableAccountList.ACCOUNTID + "=?",
+                    Account.ACCOUNTID + "=?",
                     new String[]{Integer.toString(mAccount.getId())});
             if (updateCount <= 0) {
                 Core.alertDialog(this, R.string.db_account_update_failed);
@@ -493,7 +496,7 @@ public class AccountEditActivity
     }
 
     /**
-     * Select the account indentified by accountId
+     * Select the account identified by accountId
      *
      * @param accountId account id
      * @return true if data is correctly selected, false if error occurs
@@ -515,7 +518,7 @@ public class AccountEditActivity
         mContactInfo = account.getContactInfo();
         mAccessInfo = account.getAccessInfo();
         mInitialBal = account.getInitialBalance();
-        mFavoriteAcct = account.getFavourite();
+//        mFavoriteAcct = account.getFavourite();
         mCurrencyId = account.getCurrencyId();
 
         // TODO Select currency name: could be improved for better usage of members
@@ -556,7 +559,8 @@ public class AccountEditActivity
             mInitialBal = mInitialBal.negate();
         }
         mNotes = savedInstanceState.getString(KEY_NOTES);
-        mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
+//        mFavoriteAcct = savedInstanceState.getString(KEY_FAVORITE_ACCT);
+        mAccount.setFavorite(savedInstanceState.getBoolean(KEY_FAVORITE_ACCT));
         mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
         if (mCurrencyId == Constants.NOT_SET) {
             mCurrencyId = null;

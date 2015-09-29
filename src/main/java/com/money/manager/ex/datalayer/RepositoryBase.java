@@ -1,4 +1,4 @@
-package com.money.manager.ex.database;
+package com.money.manager.ex.datalayer;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -6,6 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.Dataset;
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.EntityBase;
 
 /**
  * Contains common code for repositories.
@@ -17,14 +22,26 @@ public class RepositoryBase
     public RepositoryBase(Context context, String source, DatasetType type, String basePath) {
         super(source, type, basePath);
 
-        mContext = context.getApplicationContext();
+        this.context = context.getApplicationContext();
     }
 
-    protected Context mContext;
+    protected Context context;
+
+//    protected EntityBase get(int id) {
+//        context.getContentResolver().query(this.getUri(),
+//                )
+//
+//    }
+
+    public int add(EntityBase entity) {
+        return insert(entity.contentValues);
+    }
 
     protected int insert(ContentValues values) {
-        Uri insertUri = mContext.getContentResolver().insert(this.getUri(),
+        Uri insertUri = context.getContentResolver().insert(this.getUri(),
                 values);
+        if (insertUri == null) return Constants.NOT_SET;
+
         long id = ContentUris.parseId(insertUri);
 
         return (int) id;
@@ -33,7 +50,7 @@ public class RepositoryBase
     protected boolean update(int id, ContentValues values, String where) {
         boolean result = false;
 
-        int updateResult = mContext.getContentResolver().update(this.getUri(),
+        int updateResult = context.getContentResolver().update(this.getUri(),
                 values,
                 where,
                 null
@@ -49,12 +66,20 @@ public class RepositoryBase
     }
 
     protected Cursor openCursor(String[] projection, String selection, String[] args) {
-        Cursor cursor = mContext.getContentResolver().query(
-                getUri(),
+        Cursor cursor = context.getContentResolver().query(getUri(),
                 projection,
                 selection,
                 args,
                 null);
+        return cursor;
+    }
+
+    protected Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
+        Cursor cursor = context.getContentResolver().query(getUri(),
+                projection,
+                selection,
+                args,
+                sort);
         return cursor;
     }
 

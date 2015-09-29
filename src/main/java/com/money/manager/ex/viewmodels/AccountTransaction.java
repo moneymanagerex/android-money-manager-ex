@@ -60,6 +60,10 @@ public class AccountTransaction
         return getInt(QueryAllData.ACCOUNTID);
     }
 
+    public void setAccountId(int value) {
+        setInt(QueryAllData.ACCOUNTID, value);
+    }
+
     public String getAccountName() {
         return getString(QueryAllData.AccountName);
     }

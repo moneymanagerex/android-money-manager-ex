@@ -17,19 +17,16 @@
  */
 package com.money.manager.ex.businessobjects;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDiskIOException;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.database.sqlite.SQLiteStatement;
 
 import com.money.manager.ex.core.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
@@ -54,9 +51,11 @@ public class AccountService {
 
     public AccountService(Context context) {
         mContext = context;
+        this.accountRepository = new AccountRepository(context);
     }
 
     private Context mContext;
+    private AccountRepository accountRepository;
 
     /**
      * Loads account list, applying the current preferences for Open & Favourite accounts.
@@ -225,16 +224,6 @@ public class AccountService {
         return curTotal;
     }
 
-    public Integer loadCurrencyId(int accountId) {
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(TableAccountList.ACCOUNTID, "=", accountId);
-
-        AccountRepository repo = new AccountRepository(mContext);
-        Account account = repo.query(new String[]{TableAccountList.CURRENCYID},
-                where.getWhere(), null);
-        return account.getCurrencyId();
-    }
-
     public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
         try {
             return getCursorInternal(open, favorite, accountTypes);
@@ -287,7 +276,7 @@ public class AccountService {
                 account.getAllColumns(),
                 where,
                 null,
-                "lower (" + TableAccountList.ACCOUNTNAME + ")"
+                "lower (" + Account.ACCOUNTNAME + ")"
         );
         return cursor;
     }
@@ -310,7 +299,7 @@ public class AccountService {
 
     private String getWherePartFor(List<String> accountTypes) {
         StringBuilder where = new StringBuilder();
-        where.append(TableAccountList.ACCOUNTTYPE);
+        where.append(Account.ACCOUNTTYPE);
         where.append(" IN (");
         for(String type : accountTypes) {
             if (accountTypes.indexOf(type) > 0) {
@@ -328,7 +317,7 @@ public class AccountService {
 
     private TableAccountList loadAccount(int id) {
         TableAccountList account = new TableAccountList();
-        String selection = TableAccountList.ACCOUNTID + "=?";
+        String selection = Account.ACCOUNTID + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(account.getUri(),
                 null,

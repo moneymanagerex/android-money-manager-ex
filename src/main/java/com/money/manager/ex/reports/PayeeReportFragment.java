@@ -295,9 +295,9 @@ public class PayeeReportFragment
 //        payee.loadFromCursor(cursor);
         // The fields are different! Can't use standard loadFromCursor.
         DatabaseUtils.cursorIntToContentValues(cursor, ViewMobileData.PAYEEID,
-                payee.contentValues, TablePayee.PAYEEID);
+                payee.contentValues, Payee.PAYEEID);
         DatabaseUtils.cursorStringToContentValues(cursor, ViewMobileData.PAYEE,
-                payee.contentValues, TablePayee.PAYEENAME);
+                payee.contentValues, Payee.PAYEENAME);
 
         return payee;
     }

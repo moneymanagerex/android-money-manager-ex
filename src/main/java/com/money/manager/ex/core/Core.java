@@ -55,6 +55,7 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -310,10 +311,10 @@ public class Core {
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {
             payee = new TablePayee();
-            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID)));
-            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
-            payee.setCategId(cursor.getInt(cursor.getColumnIndex(TablePayee.CATEGID)));
-            payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(TablePayee.SUBCATEGID)));
+            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID)));
+            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
+            payee.setCategId(cursor.getInt(cursor.getColumnIndex(Payee.CATEGID)));
+            payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(Payee.SUBCATEGID)));
 
             cursor.close();
         }
@@ -561,7 +562,7 @@ public class Core {
         MoneyManagerOpenHelper.closeDatabase();
 
         // change database
-//        MoneyManagerApplication.setDatabasePath(mContext, path);
+//        MoneyManagerApplication.setDatabasePath(context, path);
         new AppSettings(mContext).getDatabaseSettings().setDatabasePath(path);
 
         return true;
@@ -629,8 +630,8 @@ public class Core {
 //     * @return preferences account fav visible
 //     */
 //    public boolean getAccountFavoriteVisible() {
-//        return PreferenceManager.getDefaultSharedPreferences(mContext)
-//                .getBoolean(mContext.getString(R.string.pref_account_fav_visible), false);
+//        return PreferenceManager.getDefaultSharedPreferences(context)
+//                .getBoolean(context.getString(R.string.pref_account_fav_visible), false);
 //        // PreferenceConstants.PREF_ACCOUNT_FAV_VISIBLE
 //    }
 //
@@ -638,8 +639,8 @@ public class Core {
 //     * @return preferences accounts visible
 //     */
 //    public boolean getAccountsOpenVisible() {
-//        return PreferenceManager.getDefaultSharedPreferences(mContext)
-//                .getBoolean(mContext.getString(R.string.pref_account_open_visible), false);
+//        return PreferenceManager.getDefaultSharedPreferences(context)
+//                .getBoolean(context.getString(R.string.pref_account_open_visible), false);
 //        // PreferenceConstants.PREF_ACCOUNT_OPEN_VISIBLE
 //    }
 
@@ -689,12 +690,12 @@ public class Core {
 
     private TypedArray getAttributeValue(int attribute) {
 //        TypedValue typedValue = new TypedValue();
-//        mContext.getTheme().resolveAttribute(attribute, typedValue, true);
+//        context.getTheme().resolveAttribute(attribute, typedValue, true);
 //        return typedValue;
 
 //        int[] arrayAttributes = new int[] { attribute };
-//        TypedArray typedArray = mContext.obtainStyledAttributes(arrayAttributes);
-//        int value = typedArray.getColor(0, mContext.getResources().getColor(R.color.abBackground));
+//        TypedArray typedArray = context.obtainStyledAttributes(arrayAttributes);
+//        int value = typedArray.getColor(0, context.getResources().getColor(R.color.abBackground));
 //        typedArray.recycle();
 
         // Create an array of the attributes we want to resolve

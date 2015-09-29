@@ -33,6 +33,20 @@ import info.javaperformance.money.Money;
 public class Account
     extends EntityBase {
 
+    public static final String ACCOUNTID = "ACCOUNTID";
+    public static final String ACCOUNTNAME = "ACCOUNTNAME";
+    public static final String ACCOUNTTYPE = "ACCOUNTTYPE";
+    public static final String ACCOUNTNUM = "ACCOUNTNUM";
+    public static final String STATUS = "STATUS";
+    public static final String NOTES = "NOTES";
+    public static final String HELDAT = "HELDAT";
+    public static final String WEBSITE = "WEBSITE";
+    public static final String CONTACTINFO = "CONTACTINFO";
+    public static final String ACCESSINFO = "ACCESSINFO";
+    public static final String INITIALBAL = "INITIALBAL";
+    public static final String FAVORITEACCT = "FAVORITEACCT";
+    public static final String CURRENCYID = "CURRENCYID";
+
     public static Account from(Cursor c) {
         Account account = new Account();
         account.loadFromCursor(c);
@@ -48,71 +62,77 @@ public class Account
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, TableAccountList.INITIALBAL, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, Account.INITIALBAL, this.contentValues);
     }
 
     public Integer getId() {
-        return getInt(TableAccountList.ACCOUNTID);
+        return getInt(Account.ACCOUNTID);
     }
 
     public void setId(Integer value) {
-        setInt(TableAccountList.ACCOUNTID, value);
+        setInt(Account.ACCOUNTID, value);
     }
 
     public Integer getCurrencyId() {
-        return getInt(TableAccountList.CURRENCYID);
+        return getInt(Account.CURRENCYID);
     }
 
     public void setCurrencyId(Integer currencyId) {
-        setInt(TableAccountList.CURRENCYID, currencyId);
+        setInt(Account.CURRENCYID, currencyId);
     }
 
     public String getName() {
-        return getString(TableAccountList.ACCOUNTNAME);
+        return getString(Account.ACCOUNTNAME);
     }
 
     public void setName(String value) {
-        setString(TableAccountList.ACCOUNTNAME, value);
+        setString(Account.ACCOUNTNAME, value);
     }
 
     public String getType() {
-        return getString(TableAccountList.ACCOUNTTYPE);
+        return getString(Account.ACCOUNTTYPE);
     }
 
     public String getAccountNumber() {
-        return getString(TableAccountList.ACCOUNTNUM);
+        return getString(Account.ACCOUNTNUM);
     }
 
     public String getStatus() {
-        return getString(TableAccountList.STATUS);
+        return getString(Account.STATUS);
     }
 
     public String getNotes() {
-        return getString(TableAccountList.NOTES);
+        return getString(Account.NOTES);
     }
 
     public String getHeldAt() {
-        return getString(TableAccountList.HELDAT);
+        return getString(Account.HELDAT);
     }
 
     public String getWebSite() {
-        return getString(TableAccountList.WEBSITE);
+        return getString(Account.WEBSITE);
     }
 
     public String getContactInfo() {
-        return getString(TableAccountList.CONTACTINFO);
+        return getString(Account.CONTACTINFO);
     }
 
     public String getAccessInfo() {
-        return getString(TableAccountList.ACCESSINFO);
+        return getString(Account.ACCESSINFO);
     }
 
     public Money getInitialBalance() {
-        return getMoney(TableAccountList.INITIALBAL);
+        return getMoney(Account.INITIALBAL);
     }
 
-    public String getFavourite() {
-        return getString(TableAccountList.FAVORITEACCT);
+//    public String getFavourite() {
+//        return getString(Account.FAVORITEACCT);
+//    }
+    public Boolean getFavorite() {
+        return getBoolean(Account.FAVORITEACCT);
     }
 
+    public void setFavorite(boolean value) {
+        setBoolean(Account.FAVORITEACCT, value);
+    }
 }

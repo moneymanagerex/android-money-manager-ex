@@ -23,9 +23,7 @@ import android.net.Uri;
 import com.money.manager.ex.businessobjects.CategoryService;
 import com.money.manager.ex.businessobjects.PayeeService;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.AccountRepository;
-
-import java.math.BigDecimal;
+import com.money.manager.ex.datalayer.AccountRepository;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;

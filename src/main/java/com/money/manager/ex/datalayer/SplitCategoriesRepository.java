@@ -15,10 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.money.manager.ex.database;
+package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 import android.database.Cursor;
+
+import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.TableSplitTransactions;
 
 import java.util.ArrayList;
 

@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.database;
 
@@ -61,7 +60,6 @@ public class QueryAllData
     public static final String currency = "currency";
     public static final String finyear = "finyear";
 
-    // CONSTRUCTOR
     public QueryAllData(Context context) {
         super(RawFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
     }

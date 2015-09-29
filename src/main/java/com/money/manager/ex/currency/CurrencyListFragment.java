@@ -45,6 +45,7 @@ import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
@@ -165,7 +166,7 @@ public class CurrencyListFragment
                 break;
             case 3: //DELETE
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(TableAccountList.CURRENCYID, currencyId);
+                contentValues.put(Account.CURRENCYID, currencyId);
                 if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
                     showDialogDeleteCurrency(currencyId);
                 } else {

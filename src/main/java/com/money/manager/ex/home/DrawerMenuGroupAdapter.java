@@ -85,8 +85,8 @@ public class DrawerMenuGroupAdapter
         DrawerViewHolder holder = null;
 
         if (convertView == null) {
-//            convertView = new TextView(mContext);
-//            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            convertView = new TextView(context);
+//            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //            convertView = inflater.inflate(R.layout.item_drawer_child, null);
 //
 //            ImageView imageViewIcon = (ImageView) convertView.findViewById(R.id.imageViewIcon);
@@ -177,7 +177,7 @@ public class DrawerMenuGroupAdapter
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 //        if (convertView == null) {
-//            convertView = new TextView(mContext);
+//            convertView = new TextView(context);
 //        }
 
 //        DrawerMenuItem item = getItem(position);
@@ -223,9 +223,9 @@ public class DrawerMenuGroupAdapter
                 // the group is not expanded and has children.
                 // holder.imageViewIcon.setBackground(item.getIconDrawable());
                 chevronView.setText(mContext.getString(R.string.ic_chevron_down));
-//                chevronView.setBackground(FontIconDrawable.inflate(mContext, R.xml.ic_chevron_down));
+//                chevronView.setBackground(FontIconDrawable.inflate(context, R.xml.ic_chevron_down));
             } else {
-//                chevronView.setBackground(FontIconDrawable.inflate(mContext, R.xml.ic_chevron_right));
+//                chevronView.setBackground(FontIconDrawable.inflate(context, R.xml.ic_chevron_right));
                 chevronView.setText(mContext.getString(R.string.ic_chevron_right));
             }
 

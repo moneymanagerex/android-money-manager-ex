@@ -19,21 +19,32 @@ package org.moneymanagerex.android.tests;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchFragment;
+import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.Shadows;
@@ -41,6 +52,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.util.ActivityController;
 
+import static junit.framework.Assert.fail;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -59,11 +71,14 @@ public class SearchActivityTests {
     public void setUp() {
         this.controller = UnitTestHelper.getController(SearchActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
+
+        UnitTestHelper.initializeContentProvider();
     }
 
     @After
     public void tearDown() {
         this.controller.destroy();
+        UnitTestHelper.resetDatabase();
     }
 
     @Test
@@ -73,7 +88,11 @@ public class SearchActivityTests {
 
     @Test
     public void searchForSubCategory() {
+        // arrange
+        DataHelpers.insertData();
         Intent expectedIntent;
+
+        // act
 
         // Click Select Category
         TextView selectCategory = (TextView) activity.findViewById(R.id.textViewSelectCategory);
@@ -107,8 +126,29 @@ public class SearchActivityTests {
 
         searchButton.performClick();
 
-        // todo: test the results.
-        // We need the data first. :S
+        //**************************************
+        // assert
 
+        // confirm the Total is shown and the sum is 0.
+
+        Fragment resultsFragment = UnitTestHelper.getFragment(activity, AllDataListFragment.class.getSimpleName());
+        assertThat(resultsFragment).isNotNull();
+
+        View totalView = resultsFragment.getView().findViewById(R.id.textViewColumn1);
+        assertThat(totalView).isNotNull();
+        assertThat(totalView).isInstanceOf(TextView.class);
+        TextView totalTextView = (TextView) totalView;
+        assertThat(totalTextView.getText()).isEqualTo("Total");
+
+        // todo:
+//        // total amount
+//        View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
+//        assertThat(totalNumberView).isNotNull();
+//        assertThat(totalNumberView).isInstanceOf(TextView.class);
+//        TextView totalNumberTextView = (TextView) totalNumberView;
+//        assertThat(totalNumberTextView.getText()).isEqualTo("€ 0.00");
+
+        fail("This test needs to show that the filter works correctly and that the transactions are shown");
     }
+
 }

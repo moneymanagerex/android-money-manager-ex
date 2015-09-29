@@ -73,7 +73,6 @@ import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;

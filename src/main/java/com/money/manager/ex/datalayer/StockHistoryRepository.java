@@ -1,4 +1,4 @@
-package com.money.manager.ex.businessobjects;
+package com.money.manager.ex.datalayer;
 
 import android.content.ContentUris;
 import android.content.ContentValues;

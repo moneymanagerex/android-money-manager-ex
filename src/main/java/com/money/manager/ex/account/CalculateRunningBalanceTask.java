@@ -174,7 +174,7 @@ public class CalculateRunningBalanceTask
     }
 
     /**
-     * @return the mContext
+     * @return the context
      */
 //    @SuppressWarnings("unused")
     public Context getContext() {
@@ -182,7 +182,7 @@ public class CalculateRunningBalanceTask
     }
 
     /**
-     * @param mContext the mContext to set
+     * @param mContext the context to set
      */
     public void setContext(Context mContext) {
         this.mContext = mContext;

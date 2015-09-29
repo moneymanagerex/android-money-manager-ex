@@ -281,9 +281,10 @@ public class AccountTransactionsFragment
                 mAccountList.setFavoriteAcct(!(mAccountList.isFavoriteAcct()));
                 // populate content values for update
                 ContentValues values = new ContentValues();
-                values.put(TableAccountList.FAVORITEACCT, mAccountList.getFavoriteAcct());
+                values.put(Account.FAVORITEACCT, mAccountList.getFavoriteAcct());
                 // update
-                if (getActivity().getContentResolver().update(mAccountList.getUri(), values, TableAccountList.ACCOUNTID + "=?",
+                if (getActivity().getContentResolver().update(mAccountList.getUri(), values,
+                        Account.ACCOUNTID + "=?",
                         new String[]{Integer.toString(mAccountId)}) != 1) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
                 } else {
@@ -694,7 +695,7 @@ public class AccountTransactionsFragment
 
         for (int i = 0; i < adapter.getCount(); i++) {
             cursor.moveToPosition(i);
-            String accountIdString = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTID));
+            String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
             int accountId = Integer.parseInt(accountIdString);
             if (accountId == mAccountId) {
                 position = i;
@@ -768,7 +769,7 @@ public class AccountTransactionsFragment
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
                 android.R.layout.simple_spinner_item,
                 cursor,
-                new String[] { TableAccountList.ACCOUNTNAME, TableAccountList.ACCOUNTID },
+                new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
                 adapterRowViews,
                 SimpleCursorAdapter.NO_SELECTION);
         cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

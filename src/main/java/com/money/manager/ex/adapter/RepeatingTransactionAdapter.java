@@ -85,7 +85,7 @@ public class RepeatingTransactionAdapter
         try {
             Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(
                     cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
-//            Locale locale = mContext.getResources().getConfiguration().locale;
+//            Locale locale = context.getResources().getConfiguration().locale;
             txtDate.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format(date));
         } catch (ParseException e) {
             txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)));

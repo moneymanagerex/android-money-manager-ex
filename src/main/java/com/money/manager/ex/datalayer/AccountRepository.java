@@ -13,16 +13,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
-package com.money.manager.ex.database;
+package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.Currency;
 
 /**
  * Repository for Accounts
@@ -38,9 +40,17 @@ public class AccountRepository
 
     private TableAccountList mAccount;
 
+    @Override
+    public String[] getAllColumns() {
+        return new String[] { "ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
+                Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
+                Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
+                Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
+    }
+
     public Account load(int accountId) {
         WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(TableAccountList.ACCOUNTID, "=", accountId);
+        where.addStatement(Account.ACCOUNTID, "=", accountId);
 
         return query(where.getWhere());
     }
@@ -51,11 +61,11 @@ public class AccountRepository
      * @return QueryAccountBills entity.
      */
     public QueryAccountBills loadAccountBills(int accountId) {
-        QueryAccountBills result = new QueryAccountBills(mContext);
+        QueryAccountBills result = new QueryAccountBills(context);
 
         String selection = QueryAccountBills.ACCOUNTID + "=?";
 
-        Cursor cursor = mContext.getContentResolver().query(
+        Cursor cursor = context.getContentResolver().query(
                 result.getUri(),
                 result.getAllColumns(),
                 selection,
@@ -77,18 +87,18 @@ public class AccountRepository
 
         if(TextUtils.isEmpty(name)) { return result; }
 
-        String selection = TableAccountList.ACCOUNTNAME + "=?";
+        String selection = Account.ACCOUNTNAME + "=?";
 
-        Cursor cursor = mContext.getContentResolver().query(
+        Cursor cursor = context.getContentResolver().query(
                 mAccount.getUri(),
-                new String[] { TableAccountList.ACCOUNTID },
+                new String[] { Account.ACCOUNTID },
                 selection,
                 new String[] { name },
                 null);
         if (cursor == null) return result;
 
         if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(TableAccountList.ACCOUNTID));
+            result = cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID));
         }
 
         cursor.close();
@@ -99,14 +109,14 @@ public class AccountRepository
     public String loadName(int id) {
         String name = null;
 
-        Cursor cursor = openCursor(new String[] { TableAccountList.ACCOUNTNAME },
-                TableAccountList.ACCOUNTID + "=?",
+        Cursor cursor = openCursor(new String[] { Account.ACCOUNTNAME },
+                Account.ACCOUNTID + "=?",
                 new String[]{Integer.toString(id)}
         );
         if (cursor == null) return null;
 
         if (cursor.moveToFirst()) {
-            name = cursor.getString(cursor.getColumnIndex(TableAccountList.ACCOUNTNAME));
+            name = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME));
         }
         cursor.close();
 

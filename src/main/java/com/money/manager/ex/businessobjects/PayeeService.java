@@ -26,6 +26,8 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.domainmodel.Payee;
 
 /**
  *
@@ -35,13 +37,15 @@ public class PayeeService {
     public PayeeService(Context context) {
         mContext = context;
         mPayee = new TablePayee();
+        this.payeeRepository = new PayeeRepository(context);
     }
 
     private Context mContext;
     private TablePayee mPayee;
+    private PayeeRepository payeeRepository;
 
     public TablePayee loadByName(String name) {
-        String selection = TablePayee.PAYEENAME + "='" + name + "'";
+        String selection = Payee.PAYEENAME + "='" + name + "'";
 
         Cursor cursor = mContext.getContentResolver().query(
                 mPayee.getUri(),
@@ -64,17 +68,18 @@ public class PayeeService {
 
         if(TextUtils.isEmpty(name)) return result;
 
-        String selection = TablePayee.PAYEENAME + "=?";
+        String selection = Payee.PAYEENAME + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(
                 mPayee.getUri(),
-                new String[]{TablePayee.PAYEEID},
+                new String[]{ Payee.PAYEEID },
                 selection,
                 new String[] { name },
                 null);
+        if (cursor == null) return Constants.NOT_SET;
 
         if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID));
+            result = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
         }
 
         cursor.close();
@@ -87,13 +92,10 @@ public class PayeeService {
 
         name = name.trim();
 
-        ContentValues values = new ContentValues();
-        values.put(TablePayee.PAYEENAME, name);
+        Payee payee = new Payee();
+        payee.setName(name);
 
-        Uri result = mContext.getContentResolver().insert(mPayee.getUri(), values);
-        long id = ContentUris.parseId(result);
-
-        return ((int) id);
+        return this.payeeRepository.add(payee);
     }
 
     public boolean exists(String name) {
@@ -109,11 +111,12 @@ public class PayeeService {
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(TablePayee.PAYEENAME, name);
+        values.put(Payee.PAYEENAME, name);
 
         int result = mContext.getContentResolver().update(mPayee.getUri(),
                 values,
-                TablePayee.PAYEEID + "=" + id, null);
+                Payee.PAYEEID + "=" + id,
+                null);
 
         return result;
     }

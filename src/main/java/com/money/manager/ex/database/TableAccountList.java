@@ -19,22 +19,10 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
+import com.money.manager.ex.domainmodel.Account;
+
 public class TableAccountList
 		extends Dataset {
-
-	public static final String ACCOUNTID = "ACCOUNTID";
-	public static final String ACCOUNTNAME = "ACCOUNTNAME";
-	public static final String ACCOUNTTYPE = "ACCOUNTTYPE";
-	public static final String ACCOUNTNUM = "ACCOUNTNUM";
-	public static final String STATUS = "STATUS";
-	public static final String NOTES = "NOTES";
-	public static final String HELDAT = "HELDAT";
-	public static final String WEBSITE = "WEBSITE";
-	public static final String CONTACTINFO = "CONTACTINFO";
-	public static final String ACCESSINFO = "ACCESSINFO"; 
-	public static final String INITIALBAL = "INITIALBAL";
-	public static final String FAVORITEACCT = "FAVORITEACCT";
-	public static final String CURRENCYID = "CURRENCYID";
 
 	private int accountId;
 	private String accountName;
@@ -56,9 +44,10 @@ public class TableAccountList
 
     @Override
 	public String[] getAllColumns() {
-		return new String[] { "ACCOUNTID AS _id", ACCOUNTID, ACCOUNTNAME,
-				ACCOUNTTYPE, ACCOUNTNUM, STATUS, NOTES, HELDAT, WEBSITE,
-				CONTACTINFO, ACCESSINFO, INITIALBAL, FAVORITEACCT, CURRENCYID };
+		return new String[] { "ACCOUNTID AS _id", Account.ACCOUNTID, Account.ACCOUNTNAME,
+				Account.ACCOUNTTYPE, Account.ACCOUNTNUM, Account.STATUS, Account.NOTES,
+				Account.HELDAT, Account.WEBSITE, Account.CONTACTINFO, Account.ACCESSINFO,
+                Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
 	}
 
 	@Override
@@ -68,19 +57,19 @@ public class TableAccountList
 		// controllo che il numero di colonne siano le stesse
 		// if (!(c.getColumnCount() == this.getAllColumns().length)) { return; }
 		// set dei valori
-		this.setAccountId(c.getInt(c.getColumnIndex(ACCOUNTID)));
-		this.setAccountName(c.getString(c.getColumnIndex(ACCOUNTNAME)));
-		this.setAccountType(c.getString(c.getColumnIndex(ACCOUNTTYPE)));
-		this.setAccountNum(c.getString(c.getColumnIndex(ACCOUNTNUM)));
-		this.setStatus(c.getString(c.getColumnIndex(STATUS)));
-		this.setNotes(c.getString(c.getColumnIndex(NOTES)));
-		this.setHeldat(c.getString(c.getColumnIndex(HELDAT)));
-		this.setWebsite(c.getString(c.getColumnIndex(WEBSITE)));
-		this.setContactinfo(c.getString(c.getColumnIndex(CONTACTINFO)));
-		this.setAccessinfo(c.getString(c.getColumnIndex(ACCESSINFO)));
-		this.setInitialBal(c.getDouble(c.getColumnIndex(INITIALBAL)));
-		this.setFavoriteAcct(c.getString(c.getColumnIndex(FAVORITEACCT)));
-		this.setCurrencyId(c.getInt(c.getColumnIndex(CURRENCYID)));
+		this.setAccountId(c.getInt(c.getColumnIndex(Account.ACCOUNTID)));
+		this.setAccountName(c.getString(c.getColumnIndex(Account.ACCOUNTNAME)));
+		this.setAccountType(c.getString(c.getColumnIndex(Account.ACCOUNTTYPE)));
+		this.setAccountNum(c.getString(c.getColumnIndex(Account.ACCOUNTNUM)));
+		this.setStatus(c.getString(c.getColumnIndex(Account.STATUS)));
+		this.setNotes(c.getString(c.getColumnIndex(Account.NOTES)));
+		this.setHeldat(c.getString(c.getColumnIndex(Account.HELDAT)));
+		this.setWebsite(c.getString(c.getColumnIndex(Account.WEBSITE)));
+		this.setContactinfo(c.getString(c.getColumnIndex(Account.CONTACTINFO)));
+		this.setAccessinfo(c.getString(c.getColumnIndex(Account.ACCESSINFO)));
+		this.setInitialBal(c.getDouble(c.getColumnIndex(Account.INITIALBAL)));
+		this.setFavoriteAcct(c.getString(c.getColumnIndex(Account.FAVORITEACCT)));
+		this.setCurrencyId(c.getInt(c.getColumnIndex(Account.CURRENCYID)));
 	}
 
 	/**

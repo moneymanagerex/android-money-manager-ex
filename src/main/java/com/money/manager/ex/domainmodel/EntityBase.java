@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.domainmodel;
 
@@ -25,9 +24,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DateUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,6 +59,14 @@ public class EntityBase {
 
     public void setCursor(Cursor c) {
         this.mCursor = c;
+    }
+
+    protected Boolean getBoolean(String column) {
+        return contentValues.getAsBoolean(column);
+    }
+
+    protected void setBoolean(String column, Boolean value) {
+        contentValues.put(column, value);
     }
 
 //    protected MonetaryAmount getMonetaryAmount(String fieldName) {
@@ -110,8 +114,8 @@ public class EntityBase {
         contentValues.put(fieldName, dateString);
     }
 
-    protected Integer getInt(String fieldName) {
-        return contentValues.getAsInteger(fieldName);
+    protected Integer getInt(String column) {
+        return contentValues.getAsInteger(column);
     }
 
     protected void setInt(String fieldName, Integer value) {

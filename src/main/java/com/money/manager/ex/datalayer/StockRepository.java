@@ -1,14 +1,14 @@
-package com.money.manager.ex.database;
+package com.money.manager.ex.datalayer;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.net.Uri;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.TableStock;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Stock;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -56,7 +56,7 @@ public class StockRepository
     public Stock load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+        Cursor cursor = context.getContentResolver().query(this.getUri(),
                 null,
                 TableStock.STOCKID + "=?",
                 new String[] { Integer.toString(id) },
@@ -77,7 +77,7 @@ public class StockRepository
     public ContentValues loadContentValues(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+        Cursor cursor = context.getContentResolver().query(this.getUri(),
                 null,
                 TableStock.STOCKID + "=?",
                 new String[] { Integer.toString(id)},
@@ -101,7 +101,7 @@ public class StockRepository
 //        boolean result = false;
 //
 //        String selection = TableAccountList.ACCOUNTID + "=?";
-//        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+//        Cursor cursor = context.getContentResolver().query(this.getUri(),
 //                null,
 //                selection,
 //                new String[] { Integer.toString(accountId) },
@@ -126,7 +126,7 @@ public class StockRepository
     public int[] findIdsBySymbol(String symbol) {
         int[] result = null;
 
-        Cursor cursor = mContext.getContentResolver().query(this.getUri(),
+        Cursor cursor = context.getContentResolver().query(this.getUri(),
                 new String[]{ TableStock.STOCKID },
                 TableStock.SYMBOL + "=?", new String[]{symbol},
                 null);
@@ -152,7 +152,7 @@ public class StockRepository
 //    public boolean update(int id, ContentValues values) {
 //        boolean result = false;
 //
-//        int updateResult = mContext.getContentResolver().update(this.getUri(),
+//        int updateResult = context.getContentResolver().update(this.getUri(),
 //                values,
 //                TableStock.STOCKID + "=?",
 //                new String[]{Integer.toString(id)}

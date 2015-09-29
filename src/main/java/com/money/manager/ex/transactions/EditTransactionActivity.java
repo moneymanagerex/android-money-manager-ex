@@ -39,10 +39,10 @@ import com.money.manager.ex.businessobjects.RecurringTransactionService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.RecurringTransactionRepository;
-import com.money.manager.ex.database.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
@@ -50,6 +50,7 @@ import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -730,13 +731,13 @@ public class EditTransactionActivity
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
-            values.put(TablePayee.CATEGID, mCommonFunctions.categoryId);
-            values.put(TablePayee.SUBCATEGID, mCommonFunctions.subCategoryId);
+            values.put(Payee.CATEGID, mCommonFunctions.categoryId);
+            values.put(Payee.SUBCATEGID, mCommonFunctions.subCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
             if (getContentResolver().update(payee.getUri(), values,
-                    TablePayee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId), null) <= 0) {
+                    Payee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId), null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");
             }

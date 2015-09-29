@@ -1,7 +1,9 @@
-package com.money.manager.ex.database;
+package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 import android.database.Cursor;
+
+import com.money.manager.ex.database.TableBillsDeposits;
 
 /**
  * Recurring transaction repository.

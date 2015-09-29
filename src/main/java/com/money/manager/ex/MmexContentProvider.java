@@ -56,8 +56,9 @@ import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.businessobjects.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -100,11 +101,13 @@ public class MmexContentProvider
 
     @Override
     public boolean onCreate() {
+        Context context = getContext();
 
         setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
 
         List<Dataset> objMoneyManager = Arrays.asList(
-                new TableAccountList(),
+//                new TableAccountList(),
+                new AccountRepository(context),
                 new TableAssets(),
                 new TableBillsDeposits(),
                 new BudgetTable(),

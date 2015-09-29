@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.RecurringTransactionRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.utils.DateUtils;

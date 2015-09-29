@@ -81,7 +81,7 @@ public class DropboxManager {
 
     public void downloadFromDropbox() {
         // toast to show
-//        Toast.makeText(mContext.getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context.getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
 
         runDropbox(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
     }

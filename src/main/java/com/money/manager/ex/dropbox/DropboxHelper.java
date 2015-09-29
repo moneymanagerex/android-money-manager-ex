@@ -247,7 +247,7 @@ public class DropboxHelper {
     }
 
     private void storeOauth2Token(String token) {
-//        AppSettings settings = new AppSettings(mContext);
+//        AppSettings settings = new AppSettings(context);
 //        settings.getDropboxSettings().setOauth2Token(token);
 
         SharedPreferences prefs = getDropboxPreferences();
@@ -320,7 +320,7 @@ public class DropboxHelper {
             } catch (RuntimeException e) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
                 handler.handle(e, "authenticating with Dropbox");
-//                Toast.makeText(mContext, "Couldn't authenticate with Dropbox", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "Couldn't authenticate with Dropbox", Toast.LENGTH_LONG).show();
                 if (BuildConfig.DEBUG) Log.d(LOGCAT, "Error authenticating", e);
             }
         }
@@ -339,7 +339,7 @@ public class DropboxHelper {
     public void logIn() {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Login dropbox service");
         // Start the remote authentication
-        //mDropboxApi.getSession().startAuthentication(mContext);
+        //mDropboxApi.getSession().startAuthentication(context);
         mDropboxApi.getSession().startOAuth2Authentication(mContext);
     }
 
@@ -408,11 +408,11 @@ public class DropboxHelper {
     }
 
 //    public boolean isActiveAutoUpload() {
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 //        boolean result = false;
 //
 //        if (prefs != null) {
-//            result = prefs.getBoolean(mContext.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
+//            result = prefs.getBoolean(context.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
 //        }
 //
 //        return result;
@@ -461,7 +461,7 @@ public class DropboxHelper {
                 .setAutoCancel(false)
                 .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
                 .setContentText(mContext.getString(R.string.dropbox_downloadProgress))
-                        //.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
+                        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(mContext.getResources().getColor(R.color.md_primary));
         // only for previous version!
@@ -492,7 +492,7 @@ public class DropboxHelper {
                 .setContentIntent(pendingIntent)
                 .setContentTitle(mContext.getString(R.string.application_name_dropbox))
                 .setContentText(mContext.getString(R.string.dropbox_open_database_downloaded))
-                        ////.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
+                        ////.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setTicker(mContext.getString(R.string.dropbox_file_ready_for_use))
                 .setStyle(inboxStyle)
@@ -512,7 +512,7 @@ public class DropboxHelper {
                 .setContentInfo(mContext.getString(R.string.upload_file_to_dropbox_complete))
                 .setAutoCancel(false)
                 .setContentText(mContext.getString(R.string.dropbox_uploadProgress))
-                        //.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
+                        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(mContext.getResources().getColor(R.color.md_primary));
         ;
@@ -538,12 +538,12 @@ public class DropboxHelper {
         inboxStyle.addLine(mContext.getString(R.string.upload_file_to_dropbox_complete));
         // compose builder
         NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
-                //.addAction(R.drawable.ic_action_folder_open_dark, mContext.getString(R.string.open_database), pendingIntent)
+                //.addAction(R.drawable.ic_action_folder_open_dark, context.getString(R.string.open_database), pendingIntent)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setContentTitle(mContext.getString(R.string.application_name_dropbox))
                 .setContentText(mContext.getString(R.string.upload_file_to_dropbox_complete))
-                        //.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_action_dropbox_dark))
+                        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setStyle(inboxStyle)
                 .setTicker(mContext.getString(R.string.upload_file_to_dropbox_complete))
@@ -663,7 +663,7 @@ public class DropboxHelper {
                     // link file if not linked
                     if (TextUtils.isEmpty(getLinkedRemoteFile())) {
                         setLinkedRemoteFile(entry.path);
-                        //Toast.makeText(mContext, mContext.getString(R.string.dropbox_linkedFile) + ": " + entry.path, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, context.getString(R.string.dropbox_linkedFile) + ": " + entry.path, Toast.LENGTH_LONG).show();
                     }
                 }
             }

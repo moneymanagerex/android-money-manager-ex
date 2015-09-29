@@ -19,17 +19,14 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
+import com.money.manager.ex.domainmodel.Payee;
+
 public class TablePayee
 		extends Dataset {
 
     public TablePayee() {
         super("payee_v1", DatasetType.TABLE, "payee");
     }
-
-	public static final String PAYEEID = "PAYEEID";
-	public static final String PAYEENAME = "PAYEENAME";
-	public static final String CATEGID = "CATEGID";
-	public static final String SUBCATEGID = "SUBCATEGID";
 
 	// Fields
 	private int payeeId;
@@ -39,17 +36,18 @@ public class TablePayee
 
     @Override
 	public String[] getAllColumns() {
-		return new String[] { "PAYEEID AS _id", PAYEEID, PAYEENAME, CATEGID, SUBCATEGID };
+		return new String[] { "PAYEEID AS _id", Payee.PAYEEID, Payee.PAYEENAME, Payee.CATEGID,
+				Payee.SUBCATEGID };
 	}
 
 	@Override
 	public void setValueFromCursor(Cursor c) {
 		if (c == null) return;
 
-		this.setPayeeId(c.getInt(c.getColumnIndex(PAYEEID)));
-		this.setPayeeName(c.getString(c.getColumnIndex(PAYEENAME)));
-		this.setCategId(c.getInt(c.getColumnIndex(CATEGID)));
-		this.setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
+		this.setPayeeId(c.getInt(c.getColumnIndex(Payee.PAYEEID)));
+		this.setPayeeName(c.getString(c.getColumnIndex(Payee.PAYEENAME)));
+		this.setCategId(c.getInt(c.getColumnIndex(Payee.CATEGID)));
+		this.setSubCategId(c.getInt(c.getColumnIndex(Payee.SUBCATEGID)));
 	}
 	/**
 	 * @return the payeeId

@@ -40,10 +40,10 @@ public class DownloadCsvTask
 
     public DownloadCsvTask() {
         // Context context
-//        mContext = context;
+//        context = context;
     }
 
-//    private Context mContext;
+//    private Context context;
 
     @Override
     protected void onPreExecute() {

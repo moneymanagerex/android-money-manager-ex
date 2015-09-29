@@ -54,13 +54,14 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.AccountRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconView;
@@ -303,9 +304,9 @@ public class EditTransactionCommonFunctions {
      * Initialize account selectors.
      */
     public void initAccountSelectors() {
-//        Core core = new Core(mContext);
+//        Core core = new Core(context);
         AppSettings settings = new AppSettings(mContext);
-//        LookAndFeelSettings settings = new AppSettings(mContext).getLookAndFeelSettings();
+//        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
 
         // account list to populate the spin
         AccountService accountService = new AccountService(mContext);
@@ -996,14 +997,14 @@ public class EditTransactionCommonFunctions {
         TablePayee payee = new TablePayee();
         Cursor cursor = mParent.getContentResolver().query(payee.getUri(),
                 payee.getAllColumns(),
-                TablePayee.PAYEEID + "=?",
+                Payee.PAYEEID + "=?",
                 new String[]{Integer.toString(payeeId)}, null);
         // check if cursor is valid and open
         if (cursor == null) return false;
 
         if (cursor.moveToFirst()) {
             // set payee name
-            payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+            payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
         }
         cursor.close();
 
@@ -1022,15 +1023,15 @@ public class EditTransactionCommonFunctions {
         TablePayee payee = new TablePayee();
         Cursor curPayee = mParent.getContentResolver().query(payee.getUri(),
                 payee.getAllColumns(),
-                TablePayee.PAYEEID + "=?",
+                Payee.PAYEEID + "=?",
                 new String[]{ Integer.toString(payeeId) },
                 null);
         // check cursor is valid
         if ((curPayee != null) && (curPayee.moveToFirst())) {
             // check if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID)) != -1) {
-                categoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.CATEGID));
-                subCategoryId = curPayee.getInt(curPayee.getColumnIndex(TablePayee.SUBCATEGID));
+            if (curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)) != Constants.NOT_SET) {
+                categoryId = curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID));
+                subCategoryId = curPayee.getInt(curPayee.getColumnIndex(Payee.SUBCATEGID));
                 // create instance of query
                 QueryCategorySubCategory category = new QueryCategorySubCategory(mParent.getApplicationContext());
                 // compose selection

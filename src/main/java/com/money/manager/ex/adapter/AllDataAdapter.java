@@ -367,13 +367,13 @@ public class AllDataAdapter
 //            balanceAmount.setAccountId(getAccountId());
 //            balanceAmount.setDate(date);
 //            balanceAmount.setTextView(holder.txtBalance);
-//            balanceAmount.setContext(mContext);
+//            balanceAmount.setContext(context);
 //            balanceAmount.setCurrencyId(getCurrencyId());
 //            balanceAmount.setTransId(transId);
 //            // execute thread
 //            balanceAmount.execute();
 //        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            ExceptionHandler handler = new ExceptionHandler(context, this);
 //            handler.handle(ex, "calculating balance amount");
 //        }
 //    }

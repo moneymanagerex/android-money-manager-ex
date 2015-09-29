@@ -71,7 +71,7 @@ public class PayeeListFragment
     // SORT BY USAGE
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID) DESC";
     // SORT BY NAME
-    private static final String SORT_BY_NAME = "UPPER(" + TablePayee.PAYEENAME + ")";
+    private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
 
     private Context mContext;
     private String mCurFilter;
@@ -96,7 +96,7 @@ public class PayeeListFragment
 
         // associate adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
-                layout, null, new String[] { TablePayee.PAYEENAME },
+                layout, null, new String[] { Payee.PAYEENAME },
                 new int[]{android.R.id.text1}, 0);
         // set adapter
         setListAdapter(adapter);
@@ -179,7 +179,7 @@ public class PayeeListFragment
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
 
         String[] menuItems = getResources().getStringArray(R.array.context_menu);
         int id;
@@ -210,7 +210,7 @@ public class PayeeListFragment
 
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(TablePayee.PAYEEID, payee.getId());
+                contentValues.put(Payee.PAYEEID, payee.getId());
                 if (new TablePayee().canDelete(getActivity(), contentValues)) {
                     showDialogDeletePayee(payee.getId());
                 } else {
@@ -249,7 +249,7 @@ public class PayeeListFragment
                 String whereClause = null;
                 String selectionArgs[] = null;
                 if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = TablePayee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
+                    whereClause = Payee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
                     selectionArgs = new String[]{mCurFilter + '%'};
                 }
                 return new MmexCursorLoader(getActivity(), mPayee.getUri(),
@@ -317,8 +317,8 @@ public class PayeeListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            int payeeId = cursor.getInt(cursor.getColumnIndex(TablePayee.PAYEEID));
-            String payeeName = cursor.getString(cursor.getColumnIndex(TablePayee.PAYEENAME));
+            int payeeId = cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID));
+            String payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
 
             sendResultToActivity(payeeId, payeeName);
 

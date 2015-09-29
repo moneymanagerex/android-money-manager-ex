@@ -84,6 +84,11 @@ public class UnitTestHelper {
         return result;
     }
 
+    /**
+     * Initialize the content provider explicitly as it is not executed automatically.
+     * Also, call resetDatabase after each test, in @After.
+     * @return initialized Content Provider, if needed.
+     */
     public static ContentProvider initializeContentProvider() {
         ContentProvider contentProvider = new MmexContentProvider();
 //        shadowOf(contentProvider).getContext();

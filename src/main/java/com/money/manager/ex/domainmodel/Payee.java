@@ -25,32 +25,37 @@ import com.money.manager.ex.database.TablePayee;
 public class Payee
     extends EntityBase {
 
+    public static final String PAYEEID = "PAYEEID";
+    public static final String PAYEENAME = "PAYEENAME";
+    public static final String CATEGID = "CATEGID";
+    public static final String SUBCATEGID = "SUBCATEGID";
+
     public Payee() {
 
     }
 
     public Integer getId() {
-        return getInt(TablePayee.PAYEEID);
+        return getInt(Payee.PAYEEID);
     }
 
     public void setId(Integer value) {
-        setInt(TablePayee.PAYEEID, value);
+        setInt(Payee.PAYEEID, value);
     }
 
     public String getName() {
-        return getString(TablePayee.PAYEENAME);
+        return getString(Payee.PAYEENAME);
     }
 
     public void setName(String value) {
-        setString(TablePayee.PAYEENAME, value);
+        setString(Payee.PAYEENAME, value);
     }
 
     public Integer getCategoryId() {
-        return getInt(TablePayee.CATEGID);
+        return getInt(Payee.CATEGID);
     }
 
     public Integer getSubcategoryId() {
-        return getInt(TablePayee.SUBCATEGID);
+        return getInt(Payee.SUBCATEGID);
     }
 
 }

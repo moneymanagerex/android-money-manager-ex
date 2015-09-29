@@ -18,7 +18,6 @@
 package com.money.manager.ex.investment;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,8 +32,8 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.AccountRepository;
-import com.money.manager.ex.database.StockRepository;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.utils.DateUtils;

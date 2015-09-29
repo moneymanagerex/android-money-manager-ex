@@ -23,10 +23,9 @@ import android.widget.ListAdapter;
 
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
-import com.money.manager.ex.businessobjects.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
-import com.money.manager.ex.database.TableStock;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
