@@ -42,8 +42,7 @@ import java.util.Currency;
 import java.util.Locale;
 
 /**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.0.1
+ * Actual helper class for accessing an SQLite database.
  */
 public class MoneyManagerOpenHelper
         extends SQLiteOpenHelper {
@@ -51,7 +50,7 @@ public class MoneyManagerOpenHelper
     /**
      * Returns the singleton instance of the helper for database access.
      * @param context Use Application context for database access (?)
-     * @return
+     * @return instance of the db helper
      */
     public static synchronized MoneyManagerOpenHelper getInstance(Context context) {
         if (mInstance == null) {

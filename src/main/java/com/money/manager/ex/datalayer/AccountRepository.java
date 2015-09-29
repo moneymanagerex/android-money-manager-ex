@@ -35,10 +35,7 @@ public class AccountRepository
     public AccountRepository(Context context) {
         super(context, "accountlist_v1", DatasetType.TABLE, "accountlist");
 
-        mAccount = new TableAccountList();
     }
-
-    private TableAccountList mAccount;
 
     @Override
     public String[] getAllColumns() {
@@ -90,7 +87,7 @@ public class AccountRepository
         String selection = Account.ACCOUNTNAME + "=?";
 
         Cursor cursor = context.getContentResolver().query(
-                mAccount.getUri(),
+                this.getUri(),
                 new String[] { Account.ACCOUNTID },
                 selection,
                 new String[] { name },

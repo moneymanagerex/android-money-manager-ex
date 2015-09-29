@@ -13,13 +13,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.tests;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -30,15 +28,8 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchFragment;
-import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import org.junit.After;
 import org.junit.Before;
@@ -57,8 +48,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test Search activity.
- *
- * Created by Alen on 27/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -88,10 +77,13 @@ public class SearchActivityTests {
 
     @Test
     public void searchForSubCategory() {
+        //*******************************************
         // arrange
+
         DataHelpers.insertData();
         Intent expectedIntent;
 
+        //*******************************************
         // act
 
         // Click Select Category

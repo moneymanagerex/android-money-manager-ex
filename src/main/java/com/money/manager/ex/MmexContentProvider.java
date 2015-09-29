@@ -151,24 +151,18 @@ public class MmexContentProvider
         // database reference
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        long id = 0;
+        long id = Constants.NOT_SET;
         String parse;
         // check instance type object
         if (Dataset.class.isInstance(ret)) {
             Dataset dataset = ((Dataset) ret);
             switch (dataset.getType()) {
                 case TABLE:
-                    // compose verbose log
-                    String log = "INSERT INTO " + dataset.getSource();
-                    if (values != null) {
-                        log += " VALUES ( " + values.toString() + ")";
-                    }
+                    logTableInsert(dataset, values);
 
                     ////database.beginTransaction();
                     try {
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
-
-                        id = database.insert(dataset.getSource(), null, values);
+                        id = database.insertOrThrow(dataset.getSource(), null, values);
                         // committed
                         ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                         ////database.setTransactionSuccessful();
@@ -338,6 +332,91 @@ public class MmexContentProvider
         return null;
     }
 
+    /**
+     * Prepare statement SQL from data set object
+     *
+     * @param query SQL query
+     * @param projection ?
+     * @param selection ?
+     * @param sortOrder field name for sort order
+     * @return statement
+     */
+    public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
+        String selectList, from, where = "", sort = "";
+
+        // todo: use builder?
+//        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+//        SQLiteQueryBuilder.buildQueryString(false, )
+
+        // compose select list
+        if (projection == null) {
+            selectList = "SELECT *";
+        } else {
+            selectList = "SELECT ";
+
+            for (int i = 0; i < projection.length; i++) {
+                if (i > 0) {
+                    selectList += ", ";
+                }
+                selectList += projection[i];
+            }
+        }
+        // FROM
+        from = "FROM (" + query + ") T";
+        // WHERE
+        if (!TextUtils.isEmpty(selection)) {
+//            if (!selection.contains("WHERE")) {
+            if (!selection.startsWith("WHERE")) {
+                where += "WHERE";
+            }
+            where += " " + selection;
+        }
+        // compose sort
+        if (!TextUtils.isEmpty(sortOrder)) {
+            if (!sortOrder.contains("ORDER BY")) {
+                sort += "ORDER BY ";
+            }
+            sort += " " + sortOrder;
+        }
+        // compose statement to return
+        query = selectList + " " + from;
+        // check where or sort not empty
+        if (!TextUtils.isEmpty(where)) {
+            query += " " + where;
+        }
+        if (!TextUtils.isEmpty(sort)) {
+            query += " " + sort;
+        }
+
+        return query;
+    }
+
+    public Object getObjectFromUri(Uri uri) {
+        int uriMatch = sUriMatcher.match(uri);
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Uri Match Result: " + Integer.toString(uriMatch));
+
+        // find key into hash map
+        Object objectRet = mapContent.get(uriMatch);
+        if (objectRet == null) {
+            throw new IllegalArgumentException("Unknown URI for Update: " + uri);
+        }
+
+        return objectRet;
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        return null;
+    }
+
+    private void logTableInsert(Dataset dataset, ContentValues values) {
+        String log = "INSERT INTO " + dataset.getSource();
+        if (values != null) {
+            log += " VALUES ( " + values.toString() + ")";
+        }
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+    }
+
     private Cursor query_internal(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Query URI: " + uri);
 
@@ -420,80 +499,4 @@ public class MmexContentProvider
         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
     }
 
-    /**
-     * Prepare statement SQL from data set object
-     *
-     * @param query SQL query
-     * @param projection ?
-     * @param selection ?
-     * @param sortOrder field name for sort order
-     * @return statement
-     */
-    public String prepareQuery(String query, String[] projection, String selection, String sortOrder) {
-        String selectList, from, where = "", sort = "";
-
-        // todo: use builder?
-//        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-//        SQLiteQueryBuilder.buildQueryString(false, )
-
-        // compose select list
-        if (projection == null) {
-            selectList = "SELECT *";
-        } else {
-            selectList = "SELECT ";
-
-            for (int i = 0; i < projection.length; i++) {
-                if (i > 0) {
-                    selectList += ", ";
-                }
-                selectList += projection[i];
-            }
-        }
-        // FROM
-        from = "FROM (" + query + ") T";
-        // WHERE
-        if (!TextUtils.isEmpty(selection)) {
-//            if (!selection.contains("WHERE")) {
-            if (!selection.startsWith("WHERE")) {
-                where += "WHERE";
-            }
-            where += " " + selection;
-        }
-        // compose sort
-        if (!TextUtils.isEmpty(sortOrder)) {
-            if (!sortOrder.contains("ORDER BY")) {
-                sort += "ORDER BY ";
-            }
-            sort += " " + sortOrder;
-        }
-        // compose statement to return
-        query = selectList + " " + from;
-        // check where or sort not empty
-        if (!TextUtils.isEmpty(where)) {
-            query += " " + where;
-        }
-        if (!TextUtils.isEmpty(sort)) {
-            query += " " + sort;
-        }
-
-        return query;
-    }
-
-    public Object getObjectFromUri(Uri uri) {
-        int uriMatch = sUriMatcher.match(uri);
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Uri Match Result: " + Integer.toString(uriMatch));
-
-        // find key into hash map
-        Object objectRet = mapContent.get(uriMatch);
-        if (objectRet == null) {
-            throw new IllegalArgumentException("Unknown URI for Update: " + uri);
-        }
-
-        return objectRet;
-    }
-
-    @Override
-    public String getType(Uri uri) {
-        return null;
-    }
 }
