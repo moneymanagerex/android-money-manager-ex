@@ -21,10 +21,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.core.AccountTypes;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 

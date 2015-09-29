@@ -62,6 +62,7 @@ public class SearchActivityTests {
         this.activity = UnitTestHelper.getActivity(this.controller);
 
         UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupLog();
     }
 
     @After

@@ -15,20 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.money.manager.ex.core;
+package com.money.manager.ex.account;
 
 /**
- * Enumeration of account types.
+ * Enumeration of account statuses.
  */
-public enum AccountTypes {
-    CHECKING ("Checking"),
-    TERM ("Term"),
-    CREDIT_CARD ("Credit Card"),
-    INVESTMENT ("Investment");
+public enum AccountStatuses {
+    OPEN ("Open"),
+    CLOSED ("Closed");
 
     private final String name;
 
-    private AccountTypes(String s) {
+    private AccountStatuses(String s) {
         name = s;
     }
 

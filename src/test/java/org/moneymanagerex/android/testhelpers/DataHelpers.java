@@ -18,8 +18,9 @@ package org.moneymanagerex.android.testhelpers;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 
+import com.money.manager.ex.account.AccountStatuses;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
@@ -27,10 +28,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.viewmodels.AccountTransaction;
 
-import org.junit.Test;
-import org.robolectric.Robolectric;
 import org.robolectric.fakes.BaseCursor;
-import org.robolectric.shadows.ShadowContentProvider;
 import org.robolectric.shadows.ShadowContentResolver;
 
 import static org.robolectric.Shadows.shadowOf;
@@ -43,13 +41,13 @@ import static org.robolectric.Shadows.shadowOf;
 public class DataHelpers {
     public static void insertData() {
         Context context = UnitTestHelper.getContext();
-//        setFakeCursor();
 
         // add account
 
         AccountRepository accountRepository = new AccountRepository(context);
-        Account account = new Account();
-        account.setName("cash");
+        // Bahraini dinar
+        Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
+                true, 17);
         accountRepository.add(account);
 
         // add payees

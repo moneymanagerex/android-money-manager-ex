@@ -60,7 +60,7 @@ import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.AccountTypes;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;

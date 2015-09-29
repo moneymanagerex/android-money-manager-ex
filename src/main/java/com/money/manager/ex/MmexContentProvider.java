@@ -182,7 +182,8 @@ public class MmexContentProvider
         if (id > 0) {
             // notify the data inserted
             getContext().getContentResolver().notifyChange(uri, null);
-            // notify dropbox data changed
+
+            // notify dropbox of the data changes
             DropboxHelper.notifyDataChanged();
         }
 

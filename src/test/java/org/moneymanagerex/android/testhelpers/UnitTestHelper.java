@@ -31,6 +31,7 @@ import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowContentResolver;
+import org.robolectric.shadows.ShadowLog;
 import org.robolectric.util.ActivityController;
 
 import java.lang.reflect.Field;
@@ -114,5 +115,9 @@ public class UnitTestHelper {
      */
     public static void resetDatabase() {
         resetSingleton(MoneyManagerOpenHelper.class, "mInstance");
+    }
+
+    public static void setupLog() {
+        ShadowLog.stream = System.out;
     }
 }

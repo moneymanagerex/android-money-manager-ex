@@ -22,7 +22,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDiskIOException;
 
-import com.money.manager.ex.core.AccountTypes;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;

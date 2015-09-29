@@ -20,9 +20,8 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.database.TableAccountList;
-
-import java.math.BigDecimal;
+import com.money.manager.ex.account.AccountStatuses;
+import com.money.manager.ex.account.AccountTypes;
 
 import info.javaperformance.money.Money;
 
@@ -50,6 +49,19 @@ public class Account
     public static Account from(Cursor c) {
         Account account = new Account();
         account.loadFromCursor(c);
+        return account;
+    }
+
+    public static Account create(String name, AccountTypes type, AccountStatuses status,
+                                 boolean favorite, int currencyId) {
+        Account account = new Account();
+
+        account.setName(name);
+        account.setType(type);
+        account.setStatus(status);
+        account.setFavorite(favorite);
+        account.setCurrencyId(currencyId);
+
         return account;
     }
 
@@ -93,12 +105,20 @@ public class Account
         return getString(Account.ACCOUNTTYPE);
     }
 
+    public void setType(AccountTypes value) {
+        setString(Account.ACCOUNTTYPE, value.name());
+    }
+
     public String getAccountNumber() {
         return getString(Account.ACCOUNTNUM);
     }
 
     public String getStatus() {
         return getString(Account.STATUS);
+    }
+
+    public void setStatus(AccountStatuses value) {
+        setString(Account.STATUS, value.name());
     }
 
     public String getNotes() {

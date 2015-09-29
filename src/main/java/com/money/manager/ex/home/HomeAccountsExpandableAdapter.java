@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.AccountTypes;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 
