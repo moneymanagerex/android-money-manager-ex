@@ -71,17 +71,25 @@ public class DataHelpers {
 
         // add transactions
 
-        AccountTransactionRepository txRepo = new AccountTransactionRepository(context);
         for (int i = 0; i < 3; i++) {
             Money amount = MoneyFactory.fromString("-" + i);
-            AccountTransaction tx = AccountTransaction.create(accountId, 1, TransactionTypes.Withdrawal,
-                    amount);
-            int txId = txRepo.add(tx);
-            assertThat(txId).isNotEqualTo(Constants.NOT_SET);
+            // this is semantically wrong as there is no category & subcategory!
+            createTransaction(accountId, 1, TransactionTypes.Withdrawal, -1, -1, amount);
         }
     }
 
-    public static void setFakeCursor() {
+    public static void createTransaction(int accountId, int payeeId, TransactionTypes type,
+                                         int categoryId, int subCategoryId, Money amount) {
+        AccountTransactionRepository txRepo = new AccountTransactionRepository(UnitTestHelper.getContext());
+
+        AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
+                categoryId, subCategoryId, amount);
+        int txId = txRepo.add(tx);
+        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
+
+    }
+
+    private static void setFakeCursor() {
         ContentResolver resolver = UnitTestHelper.getContext().getContentResolver();
         ShadowContentResolver shadow = shadowOf(resolver);
 

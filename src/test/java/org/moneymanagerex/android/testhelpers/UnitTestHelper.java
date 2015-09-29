@@ -135,9 +135,4 @@ public class UnitTestHelper {
         CurrencyService currencyService = new CurrencyService(getContext());
         currencyService.setBaseCurrencyId(currencyId);
     }
-
-    public static void setDefaultCurrency() {
-        // use Bosnian Mark
-        setDefaultCurrency("BAM");
-    }
 }

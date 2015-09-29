@@ -30,12 +30,14 @@ public class AccountTransaction
     public static final String TRANSID = "TRANSID";
 
     public static AccountTransaction create(int accountId, int payeeId, TransactionTypes type,
-                                            Money amount) {
+                                            int categoryId, int subCategoryId, Money amount) {
         AccountTransaction tx = new AccountTransaction();
 
         tx.setAccountId(accountId);
         tx.setPayeeId(payeeId);
         tx.setType(type);
+        tx.setCategoryId(categoryId);
+        tx.setSubcategoryId(subCategoryId);
         tx.setAmount(amount);
 
         return tx;
@@ -55,5 +57,13 @@ public class AccountTransaction
 
     public void setAmount(Money value) {
         setMoney(ISplitTransactionsDataset.TRANSAMOUNT, value);
+    }
+
+    public void setCategoryId(Integer value) {
+        setInt(ISplitTransactionsDataset.CATEGID, value);
+    }
+
+    public void setSubcategoryId(Integer value) {
+        setInt(ISplitTransactionsDataset.SUBCATEGID, value);
     }
 }
