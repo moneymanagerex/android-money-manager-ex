@@ -164,7 +164,6 @@ public class SearchActivityTests {
 
         // Click Select Category
         TextView selectCategory = (TextView) activity.findViewById(R.id.textViewSelectCategory);
-        assertThat(selectCategory).isNotNull();
         selectCategory.performClick();
 
         // confirm that clicking the Select Category text view opens category selector
@@ -177,7 +176,6 @@ public class SearchActivityTests {
         // Now simulate that we received the category.
 
         Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchFragment.class.getSimpleName());
-//        assertThat(searchFragment).isNotNull();
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
@@ -188,7 +186,6 @@ public class SearchActivityTests {
         // Run search
 
         LinearLayout searchButton = (LinearLayout) activity.findViewById(R.id.action_search);
-        assertThat(searchButton).isNotNull();
         searchButton.performClick();
 
         //**************************************
@@ -197,17 +194,14 @@ public class SearchActivityTests {
         // confirm the Total is shown and the sum is 0.
 
         Fragment resultsFragment = UnitTestHelper.getFragment(activity, AllDataListFragment.class.getSimpleName());
-        assertThat(resultsFragment).isNotNull();
 
         View totalView = resultsFragment.getView().findViewById(R.id.textViewColumn1);
-        assertThat(totalView).isNotNull();
         assertThat(totalView).isInstanceOf(TextView.class);
         TextView totalTextView = (TextView) totalView;
         assertThat(totalTextView.getText()).isEqualTo("Total");
 
         // total amount
         View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
-        assertThat(totalNumberView).isNotNull();
         assertThat(totalNumberView).isInstanceOf(TextView.class);
         TextView totalNumberTextView = (TextView) totalNumberView;
         assertThat(totalNumberTextView.getText()).isEqualTo("KM 0.00");
