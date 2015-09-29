@@ -35,7 +35,7 @@ import info.javaperformance.money.Money;
 
 public class SearchActivity
         extends BaseFragmentActivity
-        implements IInputAmountDialogListener, ICommonFragmentCallbacks {
+        implements ICommonFragmentCallbacks {
 
     public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
 
@@ -75,13 +75,6 @@ public class SearchActivity
 		if (fragment != null && fragment.isVisible()) {
 			fragment.loadData();
 		}
-	}
-
-	@Override
-	public void onFinishedInputAmountDialog(int id, Money amount) {
-		SearchFragment fragment = (SearchFragment)getSupportFragmentManager()
-                .findFragmentByTag(SearchFragment.class.getSimpleName());
-		if (fragment != null) fragment.onFinishedInputAmountDialog(id, amount);
 	}
 
     @Override

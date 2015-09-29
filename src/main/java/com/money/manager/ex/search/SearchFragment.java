@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.search;
 
@@ -74,6 +73,7 @@ public class SearchFragment extends Fragment
     // ID REQUEST code
     public static final int REQUEST_PICK_PAYEE = 1;
     public static final int REQUEST_PICK_CATEGORY = 3;
+    public static final int REQUEST_AMOUNT = 4;
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
 
@@ -224,6 +224,7 @@ public class SearchFragment extends Fragment
                     amount = MoneyFactory.fromString(tag.toString());
                 }
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -285,8 +286,6 @@ public class SearchFragment extends Fragment
     public void onFinishedInputAmountDialog(int id, Money amount) {
         View rootView = getView();
         if (rootView == null) return;
-
-//        Core core = new Core(getActivity().getApplicationContext());
 
         View view = rootView.findViewById(id);
         if (view != null && view instanceof TextView) {
