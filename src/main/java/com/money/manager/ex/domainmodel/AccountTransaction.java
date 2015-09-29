@@ -16,7 +16,10 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+
+import info.javaperformance.money.Money;
 
 /**
  * Account Transaction entity. Table checkingaccount_v1.
@@ -26,8 +29,31 @@ public class AccountTransaction
 
     public static final String TRANSID = "TRANSID";
 
+    public static AccountTransaction create(int accountId, int payeeId, TransactionTypes type,
+                                            Money amount) {
+        AccountTransaction tx = new AccountTransaction();
+
+        tx.setAccountId(accountId);
+        tx.setPayeeId(payeeId);
+        tx.setType(type);
+        tx.setAmount(amount);
+
+        return tx;
+    }
+
     public void setAccountId(int value) {
         setInt(ISplitTransactionsDataset.ACCOUNTID, value);
     }
 
+    public void setPayeeId(int value) {
+        setInt(ISplitTransactionsDataset.PAYEEID, value);
+    }
+
+    public void setType(TransactionTypes value) {
+        setString(ISplitTransactionsDataset.TRANSCODE, value.name());
+    }
+
+    public void setAmount(Money value) {
+        setMoney(ISplitTransactionsDataset.TRANSAMOUNT, value);
+    }
 }

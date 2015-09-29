@@ -22,6 +22,7 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
@@ -32,6 +33,9 @@ import com.money.manager.ex.domainmodel.Payee;
 
 import org.robolectric.fakes.BaseCursor;
 import org.robolectric.shadows.ShadowContentResolver;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
@@ -51,9 +55,9 @@ public class DataHelpers {
         // Bahraini dinar
         Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
                 true, 17);
-        int id = accountRepository.add(account);
-        assertThat(id).isNotEqualTo(Constants.NOT_SET);
-        account.setId(id);
+        int accountId = accountRepository.add(account);
+        account.setId(accountId);
+        assertThat(accountId).isNotEqualTo(Constants.NOT_SET);
 
         // add payees
 
@@ -61,16 +65,19 @@ public class DataHelpers {
         for (int i = 0; i < 3; i++) {
             Payee payee = new Payee();
             payee.setName("payee" + i);
-            repo.add(payee);
+            int payeeId = repo.add(payee);
+            assertThat(payeeId).isNotEqualTo(Constants.NOT_SET);
         }
 
         // add transactions
 
         AccountTransactionRepository txRepo = new AccountTransactionRepository(context);
         for (int i = 0; i < 3; i++) {
-            AccountTransaction tx = new AccountTransaction();
-            tx.setAccountId(account.getId());
-            txRepo.add(tx);
+            Money amount = MoneyFactory.fromString("-" + i);
+            AccountTransaction tx = AccountTransaction.create(accountId, 1, TransactionTypes.Withdrawal,
+                    amount);
+            int txId = txRepo.add(tx);
+            assertThat(txId).isNotEqualTo(Constants.NOT_SET);
         }
     }
 
