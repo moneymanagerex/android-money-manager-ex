@@ -41,15 +41,16 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -78,7 +79,6 @@ public class EditTransactionActivity
     public int mRecurringTransactionId = Constants.NOT_SET;
     public String mNextOccurrence = null;
 
-    private TableCheckingAccount mCheckingAccount = new TableCheckingAccount();
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
@@ -333,9 +333,11 @@ public class EditTransactionActivity
      * @return true if data selected, false nothing
      */
     private boolean loadCheckingAccountInternal(int transId, boolean duplicate) {
-        Cursor cursor = getContentResolver().query(mCheckingAccount.getUri(),
-                mCheckingAccount.getAllColumns(),
-                TableCheckingAccount.TRANSID + "=?",
+        AccountTransactionRepository repo = new AccountTransactionRepository(getApplicationContext());
+
+        Cursor cursor = getContentResolver().query(repo.getUri(),
+                repo.getAllColumns(),
+                AccountTransaction.TRANSID + "=?",
                 new String[]{Integer.toString(transId)}, null);
         // check if cursor is valid and open
         if ((cursor == null) || (!cursor.moveToFirst())) {
@@ -344,7 +346,7 @@ public class EditTransactionActivity
 
         // take a data
         if (!duplicate) {
-            mTransId = cursor.getInt(cursor.getColumnIndex(TableCheckingAccount.TRANSID));
+            mTransId = cursor.getInt(cursor.getColumnIndex(AccountTransaction.TRANSID));
         }
         mCommonFunctions.accountId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID));
         mCommonFunctions.toAccountId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.TOACCOUNTID));
@@ -638,10 +640,12 @@ public class EditTransactionActivity
         // content value for insert or update data
         ContentValues values = getContentValues(isTransfer);
 
+        AccountTransactionRepository repo = new AccountTransactionRepository(getApplicationContext());
+
         // Insert or update?
         if (Intent.ACTION_INSERT.equals(mIntentAction) || Intent.ACTION_PASTE.equals(mIntentAction)) {
             // insert
-            Uri insert = getContentResolver().insert(mCheckingAccount.getUri(), values);
+            Uri insert = getContentResolver().insert(repo.getUri(), values);
             if (insert == null) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
@@ -651,9 +655,9 @@ public class EditTransactionActivity
             mTransId = (int) id;
         } else {
             // update
-            if (getContentResolver().update(mCheckingAccount.getUri(),
+            if (getContentResolver().update(repo.getUri(),
                     values,
-                    TableCheckingAccount.TRANSID + "=?",
+                    AccountTransaction.TRANSID + "=?",
                     new String[]{Integer.toString(mTransId)}) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");

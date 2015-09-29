@@ -31,11 +31,11 @@ import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.viewmodels.AccountTransaction;
+import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -106,8 +106,6 @@ public class AccountService {
     public Money calculateBalanceOn(int accountId, String isoDate) {
         Money total = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
 
-        TableCheckingAccount tableCheckingAccount = new TableCheckingAccount();
-
         WhereStatementGenerator where = new WhereStatementGenerator();
         // load all transactions on the account before and on given date.
         where.addStatement(
@@ -122,14 +120,16 @@ public class AccountService {
 
         String selection = where.getWhere();
 
-        Cursor cursor = mContext.getContentResolver().query(tableCheckingAccount.getUri(),
+        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+
+        Cursor cursor = mContext.getContentResolver().query(repo.getUri(),
             null,
             selection,
             null,
             null);
         if (cursor == null) return total;
 
-        AccountTransaction tx = new AccountTransaction();
+        AccountTransactionDisplay tx = new AccountTransactionDisplay();
         Money amount;
 
         // calculate balance.

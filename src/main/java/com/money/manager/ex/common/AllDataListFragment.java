@@ -54,6 +54,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
@@ -67,7 +69,6 @@ import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -661,10 +662,12 @@ public class AllDataListFragment
             // set new state
             values.put(ISplitTransactionsDataset.STATUS, status.toUpperCase());
 
+            AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
+
             // update
-            int updateResult = getActivity().getContentResolver().update(new TableCheckingAccount().getUri(),
+            int updateResult = getActivity().getContentResolver().update(repo.getUri(),
                     values,
-                    TableCheckingAccount.TRANSID + "=?",
+                    AccountTransaction.TRANSID + "=?",
                     new String[]{Integer.toString(id)});
             if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
@@ -730,9 +733,10 @@ public class AllDataListFragment
 
                     // Delete the transaction.
 
-                    TableCheckingAccount trans = new TableCheckingAccount();
-                    int deleteResult = getActivity().getContentResolver().delete(
-                            trans.getUri(), TableCheckingAccount.TRANSID + "=?",
+                    AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
+
+                    int deleteResult = getActivity().getContentResolver().delete(repo.getUri(),
+                            AccountTransaction.TRANSID + "=?",
                             new String[]{Integer.toString(transactionId)});
                     if (deleteResult == 0) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();

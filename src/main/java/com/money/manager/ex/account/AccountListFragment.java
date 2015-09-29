@@ -112,7 +112,7 @@ public class AccountListFragment
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Account.ACCOUNTID, cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
-                if (new TablePayee().canDelete(getActivity(), contentValues)) {
+                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
                     showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
                 } else {
 //                    Core core = new Core(getActivity());

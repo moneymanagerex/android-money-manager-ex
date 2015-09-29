@@ -29,9 +29,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.TableCheckingAccount;
-
-import java.math.BigDecimal;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -77,23 +76,22 @@ public class CalculateRunningBalanceTask
     }
 
     private boolean runTask() {
-        TableCheckingAccount checkingAccount = new TableCheckingAccount();
-
         String selection = "(" + ISplitTransactionsDataset.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
                 " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " +
             "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
                 "' OR (" + ISplitTransactionsDataset.TRANSDATE + "='" + getDate() +
-                    "' AND " + TableCheckingAccount.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
+                    "' AND " + AccountTransaction.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
             "AND " + ISplitTransactionsDataset.STATUS + "<>'V'";
 
         // sorting required for the correct balance calculation.
         String sort = ISplitTransactionsDataset.TRANSDATE + " DESC, " +
             ISplitTransactionsDataset.TRANSCODE + ", " +
-            TableCheckingAccount.TRANSID + " DESC";
+            AccountTransaction.TRANSID + " DESC";
 
+        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
 
-        Cursor cursor = mContext.getContentResolver().query(checkingAccount.getUri(),
-                checkingAccount.getAllColumns(),
+        Cursor cursor = mContext.getContentResolver().query(repo.getUri(),
+                repo.getAllColumns(),
                 selection, null,
                 sort);
 

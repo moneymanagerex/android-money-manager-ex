@@ -41,14 +41,12 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableAssets;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.BudgetTable;
 import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.database.TablePayee;
@@ -57,6 +55,7 @@ import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 
@@ -114,7 +113,7 @@ public class MmexContentProvider
                 new TableBudgetSplitTransactions(),
                 new BudgetYear(),
                 new TableCategory(),
-                new TableCheckingAccount(),
+                new AccountTransactionRepository(context),
                 new TableCurrencyFormats(),
                 new TableInfoTable(),
                 new TablePayee(),

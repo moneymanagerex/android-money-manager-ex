@@ -27,9 +27,9 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.QueryAllDataRepository;
 import com.money.manager.ex.utils.DateUtils;
-import com.money.manager.ex.viewmodels.AccountTransaction;
+import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -117,7 +117,7 @@ public class CalculateRunningBalanceTask2
         Money startingBalance = null;
 
         AccountService accountService = new AccountService(this.context);
-        AccountTransaction tx = new AccountTransaction();
+        AccountTransactionDisplay tx = new AccountTransactionDisplay();
 
         int originalPosition = c.getPosition();
 //        balances = new BigDecimal[c.getCount()];
@@ -187,7 +187,7 @@ public class CalculateRunningBalanceTask2
         String where = this.selectionBundle.getString(AllDataListFragment.KEY_ARGUMENTS_WHERE);
         String sort = this.selectionBundle.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(this.context);
+        QueryAllDataRepository repo = new QueryAllDataRepository(this.context);
         return repo.query(where, sort);
     }
 }

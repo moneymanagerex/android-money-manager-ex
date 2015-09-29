@@ -61,15 +61,6 @@ public abstract class Dataset
 	private String _ID = "ROWID AS _id";
 
 	/**
-	 * The default check in CheckingAccount. If checked to another table use canDelete(Context context, ContentValues values, String className)
-	 * @param context context from call
-	 * @param values to compose filter
-	 * @return true if can delete
-	 */
-	public boolean canDelete(Context context, ContentValues values) {
-		return canDelete(context, values, TableCheckingAccount.class.getName());
-	}	
-	/**
 	 * 
 	 * @param context context from call
 	 * @param values to compose filter
@@ -93,7 +84,7 @@ public abstract class Dataset
 			selectionArgs.add(entry.getValue().toString());
 		}
 		// create dynamic dataset
-		@SuppressWarnings("rawtypes")
+		//@SuppressWarnings("rawtypes")
 		Class[] classParm = null;
 		Object[] objectParm = null;
 		Dataset dataset;

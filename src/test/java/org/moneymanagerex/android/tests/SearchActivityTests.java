@@ -133,13 +133,12 @@ public class SearchActivityTests {
         TextView totalTextView = (TextView) totalView;
         assertThat(totalTextView.getText()).isEqualTo("Total");
 
-        // todo:
-//        // total amount
-//        View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
-//        assertThat(totalNumberView).isNotNull();
-//        assertThat(totalNumberView).isInstanceOf(TextView.class);
-//        TextView totalNumberTextView = (TextView) totalNumberView;
-//        assertThat(totalNumberTextView.getText()).isEqualTo("€ 0.00");
+        // total amount
+        View totalNumberView = resultsFragment.getView().findViewById(R.id.textViewColumn2);
+        assertThat(totalNumberView).isNotNull();
+        assertThat(totalNumberView).isInstanceOf(TextView.class);
+        TextView totalNumberTextView = (TextView) totalNumberView;
+        assertThat(totalNumberTextView.getText()).isEqualTo("€ 0.00");
 
         fail("This test needs to show that the filter works correctly and that the transactions are shown");
     }

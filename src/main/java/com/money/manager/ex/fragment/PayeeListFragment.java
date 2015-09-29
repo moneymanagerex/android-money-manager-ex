@@ -211,7 +211,7 @@ public class PayeeListFragment
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Payee.PAYEEID, payee.getId());
-                if (new TablePayee().canDelete(getActivity(), contentValues)) {
+                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
                     showDialogDeletePayee(payee.getId());
                 } else {
                     new AlertDialogWrapper.Builder(getActivity())

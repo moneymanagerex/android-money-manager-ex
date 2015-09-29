@@ -58,8 +58,8 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.TableCheckingAccount;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
@@ -651,8 +651,10 @@ public class EditTransactionCommonFunctions {
             @Override
             public void onClick(View v) {
                 MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
+                AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+
                 String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                        new TableCheckingAccount().getSource() + " WHERE " +
+                        repo.getSource() + " WHERE " +
                         ISplitTransactionsDataset.ACCOUNTID + "=?";
 
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
@@ -666,8 +668,6 @@ public class EditTransactionCommonFunctions {
                     }
                     if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
                         try {
-//                            edtTransNumber.setText(Long.toString(Long.parseLong(transNumber) + 1));
-                            // Use BigDecimal to allow for large numbers.
                             Money transactionNumber = MoneyFactory.fromString(transNumber);
                             edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
                                     .toString());

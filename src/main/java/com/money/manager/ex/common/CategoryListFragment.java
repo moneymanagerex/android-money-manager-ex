@@ -441,19 +441,16 @@ public class CategoryListFragment
 
     /**
      * Show alter dialog confirm delete category or sub category
-     *
-     * @param categoryId    id of category
-     * @param subCategoryId id of subcategory. 0 if not sub category
      */
     private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
         boolean canDelete = false;
         ContentValues values = new ContentValues();
         if (categoryIds.subCategId <= 0) {
             values.put(TableCategory.CATEGID, categoryIds.categId);
-            canDelete = new TableCategory().canDelete(getActivity(), values);
+            canDelete = new TableCategory().canDelete(getActivity(), values, TableCategory.class.getName());
         } else {
             values.put(TableSubCategory.SUBCATEGID, categoryIds.subCategId);
-            canDelete = new TableSubCategory().canDelete(getActivity(), values);
+            canDelete = new TableSubCategory().canDelete(getActivity(), values, TableSubCategory.class.getName());
         }
         if (!(canDelete)) {
 //            Core core = new Core(getActivity());

@@ -25,7 +25,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.viewmodels.AccountTransaction;
+import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,7 +54,7 @@ public class QifRecord {
      * Parses the data and generates a QIF record for transaction.
      * @return A string representing one QIF record
      */
-    public String parse(AccountTransaction transaction) throws ParseException {
+    public String parse(AccountTransactionDisplay transaction) throws ParseException {
         StringBuilder builder = new StringBuilder();
 
         // Date
@@ -134,7 +134,7 @@ public class QifRecord {
         return builder.toString();
     }
 
-    public String getSplitCategories(AccountTransaction transaction) {
+    public String getSplitCategories(AccountTransactionDisplay transaction) {
         StringBuilder builder = new StringBuilder();
 
         // retrieve splits
@@ -186,7 +186,7 @@ public class QifRecord {
         return builder.toString();
     }
 
-    private String parseDate(AccountTransaction transaction) throws ParseException {
+    private String parseDate(AccountTransactionDisplay transaction) throws ParseException {
         Date date = transaction.getDate();
 
         // todo: get Quicken date format from settings.
@@ -195,7 +195,7 @@ public class QifRecord {
         return qifFormat.format(date);
     }
 
-    private String parseAmount(AccountTransaction transaction) {
+    private String parseAmount(AccountTransactionDisplay transaction) {
         String amount;
         if (transaction.getTransactionType().equals(TransactionTypes.Transfer)) {
             amount = transaction.getToAmount().toString();
@@ -205,7 +205,7 @@ public class QifRecord {
         return amount;
     }
 
-    private String parseCategory(AccountTransaction transaction) {
+    private String parseCategory(AccountTransactionDisplay transaction) {
 //        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
         String category = transaction.getCategory();
 //        String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));

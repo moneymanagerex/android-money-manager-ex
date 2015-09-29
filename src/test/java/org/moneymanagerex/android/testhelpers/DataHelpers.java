@@ -19,18 +19,21 @@ package org.moneymanagerex.android.testhelpers;
 import android.content.ContentResolver;
 import android.content.Context;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.QueryAllDataRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.viewmodels.AccountTransaction;
 
 import org.robolectric.fakes.BaseCursor;
 import org.robolectric.shadows.ShadowContentResolver;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
 /**
@@ -48,7 +51,9 @@ public class DataHelpers {
         // Bahraini dinar
         Account account = Account.create("cash", AccountTypes.CHECKING, AccountStatuses.OPEN,
                 true, 17);
-        accountRepository.add(account);
+        int id = accountRepository.add(account);
+        assertThat(id).isNotEqualTo(Constants.NOT_SET);
+        account.setId(id);
 
         // add payees
 

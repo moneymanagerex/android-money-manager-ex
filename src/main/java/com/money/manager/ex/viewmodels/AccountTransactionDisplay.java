@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.viewmodels;
 
@@ -39,8 +38,9 @@ import info.javaperformance.money.Money;
  * Record from All Data query. Used for account transactions lists (search results, account
  * transactions).
  * Source is QueryAllData.
+ * Note: This data is readonly! Records can not be created or updated.
  */
-public class AccountTransaction
+public class AccountTransactionDisplay
     extends EntityBase {
 
     @Override
@@ -58,10 +58,6 @@ public class AccountTransaction
 
     public Integer getAccountId() {
         return getInt(QueryAllData.ACCOUNTID);
-    }
-
-    public void setAccountId(int value) {
-        setInt(QueryAllData.ACCOUNTID, value);
     }
 
     public String getAccountName() {
