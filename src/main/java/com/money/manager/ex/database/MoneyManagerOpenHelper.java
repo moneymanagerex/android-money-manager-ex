@@ -427,7 +427,7 @@ public class MoneyManagerOpenHelper
             int recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(TableInfoTable.INFOID));
             currencyCursor.close();
 
-            // get system default currency
+            // Use the system default currency.
             int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
 
             if (!recordExists && (currencyId != Constants.NOT_SET)) {

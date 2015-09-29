@@ -81,6 +81,7 @@ public class SearchActivityTests {
         //*******************************************
         // arrange
 
+        UnitTestHelper.setDefaultCurrency();
         DataHelpers.insertData();
         Intent expectedIntent;
 

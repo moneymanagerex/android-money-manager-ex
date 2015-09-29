@@ -26,7 +26,10 @@ import android.support.v4.app.Fragment;
 import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.currency.CurrencyRepository;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.TableCurrencyFormats;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
@@ -119,5 +122,22 @@ public class UnitTestHelper {
 
     public static void setupLog() {
         ShadowLog.stream = System.out;
+    }
+
+    public static void setDefaultCurrency(String symbol) {
+        CurrencyRepository repo = new CurrencyRepository(getContext());
+        TableCurrencyFormats currency = repo.loadCurrency(symbol);
+        int id = currency.getCurrencyId();
+        setDefaultCurrency(id);
+    }
+
+    public static void setDefaultCurrency(int currencyId) {
+        CurrencyService currencyService = new CurrencyService(getContext());
+        currencyService.setBaseCurrencyId(currencyId);
+    }
+
+    public static void setDefaultCurrency() {
+        // use Bosnian Mark
+        setDefaultCurrency("BAM");
     }
 }
