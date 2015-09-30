@@ -35,31 +35,17 @@ public class SingleAccountWidget
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
+
         // todo: allow selecting the account from a list.
 
         // todo: load the configured account id
         AppSettings settings = new AppSettings(context);
         String defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-        if (StringUtils.isEmpty(defaultAccountId)) return;
-
-        int accountId = Integer.parseInt(defaultAccountId);
-        Account account = loadAccount(context, accountId);
-        if (account == null) return;
-
-//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
-
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
-//        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // display the account name
-//        String accountName = getAccountName(context, accountId);
-        String accountName = account.getName();
-        views.setTextViewText(R.id.accountNameTextView, accountName);
-
-        // get account balance (for this account?)
-        String balance = getFormattedAccountBalance(context, account);
-        views.setTextViewText(R.id.balanceTextView, balance);
+        if (StringUtils.isNotEmpty(defaultAccountId)) {
+            displayAccountInfo(context, defaultAccountId, views);
+        }
 
         // handle + click -> open the new transaction screen for this account.
         // todo: pass the account id?
@@ -73,6 +59,25 @@ public class SingleAccountWidget
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    static void displayAccountInfo(Context context, String defaultAccountId, RemoteViews views) {
+        int accountId = Integer.parseInt(defaultAccountId);
+        Account account = loadAccount(context, accountId);
+        if (account == null) return;
+
+//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+
+//        views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // display the account name
+//        String accountName = getAccountName(context, accountId);
+        String accountName = account.getName();
+        views.setTextViewText(R.id.accountNameTextView, accountName);
+
+        // get account balance (for this account?)
+        String balance = getFormattedAccountBalance(context, account);
+        views.setTextViewText(R.id.balanceTextView, balance);
     }
 
     static void initializeNewTransactionButton(Context context, RemoteViews views) {
@@ -160,7 +165,48 @@ public class SingleAccountWidget
         int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
         int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
         int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-        Log.d("test", "resized");
+        Log.d(this.getClass().getSimpleName(), "resized");
+
+        // Obtain appropriate widget and update it.
+        appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, minWidth, minHeight));
+
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+    }
+
+    /**
+     * Determine appropriate view based on width provided.
+     *
+     * @param minWidth
+     * @param minHeight
+     * @return
+     */
+    private RemoteViews getRemoteViews(Context context, int minWidth,
+                                       int minHeight) {
+        // First find out rows and columns based on width provided.
+        int rows = getCellsForSize(minHeight);
+        int columns = getCellsForSize(minWidth);
+
+        if (columns <= 2) {
+            // Get 1 column widget remote view and return
+            return new RemoteViews(context.getPackageName(), R.layout.widget_single_account_1x1);
+        } else {
+            // Get appropriate remote view.
+            return new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
+        }
+    }
+
+    /**
+     * Returns number of cells needed for given size of the widget.
+     *
+     * @param size Widget size in dp.
+     * @return Size in number of cells.
+     */
+    private static int getCellsForSize(int size) {
+        int n = 2;
+        while (70 * n - 30 < size) {
+            ++n;
+        }
+        return n - 1;
     }
 }
 
