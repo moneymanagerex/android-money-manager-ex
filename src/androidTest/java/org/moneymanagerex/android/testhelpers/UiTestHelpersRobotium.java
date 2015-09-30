@@ -19,6 +19,7 @@ package org.moneymanagerex.android.testhelpers;
 import android.content.Context;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 
 import com.money.manager.ex.Constants;
@@ -97,4 +98,14 @@ public class UiTestHelpersRobotium {
 //
 //        solo.clickOnActionBarHomeButton();
 //    }
+
+    public static void uninstallApp() {
+        Runtime rt = Runtime.getRuntime();
+        try {
+            Process pr = rt.exec("adb uninstall your.package");
+            pr.waitFor();
+        } catch (Exception e) {
+            Log.e("uninstalling app", e.getMessage());
+        }
+    }
 }

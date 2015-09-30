@@ -17,8 +17,11 @@
  */
 package org.moneymanagerex.android.robotium;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
@@ -26,45 +29,41 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Robotium tests for the Main Activity.
- * Robotium tests run with JUnit 3 only.
- * The tests start with a fresh copy of preferences. The intention is to test the steps when
- * the app is just installed.
- * Need to find a way to reset the preferences and delete the directory on device before the test.
- * Well, that can be done manually.
+ * Test the startup of the Main Activity for the very first time after installation.
+ * The tests here require that the emulator is pre-set manually by:
+ * - uninstalling the app from the device
+ * - deleting the MoneyManagerEx directory from the internal storage
  */
-public class NewMainActivityTests
+@RunWith(AndroidJUnit4.class)
+public class FirstAppRunTests
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private Solo solo;
-    private MainActivity testObject;
-    private UiTestHelpersRobotium helper;
 
-    public NewMainActivityTests() {
+    public FirstAppRunTests() {
         super(MainActivity.class);
 
     }
 
     @Before
-    @Override
     public void setUp() throws Exception {
         super.setUp();
 
-        this.helper = new UiTestHelpersRobotium(solo);
-        helper.clearPreferences(getInstrumentation().getTargetContext());
+        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+
+//        this.helper = new UiTestHelpersRobotium(solo);
+//        helper.clearPreferences(getInstrumentation().getTargetContext());
 
         solo = new Solo(getInstrumentation(), getActivity());
-
-        this.testObject = getActivity();
     }
 
     @After
-    @Override
     public void tearDown() throws Exception {
         super.tearDown();
 
@@ -104,11 +103,20 @@ public class NewMainActivityTests
 
     }
 
+    public void currenciesCreated() {
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Entities");
+        solo.clickOnText("Currencies");
+
+        assertThat(solo.waitForActivity(CurrenciesActivity.class.getSimpleName())).isTrue();
+        assertThat(solo.searchText("Bosnia and Herzegovina")).isTrue();
+    }
+
     /**
      * This is the full test for the new installation of the app. Runs all the partial tests.
      */
     @Test
-    public void testAll() {
+    public void runForTheFirstTime() {
         // First the tutorial should be shown.
         tutorial();
         solo.clickOnText("Close", 1, false);
@@ -116,10 +124,7 @@ public class NewMainActivityTests
         changelog();
 
         welcomeScreen();
-    }
 
-    @Test
-    public void doesThisRun() {
-        assertThat(true).isTrue();
+        currenciesCreated();
     }
 }
