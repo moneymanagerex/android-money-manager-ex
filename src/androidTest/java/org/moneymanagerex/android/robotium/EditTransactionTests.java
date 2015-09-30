@@ -15,15 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.moneymanagerex.android.tests;
+package org.moneymanagerex.android.robotium;
 
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.robotium.solo.Solo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
- * Robotium test.
+ * Robotium test for Edit Transaction activity.
  */
 public class EditTransactionTests
     extends ActivityInstrumentationTestCase2<EditTransactionActivity> {
@@ -44,8 +46,31 @@ public class EditTransactionTests
     solo.finishOpenedActivities();
   }
 
-  public void testActivityExists() {
-    EditTransactionActivity activity = getActivity();
-    assertNotNull(activity);
-  }
+    public void testActivityExists() {
+        EditTransactionActivity activity = getActivity();
+        assertNotNull(activity);
+    }
+
+    public void testStatusChange() {
+        solo.waitForActivity(EditTransactionActivity.class.getSimpleName());
+
+        boolean spinnerFound = solo.searchText("None");
+        assertThat(spinnerFound).isTrue();
+
+        solo.pressSpinnerItem(0, 1);
+        assertThat(solo.isSpinnerTextSelected(0, "Reconciled"));
+
+        solo.pressSpinnerItem(0, 1);
+        assertThat(solo.isSpinnerTextSelected(0, "Void"));
+
+        solo.pressSpinnerItem(0, -2);
+        assertThat(solo.isSpinnerTextSelected(0, "None"));
+
+        solo.pressSpinnerItem(0, 4);
+        assertThat(solo.isSpinnerTextSelected(0, "Duplicate"));
+
+        solo.pressSpinnerItem(0, -1);
+        assertThat(solo.isSpinnerTextSelected(0, "Follow up"));
+
+    }
 }
