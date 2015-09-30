@@ -200,7 +200,7 @@ INSERT INTO "CURRENCYFORMATS_V1" VALUES(62,'Honduran lempira','L','','.',' ','',
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(63,'Hong Kong dollar','HK$','','.',' ','','',100,1,'HKD');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(64,'Hungarian forint','Ft','','.',' ','','',1,1,'HUF');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(65,'Icelandic króna','kr','','.',' ','','',1,1,'ISK');
-INSERT INTO "CURRENCYFORMATS_V1" VALUES(66,'Indian rupee','','','.',' ','','',100,1,'INR');
+INSERT INTO "CURRENCYFORMATS_V1" VALUES(66,'Indian rupee','₹','','.',' ','','',100,1,'INR');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(67,'Indonesian rupiah','Rp','','.',' ','','',1,1,'IDR');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(68,'Special Drawing Rights','SDR','','.',' ','','',100,1,'XDR');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(69,'Iranian rial','','','.',' ','','',1,1,'IRR');
