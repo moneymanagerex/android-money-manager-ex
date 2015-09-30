@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.moneymanagerex.android.tests;
+package org.moneymanagerex.android.robotium;
 
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -28,12 +28,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Robotium tests for the Main Activity.
- * Runs with JUnit 3.
- * The tests start with a fresh copy of preferences.
- *
- * Created by Alen Siljak on 24/09/2015.
+ * Robotium tests run with JUnit 3 only.
+ * The tests start with a fresh copy of preferences. The intention is to test the steps when
+ * the app is just installed.
+ * Need to find a way to reset the preferences and delete the directory on device before the test.
+ * Well, that can be done manually.
  */
 public class NewMainActivityTests
         extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -115,4 +118,8 @@ public class NewMainActivityTests
         welcomeScreen();
     }
 
+    @Test
+    public void doesThisRun() {
+        assertThat(true).isTrue();
+    }
 }

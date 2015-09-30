@@ -32,8 +32,6 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * Test Account model.
- *
- * Created by Alen Siljak on 22/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)

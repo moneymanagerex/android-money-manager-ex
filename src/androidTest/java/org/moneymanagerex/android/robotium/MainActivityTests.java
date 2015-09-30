@@ -17,6 +17,8 @@
  */
 package org.moneymanagerex.android.robotium;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
@@ -27,11 +29,17 @@ import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Robotium tests for the Main Activity.
  */
+@RunWith(AndroidJUnit4.class)
 public class MainActivityTests
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -42,14 +50,16 @@ public class MainActivityTests
 
     }
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
+
+        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
 
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
 
@@ -58,6 +68,7 @@ public class MainActivityTests
         }
     }
 
+    @Test
     public void testCreation() {
         assertNotNull(getActivity());
     }
@@ -68,6 +79,7 @@ public class MainActivityTests
         //assert
     }
 
+    @Test
     public void testDrawerOpenClose() {
 //        solo.waitForActivity(MainActivity.class.getSimpleName());
 
@@ -87,6 +99,7 @@ public class MainActivityTests
         assertThat(solo.searchText("Budgets", true)).isFalse();
     }
 
+    @Test
     public void testBudgetsOpen() {
         solo.clickOnActionBarHomeButton();
         assertThat(solo.searchText("Budgets", true)).as("Budgets menu item not visible.").isTrue();
@@ -97,6 +110,7 @@ public class MainActivityTests
         assertThat(solo.searchText("Budget list")).isTrue();
     }
 
+    @Test
     public void testEntitiesSubmenu() {
         solo.clickOnActionBarHomeButton();
 
@@ -110,6 +124,7 @@ public class MainActivityTests
         assertThat(solo.searchText("Payees")).isTrue();
     }
 
+    @Test
     public void testCurrenciesOpen() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Entities");
