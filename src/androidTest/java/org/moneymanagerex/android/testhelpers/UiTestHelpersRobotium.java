@@ -13,21 +13,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.testhelpers;
 
 import android.content.Context;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.view.View;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.robotium.solo.Solo;
 
-public class UiTestHelpers {
+public class UiTestHelpersRobotium {
 
-    public UiTestHelpers(Solo solo) {
+    public UiTestHelpersRobotium(Solo solo) {
         this.solo = solo;
 //        this.host = host;
 
@@ -85,4 +86,15 @@ public class UiTestHelpers {
         }
         clickOnView(viewId);
     }
+
+//    public static void clickOnActionBarHomeButton(Solo solo) {
+////        View homeView = solo.getView(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.id.home : R.id.home);
+////        solo.clickOnView(homeView);
+//
+////        solo.setNavigationDrawer(Solo.OPENED);
+//
+////        solo.clickOnScreen(50, 50);
+//
+//        solo.clickOnActionBarHomeButton();
+//    }
 }

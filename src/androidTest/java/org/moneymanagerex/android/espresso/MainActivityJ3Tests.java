@@ -39,7 +39,7 @@ public class MainActivityJ3Tests
         extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity testObject;
-//    private UiTestHelpers helper;
+//    private UiTestHelpersRobotium helper;
 
     public MainActivityJ3Tests() {
         super(MainActivity.class);
@@ -54,7 +54,7 @@ public class MainActivityJ3Tests
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
 
         this.testObject = getActivity();
-//        this.helper = new UiTestHelpers(solo);
+//        this.helper = new UiTestHelpersRobotium(solo);
     }
 
     @Override

@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.moneymanagerex.android.testhelpers.UiTestHelpers;
+import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 
 /**
  * Robotium tests for the Main Activity.
@@ -40,7 +40,7 @@ public class NewMainActivityTests
 
     private Solo solo;
     private MainActivity testObject;
-    private UiTestHelpers helper;
+    private UiTestHelpersRobotium helper;
 
     public NewMainActivityTests() {
         super(MainActivity.class);
@@ -52,7 +52,7 @@ public class NewMainActivityTests
     public void setUp() throws Exception {
         super.setUp();
 
-        this.helper = new UiTestHelpers(solo);
+        this.helper = new UiTestHelpersRobotium(solo);
         helper.clearPreferences(getInstrumentation().getTargetContext());
 
         solo = new Solo(getInstrumentation(), getActivity());
