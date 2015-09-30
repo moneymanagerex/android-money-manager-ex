@@ -14,15 +14,15 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
   -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="250dp" android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
     android:previewImage="@drawable/ic_logo_money_manager_ex"
-    android:initialLayout="@layout/single_account_widget"
-    android:resizeMode="horizontal|vertical" android:widgetCategory="home_screen|keyguard"
-    android:initialKeyguardLayout="@layout/single_account_widget">
+    android:initialLayout="@layout/widget_single_account"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen|keyguard"
+    android:initialKeyguardLayout="@layout/widget_single_account">
     <!-- todo: enable this for widget configuration screen -->
     <!--     android:configure="com.money.manager.ex.widget.SingleAccountWidgetConfigureActivity" -->
 </appwidget-provider>
