@@ -52,6 +52,7 @@ public class LookAndFeelSettings
         DefinedDateRanges ranges = new DefinedDateRanges(mContext);
         DefinedDateRange range = ranges.getByLocalizedName(value);
         if (range != null) {
+            setShowTransactions(range.key);
             return range.key;
         }
 
