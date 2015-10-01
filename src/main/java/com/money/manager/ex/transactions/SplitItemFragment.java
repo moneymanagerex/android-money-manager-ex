@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,23 +50,44 @@ public class SplitItemFragment
         extends Fragment
         implements IInputAmountDialogListener {
 
-    public static SplitItemFragment newInstance(ISplitTransactionsDataset split, Integer currencyId) {
-        SplitItemFragment fragment = new SplitItemFragment();
-        fragment.mSplitTransaction = split;
-        fragment.currencyId = currencyId;
-        return fragment;
-    }
-
+    private static final String ARG_CURRENCY_ID = "CurrencyId";
+    private static final String ARG_SPLIT = "arg:split";
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
-
     private static final int REQUEST_PICK_CATEGORY = 1;
     private static final int REQUEST_AMOUNT = 2;
+
+    public static SplitItemFragment newInstance(ISplitTransactionsDataset split, Integer currencyId) {
+        SplitItemFragment fragment = new SplitItemFragment();
+
+        // todo: this is how arguments should be used to get saved for recreate.
+        Bundle args = new Bundle();
+        args.putInt(ARG_CURRENCY_ID, currencyId);
+        args.putParcelable(ARG_SPLIT, split);
+        fragment.setArguments(args);
+
+//        fragment.mSplitTransaction = split;
+//        fragment.currencyId = currencyId;
+        return fragment;
+    }
 
     private ISplitTransactionsDataset mSplitTransaction;
     private ISplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtAmount;
     private Spinner spinTransCode;
-    private Integer currencyId;
+//    private Integer currencyId;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        this.mSplitTransaction = getArguments().getParcelable(ARG_SPLIT);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -87,6 +109,8 @@ public class SplitItemFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         if (container == null)
             return null;
 
@@ -108,7 +132,7 @@ public class SplitItemFragment
                 }
 
                 FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount,
-                        this.currencyId);
+                        this.getCurrencyId());
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
@@ -122,13 +146,8 @@ public class SplitItemFragment
                         amount = MoneyFactory.fromString(tag.toString());
                     }
 
-//                    if (getActivity() instanceof SplitTransactionsActivity) {
-//                        SplitTransactionsActivity activity = (SplitTransactionsActivity) getActivity();
-//                        activity.setInputAmountClickHandler(SplitItemFragment.this);
-//                    }
-
                     InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
-                            amount, SplitItemFragment.this.currencyId);
+                            amount, SplitItemFragment.this.getCurrencyId());
                     dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
@@ -180,32 +199,10 @@ public class SplitItemFragment
         return layout;
     }
 
-    private int getTransactionTypeSelection(){
-        // define the transaction type based on the amount and the parent type.
-
-        int transactionTypeSelection;
-
-        SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
-        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
-        Money amount = mSplitTransaction.getSplitTransAmount();
-        if(parentIsWithdrawal){
-            // parent is Withdrawal.
-            transactionTypeSelection = amount.toDouble() >= 0
-                    ? TransactionTypes.Withdrawal.getCode() // 0
-                    : TransactionTypes.Deposit.getCode(); // 1;
-        } else {
-            // parent is Deposit.
-            transactionTypeSelection = amount.toDouble() >= 0
-                    ? TransactionTypes.Deposit.getCode() // 1
-                    : TransactionTypes.Withdrawal.getCode(); // 0;
-        }
-
-        return transactionTypeSelection;
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitTransaction);
     }
 
@@ -214,7 +211,7 @@ public class SplitItemFragment
         if (txtAmount.getId() == id) {
             mSplitTransaction.setSplitTransAmount(amount);
 
-            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount, currencyId);
+            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount, getCurrencyId());
 
             // assign the tag *after* the text to overwrite the amount object with string.
             String amountTag = amount.toString();
@@ -272,4 +269,30 @@ public class SplitItemFragment
         return mSplitTransaction;
     }
 
+    private int getTransactionTypeSelection(){
+        // define the transaction type based on the amount and the parent type.
+
+        int transactionTypeSelection;
+
+        SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
+        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
+        Money amount = mSplitTransaction.getSplitTransAmount();
+        if(parentIsWithdrawal){
+            // parent is Withdrawal.
+            transactionTypeSelection = amount.toDouble() >= 0
+                    ? TransactionTypes.Withdrawal.getCode() // 0
+                    : TransactionTypes.Deposit.getCode(); // 1;
+        } else {
+            // parent is Deposit.
+            transactionTypeSelection = amount.toDouble() >= 0
+                    ? TransactionTypes.Deposit.getCode() // 1
+                    : TransactionTypes.Withdrawal.getCode(); // 0;
+        }
+
+        return transactionTypeSelection;
+    }
+
+    private Integer getCurrencyId() {
+        return getArguments().getInt(ARG_CURRENCY_ID);
+    }
 }

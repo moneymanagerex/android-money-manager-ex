@@ -88,6 +88,7 @@ public class AccountTransactionsFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, ICalculateRunningBalanceTaskCallbacks {
 
+    private static final String ARG_ACCOUNT_ID = "arg:accountId";
     private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
 
@@ -103,7 +104,6 @@ public class AccountTransactionsFragment
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
     private Activity mActivity;
-//    private BigDecimal[] balances;
 
     // filter
     DateRange mDateRange;
@@ -114,7 +114,10 @@ public class AccountTransactionsFragment
      */
     public static AccountTransactionsFragment newInstance(int accountId) {
         AccountTransactionsFragment fragment = new AccountTransactionsFragment();
-        fragment.mAccountId = accountId;
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_ACCOUNT_ID, accountId);
+        fragment.setArguments(args);
 
         // set name of child fragment
         fragment.setFragmentName(AccountTransactionsFragment.class.getSimpleName() + "_" +
@@ -126,6 +129,9 @@ public class AccountTransactionsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // get account id from the arguments first.
+        mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
 
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
