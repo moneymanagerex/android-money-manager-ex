@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.transactions;
 
@@ -488,7 +487,7 @@ public class EditTransactionCommonFunctions {
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         viewHolder.txtSelectDate.setTag(date);
-                        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
+                        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, date);
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(mParent, this);
                         handler.handle(e, "setting the date");

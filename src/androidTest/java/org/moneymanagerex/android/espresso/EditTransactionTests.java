@@ -38,6 +38,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
@@ -119,6 +120,9 @@ public class EditTransactionTests {
 
         // TODO: 25/09/2015 save
         // TODO: 25/09/2015 check that the transaction exists with today's date
+
+        // not finished and probably won't be as we can't select the correct date.
+        assertThat(false).isTrue();
     }
 
     @Test
@@ -175,6 +179,7 @@ public class EditTransactionTests {
     }
 
     /**
+     * Another shortcoming of Espresso:
      * Can't change the date programmatically. :(
      */
 //    @Test

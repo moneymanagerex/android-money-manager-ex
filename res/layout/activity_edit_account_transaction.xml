@@ -97,7 +97,8 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
                     <!-- Deposit -->
                     <RelativeLayout
                         android:id="@+id/depositButton"

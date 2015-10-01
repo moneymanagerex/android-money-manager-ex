@@ -20,7 +20,11 @@ package org.moneymanagerex.android.robotium;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -28,6 +32,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,5 +93,53 @@ public class EditTransactionTests
 
         solo.pressSpinnerItem(0, -1);
         assertThat(solo.isSpinnerTextSelected(0, "Follow up"));
+    }
+
+    @Test
+    public void changeDate() {
+        // Given
+        // The date is today.
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        Locale defaultLocale = Locale.ENGLISH;
+        int month = calendar.get(Calendar.MONTH);
+        String monthDisplay = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, defaultLocale);
+        String yearDisplay = calendar.getDisplayName(Calendar.YEAR, Calendar.LONG, defaultLocale);
+        int year = calendar.get(Calendar.YEAR);
+//        DateUtils dateUtils = new DateUtils(getActivity());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.LONG_DATE_PATTERN, defaultLocale);
+        String todayFormatted = dateFormat.format(today);
+
+        // expected date
+        int expectedDay = 15;
+        calendar.set(Calendar.DAY_OF_MONTH, expectedDay);
+        Date expectedDate = calendar.getTime();
+        String expectedDateDisplay = dateFormat.format(expectedDate);
+
+        RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) solo.getView(R.id.textViewDate);
+        String displayedDate = dateView.getText().toString();
+
+        assertThat(displayedDate).isEqualTo(todayFormatted);
+
+
+        // When
+        // changing the date to 15th
+        solo.clickOnView(dateView);
+        solo.waitForDialogToOpen(1000);
+        System.out.println("dialog open");
+
+//        assertThat(solo.searchText(month + " " + year)).isTrue();
+        solo.clickOnText(Integer.toString(expectedDay));
+
+        // todo: this also does not work!!! Can't select a date.
+//        solo.setDatePicker(0, year, month, expectedDay);
+
+        solo.waitForDialogToClose(2000);
+
+        // Then
+        // The displayed date should show the 15th of this month
+        String actualDate = dateView.getText().toString();
+
+        assertThat(actualDate).isEqualTo(expectedDateDisplay);
     }
 }

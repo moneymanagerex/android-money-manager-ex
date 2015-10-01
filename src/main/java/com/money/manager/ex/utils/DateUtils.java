@@ -295,7 +295,7 @@ public class DateUtils {
     public void formatExtendedDate(TextView dateTextView, Date date) {
         try {
             Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", locale);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.LONG_DATE_PATTERN, locale);
             // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width, if
             // the status selector is to switch to an icon.
 //            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
