@@ -33,6 +33,17 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!--<com.shamanland.fonticon.FontIconView-->
+            <!--android:id="@+id/image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/ic_tutorial_accounts"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textColor="@color/material_grey_200" />-->
+        <!--android:textSize="@dimen/icon_size"-->
+        <!--android:textScaleX=""-->
+
         <com.caverock.androidsvg.SVGImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"

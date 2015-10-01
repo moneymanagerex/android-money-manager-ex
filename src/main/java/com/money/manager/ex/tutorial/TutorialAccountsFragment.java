@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 
 package com.money.manager.ex.tutorial;
@@ -33,7 +32,8 @@ import com.money.manager.ex.R;
  * Use the {@link TutorialAccountsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TutorialAccountsFragment extends Fragment {
+public class TutorialAccountsFragment
+        extends Fragment {
 
     /**
      * Use this factory method to create a new instance of
@@ -57,17 +57,17 @@ public class TutorialAccountsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorial_accounts, container, false);
+        View view = inflater.inflate(R.layout.fragment_tutorial_accounts, container, false);
+
+        // customize the icon
+
+        return view;
     }
 
 

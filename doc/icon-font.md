@@ -7,13 +7,13 @@ instead of multiple resource files for images.
 
 To use font for icons, see
 
-http://blog.shamanland.com/2013/11/how-to-use-icon-fonts-in-android.html
+[Blog post](http://blog.shamanland.com/2013/11/how-to-use-icon-fonts-in-android.html)
 
-https://github.com/shamanland/fonticon
+[GitHub repository](https://github.com/shamanland/fonticon)
 
 and Fontastic.me service.
 
-http://blog.shamanland.com/p/android-fonticon-library.html
+[Library post](http://blog.shamanland.com/p/android-fonticon-library.html)
 
 # Font
 
