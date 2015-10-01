@@ -61,15 +61,7 @@ public class LookAndFeelSettings
         return defaultValue;
     }
 
-//    public boolean setShowTransactions(String value) {
-//        String key = getSettingsKey(R.string.pref_show_transaction);
-//        return set(key, value);
-//    }
-
     public boolean setShowTransactions(DefinedDateRangeName value) {
-//        String value = context.getString(resourceId);
-//        if (TextUtils.isEmpty(value)) return false;
-
         String key = getSettingsKey(R.string.pref_show_transaction);
         return set(key, value.toString());
     }
