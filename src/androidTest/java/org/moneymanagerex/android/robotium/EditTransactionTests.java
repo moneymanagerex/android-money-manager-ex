@@ -17,16 +17,24 @@
  */
 package org.moneymanagerex.android.robotium;
 
+import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.robotium.solo.Solo;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Robotium test for Edit Transaction activity.
  */
+@RunWith(AndroidJUnit4.class)
 public class EditTransactionTests
     extends ActivityInstrumentationTestCase2<EditTransactionActivity> {
 
@@ -36,21 +44,26 @@ public class EditTransactionTests
     super(EditTransactionActivity.class);
   }
 
-  public void setUp() throws Exception {
-    solo = new Solo(getInstrumentation(), getActivity());
-  }
+    @Before
+    public void setUp() throws Exception {
+        solo = UiTestHelpersRobotium.setUp(this);
+    }
 
 
-  @Override
-  public void tearDown() throws Exception {
-    solo.finishOpenedActivities();
-  }
+    @After
+    public void tearDown() throws Exception {
+        super.tearDown();
 
+        UiTestHelpersRobotium.tearDown(solo);
+    }
+
+    @Test
     public void testActivityExists() {
         EditTransactionActivity activity = getActivity();
         assertNotNull(activity);
     }
 
+    @Test
     public void testStatusChange() {
         solo.waitForActivity(EditTransactionActivity.class.getSimpleName());
 
@@ -71,6 +84,5 @@ public class EditTransactionTests
 
         solo.pressSpinnerItem(0, -1);
         assertThat(solo.isSpinnerTextSelected(0, "Follow up"));
-
     }
 }

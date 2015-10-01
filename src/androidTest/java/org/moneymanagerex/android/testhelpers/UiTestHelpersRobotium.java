@@ -19,6 +19,8 @@ package org.moneymanagerex.android.testhelpers;
 import android.content.Context;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.test.InstrumentationRegistry;
+import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.view.View;
 
@@ -39,7 +41,18 @@ public class UiTestHelpersRobotium {
 
 //    private ActivityInstrumentationTestCase2 host;
     public Solo solo;
-//    public Context context;
+
+    public static Solo setUp(ActivityInstrumentationTestCase2 host) {
+        host.injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+
+        return new Solo(host.getInstrumentation(), host.getActivity());
+    }
+
+    public static void tearDown(Solo solo) {
+        if (solo != null) {
+            solo.finishOpenedActivities();
+        }
+    }
 
     public void clearPreferences(Context context) {
         // clear default preferences

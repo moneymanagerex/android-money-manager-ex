@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.common;
 
@@ -127,9 +126,11 @@ public class CategoryListFragment
 
         setEmptyText(getActivity().getResources().getString(R.string.category_empty_list));
 
-        // define layout
-        // Show category selector (arrow) when used as a picker.
-        // show simple list when opened independently.
+        /*
+            Define the layout.
+            Show category selector (arrow) when used as a picker.
+            Show simple list when opened independently.
+        */
         mLayout = mAction.equals(Intent.ACTION_PICK)
                 ? R.layout.simple_expandable_list_item_selector
                 : android.R.layout.simple_expandable_list_item_2;
@@ -674,7 +675,7 @@ public class CategoryListFragment
 
     private void addListClickHandlers() {
         // the list handlers available only when selecting a category.
-        if (Intent.ACTION_PICK.equals(mAction)) {
+        if (mAction.equals(Intent.ACTION_PICK)) {
             getExpandableListView().setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
                 @Override

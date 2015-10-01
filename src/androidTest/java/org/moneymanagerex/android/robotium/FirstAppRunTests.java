@@ -55,21 +55,14 @@ public class FirstAppRunTests
     public void setUp() throws Exception {
         super.setUp();
 
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-
-//        this.helper = new UiTestHelpersRobotium(solo);
-//        helper.clearPreferences(getInstrumentation().getTargetContext());
-
-        solo = new Solo(getInstrumentation(), getActivity());
+        solo = UiTestHelpersRobotium.setUp(this);
     }
 
     @After
     public void tearDown() throws Exception {
         super.tearDown();
 
-        if (solo != null) {
-            solo.finishOpenedActivities();
-        }
+        UiTestHelpersRobotium.tearDown(solo);
     }
 
     @Ignore

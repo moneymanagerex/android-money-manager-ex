@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 
 package com.money.manager.ex.adapter;
@@ -98,7 +97,6 @@ public class CategoryExpandableListAdapter
 			convertView = inflater.inflate(mLayout, null);
 			
 			holder = new ViewHolderChild();
-//			holder.text1 = (TextView)convertView.findViewById(android.R.id.text1);
             View text1 = convertView.findViewById(android.R.id.text1);
             if (text1 instanceof RobotoTextView) {
                 holder.text1 = (RobotoTextView) text1;

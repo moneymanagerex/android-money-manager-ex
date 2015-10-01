@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.espresso;
 
@@ -47,9 +46,11 @@ import static org.moneymanagerex.android.testhelpers.MmexMatchers.hasCategory;
 import static org.moneymanagerex.android.testhelpers.MmexMatchers.hasSubCategory;
 
 /**
- * Various Search activity tests.
+ * This is not operational because it is not possible to select a subcategory - a child item
+ * in expandable list view.
+ * There is the correct test in Robotium test suite.
  *
- * Created by Alen on 27/09/2015.
+ * Various Search activity tests.
  */
 public class SearchTests {
     @Rule
