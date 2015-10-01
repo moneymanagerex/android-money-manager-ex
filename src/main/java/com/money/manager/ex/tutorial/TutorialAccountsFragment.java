@@ -23,8 +23,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.money.manager.ex.R;
+import com.shamanland.fonticon.FontIconDrawable;
 
 
 /**
@@ -66,6 +68,10 @@ public class TutorialAccountsFragment
         View view = inflater.inflate(R.layout.fragment_tutorial_accounts, container, false);
 
         // customize the icon
+//        FontIconDrawable drawable = FontIconDrawable.inflate(getActivity(), R.xml.ic_tutorial_accounts);
+//        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+//        imageView.setImageDrawable(drawable);
+        // this inflates pixelated image
 
         return view;
     }

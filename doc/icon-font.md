@@ -19,9 +19,6 @@ and Fontastic.me service.
 
 The custom font is named mmex.
 
-Icons used:
-- icon-law, octicons; a
-
 # Usage
 
 ## As Image

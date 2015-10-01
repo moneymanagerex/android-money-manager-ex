@@ -13,8 +13,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:svgimageview="http://schemas.android.com/apk/res-auto"
@@ -43,6 +42,14 @@
             <!--android:textColor="@color/material_grey_200" />-->
         <!--android:textSize="@dimen/icon_size"-->
         <!--android:textScaleX=""-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_margin="40dp"-->
+            <!--android:scaleType="fitCenter" />-->
 
         <com.caverock.androidsvg.SVGImageView
             android:id="@+id/imageView"
