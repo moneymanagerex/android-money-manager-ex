@@ -479,7 +479,7 @@ public class MainActivity
         super.onDestroy();
 
         // close database
-        MoneyManagerOpenHelper.closeDatabase();
+//        MoneyManagerOpenHelper.closeDatabase();
     }
 
     /**
