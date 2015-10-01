@@ -31,103 +31,6 @@ import info.javaperformance.money.Money;
 public class SingleAccountWidget
         extends AppWidgetProvider {
 
-    // Static
-
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
-
-        // todo: allow selecting the account from a list.
-
-        // todo: load the configured account id
-        AppSettings settings = new AppSettings(context);
-        String defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-        if (StringUtils.isNotEmpty(defaultAccountId)) {
-            displayAccountInfo(context, defaultAccountId, views);
-        }
-
-        // handle + click -> open the new transaction screen for this account.
-        // todo: pass the account id?
-        initializeNewTransactionButton(context, views);
-
-        // handle logo click -> open the app.
-        initializeAppButton(context, views);
-
-        // click account name -> refresh the balance.
-        initializeContentPanel(context, views, appWidgetId);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
-
-    static void displayAccountInfo(Context context, String defaultAccountId, RemoteViews views) {
-        int accountId = Integer.parseInt(defaultAccountId);
-        Account account = loadAccount(context, accountId);
-        if (account == null) return;
-
-//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
-
-//        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // display the account name
-//        String accountName = getAccountName(context, accountId);
-        String accountName = account.getName();
-        views.setTextViewText(R.id.accountNameTextView, accountName);
-
-        // get account balance (for this account?)
-        String balance = getFormattedAccountBalance(context, account);
-        views.setTextViewText(R.id.balanceTextView, balance);
-    }
-
-    static void initializeNewTransactionButton(Context context, RemoteViews views) {
-        Intent intent = new Intent(context, EditTransactionActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
-    }
-
-    static String getFormattedAccountBalance(Context context, Account account) {
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(QueryAccountBills.ACCOUNTID, "=", account.getId());
-        String selection =  where.getWhere();
-
-        AccountService service = new AccountService(context);
-        Money total = service.loadBalance(selection);
-
-        // format the amount
-        CurrencyService currencyService = new CurrencyService(context);
-        String summary = currencyService.getCurrencyFormatted(
-                account.getCurrencyId(), total);
-
-        return summary;
-    }
-
-    static Account loadAccount(Context context, int accountId) {
-        AccountRepository repository = new AccountRepository(context);
-        return repository.load(accountId);
-    }
-
-    static void initializeAppButton(Context context, RemoteViews views) {
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        // Get the layout for the App Widget and attach an on-click listener to the button
-//        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.appwidget_provider_layout);
-        views.setOnClickPendingIntent(R.id.appLogoImage, pendingIntent);
-    }
-
-    static void initializeContentPanel(Context context, RemoteViews views, int appWidgetId) {
-        // refresh the balance on tap.
-        Intent intent = new Intent(context, SingleAccountWidget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] { appWidgetId });
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.contentPanel, pendingIntent);
-    }
-
-    // Instance methods.
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
@@ -171,28 +74,42 @@ public class SingleAccountWidget
         appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, minWidth, minHeight));
 
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
+        this.updateAppWidget(context, appWidgetManager, appWidgetId);
+    }
+
+    private RemoteViews mRemoteViews;
+
+    private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        if (mRemoteViews == null) {
+            int minWidth = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeWidth;
+            int minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeHeight;
+            mRemoteViews = getRemoteViews(context, minWidth, minHeight);
+        }
+        return mRemoteViews;
+
     }
 
     /**
      * Determine appropriate view based on width provided.
      *
-     * @param minWidth
-     * @param minHeight
-     * @return
+     * @param minWidth current width
+     * @param minHeight current height
+     * @return Remote views for the current widget.
      */
-    private RemoteViews getRemoteViews(Context context, int minWidth,
-                                       int minHeight) {
+    private RemoteViews getRemoteViews(Context context, int minWidth, int minHeight) {
         // First find out rows and columns based on width provided.
         int rows = getCellsForSize(minHeight);
         int columns = getCellsForSize(minWidth);
 
         if (columns <= 2) {
             // Get 1 column widget remote view and return
-            return new RemoteViews(context.getPackageName(), R.layout.widget_single_account_1x1);
+            mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_single_account_1x1);
         } else {
             // Get appropriate remote view.
-            return new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
+            mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
         }
+        return mRemoteViews;
     }
 
     /**
@@ -208,5 +125,104 @@ public class SingleAccountWidget
         }
         return n - 1;
     }
+
+    private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        // Construct the RemoteViews object
+//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
+        RemoteViews views = getRemoteViews(context, appWidgetManager, appWidgetId);
+
+        // todo: allow selecting the account from a list.
+
+        // todo: load the configured account id
+        AppSettings settings = new AppSettings(context);
+        String defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        if (StringUtils.isNotEmpty(defaultAccountId)) {
+            displayAccountInfo(context, defaultAccountId, views);
+        }
+
+        // handle + click -> open the new transaction screen for this account.
+        // todo: pass the account id?
+        initializeNewTransactionCommand(context, views);
+
+        // handle logo click -> open the app.
+        initializeStartAppCommand(context, views);
+
+        // click account name -> refresh the balance.
+        initializeRefreshDataCommand(context, views, appWidgetId);
+
+        // Instruct the widget manager to update the widget
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private void displayAccountInfo(Context context, String defaultAccountId, RemoteViews views) {
+        int accountId = Integer.parseInt(defaultAccountId);
+        Account account = loadAccount(context, accountId);
+        if (account == null) return;
+
+//        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+
+//        views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // display the account name
+//        String accountName = getAccountName(context, accountId);
+        String accountName = account.getName();
+        views.setTextViewText(R.id.accountNameTextView, accountName);
+
+        // get account balance (for this account?)
+        String balance = getFormattedAccountBalance(context, account);
+        views.setTextViewText(R.id.balanceTextView, balance);
+    }
+
+    private void initializeNewTransactionCommand(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, EditTransactionActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+        views.setOnClickPendingIntent(R.id.newTransactionPanel, pendingIntent);
+        // for now, the button requires a separate setup. try to find a way to propagate click.
+        views.setOnClickPendingIntent(R.id.newTransactionButton, pendingIntent);
+    }
+
+    private String getFormattedAccountBalance(Context context, Account account) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(QueryAccountBills.ACCOUNTID, "=", account.getId());
+        String selection =  where.getWhere();
+
+        AccountService service = new AccountService(context);
+        Money total = service.loadBalance(selection);
+
+        // format the amount
+        CurrencyService currencyService = new CurrencyService(context);
+        String summary = currencyService.getCurrencyFormatted(
+                account.getCurrencyId(), total);
+
+        return summary;
+    }
+
+    private Account loadAccount(Context context, int accountId) {
+        AccountRepository repository = new AccountRepository(context);
+        return repository.load(accountId);
+    }
+
+    private void initializeStartAppCommand(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        // Get the layout for the App Widget and attach an on-click listener to the button
+//        RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.appwidget_provider_layout);
+
+        views.setOnClickPendingIntent(R.id.appLogoImage, pendingIntent);
+    }
+
+    private void initializeRefreshDataCommand(Context context, RemoteViews views, int appWidgetId) {
+        // refresh the balance on tap.
+        Intent intent = new Intent(context, SingleAccountWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        views.setOnClickPendingIntent(R.id.refreshDataPanel, pendingIntent);
+    }
+
 }
 
