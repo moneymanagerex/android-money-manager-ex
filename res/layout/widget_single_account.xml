@@ -48,7 +48,7 @@
 
     <!-- Details pane -->
     <LinearLayout
-        android:id="@+id/contentPanel"
+        android:id="@+id/refreshDataPanel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -89,7 +89,7 @@
         <!--/>-->
 
     <ImageButton
-        android:id="@+id/newTransactionButton"
+        android:id="@+id/newTransactionPanel"
         android:layout_width="72dp"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
