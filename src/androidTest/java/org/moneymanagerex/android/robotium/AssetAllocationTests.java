@@ -18,9 +18,11 @@ package org.moneymanagerex.android.robotium;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
+import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
@@ -74,8 +76,18 @@ public class AssetAllocationTests
         // layoutIsLandscape ?
         // title
         assertThat(solo.searchText("Asset Allocation")).isTrue();
+        // no records
+        assertThat(solo.searchText("No asset classes have been defined.")).isTrue();
         // addNew button
         assertThat(solo.waitForView(R.id.fab)).isTrue();
+    }
+
+    @Test
+    public void openNewAssetClassForm() {
+        View fab = getActivity().findViewById(R.id.fab);
+        solo.clickOnView(fab);
+
+        assertThat(solo.waitForActivity(AssetClassEditActivity.class)).isTrue();
     }
 
     /*
@@ -87,7 +99,7 @@ public class AssetAllocationTests
     todo: Tests
     - we see a grid of asset allocations
     - can add a new allocation
-      - create/edit form opens
+      + create/edit form opens
       - can select a security from all the available ones
     - can delete an allocation
     - when adding a stock, the allocation value updates

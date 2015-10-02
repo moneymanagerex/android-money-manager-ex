@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -134,7 +135,9 @@ public class AssetAllocationFragment
     // private
 
     private void startEditAssetClassActivity() {
-        // todo: complete
+        Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
     }
 
     private void loadData() {

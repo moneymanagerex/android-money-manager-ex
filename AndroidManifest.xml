@@ -410,6 +410,10 @@
             android:name=".assetallocation.AssetAllocationActivity"
             android:label="@string/asset_allocation" >
         </activity>
+        <activity
+            android:name=".assetallocation.AssetClassEditActivity"
+            android:label="@string/title_activity_asset_class_edit" >
+        </activity>
     </application>
 
 </manifest>
