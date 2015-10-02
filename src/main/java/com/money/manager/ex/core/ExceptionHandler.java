@@ -25,7 +25,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,7 +33,6 @@ import com.money.manager.ex.R;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Objects;
 
 /**
  * Standard exception handler.

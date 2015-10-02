@@ -13,9 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
-
 package com.money.manager.ex.currency;
 
 import android.content.Intent;
@@ -28,8 +26,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
-
-public class CurrencyChartActivity extends BaseFragmentActivity {
+public class CurrencyChartActivity
+    extends BaseFragmentActivity {
 
     public static final String BASE_CURRENCY_SYMBOL = "CurrencyChartActivity::BaseCurrencySymbol";
 

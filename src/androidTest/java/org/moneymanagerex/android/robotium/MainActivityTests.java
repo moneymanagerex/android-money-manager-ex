@@ -24,8 +24,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.currency.CurrenciesActivity;
+import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
@@ -130,7 +131,17 @@ public class MainActivityTests
         solo.clickOnText("Entities");
         solo.clickOnText("Currencies");
 
-        assertThat(solo.waitForActivity(CurrenciesActivity.class.getSimpleName())).isTrue();
+        assertThat(solo.waitForActivity(CurrencyListActivity.class.getSimpleName())).isTrue();
         assertThat(solo.searchText("Bosnia and Herzegovina")).isTrue();
+    }
+
+    @Test
+    public void openAssetAllocation() {
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Asset Allocation");
+
+        assertThat(solo.waitForActivity(AssetAllocationActivity.class.getSimpleName()))
+            .as("Asset Allocation not started")
+            .isTrue();
     }
 }

@@ -63,7 +63,7 @@ public class ImportAllCurrenciesTask
                 DialogUtils.closeProgressDialog(dialog);
             }
         } catch (Exception e) {
-            Log.e(CurrenciesActivity.LOGCAT, e.getMessage());
+            Log.e(CurrencyListActivity.LOGCAT, e.getMessage());
         }
         super.onPostExecute(result);
     }

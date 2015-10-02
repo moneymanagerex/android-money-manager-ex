@@ -84,12 +84,15 @@
                 <item
                     android:id="@+id/menu_recurring_transaction"
                     android:title="@string/repeating_transactions"/>
-                <item
-                    android:id="@+id/menu_budgets"
-                    android:title="@string/budgets" />
             </menu>
         </item>
     </group>
+    <item
+        android:id="@+id/menu_budgets"
+        android:title="@string/budgets" />
+    <item
+        android:id="@+id/menu_asset_allocation"
+        android:title="@string/asset_allocation" />
     <group
         android:id="@+id/menu_group_reports"
         android:orderInCategory="1007">

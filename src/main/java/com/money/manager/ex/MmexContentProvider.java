@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex;
 
@@ -56,6 +55,7 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 
@@ -105,21 +105,21 @@ public class MmexContentProvider
         setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
 
         List<Dataset> objMoneyManager = Arrays.asList(
-//                new TableAccountList(),
-                new AccountRepository(context),
+            new AccountRepository(context),
+            new AssetClassRepository(context),
                 new TableAssets(),
                 new TableBillsDeposits(),
                 new BudgetTable(),
                 new TableBudgetSplitTransactions(),
                 new BudgetYear(),
                 new TableCategory(),
-                new AccountTransactionRepository(context),
+            new AccountTransactionRepository(context),
                 new TableCurrencyFormats(),
                 new TableInfoTable(),
                 new TablePayee(),
                 new TableSplitTransactions(),
                 new TableStock(),
-                new StockHistoryRepository(),
+            new StockHistoryRepository(),
                 new TableSubCategory(),
                 new QueryAccountBills(getContext()),
                 new QueryCategorySubCategory(getContext()),

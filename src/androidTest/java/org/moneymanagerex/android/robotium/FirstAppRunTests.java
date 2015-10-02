@@ -17,11 +17,10 @@
  */
 package org.moneymanagerex.android.robotium;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.currency.CurrenciesActivity;
+import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
@@ -101,7 +100,7 @@ public class FirstAppRunTests
         solo.clickOnText("Entities");
         solo.clickOnText("Currencies");
 
-        assertThat(solo.waitForActivity(CurrenciesActivity.class.getSimpleName())).isTrue();
+        assertThat(solo.waitForActivity(CurrencyListActivity.class.getSimpleName())).isTrue();
         assertThat(solo.searchText("Bosnia and Herzegovina")).isTrue();
     }
 

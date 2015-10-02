@@ -28,27 +28,25 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.ActivityUtils;
 
 /**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
+ * List of currencies.
  */
-public class CurrenciesActivity
+public class CurrencyListActivity
         extends BaseFragmentActivity {
 
-    public static final String INTENT_RESULT_CURRENCYID = "CurrenciesActivity:ACCOUNTID";
-    public static final String INTENT_RESULT_CURRENCYNAME = "CurrenciesActivity:ACCOUNTNAME";
-    public static final String LOGCAT = CurrenciesActivity.class.getSimpleName();
-    private static final String FRAGMENTTAG = CurrenciesActivity.class.getSimpleName() + "_Fragment";
-
-    // Instance fragment list
-    private CurrencyListFragment listFragment = new CurrencyListFragment();
+    public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
+    public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
+    public static final String LOGCAT = CurrencyListActivity.class.getSimpleName();
+    private static final String FRAGMENTTAG = CurrencyListActivity.class.getSimpleName() + "_Fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.base_toolbar_activity);
 
-        // enabled home to come back
+        // change home icon to 'back'.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CurrencyListFragment listFragment = new CurrencyListFragment();
 
         // take intent
         Intent intent = getIntent();
@@ -56,10 +54,10 @@ public class CurrenciesActivity
             // Store the requested action.
             listFragment.mAction = intent.getAction();
             // restore previous device orientation if it was modified.
-            if(listFragment.PreviousOrientation != -1) {
+            if(listFragment.mPreviousOrientation != -1) {
                 int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
-                if(currentOrientation != listFragment.PreviousOrientation) {
-                    ActivityUtils.restoreOrientation(this, listFragment.PreviousOrientation);
+                if(currentOrientation != listFragment.mPreviousOrientation) {
+                    ActivityUtils.restoreOrientation(this, listFragment.mPreviousOrientation);
                 }
             }
         }

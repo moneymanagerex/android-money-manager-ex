@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.home;
 
@@ -88,7 +87,6 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * The fragment that contains the accounts groups with accounts and their balances.
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
 public class HomeFragment
         extends Fragment
@@ -205,7 +203,6 @@ public class HomeFragment
         super.onViewCreated(view, savedInstanceState);
 
         mFloatingActionButton.attachToListView(mExpandableListView);
-
     }
 
     // Loader event handlers

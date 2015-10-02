@@ -239,7 +239,7 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".currency.CurrenciesActivity" >
+        <activity android:name=".currency.CurrencyListActivity" >
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -405,6 +405,10 @@
         <activity
             android:name=".common.WebViewActivity"
             android:label="@string/donate" >
+        </activity>
+        <activity
+            android:name=".assetallocation.AssetAllocationActivity"
+            android:label="@string/asset_allocation" >
         </activity>
     </application>
 

@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsListFragment;
@@ -67,7 +68,9 @@ public abstract class BaseListFragment
         try {
             getActivity().setTheme(core.getThemeApplication());
         } catch (Exception e) {
-            Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
+//            Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(e, "setting app theme");
         }
         super.onCreate(savedInstanceState);
     }

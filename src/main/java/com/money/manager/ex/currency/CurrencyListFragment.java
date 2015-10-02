@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.currency;
 
@@ -71,7 +70,7 @@ public class CurrencyListFragment
 
     public String mAction = Intent.ACTION_EDIT;
     // Store previous device orientation when showing other screens (chart, etc.)
-    public int PreviousOrientation = -1;
+    public int mPreviousOrientation = -1;
 
     private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
 
@@ -109,7 +108,6 @@ public class CurrencyListFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         setListShown(false);
-
         loadData();
 
         setFloatingActionButtonVisible(true);
@@ -149,37 +147,35 @@ public class CurrencyListFragment
                 break;
             case 1: // Chart
                 // remember the device orientation and return to it after the chart.
-                this.PreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+                this.mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+
+                // add the currency information.
+                String symbol = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL));
+                CurrencyService currencyService = this.getCurrencyUtils();
+                String baseCurrencyCode = currencyService.getBaseCurrencyCode();
 
                 Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
-                // add the currency information.
-                String symbol = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL));
                 intent.putExtra(TableCurrencyFormats.CURRENCY_SYMBOL, symbol);
-                CurrencyService currencyService = this.getCurrencyUtils();
-                String baseCurrencyCode = currencyService.getBaseCurrencyCode();
                 intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
+
                 startActivity(intent);
                 break;
+
             case 2: // Update exchange rate
                 updateSingleCurrencyExchangeRate(currencyId);
                 break;
+
             case 3: //DELETE
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Account.CURRENCYID, currencyId);
                 if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
                     showDialogDeleteCurrency(currencyId);
                 } else {
-//                    Core core = new Core(getActivity());
-//                    int icon = core.usingDarkTheme()
-//                            ? R.drawable.ic_action_warning_dark
-//                            : R.drawable.ic_action_warning_light;
-
                     new AlertDialogWrapper.Builder(getContext())
                         .setTitle(R.string.attention)
                         .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                         .setMessage(R.string.currency_can_not_deleted)
-//                        .setIcon(icon)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -339,9 +335,9 @@ public class CurrencyListFragment
                     cursor.moveToPosition(i);
 
                     result = new Intent();
-                    result.putExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYID,
+                    result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID,
                             cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
-                    result.putExtra(CurrenciesActivity.INTENT_RESULT_CURRENCYNAME,
+                    result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME,
                             cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
 
                     getActivity().setResult(Activity.RESULT_OK, result);
@@ -350,7 +346,7 @@ public class CurrencyListFragment
                 }
             }
         }
-        getActivity().setResult(CurrenciesActivity.RESULT_CANCELED);
+        getActivity().setResult(CurrencyListActivity.RESULT_CANCELED);
     }
 
     @Override

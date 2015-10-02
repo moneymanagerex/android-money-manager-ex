@@ -644,4 +644,8 @@
     <string name="error_downloading_symbol">Error downloading price for symbol</string>
     <string name="other">Other</string>
     <string name="cleared">Cleared</string>
+
+    <!-- asset allocation -->
+    <string name="asset_allocation">Asset Allocation</string>
+    <string name="asset_classes_empty">No asset classes have been defined. To create one, tap the green plus button.</string>
 </resources>

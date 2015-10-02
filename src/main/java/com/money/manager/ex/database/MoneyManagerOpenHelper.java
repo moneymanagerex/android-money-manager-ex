@@ -35,17 +35,22 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.RawFileUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.text.SimpleDateFormat;
 import java.util.Currency;
-import java.util.Locale;
 
 /**
  * Actual helper class for accessing an SQLite database.
  */
 public class MoneyManagerOpenHelper
         extends SQLiteOpenHelper {
+
+    private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
+    /*
+       The version corresponds to the user version in info table, used by the desktop app.
+     */
+    private static final int databaseVersion = 3;
+
+    // singleton
+    private static MoneyManagerOpenHelper mInstance;
 
     /**
      * Returns the singleton instance of the helper for database access.
@@ -67,15 +72,8 @@ public class MoneyManagerOpenHelper
         mInstance.close();
     }
 
-    private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
-    // The version corresponds to the user version in info table, used by the desktop app.
-    private static final int databaseCurrentVersion = 3;
-
-    // singleton
-    private static MoneyManagerOpenHelper mInstance;
-
     private MoneyManagerOpenHelper(Context context) {
-        super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseCurrentVersion);
+        super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseVersion);
         this.mContext = context;
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
@@ -104,7 +102,7 @@ public class MoneyManagerOpenHelper
 
 //        if (BuildConfig.DEBUG) Log.d(LOGCAT, "db version after creation of tables: " + db.getVersion());
         // Execute update scripts?
-//        updateDatabase(db, 0, databaseCurrentVersion);
+//        updateDatabase(db, 0, databaseVersion);
 
         try {
             initDatabase(db);

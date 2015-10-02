@@ -54,18 +54,18 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
+import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.currency.CurrenciesActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.account.AccountListFragment;
@@ -165,7 +165,8 @@ public class MainActivity
                     throw new RuntimeException("Could not open database: " + pathFile);
                 }
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "opening database from intent");
             }
         }
 
@@ -350,7 +351,7 @@ public class MainActivity
                 break;
             case R.id.menu_currency:
                 // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrenciesActivity.class);
+                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
                 break;
@@ -362,6 +363,10 @@ public class MainActivity
                 break;
             case R.id.menu_budgets:
                 intent = new Intent(this, BudgetsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_asset_allocation:
+                intent = new Intent(this, AssetAllocationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_search_transaction:
@@ -610,7 +615,7 @@ public class MainActivity
             mDrawer.setDrawerListener(mDrawerToggle);
 
             // create drawer menu
-            createDrawerMenu();
+            initializeDrawerVariables();
 //            createLinearDrawer();
             createExpandableDrawer();
 
@@ -910,7 +915,7 @@ public class MainActivity
     /**
      * drawer management
      */
-    private void createDrawerMenu() {
+    private void initializeDrawerVariables() {
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
 
         // repeating transaction
@@ -995,6 +1000,11 @@ public class MainActivity
 
         // Budgets
         childItems.add(null);
+
+        // Asset Allocation
+        if (BuildConfig.DEBUG) {
+            childItems.add(null);
+        }
 
         // Search transaction
         childItems.add(null);
@@ -1103,8 +1113,15 @@ public class MainActivity
 
         // Budgets
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-                .withText(getString(R.string.budgets))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+            .withText(getString(R.string.budgets))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+
+        // Asset Allocation
+        if (BuildConfig.DEBUG) {
+            menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
+                .withText(getString(R.string.asset_allocation))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+        }
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
