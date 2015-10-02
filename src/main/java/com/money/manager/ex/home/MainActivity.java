@@ -502,9 +502,9 @@ public class MainActivity
         }else{
             try {
                 super.onBackPressed();
-            } catch (IllegalStateException illegal) {
-                Log.e(LOGCAT, "Error on back pressed:" + illegal.getMessage());
-//                illegal.printStackTrace();
+            } catch (IllegalStateException e) {
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "on back pressed");
             }
         }
     }

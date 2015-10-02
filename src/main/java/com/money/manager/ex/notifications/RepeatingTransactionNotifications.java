@@ -63,8 +63,8 @@ public class RepeatingTransactionNotifications {
         QueryBillDeposits billDeposits = new QueryBillDeposits(mContext);
 
         /*
-        In this query, the 0 days diff parameter HAS to be set in the query. Adding it in
-        the parameters will not work (for whatever reason).
+          In this query, the 0 days diff parameter HAS to be set in the query. Adding it in
+          the parameters will not work (for whatever reason).
         */
 
         Cursor cursor = mContext.getContentResolver().query(billDeposits.getUri(),
