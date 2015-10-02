@@ -58,8 +58,8 @@ android {
         minSdkVersion 15
 //        minSdkVersion 16
         targetSdkVersion 23
-        versionCode 730
-        versionName '2.20.8'
+        versionCode 731
+        versionName '2.21.0'
         // 601 = 1.4.17, stable
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
