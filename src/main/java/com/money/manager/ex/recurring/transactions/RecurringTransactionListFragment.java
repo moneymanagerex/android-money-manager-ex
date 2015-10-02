@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.recurring.transactions;
 
@@ -25,13 +24,16 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;
@@ -103,11 +105,20 @@ public class RecurringTransactionListFragment
         int repeats, bdId;
         Date date;
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        if (menuInfo == null) {
+            String errorMessage = "no context menu info";
+            Log.w(this.getClass().getSimpleName(), errorMessage);
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.showMessage("no context menu info");
+            return false;
+        }
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         /*
-      The cursor position of the current transaction in the list of all transactions.
-      The active transaction is the one on which we are performing an operation (edit, enter...).
-     */
+          The cursor position of the current transaction in the list of all transactions.
+          The active transaction is the one on which we are performing an operation (edit, enter...).
+         */
         int activeTransactionPosition = info.position;
 
         // move cursor to selected item's position.
