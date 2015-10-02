@@ -20,6 +20,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
         android:name="com.money.manager.ex.assetallocation.AssetClassEditActivityFragment"

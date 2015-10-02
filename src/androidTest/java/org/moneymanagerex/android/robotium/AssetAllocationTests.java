@@ -93,6 +93,7 @@ public class AssetAllocationTests
     /*
     todo: Tasks
     - Add sortOrder column.
+    - Add Parent column. How about groups? International Equity: EM, Europe, etc.
      */
 
     /*
