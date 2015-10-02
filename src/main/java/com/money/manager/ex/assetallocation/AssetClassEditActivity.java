@@ -10,7 +10,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 public class AssetClassEditActivity
     extends BaseFragmentActivity {
 
-    private static final String FRAGMENTTAG = AssetClassEditFragment.class.getSimpleName();
+//    private static final String FRAGMENTTAG = AssetClassEditFragment.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +19,11 @@ public class AssetClassEditActivity
 
         setToolbarStandardAction(getToolbar());
 
-        AssetClassEditFragment fragment = new AssetClassEditFragment();
-
-        FragmentManager fm = getSupportFragmentManager();
-        if (fm.findFragmentById(R.id.content) == null) {
-            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
-        }
+//        AssetClassEditFragment fragment = new AssetClassEditFragment();
+//        FragmentManager fm = getSupportFragmentManager();
+//        if (fm.findFragmentById(R.id.content) == null) {
+//            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
+//        }
 
     }
 
