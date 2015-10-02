@@ -14,12 +14,11 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/activity_side_margin"
     android:layout_marginRight="@dimen/activity_side_margin"
     android:animateLayoutChanges="true"
@@ -30,26 +29,11 @@
 
     <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/buttons"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true">-->
-
-        <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--style="@style/Money.TextView.Header.Caption"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/warning"/>-->
-
-    <!--</LinearLayout>-->
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true"
         android:orientation="vertical">
-        <!-- android:layout_above="@id/buttons" -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/money_padding"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:hint="@string/stock_name"
                 android:inputType="text"
                 android:maxLength="1000"

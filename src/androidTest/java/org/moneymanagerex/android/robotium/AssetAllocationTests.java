@@ -91,9 +91,13 @@ public class AssetAllocationTests
     }
 
     /*
-    todo: Tasks
-    - Add sortOrder column.
-    - Add Parent column. How about groups? International Equity: EM, Europe, etc.
+      todo: Tasks
+      - Add sortOrder column.
+      - Add Parent column. How about groups? International Equity: EM, Europe, etc. Each group
+        should have the totals column.
+      - Create Asset Allocation model object with multiple groups/children, with totals. This is to
+        be used for quick display.
+      - show pie chart for allocation.
      */
 
     /*
@@ -108,5 +112,6 @@ public class AssetAllocationTests
 
     - test that fab opens the new asset class form
     - test that the asset classes are sorted.
+    - ability to move classes up or down
      */
 }
