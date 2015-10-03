@@ -28,23 +28,25 @@ public class AssetAllocationService {
         // todo: this is incomplete. Need to set the default value on creation and handle
         // deletions. Also pay attention if the order will be ascending or descending and adjust.
 
+        List<AssetClass> bulk = new ArrayList();
+
         AssetClass up = repository.load(id);
         Integer currentPosition = up.getSortOrder();
         if (currentPosition == null) currentPosition = 0;
         int upPosition = currentPosition + 1;
 
         up.setSortOrder(upPosition);
+        bulk.add(up);
 
         WhereStatementGenerator where = new WhereStatementGenerator();
         String filter = where.getStatement(AssetClass.SORTORDER, "=", upPosition);
         AssetClass down = repository.query(filter);
-
-        down.setSortOrder(currentPosition);
+        if (down != null) {
+            down.setSortOrder(currentPosition);
+            bulk.add(down);
+        }
 
         // save in transaction
-        List<AssetClass> bulk = new ArrayList();
-        bulk.add(up);
-        bulk.add(down);
-        repository.bulkInsert(bulk);
+        repository.bulkUpdate(bulk);
     }
 }

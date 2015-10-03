@@ -70,9 +70,6 @@ import java.util.Map;
  * MmexContentProvider is the extension of the base class of Android
  * ContentProvider. Its purpose is to implement the read access and modify the
  * application data
- *
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.1.0
  */
 public class MmexContentProvider
     extends ContentProvider {
@@ -194,48 +191,24 @@ public class MmexContentProvider
     public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Update Uri: " + uri);
 
-        // find object from uri
         Object ret = getObjectFromUri(uri);
-        // Instance of database
+
         MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int rowsUpdate = 0;
-        // check ret what type of class
+
         if (Dataset.class.isInstance(ret)) {
             Dataset dataset = ((Dataset) ret);
             switch (dataset.getType()) {
                 case TABLE:
-                    String log = "UPDATE " + dataset.getSource();
-                    // compose log verbose
-                    if (values != null) {
-                        log += " SET " + values.toString();
-                    }
-                    if (!TextUtils.isEmpty(whereClause)) {
-                        log += " WHERE " + whereClause;
-                    }
-                    if (whereArgs != null) {
-                        log += "; ARGS=" + Arrays.asList(whereArgs).toString();
-                    }
+                    logUpdate(dataset, values, whereClause, whereArgs);
 
-                    // open transaction
-                    //database.beginTransaction();
-                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
-
-                    // update
                     try {
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
-
                         rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
-                        // committed
-                        ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                        //database.setTransactionSuccessful();
-//                    } catch (SQLiteException sqlLiteExc) {
-//                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
                     } catch (Exception ex) {
-//                        Log.e(LOGCAT, exc.getMessage());
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(ex, "update in provider");
+                        handler.handle(ex, "update in provider:" + ex.getMessage());
                     }
                     break;
                 default:
@@ -496,6 +469,26 @@ public class MmexContentProvider
             }
         }
         // log
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+    }
+
+    private void logUpdate(Dataset dataset, ContentValues values, String whereClause, String[] whereArgs) {
+        String log = "UPDATE " + dataset.getSource();
+        // compose log verbose
+        if (values != null) {
+            log += " SET " + values.toString();
+        }
+        if (!TextUtils.isEmpty(whereClause)) {
+            log += " WHERE " + whereClause;
+        }
+        if (whereArgs != null) {
+            log += "; ARGS=" + Arrays.asList(whereArgs).toString();
+        }
+
+        // open transaction
+        //database.beginTransaction();
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+
         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
     }
 

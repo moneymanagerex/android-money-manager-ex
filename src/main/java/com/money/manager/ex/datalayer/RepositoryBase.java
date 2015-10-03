@@ -1,18 +1,27 @@
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MmexContentProvider;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains common code for repositories.
@@ -69,6 +78,31 @@ public class RepositoryBase
         }
 
         return  result;
+    }
+
+    /**
+     * Ref: http://www.grokkingandroid.com/better-performance-with-contentprovideroperation/
+     * @param entities array of entities to update in a transaction
+     * @return results of the bulk update
+     */
+    protected ContentProviderResult[] bulkUpdate(EntityBase[] entities) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
+        for (EntityBase entity : entities) {
+            operations.add(ContentProviderOperation.newUpdate(this.getUri())
+                .withValues(entity.contentValues)
+                .build());
+        }
+
+        ContentProviderResult[] results = null;
+        try {
+            results = context.getContentResolver().applyBatch(MmexContentProvider.getAuthority(),
+                operations);
+        } catch (RemoteException | OperationApplicationException e) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(e, "bulk updating");
+        }
+        return results;
     }
 
     protected int delete(String where, String[] args) {

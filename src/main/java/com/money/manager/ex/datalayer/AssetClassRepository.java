@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import com.innahema.collections.query.queriables.Queryable;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.EntityBase;
 
 import java.util.List;
 
@@ -109,6 +111,14 @@ public class AssetClassRepository
         String where = generator.getStatement(AssetClass.ID, "=", id);
 
         return update(id, value.contentValues, where);
+    }
+
+    public boolean bulkUpdate(List<AssetClass> entities) {
+        EntityBase[] values = new EntityBase[entities.size()];
+        entities.toArray(values);
+
+        ContentProviderResult[] results = bulkUpdate(values);
+        return results.length == entities.size();
     }
 
     public boolean delete(int id) {
