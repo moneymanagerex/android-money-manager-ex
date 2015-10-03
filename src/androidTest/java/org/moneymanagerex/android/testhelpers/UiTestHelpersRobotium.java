@@ -167,11 +167,11 @@ public class UiTestHelpersRobotium {
         }
     }
 
-    public void clickOnOK() {
+    public void clickDone() {
         solo.clickOnView(solo.getView(R.id.action_done));
     }
 
-    public void clickOnCancel() {
+    public void clickCancel() {
         solo.clickOnView(solo.getView(R.id.action_cancel));
     }
 

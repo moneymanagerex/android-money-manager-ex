@@ -66,6 +66,14 @@ public class RepositoryBase
         return  result;
     }
 
+    protected int delete(String where, String[] args) {
+        int result = context.getContentResolver().delete(this.getUri(),
+            where,
+            args
+        );
+        return result;
+    }
+
     protected Cursor openCursor(String[] projection, String selection, String[] args) {
         Cursor cursor = context.getContentResolver().query(getUri(),
                 projection,

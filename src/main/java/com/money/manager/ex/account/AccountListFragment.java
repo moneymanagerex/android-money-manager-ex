@@ -13,9 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
-
 package com.money.manager.ex.account;
 
 import android.app.Activity;
@@ -44,6 +42,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TablePayee;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -57,9 +56,8 @@ public class AccountListFragment
     public String mAction = Intent.ACTION_EDIT;
 
     private static TableAccountList mAccount = new TableAccountList();
-    // id menu item add
     private static final int ID_LOADER_ACCOUNT = 0;
-    // filter
+
     private String mCurFilter;
 
     @Override
@@ -101,39 +99,32 @@ public class AccountListFragment
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         // take cursor
-        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
+//        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+//        cursor.moveToPosition(info.position);
+        int accountId = (int) info.id;
 
         switch (item.getItemId()) {
             case 0: //EDIT
-                startAccountListEditActivity(cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
+                startAccountListEditActivity(accountId);
                 break;
 
             case 1: //DELETE
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Account.ACCOUNTID, cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
-                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
-                    showDialogDeleteAccount(cursor.getInt(cursor.getColumnIndex(Account.ACCOUNTID)));
-                } else {
-//                    Core core = new Core(getActivity());
-//                    int icon = core.usingDarkTheme()
-//                            ? R.drawable.ic_action_warning_dark
-//                            : R.drawable.ic_action_warning_light;
-
-                    new AlertDialogWrapper.Builder(getActivity())
-                            .setTitle(R.string.attention)
-                            .setMessage(R.string.account_can_not_deleted)
-                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-                            .setPositiveButton(android.R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialog,
-                                                int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).create().show();
-                }
+                showDialogDeleteAccount(accountId);
+//                } else {
+//                    new AlertDialogWrapper.Builder(getActivity())
+//                            .setTitle(R.string.attention)
+//                            .setMessage(R.string.account_can_not_deleted)
+//                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+//                            .setPositiveButton(android.R.string.ok,
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(
+//                                                DialogInterface dialog,
+//                                                int which) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    }).create().show();
+//                }
                 break;
         }
         return false;
@@ -237,7 +228,7 @@ public class AccountListFragment
         getActivity().setResult(AccountListActivity.RESULT_CANCELED);
     }
 
-    private void showDialogDeleteAccount(final int ACCOUNTID) {
+    private void showDialogDeleteAccount(final int accountId) {
         // create dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_account)
@@ -248,7 +239,8 @@ public class AccountListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (getActivity().getContentResolver().delete(mAccount.getUri(), "ACCOUNTID=" + ACCOUNTID, null) == 0) {
+                        AccountRepository repo = new AccountRepository(getActivity());
+                        if (!repo.delete(accountId)) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         }
                         // restart loader

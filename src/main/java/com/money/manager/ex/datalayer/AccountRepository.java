@@ -52,6 +52,11 @@ public class AccountRepository
         return query(where.getWhere());
     }
 
+    public boolean delete(int accountId) {
+        int result = delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(accountId)});
+        return result > 0;
+    }
+
     /**
      * Loads account data with balances.
      * @param accountId Id of the account to load.

@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.account;
 
@@ -26,8 +25,6 @@ import android.view.KeyEvent;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
-//
-
 /**
  *
  * @author Alessandro Lazzari (lazzari.ale@gmail.com)
@@ -37,8 +34,6 @@ public class AccountListActivity
 
     public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
-    @SuppressWarnings("unused")
-    private static final String LOGCAT = AccountListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
     private AccountListFragment listFragment = new AccountListFragment();
 

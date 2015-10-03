@@ -108,7 +108,7 @@ public class AssetAllocationTests
         solo.clickOnText("OK");
 
         // save
-        robot.clickOnOK();
+        robot.clickDone();
 
         // Then
 

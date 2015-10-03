@@ -34,10 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 /**
- * 
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
+ * Dataset
  */
-//@SuppressWarnings("unused")
 public abstract class Dataset
 	implements BaseColumns {
 
@@ -84,7 +82,6 @@ public abstract class Dataset
 			selectionArgs.add(entry.getValue().toString());
 		}
 		// create dynamic dataset
-		//@SuppressWarnings("rawtypes")
 		Class[] classParm = null;
 		Object[] objectParm = null;
 		Dataset dataset;

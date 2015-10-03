@@ -63,8 +63,8 @@ import info.javaperformance.money.MoneyFactory;
  * Edit Account activity/form
  */
 public class AccountEditActivity
-        extends BaseFragmentActivity
-        implements IInputAmountDialogListener {
+    extends BaseFragmentActivity
+    implements IInputAmountDialogListener {
 
     public static final String KEY_ACCOUNT_ID = "AccountEditActivity:AccountId";
     public static final String KEY_ACCOUNT_NAME = "AccountEditActivity:AccountName";
@@ -109,28 +109,13 @@ public class AccountEditActivity
     private ImageView imgbFavouriteAccount;
 
     @Override
-    public boolean onActionCancelClick() {
-        finish();
-        return super.onActionCancelClick();
-    }
-
-    @Override
-    public boolean onActionDoneClick() {
-        if (updateAccountList()) {
-            // If everything is okay, finish the activity
-            finish();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // create a dummy account for initial values
         mAccount = new Account();
         mAccount.setId(Constants.NOT_SET);
+        mAccount.setFavorite(false);
 
         // Restore saved instance state
         if ((savedInstanceState != null)) {
@@ -214,7 +199,9 @@ public class AccountEditActivity
                 ? PLUS : LESS);
 
         // always use positive value. The sign is in the spinner.
-        mInitialBal = MoneyFactory.fromDouble(Math.abs(mInitialBal.toDouble()));
+        if (mInitialBal.compareTo(MoneyFactory.fromString("0")) < 0) {
+            mInitialBal = mInitialBal.negate();
+        }
 
         FormatUtilities.formatAmountTextView(this, txtInitialBalance, mInitialBal, mCurrencyId);
         txtInitialBalance.setOnClickListener(new OnClickListener() {
@@ -386,6 +373,23 @@ public class AccountEditActivity
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
         outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
         outState.putString(KEY_ACTION, mIntentAction);
+    }
+
+    @Override
+    public boolean onActionCancelClick() {
+        finish();
+        return super.onActionCancelClick();
+    }
+
+    @Override
+    public boolean onActionDoneClick() {
+        if (updateAccountList()) {
+            // If everything is okay, finish the activity
+            finish();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
