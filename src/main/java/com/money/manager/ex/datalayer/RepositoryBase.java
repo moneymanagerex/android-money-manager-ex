@@ -11,6 +11,7 @@ import android.util.Log;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
 /**
@@ -46,6 +47,10 @@ public class RepositoryBase
         long id = ContentUris.parseId(insertUri);
 
         return (int) id;
+    }
+
+    protected int bulkInsert(ContentValues[] items) {
+        return context.getContentResolver().bulkInsert(this.getUri(), items);
     }
 
     protected boolean update(int id, ContentValues values, String where) {

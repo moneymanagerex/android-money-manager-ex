@@ -58,7 +58,8 @@ public abstract class Dataset
 	private String _ID = "ROWID AS _id";
 
 	/**
-	 * 
+	 * This method is a bit of a mess right now.
+	 *
 	 * @param context context from call
 	 * @param values to compose filter
 	 * @param className name dataset to check

@@ -31,6 +31,7 @@ public class AssetClass
     public static final String ID = "ID";
     public static final String NAME = "NAME";
     public static final String ALLOCATION = "ALLOCATION";
+    public static final String SORTORDER = "SORTORDER";
 
     public static AssetClass from(Cursor c) {
         AssetClass entity = new AssetClass();
@@ -74,5 +75,13 @@ public class AssetClass
 
     public void setName(String value) {
         setString(NAME, value);
+    }
+
+    public Integer getSortOrder() {
+        return getInt(SORTORDER);
+    }
+
+    public void setSortOrder(int value) {
+        setInt(SORTORDER, value);
     }
 }

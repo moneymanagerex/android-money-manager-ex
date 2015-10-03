@@ -191,7 +191,8 @@ dependencies {
         //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
         'com.android.support:support-annotations:23.0.1',
         'com.squareup.retrofit:retrofit:2.0.0-beta1',
-        'com.squareup.retrofit:converter-gson:2.0.0-beta1'
+        'com.squareup.retrofit:converter-gson:2.0.0-beta1',
+        'com.innahema:collections-query:0.2.9'
     )
 
     // Robolectric, unit testing

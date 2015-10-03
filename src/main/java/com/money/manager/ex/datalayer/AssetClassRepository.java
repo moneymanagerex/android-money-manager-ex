@@ -16,12 +16,17 @@
  */
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.innahema.collections.query.functions.Converter;
+import com.innahema.collections.query.queriables.Queryable;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
+
+import java.util.List;
 
 /**
  * Repository for Asset Classes.
@@ -70,6 +75,31 @@ public class AssetClassRepository
 
     public boolean insert(AssetClass value) {
         return this.insert(value.contentValues) > 0;
+    }
+
+    public boolean bulkInsert(List<AssetClass> entities) {
+        List<ContentValues> contentValues = Queryable.from(entities)
+            .map(new Converter<AssetClass, ContentValues>() {
+                @Override
+                public ContentValues convert(AssetClass element) {
+                    return element.contentValues;
+                }
+            })
+            .toList();
+
+        ContentValues[] values = new ContentValues[entities.size()];
+
+//        int i = 0;
+//
+//        for (AssetClass entity : entities) {
+//            values[i] = entity.contentValues;
+//            i++;
+//        }
+
+        contentValues.toArray(values);
+
+        int records = bulkInsert(values);
+        return records == entities.size();
     }
 
     public boolean update(AssetClass value) {

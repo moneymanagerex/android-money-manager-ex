@@ -35,6 +35,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -164,7 +165,9 @@ public class AssetAllocationFragment
 
         switch (item.getItemId()) {
             case R.id.menu_move_up:
-                // todo move item up
+                // move item up
+                AssetAllocationService service = new AssetAllocationService(getActivity());
+                service.moveClassUp(id);
                 break;
 
             case R.id.menu_move_down:
