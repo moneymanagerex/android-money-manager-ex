@@ -36,7 +36,13 @@ public class AssetClassEditFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        this.assetClass = new AssetClass();
+        if (this.assetClass == null) {
+            this.assetClass = AssetClass.create();
+        }
+
+        View view = getView();
+        initializeNameEdit(view);
+        initializeAllocationPicker(view);
     }
 
     @Override
@@ -44,50 +50,52 @@ public class AssetClassEditFragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_asset_class_edit, container, false);
 
-        initializeNameEdit(view);
-        initializeAllocationPicker(view);
-
         return view;
     }
 
     private void initializeNameEdit(View view) {
         final EditText edit = (EditText) view.findViewById(R.id.nameEdit);
-        if (edit != null) {
-            edit.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if (edit == null) return;
 
-                }
+        edit.setText(assetClass.getName());
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+        edit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                }
+            }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    assetClass.setName(edit.getText().toString());
-                }
-            });
-        }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // edit.getText().toString()
+                String newValue = s.toString();
+                assetClass.setName(newValue);
+            }
+        });
     }
 
     private void initializeAllocationPicker(View view) {
         TextView textView = (TextView) view.findViewById(R.id.allocationEdit);
-        if (textView != null) {
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
-                        assetClass.getAllocation(),
-                        null);
-                    dialog.roundToCurrencyDecimals = false;
-                    dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
-                    dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+        if (textView == null) return;
 
-                }
-            });
-        }
+        textView.setText(assetClass.getAllocation().toString());
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
+                    assetClass.getAllocation(),
+                    null);
+                dialog.roundToCurrencyDecimals = false;
+                dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
+                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        });
     }
 
     @Override

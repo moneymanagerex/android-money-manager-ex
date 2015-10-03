@@ -219,12 +219,15 @@ public class CurrencyEditActivity
         }
 
         Currency currency = new Currency();
+        currency.setCurrencyid(mCurrencyId);
 
-        // set values
-        currency.contentValues.put(Currency.CURRENCYNAME, edtCurrencyName.getText().toString().trim());
+//        currency.contentValues.put(Currency.CURRENCYNAME, edtCurrencyName.getText().toString().trim());
+        currency.setName(edtCurrencyName.getText().toString().trim());
+
         if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-            currency.contentValues.put(Currency.CURRENCY_SYMBOL, getResources()
-                    .getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
+            String code = getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()];
+//            currency.contentValues.put(Currency.CURRENCY_SYMBOL, symbol);
+            currency.setCode(code);
         }
         currency.contentValues.put(Currency.UNIT_NAME, edtCurrencyName.getText().toString().trim());
         currency.contentValues.put(Currency.CENT_NAME, edtCentsName.getText().toString().trim());
@@ -247,7 +250,7 @@ public class CurrencyEditActivity
                 return false;
             }
         } else {
-            boolean success = repo.update(mCurrencyId, currency);
+            boolean success = repo.update(currency);
 
             if (!success) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();

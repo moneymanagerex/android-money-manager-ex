@@ -59,10 +59,10 @@ public class AccountRepository
 
     /**
      * Loads account data with balances.
-     * @param accountId Id of the account to load.
+     * @param id Id of the account to load.
      * @return QueryAccountBills entity.
      */
-    public QueryAccountBills loadAccountBills(int accountId) {
+    public QueryAccountBills loadAccountBills(int id) {
         QueryAccountBills result = new QueryAccountBills(context);
 
         String selection = QueryAccountBills.ACCOUNTID + "=?";
@@ -71,7 +71,7 @@ public class AccountRepository
                 result.getUri(),
                 result.getAllColumns(),
                 selection,
-                new String[] { Integer.toString(accountId) },
+                new String[] { Integer.toString(id) },
                 null);
         if (cursor == null) return null;
 

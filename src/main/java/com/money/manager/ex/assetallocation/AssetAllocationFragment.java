@@ -91,7 +91,7 @@ public class AssetAllocationFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        startEditAssetClassActivity();
+        startEditAssetClassActivityForInsert();
     }
 
     // data loader
@@ -148,8 +148,9 @@ public class AssetAllocationFragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//        menu.setHeaderTitle(data.get(info.position).getDataName());
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        int id = (int) info.id;
+//        menu.setHeaderTitle(info.id);
         menu.setHeaderTitle(getString(R.string.asset_allocation));
 
         MenuInflater inflater = this.getActivity().getMenuInflater();
@@ -160,19 +161,38 @@ public class AssetAllocationFragment
     public boolean onContextItemSelected(MenuItem item) {
         boolean handled = false;
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int id = (int) info.id;
 
         switch (item.getItemId()) {
+            case R.id.menu_move_up:
+                // todo move item up
+                break;
+
+            case R.id.menu_move_down:
+                // todo move item down
+                break;
+
             case R.id.menu_edit:
-                // todo: open edit
+                startEditAssetClassActivityForEdit(id);
                 handled = true;
                 break;
+
             case R.id.menu_delete:
-                confirmDelete((int) info.id);
+                confirmDelete(id);
                 handled = true;
                 break;
         }
         return handled;
     }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        getActivity().openContextMenu(v);
+    }
+
+    // private
 
     private void confirmDelete(final int id) {
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
@@ -204,11 +224,16 @@ public class AssetAllocationFragment
         alertDialog.create().show();
     }
 
-    // private
-
-    private void startEditAssetClassActivity() {
+    private void startEditAssetClassActivityForInsert() {
         Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
+    }
+
+    private void startEditAssetClassActivityForEdit(int assetClassId) {
+        Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(Intent.EXTRA_UID, assetClassId);
         startActivity(intent);
     }
 

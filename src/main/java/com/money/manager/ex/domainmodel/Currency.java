@@ -41,6 +41,10 @@ public class Currency
         return getInt(CURRENCYID);
     }
 
+    public void setCurrencyid(int value) {
+        setInt(CURRENCYID, value);
+    }
+
     public void setName(String value) {
         setString(CURRENCYNAME, value);
     }

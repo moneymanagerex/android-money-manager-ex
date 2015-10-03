@@ -28,7 +28,9 @@ public class CurrencyRepository
         return this.insert(value.contentValues) > 0;
     }
 
-    public boolean update(int id, Currency value) {
+    public boolean update(Currency value) {
+        int id = value.getCurrencyId();
+
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Currency.CURRENCYID, "=", id);
 

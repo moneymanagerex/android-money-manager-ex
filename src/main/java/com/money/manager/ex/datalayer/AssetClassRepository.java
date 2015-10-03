@@ -17,11 +17,11 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.domainmodel.Currency;
 
 /**
  * Repository for Asset Classes.
@@ -40,8 +40,45 @@ public class AssetClassRepository
             AssetClass.ALLOCATION };
     }
 
+    public AssetClass load(int id) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(AssetClass.ID, "=", id);
+
+        return query(where.getWhere());
+    }
+
+    public AssetClass query(String selection) {
+        return query(null, selection, null);
+    }
+
+    public AssetClass query(String[] projection, String selection, String[] args) {
+        Cursor c = openCursor(projection, selection, args);
+
+        if (c == null) return null;
+
+        AssetClass account = null;
+
+        if (c.moveToNext()) {
+            account = new AssetClass();
+            account.loadFromCursor(c);
+        }
+
+        c.close();
+
+        return account;
+    }
+
     public boolean insert(AssetClass value) {
         return this.insert(value.contentValues) > 0;
+    }
+
+    public boolean update(AssetClass value) {
+        int id = value.getId();
+
+        WhereStatementGenerator generator = new WhereStatementGenerator();
+        String where = generator.getStatement(AssetClass.ID, "=", id);
+
+        return update(id, value.contentValues, where);
     }
 
     public boolean delete(int id) {

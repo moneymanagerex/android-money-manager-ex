@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Asset Class
@@ -37,6 +38,12 @@ public class AssetClass
         return entity;
     }
 
+    public static AssetClass create() {
+        AssetClass entity = new AssetClass();
+        entity.setAllocation(MoneyFactory.fromString("0"));
+        return entity;
+    }
+
     public AssetClass() {
         super();
     }
@@ -47,6 +54,10 @@ public class AssetClass
 
         // Reload all money values.
         DatabaseUtils.cursorDoubleToCursorValues(c, ALLOCATION, this.contentValues);
+    }
+
+    public int getId() {
+        return getInt(ID);
     }
 
     public Money getAllocation() {

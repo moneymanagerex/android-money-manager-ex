@@ -113,7 +113,8 @@ public class AssetAllocationTests
         // confirm that the new item is listed
         assertThat(solo.searchText(assetClassName)).isTrue();
 
-        solo.clickLongOnText(assetClassName);
+//        solo.clickLongOnText(assetClassName);
+        solo.clickOnText(assetClassName);
         solo.clickOnText("Delete");
         solo.clickOnText("OK");
 

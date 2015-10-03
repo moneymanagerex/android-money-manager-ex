@@ -1,13 +1,14 @@
 -- Asset Classes
 CREATE TABLE ASSETCLASS_V1 (
-    ID integer primary key,
+    ID INTEGER primary key,
     NAME TEXT COLLATE NOCASE NOT NULL,
-    ALLOCATION numeric
+    ALLOCATION REAL,
+    SORTORDER INTEGER
 );
 
 -- Asset Class / Stock link table
 CREATE TABLE ASSETCLASS_STOCK_V1 (
-    ID integer primary key,
-    ASSETCLASSID integer UNIQUE,
-    STOCKID integer UNIQUE
+    ID INTEGER primary key,
+    ASSETCLASSID INTEGER UNIQUE,
+    STOCKID INTEGER UNIQUE
 );
