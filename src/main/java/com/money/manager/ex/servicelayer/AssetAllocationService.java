@@ -25,6 +25,9 @@ public class AssetAllocationService {
      * Increase sort order for this item. Finds the next in order and decrease it's sort order.
      */
     public void moveClassUp(int id) {
+        // todo: this is incomplete. Need to set the default value on creation and handle
+        // deletions. Also pay attention if the order will be ascending or descending and adjust.
+
         AssetClass up = repository.load(id);
         Integer currentPosition = up.getSortOrder();
         if (currentPosition == null) currentPosition = 0;
