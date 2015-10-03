@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.settings;
 
@@ -134,12 +133,13 @@ public class DatabaseSettingsFragment
         Preference migratePreference = findPreference(getString(R.string.pref_database_migrate_14_to_20));
         if (migratePreference == null) return;
 
-        // display description.
-        migratePreference.setSummary(getString(R.string.database_migrate_14_to_20_explanation));
-
         // check if there is a database at the old location.
         final DatabaseMigrator14To20 migrator = new DatabaseMigrator14To20(getActivity());
         boolean legacyDataExists = migrator.legacyDataExists();
+
+        // display description.
+        migratePreference.setSummary(getString(R.string.database_migrate_14_to_20_explanation) +
+            " (" + migrator.getLegacyDbPath() + ")");
 
         Preference.OnPreferenceClickListener migrateClicked = new Preference.OnPreferenceClickListener() {
             @Override
