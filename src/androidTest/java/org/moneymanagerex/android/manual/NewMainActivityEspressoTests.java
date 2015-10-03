@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.manual;
 
@@ -41,8 +40,6 @@ import static junit.framework.Assert.assertTrue;
 /**
  * Espresso tests for the Main Activity.
  * The tests start with a fresh copy of preferences.
- *
- * Created by Alen Siljak on 24/09/2015.
  */
 @RunWith(AndroidJUnit4.class)
 public class NewMainActivityEspressoTests {

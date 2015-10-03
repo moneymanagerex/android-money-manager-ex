@@ -150,7 +150,6 @@ public class AssetAllocationFragment
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int id = (int) info.id;
-//        menu.setHeaderTitle(info.id);
         menu.setHeaderTitle(getString(R.string.asset_allocation));
 
         MenuInflater inflater = this.getActivity().getMenuInflater();

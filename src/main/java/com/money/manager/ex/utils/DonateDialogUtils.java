@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 
 package com.money.manager.ex.utils;
@@ -27,10 +26,9 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.PreferenceConstants;
 

@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.investment;
 
@@ -23,7 +22,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -39,12 +37,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.dropbox.DropboxHelper;

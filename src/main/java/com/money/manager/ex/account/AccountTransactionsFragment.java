@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.account;
 
@@ -40,21 +39,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.adapter.AllDataViewHolder;
-import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
-import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -64,7 +60,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -73,7 +68,6 @@ import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;

@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;

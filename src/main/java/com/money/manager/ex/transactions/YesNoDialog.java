@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 
 package com.money.manager.ex.transactions;
@@ -26,7 +25,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 /**
- *
  */
 public class YesNoDialog
         extends DialogFragment {

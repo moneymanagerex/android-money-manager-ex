@@ -47,8 +47,8 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
-import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;

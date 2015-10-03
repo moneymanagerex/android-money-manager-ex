@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.testhelpers;
 
@@ -28,8 +27,6 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for a Sub/Category row in Categories list.
- *
- * Created by Alen on 27/09/2015.
  */
 public class MmexMatchers {
     public static Matcher<TableCategory> hasCategory(final String categoryName){

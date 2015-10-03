@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.espresso;
 
@@ -37,8 +36,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Look and Feel settings
- *
- * Created by Alen Siljak on 25/09/2015.
  */
 @RunWith(AndroidJUnit4.class)
 public class SettingsLookFeelTests {

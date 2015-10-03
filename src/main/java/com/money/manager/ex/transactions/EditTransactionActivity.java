@@ -32,9 +32,9 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.CategoryService;
-import com.money.manager.ex.businessobjects.PayeeService;
-import com.money.manager.ex.businessobjects.RecurringTransactionService;
+import com.money.manager.ex.servicelayer.CategoryService;
+import com.money.manager.ex.servicelayer.PayeeService;
+import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;

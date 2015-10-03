@@ -13,9 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
-package com.money.manager.ex.businessobjects;
+package com.money.manager.ex.servicelayer;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -26,7 +25,6 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TablePayee;
 
 import java.util.ArrayList;
 import java.util.List;

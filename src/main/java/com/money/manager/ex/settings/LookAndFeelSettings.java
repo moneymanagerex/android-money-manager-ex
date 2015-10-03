@@ -1,17 +1,13 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.NumericHelper;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Look & Feel preferences

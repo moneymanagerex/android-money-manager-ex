@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.espresso;
 
@@ -46,8 +45,6 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
  * Edit transaction tests.
  * This test writes into the database! Therefore, make sure to run it on a test device or with a
  * test database only!!!
- *
- * Created by Alen Siljak on 24/09/2015.
  */
 @RunWith(AndroidJUnit4.class)
 public class EditTransactionTests {

@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 
 package com.money.manager.ex.settings;
@@ -25,7 +24,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 /**
- *
  */
 public class BaseSettingsFragmentActivity extends BaseFragmentActivity {
 

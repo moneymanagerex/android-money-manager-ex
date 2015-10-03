@@ -17,7 +17,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.Passcode;
 
 /**
- *
  */
 public class SecuritySettingsFragment extends PreferenceFragment {
     private static final int REQUEST_INSERT_PASSCODE = 1;

@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 
 package com.money.manager.ex.inapp.util;
@@ -70,7 +69,6 @@ import java.util.List;
  * has not yet completed will result in an exception being thrown.
  *
  * @author Bruno Oliveira (Google)
- *
  */
 public class IabHelper {
     // Is debug logging enabled?

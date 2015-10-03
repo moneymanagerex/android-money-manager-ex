@@ -10,13 +10,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.AccountSpinnerAdapter;
-import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.database.TableAccountList;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.domainmodel.Account;
 
 import java.util.ArrayList;

@@ -13,9 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
-package com.money.manager.ex.businessobjects.qif;
+package com.money.manager.ex.servicelayer.qif;
 
 import android.content.Context;
 import android.text.TextUtils;

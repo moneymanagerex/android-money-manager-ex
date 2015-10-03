@@ -19,14 +19,13 @@ package com.money.manager.ex.currency;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.AccountService;
-import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;

@@ -35,7 +35,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.Constants;
@@ -48,7 +48,6 @@ import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;

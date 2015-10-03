@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.account;
 
@@ -24,7 +23,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
-import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;

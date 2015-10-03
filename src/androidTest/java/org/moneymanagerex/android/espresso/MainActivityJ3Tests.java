@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package org.moneymanagerex.android.espresso;
 
@@ -33,7 +32,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  * Espresso tests for the Main Activity, using JUnit 3 and instrumentation test case.
  * This in NOT NEEDED as JUnit 4 tests can run in the emulator equally well.
  * Displayed here only as a sample.
- * Created by Alen Siljak on 24/09/2015.
  */
 public class MainActivityJ3Tests
         extends ActivityInstrumentationTestCase2<MainActivity> {

@@ -45,7 +45,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
-import com.money.manager.ex.businessobjects.AccountService;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.InputAmountDialog;

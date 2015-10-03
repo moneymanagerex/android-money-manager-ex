@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.settings;
 
@@ -33,7 +32,6 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.core.ExceptionHandler;
 
 /**
- *
  */
 public class SettingsFragment
         extends PreferenceFragment {

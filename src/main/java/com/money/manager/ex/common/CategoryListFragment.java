@@ -41,7 +41,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
-import com.money.manager.ex.businessobjects.CategoryService;
+import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransaction;

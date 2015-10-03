@@ -1,19 +1,13 @@
-package com.money.manager.ex.businessobjects;
+package com.money.manager.ex.servicelayer;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 
 /**

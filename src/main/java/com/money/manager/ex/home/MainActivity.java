@@ -56,7 +56,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.businessobjects.InfoService;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;

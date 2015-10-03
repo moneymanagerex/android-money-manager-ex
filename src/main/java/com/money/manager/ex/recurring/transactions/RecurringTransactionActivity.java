@@ -13,7 +13,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.recurring.transactions;
 
@@ -36,7 +35,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.RecurringTransactionService;
+import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Payee;

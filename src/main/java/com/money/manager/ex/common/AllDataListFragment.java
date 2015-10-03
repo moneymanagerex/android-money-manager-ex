@@ -58,7 +58,7 @@ import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.businessobjects.qif.QifExport;
+import com.money.manager.ex.servicelayer.qif.QifExport;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.adapter.AllDataAdapter;
