@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Currency;
 
 /**
  * Adapter for the list of currencies
@@ -62,11 +63,11 @@ public class CurrencyListAdapter
         CurrencyListViewHolder holder = (CurrencyListViewHolder) view.getTag();
 
         // name
-        String name = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME));
+        String name = cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME));
         holder.nameTextView.setText(name);
 
         // price
-        String rate = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.BASECONVRATE));
+        String rate = cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE));
         holder.rateTextView.setText(rate);
     }
 }

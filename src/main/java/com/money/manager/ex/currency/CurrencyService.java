@@ -13,13 +13,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 package com.money.manager.ex.currency;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -29,14 +29,13 @@ import com.money.manager.ex.businessobjects.AccountService;
 import com.money.manager.ex.businessobjects.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -226,6 +225,63 @@ public class CurrencyService {
         return result;
     }
 
+    public boolean importCurrenciesFromLocaleAvaible() {
+        Locale[] locales = Locale.getAvailableLocales();
+        // get map codes and symbols
+        HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
+        java.util.Currency localeCurrency;
+        Currency newCurrency;
+        CurrencyRepository repo = new CurrencyRepository(mContext);
+        TableCurrencyFormats existingCurrency;
+
+        for (Locale locale : locales) {
+            try {
+                localeCurrency = java.util.Currency.getInstance(locale);
+
+                // check if already exists currency symbol
+                existingCurrency = repo.loadCurrency(localeCurrency.getCurrencyCode());
+
+                if (existingCurrency != null) continue;
+
+                // No currency. Create a new one.
+
+                newCurrency = new Currency();
+
+                newCurrency.setName(localeCurrency.getDisplayName());
+                newCurrency.setCode(localeCurrency.getCurrencyCode());
+
+                if (symbols != null && symbols.containsKey(localeCurrency.getCurrencyCode())) {
+                    newCurrency.setPfxSymbol(symbols.get(localeCurrency.getCurrencyCode()));
+                }
+
+                newCurrency.setDecimalPoint(".");
+                newCurrency.setGroupSeparator(",");
+                newCurrency.setScale(100);
+                newCurrency.setConversionRate(1.0);
+
+                repo.insert(newCurrency);
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                handler.handle(e, "importing currencies from locale " + locale.getDisplayName());
+            }
+        }
+
+        return true;
+    }
+
+    public HashMap<String, String> getCurrenciesCodeAndSymbol() {
+        HashMap<String, String> map = new HashMap<>();
+        // compose map
+        String[] codes = mContext.getResources().getStringArray(R.array.currencies_code);
+        String[] symbols = mContext.getResources().getStringArray(R.array.currencies_symbol);
+
+        for (int i = 0; i < codes.length; i++) {
+            map.put(codes[i], symbols[i]);
+        }
+
+        return map;
+    }
+
     /**
      * Update database with new Base Currency Id
      *
@@ -280,7 +336,7 @@ public class CurrencyService {
         TableCurrencyFormats currency = new TableCurrencyFormats();
         currency.setValueFromCursor(cursor);
 
-        Integer currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+        Integer currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
         // put object into map
         getCurrenciesStore().put(currencyId, currency);
     }
@@ -302,8 +358,8 @@ public class CurrencyService {
         return currencyId;
     }
 
-    public Currency getSystemDefaultCurrency() {
-        Currency currency = null;
+    public java.util.Currency getSystemDefaultCurrency() {
+        java.util.Currency currency = null;
 
         Locale defaultLocale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
@@ -311,7 +367,7 @@ public class CurrencyService {
             if (defaultLocale == null) {
                 defaultLocale = Locale.getDefault();
             }
-            currency = Currency.getInstance(defaultLocale);
+            currency = java.util.Currency.getInstance(defaultLocale);
         } catch (Exception ex) {
             String message = "getting default system currency";
             if (defaultLocale != null) {
@@ -328,15 +384,15 @@ public class CurrencyService {
         TableCurrencyFormats currencyEntity = new TableCurrencyFormats();
 
         Cursor cursor = db.query(currencyEntity.getSource(),
-                new String[] { TableCurrencyFormats.CURRENCYID },
-                TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
-                new String[]{ currencySymbol },
-                null, null, null);
+            new String[] { Currency.CURRENCYID },
+            Currency.CURRENCY_SYMBOL + "=?",
+            new String[]{ currencySymbol },
+            null, null, null);
         if (cursor == null) return result;
 
         // set BaseCurrencyId
         if (cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+            result = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
         }
         cursor.close();
 

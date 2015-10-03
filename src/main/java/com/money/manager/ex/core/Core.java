@@ -18,7 +18,6 @@
 
 package com.money.manager.ex.core;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +30,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -42,7 +41,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
@@ -50,6 +48,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -68,7 +67,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -77,11 +75,8 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 
-import info.javaperformance.money.Money;
-
 public class Core {
 
-//    public static final int INVALID_ATTRIBUTE = -1;
     private static final String LOGCAT = Core.class.getSimpleName();
     private static final String base64 = "A346EA3CFF9C3F679946C4294AAF737D1E2708694B66A13D1A615F7C0752F4770664F8407DDCE84AB1DE2770DA62760D2ACF6F45F9DCDDB7E5018D9F5FCD561544C6F4BDFF7801BC1DF65A97C40AC293A3C097C4E3F3CDD5366EAB72B29CA78D234B69C30047201323D7070BCC42EA02A9903955783CC701FB3B3CCB9855B16D70EAC0931668FD33E1C7634EAEECAC93D1980D3B81DB10A50905815A54FFEAE951DDA6862561B971D1F439FE49A146F33FF661E79533F574F187377DE7229433ABBFF7ACEC1C05BC38520BB537D1418239077A696AA00E415980922AD575B39E83B70B04C836D2E9BD9398884469A27E5826DAF1FF77D6DE687BE17ACA2243F25901168FD37E14717D38737A963175E4131B819B475A700A3532F10CA5A3028ACC4061217B7CD0EF070FB9B0354BD8D0F95719E5C1F27BB227CA62EBE1B6C04BFB31A5592701F263023A14A2D27231D44B60A5D0B5394154C786C87D0911C566640C1F67A223A302BF19E47137CEBF2DDFC3594E1AE0962A135BBEF9355AADB28AD494AEA033CB9C877254676844D0F246AAE95F7D95932929A01675E8AEC76097E46702514A60FF6A3A7C72C848D002CD1EEEA424FACE609126134C2E24A8D93B2777F3DE24CE8C557ABA1B293DEC5119A62DAE6249EAD0EB88A9B4E1D8729968A8098AF61A2BD67446F692F665F891F1909B1CA66AA6872524E7F7C6EB7EF79D87D6FD6665149F5FC94362533D9AB7CB51BCB6B4599BA217F82220C5217F6AC6D138A3B8E5D8DAC4DE6618B435F006E8426065593347411CD6BE9CECA39A23D693C7A072F75937F5BE454119D780E9623E1424F14631EF693ECAD21438473E5813DF6D7B5984693441AD8C15EA4543BC958AEE8F8C0AF587D18893AA3584268091B606A04B0B099B5AD3D97D5347BFB09F64B3CA7F3836D11EDF2C56C436877658A54C86ABEDE5BB86E0C3324E52CCEDD1DD1F41D347ECEE8E8566FCF481EA4FD5841F3102AB25228AD93A7A89C9728E18A1315EA46CCD94BA84A62EDFB65A992DDC8BC87983AE9F11AA606DCE191E209073B94B40760820C024EBD717D2D4D66F459EF7A7C577371CD88864B8E94E48D4883D623EB1EB1CDB8109157C6B2444F79869F2FE56C0A4CCA491DBE6A69F";
     @SuppressWarnings("unused")
@@ -283,11 +278,6 @@ public class Core {
         }
     }
 
-    public boolean usingDarkTheme(){
-        int currentTheme = this.getThemeApplication();
-        return currentTheme == R.style.Theme_Money_Manager_Dark;
-    }
-
     /**
      * Method, which returns the last payee used
      *
@@ -430,19 +420,6 @@ public class Core {
         return new DateFormatSymbols().getMonths();
     }
 
-    public HashMap<String, String> getCurrenciesCodeAndSymbol() {
-        HashMap<String, String> map = new HashMap<>();
-        // compose map
-        String[] codes = mContext.getResources().getStringArray(R.array.currencies_code);
-        String[] symbols = mContext.getResources().getStringArray(R.array.currencies_symbol);
-
-        for (int i = 0; i < codes.length; i++) {
-            map.put(codes[i], symbols[i]);
-        }
-
-        return map;
-    }
-
     /**
      * This method allows to highlight in bold the content of a search string
      *
@@ -479,58 +456,11 @@ public class Core {
         }
     }
 
-    public boolean importCurrenciesFromLocaleAvaible() {
-        Locale[] locales = Locale.getAvailableLocales();
-        TableCurrencyFormats tableCurrencyFormats = new TableCurrencyFormats();
-        // get map codes and symbols
-        HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
-
-        for (Locale locale : locales) {
-            Currency currency;
-            try {
-                currency = Currency.getInstance(locale);
-
-                // check if already exists currency symbol
-                Cursor cursor = mContext.getContentResolver().query(tableCurrencyFormats.getUri(), null,
-                        TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
-                        new String[]{currency.getCurrencyCode()}, null);
-                if (cursor == null) return false;
-
-                if (cursor.getCount() <= 0) {
-                    ContentValues values = new ContentValues();
-
-                    values.put(TableCurrencyFormats.CURRENCYNAME, currency.getDisplayName());
-                    values.put(TableCurrencyFormats.CURRENCY_SYMBOL, currency.getCurrencyCode());
-
-                    if (symbols != null && symbols.containsKey(currency.getCurrencyCode())) {
-                        values.put(TableCurrencyFormats.PFX_SYMBOL, symbols.get(currency.getCurrencyCode()));
-                    }
-
-                    values.put(TableCurrencyFormats.DECIMAL_POINT, ".");
-                    values.put(TableCurrencyFormats.GROUP_SEPARATOR, ",");
-                    values.put(TableCurrencyFormats.SCALE, 100);
-                    values.put(TableCurrencyFormats.BASECONVRATE, 1);
-
-                    // insert and check error
-                    if (mContext.getContentResolver().insert(tableCurrencyFormats.getUri(), values) == null)
-                        return false;
-                }
-                cursor.close();
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.handle(e, "importing currencies from locale");
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Function that determines if the application is running on tablet
      *
      * @return true if running on the tablet, otherwise false
      */
-//    @SuppressLint("InlinedApi")
     public boolean isTablet() {
         int layout = mContext.getResources().getConfiguration().screenLayout;
         return ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
@@ -687,6 +617,13 @@ public class Core {
 
         return result;
     }
+
+    public boolean usingDarkTheme(){
+        int currentTheme = this.getThemeApplication();
+        return currentTheme == R.style.Theme_Money_Manager_Dark;
+    }
+
+    // private
 
     private TypedArray getAttributeValue(int attribute) {
 //        TypedValue typedValue = new TypedValue();

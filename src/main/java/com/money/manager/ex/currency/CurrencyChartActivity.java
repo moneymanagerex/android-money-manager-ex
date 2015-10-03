@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.domainmodel.Currency;
 
 public class CurrencyChartActivity
     extends BaseFragmentActivity {
@@ -41,7 +42,7 @@ public class CurrencyChartActivity
         // get the currency information from the intent.
         Intent intent = getIntent();
         if(intent != null) {
-            currencySymbol = intent.getStringExtra(TableCurrencyFormats.CURRENCY_SYMBOL);
+            currencySymbol = intent.getStringExtra(Currency.CURRENCY_SYMBOL);
             baseCurrencySymbol = intent.getStringExtra(BASE_CURRENCY_SYMBOL);
         }
 

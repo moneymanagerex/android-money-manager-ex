@@ -171,23 +171,24 @@ public class CurrencyEditActivity
     private boolean loadData(int currencyId) {
         Cursor cursor = getContentResolver().query(mCurrency.getUri(),
                 mCurrency.getAllColumns(),
-                TableCurrencyFormats.CURRENCYID + "=?",
+                Currency.CURRENCYID + "=?",
                 new String[]{Integer.toString(currencyId)}, null);
         // check if cursor is valid and open
         if ((cursor == null) || (!cursor.moveToFirst())) {
             return false;
         }
         // populate values
-        edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
-        spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code)).indexOf(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL))), true);
-        edtUnitName.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.UNIT_NAME)));
-        edtCentsName.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CENT_NAME)));
-        edtPrefix.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.PFX_SYMBOL)));
-        edtSuffix.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.SFX_SYMBOL)));
-        edtDecimal.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.DECIMAL_POINT)));
-        edtGroup.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.GROUP_SEPARATOR)));
-        edtScale.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.SCALE)));
-        edtConversion.setText(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.BASECONVRATE)));
+        edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
+        spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
+            .indexOf(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL))), true);
+        edtUnitName.setText(cursor.getString(cursor.getColumnIndex(Currency.UNIT_NAME)));
+        edtCentsName.setText(cursor.getString(cursor.getColumnIndex(Currency.CENT_NAME)));
+        edtPrefix.setText(cursor.getString(cursor.getColumnIndex(Currency.PFX_SYMBOL)));
+        edtSuffix.setText(cursor.getString(cursor.getColumnIndex(Currency.SFX_SYMBOL)));
+        edtDecimal.setText(cursor.getString(cursor.getColumnIndex(Currency.DECIMAL_POINT)));
+        edtGroup.setText(cursor.getString(cursor.getColumnIndex(Currency.GROUP_SEPARATOR)));
+        edtScale.setText(cursor.getString(cursor.getColumnIndex(Currency.SCALE)));
+        edtConversion.setText(cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE)));
 
         cursor.close();
 
@@ -220,19 +221,19 @@ public class CurrencyEditActivity
         Currency currency = new Currency();
 
         // set values
-        currency.contentValues.put(TableCurrencyFormats.CURRENCYNAME, edtCurrencyName.getText().toString().trim());
+        currency.contentValues.put(Currency.CURRENCYNAME, edtCurrencyName.getText().toString().trim());
         if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-            currency.contentValues.put(TableCurrencyFormats.CURRENCY_SYMBOL, getResources()
+            currency.contentValues.put(Currency.CURRENCY_SYMBOL, getResources()
                     .getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
         }
-        currency.contentValues.put(TableCurrencyFormats.UNIT_NAME, edtCurrencyName.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.CENT_NAME, edtCentsName.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.PFX_SYMBOL, edtPrefix.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.SFX_SYMBOL, edtSuffix.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.DECIMAL_POINT, edtDecimal.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.GROUP_SEPARATOR, edtGroup.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.SCALE, edtScale.getText().toString().trim());
-        currency.contentValues.put(TableCurrencyFormats.BASECONVRATE, edtConversion.getText().toString().trim());
+        currency.contentValues.put(Currency.UNIT_NAME, edtCurrencyName.getText().toString().trim());
+        currency.contentValues.put(Currency.CENT_NAME, edtCentsName.getText().toString().trim());
+        currency.contentValues.put(Currency.PFX_SYMBOL, edtPrefix.getText().toString().trim());
+        currency.contentValues.put(Currency.SFX_SYMBOL, edtSuffix.getText().toString().trim());
+        currency.contentValues.put(Currency.DECIMAL_POINT, edtDecimal.getText().toString().trim());
+        currency.contentValues.put(Currency.GROUP_SEPARATOR, edtGroup.getText().toString().trim());
+        currency.contentValues.put(Currency.SCALE, edtScale.getText().toString().trim());
+        currency.contentValues.put(Currency.BASECONVRATE, edtConversion.getText().toString().trim());
 
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
 

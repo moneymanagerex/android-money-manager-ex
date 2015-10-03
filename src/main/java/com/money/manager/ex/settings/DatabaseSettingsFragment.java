@@ -138,8 +138,8 @@ public class DatabaseSettingsFragment
         boolean legacyDataExists = migrator.legacyDataExists();
 
         // display description.
-        migratePreference.setSummary(getString(R.string.database_migrate_14_to_20_explanation) +
-            " (" + migrator.getLegacyDbPath() + ")");
+        migratePreference.setSummary(getString(R.string.database_migrate_14_to_20_explanation));
+        // + " (" + migrator.getLegacyDbPath() + ")");
 
         Preference.OnPreferenceClickListener migrateClicked = new Preference.OnPreferenceClickListener() {
             @Override

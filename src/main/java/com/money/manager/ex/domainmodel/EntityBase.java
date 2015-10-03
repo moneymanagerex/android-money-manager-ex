@@ -144,6 +144,10 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
+    protected void setDouble(String column, Double value) {
+        contentValues.put(column, value);
+    }
+
     @Override
     public int describeContents() {
         return 0;

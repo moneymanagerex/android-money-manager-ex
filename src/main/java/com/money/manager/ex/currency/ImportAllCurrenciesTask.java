@@ -49,8 +49,8 @@ public class ImportAllCurrenciesTask
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
-            Core core = new Core(mContext.getApplicationContext());
-            return core.importCurrenciesFromLocaleAvaible();
+            CurrencyService service = new CurrencyService(mContext);
+            return service.importCurrenciesFromLocaleAvaible();
         } catch (Exception e) {
             throw new RuntimeException("Error in import all currencies", e);
         }

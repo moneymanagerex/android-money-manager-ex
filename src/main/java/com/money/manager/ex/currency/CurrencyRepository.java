@@ -30,31 +30,31 @@ public class CurrencyRepository
 
     public boolean update(int id, Currency value) {
         WhereStatementGenerator generator = new WhereStatementGenerator();
-        String where = generator.getStatement(TableCurrencyFormats.CURRENCYID, "=", id);
+        String where = generator.getStatement(Currency.CURRENCYID, "=", id);
 
         return update(id, value.contentValues, where);
     }
 
     public TableCurrencyFormats loadCurrency(int currencyId) {
         return loadCurrency(
-                TableCurrencyFormats.CURRENCYID + "=?",
+            Currency.CURRENCYID + "=?",
                 new String[] { Integer.toString(currencyId) });
     }
 
     public TableCurrencyFormats loadCurrency(String symbol) {
         return loadCurrency(
-                TableCurrencyFormats.CURRENCY_SYMBOL + "=?",
+            Currency.CURRENCY_SYMBOL + "=?",
                 new String[] { symbol });
     }
 
     public int saveExchangeRate(int currencyId, Money exchangeRate) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TableCurrencyFormats.BASECONVRATE, exchangeRate.toString());
+        contentValues.put(Currency.BASECONVRATE, exchangeRate.toString());
 
         int result = context.getContentResolver().update(this.getUri(),
-                contentValues,
-                TableCurrencyFormats.CURRENCYID + "=?",
-                new String[] { Integer.toString(currencyId) });
+            contentValues,
+            Currency.CURRENCYID + "=?",
+            new String[] { Integer.toString(currencyId) });
 
         return result;
     }

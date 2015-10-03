@@ -45,6 +45,7 @@ import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
@@ -121,7 +122,7 @@ public class CurrencyListFragment
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
         // set currency name
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
 
         // compose context menu
         String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
@@ -137,7 +138,7 @@ public class CurrencyListFragment
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
 
-        int currencyId = cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID));
+        int currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
 
         // check item selected
         int selectedItem = item.getItemId();
@@ -150,13 +151,13 @@ public class CurrencyListFragment
                 this.mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
 
                 // add the currency information.
-                String symbol = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCY_SYMBOL));
+                String symbol = cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL));
                 CurrencyService currencyService = this.getCurrencyUtils();
                 String baseCurrencyCode = currencyService.getBaseCurrencyCode();
 
                 Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.putExtra(TableCurrencyFormats.CURRENCY_SYMBOL, symbol);
+                intent.putExtra(Currency.CURRENCY_SYMBOL, symbol);
                 intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
 
                 startActivity(intent);
@@ -210,7 +211,7 @@ public class CurrencyListFragment
                         }
 
                         MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
-                        whereClause = TableCurrencyFormats.CURRENCY_SYMBOL + " IN (" +
+                        whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
                                 databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
                         arguments.addAll(symbols);
                     }
@@ -221,7 +222,7 @@ public class CurrencyListFragment
                         whereClause += " AND ";
                     }
 
-                    whereClause += TableCurrencyFormats.CURRENCYNAME + " LIKE ?";
+                    whereClause += Currency.CURRENCYNAME + " LIKE ?";
                     arguments.add(mCurFilter + "%");
 //                    selectionArgs = new String[]{ mCurFilter + "%"};
                 }
@@ -233,7 +234,7 @@ public class CurrencyListFragment
                         mCurrency.getAllColumns(),
                         whereClause,
                         selectionArgs,
-                        "upper(" + TableCurrencyFormats.CURRENCYNAME + ")");
+                        "upper(" + Currency.CURRENCYNAME + ")");
         }
 
         return null;
@@ -336,9 +337,9 @@ public class CurrencyListFragment
 
                     result = new Intent();
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID,
-                            cursor.getInt(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYID)));
+                            cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID)));
                     result.putExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME,
-                            cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME)));
+                            cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
 
                     getActivity().setResult(Activity.RESULT_OK, result);
 
@@ -422,7 +423,7 @@ public class CurrencyListFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (getActivity().getContentResolver().delete(mCurrency.getUri(),
-                                TableCurrencyFormats.CURRENCYID + "=" + currencyId, null) == 0) {
+                            Currency.CURRENCYID + "=" + currencyId, null) == 0) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         }
                         // restart loader

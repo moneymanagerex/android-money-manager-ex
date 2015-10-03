@@ -21,12 +21,51 @@ import com.money.manager.ex.database.TableCurrencyFormats;
 
 /**
  * Currency entity
- * Created by Alen on 18/09/2015.
  */
 public class Currency
     extends EntityBase {
 
+    public static final String CURRENCYID = "CURRENCYID";
+    public static final String CURRENCYNAME = "CURRENCYNAME";
+    public static final String PFX_SYMBOL = "PFX_SYMBOL";
+    public static final String SFX_SYMBOL = "SFX_SYMBOL";
+    public static final String DECIMAL_POINT = "DECIMAL_POINT";
+    public static final String GROUP_SEPARATOR = "GROUP_SEPARATOR";
+    public static final String UNIT_NAME = "UNIT_NAME";
+    public static final String CENT_NAME = "CENT_NAME";
+    public static final String SCALE = "SCALE";
+    public static final String BASECONVRATE = "BASECONVRATE";
+    public static final String CURRENCY_SYMBOL = "CURRENCY_SYMBOL";
+
     public int getCurrencyId() {
-        return getInt(TableCurrencyFormats.CURRENCYID);
+        return getInt(CURRENCYID);
+    }
+
+    public void setName(String value) {
+        setString(CURRENCYNAME, value);
+    }
+
+    public void setCode(String value) {
+        setString(CURRENCY_SYMBOL, value);
+    }
+
+    public void setPfxSymbol(String value) {
+        setString(PFX_SYMBOL, value);
+    }
+
+    public void setDecimalPoint(String value) {
+        setString(DECIMAL_POINT, value);
+    }
+
+    public void setGroupSeparator(String value) {
+        setString(GROUP_SEPARATOR, value);
+    }
+
+    public void setScale(double value) {
+        setDouble(SCALE, value);
+    }
+
+    public void setConversionRate(Double value) {
+        setDouble(BASECONVRATE, value);
     }
 }
