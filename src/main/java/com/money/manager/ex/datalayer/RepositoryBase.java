@@ -17,6 +17,7 @@ import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
@@ -81,16 +82,23 @@ public class RepositoryBase
     }
 
     /**
-     * Ref: http://www.grokkingandroid.com/better-performance-with-contentprovideroperation/
+     * Ref:
+     * http://www.grokkingandroid.com/better-performance-with-contentprovideroperation/
+     * http://www.grokkingandroid.com/android-tutorial-using-content-providers/
      * @param entities array of entities to update in a transaction
      * @return results of the bulk update
      */
     protected ContentProviderResult[] bulkUpdate(EntityBase[] entities) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+//        WhereStatementGenerator where = new WhereStatementGenerator();
 
         for (EntityBase entity : entities) {
+            AssetClass assetClass = (AssetClass) entity;
+//            String selection = where.getStatement(AssetClass.ID, "=", assetClass.getId());
+
             operations.add(ContentProviderOperation.newUpdate(this.getUri())
                 .withValues(entity.contentValues)
+                .withSelection(AssetClass.ID + "=?", new String[] {Integer.toString(assetClass.getId())})
                 .build());
         }
 
