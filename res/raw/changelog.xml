@@ -14,8 +14,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <changelog bulletedList="true">
     <changelogversion changeDate="October 1, 2015" versionName="2.21.0">
         <changelogtext>Different layout for Single Account widget when resized to 2 and 1 tile(s).</changelogtext>

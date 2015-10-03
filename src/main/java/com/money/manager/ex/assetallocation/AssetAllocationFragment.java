@@ -21,6 +21,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.money.manager.ex.R;
@@ -65,6 +70,7 @@ public class AssetAllocationFragment
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());
+
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
         loadData();
@@ -130,6 +136,37 @@ public class AssetAllocationFragment
                 adapter.swapCursor(null);
                 break;
         }
+    }
+
+    // Context menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+//        menu.setHeaderTitle(data.get(info.position).getDataName());
+        menu.setHeaderTitle(getString(R.string.asset_allocation));
+
+        MenuInflater inflater = this.getActivity().getMenuInflater();
+        inflater.inflate(R.menu.contextmenu_asset_allocation, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        boolean handled = false;
+
+        switch (item.getItemId()) {
+            case R.id.menu_edit:
+                // todo: open edit
+                handled = true;
+                break;
+            case R.id.menu_delete:
+                // todo: confirmation
+                handled = true;
+                break;
+        }
+        return handled;
     }
 
     // private

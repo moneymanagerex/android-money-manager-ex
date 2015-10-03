@@ -13,8 +13,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <resources>
     <color name="money_manager_ex_sign_dollar">#2B5429</color>
     <color name="money_manager_ex_sign_bg">#4CAF50</color>

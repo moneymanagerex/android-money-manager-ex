@@ -19,11 +19,11 @@ package org.moneymanagerex.android.robotium;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
+import android.widget.EditText;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
-import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -90,6 +90,33 @@ public class AssetAllocationTests
         assertThat(solo.waitForActivity(AssetClassEditActivity.class)).isTrue();
     }
 
+    @Test
+    public void createAndDeleteAssetClass() {
+        // Given
+
+        String assetClassName = "cash";
+        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
+
+        robot.clickOnFloatingButton();
+        solo.waitForActivity(AssetClassEditActivity.class);
+
+        EditText editText = (EditText) solo.getView(R.id.nameEdit);
+        solo.enterText(editText, assetClassName);
+
+        solo.clickOnView(solo.getView(R.id.allocationEdit));
+        robot.enterInNumericInput("2.54");
+        solo.clickOnText("OK");
+
+        // save
+        robot.clickOnOK();
+
+        // Then
+
+        // confirm that the new item is listed
+        assertThat(solo.searchText(assetClassName)).isTrue();
+
+    }
+
     /*
       todo: Tasks
       - Add sortOrder column.
@@ -98,6 +125,7 @@ public class AssetAllocationTests
       - Create Asset Allocation model object with multiple groups/children, with totals. This is to
         be used for quick display.
       - show pie chart for allocation.
+      - use treeview for sub-classes
      */
 
     /*

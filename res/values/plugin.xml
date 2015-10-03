@@ -14,8 +14,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <resources>
     <color name="color_money_manager">@color/GreenButtonEndColor</color>
     <color name="color_ice_cream_sandiwich">@color/holo_color</color>

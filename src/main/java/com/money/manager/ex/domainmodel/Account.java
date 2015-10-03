@@ -145,9 +145,6 @@ public class Account
         return getMoney(Account.INITIALBAL);
     }
 
-//    public String getFavourite() {
-//        return getString(Account.FAVORITEACCT);
-//    }
     public Boolean getFavorite() {
         return getBoolean(Account.FAVORITEACCT);
     }

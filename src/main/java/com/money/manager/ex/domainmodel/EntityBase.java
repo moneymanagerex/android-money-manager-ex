@@ -19,6 +19,9 @@ package com.money.manager.ex.domainmodel;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -35,7 +38,8 @@ import info.javaperformance.money.MoneyFactory;
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  * Created by Alen Siljak on 5/09/2015.
  */
-public class EntityBase {
+public class EntityBase
+    implements Parcelable {
 
     /**
      * Default constructor.
@@ -50,6 +54,22 @@ public class EntityBase {
      * Contains the pointer to the actual data when loading from content provider.
      */
     protected Cursor mCursor;
+
+    protected EntityBase(Parcel in) {
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+    }
+
+    public static final Creator<EntityBase> CREATOR = new Creator<EntityBase>() {
+        @Override
+        public EntityBase createFromParcel(Parcel in) {
+            return new EntityBase(in);
+        }
+
+        @Override
+        public EntityBase[] newArray(int size) {
+            return new EntityBase[size];
+        }
+    };
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();
@@ -79,18 +99,12 @@ public class EntityBase {
 //    }
 
     protected Money getMoney(String fieldName) {
-//        Double d = contentValues.getAsDouble(fieldName);
-//        return MoneyFactory.fromDouble(d, Constants.DEFAULT_PRECISION);
-
         String value = contentValues.getAsString(fieldName);
+        if (value == null || TextUtils.isEmpty(value)) return null;
+
         Money result = MoneyFactory.fromString(value).truncate(Constants.DEFAULT_PRECISION);
         return result;
     }
-
-//    protected BigDecimal getBigDecimal(String fieldName) {
-//        String value = contentValues.getAsString(fieldName);
-//        return new BigDecimal(value);
-//    }
 
     protected void setMoney(String fieldName, Money value) {
         contentValues.put(fieldName, value.toString());
@@ -130,4 +144,13 @@ public class EntityBase {
         contentValues.put(fieldName, value);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        this.contentValues.writeToParcel(dest, flags);
+    }
 }

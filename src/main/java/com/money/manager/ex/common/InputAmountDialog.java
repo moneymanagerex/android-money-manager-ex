@@ -60,8 +60,8 @@ public class InputAmountDialog
     public static InputAmountDialog getInstance(int id, Money amount, Integer currencyId) {
         Bundle args = new Bundle();
         args.putInt("id", id);
-//        args.putDouble("amount", amount);
-        args.putString("amount", amount.toString());
+        String amountString = amount == null ? "0" : amount.toString();
+        args.putString("amount", amountString);
 
         InputAmountDialog dialog = new InputAmountDialog();
         dialog.setArguments(args);

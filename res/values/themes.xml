@@ -13,8 +13,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <resources>
     <!--<style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">-->
         <!--<item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>-->
@@ -43,7 +42,7 @@
         <item name="android:textColorPrimary">@color/md_primary_text</item>
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
         <item name="android:textColor">@color/md_primary_text</item>
-        -->
+     -->
         <item name="android:icon">@color/md_icons</item>
         <item name="android:divider">@color/md_divider</item>
         <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>

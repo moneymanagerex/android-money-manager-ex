@@ -15,8 +15,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <resources>
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">一个简单易用的应用程序，它主要是用来管理个人财务、银行帐户以及家庭预算。</string>

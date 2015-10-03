@@ -108,7 +108,6 @@ public class EditInvestmentTransactionActivity
 
     @Override
     public boolean onActionCancelClick() {
-//        return mCommonFunctions.onActionCancelClick();
         setResult(Activity.RESULT_CANCELED);
         finish();
 

@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.Currency;
 
 /**
  * Repository for Asset Classes.
@@ -36,6 +37,10 @@ public class AssetClassRepository
     public String[] getAllColumns() {
         return new String[] {AssetClass.ID + " AS _id", AssetClass.ID, AssetClass.NAME,
             AssetClass.ALLOCATION };
+    }
+
+    public boolean insert(AssetClass value) {
+        return this.insert(value.contentValues) > 0;
     }
 
 }

@@ -16,6 +16,11 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+
+import info.javaperformance.money.Money;
+
 /**
  * Asset Class
  */
@@ -26,7 +31,37 @@ public class AssetClass
     public static final String NAME = "NAME";
     public static final String ALLOCATION = "ALLOCATION";
 
+    public static AssetClass from(Cursor c) {
+        AssetClass entity = new AssetClass();
+        entity.loadFromCursor(c);
+        return entity;
+    }
+
     public AssetClass() {
         super();
+    }
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, ALLOCATION, this.contentValues);
+    }
+
+    public Money getAllocation() {
+        return getMoney(ALLOCATION);
+    }
+
+    public void setAllocation(Money value) {
+        setMoney(ALLOCATION, value);
+    }
+
+    public String getName() {
+        return getString(NAME);
+    }
+
+    public void setName(String value) {
+        setString(NAME, value);
     }
 }

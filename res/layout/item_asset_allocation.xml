@@ -22,7 +22,7 @@
     android:orientation="horizontal" >
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/categoryTextView"
+        android:id="@+id/assetClassTextView"
         android:layout_width="0dp"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
@@ -30,35 +30,37 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:layout_weight="1"
-        android:text="@string/category" />
+        android:text="@string/asset_class_name" />
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/frequencyTextView"
+        android:id="@+id/allocationTextView"
         android:layout_width="wrap_content"
         android:minWidth="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:gravity="center"
-        android:text="@string/frequency" />
+        android:text="@string/allocation" />
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/amountTextView"
+        android:id="@+id/currentAllocationTextView"
         android:layout_width="wrap_content"
         android:minWidth="60dp"
+        android:paddingStart="1dp"
         android:paddingLeft="1dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
-        android:text="@string/amount" />
+        android:text="@string/current_allocation" />
 
     <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/actualTextView"
+        android:id="@+id/differenceTextView"
         android:layout_width="wrap_content"
         android:minWidth="60dp"
+        android:paddingStart="1dp"
         android:paddingLeft="1dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
-        android:text="@string/actual" />
+        android:text="@string/difference" />
 
 </LinearLayout>

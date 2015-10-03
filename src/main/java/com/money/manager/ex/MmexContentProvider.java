@@ -167,7 +167,7 @@ public class MmexContentProvider
                         ////database.setTransactionSuccessful();
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(e, "inserting record");
+                        handler.handle(e, "inserting record: " + e.getMessage());
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;

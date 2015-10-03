@@ -24,8 +24,8 @@ public class CurrencyRepository
 
     }
 
-    public boolean insert(Currency currency) {
-        return this.insert(currency.contentValues) > 0;
+    public boolean insert(Currency value) {
+        return this.insert(value.contentValues) > 0;
     }
 
     public boolean update(int id, Currency value) {

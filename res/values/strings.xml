@@ -14,8 +14,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
@@ -651,4 +650,5 @@
     <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
     <string name="asset_class_name">Asset Class name</string>
     <string name="allocation">Allocation</string>
+    <string name="current_allocation">Current Allocation</string>
 </resources>

@@ -60,7 +60,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * @author Francesco Berton
+ * Edit Account activity/form
  */
 public class AccountEditActivity
         extends BaseFragmentActivity
@@ -90,14 +90,12 @@ public class AccountEditActivity
     private static final int PLUS = 0;
     private static final int LESS = 1;
 
-    Account mAccount;
+    private Account mAccount;
 
     // Action type
-    private String mIntentAction = ""; // Insert? Edit?
+    private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
 
     // Activity members
-//    private int mAccountId = -1;
-    // mAccountName, mFavoriteAcct
     private String mAccountType, mAccountNum, mHeldAt, mWebsite, mContactInfo, mAccessInfo,
             mStatus, mNotes, mCurrencyName;
     private Money mInitialBal = MoneyFactory.fromString("0");
@@ -106,7 +104,6 @@ public class AccountEditActivity
     private String[] mAccountStatusValues;
     // Activity controls
     private EditText edtAccountName, edtAccountNumber, edtAccountHeldAt, edtWebsite, edtContact, edtAccessInfo, edtNotes;
-    ;
     private Spinner spinSymbolInitialBalance;
     private TextView txtSelectCurrency, txtInitialBalance;
     private ImageView imgbFavouriteAccount;
@@ -134,8 +131,6 @@ public class AccountEditActivity
 
         mAccount = new Account();
         mAccount.setId(Constants.NOT_SET);
-
-        Core core = new Core(getApplicationContext());
 
         // Restore saved instance state
         if ((savedInstanceState != null)) {
@@ -237,17 +232,15 @@ public class AccountEditActivity
         if (!(TextUtils.isEmpty(mNotes))) {
             edtNotes.setText(mNotes);
         }
-//        if (TextUtils.isEmpty(mFavoriteAcct)) {
-//            // TODO should be done better with enumeration for TRUE and FALSE
-//            mFavoriteAcct = String.valueOf(Boolean.FALSE);
-//        }
-//        imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(mFavoriteAcct)
-//                ? R.drawable.ic_star : R.drawable.ic_star_outline);
+
+        // Favourite
+
         imgbFavouriteAccount.setBackgroundResource(mAccount.getFavorite()
             ? R.drawable.ic_star : R.drawable.ic_star_outline);
         imgbFavouriteAccount.setTag(mAccount.getFavorite().toString());
 
-        // spinAccountType adapters and values
+        // Account Type adapters and values
+
         String[] mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
         mAccountTypeValues = getResources().getStringArray(R.array.accounttype_values);
         ArrayAdapter<String> adapterAccountType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
@@ -261,7 +254,8 @@ public class AccountEditActivity
             mAccountType = (String) spinAccountType.getSelectedItem();
         }
 
-        // spinAccountStatus adapters and values
+        // Account Status adapters and values
+
         String[] mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
         mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
         ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
@@ -469,7 +463,7 @@ public class AccountEditActivity
         TableAccountList mAccountList = new TableAccountList();
 
         // check whether the application should update or insert
-        if (Intent.ACTION_INSERT.equals(mIntentAction)) {
+        if (mIntentAction.equals(Intent.ACTION_INSERT)) {
             // insert
             Uri insertUri = getContentResolver().insert(mAccountList.getUri(), values);
             long id = ContentUris.parseId(insertUri);

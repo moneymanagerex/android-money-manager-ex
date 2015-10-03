@@ -121,4 +121,58 @@ public class UiTestHelpersRobotium {
             Log.e("uninstalling app", e.getMessage());
         }
     }
+
+    public void clickOnFloatingButton() {
+        solo.clickOnView(solo.getView(R.id.fab));
+    }
+
+    public void enterInNumericInput(String value) {
+        for (Character character : value.toCharArray()) {
+            switch (character) {
+                case '.':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNumDecimal));
+                    break;
+                case '1':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum1));
+                    break;
+                case '2':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum2));
+                    break;
+                case '3':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum3));
+                    break;
+                case '4':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum4));
+                    break;
+                case '5':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum5));
+                    break;
+                case '6':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum6));
+                    break;
+                case '7':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum7));
+                    break;
+                case '8':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum8));
+                    break;
+                case '9':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum9));
+                    break;
+                case '0':
+                    solo.clickOnView(solo.getView(R.id.buttonKeyNum0));
+                    break;
+
+            }
+        }
+    }
+
+    public void clickOnOK() {
+        solo.clickOnView(solo.getView(R.id.action_done));
+    }
+
+    public void clickOnCancel() {
+        solo.clickOnView(solo.getView(R.id.action_cancel));
+    }
+
 }

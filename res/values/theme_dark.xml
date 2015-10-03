@@ -14,8 +14,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <resources>
     <!-- Dark Theme -->
 
@@ -25,7 +24,7 @@
         <item name="android:textColorPrimary">@color/material_grey_50</item>
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
         <item name="android:textColor">@color/material_grey_50</item>
-        -->
+     -->
         <item name="android:windowContentOverlay">@null</item>
         <item name="actionModeBackground">@color/md_primary_dark</item>
         <item name="android:windowNoTitle">true</item>

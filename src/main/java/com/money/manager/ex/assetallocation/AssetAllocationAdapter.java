@@ -19,8 +19,15 @@ package com.money.manager.ex.assetallocation;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.money.manager.ex.R;
+import com.money.manager.ex.domainmodel.AssetClass;
+
+import org.w3c.dom.Text;
 
 /**
  * Adapter for the Asset Allocation list.
@@ -36,11 +43,24 @@ public class AssetAllocationAdapter
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return null;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.item_asset_allocation, parent, false);
+
+        return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        AssetClass assetClass = AssetClass.from(cursor);
 
+        TextView name = (TextView) view.findViewById(R.id.assetClassTextView);
+        name.setText(assetClass.getName());
+
+        TextView allocation = (TextView) view.findViewById(R.id.allocationTextView);
+        allocation.setText(assetClass.getAllocation().toString());
+
+        // currentAllocationTextView
+        // differenceTextView
     }
 }

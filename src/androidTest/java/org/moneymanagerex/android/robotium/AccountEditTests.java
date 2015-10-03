@@ -18,11 +18,8 @@ package org.moneymanagerex.android.robotium;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
-import android.widget.TextView;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.AssetClassEditActivity;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
@@ -35,16 +32,16 @@ import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Asset Class edit form.
+ * Test sample class. Use as a template for other tests.
  */
 @RunWith(AndroidJUnit4.class)
-public class AssetClassTests
-        extends ActivityInstrumentationTestCase2<AssetClassEditActivity> {
+public class AccountEditTests
+        extends ActivityInstrumentationTestCase2<AccountEditActivity> {
 
     private Solo solo;
 
-    public AssetClassTests() {
-        super(AssetClassEditActivity.class);
+    public AccountEditTests() {
+        super(AccountEditActivity.class);
     }
 
     @Before
@@ -64,25 +61,5 @@ public class AssetClassTests
         assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
     }
 
-    @Test
-    public void visualAppearance() {
-        assertThat(solo.searchText("Cancel")).isTrue();
-    }
-
-    @Test
-    public void enterAllocation() {
-        View allocationView = solo.getView(R.id.allocationEdit);
-        solo.clickOnView(allocationView);
-
-        solo.waitForDialogToOpen();
-        solo.clickOnView(solo.getView(R.id.buttonKeyNum2));
-        solo.clickOnView(solo.getView(R.id.buttonKeyNumDecimal));
-        solo.clickOnView(solo.getView(R.id.buttonKeyNum5));
-        solo.clickOnView(solo.getView(R.id.buttonKeyNum6));
-        solo.clickOnText("OK");
-        solo.waitForDialogToClose();
-
-        assertThat(solo.waitForText("2.56")).isTrue();
-    }
 
 }

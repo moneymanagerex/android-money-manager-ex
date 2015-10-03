@@ -11,8 +11,6 @@ import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 /**
  * Account Transaction repository.
- *
- * Created by Alen Siljak on 02/09/2015.
  */
 public class QueryAllDataRepository
     extends RepositoryBase {

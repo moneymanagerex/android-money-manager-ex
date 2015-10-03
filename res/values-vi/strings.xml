@@ -15,8 +15,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <resources>
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Một ứng dụng đơn giản và dễ dàng sử dụng để quản lý tài chính cá nhân, tài khoản ngân hàng, ngân sách gia đình, và v.v...</string>

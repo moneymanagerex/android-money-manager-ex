@@ -14,8 +14,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
+-->
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Money.Button"
     android:layout_width="140dp"
