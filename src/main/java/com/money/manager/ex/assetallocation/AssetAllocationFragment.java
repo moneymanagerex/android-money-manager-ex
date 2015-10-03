@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,11 +28,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.shamanland.fonticon.FontIconDrawable;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -155,6 +159,7 @@ public class AssetAllocationFragment
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         boolean handled = false;
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
             case R.id.menu_edit:
@@ -162,11 +167,41 @@ public class AssetAllocationFragment
                 handled = true;
                 break;
             case R.id.menu_delete:
-                // todo: confirmation
+                confirmDelete((int) info.id);
                 handled = true;
                 break;
         }
         return handled;
+    }
+
+    private void confirmDelete(final int id) {
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.delete_account)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.confirmDelete);
+
+        alertDialog.setPositiveButton(android.R.string.ok,
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AssetClassRepository repo = new AssetClassRepository(getActivity());
+                    if (!repo.delete(id)) {
+                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                    }
+                    // restart loader
+                    getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, AssetAllocationFragment.this);
+                }
+            });
+
+        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // close dialog
+                dialog.cancel();
+            }
+        });
+        // show dialog
+        alertDialog.create().show();
     }
 
     // private

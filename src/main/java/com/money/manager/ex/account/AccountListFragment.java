@@ -96,41 +96,6 @@ public class AccountListFragment
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        // take cursor
-//        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-//        cursor.moveToPosition(info.position);
-        int accountId = (int) info.id;
-
-        switch (item.getItemId()) {
-            case 0: //EDIT
-                startAccountListEditActivity(accountId);
-                break;
-
-            case 1: //DELETE
-                showDialogDeleteAccount(accountId);
-//                } else {
-//                    new AlertDialogWrapper.Builder(getActivity())
-//                            .setTitle(R.string.attention)
-//                            .setMessage(R.string.account_can_not_deleted)
-//                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-//                            .setPositiveButton(android.R.string.ok,
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(
-//                                                DialogInterface dialog,
-//                                                int which) {
-//                                            dialog.dismiss();
-//                                        }
-//                                    }).create().show();
-//                }
-                break;
-        }
-        return false;
-    }
-
-    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         // take cursor
@@ -143,6 +108,25 @@ public class AccountListFragment
         for (int i = 0; i < menuItems.length; i++) {
             menu.add(Menu.NONE, i, i, menuItems[i]);
         }
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
+//        cursor.moveToPosition(info.position);
+        int accountId = (int) info.id;
+
+        switch (item.getItemId()) {
+            case 0: //EDIT
+                startAccountListEditActivity(accountId);
+                break;
+
+            case 1: //DELETE
+                showDialogDeleteAccount(accountId);
+                break;
+        }
+        return false;
     }
 
     // Loader
@@ -229,7 +213,6 @@ public class AccountListFragment
     }
 
     private void showDialogDeleteAccount(final int accountId) {
-        // create dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_account)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))

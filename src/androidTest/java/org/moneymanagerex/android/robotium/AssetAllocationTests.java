@@ -110,11 +110,16 @@ public class AssetAllocationTests
         // save
         robot.clickDone();
 
-        // Then
-
         // confirm that the new item is listed
         assertThat(solo.searchText(assetClassName)).isTrue();
 
+        solo.clickLongOnText(assetClassName);
+        solo.clickOnText("Delete");
+        solo.clickOnText("OK");
+
+        // Then
+
+        assertThat(solo.searchText(assetClassName)).isFalse();
     }
 
     /*
@@ -126,6 +131,7 @@ public class AssetAllocationTests
         be used for quick display.
       - show pie chart for allocation.
       - use treeview for sub-classes
+      - ability to select securities that belong to this asset class
      */
 
     /*
@@ -134,7 +140,7 @@ public class AssetAllocationTests
     - can add a new allocation
       + create/edit form opens
       - can select a security from all the available ones
-    - can delete an allocation
+    + can delete an allocation
     - when adding a stock, the allocation value updates
     - updating a stock price updates the allocation value (update manually for test value)
 

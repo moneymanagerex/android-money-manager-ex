@@ -19,6 +19,7 @@ package com.money.manager.ex.datalayer;
 import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Currency;
 
@@ -43,4 +44,8 @@ public class AssetClassRepository
         return this.insert(value.contentValues) > 0;
     }
 
+    public boolean delete(int id) {
+        int result = delete(AssetClass.ID + "=?", new String[] { Integer.toString(id)});
+        return result > 0;
+    }
 }
