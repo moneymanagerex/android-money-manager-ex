@@ -176,7 +176,7 @@ public class WatchlistFragment
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        initializeAccountsSelector(savedInstanceState);
+        initializeAccountsSelector();
         selectCurrentAccount();
     }
 
@@ -585,19 +585,14 @@ public class WatchlistFragment
         }
     }
 
-    private void initializeAccountsSelector(Bundle savedInstanceState) {
+    private void initializeAccountsSelector() {
         ActionBar actionBar = getActionBar();
         if (actionBar == null) return;
 
         actionBar.setDisplayShowTitleEnabled(false);
 
-//        ActionBar actionBar = getActivity().getActionBar();
-//        View actionBarView = getLayoutInflater(savedInstanceState)
-//            .inflate(R.layout.spinner, null);
-//        actionBar.setCustomView(actionBarView);
         actionBar.setCustomView(R.layout.spinner);
         actionBar.setDisplayShowCustomEnabled(true);
-//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         Spinner spinner = getAccountsSpinner();
         if (spinner == null) return;

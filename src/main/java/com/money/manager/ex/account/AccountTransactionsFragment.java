@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -108,15 +109,26 @@ public class AccountTransactionsFragment
     private String mFragmentName;
     private Money mAccountBalance = MoneyFactory.fromString("0"),
             mAccountReconciled = MoneyFactory.fromString("0");
-//    private TableAccountList mAccount;
     private Account mAccount;
     // Controls
     private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
     private ImageView imgAccountFav, imgGotoAccount;
     private Activity mActivity;
+    ViewGroup mListHeader;
 
     // filter
     DateRange mDateRange;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // Keep the direct reference to the activity to avoing null exceptions on getActivity().
+        // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
+        if (context instanceof Activity) {
+            mActivity = (Activity) context;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,14 +153,48 @@ public class AccountTransactionsFragment
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // Keep the direct reference to the activity to avoing null exceptions on getActivity().
-        // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
-        if (context instanceof Activity) {
-            mActivity = (Activity) context;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
+        if (container == null) {
+            return null;
+        }
+        // inflate layout
+        View view = inflater.inflate(R.layout.account_fragment, container, false);
+
+        // take object AccountList
+        if (mAccount == null) {
+            reloadAccountInfo();
+        }
+
+        initializeListHeader(inflater);
+
+        // Transactions
+        showTransactionsFragment(mListHeader);
+
+        // refresh user interface
+        if (mAccount != null) {
+            setImageViewFavorite();
+        }
+
+        setHasOptionsMenu(true);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // hide the title
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+        initializeAccountsSelector();
+        selectCurrentAccount();
     }
 
     @Override
@@ -173,8 +219,8 @@ public class AccountTransactionsFragment
         // Accounts list dropdown in toolbar.
         // Ref: http://stackoverflow.com/questions/11377760/adding-spinner-to-actionbar-not-navigation
         // Add options available only in account transactions list(s).
-        inflater.inflate(R.menu.menu_account_spinner, menu);
-        initAccountsDropdown(menu);
+//        inflater.inflate(R.menu.menu_account_spinner, menu);
+//        initAccountsDropdown(menu);
 
         // add the date picker.
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
@@ -216,8 +262,6 @@ public class AccountTransactionsFragment
             }
         }
 
-        selectCurrentAccount(menu);
-
         selectCurrentPeriod(menu);
     }
 
@@ -250,85 +294,6 @@ public class AccountTransactionsFragment
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    // End menu.
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
-        }
-        if (container == null) {
-            return null;
-        }
-        // inflate layout
-        View view = inflater.inflate(R.layout.account_fragment, container, false);
-
-        // take object AccountList
-        if (mAccount == null) {
-            reloadAccountInfo();
-        }
-
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
-        // take reference text view from layout
-        txtAccountBalance = (TextView) header.findViewById(R.id.textViewAccountBalance);
-        txtAccountReconciled = (TextView) header.findViewById(R.id.textViewAccountReconciled);
-        txtAccountDifference = (TextView) header.findViewById(R.id.textViewDifference);
-        // favorite icon
-        imgAccountFav = (ImageView) header.findViewById(R.id.imageViewAccountFav);
-
-        // set listener click on favorite icon for change image
-        imgAccountFav.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // set status account
-                mAccount.setFavorite(!(mAccount.getFavorite()));
-                // populate content values for update
-//                ContentValues values = new ContentValues();
-//                values.put(Account.FAVORITEACCT, mAccount.getFavorite());
-                AccountRepository repo = new AccountRepository(getActivity());
-                boolean updated = repo.update(mAccount);
-                // update
-//                if (getActivity().getContentResolver().update(repo.getUri(),
-//                    values,
-//                    Account.ACCOUNTID + "=?",
-//                    new String[]{Integer.toString(mAccountId)}) != 1) {
-                if (!updated) {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
-                } else {
-                    setImageViewFavorite();
-                }
-            }
-        });
-
-        // goto account
-        imgGotoAccount = (ImageView) header.findViewById(R.id.imageViewGotoAccount);
-        imgGotoAccount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
-            intent.setAction(Intent.ACTION_EDIT);
-            startActivity(intent);
-            }
-        });
-
-        // Transactions
-        showTransactionsFragment(header);
-
-        // refresh user interface
-        if (mAccount != null) {
-            setImageViewFavorite();
-        }
-
-        setHasOptionsMenu(true);
-
-        return view;
-    }
-
-    private void reloadAccountInfo() {
-        AccountRepository repo = new AccountRepository(getActivity());
-        mAccount = repo.load(mAccountId);
     }
 
     // Loader events.
@@ -413,6 +378,39 @@ public class AccountTransactionsFragment
     }
 
     // Private
+
+    private void initializeAccountsSelector() {
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return;
+
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        actionBar.setCustomView(R.layout.spinner);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        Spinner spinner = getAccountsSpinner();
+        if (spinner == null) return;
+
+        loadAccountsInto(spinner);
+    }
+
+    private void reloadAccountInfo() {
+        AccountRepository repo = new AccountRepository(getActivity());
+        mAccount = repo.load(mAccountId);
+    }
+
+    /**
+     * Refreshes the running balance.
+     */
+    public void populateRunningBalance() {
+        Bundle arguments = prepareQuery();
+
+        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
+            getContext(), this.mAccountId, mDateRange.dateFrom, this, arguments);
+        task.execute();
+
+        // the result is received in #onTaskComplete.
+    }
 
     /**
      * Prepare SQL query for record selection.
@@ -588,15 +586,31 @@ public class AccountTransactionsFragment
         return true;
     }
 
-    private Spinner getAccountsSpinner(Menu menu) {
-        Spinner spinner = null;
+    private Spinner getAccountsSpinner() {
+//        Spinner spinner = null;
+//
+//        MenuItem item = menu.findItem(R.id.menuAccountSelector);
+//        if (item != null) {
+//            spinner = (Spinner) MenuItemCompat.getActionView(item);
+//        }
+//
+//        return spinner;
 
-        MenuItem item = menu.findItem(R.id.menuAccountSelector);
-        if (item != null) {
-            spinner = (Spinner) MenuItemCompat.getActionView(item);
-        }
+        // get from custom view, not the menu.
 
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return null;
+
+        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
         return spinner;
+    }
+
+    private ActionBar getActionBar() {
+        if (!(getActivity() instanceof AppCompatActivity)) return null;
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+        return actionBar;
     }
 
     private void initAccountsDropdown(Menu menu) {
@@ -610,7 +624,7 @@ public class AccountTransactionsFragment
 //        actionBar.setDisplayShowHomeEnabled(true);
 
         // Load accounts into the list.
-        Spinner spinner = getAccountsSpinner(menu);
+        Spinner spinner = getAccountsSpinner();
         if (spinner == null) return;
 
         AccountService accountService = new AccountService(getActivity());
@@ -680,12 +694,85 @@ public class AccountTransactionsFragment
         });
     }
 
+    private void initializeListHeader(LayoutInflater inflater) {
+        mListHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
+        // take reference text view from layout
+        txtAccountBalance = (TextView) mListHeader.findViewById(R.id.textViewAccountBalance);
+        txtAccountReconciled = (TextView) mListHeader.findViewById(R.id.textViewAccountReconciled);
+        txtAccountDifference = (TextView) mListHeader.findViewById(R.id.textViewDifference);
+        // favorite icon
+        imgAccountFav = (ImageView) mListHeader.findViewById(R.id.imageViewAccountFav);
+
+        // set listener click on favorite icon for change image
+        imgAccountFav.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                // set status account
+                mAccount.setFavorite(!(mAccount.getFavorite()));
+                // populate content values for update
+//                ContentValues values = new ContentValues();
+//                values.put(Account.FAVORITEACCT, mAccount.getFavorite());
+                AccountRepository repo = new AccountRepository(getActivity());
+                boolean updated = repo.update(mAccount);
+                // update
+//                if (getActivity().getContentResolver().update(repo.getUri(),
+//                    values,
+//                    Account.ACCOUNTID + "=?",
+//                    new String[]{Integer.toString(mAccountId)}) != 1) {
+                if (!updated) {
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
+                } else {
+                    setImageViewFavorite();
+                }
+            }
+        });
+
+        // goto account
+        imgGotoAccount = (ImageView) mListHeader.findViewById(R.id.imageViewGotoAccount);
+        imgGotoAccount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void loadAccountsInto(Spinner spinner) {
+        // Load accounts into the list.
+//        Menu menu
+//        Spinner spinner = getAccountsSpinner(menu);
+        if (spinner == null) return;
+
+        AccountService accountService = new AccountService(getActivity());
+        accountService.loadTransactionAccountsToSpinner(spinner);
+
+        // handle switching of accounts.
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // switch account.
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                Account account = new Account();
+                account.loadFromCursor(cursor);
+
+                int accountId = account.getId();
+                switchAccount(accountId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     /**
      * Select the current account in the accounts dropdown.
-     * @param menu The toolbar/menu that contains the dropdown.
      */
-    private void selectCurrentAccount(Menu menu) {
-        Spinner spinner = getAccountsSpinner(menu);
+    private void selectCurrentAccount() {
+        Spinner spinner = getAccountsSpinner();
         if (spinner == null) return;
 
         // find account
@@ -730,18 +817,25 @@ public class AccountTransactionsFragment
         itemToMark.setChecked(true);
     }
 
-    // Running balance
+    private void switchAccount(int accountId) {
+        if (accountId == mAccountId) return;
 
-    /**
-     * Refreshes the running balance.
-     */
-    public void populateRunningBalance() {
-        Bundle arguments = prepareQuery();
+        // switch account. Reload transactions.
+        mAccountId = accountId;
+        mAllDataListFragment.AccountId = accountId;
+        mAllDataListFragment.loadData();
 
-        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-                getContext(), this.mAccountId, mDateRange.dateFrom, this, arguments);
-        task.execute();
-
-        // the result is received in #onTaskComplete.
+        // hide account details bar if all accounts are selected
+        if (accountId == Constants.NOT_SET) {
+//            mDataFragment.setListHeader(null);
+            mAllDataListFragment.getListView().removeHeaderView(mListHeader);
+//            mListHeader.setVisibility(View.GONE);
+        } else {
+            if (mAllDataListFragment.getListView().getHeaderViewsCount() == 0) {
+                mAllDataListFragment.getListView().addHeaderView(mListHeader);
+            }
+//            mListHeader.setVisibility(View.VISIBLE);
+        }
     }
+
 }
