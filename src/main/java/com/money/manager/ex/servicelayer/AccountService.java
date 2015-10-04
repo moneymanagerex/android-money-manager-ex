@@ -19,8 +19,14 @@ package com.money.manager.ex.servicelayer;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDiskIOException;
+import android.util.Log;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
@@ -34,6 +40,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import java.math.BigDecimal;
@@ -184,6 +191,69 @@ public class AccountService {
 
         cursor.close();
         return total;
+    }
+
+    public void loadTransactionAccountsToSpinner(Spinner spinner) {
+        Context context = mContext;
+
+        if (spinner == null) return;
+
+        if (context == null) {
+            Log.e(this.getClass().getSimpleName(), "Context not sent when loading accounts");
+            return;
+        }
+
+        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
+
+        Cursor cursor = this.getCursor(settings.getViewOpenAccounts(),
+            settings.getViewFavouriteAccounts(), this.getTransactionAccountTypeNames());
+
+        int[] adapterRowViews = new int[] { android.R.id.text1 };
+
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
+            android.R.layout.simple_spinner_item,
+            cursor,
+            new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
+            adapterRowViews,
+            SimpleCursorAdapter.NO_SELECTION);
+        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(cursorAdapter);
+    }
+
+    public void loadInvestmentAccountsToSpinner(Spinner spinner) {
+        Context context = mContext;
+
+        if (spinner == null) return;
+
+        if (context == null) {
+            Log.e(this.getClass().getSimpleName(), "Context not sent when loading accounts");
+            return;
+        }
+
+        AccountRepository repo = new AccountRepository(context);
+        Cursor cursor = repo.getInvestmentAccountsCursor(true);
+
+        // append All Accounts item
+        MatrixCursor extras = new MatrixCursor(new String[] { "_id", Account.ACCOUNTID,
+            Account.ACCOUNTNAME, Account.INITIALBAL });
+        extras.addRow(new String[] { Integer.toString(Constants.NOT_SET),
+            Integer.toString(Constants.NOT_SET), "All Accounts", "0.0" });
+        Cursor[] cursors = { extras, cursor };
+        Cursor extendedCursor = new MergeCursor(cursors);
+
+
+        int[] adapterRowViews = new int[] { android.R.id.text1 };
+
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
+            android.R.layout.simple_spinner_item,
+            extendedCursor,
+            new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
+            adapterRowViews,
+            SimpleCursorAdapter.NO_SELECTION);
+        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(cursorAdapter);
     }
 
     public List<Account> loadAccounts(boolean open, boolean favorite, List<String> accountTypes) {

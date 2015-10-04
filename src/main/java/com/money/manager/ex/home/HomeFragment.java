@@ -93,11 +93,11 @@ public class HomeFragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IInputAmountDialogListener {
 
     // ID Loader Manager
-    private static final int ID_LOADER_USER_NAME = 1;
-    private static final int ID_LOADER_ACCOUNT_BILLS = 2;
-    private static final int ID_LOADER_BILL_DEPOSITS = 3;
-    private static final int ID_LOADER_INCOME_EXPENSES = 4;
-    private static final int ID_LOADER_INVESTMENTS = 5;
+    private static final int LOADER_USER_NAME = 1;
+    private static final int LOADER_ACCOUNT_BILLS = 2;
+    private static final int LOADER_BILL_DEPOSITS = 3;
+    private static final int LOADER_INCOME_EXPENSES = 4;
+    private static final int LOADER_INVESTMENTS = 5;
 
     private static final String TAG_BALANCE_ACCOUNT = "HomeFragment:BalanceAccount";
     private static final int REQUEST_BALANCE_ACCOUNT = 1;
@@ -160,10 +160,6 @@ public class HomeFragment
         if (savedInstanceState != null) {
             this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
         }
-//        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager().findFragmentByTag(TAG_BALANCE_ACCOUNT);
-//        if (inputAmountDialog != null) {
-//            Log.d("test", "input amount dialog found");
-//        }
     }
 
     @Override
@@ -209,26 +205,25 @@ public class HomeFragment
 
     public void startLoader() {
         LoaderManager loaderManager = getLoaderManager();
-        loaderManager.restartLoader(ID_LOADER_USER_NAME, null, this);
-        loaderManager.restartLoader(ID_LOADER_ACCOUNT_BILLS, null, this);
-        /*getLoaderManager().restartLoader(ID_LOADER_BILL_DEPOSITS, null, this);*/
-        loaderManager.restartLoader(ID_LOADER_INCOME_EXPENSES, null, this);
-        loaderManager.restartLoader(ID_LOADER_INVESTMENTS, null, this);
+        loaderManager.restartLoader(LOADER_USER_NAME, null, this);
+        loaderManager.restartLoader(LOADER_ACCOUNT_BILLS, null, this);
+        /*getLoaderManager().restartLoader(LOADER_BILL_DEPOSITS, null, this);*/
+        loaderManager.restartLoader(LOADER_INCOME_EXPENSES, null, this);
+        loaderManager.restartLoader(LOADER_INVESTMENTS, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        Core core = new Core(getActivity().getApplicationContext());
         MmexCursorLoader result;
 
         switch (id) {
-            case ID_LOADER_USER_NAME:
+            case LOADER_USER_NAME:
                 result = new MmexCursorLoader(getActivity(), mInfoTable.getUri(),
                         new String[]{ TableInfoTable.INFONAME, TableInfoTable.INFOVALUE },
                         null, null, null);
                 break;
 
-            case ID_LOADER_ACCOUNT_BILLS:
+            case LOADER_ACCOUNT_BILLS:
                 mAccountTransactionsLoaded = false;
 
                 setListViewAccountBillsVisible(false);
@@ -250,14 +245,14 @@ public class HomeFragment
                         QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
                 break;
 
-            case ID_LOADER_BILL_DEPOSITS:
+            case LOADER_BILL_DEPOSITS:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
                 result = new MmexCursorLoader(getActivity(),
                         billDeposits.getUri(), null,
                         QueryBillDeposits.DAYSLEFT + "<=0", null, null);
                 break;
 
-            case ID_LOADER_INCOME_EXPENSES:
+            case LOADER_INCOME_EXPENSES:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
 
                 // todo: Get custom period. pref_income_expense_footer_period
@@ -279,7 +274,7 @@ public class HomeFragment
                         null);
                 break;
 
-            case ID_LOADER_INVESTMENTS:
+            case LOADER_INVESTMENTS:
                 mInvestmentTransactionsLoaded = false;
 
                 // get investment accounts
@@ -320,7 +315,7 @@ public class HomeFragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
-            case ID_LOADER_ACCOUNT_BILLS:
+            case LOADER_ACCOUNT_BILLS:
                 txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromString("0")));
                 setListViewAccountBillsVisible(false);
                 mAccountsByType.clear();
@@ -338,7 +333,7 @@ public class HomeFragment
         }
 
         switch (loader.getId()) {
-            case ID_LOADER_USER_NAME:
+            case LOADER_USER_NAME:
                 if (data != null) {
                     while (data.moveToNext()) {
                         String infoValue = data.getString(data.getColumnIndex(TableInfoTable.INFONAME));
@@ -352,7 +347,7 @@ public class HomeFragment
                 mainActivity.setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());
                 break;
 
-            case ID_LOADER_ACCOUNT_BILLS:
+            case LOADER_ACCOUNT_BILLS:
                 try {
                     renderAccountsList(data);
                 } catch (Exception e) {
@@ -367,12 +362,12 @@ public class HomeFragment
                 }
                 break;
 
-            case ID_LOADER_BILL_DEPOSITS:
+            case LOADER_BILL_DEPOSITS:
                 // Recurring Transactions.
                 mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
                 break;
 
-            case ID_LOADER_INCOME_EXPENSES:
+            case LOADER_INCOME_EXPENSES:
                 double income = 0, expenses = 0;
                 if (data != null) {
                     while (data.moveToNext()) {
@@ -418,7 +413,7 @@ public class HomeFragment
                 }
                 break;
 
-            case ID_LOADER_INVESTMENTS:
+            case LOADER_INVESTMENTS:
                 mInvestmentsCursor = data;
                 mInvestmentTransactionsLoaded = true;
                 try {
@@ -471,11 +466,15 @@ public class HomeFragment
     public void onResume() {
         super.onResume();
 
-        // clear subTitle of ActionBar
-//        ActionBarActivity activity = (ActionBarActivity) getActivity();
+        // Toolbar
         Activity parent = getActivity();
         if (parent instanceof AppCompatActivity) {
             AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+            // show title
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+            // clear subTitle of ActionBar
             activity.getSupportActionBar().setSubtitle(null);
         }
 

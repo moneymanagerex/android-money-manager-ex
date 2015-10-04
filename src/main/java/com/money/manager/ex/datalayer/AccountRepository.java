@@ -20,11 +20,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.money.manager.ex.account.AccountStatuses;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Repository for Accounts
@@ -111,9 +116,9 @@ public class AccountRepository
     public String loadName(int id) {
         String name = null;
 
-        Cursor cursor = openCursor(new String[] { Account.ACCOUNTNAME },
-                Account.ACCOUNTID + "=?",
-                new String[]{Integer.toString(id)}
+        Cursor cursor = openCursor(new String[]{Account.ACCOUNTNAME},
+            Account.ACCOUNTID + "=?",
+            new String[]{Integer.toString(id)}
         );
         if (cursor == null) return null;
 
@@ -144,5 +149,42 @@ public class AccountRepository
         c.close();
 
         return account;
+    }
+
+    public boolean update(Account value) {
+        int id = value.getId();
+
+        WhereStatementGenerator generator = new WhereStatementGenerator();
+        String where = generator.getStatement(Account.ACCOUNTID, "=", id);
+
+        return update(id, value.contentValues, where);
+    }
+
+    public Cursor getInvestmentAccountsCursor(boolean openOnly) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(Account.ACCOUNTTYPE, "=", AccountTypes.INVESTMENT.toString());
+        if (openOnly) {
+            where.addStatement(Account.STATUS, "=", AccountStatuses.OPEN.toString());
+        }
+
+        Cursor c = openCursor(this.getAllColumns(),
+            where.getWhere(),
+            null,
+            "lower (" + Account.ACCOUNTNAME + ")");
+        if (c == null) return null;
+
+        return c;
+    }
+
+    public List<Account> loadInvestmentAccounts(boolean openOnly) {
+        Cursor c = getInvestmentAccountsCursor(openOnly);
+
+        List<Account> result = new ArrayList<>();
+        while (c.moveToNext()) {
+            result.add(Account.from(c));
+        }
+        c.close();
+
+        return result;
     }
 }

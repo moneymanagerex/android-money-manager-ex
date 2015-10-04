@@ -831,13 +831,13 @@ public class MainActivity
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
-        String tagFragment = AccountTransactionsFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        AccountTransactionsFragment fragment = (AccountTransactionsFragment) getSupportFragmentManager().findFragmentByTag(tagFragment);
+        String tag = AccountTransactionsFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        AccountTransactionsFragment fragment = (AccountTransactionsFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = AccountTransactionsFragment.newInstance(accountId);
         }
         // show fragment
-        showFragment(fragment, tagFragment);
+        showFragment(fragment, tag);
     }
 
     public void showWatchlistFragment(int accountId) {

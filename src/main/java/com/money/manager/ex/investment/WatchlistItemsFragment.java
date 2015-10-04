@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -85,14 +86,35 @@ public class WatchlistItemsFragment
     private Context mContext;
     private StockRepository mStockRepository;
     private StockHistoryRepository mStockHistoryRepository;
-//    private Bundle mLoaderArgs;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        setHasOptionsMenu(true);
+
+        this.accountId = getArguments().getInt(KEY_ACCOUNT_ID);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        return super.onCreateView(inflater, container, savedInstanceState);
+        View layout = inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
+
+        // get data from saved instance state
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
+            this.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+        }
+
+        return layout;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // get arguments
         mContext = getActivity();
-//        mLoaderArgs = getArguments();
 
         // set fragment
         setEmptyText(getString(R.string.no_stock_data));
@@ -102,7 +124,6 @@ public class WatchlistItemsFragment
 
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(mContext, null);
-//        adapter.setAccountId(accountId);
 
         // handle list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -116,10 +137,16 @@ public class WatchlistItemsFragment
                 }
             }
         });
+
         // if header is not null add to list view
         if (getListAdapter() == null) {
-            if (mListHeader != null) getListView().addHeaderView(mListHeader);
+            if (mListHeader != null) {
+                getListView().addHeaderView(mListHeader);
+            } else {
+                getListView().removeHeaderView(mListHeader);
+            }
         }
+
         // set adapter
         setListAdapter(adapter);
         // start loader
@@ -141,13 +168,7 @@ public class WatchlistItemsFragment
         setFloatingActionButtonAttachListView(true);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-//        setHasOptionsMenu(true);
-
-    }
+    // context menu
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -189,7 +210,6 @@ public class WatchlistItemsFragment
 
         boolean result = false;
         int itemId = item.getItemId();
-//        String itemTitle = item.getTitle();
 
         switch (itemId) {
             case 0:
@@ -214,6 +234,8 @@ public class WatchlistItemsFragment
         return result;
     }
 
+    // menu
+
     /**
      * Add options to the action bar of the host activity.
      * This is not called in ActionBar Activity, i.e. Search.
@@ -227,17 +249,21 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-        View layout = inflater.inflate(R.layout.fragment_watchlist_item_list, container, false);
+    public boolean onOptionsItemSelected(MenuItem item) {
+//        int itemId = item.getItemId();
 
-        // get data from saved instance state
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACCOUNT_ID)) {
-            this.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-        }
+//        if (itemId == R.id.menu_export_to_csv) {
+//            exportDataToCSVFile();
+//            return true;
+//        }
+//        if (itemId == R.id.menu_qif_export) {
+//            // export visible transactions.
+//            exportToQif();
+//        }
 
-        return layout;
+        return super.onOptionsItemSelected(item);
     }
+
 
     /**
      * This is just to test:
@@ -334,22 +360,6 @@ public class WatchlistItemsFragment
     // Menu
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-
-//        if (itemId == R.id.menu_export_to_csv) {
-//            exportDataToCSVFile();
-//            return true;
-//        }
-//        if (itemId == R.id.menu_qif_export) {
-//            // export visible transactions.
-//            exportToQif();
-//        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onFloatingActionButtonClickListener() {
         openEditInvestmentActivity();
     }
@@ -423,7 +433,9 @@ public class WatchlistItemsFragment
     private Bundle prepareArgsForChildFragment() {
         ArrayList<String> selection = new ArrayList<>();
 
-        selection.add(TableStock.HELDAT + "=" + Integer.toString(this.accountId));
+        if (this.accountId != Constants.NOT_SET) {
+            selection.add(TableStock.HELDAT + "=" + Integer.toString(this.accountId));
+        }
 
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
