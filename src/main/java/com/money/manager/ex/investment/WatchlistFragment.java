@@ -21,12 +21,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -123,44 +122,6 @@ public class WatchlistFragment
         mUpdateCounter = 0;
     }
 
-    /**
-     * Called once when the menu is created.
-     * @param menu
-     * @param inflater
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        // hide the title
-        if (getActivity() instanceof AppCompatActivity) {
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-
-        // List of accounts
-        inflater.inflate(R.menu.menu_account_spinner, menu);
-        initAccountsDropdown(menu);
-
-        // add options menu for watchlist
-        inflater.inflate(R.menu.menu_watchlist, menu);
-
-        // call create option menu of fragment
-        mDataFragment.onCreateOptionsMenu(menu, inflater);
-    }
-
-    /**
-     * Called every time the menu is displayed.
-     * @param menu
-     */
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        selectCurrentAccount(menu);
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
@@ -203,6 +164,47 @@ public class WatchlistFragment
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // hide the title
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+        initializeAccountsSelector(savedInstanceState);
+        selectCurrentAccount();
+    }
+
+    /**
+     * Called once when the menu is being created.
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        // List of accounts
+//        inflater.inflate(R.menu.menu_account_spinner, menu);
+//        initAccountsDropdown(menu);
+
+        // add options menu for watchlist
+        inflater.inflate(R.menu.menu_watchlist, menu);
+
+        // call create option menu of fragment
+        mDataFragment.onCreateOptionsMenu(menu, inflater);
+    }
+
+    /**
+     * Called every time the menu is displayed.
+     */
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
     }
 
     /**
@@ -438,9 +440,18 @@ public class WatchlistFragment
                 .show();
     }
 
-    private void initAccountsDropdown(Menu menu) {
+    private ActionBar getActionBar() {
+        if (!(getActivity() instanceof AppCompatActivity)) return null;
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+        return actionBar;
+    }
+
+    private void loadAccountsInto(Spinner spinner) {
         // Load accounts into the list.
-        Spinner spinner = getAccountsSpinner(menu);
+//        Menu menu
+//        Spinner spinner = getAccountsSpinner(menu);
         if (spinner == null) return;
 
         AccountService accountService = new AccountService(getActivity());
@@ -499,31 +510,38 @@ public class WatchlistFragment
         imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(mContext, AccountEditActivity.class);
-            intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
-            intent.setAction(Intent.ACTION_EDIT);
-            startActivity(intent);
+                Intent intent = new Intent(mContext, AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
             }
         });
     }
 
-    private Spinner getAccountsSpinner(Menu menu) {
-        Spinner spinner = null;
+    private Spinner getAccountsSpinner() {
+//        Spinner spinner = null;
+//
+//        MenuItem item = menu.findItem(R.id.menuAccountSelector);
+//        if (item != null) {
+//            spinner = (Spinner) MenuItemCompat.getActionView(item);
+//        }
+//
+//        return spinner;
 
-        MenuItem item = menu.findItem(R.id.menuAccountSelector);
-        if (item != null) {
-            spinner = (Spinner) MenuItemCompat.getActionView(item);
-        }
+        // get from custom view, not the menu.
 
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return null;
+
+        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
         return spinner;
     }
 
     /**
      * Select the current account in the accounts dropdown.
-     * @param menu The toolbar/menu that contains the dropdown.
      */
-    private void selectCurrentAccount(Menu menu) {
-        Spinner spinner = getAccountsSpinner(menu);
+    private void selectCurrentAccount() {
+        Spinner spinner = getAccountsSpinner();
         if (spinner == null) return;
 
         // find account
@@ -565,5 +583,25 @@ public class WatchlistFragment
             }
             mListHeader.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void initializeAccountsSelector(Bundle savedInstanceState) {
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return;
+
+        actionBar.setDisplayShowTitleEnabled(false);
+
+//        ActionBar actionBar = getActivity().getActionBar();
+//        View actionBarView = getLayoutInflater(savedInstanceState)
+//            .inflate(R.layout.spinner, null);
+//        actionBar.setCustomView(actionBarView);
+        actionBar.setCustomView(R.layout.spinner);
+        actionBar.setDisplayShowCustomEnabled(true);
+//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        Spinner spinner = getAccountsSpinner();
+        if (spinner == null) return;
+
+        loadAccountsInto(spinner);
     }
 }

@@ -172,16 +172,14 @@ public class WatchlistItemsFragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        boolean hasHeaderRow = getListView().getHeaderViewsCount() > 0;
-
         // ignore the header row if the headers are shown.
-        if (hasHeaderRow && info.position == 0) return;
+        if (hasHeaderRow() && info.position == 0) return;
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 
 //        DatabaseUtils.dumpCursor(cursor);
 
-        int cursorPosition = hasHeaderRow ? info.position - 1 : info.position;
+        int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL)));
@@ -202,7 +200,8 @@ public class WatchlistItemsFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position - 1);
+        int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
+        cursor.moveToPosition(cursorPosition);
 
         ContentValues contents = new ContentValues();
         // get Symbol from cursor
@@ -429,6 +428,10 @@ public class WatchlistItemsFragment
             mStockHistoryRepository = new StockHistoryRepository(mContext);
         }
         return mStockHistoryRepository;
+    }
+
+    private boolean hasHeaderRow() {
+        return getListView().getHeaderViewsCount() > 0;
     }
 
     private Bundle prepareArgsForChildFragment() {
