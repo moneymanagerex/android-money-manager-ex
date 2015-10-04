@@ -192,14 +192,15 @@ public class AccountTransactionsFragment
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-        initializeAccountsSelector();
-        selectCurrentAccount();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        initializeAccountsSelector();
+        selectCurrentAccount();
+
         // restart loader
         loadTransactions();
     }
@@ -823,7 +824,8 @@ public class AccountTransactionsFragment
         // switch account. Reload transactions.
         mAccountId = accountId;
         mAllDataListFragment.AccountId = accountId;
-        mAllDataListFragment.loadData();
+//        mAllDataListFragment.loadData();
+        mAllDataListFragment.loadData(prepareQuery());
 
         // hide account details bar if all accounts are selected
         if (accountId == Constants.NOT_SET) {

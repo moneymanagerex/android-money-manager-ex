@@ -103,7 +103,7 @@ public class WatchlistFragment
     ViewGroup mListHeader;
 
     private Context mContext;
-    // price update counter. Used to know when all the prices are done.
+    // price update counter. Used to know when all the prices are done downloading.
     private int mUpdateCounter;
     private int mToUpdateTotal;
 
@@ -175,10 +175,26 @@ public class WatchlistFragment
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         initializeAccountsSelector();
         selectCurrentAccount();
+
+        // restart loader
+        startLoaderData();
+
+        // set subtitle account name
+//        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+//        if (activity != null) {
+//            activity.getSupportActionBar().setSubtitle(mAccountName);
+//        }
     }
+
+    // Menu
 
     /**
      * Called once when the menu is being created.
@@ -231,18 +247,6 @@ public class WatchlistFragment
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // restart loader
-        startLoaderData();
-        // set subtitle account name
-        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-        if (activity != null) {
-            activity.getSupportActionBar().setSubtitle(mAccountName);
-        }
     }
 
     @Override
