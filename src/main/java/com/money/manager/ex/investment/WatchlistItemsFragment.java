@@ -130,7 +130,7 @@ public class WatchlistItemsFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Ignore the header row.
-                if (position == 0) return;
+                if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
 
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
                     getActivity().openContextMenu(view);
@@ -149,8 +149,6 @@ public class WatchlistItemsFragment
 
         // set adapter
         setListAdapter(adapter);
-        // start loader
-//        getLoaderManager().initLoader(ID_LOADER_WATCHLIST, mLoaderArgs, this);
 
         // register context menu
         registerForContextMenu(getListView());
@@ -174,14 +172,17 @@ public class WatchlistItemsFragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-        // ignore the header row.
-        if (info.position == 0) return;
+        boolean hasHeaderRow = getListView().getHeaderViewsCount() > 0;
+
+        // ignore the header row if the headers are shown.
+        if (hasHeaderRow && info.position == 0) return;
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 
 //        DatabaseUtils.dumpCursor(cursor);
 
-        cursor.moveToPosition(info.position - 1);
+        int cursorPosition = hasHeaderRow ? info.position - 1 : info.position;
+        cursor.moveToPosition(cursorPosition);
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL)));
 
