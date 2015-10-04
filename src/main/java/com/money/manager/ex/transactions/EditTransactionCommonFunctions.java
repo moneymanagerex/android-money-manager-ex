@@ -283,8 +283,13 @@ public class EditTransactionCommonFunctions {
     }
 
     public int getSourceCurrencyId() {
-        return this.AccountList.get(
-                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
+//        return this.AccountList.get(
+//                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
+        AccountRepository repo = new AccountRepository(mContext);
+        Account account = repo.query(new String[] { Account.CURRENCYID },
+            Account.ACCOUNTID + "=?",
+            new String[] { Integer.toString(this.accountId)});
+        return account.getCurrencyId();
     }
 
     public FontIconView getTransferButtonIcon() {
