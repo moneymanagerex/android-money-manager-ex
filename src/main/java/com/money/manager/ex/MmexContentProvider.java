@@ -56,6 +56,7 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 
@@ -103,6 +104,7 @@ public class MmexContentProvider
         List<Dataset> objMoneyManager = Arrays.asList(
             new AccountRepository(context),
             new AssetClassRepository(context),
+            new AssetClassStockRepository(context),
                 new TableAssets(),
                 new TableBillsDeposits(),
                 new BudgetTable(),

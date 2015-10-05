@@ -55,7 +55,7 @@ public class AssetClassRepository
     }
 
     public AssetClass query(String selection) {
-        return query(null, selection, null);
+        return query(getAllColumns(), selection, null);
     }
 
     public AssetClass query(String[] projection, String selection, String[] args) {
@@ -76,7 +76,10 @@ public class AssetClassRepository
     }
 
     public boolean insert(AssetClass value) {
-        return this.insert(value.contentValues) > 0;
+        int id = this.insert(value.contentValues);
+        value.setId(id);
+
+        return id > 0;
     }
 
     public boolean bulkInsert(List<AssetClass> entities) {

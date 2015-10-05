@@ -26,5 +26,24 @@ public class AssetClassStock
     public static final String ASSETCLASSID = "STOCKID";
     public static final String STOCKID = "STOCKID";
 
+    public static AssetClassStock create() {
+        AssetClassStock entity = new AssetClassStock();
+        return entity;
+    }
 
+    public AssetClassStock() {
+        super();
+    }
+
+    public void setId(int value) {
+        setInt(ID, value);
+    }
+
+    public void setAssetClassId(int value) {
+        setInt(ASSETCLASSID, value);
+    }
+
+    public void setStockId(int value) {
+        setInt(STOCKID, value);
+    }
 }

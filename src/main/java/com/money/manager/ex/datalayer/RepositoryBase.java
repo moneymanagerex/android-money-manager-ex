@@ -57,12 +57,7 @@ public class RepositoryBase
     }
 
     public Cursor openCursor(String[] projection, String selection, String[] args) {
-        Cursor cursor = context.getContentResolver().query(getUri(),
-            projection,
-            selection,
-            args,
-            null);
-        return cursor;
+        return openCursor(projection, selection, args, null);
     }
 
     public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {

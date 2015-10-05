@@ -16,8 +16,14 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.content.Context;
+
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 import org.junit.After;
@@ -57,6 +63,37 @@ public class AssetAllocationTests {
     }
 
     @Test
+    public void testDataLayer() {
+        // Given
+
+        UnitTestHelper.initializeContentProvider();
+        Context context = UnitTestHelper.getContext();
+//        StockRepository stockRepository = new StockRepository(context);
+        AssetClassRepository classRepo = new AssetClassRepository(context);
+        AssetClassStockRepository classStockRepo = new AssetClassStockRepository(context);
+        Double expectedAllocation = 14.28;
+        int expectedAssetClassId = 1;
+
+        // save
+        createRecords(context);
+
+        // When
+
+        // test loading
+
+        AssetClass actualClass = classRepo.load(expectedAssetClassId);
+        actualClass.stockLinks  = classStockRepo.loadForClass(expectedAssetClassId);
+
+        // Then
+
+        assertThat(actualClass).isNotNull();
+        assertThat(actualClass.getAllocation()).isEqualTo(expectedAllocation);
+
+        assertThat(actualClass.stockLinks).isNotNull();
+        assertThat(actualClass.stockLinks.size()).isGreaterThan(0);
+    }
+
+    @Test
     public void testLoadingOfAllocation() {
         // Given
 
@@ -68,5 +105,26 @@ public class AssetAllocationTests {
 
         assertThat(actual).isNotNull();
         assertThat(actual.size()).isGreaterThan(0);
+    }
+
+    // Private
+
+    public void createRecords(Context context) {
+        AssetClassRepository classRepo = new AssetClassRepository(context);
+        AssetClassStockRepository classStockRepo = new AssetClassStockRepository(context);
+
+        // One root object with allocation.
+
+        AssetClass class1 = AssetClass.create();
+        class1.setAllocation(14.28);
+        classRepo.insert(class1);
+
+        AssetClassStock links1 = AssetClassStock.create();
+        links1.setAssetClassId(class1.getId());
+        links1.setStockId(3);
+        classStockRepo.insert(links1);
+
+        // One object with child object.
+        // todo add
     }
 }

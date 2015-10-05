@@ -102,7 +102,7 @@ public class AssetClassEditFragment
     public void onFinishedInputAmountDialog(int id, Money amount) {
         switch (id) {
             case INPUT_ALLOCATION:
-                assetClass.setAllocation(amount);
+                assetClass.setAllocation(amount.toDouble());
                 updateAllocation();
                 break;
         }

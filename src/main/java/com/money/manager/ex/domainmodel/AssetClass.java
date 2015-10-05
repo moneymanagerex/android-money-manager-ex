@@ -19,6 +19,8 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import java.util.List;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -41,13 +43,15 @@ public class AssetClass
 
     public static AssetClass create() {
         AssetClass entity = new AssetClass();
-        entity.setAllocation(MoneyFactory.fromString("0"));
+        entity.setAllocation(0.0);
         return entity;
     }
 
     public AssetClass() {
         super();
     }
+
+    public List<AssetClassStock> stockLinks;
 
     @Override
     public void loadFromCursor(Cursor c) {
@@ -61,12 +65,16 @@ public class AssetClass
         return getInt(ID);
     }
 
+    public void setId(int value) {
+        setInt(ID, value);
+    }
+
     public Money getAllocation() {
         return getMoney(ALLOCATION);
     }
 
-    public void setAllocation(Money value) {
-        setMoney(ALLOCATION, value);
+    public void setAllocation(Double value) {
+        setDouble(ALLOCATION, value);
     }
 
     public String getName() {
