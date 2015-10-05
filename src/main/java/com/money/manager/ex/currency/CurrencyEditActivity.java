@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -76,7 +75,7 @@ public class CurrencyEditActivity
 
     @Override
     public boolean onActionDoneClick() {
-        if (updateData()) {
+        if (save()) {
             finish();
             return true;
         } else {
@@ -213,7 +212,7 @@ public class CurrencyEditActivity
      *
      * @return true if data is update into database
      */
-    private boolean updateData() {
+    private boolean save() {
         if (!validateData()) {
             return false;
         }
@@ -221,15 +220,15 @@ public class CurrencyEditActivity
         Currency currency = new Currency();
         currency.setCurrencyid(mCurrencyId);
 
-//        currency.contentValues.put(Currency.CURRENCYNAME, edtCurrencyName.getText().toString().trim());
         currency.setName(edtCurrencyName.getText().toString().trim());
 
         if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             String code = getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()];
-//            currency.contentValues.put(Currency.CURRENCY_SYMBOL, symbol);
             currency.setCode(code);
         }
-        currency.contentValues.put(Currency.UNIT_NAME, edtCurrencyName.getText().toString().trim());
+
+        currency.setUnitName(edtUnitName.getText().toString().trim());
+
         currency.contentValues.put(Currency.CENT_NAME, edtCentsName.getText().toString().trim());
         currency.contentValues.put(Currency.PFX_SYMBOL, edtPrefix.getText().toString().trim());
         currency.contentValues.put(Currency.SFX_SYMBOL, edtSuffix.getText().toString().trim());
@@ -237,31 +236,33 @@ public class CurrencyEditActivity
         currency.contentValues.put(Currency.GROUP_SEPARATOR, edtGroup.getText().toString().trim());
         currency.contentValues.put(Currency.SCALE, edtScale.getText().toString().trim());
         currency.contentValues.put(Currency.BASECONVRATE, edtConversion.getText().toString().trim());
+//        currency.setConversionRate();
 
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
 
         // update data
+        boolean success = false;
         if (Intent.ACTION_INSERT.equals(mIntentAction)) {
-            boolean success = repo.insert(currency);
+            success = repo.insert(currency);
 
-            if (!success) {
-                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Inserting new currency failed!");
-                return false;
-            }
+//            if (!success) {
+//                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+//                Log.w(LOGCAT, "Inserting new currency failed!");
+//                return false;
+//            }
         } else {
-            boolean success = repo.update(currency);
+            success = repo.update(currency);
 
-            if (!success) {
-                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update of currency with id:" + Integer.toString(mCurrencyId) + " failed!");
-                return false;
-            }
+//            if (!success) {
+//                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+//                Log.w(LOGCAT, "Update of currency with id:" + Integer.toString(mCurrencyId) + " failed!");
+//                return false;
+//            }
         }
         //reload currency
         CurrencyService currencyService = new CurrencyService(getApplicationContext());
         currencyService.reInit();
 
-        return true;
+        return success;
     }
 }

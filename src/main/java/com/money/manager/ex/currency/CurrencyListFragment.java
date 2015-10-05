@@ -168,11 +168,9 @@ public class CurrencyListFragment
                 break;
 
             case 3: //DELETE
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Account.CURRENCYID, currencyId);
-                if (new TablePayee().canDelete(getActivity(), contentValues, TableAccountList.class.getName())) {
-                    showDialogDeleteCurrency(currencyId);
-                } else {
+                CurrencyService service = new CurrencyService(getActivity());
+                boolean used = service.isCurrencyUsed(currencyId);
+                if (used) {
                     new AlertDialogWrapper.Builder(getContext())
                         .setTitle(R.string.attention)
                         .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
@@ -184,6 +182,10 @@ public class CurrencyListFragment
                             }
                         })
                         .create().show();
+                } else {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(Account.CURRENCYID, currencyId);
+                    showDialogDeleteCurrency(currencyId);
                 }
                 break;
         }
@@ -203,11 +205,16 @@ public class CurrencyListFragment
                 if (mShowOnlyUsedCurrencies) {
                     // get the list of used currencies.
                     CurrencyService currencyService = getCurrencyUtils();
-                    List<TableCurrencyFormats> usedCurrencies = currencyService.getUsedCurrencies();
+                    List<Currency> usedCurrencies = currencyService.getUsedCurrencies();
                     if (usedCurrencies != null && usedCurrencies.size() > 0) {
                         ArrayList<String> symbols = new ArrayList<>();
-                        for (TableCurrencyFormats currency : usedCurrencies) {
-                            symbols.add(currency.getCurrencySymbol());
+                        for (Currency currency : usedCurrencies) {
+                            if (currency == null) {
+                                ExceptionHandler handler = new ExceptionHandler(getActivity());
+                                handler.showMessage(getString(R.string.currency_not_found));
+                            } else {
+                                symbols.add(currency.getCode());
+                            }
                         }
 
                         MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
@@ -402,7 +409,7 @@ public class CurrencyListFragment
 
     private boolean saveExchangeRate(String symbol, Money rate) {
         CurrencyRepository repo = new CurrencyRepository(getActivity());
-        TableCurrencyFormats currency = repo.loadCurrency(symbol);
+        Currency currency = repo.loadCurrency(symbol);
         int currencyId = currency.getCurrencyId();
 
         // update value on database
@@ -422,10 +429,15 @@ public class CurrencyListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (getActivity().getContentResolver().delete(mCurrency.getUri(),
-                            Currency.CURRENCYID + "=" + currencyId, null) == 0) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                        CurrencyRepository repo = new CurrencyRepository(getActivity());
+                        boolean success = repo.delete(currencyId);
+                        if (success) {
+                            Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                         }
+//                        if (getActivity().getContentResolver().delete(mCurrency.getUri(),
+//                            Currency.CURRENCYID + "=" + currencyId, null) == 0) {
+//                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+//                        }
                         // restart loader
                         getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, CurrencyListFragment.this);
                     }
@@ -515,13 +527,13 @@ public class CurrencyListFragment
 
     public void updateExchangeRates() {
         // Update only the visible currencies.
-        List<TableCurrencyFormats> currencies = getVisibleCurrencies();
+        List<Currency> currencies = getVisibleCurrencies();
 
         // updateAllExchangeRatesFromYahoo();
         updateExchangeRatesFromYahoo(currencies);
     }
 
-    private List<TableCurrencyFormats> getVisibleCurrencies() {
+    private List<Currency> getVisibleCurrencies() {
         CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
         if (adapter == null) return null;
 
@@ -529,11 +541,10 @@ public class CurrencyListFragment
         if (cursor == null) return null;
 
         cursor.moveToPosition(Constants.NOT_SET);
-        List<TableCurrencyFormats> currencies = new ArrayList<>();
+        List<Currency> currencies = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            TableCurrencyFormats currency = new TableCurrencyFormats();
-            currency.setValueFromCursor(cursor);
+            Currency currency = Currency.fromCursor(cursor);
             currencies.add(currency);
         }
 
@@ -561,7 +572,7 @@ public class CurrencyListFragment
 //        updateExchangeRatesFromYahoo(currencies);
 //    }
 
-    private void updateExchangeRatesFromYahoo(List<TableCurrencyFormats> currencies){
+    private void updateExchangeRatesFromYahoo(List<Currency> currencies){
         if (currencies == null || currencies.size() <= 0) return;
 
         CurrencyService utils = getCurrencyUtils();
@@ -569,8 +580,8 @@ public class CurrencyListFragment
         String symbol;
         String baseCurrencySymbol = utils.getBaseCurrencyCode();
 
-        for (TableCurrencyFormats currency : currencies) {
-            symbol = currency.getCurrencySymbol();
+        for (Currency currency : currencies) {
+            symbol = currency.getCode();
             if (symbol == null) continue;
             if (symbol.equals(baseCurrencySymbol)) continue;
 
@@ -584,7 +595,7 @@ public class CurrencyListFragment
     private boolean updateCurrencyFromYahoo(int toCurrencyId) {
         CurrencyService utils = getCurrencyUtils();
 
-        List<TableCurrencyFormats> currencies = new ArrayList<>();
+        List<Currency> currencies = new ArrayList<>();
         currencies.add(utils.getCurrency(toCurrencyId));
 
         updateExchangeRatesFromYahoo(currencies);

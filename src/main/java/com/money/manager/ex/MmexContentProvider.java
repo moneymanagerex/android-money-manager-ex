@@ -79,7 +79,6 @@ public class MmexContentProvider
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
     private static Map<Integer, Object> mapContent = new HashMap<>();
-    // authority of application
     private static String mAuthority;
 
     public MmexContentProvider() {
@@ -164,7 +163,7 @@ public class MmexContentProvider
                         ////database.setTransactionSuccessful();
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(e, "inserting record: " + e.getMessage());
+                        handler.handle(e, "inserting: " + e.getMessage());
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;
@@ -208,7 +207,7 @@ public class MmexContentProvider
                         rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
                     } catch (Exception ex) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(ex, "update in provider:" + ex.getMessage());
+                        handler.handle(ex, "updating: " + ex.getMessage());
                     }
                     break;
                 default:

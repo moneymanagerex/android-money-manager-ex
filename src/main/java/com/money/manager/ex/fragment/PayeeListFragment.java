@@ -43,6 +43,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -210,23 +211,23 @@ public class PayeeListFragment
             case 1: //DELETE
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(Payee.PAYEEID, payee.getId());
-                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
-                    showDialogDeletePayee(payee.getId());
-                } else {
-                    new AlertDialogWrapper.Builder(getActivity())
-                            .setTitle(R.string.attention)
-                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-                            .setMessage(R.string.payee_can_not_deleted)
-                            .setPositiveButton(android.R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialog,
-                                                int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).create().show();
-                }
+//                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
+                showDialogDeletePayee(payee.getId());
+//                } else {
+//                    new AlertDialogWrapper.Builder(getActivity())
+//                            .setTitle(R.string.attention)
+//                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+//                            .setMessage(R.string.payee_can_not_deleted)
+//                            .setPositiveButton(android.R.string.ok,
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(
+//                                                DialogInterface dialog,
+//                                                int which) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    }).create().show();
+//                }
                 break;
 
             case 2: // view transactions
@@ -348,10 +349,12 @@ public class PayeeListFragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (getActivity().getContentResolver().delete(mPayee.getUri(), "PAYEEID=" + payeeId, null) == 0) {
-                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                        PayeeRepository repo = new PayeeRepository(getActivity());
+                        boolean success = repo.delete(payeeId);
+                        if (success) {
+                            Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                         }
-                        // restart loader
+
                         restartLoader();
                     }
                 });
@@ -363,7 +366,8 @@ public class PayeeListFragment
             }
         });
         // show dialog
-        alertDialog.create().show();
+        alertDialog.create()
+            .show();
     }
 
     private void showDialogEditPayeeName(final SQLTypeTransaction type, final int payeeId, final String payeeName) {

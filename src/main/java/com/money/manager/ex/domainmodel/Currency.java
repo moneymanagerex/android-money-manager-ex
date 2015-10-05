@@ -16,7 +16,8 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import com.money.manager.ex.database.TableCurrencyFormats;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 /**
  * Currency entity
@@ -36,12 +37,51 @@ public class Currency
     public static final String BASECONVRATE = "BASECONVRATE";
     public static final String CURRENCY_SYMBOL = "CURRENCY_SYMBOL";
 
+    public static Currency fromCursor(Cursor c) {
+        Currency currency = new Currency();
+        currency.loadFromCursor(c);
+        return currency;
+    }
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all Double values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, SCALE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, BASECONVRATE, this.contentValues);
+    }
+
+    public Double getBaseConversionRate() {
+        return getDouble(BASECONVRATE);
+    }
+
+    public String getCode() {
+        return getString(CURRENCY_SYMBOL);
+    }
+
     public int getCurrencyId() {
         return getInt(CURRENCYID);
     }
 
     public void setCurrencyid(int value) {
         setInt(CURRENCYID, value);
+    }
+
+    public String getDecimalPoint() {
+        return getString(DECIMAL_POINT);
+    }
+
+    public void setDecimalPoint(String value) {
+        setString(DECIMAL_POINT, value);
+    }
+
+    public String getGroupSeparator() {
+        return getString(GROUP_SEPARATOR);
+    }
+
+    public String getName() {
+        return getString(CURRENCYNAME);
     }
 
     public void setName(String value) {
@@ -52,23 +92,35 @@ public class Currency
         setString(CURRENCY_SYMBOL, value);
     }
 
-    public void setPfxSymbol(String value) {
-        setString(PFX_SYMBOL, value);
+    public String getPfxSymbol() {
+        return getString(PFX_SYMBOL);
     }
 
-    public void setDecimalPoint(String value) {
-        setString(DECIMAL_POINT, value);
+    public void setPfxSymbol(String value) {
+        setString(PFX_SYMBOL, value);
     }
 
     public void setGroupSeparator(String value) {
         setString(GROUP_SEPARATOR, value);
     }
 
+    public Double getScale() {
+        return getDouble(SCALE);
+    }
+
     public void setScale(double value) {
         setDouble(SCALE, value);
     }
 
+    public String getSfxSymbol() {
+        return getString(SFX_SYMBOL);
+    }
+
     public void setConversionRate(Double value) {
         setDouble(BASECONVRATE, value);
+    }
+
+    public void setUnitName(String value) {
+        setString(UNIT_NAME, value);
     }
 }

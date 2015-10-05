@@ -24,6 +24,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.settings.AppSettings;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +90,7 @@ public class FormatUtilities {
 
     public int getNumberOfDecimalsForBaseCurrency() {
         CurrencyService service = new CurrencyService(context);
-        TableCurrencyFormats baseCurrency = service.getBaseCurrency();
+        Currency baseCurrency = service.getBaseCurrency();
         if (baseCurrency == null) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
             handler.showMessage(context.getString(R.string.base_currency_not_set));

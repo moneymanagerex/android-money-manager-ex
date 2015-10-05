@@ -24,6 +24,23 @@ public class CurrencyRepository
 
     }
 
+    @Override
+    public String[] getAllColumns() {
+        return new String[] {
+            "CURRENCYID AS _id", Currency.CURRENCYID, Currency.CURRENCYNAME,
+            Currency.PFX_SYMBOL, Currency.SFX_SYMBOL, Currency.DECIMAL_POINT,
+            Currency.GROUP_SEPARATOR, Currency.UNIT_NAME, Currency.CENT_NAME,
+            Currency.SCALE, Currency.BASECONVRATE, Currency.CURRENCY_SYMBOL
+        };
+    }
+
+    public Currency load(int id) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(Currency.CURRENCYID, "=", id);
+
+        return first(where.getWhere());
+    }
+
     public boolean insert(Currency value) {
         return this.insert(value.contentValues) > 0;
     }
@@ -37,13 +54,18 @@ public class CurrencyRepository
         return update(id, value.contentValues, where);
     }
 
-    public TableCurrencyFormats loadCurrency(int currencyId) {
-        return loadCurrency(
-            Currency.CURRENCYID + "=?",
-                new String[] { Integer.toString(currencyId) });
+    public boolean delete(int id) {
+        int result = delete(Currency.CURRENCYID + "=?", new String[]{Integer.toString(id)});
+        return result > 0;
     }
 
-    public TableCurrencyFormats loadCurrency(String symbol) {
+    public Currency loadCurrency(int currencyId) {
+        return loadCurrency(
+            Currency.CURRENCYID + "=?",
+            new String[]{Integer.toString(currencyId)});
+    }
+
+    public Currency loadCurrency(String symbol) {
         return loadCurrency(
             Currency.CURRENCY_SYMBOL + "=?",
                 new String[] { symbol });
@@ -63,8 +85,8 @@ public class CurrencyRepository
 
     // private methods
 
-    private TableCurrencyFormats loadCurrency(String selection, String[] selectionArgs) {
-        TableCurrencyFormats result = null;
+    private Currency loadCurrency(String selection, String[] selectionArgs) {
+        Currency result = null;
         try {
             result = loadCurrencyInternal(selection, selectionArgs);
         } catch (Exception e) {
@@ -74,14 +96,14 @@ public class CurrencyRepository
         return result;
     }
 
-    private TableCurrencyFormats loadCurrencyInternal(String selection, String[] selectionArgs) {
-        TableCurrencyFormats currency = new TableCurrencyFormats();
+    private Currency loadCurrencyInternal(String selection, String[] selectionArgs) {
+        Currency currency = new Currency();
 
-        Cursor cursor = this.openCursor(currency.getAllColumns(), selection, selectionArgs);
+        Cursor cursor = openCursor(getAllColumns(), selection, selectionArgs);
         if (cursor == null) return null;
 
         if (cursor.moveToNext()) {
-            currency.setValueFromCursor(cursor);
+            currency.loadFromCursor(cursor);
         } else {
             currency = null;
         }
@@ -89,4 +111,25 @@ public class CurrencyRepository
 
         return currency;
     }
+
+    public Currency first(String selection) {
+        return query(null, selection, null);
+    }
+
+    public Currency query(String[] projection, String selection, String[] args) {
+        Cursor c = openCursor(projection, selection, args);
+
+        if (c == null) return null;
+
+        Currency account = null;
+
+        if (c.moveToNext()) {
+            account = Currency.fromCursor(c);
+        }
+
+        c.close();
+
+        return account;
+    }
+
 }

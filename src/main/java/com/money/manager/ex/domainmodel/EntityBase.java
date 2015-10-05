@@ -144,6 +144,10 @@ public class EntityBase
         contentValues.put(fieldName, value);
     }
 
+    protected Double getDouble(String column) {
+        return contentValues.getAsDouble(column);
+    }
+
     protected void setDouble(String column, Double value) {
         contentValues.put(column, value);
     }

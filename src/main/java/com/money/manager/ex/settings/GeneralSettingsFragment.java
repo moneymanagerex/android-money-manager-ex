@@ -25,6 +25,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -249,9 +250,9 @@ public class GeneralSettingsFragment
         CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
         Integer currencyId = currencyService.getBaseCurrencyId();
 
-        TableCurrencyFormats tableCurrency = currencyService.getCurrency(currencyId);
+        Currency tableCurrency = currencyService.getCurrency(currencyId);
         if (tableCurrency != null) {
-            baseCurrency.setSummary(tableCurrency.getCurrencyName());
+            baseCurrency.setSummary(tableCurrency.getName());
         }
     }
 

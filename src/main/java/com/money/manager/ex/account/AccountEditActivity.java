@@ -51,6 +51,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
 
 import java.util.Arrays;
 
@@ -137,11 +138,11 @@ public class AccountEditActivity
         // default currency
         if (mCurrencyId == null) {
             CurrencyService currencyService = new CurrencyService(getApplicationContext());
-            TableCurrencyFormats baseCurrency = currencyService.getBaseCurrency();
+            Currency baseCurrency = currencyService.getBaseCurrency();
 
             if (baseCurrency != null) {
                 mCurrencyId = baseCurrency.getCurrencyId();
-                mCurrencyName = baseCurrency.getCurrencyName();
+                mCurrencyName = baseCurrency.getName();
             }
         }
 
@@ -562,7 +563,7 @@ public class AccountEditActivity
         if (mCurrencyId == Constants.NOT_SET) {
             mCurrencyId = null;
         }
-        // todo: mAccount.setCurrencyId(mCurrencyId);
+        mAccount.setCurrencyId(mCurrencyId);
 
         mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
@@ -575,24 +576,17 @@ public class AccountEditActivity
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */
     private boolean selectCurrencyName(int currencyId) {
+        boolean result = false;
         CurrencyRepository repository = new CurrencyRepository(getApplicationContext());
-        TableCurrencyFormats currency = repository.loadCurrency(currencyId);
-        mCurrencyName = currency.getCurrencyName();
+        Currency currency = repository.loadCurrency(currencyId);
+        if (currency == null) {
+            mCurrencyName = "N/A";
+            result = false;
+        } else {
+            mCurrencyName = currency.getName();
+            result = true;
+        }
 
-//        TableCurrencyFormats tableCurrencyFormats = new TableCurrencyFormats();
-//        Cursor cursor = getContentResolver().query(tableCurrencyFormats.getUri(),
-//                tableCurrencyFormats.getAllColumns(),
-//                TableCurrencyFormats.CURRENCYID + "=?",
-//                (new String[]{Integer.toString(currencyId)}), null);
-//        // check if cursor is valid and open
-//        if ((cursor == null) || (!(cursor.moveToFirst()))) {
-//            return false;
-//        }
-//        // set category name
-//        mCurrencyName = cursor.getString(cursor.getColumnIndex(TableCurrencyFormats.CURRENCYNAME));
-//
-//        cursor.close();
-
-        return true;
+        return result;
     }
 }

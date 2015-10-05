@@ -16,17 +16,13 @@
  */
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentUris;
 import android.content.Context;
-import android.net.Uri;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Payee;
 
 /**
  * Payee repository
- * Created by Alen Siljak on 29/09/2015.
  */
 public class PayeeRepository
     extends RepositoryBase{
@@ -45,4 +41,10 @@ public class PayeeRepository
     public int add(Payee entity) {
         return insert(entity.contentValues);
     }
+
+    public boolean delete(int id) {
+        int result = delete(Payee.PAYEEID + "=?", new String[] { Integer.toString(id)});
+        return result > 0;
+    }
+
 }

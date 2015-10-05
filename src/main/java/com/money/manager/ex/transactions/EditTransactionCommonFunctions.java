@@ -282,15 +282,15 @@ public class EditTransactionCommonFunctions {
         return mDirty;
     }
 
-    public int getSourceCurrencyId() {
-//        return this.AccountList.get(
-//                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
-        AccountRepository repo = new AccountRepository(mContext);
-        Account account = repo.query(new String[] { Account.CURRENCYID },
-            Account.ACCOUNTID + "=?",
-            new String[] { Integer.toString(this.accountId)});
-        return account.getCurrencyId();
-    }
+//    public int getSourceCurrencyId() {
+////        return this.AccountList.get(
+////                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
+//        AccountRepository repo = new AccountRepository(mContext);
+//        Account account = repo.query(new String[] { Account.CURRENCYID },
+//            Account.ACCOUNTID + "=?",
+//            new String[] { Integer.toString(this.accountId)});
+//        return account.getCurrencyId();
+//    }
 
     public FontIconView getTransferButtonIcon() {
         return (FontIconView) mParent.findViewById(R.id.transferButtonIcon);
@@ -461,7 +461,10 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
         intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
         intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
-        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, this.getSourceCurrencyId());
+
+        AccountRepository repo = new AccountRepository(mContext);
+        Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
+        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }
@@ -848,7 +851,9 @@ public class EditTransactionCommonFunctions {
         }
 
         if (isTransfer) {
-            Integer fromCurrencyId = getSourceCurrencyId();
+            AccountRepository repo = new AccountRepository(mContext);
+//            Integer fromCurrencyId = getSourceCurrencyId();
+            Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
             Integer toCurrencyId = getDestinationCurrencyId();
             if (fromCurrencyId.equals(toCurrencyId)) {
                 // Same currency.
@@ -1098,7 +1103,9 @@ public class EditTransactionCommonFunctions {
 
         if (!isSourceAmount) {
             fromCurrencyId = getDestinationCurrencyId();
-            toCurrencyId = getSourceCurrencyId();
+            AccountRepository repo = new AccountRepository(mContext);
+//            toCurrencyId = getSourceCurrencyId();
+            toCurrencyId = repo.loadCurrencyIdFor(this.accountId);
 
             destinationTextView = txtAmount;
         }

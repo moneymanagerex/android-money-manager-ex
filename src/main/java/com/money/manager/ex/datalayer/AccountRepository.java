@@ -50,15 +50,15 @@ public class AccountRepository
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
     }
 
-    public Account load(int accountId) {
+    public Account load(int id) {
         WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(Account.ACCOUNTID, "=", accountId);
+        where.addStatement(Account.ACCOUNTID, "=", id);
 
         return query(where.getWhere());
     }
 
-    public boolean delete(int accountId) {
-        int result = delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(accountId)});
+    public boolean delete(int id) {
+        int result = delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(id)});
         return result > 0;
     }
 
@@ -111,6 +111,14 @@ public class AccountRepository
         cursor.close();
 
         return result;
+    }
+
+    public int loadCurrencyIdFor(int id) {
+        Account account = query(
+            new String[] { Account.CURRENCYID },
+            Account.ACCOUNTID + "=?",
+            new String[] { Integer.toString(id)});
+        return account.getCurrencyId();
     }
 
     public String loadName(int id) {
@@ -176,15 +184,19 @@ public class AccountRepository
         return c;
     }
 
-    public List<Account> loadInvestmentAccounts(boolean openOnly) {
-        Cursor c = getInvestmentAccountsCursor(openOnly);
+//    public List<Account> loadInvestmentAccounts(boolean openOnly) {
+//        Cursor c = getInvestmentAccountsCursor(openOnly);
+//
+//        List<Account> result = new ArrayList<>();
+//        while (c.moveToNext()) {
+//            result.add(Account.from(c));
+//        }
+//        c.close();
+//
+//        return result;
+//    }
 
-        List<Account> result = new ArrayList<>();
-        while (c.moveToNext()) {
-            result.add(Account.from(c));
-        }
-        c.close();
-
-        return result;
+    public boolean anyAccountsUsingCurrency(int currencyId) {
+        return any(Account.CURRENCYID + "=?", new String[]{Integer.toString(currencyId)});
     }
 }

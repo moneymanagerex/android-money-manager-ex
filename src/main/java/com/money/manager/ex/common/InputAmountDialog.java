@@ -35,6 +35,7 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Currency;
 import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.ExpressionBuilder;
@@ -142,7 +143,7 @@ public class InputAmountDialog
         mIdView = getArguments().getInt("id");
         // Display the existing amount, if any has been passed into the dialog.
         NumericHelper numericHelper = new NumericHelper(getContext());
-        TableCurrencyFormats currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+        Currency currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
 
         Money amount = MoneyFactory.fromString(getArguments().getString("amount"));
         if (currency != null) {
@@ -449,7 +450,7 @@ public class InputAmountDialog
         String result;
         if(this.roundToCurrencyDecimals) {
             // use decimals from the display currency.
-            TableCurrencyFormats displayCurrency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+            Currency displayCurrency = mCurrencyService.getCurrency(mDisplayCurrencyId);
             if (displayCurrency != null) {
                 // but decimal and group separators from the base currency.
                 result = helper.getNumberFormatted(amount, displayCurrency.getScale(),

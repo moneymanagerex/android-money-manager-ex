@@ -32,6 +32,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
 /**
  * Dataset
  */
@@ -55,75 +56,75 @@ public abstract class Dataset
 	private String source = "";
 	private DatasetType type;
 	private String basepath = "";
-	private String _ID = "ROWID AS _id";
+//	private String _ID = "ROWID AS _id";
 
-	/**
-	 * This method is a bit of a mess right now.
-	 *
-	 * @param context context from call
-	 * @param values to compose filter
-	 * @param className name dataset to check
-	 * @return true if can delete
-	 */
-	public boolean canDelete(Context context, ContentValues values, String className) {
-		// check if content values is populate
-		if (values.size() < 0) {
-			return true;
-		}
-		// compose filter
-		String selection = "";
-		List<String> selectionArgs = new ArrayList<>();
-		
-		for(Entry<String, Object> entry : values.valueSet()) {
-			if (!(TextUtils.isEmpty(selection))) {
-				selection += " AND ";
-			}
-			selection += entry.getKey() + "=?";
-			selectionArgs.add(entry.getValue().toString());
-		}
-		// create dynamic dataset
-		Class[] classParm = null;
-		Object[] objectParm = null;
-		Dataset dataset;
-		try {
-			Class<?> cls = Class.forName(className);
-			Constructor<?> cnt = cls.getConstructor(classParm);
-			dataset = (Dataset) cnt.newInstance(objectParm);
-		} catch (Exception e) {
-			ExceptionHandler handler = new ExceptionHandler(context, this);
-			handler.handle(e, "creating new instance of a dataset");
-			return false;
-		}
-		// check if dataset is created
-		if (dataset == null) {
-			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Dataset is not created dynamic. Force return false");
-			return false;
-		}
+//	/**
+//	 * This method is a bit of a mess right now.
+//	 *
+//	 * @param context context from call
+//	 * @param values to compose filter
+//	 * @param className name dataset to check
+//	 * @return true if can delete
+//	 */
+//	public boolean canDelete(Context context, ContentValues values, String className) {
+//		// check if content values is populate
+//		if (values.size() < 0) {
+//			return true;
+//		}
+//		// compose filter
+//		String selection = "";
+//		List<String> selectionArgs = new ArrayList<>();
+//
+//		for(Entry<String, Object> entry : values.valueSet()) {
+//			if (!(TextUtils.isEmpty(selection))) {
+//				selection += " AND ";
+//			}
+//			selection += entry.getKey() + "=?";
+//			selectionArgs.add(entry.getValue().toString());
+//		}
+//		// create dynamic dataset
+//		Class[] classParm = null;
+//		Object[] objectParm = null;
+//		Dataset dataset;
+//		try {
+//			Class<?> cls = Class.forName(className);
+//			Constructor<?> cnt = cls.getConstructor(classParm);
+//			dataset = (Dataset) cnt.newInstance(objectParm);
+//		} catch (Exception e) {
+//			ExceptionHandler handler = new ExceptionHandler(context, this);
+//			handler.handle(e, "creating new instance of a dataset");
+//			return false;
+//		}
+//		// check if dataset is created
+//		if (dataset == null) {
+//			if (BuildConfig.DEBUG) Log.d(LOGCAT, "Dataset is not created dynamic. Force return false");
+//			return false;
+//		}
+//
+//		// check if referenced
+//		Cursor cursor = loadDataset(context, dataset, selection, selectionArgs);
+//		if (cursor != null && cursor.getCount() <= 0) {
+//			cursor.close();
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 
-		// check if referenced
-		Cursor cursor = loadDataset(context, dataset, selection, selectionArgs);
-		if (cursor != null && cursor.getCount() <= 0) {
-			cursor.close();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-    private Cursor loadDataset(Context context, Dataset dataset, String selection,
-                               List<String> selectionArgs) {
-        Cursor result = null;
-        try {
-            result = context.getContentResolver().query(dataset.getUri(), null,
-                    selection,
-                    selectionArgs.toArray(new String[selectionArgs.size()]),
-                    null);
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ex, "loading dataset");
-        }
-        return result;
-    }
+//    private Cursor loadDataset(Context context, Dataset dataset, String selection,
+//                               List<String> selectionArgs) {
+//        Cursor result = null;
+//        try {
+//            result = context.getContentResolver().query(dataset.getUri(), null,
+//                    selection,
+//                    selectionArgs.toArray(new String[selectionArgs.size()]),
+//                    null);
+//        } catch (Exception ex) {
+//            ExceptionHandler handler = new ExceptionHandler(context, this);
+//            handler.handle(ex, "loading dataset");
+//        }
+//        return result;
+//    }
 
 	/**
 	 * All columns of the dataset.
@@ -146,21 +147,21 @@ public abstract class Dataset
 		return source;
 	}
 
-	/**
-	 * 
-	 * @return SQL statment
-	 */
-	public String getSQL() {
-		switch (type) {
-		case TABLE:
-		case VIEW:
-			return "SELECT " + getAllColumns() + " FROM " + source;
-		case QUERY:
-			return source;
-		default:
-			return null;
-		}
-	}
+//	/**
+//	 *
+//	 * @return SQL statment
+//	 */
+//	public String getSQL() {
+//		switch (type) {
+//		case TABLE:
+//		case VIEW:
+//			return "SELECT " + getAllColumns() + " FROM " + source;
+//		case QUERY:
+//			return source;
+//		default:
+//			return null;
+//		}
+//	}
 
 	/**
 	 * @return the type
@@ -175,22 +176,20 @@ public abstract class Dataset
 	 */
 	public Uri getUri() {
 		String parse = "content://" + MmexContentProvider.getAuthority() + "/";
-		// check if set basepath
+
 		if (!TextUtils.isEmpty(this.basepath)) {
-			switch (this.type) {
-                case TABLE:
-                    // todo: inspect what was the intention here. The result of the operation is ignored.
-
-                    parse.concat("tables/");
-                    break;
-                case QUERY:
-                    // todo: inspect what was the intention here. The result of the operation is ignored.
-
-                    parse.concat("queries/");
-                    break;
-                default:
-                    break;
-			}
+//			switch (this.type) {
+//                case TABLE:
+//                    // todo: inspect what was the intention here. The result of the operation is ignored.
+////                    parse.concat("tables/");
+//                    break;
+//                case QUERY:
+//                    // todo: inspect what was the intention here. The result of the operation is ignored.
+////                    parse.concat("queries/");
+//                    break;
+//                default:
+//                    break;
+//			}
 			return Uri.parse(parse.concat(this.basepath));
 		} else {
 			throw new AssertionError("Internal Error. BasePath is not defined for the dataset");
@@ -203,24 +202,18 @@ public abstract class Dataset
 	public void setBasePath(String basepath) {
 		this.basepath = basepath;
 	}
+
+//	public void setID(String id) {
+//		this._ID = id;
+//	}
+
 	/**
-	 * 
-	 * @param id colonna chiave del dataset
-	 */
-	public void setID(String id) {
-		this._ID = id;
-	}
-	/**
-	 * 
+	 *
 	 * @param source table/view/query
 	 */
 	public void setSource(String source) {
 		this.source = source;
 	}
-
-//    public void setWhere(String whereStatement) {
-//
-//    }
 
 	/**
 	 * Populates the instance of the class to current record the cursor

@@ -422,9 +422,7 @@ public class CategoryListFragment
             } else {
                 getActivity().setResult(Activity.RESULT_CANCELED);
             }
-
         }
-
     }
 
     @Override
@@ -435,7 +433,6 @@ public class CategoryListFragment
     @Override
     public void onFloatingActionButtonClickListener() {
         showTypeSelectorDialog();
-//        showNameEntryDialog();
     }
 
     // Private
@@ -444,43 +441,37 @@ public class CategoryListFragment
      * Show alter dialog confirm delete category or sub category
      */
     private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
-        boolean canDelete = false;
+//        boolean canDelete;
         ContentValues values = new ContentValues();
         if (categoryIds.subCategId <= 0) {
             values.put(TableCategory.CATEGID, categoryIds.categId);
-            canDelete = new TableCategory().canDelete(getActivity(), values, TableCategory.class.getName());
+//            canDelete = new TableCategory().canDelete(getActivity(), values, TableCategory.class.getName());
         } else {
             values.put(TableSubCategory.SUBCATEGID, categoryIds.subCategId);
-            canDelete = new TableSubCategory().canDelete(getActivity(), values, TableSubCategory.class.getName());
+//            canDelete = new TableSubCategory().canDelete(getActivity(), values, TableSubCategory.class.getName());
         }
-        if (!(canDelete)) {
-//            Core core = new Core(getActivity());
-//            int icon = core.usingDarkTheme()
-//                ? R.drawable.ic_action_warning_dark
-//                : R.drawable.ic_action_warning_light;
-
-            new AlertDialogWrapper.Builder(getContext())
-                    .setTitle(R.string.attention)
-                    .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-                    .setMessage(R.string.category_can_not_deleted)
-//                    .setIcon(icon)
-                    .setPositiveButton(android.R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(
-                                        DialogInterface dialog,
-                                        int which) {
-                                    dialog.dismiss();
-                                }
-                            }).create().show();
-            return;
-        }
+//        if (!(canDelete)) {
+//            new AlertDialogWrapper.Builder(getContext())
+//                    .setTitle(R.string.attention)
+//                    .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+//                    .setMessage(R.string.category_can_not_deleted)
+//                    .setPositiveButton(android.R.string.ok,
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(
+//                                        DialogInterface dialog,
+//                                        int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            }).create().show();
+//            return;
+//        }
         // create and set alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_category)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
             .setMessage(R.string.confirmDelete);
-//        alertDialog.setIcon(R.drawable.ic_action_warning_light);
+
         // listener on positive button
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {

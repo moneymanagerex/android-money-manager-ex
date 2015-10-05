@@ -42,6 +42,7 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.DateUtils;
@@ -252,7 +253,7 @@ public class EditPriceDialog
         int currencyId = account.getCurrencyId();
 
         CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
-        TableCurrencyFormats currency = currencyService.getCurrency(currencyId);
+        Currency currency = currencyService.getCurrency(currencyId);
         String currencySymbol = currency.getSfxSymbol();
 
         mAmountTextView.setText(currencySymbol + " " + currentPrice.toString());

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -52,7 +53,7 @@ public class CurrencyService {
 
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
-    private static Map<Integer, TableCurrencyFormats> mCurrencies;
+    private static Map<Integer, Currency> mCurrencies;
 
     public static void destroy() {
         mCurrencies = null;
@@ -69,13 +70,13 @@ public class CurrencyService {
         // get base currency
         int baseCurrencyId = this.getBaseCurrencyId();
 
-        TableCurrencyFormats currency = this.getCurrency(baseCurrencyId);
+        Currency currency = this.getCurrency(baseCurrencyId);
         if (currency == null) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.showMessage(mContext.getString(R.string.base_currency_not_set));
             return null;
         }
-        return currency.getCurrencySymbol();
+        return currency.getCode();
     }
 
     public Boolean reInit() {
@@ -84,20 +85,21 @@ public class CurrencyService {
         return loadAllCurrencies();
     }
 
-    public Map<Integer, TableCurrencyFormats> getCurrenciesStore() {
+    public Map<Integer, Currency> getCurrenciesStore() {
         if (mCurrencies == null) mCurrencies = new HashMap<>();
         return mCurrencies;
     }
 
-    public List<TableCurrencyFormats> getUsedCurrencies() {
+    public List<Currency> getUsedCurrencies() {
         AccountService service = new AccountService(mContext);
 
         List<Account> accounts = service.getAccountList();
         if (accounts == null) return null;
 
-        List<TableCurrencyFormats> currencies = new ArrayList<>();
+        List<Currency> currencies = new ArrayList<>();
+
         for(Account account : accounts) {
-            TableCurrencyFormats currency = getCurrency(account.getCurrencyId());
+            Currency currency = getCurrency(account.getCurrencyId());
             if (!currencies.contains(currency)) {
                 currencies.add(currency);
             }
@@ -112,14 +114,14 @@ public class CurrencyService {
         // handle same currencies
         if (toCurrencyId.equals(fromCurrencyId)) return amount;
 
-        TableCurrencyFormats fromCurrencyFormats = getCurrency(fromCurrencyId);
-        TableCurrencyFormats toCurrencyFormats = getCurrency(toCurrencyId);
+        Currency fromCurrencyFormats = getCurrency(fromCurrencyId);
+        Currency toCurrencyFormats = getCurrency(toCurrencyId);
         // check if exists from and to currencies
         if (fromCurrencyFormats == null || toCurrencyFormats == null) return null;
 
         // exchange
-        double toConversionRate = toCurrencyFormats.getBaseConvRate();
-        double fromConversionRate = fromCurrencyFormats.getBaseConvRate();
+        double toConversionRate = toCurrencyFormats.getBaseConversionRate();
+        double fromConversionRate = fromCurrencyFormats.getBaseConversionRate();
 
 //        double result = (amount * fromConversionRate) / toConversionRate;
         Money result = amount.multiply(fromConversionRate).divide(toConversionRate, Constants.DEFAULT_PRECISION);
@@ -154,7 +156,7 @@ public class CurrencyService {
         mBaseCurrencyId = baseCurrencyId;
     }
 
-    public TableCurrencyFormats getBaseCurrency() {
+    public Currency getBaseCurrency() {
         int baseCurrencyId = getBaseCurrencyId();
         return getCurrency(baseCurrencyId);
     }
@@ -182,7 +184,7 @@ public class CurrencyService {
 
         // find currency id
         if (currencyId != null) {
-            TableCurrencyFormats tableCurrency = getCurrency(currencyId);
+            Currency tableCurrency = getCurrency(currencyId);
             NumericHelper helper = new NumericHelper(mContext);
 
             if (tableCurrency == null) {
@@ -204,11 +206,11 @@ public class CurrencyService {
      * @param currencyId of the currency to be get
      * @return an instance of class TableCurrencyFormats. Null if fail
      */
-    public TableCurrencyFormats getCurrency(Integer currencyId) {
+    public Currency getCurrency(Integer currencyId) {
         if (currencyId == null || currencyId == Constants.NOT_SET) return null;
 
         // check if the currency is cached.
-        TableCurrencyFormats result =  getCurrenciesStore().get(currencyId);
+        Currency result =  getCurrenciesStore().get(currencyId);
 
         // if not cached, try to load it.
         if (result == null) {
@@ -231,7 +233,7 @@ public class CurrencyService {
         java.util.Currency localeCurrency;
         Currency newCurrency;
         CurrencyRepository repo = new CurrencyRepository(mContext);
-        TableCurrencyFormats existingCurrency;
+        Currency existingCurrency;
 
         for (Locale locale : locales) {
             try {
@@ -279,6 +281,16 @@ public class CurrencyService {
         }
 
         return map;
+    }
+
+    /**
+     * Checks if the currency is used in any of the accounts. Useful before deletion.
+     * @param currencyId Id of the currency to check.
+     * @return A boolean indicating if the currency is in use.
+     */
+    public boolean isCurrencyUsed(int currencyId) {
+        AccountRepository accountRepository = new AccountRepository(mContext);
+        return accountRepository.anyAccountsUsingCurrency(currencyId);
     }
 
     /**
@@ -332,10 +344,11 @@ public class CurrencyService {
     }
 
     private void cacheCurrencyFromCursor(Cursor cursor) {
-        TableCurrencyFormats currency = new TableCurrencyFormats();
-        currency.setValueFromCursor(cursor);
+        Currency currency = new Currency();
+        currency.loadFromCursor(cursor);
 
-        Integer currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+//        Integer currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+        Integer currencyId = currency.getCurrencyId();
         // put object into map
         getCurrenciesStore().put(currencyId, currency);
     }

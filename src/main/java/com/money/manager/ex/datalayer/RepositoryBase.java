@@ -17,6 +17,7 @@ import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
@@ -45,13 +46,49 @@ public class RepositoryBase
 //
 //    }
 
+    public Cursor openCursor(String[] projection, String selection, String[] args) {
+        Cursor cursor = context.getContentResolver().query(getUri(),
+            projection,
+            selection,
+            args,
+            null);
+        return cursor;
+    }
+
+    public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
+        Cursor cursor = context.getContentResolver().query(getUri(),
+            projection,
+            selection,
+            args,
+            sort);
+        return cursor;
+    }
+
     public int add(EntityBase entity) {
         return insert(entity.contentValues);
     }
 
+    /**
+     * Check if any records satisfy the condition.
+     * @param where Selection statement / where.
+     * @return A boolean indicating if there are any records that satisfy the condition.
+     */
+    protected boolean any(String where, String[] args) {
+        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
+        Cursor c = helper.getReadableDatabase().rawQuery(where, args);
+        if (c == null) return false;
+
+        boolean result = false;
+        c.moveToNext();
+        // todo: result =
+        DatabaseUtils.dumpCurrentRow(c);
+        c.close();
+        return result;
+    }
+
     protected int insert(ContentValues values) {
         Uri insertUri = context.getContentResolver().insert(this.getUri(),
-                values);
+            values);
         if (insertUri == null) return Constants.NOT_SET;
 
         long id = ContentUris.parseId(insertUri);
@@ -67,9 +104,9 @@ public class RepositoryBase
         boolean result = false;
 
         int updateResult = context.getContentResolver().update(this.getUri(),
-                values,
-                where,
-                null
+            values,
+            where,
+            null
         );
 
         if (updateResult != 0) {
@@ -120,23 +157,4 @@ public class RepositoryBase
         );
         return result;
     }
-
-    protected Cursor openCursor(String[] projection, String selection, String[] args) {
-        Cursor cursor = context.getContentResolver().query(getUri(),
-                projection,
-                selection,
-                args,
-                null);
-        return cursor;
-    }
-
-    protected Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
-        Cursor cursor = context.getContentResolver().query(getUri(),
-                projection,
-                selection,
-                args,
-                sort);
-        return cursor;
-    }
-
 }

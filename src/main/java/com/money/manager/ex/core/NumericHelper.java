@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Currency;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -133,7 +134,7 @@ public class NumericHelper {
      * @param showSymbols Whether to include the currency symbol in the output.
      * @return formatted value
      */
-    public String getValueFormatted(Money value, boolean showSymbols, TableCurrencyFormats currency) {
+    public String getValueFormatted(Money value, boolean showSymbols, Currency currency) {
         String result = this.getNumberFormatted(value, currency.getScale(),
                 currency.getDecimalPoint(), currency.getGroupSeparator());
 
@@ -154,7 +155,7 @@ public class NumericHelper {
      * @param value value to format
      * @return value formatted
      */
-    public String getValueFormatted(Money value, TableCurrencyFormats currency) {
+    public String getValueFormatted(Money value, Currency currency) {
         return getValueFormatted(value, true, currency);
     }
 
