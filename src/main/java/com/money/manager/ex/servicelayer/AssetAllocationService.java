@@ -30,11 +30,11 @@ import java.util.List;
  */
 public class AssetAllocationService {
 
-    private AssetClassRepository repository;
-
     public AssetAllocationService(Context context) {
         this.repository = new AssetClassRepository(context);
     }
+
+    private AssetClassRepository repository;
 
     /**
      * Move the asset class up in the sort order.
@@ -56,7 +56,7 @@ public class AssetAllocationService {
 
         WhereStatementGenerator where = new WhereStatementGenerator();
         String filter = where.getStatement(AssetClass.SORTORDER, "=", upPosition);
-        AssetClass down = repository.query(filter);
+        AssetClass down = repository.first(filter);
         if (down != null) {
             down.setSortOrder(currentPosition);
             bulk.add(down);
@@ -68,6 +68,14 @@ public class AssetAllocationService {
 
     public List<AssetClass> loadAssetAllocation() {
         List<AssetClass> result = new ArrayList<>();
+
+        // https://communities.bmc.com/docs/DOC-9902
+        // http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
+        // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
+
+        // fetch all root-level elements
+//        this.repository.
+
 
         // todo
 

@@ -51,14 +51,14 @@ public class AssetClassRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AssetClass.ID, "=", id);
 
-        return query(where.getWhere());
+        return first(where.getWhere());
     }
 
-    public AssetClass query(String selection) {
-        return query(getAllColumns(), selection, null);
+    public AssetClass first(String selection) {
+        return first(getAllColumns(), selection, null);
     }
 
-    public AssetClass query(String[] projection, String selection, String[] args) {
+    public AssetClass first(String[] projection, String selection, String[] args) {
         Cursor c = openCursor(projection, selection, args);
 
         if (c == null) return null;

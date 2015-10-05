@@ -93,10 +93,18 @@ public class AssetAllocationTests {
         assertThat(actualClass.stockLinks.size()).isGreaterThan(0);
     }
 
-    // waiting for the data layer test to pass
-//    @Test
+    @Test
     public void testLoadingOfAllocation() {
         // Given
+
+        UnitTestHelper.initializeContentProvider();
+        Context context = UnitTestHelper.getContext();
+        AssetClassRepository classRepo = new AssetClassRepository(context);
+        AssetClassStockRepository classStockRepo = new AssetClassStockRepository(context);
+        Double expectedAllocation1 = 14.28;
+        int expectedAssetClassId = 1;
+        // save
+        createRecords(context);
 
         // When
 
@@ -106,6 +114,9 @@ public class AssetAllocationTests {
 
         assertThat(actual).isNotNull();
         assertThat(actual.size()).isGreaterThan(0);
+        // AssetClass parent = classRepo.load(2);
+        // AssetClass child = classRepo.load(3);
+
     }
 
     // Private
@@ -127,6 +138,15 @@ public class AssetAllocationTests {
         classStockRepo.insert(links1);
 
         // One object with child object.
-        // todo add
+
+        AssetClass class2 = AssetClass.create();
+        class2.setName("class2");
+        class2.setAllocation(25.16);
+        classRepo.insert(class2);
+
+        // http://stackoverflow.com/questions/192220/what-is-the-most-efficient-elegant-way-to-parse-a-flat-table-into-a-tree/192462#192462
+
+        AssetClass class2child = AssetClass.create();
+
     }
 }
