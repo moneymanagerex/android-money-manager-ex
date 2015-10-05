@@ -1,6 +1,7 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -30,6 +31,10 @@ public class LookAndFeelSettings
         DefinedDateRangeName defaultValue = DefinedDateRangeName.LAST_7_DAYS;
 
         String value = get(R.string.pref_show_transaction, defaultValue.toString());
+
+        if (TextUtils.isEmpty(value)) {
+            return defaultValue;
+        }
 
         DefinedDateRangeName result = null;
 
