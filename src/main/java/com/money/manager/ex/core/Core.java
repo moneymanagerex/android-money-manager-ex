@@ -53,7 +53,9 @@ import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -376,13 +378,13 @@ public class Core {
         // category
         Cursor cursor = mContext.getContentResolver().query(category.getUri(),
                 null,
-                TableCategory.CATEGID + "=?",
+                Category.CATEGID + "=?",
                 new String[]{Integer.toString(categoryId)},
                 null);
 
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            categoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
+            categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
         }
         if (cursor != null) {
             cursor.close();
@@ -391,12 +393,12 @@ public class Core {
         // sub-category
         cursor = mContext.getContentResolver().query(subCategory.getUri(),
                 null,
-                TableSubCategory.SUBCATEGID + "=?",
+                Subcategory.SUBCATEGID + "=?",
                 new String[]{Integer.toString(subCategoryId)},
                 null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            subCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
+            subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
         } else {
             subCategoryName = null;
         }

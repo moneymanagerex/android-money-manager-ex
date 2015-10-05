@@ -28,6 +28,8 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -329,8 +331,8 @@ public class MoneyManagerOpenHelper
                                 .getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
                         if (idStringCategory > 0) {
                             ContentValues contentValues = new ContentValues();
-                            contentValues.put(TableCategory.CATEGID, categoryId);
-                            contentValues.put(TableCategory.CATEGNAME, mContext.getString(idStringCategory));
+                            contentValues.put(Category.CATEGID, categoryId);
+                            contentValues.put(Category.CATEGNAME, mContext.getString(idStringCategory));
                             long newCategoryId = database.insert(tableCategory, null, contentValues);
 
                             if (newCategoryId <= 0) {
@@ -343,9 +345,9 @@ public class MoneyManagerOpenHelper
                             .getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
                     if (idStringSubcategory > 0) {
                         ContentValues contentValues = new ContentValues();
-                        contentValues.put(TableSubCategory.SUBCATEGID, subCategoryId);
-                        contentValues.put(TableSubCategory.CATEGID, categoryId);
-                        contentValues.put(TableSubCategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
+                        contentValues.put(Subcategory.SUBCATEGID, subCategoryId);
+                        contentValues.put(Subcategory.CATEGID, categoryId);
+                        contentValues.put(Subcategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
                         long newSubCategoryId = database.insert(tableSubcategory, null, contentValues);
 
                         if (newSubCategoryId <= 0) {

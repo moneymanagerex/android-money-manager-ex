@@ -16,24 +16,22 @@
  */
 package com.money.manager.ex.database;
 
+import com.money.manager.ex.domainmodel.Subcategory;
+
 public class TableSubCategory extends Dataset {
-	// FIELD
-	public static final String SUBCATEGID = "SUBCATEGID";
-	public static final String SUBCATEGNAME = "SUBCATEGNAME";
-	public static final String CATEGID = "CATEGID";
 
 	private int subCategId;
 	private String subCategName;
 	private int categId;
 	
-	// CONSTRUCTOR
 	public TableSubCategory() {
 		super("subcategory_v1", DatasetType.TABLE, "subcategory");
 	}
 	
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"SUBCATEGID AS _id", SUBCATEGID, SUBCATEGNAME, CATEGID };
+		return new String[] {"SUBCATEGID AS _id", Subcategory.SUBCATEGID,
+			Subcategory.SUBCATEGNAME, Subcategory.CATEGID };
 	}
 
 	/**

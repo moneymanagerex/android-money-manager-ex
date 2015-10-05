@@ -18,11 +18,10 @@ package com.money.manager.ex.database;
 
 import android.database.Cursor;
 
-public class TableCategory
-		extends Dataset {
+import com.money.manager.ex.domainmodel.Category;
 
-	public static final String CATEGID = "CATEGID";
-	public static final String CATEGNAME = "CATEGNAME";
+public class TableCategory
+	extends Dataset {
 
 	private int categId;
 	private CharSequence categName;
@@ -33,15 +32,15 @@ public class TableCategory
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"CATEGID AS _id", CATEGID, CATEGNAME};
+		return new String[] {"CATEGID AS _id", Category.CATEGID, Category.CATEGNAME};
 	}
 
     @Override
 	public void setValueFromCursor(Cursor c) {
 		if (c == null) { return; }
 
-		this.setCategId(c.getInt(c.getColumnIndex(CATEGID)));
-		this.setCategName(c.getString(c.getColumnIndex(CATEGNAME)));
+		this.setCategId(c.getInt(c.getColumnIndex(Category.CATEGID)));
+		this.setCategName(c.getString(c.getColumnIndex(Category.CATEGNAME)));
 	}
 
 	/**

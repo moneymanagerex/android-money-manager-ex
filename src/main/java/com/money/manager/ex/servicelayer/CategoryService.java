@@ -25,6 +25,10 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.SubcategoryRepository;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Subcategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,17 +51,17 @@ public class CategoryService {
 
         if(TextUtils.isEmpty(name)) { return result; }
 
-        String selection = TableCategory.CATEGNAME + "=?";
+        String selection = Category.CATEGNAME + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(
                 mCategory.getUri(),
-                new String[] { TableCategory.CATEGID },
+                new String[] { Category.CATEGID },
                 selection,
                 new String[] { name },
                 null);
 
         if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(TableCategory.CATEGID));
+            result = cursor.getInt(cursor.getColumnIndex(Category.CATEGID));
         }
 
         cursor.close();
@@ -71,7 +75,7 @@ public class CategoryService {
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(TableCategory.CATEGNAME, name);
+        values.put(Category.CATEGNAME, name);
 
         Uri result = mContext.getContentResolver()
                 .insert(mCategory.getUri(), values);
@@ -82,15 +86,12 @@ public class CategoryService {
 
     /**
      * Return a list of all categories
-     *
-     * @return List of all categories
-     * @since version 1.0.1
      */
     public List<TableCategory> getCategoryList() {
         List<TableCategory> listCategories = new ArrayList<>();
 
         Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(),
-                null, null, null, TableCategory.CATEGNAME);
+                null, null, null, Category.CATEGNAME);
         if (cursor == null) return listCategories;
 
         // populate list from data cursor
@@ -110,13 +111,30 @@ public class CategoryService {
         name = name.trim();
 
         ContentValues values = new ContentValues();
-        values.put(TableCategory.CATEGNAME, name);
+        values.put(Category.CATEGNAME, name);
 
         int result = mContext.getContentResolver().update(mCategory.getUri(),
                 values,
-                TableCategory.CATEGID + "=" + id, null);
+                Category.CATEGID + "=" + id, null);
 
         return result;
+    }
+
+    /**
+     * Checks account transactions to find any that use given category
+     * @param categoryId Id of the category for which to check.
+     * @return A boolean indicating if the category is in use.
+     */
+    public boolean isCategoryUsed(int categoryId) {
+        CategoryRepository repo = new CategoryRepository(mContext);
+        int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
+        return links > 0;
+    }
+
+    public boolean isSubcategoryUsed(int subcategoryId) {
+        SubcategoryRepository repo = new SubcategoryRepository(mContext);
+        int links = repo.count(Subcategory.SUBCATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
+        return links > 0;
     }
 
 }

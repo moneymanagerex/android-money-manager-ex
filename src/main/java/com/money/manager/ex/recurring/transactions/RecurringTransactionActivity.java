@@ -35,6 +35,8 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
@@ -382,20 +384,20 @@ public class RecurringTransactionActivity
         Cursor cursor;
         // category
         cursor = getContentResolver().query(category.getUri(), category.getAllColumns(),
-                TableCategory.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
+                Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            mCommonFunctions.categoryName = cursor.getString(cursor.getColumnIndex(TableCategory.CATEGNAME));
+            mCommonFunctions.categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
             cursor.close();
         } else {
             mCommonFunctions.categoryName = null;
         }
         // sub-category
         cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
-                TableSubCategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
+            Subcategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
         if ((cursor != null) && (cursor.moveToFirst())) {
             // set category name and sub category name
-            mCommonFunctions.subCategoryName = cursor.getString(cursor.getColumnIndex(TableSubCategory.SUBCATEGNAME));
+            mCommonFunctions.subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
             cursor.close();
         } else {
             mCommonFunctions.subCategoryName = null;

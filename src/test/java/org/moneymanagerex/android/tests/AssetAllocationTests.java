@@ -17,7 +17,8 @@
 package org.moneymanagerex.android.tests;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,44 +28,45 @@ import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * A model for test class.
+ * Unit tests for asset allocation service.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class BaseTests {
+public class AssetAllocationTests {
+
+    private AssetAllocationService testObject;
 
     @Before
     public void setup() {
-        // initialize support for activities (UI)
-//        this.controller = UnitTestHelper.getController(MainActivity.class);
-//        this.activity = UnitTestHelper.getActivity(this.controller);
-
-        // initialize database
-        // UnitTestHelper.initializeContentProvider();
+        this.testObject = new AssetAllocationService(UnitTestHelper.getContext());
     }
 
     @After
     public void tearDown() {
-        // Reset database instance between tests.
-        // UnitTestHelper.resetDatabase();
-
-        // Destroy the activity controller.
-//        this.controller.destroy();
+        this.testObject = null;
     }
 
     @Test
-    public void testTemplate() {
-        assertThat(true).isTrue();
+    public void testInstantiation() {
+        assertThat(testObject).isNotNull();
     }
 
-    /**
-     * Exception test example.
-     */
-    @Test(expected=RuntimeException.class)
-    public void throwsException() {
-        throw new RuntimeException("bang!");
+    @Test
+    public void testLoadingOfAllocation() {
+        // Given
+
+        // When
+
+        List<AssetClass> actual = testObject.loadAssetAllocation();
+
+        // Then
+
+        assertThat(actual).isNotNull();
+        assertThat(actual.size()).isGreaterThan(0);
     }
 }

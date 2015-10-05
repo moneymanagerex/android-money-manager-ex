@@ -29,6 +29,7 @@ import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.domainmodel.Currency;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
@@ -125,7 +126,7 @@ public class UnitTestHelper {
 
     public static void setDefaultCurrency(String symbol) {
         CurrencyRepository repo = new CurrencyRepository(getContext());
-        TableCurrencyFormats currency = repo.loadCurrency(symbol);
+        Currency currency = repo.loadCurrency(symbol);
         int id = currency.getCurrencyId();
         setDefaultCurrency(id);
     }

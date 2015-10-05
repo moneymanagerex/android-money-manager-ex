@@ -41,6 +41,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
+import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryCategorySubCategory;
@@ -441,31 +444,36 @@ public class CategoryListFragment
      * Show alter dialog confirm delete category or sub category
      */
     private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
-//        boolean canDelete;
+        boolean canDelete;
+        CategoryService service = new CategoryService(getActivity());
         ContentValues values = new ContentValues();
+
         if (categoryIds.subCategId <= 0) {
-            values.put(TableCategory.CATEGID, categoryIds.categId);
+            values.put(Category.CATEGID, categoryIds.categId);
 //            canDelete = new TableCategory().canDelete(getActivity(), values, TableCategory.class.getName());
+            canDelete = !service.isCategoryUsed(categoryIds.categId);
         } else {
-            values.put(TableSubCategory.SUBCATEGID, categoryIds.subCategId);
+            values.put(Subcategory.SUBCATEGID, categoryIds.subCategId);
 //            canDelete = new TableSubCategory().canDelete(getActivity(), values, TableSubCategory.class.getName());
+            canDelete = !service.isSubcategoryUsed(categoryIds.categId);
         }
-//        if (!(canDelete)) {
-//            new AlertDialogWrapper.Builder(getContext())
-//                    .setTitle(R.string.attention)
-//                    .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-//                    .setMessage(R.string.category_can_not_deleted)
-//                    .setPositiveButton(android.R.string.ok,
-//                            new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(
-//                                        DialogInterface dialog,
-//                                        int which) {
-//                                    dialog.dismiss();
-//                                }
-//                            }).create().show();
-//            return;
-//        }
+        if (!(canDelete)) {
+            new AlertDialogWrapper.Builder(getContext())
+                    .setTitle(R.string.attention)
+                    .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+                    .setMessage(R.string.category_can_not_deleted)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(
+                                        DialogInterface dialog,
+                                        int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+            return;
+        }
+
         // create and set alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_category)
@@ -480,12 +488,12 @@ public class CategoryListFragment
                         int rowsDelete;
                         if (categoryIds.subCategId <= 0) {
                             rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(),
-                                    TableCategory.CATEGID + "=" + categoryIds.categId,
+                                    Category.CATEGID + "=" + categoryIds.categId,
                                     null);
                         } else {
                             rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(),
-                                    TableSubCategory.CATEGID + "=" + categoryIds.categId + " AND " +
-                                    TableSubCategory.SUBCATEGID + "=" + categoryIds.subCategId,
+                                Subcategory.CATEGID + "=" + categoryIds.categId + " AND " +
+                                    Subcategory.SUBCATEGID + "=" + categoryIds.subCategId,
                                     null);
                         }
                         if (rowsDelete == 0) {
@@ -628,8 +636,8 @@ public class CategoryListFragment
                         // get category id
                         int categId = categories.get(spnCategory.getSelectedItemPosition()).getCategId();
                         ContentValues values = new ContentValues();
-                        values.put(TableSubCategory.CATEGID, categId);
-                        values.put(TableSubCategory.SUBCATEGNAME, name);
+                        values.put(Subcategory.CATEGID, categId);
+                        values.put(Subcategory.SUBCATEGNAME, name);
                         // check type transaction is request
                         switch (type) {
                             case INSERT:
@@ -639,12 +647,12 @@ public class CategoryListFragment
                                 break;
                             case UPDATE:
                                 if (getActivity().getContentResolver().update(
-                                        subCategory.getUri(),
-                                        values,
-                                        TableSubCategory.CATEGID + "="
-                                                + categoryId + " AND "
-                                                + TableSubCategory.SUBCATEGID
-                                                + "=" + subCategoryId, null) == 0) {
+                                    subCategory.getUri(),
+                                    values,
+                                    Subcategory.CATEGID + "="
+                                    + categoryId + " AND "
+                                    + Subcategory.SUBCATEGID
+                                    + "=" + subCategoryId, null) == 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;

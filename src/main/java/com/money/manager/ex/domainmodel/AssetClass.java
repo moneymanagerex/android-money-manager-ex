@@ -84,4 +84,5 @@ public class AssetClass
     public void setSortOrder(int value) {
         setInt(SORTORDER, value);
     }
+
 }
