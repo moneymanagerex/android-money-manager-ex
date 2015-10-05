@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableStock;
+import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.HashMap;
 
@@ -72,21 +73,21 @@ public class StocksCursorAdapter
         StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(TableStock.HELDAT));
+        int accountId = cursor.getInt(cursor.getColumnIndex(Stock.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
 
         // symbol
-        String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
+        String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
         holder.symbolTextView.setText(symbol);
 
         // name
-        String name = cursor.getString(cursor.getColumnIndex(TableStock.STOCKNAME));
+        String name = cursor.getString(cursor.getColumnIndex(Stock.STOCKNAME));
         holder.nameTextView.setText(name);
 
         // price
-        String price = cursor.getString(cursor.getColumnIndex(TableStock.CURRENTPRICE));
+        String price = cursor.getString(cursor.getColumnIndex(Stock.CURRENTPRICE));
         holder.priceTextView.setText(price);
 
         // check if item is checked

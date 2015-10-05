@@ -48,6 +48,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.database.TableStock;
+import com.money.manager.ex.domainmodel.Stock;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -182,7 +183,7 @@ public class WatchlistItemsFragment
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Stock.SYMBOL)));
 
         String[] menuItems = getResources().getStringArray(R.array.context_menu_watchlist);
         for (int i = 0; i < menuItems.length; i++) {
@@ -203,10 +204,12 @@ public class WatchlistItemsFragment
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
-        ContentValues contents = new ContentValues();
+        Stock stock = Stock.fromCursor(cursor);
+//        ContentValues contents = new ContentValues();
         // get Symbol from cursor
-        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, TableStock.SYMBOL);
-        String symbol = contents.getAsString(TableStock.SYMBOL);
+//        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, Stock.SYMBOL);
+//        String symbol = contents.getAsString(Stock.SYMBOL);
+        String symbol = stock.getSymbol();
 
         boolean result = false;
         int itemId = item.getItemId();
@@ -219,15 +222,16 @@ public class WatchlistItemsFragment
                 break;
             case 1:
                 // Edit price
-                DatabaseUtils.cursorIntToContentValuesIfPresent(cursor, contents, TableStock.HELDAT);
-                int accountId = contents.getAsInteger(TableStock.HELDAT);
-                DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, contents, TableStock.CURRENTPRICE);
-                Money currentPrice = MoneyFactory.fromString(contents.getAsString(TableStock.CURRENTPRICE));
+//                DatabaseUtils.cursorIntToContentValuesIfPresent(cursor, contents, Stock.HELDAT);
+//                int accountId = contents.getAsInteger(Stock.HELDAT);
+                int accountId = stock.getHeldAt();
+//                DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, contents, Stock.CURRENTPRICE);
+//                Money currentPrice = MoneyFactory.fromString(contents.getAsString(Stock.CURRENTPRICE));
+                Money currentPrice = stock.getCurrentPrice();
 
                 EditPriceDialog dialog = new EditPriceDialog();
                 dialog.setParameters(accountId, symbol, currentPrice);
                 dialog.show(getChildFragmentManager(), "input-amount");
-                // getFragmentManager()
                 break;
         }
 
@@ -438,12 +442,12 @@ public class WatchlistItemsFragment
         ArrayList<String> selection = new ArrayList<>();
 
         if (this.accountId != Constants.NOT_SET) {
-            selection.add(TableStock.HELDAT + "=" + Integer.toString(this.accountId));
+            selection.add(Stock.HELDAT + "=" + Integer.toString(this.accountId));
         }
 
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, TableStock.SYMBOL + " ASC");
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, Stock.SYMBOL + " ASC");
 
         return args;
     }

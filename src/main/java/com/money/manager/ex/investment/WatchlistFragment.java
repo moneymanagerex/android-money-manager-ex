@@ -50,6 +50,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -358,7 +359,7 @@ public class WatchlistFragment
 
         for(int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) mDataFragment.getListAdapter().getItem(i);
-            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
+            String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
 
             result[i] = symbol;
         }

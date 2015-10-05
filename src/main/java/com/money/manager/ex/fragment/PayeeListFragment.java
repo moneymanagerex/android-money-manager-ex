@@ -68,9 +68,8 @@ public class PayeeListFragment
 //    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
     private static TablePayee mPayee = new TablePayee();
-    // SORT BY USAGE
+
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID) DESC";
-    // SORT BY NAME
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
 
     private Context mContext;
@@ -209,25 +208,27 @@ public class PayeeListFragment
                 break;
 
             case 1: //DELETE
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(Payee.PAYEEID, payee.getId());
+                PayeeService service = new PayeeService(getActivity());
+                if (!service.isPayeeUsed(payee.getId())) {
+//                ContentValues contentValues = new ContentValues();
+//                contentValues.put(Payee.PAYEEID, payee.getId());
 //                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
-                showDialogDeletePayee(payee.getId());
-//                } else {
-//                    new AlertDialogWrapper.Builder(getActivity())
-//                            .setTitle(R.string.attention)
-//                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-//                            .setMessage(R.string.payee_can_not_deleted)
-//                            .setPositiveButton(android.R.string.ok,
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(
-//                                                DialogInterface dialog,
-//                                                int which) {
-//                                            dialog.dismiss();
-//                                        }
-//                                    }).create().show();
-//                }
+                    showDialogDeletePayee(payee.getId());
+                } else {
+                    new AlertDialogWrapper.Builder(getActivity())
+                            .setTitle(R.string.attention)
+                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+                            .setMessage(R.string.payee_can_not_deleted)
+                            .setPositiveButton(android.R.string.ok,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).create().show();
+                }
                 break;
 
             case 2: // view transactions
@@ -302,15 +303,6 @@ public class PayeeListFragment
         restartLoader();
         return true;
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        ListView l = getListView();
-//        l.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-//        l.setStackFromBottom(true);
-//
-//        return l;
-//    }
 
     @Override
     protected void setResult() {

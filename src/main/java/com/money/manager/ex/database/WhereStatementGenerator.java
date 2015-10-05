@@ -36,6 +36,10 @@ public class WhereStatementGenerator {
         this.statements.add(getStatement(field, operator, argument));
     }
 
+    public void clear() {
+        this.statements.clear();
+    }
+
     public String getWhere() {
         String where = "";
         for (String statement : this.statements) {

@@ -175,4 +175,9 @@ public class UiTestHelpersRobotium {
         solo.clickOnView(solo.getView(R.id.action_cancel));
     }
 
+    public void openPayeesList() {
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Entities");
+        solo.clickOnText("Payees");
+    }
 }

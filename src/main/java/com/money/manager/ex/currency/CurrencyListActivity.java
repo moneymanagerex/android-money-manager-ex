@@ -34,7 +34,6 @@ public class CurrencyListActivity
 
     public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
-    public static final String LOGCAT = CurrencyListActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = CurrencyListActivity.class.getSimpleName() + "_Fragment";
 
     @Override
@@ -51,7 +50,11 @@ public class CurrencyListActivity
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             // Store the requested action.
-            listFragment.mAction = intent.getAction();
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_MAIN)) {
+                action = Intent.ACTION_EDIT;
+            }
+            listFragment.mAction = action;
             // restore previous device orientation if it was modified.
             if(listFragment.mPreviousOrientation != -1) {
                 int currentOrientation = ActivityUtils.forceCurrentOrientation(this);

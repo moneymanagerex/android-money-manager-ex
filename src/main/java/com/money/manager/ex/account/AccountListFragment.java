@@ -39,11 +39,10 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -123,7 +122,22 @@ public class AccountListFragment
                 break;
 
             case 1: //DELETE
-                showDialogDeleteAccount(accountId);
+                AccountService service = new AccountService(getActivity());
+                if (service.isAccountUsed(accountId)) {
+                    new AlertDialogWrapper.Builder(getContext())
+                        .setTitle(R.string.attention)
+                        .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+                        .setMessage(R.string.account_can_not_deleted)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+                } else {
+                    showDialogDeleteAccount(accountId);
+                }
                 break;
         }
         return false;

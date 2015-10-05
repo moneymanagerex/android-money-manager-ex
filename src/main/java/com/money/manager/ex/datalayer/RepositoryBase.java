@@ -46,6 +46,16 @@ public class RepositoryBase
 //
 //    }
 
+    public int count(String selection, String[] args) {
+        Cursor c = openCursor(null, selection, args);
+        if (c == null) return Constants.NOT_SET;
+
+        int result = c.getCount();
+        c.close();
+
+        return result;
+    }
+
     public Cursor openCursor(String[] projection, String selection, String[] args) {
         Cursor cursor = context.getContentResolver().query(getUri(),
             projection,
@@ -68,23 +78,23 @@ public class RepositoryBase
         return insert(entity.contentValues);
     }
 
-    /**
-     * Check if any records satisfy the condition.
-     * @param where Selection statement / where.
-     * @return A boolean indicating if there are any records that satisfy the condition.
-     */
-    protected boolean any(String where, String[] args) {
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
-        Cursor c = helper.getReadableDatabase().rawQuery(where, args);
-        if (c == null) return false;
-
-        boolean result = false;
-        c.moveToNext();
-        // todo: result =
-        DatabaseUtils.dumpCurrentRow(c);
-        c.close();
-        return result;
-    }
+//    /**
+//     * Check if any records satisfy the condition.
+//     * @param where Selection statement / where.
+//     * @return A boolean indicating if there are any records that satisfy the condition.
+//     */
+//    protected boolean any(String where, String[] args) {
+//        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
+//        Cursor c = helper.getReadableDatabase().rawQuery(where, args);
+//        if (c == null) return false;
+//
+//        boolean result = false;
+//        c.moveToNext();
+//        // todo: result =
+//        DatabaseUtils.dumpCurrentRow(c);
+//        c.close();
+//        return result;
+//    }
 
     protected int insert(ContentValues values) {
         Uri insertUri = context.getContentResolver().insert(this.getUri(),

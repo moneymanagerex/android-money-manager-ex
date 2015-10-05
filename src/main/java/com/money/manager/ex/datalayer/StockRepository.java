@@ -7,7 +7,6 @@ import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Stock;
 
@@ -19,9 +18,6 @@ import info.javaperformance.money.Money;
 
 /**
  * Data repository for Stock entities.
- * This is an experiment on how to replace the current dataset objects.
- *
- * Created by Alen Siljak on 5/09/2015.
  */
 public class StockRepository
     extends RepositoryBase {
@@ -42,14 +38,17 @@ public class StockRepository
 
     public String[] tableColumns() {
         return new String[] {
-                TableStock.STOCKID,
-                TableStock.HELDAT,
-                TableStock.PURCHASEDATE,
-                TableStock.STOCKNAME,
-                TableStock.SYMBOL,
-                TableStock.CURRENTPRICE,
-                TableStock.NUMSHARES,
-                TableStock.VALUE
+            Stock.STOCKID,
+            Stock.CURRENTPRICE,
+            Stock.COMMISSION,
+            Stock.HELDAT,
+            Stock.PURCHASEDATE,
+            Stock.STOCKNAME,
+            Stock.SYMBOL,
+            Stock.NOTES,
+            Stock.NUMSHARES,
+            Stock.PURCHASEPRICE,
+            Stock.VALUE
         };
     }
 
@@ -58,7 +57,7 @@ public class StockRepository
 
         Cursor cursor = context.getContentResolver().query(this.getUri(),
                 null,
-                TableStock.STOCKID + "=?",
+                Stock.STOCKID + "=?",
                 new String[] { Integer.toString(id) },
                 null);
         if (cursor == null) return null;
@@ -79,7 +78,7 @@ public class StockRepository
 
         Cursor cursor = context.getContentResolver().query(this.getUri(),
                 null,
-                TableStock.STOCKID + "=?",
+                Stock.STOCKID + "=?",
                 new String[] { Integer.toString(id)},
                 null);
         if (cursor == null) return null;
@@ -127,8 +126,8 @@ public class StockRepository
         int[] result = null;
 
         Cursor cursor = context.getContentResolver().query(this.getUri(),
-                new String[]{ TableStock.STOCKID },
-                TableStock.SYMBOL + "=?", new String[]{symbol},
+                new String[]{ Stock.STOCKID },
+                Stock.SYMBOL + "=?", new String[]{symbol},
                 null);
 
         if (cursor != null) {
@@ -137,7 +136,7 @@ public class StockRepository
 
             for (int i = 0; i < records; i++) {
                 cursor.moveToNext();
-                result[i] = cursor.getInt(cursor.getColumnIndex(TableStock.STOCKID));
+                result[i] = cursor.getInt(cursor.getColumnIndex(Stock.STOCKID));
             }
             cursor.close();
         }
@@ -154,7 +153,7 @@ public class StockRepository
 //
 //        int updateResult = context.getContentResolver().update(this.getUri(),
 //                values,
-//                TableStock.STOCKID + "=?",
+//                Stock.STOCKID + "=?",
 //                new String[]{Integer.toString(id)}
 //        );
 //
@@ -169,7 +168,7 @@ public class StockRepository
 
     public boolean update(int id, Stock stock) {
         WhereStatementGenerator generator = new WhereStatementGenerator();
-        String where = generator.getStatement(TableStock.STOCKID, "=", id);
+        String where = generator.getStatement(Stock.STOCKID, "=", id);
 
         return update(id, stock.contentValues, where);
     }
@@ -188,14 +187,14 @@ public class StockRepository
             //updatePrice(id, price);
 
             ContentValues oldValues = loadContentValues(id);
-            double numberOfSharesD = oldValues.getAsDouble(TableStock.NUMSHARES);
+            double numberOfSharesD = oldValues.getAsDouble(Stock.NUMSHARES);
             BigDecimal numberOfShares = new BigDecimal(numberOfSharesD);
             BigDecimal value = numberOfShares.multiply(price.toBigDecimal());
 
 //            ContentValues newValues = new ContentValues();
             Stock stock = new Stock();
-            stock.contentValues.put(TableStock.CURRENTPRICE, price.toDouble());
-            stock.contentValues.put(TableStock.VALUE, value.doubleValue());
+            stock.contentValues.put(Stock.CURRENTPRICE, price.toDouble());
+            stock.contentValues.put(Stock.VALUE, value.doubleValue());
 
             update(id, stock);
         }

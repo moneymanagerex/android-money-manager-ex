@@ -47,6 +47,8 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -294,13 +296,13 @@ public class HomeFragment
                 String selection = "";
                 if (accountList != null && accountList.length > 0) {
                     MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
-                    selection = TableStock.HELDAT + " IN (" + databaseUtils.makePlaceholders(investmentAccounts.size()) + ")";
+                    selection = Stock.HELDAT + " IN (" + databaseUtils.makePlaceholders(investmentAccounts.size()) + ")";
                 }
 
-                TableStock stocks = new TableStock();
-                result = new MmexCursorLoader(getActivity(), stocks.getUri(),
-                        new String[] { TableStock.HELDAT, TableStock.SYMBOL, TableStock.NUMSHARES,
-                                TableStock.CURRENTPRICE },
+                StockRepository stockRepository = new StockRepository(getActivity());
+                result = new MmexCursorLoader(getActivity(), stockRepository.getUri(),
+                        new String[] { Stock.HELDAT, Stock.SYMBOL, Stock.NUMSHARES,
+                                Stock.CURRENTPRICE },
                         selection,
                         accountList,
                         null);
@@ -938,13 +940,13 @@ public class HomeFragment
 
         Money total = MoneyFactory.fromString("0");
         while(cursor.moveToNext()) {
-            int accountId = cursor.getInt(cursor.getColumnIndex(TableStock.HELDAT));
+            int accountId = cursor.getInt(cursor.getColumnIndex(Stock.HELDAT));
             QueryAccountBills account = investmentAccounts.get(accountId);
             if (account == null) continue;
 
-//            String symbol = cursor.getString(cursor.getColumnIndex(TableStock.SYMBOL));
-            double price = cursor.getDouble(cursor.getColumnIndex(TableStock.CURRENTPRICE));
-            double numShares = cursor.getDouble(cursor.getColumnIndex(TableStock.NUMSHARES));
+//            String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
+            double price = cursor.getDouble(cursor.getColumnIndex(Stock.CURRENTPRICE));
+            double numShares = cursor.getDouble(cursor.getColumnIndex(Stock.NUMSHARES));
             double amount = price * numShares;
 
             // total in local currency

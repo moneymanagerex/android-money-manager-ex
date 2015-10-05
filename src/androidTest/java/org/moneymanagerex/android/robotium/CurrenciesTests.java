@@ -20,10 +20,10 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.AccountListActivity;
+import com.money.manager.ex.currency.CurrencyListActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -35,16 +35,16 @@ import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Accounts list tests.
+ * Test sample class. Use as a template for other tests.
  */
 @RunWith(AndroidJUnit4.class)
-public class AccountsTests
-        extends ActivityInstrumentationTestCase2<AccountListActivity> {
+public class CurrenciesTests
+        extends ActivityInstrumentationTestCase2<CurrencyListActivity> {
 
     private Solo solo;
 
-    public AccountsTests() {
-        super(AccountListActivity.class);
+    public CurrenciesTests() {
+        super(CurrencyListActivity.class);
     }
 
     @Before
@@ -64,38 +64,42 @@ public class AccountsTests
         assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
     }
 
+//    @Test
+//    public void canCreateAndDeleteCurrency() {
+//        // Given
+//
+//        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
+//        final String accountName = "Test Currency";
+//
+//        // When
+//
+//        robot.clickOnFloatingButton();
+//
+//        solo.waitForDialogToOpen();
+//        EditText editText = solo.getEditText(0);
+//        solo.enterText(editText, accountName);
+//
+//        // select symbol
+//        solo.pressSpinnerItem(0, 2);
+//        assertThat(solo.isSpinnerTextSelected(0, "AFN"));
+//
+//        robot.clickDone();
+//        solo.waitForDialogToClose();
+//
+//        // delete
+////        solo.clickLongOnText(accountName);
+//        solo.clickOnText(accountName);
+//        solo.clickOnText("Delete");
+//        solo.clickOnText("OK");
+//
+//        // Then
+//
+//        assertThat(solo.searchText(accountName)).isFalse();
+//    }
+
     @Test
-    public void canCreateAndDeleteAccount() {
-        // Given
-
-        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
-        final String accountName = "Test Account";
-
-        // When
-
-        robot.clickOnFloatingButton();
-
-        solo.waitForDialogToOpen();
-        View view = solo.getView(R.id.editTextAccountName);
-        EditText editText = (EditText) view;
-        solo.enterText(editText, accountName);
-        robot.clickDone();
-        solo.waitForDialogToClose();
-
-        // delete
-//        solo.clickLongOnText(accountName);
-        solo.clickOnText(accountName);
-        solo.clickOnText("Delete");
-        solo.clickOnText("OK");
-
-        // Then
-
-        assertThat(solo.searchText(accountName)).isFalse();
-    }
-
-    @Test
-    public void getNotificationForAccountThatCanNotBeDeleted() {
-        solo.clickOnText("cash, EUR");
+    public void getNotificationForCurrencyThatCanNotBeDeleted() {
+        solo.clickOnText("Australian Dollar");
         solo.clickOnText("Delete");
 
         solo.waitForDialogToOpen();
@@ -104,4 +108,5 @@ public class AccountsTests
 
         solo.clickOnText("OK");
     }
+
 }

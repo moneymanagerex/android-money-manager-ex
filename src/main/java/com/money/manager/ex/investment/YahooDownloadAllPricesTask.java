@@ -93,7 +93,8 @@ public class YahooDownloadAllPricesTask
                 DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            Log.e(CurrencyListActivity.LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "closing progress dialog");
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();

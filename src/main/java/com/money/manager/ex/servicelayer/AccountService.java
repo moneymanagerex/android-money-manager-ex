@@ -38,7 +38,10 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
@@ -191,6 +194,33 @@ public class AccountService {
 
         cursor.close();
         return total;
+    }
+
+    /**
+     * Check if the account is used in any of the transactions.
+     * @param accountId id of the account
+     * @return a boolean indicating if there are any transactions using this account.
+     */
+    public boolean isAccountUsed(int accountId) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        // transactional accounts
+        where.addStatement(
+            where.concatenateOr(
+                where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", accountId),
+                where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", accountId)
+            )
+        );
+
+        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+        int txCount = repo.count(where.getWhere(), null);
+
+        // investment accounts
+        StockRepository stockRepository = new StockRepository(mContext);
+        where.clear();
+        where.addStatement(Stock.HELDAT, "=", accountId);
+        int investmentCount = stockRepository.count(where.getWhere(), null);
+
+        return (txCount + investmentCount) > 0;
     }
 
     public void loadTransactionAccountsToSpinner(Spinner spinner) {

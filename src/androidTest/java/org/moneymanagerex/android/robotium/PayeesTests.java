@@ -20,10 +20,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.AccountListActivity;
+import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -35,16 +34,16 @@ import org.moneymanagerex.android.testhelpers.UiTestHelpersRobotium;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Accounts list tests.
+ * Payees list
  */
 @RunWith(AndroidJUnit4.class)
-public class AccountsTests
-        extends ActivityInstrumentationTestCase2<AccountListActivity> {
+public class PayeesTests
+        extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private Solo solo;
 
-    public AccountsTests() {
-        super(AccountListActivity.class);
+    public PayeesTests() {
+        super(MainActivity.class);
     }
 
     @Before
@@ -65,37 +64,21 @@ public class AccountsTests
     }
 
     @Test
-    public void canCreateAndDeleteAccount() {
-        // Given
+    public void fragmentOpens() {
+        UiTestHelpersRobotium helper = new UiTestHelpersRobotium(solo);
 
-        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
-        final String accountName = "Test Account";
+        helper.openPayeesList();
 
-        // When
-
-        robot.clickOnFloatingButton();
-
-        solo.waitForDialogToOpen();
-        View view = solo.getView(R.id.editTextAccountName);
-        EditText editText = (EditText) view;
-        solo.enterText(editText, accountName);
-        robot.clickDone();
-        solo.waitForDialogToClose();
-
-        // delete
-//        solo.clickLongOnText(accountName);
-        solo.clickOnText(accountName);
-        solo.clickOnText("Delete");
-        solo.clickOnText("OK");
-
-        // Then
-
-        assertThat(solo.searchText(accountName)).isFalse();
+        assertThat(solo.waitForText("Balance Adjustment")).isTrue();
     }
 
     @Test
-    public void getNotificationForAccountThatCanNotBeDeleted() {
-        solo.clickOnText("cash, EUR");
+    public void getNotificationForPayeeThatCanNotBeDeleted() {
+        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
+
+        robot.openPayeesList();
+
+        solo.clickOnText("Balance Adjustment");
         solo.clickOnText("Delete");
 
         solo.waitForDialogToOpen();
@@ -104,4 +87,33 @@ public class AccountsTests
 
         solo.clickOnText("OK");
     }
+
+    @Test
+    public void canCreateAndDeletePayee() {
+        // Given
+
+        UiTestHelpersRobotium robot = new UiTestHelpersRobotium(solo);
+        final String payeeName = "Test Payee";
+        robot.openPayeesList();
+
+        // When
+
+        robot.clickOnFloatingButton();
+
+        solo.waitForDialogToOpen();
+        EditText editText = solo.getEditText(0);
+        solo.enterText(editText, payeeName);
+        solo.clickOnText("OK");
+        solo.waitForDialogToClose();
+
+        // delete
+        solo.clickOnText(payeeName);
+        solo.clickOnText("Delete");
+        solo.clickOnText("OK");
+
+        // Then
+
+        assertThat(solo.searchText(payeeName)).isFalse();
+    }
+
 }

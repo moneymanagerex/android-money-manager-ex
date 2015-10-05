@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DialogUtils;
 
 /**
@@ -61,7 +62,8 @@ public class ImportAllCurrenciesTask
                 DialogUtils.closeProgressDialog(dialog);
             }
         } catch (Exception e) {
-            Log.e(CurrencyListActivity.LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "closing progress dialog");
         }
         super.onPostExecute(result);
     }

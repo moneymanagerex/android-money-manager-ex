@@ -197,6 +197,7 @@ public class AccountRepository
 //    }
 
     public boolean anyAccountsUsingCurrency(int currencyId) {
-        return any(Account.CURRENCYID + "=?", new String[]{Integer.toString(currencyId)});
+        int links = count(Account.CURRENCYID + "=?", new String[]{Integer.toString(currencyId)});
+        return links > 0;
     }
 }
