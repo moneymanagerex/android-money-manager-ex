@@ -18,6 +18,7 @@ package com.money.manager.ex.reports;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -37,7 +39,6 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.PercentFormatter;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.nispok.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -230,10 +231,11 @@ public class PieChartFragment extends Fragment implements OnChartValueSelectedLi
         String text;
         try {
             text = mPieCharts.get(e.getXIndex()).getText().concat(": ").concat(mPieCharts.get(e.getXIndex()).getValueFormatted());
-            Snackbar.with(getActivity().getApplicationContext()) // context
-                    .text(text)
-                    .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
-                    .show(getActivity());
+//            Snackbar.with(getActivity().getApplicationContext()) // context
+//                    .text(text)
+//                    .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
+//                    .show(getActivity());
+            Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
         } catch (Exception exp) {
             Log.e(LOGCAT, exp.getMessage());
         }

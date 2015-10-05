@@ -376,7 +376,8 @@ public class AccountEditActivity
     @Override
     public boolean onActionCancelClick() {
         finish();
-        return super.onActionCancelClick();
+//        return super.onActionCancelClick();
+        return true;
     }
 
     @Override

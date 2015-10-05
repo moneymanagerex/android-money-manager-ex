@@ -16,18 +16,12 @@
  */
 package com.money.manager.ex.common;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -37,15 +31,15 @@ import com.money.manager.ex.settings.AppSettings;
 public abstract class BaseFragmentActivity
         extends AppCompatActivity {
 
-    private boolean mDialogMode = false;
-    private boolean mDisplayHomeAsUpEnabled = false;
+//    private boolean mDialogMode = false;
+//    private boolean mDisplayHomeAsUpEnabled = false;
     private Toolbar mToolbar;
-    private Core mCore;
 
     @Override
     public void setContentView(int layoutResID) {
-        // setTheme
-        setTheme();
+        // why twice?
+//        setTheme();
+
         // call super method
         super.setContentView(layoutResID);
         // check if Toolbar define into layout
@@ -57,9 +51,6 @@ public abstract class BaseFragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstance) {
-        // create Core
-        mCore = new Core(getApplicationContext());
-        // setTheme
         setTheme();
 
         AppSettings settings = new AppSettings(this);
@@ -71,40 +62,42 @@ public abstract class BaseFragmentActivity
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (isDialogMode()) {
-            if (mCore.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
-            } else {
-                createActionBar();
-            }
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        if (isDialogMode()) {
+//            Core core = new Core(getApplicationContext());
+//
+//            if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
+//            } else {
+//                createActionBar();
+//            }
+//        }
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (isDisplayHomeAsUpEnabled()) {
-                    finish();
-                    return true;
-                }
-            case R.id.menu_cancel:
-                if (isDialogMode()) {
-                    onActionCancelClick();
-                    return true;
-                }
-            case R.id.menu_done:
-                if (isDialogMode()) {
-                    onActionDoneClick();
-                    return true;
-                }
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                if (isDisplayHomeAsUpEnabled()) {
+//                    finish();
+//                    return true;
+//                }
+//            case R.id.menu_cancel:
+//                if (isDialogMode()) {
+//                    onActionCancelClick();
+//                    return true;
+//                }
+//            case R.id.menu_done:
+//                if (isDialogMode()) {
+//                    onActionDoneClick();
+//                    return true;
+//                }
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onStart() {
@@ -114,33 +107,33 @@ public abstract class BaseFragmentActivity
             getSupportActionBar().setElevation(0);
     }
 
-    @Deprecated
-    public void createActionBar() {
-        getSupportActionBar().setDisplayOptions(
-                ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-                        | ActionBar.DISPLAY_SHOW_CUSTOM);
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
-        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
-        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-        cancelActionView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                onActionCancelClick();
-            }
-        });
-        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-        doneActionView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onActionDoneClick();
-            }
-        });
-        getSupportActionBar().setCustomView(actionBarButtons);
-    }
+//    @Deprecated
+//    public void createActionBar() {
+//        getSupportActionBar().setDisplayOptions(
+//                ActionBar.DISPLAY_SHOW_CUSTOM,
+//                ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
+//                        | ActionBar.DISPLAY_SHOW_CUSTOM);
+//
+//        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//
+//        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
+//        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
+//        cancelActionView.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                onActionCancelClick();
+//            }
+//        });
+//        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
+//        doneActionView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onActionDoneClick();
+//            }
+//        });
+//        getSupportActionBar().setCustomView(actionBarButtons);
+//    }
 
     public void setToolbarStandardAction(Toolbar toolbar) {
         setToolbarStandardAction(toolbar, R.id.action_cancel, R.id.action_done);
@@ -184,21 +177,21 @@ public abstract class BaseFragmentActivity
         return true;
     }
 
-    public boolean isDialogMode() {
-        return mDialogMode;
-    }
+//    public boolean isDialogMode() {
+//        return mDialogMode;
+//    }
 
-    @Deprecated
-    public void setDialogMode(boolean mDialogMode) {
-        this.mDialogMode = mDialogMode;
-    }
+//    @Deprecated
+//    public void setDialogMode(boolean mDialogMode) {
+//        this.mDialogMode = mDialogMode;
+//    }
 
-    public boolean isDisplayHomeAsUpEnabled() {
-        return mDisplayHomeAsUpEnabled;
-    }
+//    public boolean isDisplayHomeAsUpEnabled() {
+//        return mDisplayHomeAsUpEnabled;
+//    }
 
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
-        this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
+//        this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
     }
 
@@ -213,9 +206,5 @@ public abstract class BaseFragmentActivity
         } catch (Exception e) {
             Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
         }
-    }
-
-    public Core getCore() {
-        return mCore;
     }
 }

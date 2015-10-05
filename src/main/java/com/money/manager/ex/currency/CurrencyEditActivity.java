@@ -70,7 +70,8 @@ public class CurrencyEditActivity
     @Override
     public boolean onActionCancelClick() {
         finish();
-        return super.onActionCancelClick();
+//        return super.onActionCancelClick();
+        return true;
     }
 
     @Override
