@@ -17,6 +17,7 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.domainmodel.AssetClass;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -89,7 +90,7 @@ public class AssetClassEditFragment
             @Override
             public void onClick(View v) {
                 InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
-                    assetClass.getAllocation(),
+                    MoneyFactory.fromDouble(assetClass.getAllocation()),
                     null);
                 dialog.roundToCurrencyDecimals = false;
                 dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
@@ -111,7 +112,7 @@ public class AssetClassEditFragment
     private void updateAllocation() {
         TextView textView = (TextView) getView().findViewById(R.id.allocationEdit);
         if (textView != null) {
-            Money allocation = assetClass.getAllocation();
+            Money allocation = MoneyFactory.fromDouble(assetClass.getAllocation());
             //FormatUtilities.formatAmountTextView();
             textView.setText(allocation.toString());
             textView.setTag(allocation.toString());

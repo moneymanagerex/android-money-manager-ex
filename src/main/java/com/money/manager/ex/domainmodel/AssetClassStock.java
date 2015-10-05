@@ -23,7 +23,7 @@ public class AssetClassStock
     extends EntityBase {
 
     public static final String ID = "ID";
-    public static final String ASSETCLASSID = "STOCKID";
+    public static final String ASSETCLASSID = "ASSETCLASSID";
     public static final String STOCKID = "STOCKID";
 
     public static AssetClassStock create() {

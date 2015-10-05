@@ -69,8 +69,8 @@ public class AssetClass
         setInt(ID, value);
     }
 
-    public Money getAllocation() {
-        return getMoney(ALLOCATION);
+    public Double getAllocation() {
+        return getDouble(ALLOCATION);
     }
 
     public void setAllocation(Double value) {

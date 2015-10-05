@@ -55,7 +55,6 @@ import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.transactions.EditTransactionActivity;
 import com.money.manager.ex.Constants;

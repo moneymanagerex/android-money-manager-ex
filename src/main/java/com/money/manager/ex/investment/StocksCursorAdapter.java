@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.HashMap;

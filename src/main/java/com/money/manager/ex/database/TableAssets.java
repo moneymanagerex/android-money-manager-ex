@@ -30,4 +30,10 @@ public class TableAssets extends Dataset {
 	public TableAssets() {
 		super("assets_v1", DatasetType.TABLE, "assets");
 	}
+
+	public String[] getAllColumns() {
+		// todo: implement!
+		return null;
+	}
+
 }

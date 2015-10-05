@@ -39,7 +39,7 @@ import java.util.Map.Entry;
 public abstract class Dataset
 	implements BaseColumns {
 
-	private static final String LOGCAT = Dataset.class.getSimpleName();
+//	private static final String LOGCAT = Dataset.class.getSimpleName();
 
 	/**
 	 * 
@@ -130,9 +130,8 @@ public abstract class Dataset
 	 * All columns of the dataset.
 	 * @return the all columns of the dataset
 	 */
-	public String[] getAllColumns() {
-		return new String[] {""};
-	}
+	public abstract String[] getAllColumns();
+    //  {     return new String[] {""}; }
 
 	/**
 	 * @return the basepath
@@ -195,6 +194,7 @@ public abstract class Dataset
 			throw new AssertionError("Internal Error. BasePath is not defined for the dataset");
 		}
 	}
+
 	/**
 	 * 
 	 * @param basepath to use into contentprovider

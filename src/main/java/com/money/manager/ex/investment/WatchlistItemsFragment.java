@@ -16,11 +16,9 @@
  */
 package com.money.manager.ex.investment;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -47,14 +45,12 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.domainmodel.Stock;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
 
 /**
  * The list of securities.

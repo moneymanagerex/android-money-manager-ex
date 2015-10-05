@@ -27,9 +27,8 @@ import java.util.List;
 
 /**
  * Contains common code for repositories.
- * Created by Alen on 5/09/2015.
  */
-public class RepositoryBase
+public abstract class RepositoryBase
     extends Dataset {
 
     public RepositoryBase(Context context, String source, DatasetType type, String basePath) {

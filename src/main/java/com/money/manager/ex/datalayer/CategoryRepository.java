@@ -19,6 +19,7 @@ package com.money.manager.ex.datalayer;
 import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Category;
 
 /**
  * A repository for Categories.
@@ -31,4 +32,10 @@ public class CategoryRepository
         super(context, "category_v1", DatasetType.TABLE, "category");
 
     }
+
+    @Override
+    public String[] getAllColumns() {
+        return new String[] {"CATEGID AS _id", Category.CATEGID, Category.CATEGNAME};
+    }
+
 }

@@ -19,6 +19,7 @@ package com.money.manager.ex.datalayer;
 import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Subcategory;
 
 /**
  * A repository for Subcategories.
@@ -31,4 +32,11 @@ public class SubcategoryRepository
         super(context, "subcategory_v1", DatasetType.TABLE, "subcategory");
 
     }
+
+    @Override
+    public String[] getAllColumns() {
+        return new String[] {"SUBCATEGID AS _id", Subcategory.SUBCATEGID,
+            Subcategory.SUBCATEGNAME, Subcategory.CATEGID };
+    }
+
 }

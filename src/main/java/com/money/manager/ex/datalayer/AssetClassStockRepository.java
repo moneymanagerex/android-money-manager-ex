@@ -33,7 +33,7 @@ public class AssetClassStockRepository
     extends RepositoryBase {
 
     public AssetClassStockRepository(Context context) {
-        super(context, "assetclass_v1", DatasetType.TABLE, "assetclass");
+        super(context, "assetclass_stock_v1", DatasetType.TABLE, "assetclassstock");
 
     }
 

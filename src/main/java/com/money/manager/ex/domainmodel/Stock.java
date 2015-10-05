@@ -1,15 +1,10 @@
 package com.money.manager.ex.domainmodel;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.database.TableStock;
 import com.money.manager.ex.utils.DateUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
