@@ -90,7 +90,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 
 /**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
+ * Main activity of the application.
  */
 public class MainActivity
         extends BaseFragmentActivity
@@ -737,25 +737,34 @@ public class MainActivity
      */
     public void restartActivity() {
         if (mRestartActivity) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
-                // this is for APIs < 11.
-                Intent intent = getIntent();
-                overridePendingTransition(0, 0);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                // finish this activity
-                finish();
-                overridePendingTransition(0, 0);
-                // restart
-                startActivity(intent);
-//            // kill process
-//            android.os.Process.killProcess(android.os.Process.myPid());
-            } else {
-                // new api:
-                this.recreate();
-            }
+//            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
+//                // this is for APIs < 11.
+//                Intent intent = getIntent();
+//                overridePendingTransition(0, 0);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                // finish this activity
+//                finish();
+//                overridePendingTransition(0, 0);
+//                // restart
+//                startActivity(intent);
+////            // kill process
+////            android.os.Process.killProcess(android.os.Process.myPid());
+//            } else {
+//                // new api:
+//                this.recreate();
+//            }
+
+            restartApp();
         }
         // set state a false
         setRestartActivity(false);
+    }
+
+    public void restartApp() {
+        Intent i = getBaseContext().getPackageManager()
+            .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 
 //    public void showDashboardFragment() {
