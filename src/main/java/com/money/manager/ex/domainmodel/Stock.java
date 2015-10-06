@@ -41,7 +41,7 @@ public class Stock
         // Set to today.
         stock.setPurchaseDate(Calendar.getInstance().getTime());
 
-        stock.setNumberOfShares(MoneyFactory.fromString("0"));
+        stock.setNumberOfShares(0.0);
         stock.setPurchasePrice(MoneyFactory.fromString("0"));
         stock.setCommission(MoneyFactory.fromString("0"));
         // should this be null?
@@ -111,13 +111,14 @@ public class Stock
         setString(NOTES, value);
     }
 
-    public Money getNumberOfShares() {
-        String numShares = contentValues.getAsString(NUMSHARES);
-        return MoneyFactory.fromString(numShares);
+    public Double getNumberOfShares() {
+        return getDouble(NUMSHARES);
+//        String numShares = contentValues.getAsString(NUMSHARES);
+//        return MoneyFactory.fromString(numShares);
     }
 
-    public void setNumberOfShares(Money numberOfShares) {
-        contentValues.put(NUMSHARES, numberOfShares.toString());
+    public void setNumberOfShares(Double value) {
+        setDouble(NUMSHARES, value);
     }
 
     public Date getPurchaseDate() {
@@ -149,7 +150,7 @@ public class Stock
         return getString(STOCKNAME);
     }
 
-    public void setStockName(String value) {
+    public void setName(String value) {
         setString(STOCKNAME, value);
     }
 
@@ -163,9 +164,9 @@ public class Stock
 
     public Money getValue() {
         // value = current price * num shares
-        Money value = this.getNumberOfShares().multiply(this.getCurrentPrice().toDouble());
+        Money value = this.getCurrentPrice().multiply(this.getNumberOfShares());
 
-        contentValues.put(VALUE, value.toString());
+        setMoney(VALUE, value);
 
         return value;
     }

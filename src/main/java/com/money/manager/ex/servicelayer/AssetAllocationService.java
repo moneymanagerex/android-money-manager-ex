@@ -17,13 +17,24 @@
 package com.money.manager.ex.servicelayer;
 
 import android.content.Context;
+import android.database.Cursor;
 
+import com.innahema.collections.query.functions.Converter;
+import com.innahema.collections.query.queriables.Queryable;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.AssetClassStock;
+import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Functions for the Asset Allocation
@@ -31,9 +42,11 @@ import java.util.List;
 public class AssetAllocationService {
 
     public AssetAllocationService(Context context) {
+        this.context = context;
         this.repository = new AssetClassRepository(context);
     }
 
+    private Context context;
     private AssetClassRepository repository;
 
     /**
@@ -67,17 +80,118 @@ public class AssetAllocationService {
     }
 
     public List<AssetClass> loadAssetAllocation() {
-        List<AssetClass> result = new ArrayList<>();
-
-        // https://communities.bmc.com/docs/DOC-9902
-        // http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
         // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
 
-        // fetch all root-level elements
-//        this.repository.
+        // Step 1: Load all elements, ordered by ParentId.
+        // Step 2: Fill a hash map with one pass through cursor.
+        HashMap<Integer, AssetClass> map = loadMap();
 
+        // Step 3: Assign children to their parents.
+        List<AssetClass> result = assignChildren(map);
 
-        // todo
+        // Step 4: Load stock links and stocks
+        loadStocks(result);
+
+        // Step 5: Calculate and store totals.
+        calculateTotals(result);
+
+        return result;
+    }
+
+    public Money getStockValue(List<Stock> stocks) {
+        Money sum = MoneyFactory.fromString("0");
+        for (Stock stock : stocks) {
+            sum = sum.add(stock.getValue());
+        }
+        return sum;
+    }
+
+    // Private.
+
+    private HashMap<Integer, AssetClass> loadMap() {
+        HashMap<Integer, AssetClass> result = new HashMap<>();
+
+        Cursor c = repository.openCursor(null, null, null, AssetClass.PARENTID);
+        if (c == null) return null;
+
+        while (c.moveToNext()) {
+            AssetClass ac = AssetClass.from(c);
+            result.put(ac.getId(), ac);
+        }
+        c.close();
+
+        return result;
+
+    }
+
+    private List<AssetClass> assignChildren(HashMap<Integer, AssetClass> map) {
+        List<AssetClass> allocation = new ArrayList<>();
+
+        // iterate through items
+        for (AssetClass ac : map.values()) {
+            // add child to the parent
+            Integer parentId = ac.getParentId();
+            if (parentId != null) {
+                map.get(parentId).addChild(ac);
+            } else {
+                // this is one of the root elements
+                allocation.add(ac);
+            }
+        }
+        return allocation;
+    }
+
+    private List<AssetClass> loadStocks(List<AssetClass> allocation) {
+        // iterate
+        for (AssetClass ac : allocation) {
+            // if element has no children, load related stocks
+            if (ac.getChildren().size() == 0) {
+                loadStocks(ac);
+            } else {
+                loadStocks(ac.getChildren());
+            }
+        }
+        return allocation;
+    }
+
+    private void loadStocks(AssetClass assetClass) {
+        if (assetClass.getChildren().size() > 0) {
+            for (AssetClass child : assetClass.getChildren()) {
+                loadStocks(child);
+            }
+        } else {
+            // load stocks
+            AssetClassStockRepository classStockRepo = new AssetClassStockRepository(this.context);
+            assetClass.setStockLinks(classStockRepo.loadForClass(assetClass.getId()));
+
+            Integer[] ids = Queryable.from(assetClass.getStockLinks()).map(new Converter<AssetClassStock, Integer>() {
+                @Override
+                public Integer convert(AssetClassStock element) {
+                    return element.getStockId();
+                }
+            }).toArray();
+
+            StockRepository stockRepo = new StockRepository(this.context);
+            assetClass.setStocks(stockRepo.load(ids));
+        }
+    }
+
+    private Money calculateTotals(List<AssetClass> allocation) {
+        // iterate recursively
+        Money result = MoneyFactory.fromString("0");
+
+        for (AssetClass ac : allocation) {
+            if (ac.getChildren().size() > 0) {
+                // Group. Calculate for children.
+                result = calculateTotals(ac.getChildren());
+                // Store the value
+            } else {
+                // Allocation. get value of all stocks.
+                result = getStockValue(ac.getStocks());
+            }
+
+            ac.setCurrentValue(result);
+        }
 
         return result;
     }

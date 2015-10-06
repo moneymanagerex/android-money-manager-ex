@@ -9,10 +9,13 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import info.javaperformance.money.Money;
 
@@ -55,7 +58,7 @@ public class StockRepository
     public Stock load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        Cursor cursor = context.getContentResolver().query(this.getUri(),
+        Cursor cursor = openCursor(
                 null,
                 Stock.STOCKID + "=?",
                 new String[] { Integer.toString(id) },
@@ -71,6 +74,37 @@ public class StockRepository
         cursor.close();
 
         return stock;
+    }
+
+    /**
+     * Load multiple items by id.
+     * @param ids
+     * @return
+     */
+    public List<Stock> load(Integer[] ids) {
+        if (ids.length == 0) return null;
+
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
+        String placeHolders = dbUtils.makePlaceholders(ids.length);
+        String[] idParams = new String[ids.length];
+
+        for (int i = 0; i < ids.length; i++) {
+            idParams[i] = Integer.toString(ids[i]);
+        }
+
+        Cursor c = openCursor(null,
+            Stock.STOCKID + " IN (" + placeHolders + ")",
+            idParams,
+            null);
+        if (c == null) return null;
+
+        List<Stock> result = new ArrayList<>();
+        while (c.moveToNext()) {
+            result.add(Stock.fromCursor(c));
+        }
+        c.close();
+
+        return result;
     }
 
     public ContentValues loadContentValues(int id) {

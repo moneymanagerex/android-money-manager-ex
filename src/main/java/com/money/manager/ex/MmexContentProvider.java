@@ -141,6 +141,22 @@ public class MmexContentProvider
     }
 
     @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        try {
+            return query_internal(uri, projection, selection, selectionArgs, sortOrder);
+        } catch (IllegalStateException | SQLiteDiskIOException | IllegalArgumentException ex) {
+            // This happens when the database is changed by all the asynchronous loaders still
+            // have references to the already-closed database helper.
+            // Just log for now. The reload is done automatically so should be no harm.
+
+            Context context = getContext();
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(ex, "content provider.query " + uri);
+        }
+        return null;
+    }
+
+    @Override
     public Uri insert(Uri uri, ContentValues values) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Insert Uri: " + uri);
 
@@ -158,12 +174,10 @@ public class MmexContentProvider
                 case TABLE:
                     logTableInsert(dataset, values);
 
-                    ////database.beginTransaction();
+                    //database.beginTransaction();
                     try {
                         id = database.insertOrThrow(dataset.getSource(), null, values);
-                        // committed
-                        ////if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
-                        ////database.setTransactionSuccessful();
+                        //database.setTransactionSuccessful();
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                         handler.handle(e, "inserting: " + e.getMessage());
@@ -289,22 +303,6 @@ public class MmexContentProvider
         //databaseHelper.close();
         // return rows delete
         return rowsDelete;
-    }
-
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        try {
-            return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (IllegalStateException | SQLiteDiskIOException | IllegalArgumentException ex) {
-            // This happens when the database is changed by all the asynchronous loaders still
-            // have references to the already-closed database helper.
-            // Just log for now. The reload is done automatically so should be no harm.
-
-            Context context = getContext();
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ex, "content provider.query " + uri);
-        }
-        return null;
     }
 
     /**

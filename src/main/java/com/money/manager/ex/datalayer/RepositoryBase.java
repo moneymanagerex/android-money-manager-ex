@@ -68,6 +68,21 @@ public abstract class RepositoryBase
         return cursor;
     }
 
+    // This won't work because of the bug in reading Double values.
+//    public ContentValues[] query(String[] projection, String selection, String[] args, String sort) {
+//        Cursor c = openCursor(projection, selection, args, sort);
+//        if (c == null) return null;
+//
+//        ContentValues[] result = new ContentValues[c.getCount()];
+//
+//        while (c.moveToNext()) {
+//            DatabaseUtils
+//        }
+//        c.close();
+//
+//        return result;
+//    }
+
     public int add(EntityBase entity) {
         return insert(entity.contentValues);
     }

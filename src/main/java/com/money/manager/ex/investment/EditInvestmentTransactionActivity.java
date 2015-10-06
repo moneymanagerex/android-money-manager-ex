@@ -195,7 +195,7 @@ public class EditInvestmentTransactionActivity
     public void onFinishedInputAmountDialog(int id, Money amount) {
         switch (id) {
             case ID_NUM_SHARES:
-                mStock.setNumberOfShares(amount);
+                mStock.setNumberOfShares(amount.toDouble());
                 showNumberOfShares();
                 showValue();
                 break;
@@ -260,7 +260,7 @@ public class EditInvestmentTransactionActivity
             public void onClick(View v) {
                 // todo: use currency
                 InputAmountDialog dialog = InputAmountDialog.getInstance(ID_NUM_SHARES,
-                        mStock.getNumberOfShares());
+                        MoneyFactory.fromDouble(mStock.getNumberOfShares()));
                 dialog.roundToCurrencyDecimals = false;
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
@@ -323,7 +323,7 @@ public class EditInvestmentTransactionActivity
 
         RobotoEditTextFontIcon nameText = (RobotoEditTextFontIcon) findViewById(R.id.stockNameEdit);
         String stockName = nameText.getText().toString().trim();
-        mStock.setStockName(stockName);
+        mStock.setName(stockName);
 
         RobotoEditTextFontIcon symbolText = (RobotoEditTextFontIcon) findViewById(R.id.symbolEdit);
         String symbol = symbolText.getText().toString().trim().replace(" ", "");

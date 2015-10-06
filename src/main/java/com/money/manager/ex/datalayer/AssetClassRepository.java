@@ -43,8 +43,12 @@ public class AssetClassRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {AssetClass.ID + " AS _id", AssetClass.ID, AssetClass.NAME,
-            AssetClass.ALLOCATION };
+        return new String[] {AssetClass.ID + " AS _id", AssetClass.ID,
+            AssetClass.PARENTID,
+            AssetClass.NAME,
+            AssetClass.ALLOCATION,
+            AssetClass.SORTORDER
+        };
     }
 
     public AssetClass load(int id) {
@@ -74,6 +78,22 @@ public class AssetClassRepository
 
         return account;
     }
+
+//    public AssetClass[] query(String[] projection, String selection, String[] args, String sort) {
+//        Cursor c = openCursor(projection, selection, args, sort);
+//        if (c == null) return null;
+//
+//        AssetClass[] result = new AssetClass[c.getCount()];
+//        int i = 0;
+//
+//        while (c.moveToNext()) {
+//            result[i] = AssetClass.from(c);
+//            i++;
+//        }
+//        c.close();
+//
+//        return result;
+//    }
 
     public boolean insert(AssetClass value) {
         int id = this.insert(value.contentValues);
