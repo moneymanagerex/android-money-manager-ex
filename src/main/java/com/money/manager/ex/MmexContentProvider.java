@@ -44,12 +44,10 @@ import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.BudgetTable;
 import com.money.manager.ex.database.BudgetYear;
-import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -257,7 +255,7 @@ public class MmexContentProvider
             return 0;
         }
         // take a database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext().getApplicationContext());
+        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         int rowsDelete = 0;
         // check type of dataset instance.

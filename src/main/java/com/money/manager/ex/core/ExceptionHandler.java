@@ -84,7 +84,7 @@ public class ExceptionHandler
     }
     /**
      * Display a toast message.
-     * @param message
+     * @param message Message text to display.
      * @param length Length of display. See Toast.Long and Toast.Short.
      * reference: http://stackoverflow.com/questions/18705945/android-cant-create-handler-inside-thread-that-has-not-called-looper-prepare
      */

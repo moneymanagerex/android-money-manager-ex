@@ -49,6 +49,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
+import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
@@ -56,6 +57,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
@@ -485,6 +487,8 @@ public class MainActivity
 
         // close database
 //        MoneyManagerOpenHelper.closeDatabase();
+
+        ExceptionHandler.clearMessages();
     }
 
     /**
@@ -1173,6 +1177,13 @@ public class MainActivity
         if (!this.recentDbs.contains(dbFilePath)) {
             this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
+
+        // reset db through provider
+//        StockRepository repo = new StockRepository(this);
+//        MmexContentProvider provider = (MmexContentProvider) this.getContentResolver()
+//            .acquireContentProviderClient(repo.getUri())
+//            .getLocalContentProvider();
+
 
         // restart this activity
         setRestartActivity(true);

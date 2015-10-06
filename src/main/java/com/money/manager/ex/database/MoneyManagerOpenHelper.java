@@ -73,6 +73,10 @@ public class MoneyManagerOpenHelper
         mInstance.close();
     }
 
+    /**
+     * Constructor. This is where the database path gets set.
+     * @param context Current context.
+     */
     private MoneyManagerOpenHelper(Context context) {
         super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseVersion);
         this.mContext = context;
@@ -140,7 +144,9 @@ public class MoneyManagerOpenHelper
     public synchronized void close() {
         // close CurrencyService
         CurrencyService.destroy();
+
         super.close();
+
         mInstance = null;
     }
 
