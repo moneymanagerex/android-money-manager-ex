@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="October 4, 2015" versionName="2.22.0">
+    <changelogversion changeDate="October 6, 2015" versionName="2.22.1">
+        <changelogtext>Solved quick-switching of databases.</changelogtext>
         <changelogtext>Dropdown for switching investment account watchlists. Option to see all symbols at once.</changelogtext>
         <changelogtext>Placing the accounts selector to the left in the toolbar to show other menu items.</changelogtext>
     </changelogversion>
