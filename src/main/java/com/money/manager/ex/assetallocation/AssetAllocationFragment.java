@@ -19,6 +19,7 @@ package com.money.manager.ex.assetallocation;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -35,8 +36,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -101,14 +105,14 @@ public class AssetAllocationFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_ASSET_CLASSES:
-                // create mmex cursor loader
+                // create cursor loader
                 AssetClassRepository repo = new AssetClassRepository(getActivity());
 
                 return new MmexCursorLoader(getActivity(), repo.getUri(),
                     repo.getAllColumns(),
                     null, // where
                     null, // args
-                    null // sort
+                    AssetClass.PARENTID // sort
                 );
                 //break;
         }
@@ -120,7 +124,10 @@ public class AssetAllocationFragment
         switch (loader.getId()) {
             case LOADER_ASSET_CLASSES:
                 AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                // create asset allocation matrix cursor
+                Cursor matrixCursor = createMatrixCursor(data);
+                adapter.swapCursor(matrixCursor);
 
                 if (isResumed()) {
                     setListShown(true);
@@ -162,16 +169,16 @@ public class AssetAllocationFragment
         boolean handled = false;
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int id = (int) info.id;
+        AssetAllocationService service = new AssetAllocationService(getActivity());
 
         switch (item.getItemId()) {
             case R.id.menu_move_up:
                 // move item up
-                AssetAllocationService service = new AssetAllocationService(getActivity());
                 service.moveClassUp(id);
                 break;
 
             case R.id.menu_move_down:
-                // todo move item down
+                service.moveClassDown(id);
                 break;
 
             case R.id.menu_edit:
@@ -243,4 +250,22 @@ public class AssetAllocationFragment
         getLoaderManager().initLoader(LOADER_ASSET_CLASSES, null, this);
     }
 
+    private MatrixCursor createMatrixCursor(Cursor data) {
+        AssetAllocationService service = new AssetAllocationService(getActivity());
+        AssetClass allocation = service.loadAssetAllocation(data);
+
+        String[] columns = new String[] {
+            "_id", AssetClass.NAME, AssetClass.ALLOCATION, "CurrentValue"
+        };
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        for (AssetClass item : allocation.getChildren()) {
+            Object[] values = new Object[] {
+                item.getId(), item.getName(), item.getAllocation(), item.getCurrentValue()
+            };
+            cursor.addRow(values);
+        }
+
+        return cursor;
+    }
 }

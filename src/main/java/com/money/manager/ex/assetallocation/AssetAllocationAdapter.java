@@ -26,8 +26,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.AssetClass;
-
-import org.w3c.dom.Text;
+import com.money.manager.ex.view.RobotoTextView;
 
 /**
  * Adapter for the Asset Allocation list.
@@ -60,7 +59,10 @@ public class AssetAllocationAdapter
         TextView allocation = (TextView) view.findViewById(R.id.allocationTextView);
         allocation.setText(assetClass.getAllocation().toString());
 
-        // currentAllocationTextView
-        // differenceTextView
+        RobotoTextView currentAllocation = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
+        currentAllocation.setText(assetClass.getCurrentAllocation().toString());
+
+        RobotoTextView difference = (RobotoTextView) view.findViewById(R.id.differenceTextView);
+        // todo: difference.setText(assetClass.getD);
     }
 }

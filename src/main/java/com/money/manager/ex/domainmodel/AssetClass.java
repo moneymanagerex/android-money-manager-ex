@@ -119,6 +119,10 @@ public class AssetClass
         return this.children;
     }
 
+    public void setChildren(List<AssetClass> value) {
+        this.children = value;
+    }
+
     public List<AssetClassStock> getStockLinks() {
         if (this.stockLinks == null) {
             this.stockLinks = new ArrayList<>();

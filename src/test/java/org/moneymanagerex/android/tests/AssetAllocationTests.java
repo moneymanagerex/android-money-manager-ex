@@ -108,16 +108,16 @@ public class AssetAllocationTests {
 
         // When
 
-        List<AssetClass> actual = testObject.loadAssetAllocation();
+        AssetClass actual = testObject.loadAssetAllocation();
 
         // Then
 
         assertThat(actual).isNotNull();
-        assertThat(actual.size()).isGreaterThan(0);
+        assertThat(actual.getChildren().size()).isGreaterThan(0);
         // There are two elements at the level 0.
-        assertThat(actual.size()).isEqualTo(2);
+        assertThat(actual.getChildren().size()).isEqualTo(2);
         // The second element is a group with a child element
-        AssetClass second = actual.get(1);
+        AssetClass second = actual.getChildren().get(1);
         assertThat(second.getChildren().size()).isEqualTo(1);
         // test total calculation on the group element
         AssetClass child = second.getChildren().get(0);
@@ -128,10 +128,20 @@ public class AssetAllocationTests {
         assertThat(child.getStocks().size()).isGreaterThan(0);
 
         Money expectedSum = testObject.getStockValue(child.getStocks());
-//        assertThat(child.getAllocation()).isEqualTo(expectedSum);
-//        assertThat(second.getAllocation()).isEqualTo(expectedSum);
         assertThat(child.getCurrentValue()).isEqualTo(expectedSum);
         assertThat(second.getCurrentValue()).isEqualTo(expectedSum);
+
+        // test total
+        assertThat(actual.getCurrentValue()).isEqualTo(MoneyFactory.fromString("56.48"));
+
+        // todo: current allocation
+        assertThat(actual.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("100"));
+        assertThat(actual.getChildren().get(0).getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("60"));
+        assertThat(second.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("40"));
+        assertThat(child.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("40"));
+
+        // todo: difference
+
     }
 
     /**

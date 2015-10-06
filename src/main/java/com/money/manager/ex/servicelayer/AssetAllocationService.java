@@ -21,7 +21,7 @@ import android.database.Cursor;
 
 import com.innahema.collections.query.functions.Converter;
 import com.innahema.collections.query.queriables.Queryable;
-import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -49,6 +49,36 @@ public class AssetAllocationService {
     private Context context;
     private AssetClassRepository repository;
 
+    public AssetClass loadAssetAllocation() {
+        // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
+
+        // Step 1: Load all elements, ordered by ParentId.
+        Cursor c = loadData();
+        return loadAssetAllocation(c);
+    }
+
+    public AssetClass loadAssetAllocation(Cursor c) {
+        // Step 2: Fill a hash map with one pass through cursor.
+        HashMap<Integer, AssetClass> map = loadMap(c);
+
+        // Step 3: Assign children to their parents.
+        List<AssetClass> list = assignChildren(map);
+
+        // Step 4: Load stock links and stocks
+        loadStocks(list);
+
+        // Step 5: Calculate and store totals.
+        AssetClass main = AssetClass.create();
+        main.setChildren(list);
+        Money totalValue = calculateCurrentValue(list);
+        main.setCurrentValue(totalValue);
+
+        // Step 6: Calculate current allocation and difference.
+        calculateCurrentAllocation(main, totalValue);
+
+        return main;
+    }
+
     /**
      * Move the asset class up in the sort order.
      * Increase sort order for this item. Finds the next in order and decrease it's sort order.
@@ -57,7 +87,7 @@ public class AssetAllocationService {
         // todo: this is incomplete. Need to set the default value on creation and handle
         // deletions. Also pay attention if the order will be ascending or descending and adjust.
 
-        List<AssetClass> bulk = new ArrayList();
+//        List<AssetClass> bulk = new ArrayList();
 
         AssetClass up = repository.load(id);
         Integer currentPosition = up.getSortOrder();
@@ -65,37 +95,33 @@ public class AssetAllocationService {
         int upPosition = currentPosition + 1;
 
         up.setSortOrder(upPosition);
-        bulk.add(up);
+//        bulk.add(up);
 
-        WhereStatementGenerator where = new WhereStatementGenerator();
-        String filter = where.getStatement(AssetClass.SORTORDER, "=", upPosition);
-        AssetClass down = repository.first(filter);
-        if (down != null) {
-            down.setSortOrder(currentPosition);
-            bulk.add(down);
-        }
+//        WhereStatementGenerator where = new WhereStatementGenerator();
+//        String filter = where.getStatement(AssetClass.SORTORDER, "=", upPosition);
+//        AssetClass down = repository.first(filter);
+//        if (down != null) {
+//            down.setSortOrder(currentPosition);
+//            bulk.add(down);
+//        }
+//
+//        // save in transaction
+//        repository.bulkUpdate(bulk);
 
-        // save in transaction
-        repository.bulkUpdate(bulk);
+        // for now, just increase the sort order on the selected item
+        repository.update(up);
     }
 
-    public List<AssetClass> loadAssetAllocation() {
-        // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
+    public void moveClassDown(int id) {
+        AssetClass assetClass = repository.load(id);
+        Integer currentPosition = assetClass.getSortOrder();
+        if (currentPosition == null) currentPosition = 0;
+        int nextPosition = currentPosition - 1;
+        if (nextPosition < 0) return;
 
-        // Step 1: Load all elements, ordered by ParentId.
-        // Step 2: Fill a hash map with one pass through cursor.
-        HashMap<Integer, AssetClass> map = loadMap();
+        assetClass.setSortOrder(nextPosition);
 
-        // Step 3: Assign children to their parents.
-        List<AssetClass> result = assignChildren(map);
-
-        // Step 4: Load stock links and stocks
-        loadStocks(result);
-
-        // Step 5: Calculate and store totals.
-        calculateTotals(result);
-
-        return result;
+        repository.update(assetClass);
     }
 
     public Money getStockValue(List<Stock> stocks) {
@@ -108,11 +134,15 @@ public class AssetAllocationService {
 
     // Private.
 
-    private HashMap<Integer, AssetClass> loadMap() {
-        HashMap<Integer, AssetClass> result = new HashMap<>();
-
+    private Cursor loadData() {
         Cursor c = repository.openCursor(null, null, null, AssetClass.PARENTID);
+        return c;
+    }
+
+    private HashMap<Integer, AssetClass> loadMap(Cursor c) {
         if (c == null) return null;
+
+        HashMap<Integer, AssetClass> result = new HashMap<>();
 
         while (c.moveToNext()) {
             AssetClass ac = AssetClass.from(c);
@@ -156,41 +186,79 @@ public class AssetAllocationService {
 
     private void loadStocks(AssetClass assetClass) {
         if (assetClass.getChildren().size() > 0) {
+            // Group. Load values for child elements.
+
             for (AssetClass child : assetClass.getChildren()) {
                 loadStocks(child);
             }
         } else {
-            // load stocks
+            // No child elements. This is the actual allocation. Load value from linked stocks.
+
+            // load stock links
             AssetClassStockRepository classStockRepo = new AssetClassStockRepository(this.context);
             assetClass.setStockLinks(classStockRepo.loadForClass(assetClass.getId()));
 
-            Integer[] ids = Queryable.from(assetClass.getStockLinks()).map(new Converter<AssetClassStock, Integer>() {
-                @Override
-                public Integer convert(AssetClassStock element) {
-                    return element.getStockId();
-                }
-            }).toArray();
+            if (assetClass.getStockLinks().size() == 0) return;
+
+            Integer[] ids = Queryable.from(assetClass.getStockLinks())
+                .map(new Converter<AssetClassStock, Integer>() {
+                    @Override
+                    public Integer convert(AssetClassStock element) {
+                        return element.getStockId();
+                    }
+                }).toArray();
 
             StockRepository stockRepo = new StockRepository(this.context);
             assetClass.setStocks(stockRepo.load(ids));
         }
     }
 
-    private Money calculateTotals(List<AssetClass> allocation) {
+    private Money calculateCurrentValue(List<AssetClass> allocation) {
         // iterate recursively
         Money result = MoneyFactory.fromString("0");
 
         for (AssetClass ac : allocation) {
+            Money itemValue;
+
             if (ac.getChildren().size() > 0) {
                 // Group. Calculate for children.
-                result = calculateTotals(ac.getChildren());
-                // Store the value
+
+                itemValue = calculateCurrentValue(ac.getChildren());
             } else {
                 // Allocation. get value of all stocks.
-                result = getStockValue(ac.getStocks());
+
+                itemValue = getStockValue(ac.getStocks());
             }
 
-            ac.setCurrentValue(result);
+            ac.setCurrentValue(itemValue);
+            result = result.add(itemValue);
+        }
+
+        return result;
+    }
+
+    private Money calculateCurrentAllocation(AssetClass allocation, Money totalValue) {
+        Money result;
+
+        if (allocation.getChildren().size() > 0) {
+            // Group.
+            result = MoneyFactory.fromString("0");
+
+            // iterate children
+            for (AssetClass child : allocation.getChildren()) {
+                // find edge node
+                result = result.add(calculateCurrentAllocation(child, totalValue));
+            }
+        } else {
+            // Allocation. Calculate current allocation as percentage of total value.
+            // current allocation = current Value * 100 / total value
+            Double totalValueD = totalValue.toDouble();
+            Money currentAllocation = allocation.getCurrentValue()
+                .multiply(100)
+                .divide(totalValueD, Constants.DEFAULT_PRECISION);
+
+            allocation.setCurrentAllocation(currentAllocation);
+            result = currentAllocation;
         }
 
         return result;
