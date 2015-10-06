@@ -90,7 +90,7 @@ public class AssetAllocationFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
-        renderFooter();
+        // todo: renderFooter();
 
         loadData();
 
