@@ -21,7 +21,6 @@ import android.database.Cursor;
 
 import com.innahema.collections.query.functions.Converter;
 import com.innahema.collections.query.queriables.Queryable;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -41,13 +40,22 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AssetAllocationService {
 
+    public static Money sumStockValues(List<Stock> stocks) {
+        Money sum = MoneyFactory.fromString("0");
+        for (Stock stock : stocks) {
+            sum = sum.add(stock.getValue());
+        }
+        return sum;
+    }
+
     public AssetAllocationService(Context context) {
         this.context = context;
         this.repository = new AssetClassRepository(context);
     }
 
+    public AssetClassRepository repository;
+
     private Context context;
-    private AssetClassRepository repository;
 
     public AssetClass loadAssetAllocation() {
         // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
@@ -69,12 +77,15 @@ public class AssetAllocationService {
 
         // Step 5: Calculate and store totals.
         AssetClass main = AssetClass.create();
+        main.setName("Asset Allocation");
         main.setChildren(list);
         Money totalValue = calculateCurrentValue(list);
         main.setCurrentValue(totalValue);
 
         // Step 6: Calculate current allocation and difference.
-        calculateCurrentAllocation(main, totalValue);
+//        calculateCurrentAllocation(main, totalValue);
+        // difference
+        calculateStats(main, totalValue);
 
         return main;
     }
@@ -122,14 +133,6 @@ public class AssetAllocationService {
         assetClass.setSortOrder(nextPosition);
 
         repository.update(assetClass);
-    }
-
-    public Money getStockValue(List<Stock> stocks) {
-        Money sum = MoneyFactory.fromString("0");
-        for (Stock stock : stocks) {
-            sum = sum.add(stock.getValue());
-        }
-        return sum;
     }
 
     // Private.
@@ -227,7 +230,7 @@ public class AssetAllocationService {
             } else {
                 // Allocation. get value of all stocks.
 
-                itemValue = getStockValue(ac.getStocks());
+                itemValue = sumStockValues(ac.getStocks());
             }
 
             ac.setCurrentValue(itemValue);
@@ -237,30 +240,137 @@ public class AssetAllocationService {
         return result;
     }
 
-    private Money calculateCurrentAllocation(AssetClass allocation, Money totalValue) {
-        Money result;
+//    private Money calculateCurrentAllocation(AssetClass allocation, Money totalValue) {
+//        Money result;
+//
+//        if (allocation.getChildren().size() > 0) {
+//            // Group.
+//            result = MoneyFactory.fromString("0");
+//
+//            // iterate children
+//            for (AssetClass child : allocation.getChildren()) {
+//                // find edge node
+//                result = result.add(calculateCurrentAllocation(child, totalValue));
+//            }
+//        } else {
+//            // Allocation. Calculate current allocation as percentage of total value.
+//            // current allocation = current Value * 100 / total value
+//            Double totalValueD = totalValue.toDouble();
+//            Money currentAllocation = allocation.getCurrentValue()
+//                .multiply(100)
+//                .divide(totalValueD, 2);
+//            // Using 2 decimal places for allocation values.
+//
+//            result = currentAllocation;
+//        }
+//
+//        allocation.setCurrentAllocation(result);
+//
+//        return result;
+//    }
 
-        if (allocation.getChildren().size() > 0) {
-            // Group.
-            result = MoneyFactory.fromString("0");
+    /**
+     * Calculate all dependent statistics for allocation records.
+     * @param allocation Asset Class/Allocation record
+     * @param totalValue Total value of the portfolio. Used to calculate the current allocation.
+     */
+    private void calculateStats(AssetClass allocation, Money totalValue) {
+        List<AssetClass> children = allocation.getChildren();
 
-            // iterate children
-            for (AssetClass child : allocation.getChildren()) {
+        // Group or allocation?
+        if (children.size() > 0) {
+            // Group. Calculate stats for children *and* get the summaries here.
+            for (AssetClass child : children) {
                 // find edge node
-                result = result.add(calculateCurrentAllocation(child, totalValue));
+                calculateStats(child, totalValue);
             }
-        } else {
-            // Allocation. Calculate current allocation as percentage of total value.
-            // current allocation = current Value * 100 / total value
-            Double totalValueD = totalValue.toDouble();
-            Money currentAllocation = allocation.getCurrentValue()
-                .multiply(100)
-                .divide(totalValueD, Constants.DEFAULT_PRECISION);
 
+            // Allocation
+            double setAllocation = getAllocationSum(children);
+            allocation.setAllocation(setAllocation);
+            // Value
+            Money setValue = getValueSum(children);
+            allocation.setValue(setValue);
+            // current allocation
+            Money currentAllocation = getCurrentAllocationSum(children);
             allocation.setCurrentAllocation(currentAllocation);
-            result = currentAllocation;
+            // current value
+            Money currentValue = getCurrentValueSum(children);
+            allocation.setCurrentValue(currentValue);
+            // difference
+            Money difference = getDifferenceSum(children);
+            allocation.setDifference(difference);
+        } else {
+            // Allocation. Calculate all stats on the spot.
+            allocation.calculateStats(totalValue);
         }
 
-        return result;
+    }
+
+    private double getAllocationSum(List<AssetClass> group) {
+        List<Double> allocations = Queryable.from(group)
+            .map(new Converter<AssetClass, Double>() {
+                @Override
+                public Double convert(AssetClass element) {
+                    return element.getAllocation();
+                }
+            }).toList();
+
+        double sum = 0.0;
+        for (double allocation : allocations) {
+            sum += allocation;
+        }
+        return sum;
+    }
+
+    private Money getValueSum(List<AssetClass> group) {
+        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
+            @Override
+            public Money convert(AssetClass element) {
+                return element.getValue();
+            }
+        };
+        return getMoneySum(group, converter);
+    }
+
+    private Money getCurrentAllocationSum(List<AssetClass> group) {
+        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
+            @Override
+            public Money convert(AssetClass element) {
+                return element.getCurrentAllocation();
+            }
+        };
+        return getMoneySum(group, converter);
+    }
+
+    private Money getCurrentValueSum(List<AssetClass> group) {
+        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
+            @Override
+            public Money convert(AssetClass element) {
+                return element.getCurrentValue();
+            }
+        };
+        return getMoneySum(group, converter);
+    }
+
+    private Money getDifferenceSum(List<AssetClass> group) {
+        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
+            @Override
+            public Money convert(AssetClass element) {
+                return element.getDifference();
+            }
+        };
+        return getMoneySum(group, converter);
+    }
+
+    private Money getMoneySum(List<AssetClass> group, Converter<AssetClass, Money> converter) {
+        List<Money> values = Queryable.from(group)
+            .map(converter).toList();
+
+        Money sum = MoneyFactory.fromString("0");
+        for (Money value : values) {
+            sum = sum.add(value);
+        }
+        return sum;
     }
 }

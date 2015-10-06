@@ -112,36 +112,48 @@ public class AssetAllocationTests {
 
         // Then
 
+        AssetClass class1 = actual.getChildren().get(0);
+        AssetClass class2 = actual.getChildren().get(1);
+
         assertThat(actual).isNotNull();
         assertThat(actual.getChildren().size()).isGreaterThan(0);
         // There are two elements at the level 0.
         assertThat(actual.getChildren().size()).isEqualTo(2);
         // The second element is a group with a child element
-        AssetClass second = actual.getChildren().get(1);
-        assertThat(second.getChildren().size()).isEqualTo(1);
+        assertThat(class2.getChildren().size()).isEqualTo(1);
         // test total calculation on the group element
-        AssetClass child = second.getChildren().get(0);
-        assertThat(second.getAllocation()).isEqualTo(child.getAllocation());
+        AssetClass child = class2.getChildren().get(0);
+        assertThat(class2.getAllocation()).isEqualTo(child.getAllocation());
 
         //test calculation of current allocation by adding the value of all related stocks
         assertThat(child.getStockLinks().size()).isGreaterThan(0);
         assertThat(child.getStocks().size()).isGreaterThan(0);
 
-        Money expectedSum = testObject.getStockValue(child.getStocks());
+        Money expectedSum = AssetAllocationService.sumStockValues(child.getStocks());
         assertThat(child.getCurrentValue()).isEqualTo(expectedSum);
-        assertThat(second.getCurrentValue()).isEqualTo(expectedSum);
+        assertThat(class2.getCurrentValue()).isEqualTo(expectedSum);
 
         // test total
         assertThat(actual.getCurrentValue()).isEqualTo(MoneyFactory.fromString("56.48"));
 
-        // todo: current allocation
+        // test that the allocation gets updated
+        assertThat(class2.getAllocation()).isNotEqualTo(MoneyFactory.fromString("13.00"));
+
+        // current allocation
         assertThat(actual.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("100"));
-        assertThat(actual.getChildren().get(0).getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("60"));
-        assertThat(second.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("40"));
-        assertThat(child.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("40"));
+        assertThat(class1.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("53.12"));
+        assertThat(class2.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("46.88"));
+        assertThat(child.getCurrentAllocation()).isEqualTo(MoneyFactory.fromString("46.88"));
 
-        // todo: difference
+        // todo: value
 
+        // todo: current value
+
+        // difference
+        assertThat(actual.getDifference()).isEqualTo(MoneyFactory.fromString("0.00"));
+        assertThat(class1.getDifference()).isEqualTo(MoneyFactory.fromString("38.84"));
+        assertThat(class2.getDifference()).isEqualTo(MoneyFactory.fromString("20.73"));
+        assertThat(child.getDifference()).isEqualTo(MoneyFactory.fromString("38.84"));
     }
 
     /**
@@ -168,11 +180,29 @@ public class AssetAllocationTests {
 
         // When
 
-        Money actual = this.testObject.getStockValue(stocks);
+        Money actual = this.testObject.sumStockValues(stocks);
 
         // Then
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void stockTotalInDifferentCurrencies() {
+        // todo check the value calculation for stocks in different currencies
+        // Stock.HeldAt provides an account, which has a currency.
+    }
+
+    // todo: test just one record with 0 allocation.
+    @Test
+    public void firstRecordWith0Allocation() {
+        // Given
+
+        // When
+        // todo: open activity
+
+        // Then
+
     }
 
     // Private
@@ -215,14 +245,10 @@ public class AssetAllocationTests {
         created = classStockRepo.insert(link1);
         assertThat(created).isTrue();
 
-//        class1.addStockLink(link1);
-//        class1.addStock(stock1);
-
         // One group with child allocation.
-
         AssetClass class2 = AssetClass.create();
         class2.setName("class2");
-        class2.setAllocation(25.16);
+        class2.setAllocation(13.00);    // this should get overwritten
         created = classRepo.insert(class2);
         assertThat(created).isTrue();
 

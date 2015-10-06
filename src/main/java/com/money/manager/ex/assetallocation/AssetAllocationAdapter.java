@@ -19,6 +19,7 @@ package com.money.manager.ex.assetallocation;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,18 +52,22 @@ public class AssetAllocationAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        AssetClass assetClass = AssetClass.from(cursor);
+//        AssetClass assetClass = AssetClass.from(cursor);
 
-        TextView name = (TextView) view.findViewById(R.id.assetClassTextView);
-        name.setText(assetClass.getName());
+        TextView nameView = (TextView) view.findViewById(R.id.assetClassTextView);
+        String name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
+        nameView.setText(name);
 
-        TextView allocation = (TextView) view.findViewById(R.id.allocationTextView);
-        allocation.setText(assetClass.getAllocation().toString());
+        TextView allocationView = (TextView) view.findViewById(R.id.allocationTextView);
+        String allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
+        allocationView.setText(allocation);
 
-        RobotoTextView currentAllocation = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
-        currentAllocation.setText(assetClass.getCurrentAllocation().toString());
+        RobotoTextView currentAllocationView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
+        String alloc = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
+        currentAllocationView.setText(alloc);
 
-        RobotoTextView difference = (RobotoTextView) view.findViewById(R.id.differenceTextView);
-        // todo: difference.setText(assetClass.getD);
+        RobotoTextView differenceView = (RobotoTextView) view.findViewById(R.id.differenceTextView);
+        String diff = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
+        differenceView.setText(diff);
     }
 }

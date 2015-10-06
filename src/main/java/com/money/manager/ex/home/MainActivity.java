@@ -487,8 +487,6 @@ public class MainActivity
 
         // close database
 //        MoneyManagerOpenHelper.closeDatabase();
-
-        ExceptionHandler.clearMessages();
     }
 
     /**

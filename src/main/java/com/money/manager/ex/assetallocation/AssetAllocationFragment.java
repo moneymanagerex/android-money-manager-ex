@@ -20,7 +20,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.ContextMenu;
@@ -28,7 +30,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
@@ -78,14 +82,36 @@ public class AssetAllocationFragment
         AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null);
         setListAdapter(adapter);
 
+//        View footer = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
+//        getListView().addFooterView(footer);
+
         registerForContextMenu(getListView());
 
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
+
+        renderFooter();
+
         loadData();
 
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        registerContentObserver();
+
+        reloadData();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+//        unregisterObserver();
     }
 
     @Override
@@ -255,17 +281,42 @@ public class AssetAllocationFragment
         AssetClass allocation = service.loadAssetAllocation(data);
 
         String[] columns = new String[] {
-            "_id", AssetClass.NAME, AssetClass.ALLOCATION, "CurrentValue"
+            MatrixCursorColumns.ID, MatrixCursorColumns.NAME, MatrixCursorColumns.ALLOCATION,
+            MatrixCursorColumns.VALUE, MatrixCursorColumns.CURRENT_ALLOCATION,
+            MatrixCursorColumns.CURRENT_VALUE, MatrixCursorColumns.DIFFERENCE
         };
+
         MatrixCursor cursor = new MatrixCursor(columns);
 
         for (AssetClass item : allocation.getChildren()) {
             Object[] values = new Object[] {
-                item.getId(), item.getName(), item.getAllocation(), item.getCurrentValue()
+                item.getId(), item.getName(), item.getAllocation(),
+                item.getValue(), item.getCurrentAllocation(),
+                item.getCurrentValue(), item.getDifference()
             };
             cursor.addRow(values);
         }
 
         return cursor;
+    }
+
+    private void reloadData() {
+        getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, this);
+    }
+
+    private void renderFooter() {
+        View footer = (LinearLayout) View.inflate(getActivity(),
+            R.layout.item_generic_report_2_columns, null);
+
+        TextView txtColumn1 = (TextView) footer.findViewById(R.id.textViewColumn1);
+        TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
+
+        txtColumn1.setText(R.string.total);
+        txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
+        txtColumn2.setText(R.string.total);
+        txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
+
+        ListView listView = getListView();
+        listView.addFooterView(footer);
     }
 }
