@@ -38,6 +38,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
@@ -86,7 +87,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
             @Override
-            public void onResponse(Response<JsonElement> response) {
+            public void onResponse(Response<JsonElement> response, Retrofit retrofit) {
                 onContentDownloaded(response.body());
             }
 
