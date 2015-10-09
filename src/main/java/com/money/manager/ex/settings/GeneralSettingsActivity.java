@@ -19,7 +19,9 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
-public class GeneralSettingsActivity extends BaseSettingsFragmentActivity {
+public class GeneralSettingsActivity
+    extends BaseSettingsFragmentActivity {
+
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);

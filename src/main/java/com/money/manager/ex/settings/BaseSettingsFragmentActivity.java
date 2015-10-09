@@ -19,13 +19,16 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.util.Log;
+import android.view.MenuItem;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 /**
  */
-public class BaseSettingsFragmentActivity extends BaseFragmentActivity {
+public class BaseSettingsFragmentActivity
+    extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {
@@ -35,9 +38,23 @@ public class BaseSettingsFragmentActivity extends BaseFragmentActivity {
         setDisplayHomeAsUpEnabled(true);
     }
 
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        if (id == android.R.id.home) {
+//            Log.d("test", "action bar clicked");
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
     protected void setSettingFragment(PreferenceFragment fragment) {
         getFragmentManager().beginTransaction()
-                .replace(R.id.content, fragment)
-                .commit();
+            .replace(R.id.content, fragment)
+            .commit();
     }
 }

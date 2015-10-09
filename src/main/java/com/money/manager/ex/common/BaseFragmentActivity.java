@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -32,7 +33,7 @@ public abstract class BaseFragmentActivity
         extends AppCompatActivity {
 
 //    private boolean mDialogMode = false;
-//    private boolean mDisplayHomeAsUpEnabled = false;
+    private boolean mDisplayHomeAsUpEnabled = false;
     private Toolbar mToolbar;
 
     @Override
@@ -76,14 +77,16 @@ public abstract class BaseFragmentActivity
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                if (isDisplayHomeAsUpEnabled()) {
-//                    finish();
-//                    return true;
-//                }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // This is used to handle the <- Home arrow button in the toolbar (i.e. settings screens).
+        
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (mDisplayHomeAsUpEnabled) {
+                    finish();
+                    return true;
+                }
 //            case R.id.menu_cancel:
 //                if (isDialogMode()) {
 //                    onActionCancelClick();
@@ -95,9 +98,9 @@ public abstract class BaseFragmentActivity
 //                    return true;
 //                }
 //
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onStart() {
@@ -191,7 +194,7 @@ public abstract class BaseFragmentActivity
 //    }
 
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
-//        this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
+        this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
     }
 
