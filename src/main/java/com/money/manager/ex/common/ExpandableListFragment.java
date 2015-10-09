@@ -22,7 +22,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
@@ -31,9 +30,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
@@ -71,9 +70,11 @@ public class ExpandableListFragment
     ExpandableListAdapter mAdapter;
     ExpandableListView mList;
     View mEmptyView;
+    ScrollView mEmptyViewScroll;
     TextView mStandardEmptyView;
+    CharSequence mEmptyText;
     View mListContainer;
-    boolean mSetEmptyText;
+    boolean mEmptyTextSet;
     boolean mListShown;
     boolean mFinishedStart = false;
 
@@ -204,10 +205,15 @@ public class ExpandableListFragment
             throw new IllegalStateException("Can't be used with a custom content view");
         }
         mStandardEmptyView.setText(text);
-        if (!mSetEmptyText) {
-            mList.setEmptyView(mStandardEmptyView);
-            mSetEmptyText = true;
+        if (mEmptyText == null) {
+            mList.setEmptyView(mEmptyViewScroll);
         }
+        mEmptyText = text;
+
+//        if (!mEmptyTextSet) {
+//            mList.setEmptyView(mStandardEmptyView);
+//            mEmptyTextSet = true;
+//        }
     }
 
     /**
@@ -271,22 +277,25 @@ public class ExpandableListFragment
     }
 
     private void ensureList() {
-        if (mList != null) {
-            return;
-        }
+        if (mList != null) return;
+
         View root = getView();
         if (root == null) {
             throw new IllegalStateException("Content view not yet created");
         }
+
         if (root instanceof ExpandableListView) {
             mList = (ExpandableListView) root;
         } else {
-//            mStandardEmptyView = (TextView) root.findViewById(INTERNAL_EMPTY_ID);
-            mStandardEmptyView = (TextView) root.findViewById(R.id.empty);
+            mEmptyViewScroll = (ScrollView) root.findViewById(R.id.emptyViewScroll);
+//            mStandardEmptyView = (TextView) root.findViewById(R.id.empty);
+            mStandardEmptyView = (TextView) root.findViewById(android.R.id.empty);
             if (mStandardEmptyView == null) {
                 mEmptyView = root.findViewById(android.R.id.empty);
+            } else {
+                mEmptyViewScroll.setVisibility(View.GONE);
             }
-//            mListContainer = root.findViewById(INTERNAL_LIST_CONTAINER_ID);
+
             mListContainer = root.findViewById(R.id.container);
             View rawListView = root.findViewById(android.R.id.list);
             if (!(rawListView instanceof ExpandableListView)) {
@@ -297,11 +306,17 @@ public class ExpandableListFragment
                 throw new RuntimeException("Content has view with id attribute 'android.R.id.list' " +
                         "that is not a ExpandableListView class");
             }
+
             mList = (ExpandableListView) rawListView;
             if (mEmptyView != null) {
-                mList.setEmptyView(mEmptyView);
+//                mList.setEmptyView(mEmptyView);
+                mList.setEmptyView(mEmptyViewScroll);
+            } else if (mEmptyTextSet) {
+                mStandardEmptyView.setText(mEmptyText);
+                mList.setEmptyView(mEmptyViewScroll);
             }
         }
+
         mListShown = true;
         mList.setOnItemClickListener(mOnClickListener);
         if (mAdapter != null) {

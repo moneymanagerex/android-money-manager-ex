@@ -268,13 +268,13 @@ public class AbsListFragment
     }
 
     private void ensureList() {
-        if (mList != null) {
-            return;
-        }
+        if (mList != null) return;
+
         View root = getView();
         if (root == null) {
             throw new IllegalStateException("Content view not yet created");
         }
+
         if (root instanceof ListView) {
             mList = (ListView) root;
         } else {
@@ -284,8 +284,8 @@ public class AbsListFragment
                 mEmptyView = root.findViewById(android.R.id.empty);
             } else {
                 mEmptyViewScroll.setVisibility(View.GONE);
-//                mStandardEmptyView.setVisibility(View.GONE);
             }
+
             mProgressContainer = root.findViewById(R.id.progressContainer);
             mListContainer = root.findViewById(R.id.listContainer);
             View rawListView = root.findViewById(android.R.id.list);
@@ -294,11 +294,8 @@ public class AbsListFragment
                         "Content has view with id attribute 'android.R.id.list' "
                                 + "that is not a ListView class");
             }
+
             mList = (ListView) rawListView;
-            if (mList == null) {
-                throw new RuntimeException(
-                        "Your content must have a ListView whose id attribute is 'android.R.id.list'");
-            }
             if (mEmptyView != null) {
 //                mList.setEmptyView(mEmptyView);
                 mList.setEmptyView(mEmptyViewScroll);
