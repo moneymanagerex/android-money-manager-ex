@@ -112,10 +112,11 @@ public class SearchFragment extends Fragment
 
         View view = inflater.inflate(R.layout.search_fragment, container, false);
 
+        initializeUiControlVariables(view);
+
         initializeAmountSelectors(view);
 
         // Account
-        spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         if (mAccountList == null) {
             LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
             AccountService accountService = new AccountService(getContext());
@@ -138,13 +139,7 @@ public class SearchFragment extends Fragment
         adapterAccount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccount.setAdapter(adapterAccount);
 
-        // Transaction Type checkboxes.
-        cbxDeposit = (CheckBox) view.findViewById(R.id.checkBoxDeposit);
-        cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
-        cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
-
         //Payee
-        txtSelectPayee = (TextView) view.findViewById(R.id.textViewSelectPayee);
         txtSelectPayee.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,7 +150,6 @@ public class SearchFragment extends Fragment
         });
 
         //Category
-        txtSelectCategory = (TextView) view.findViewById(R.id.textViewSelectCategory);
         txtSelectCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,21 +169,14 @@ public class SearchFragment extends Fragment
             mStatusValues.addAll(Arrays.asList(getResources().getStringArray(R.array.status_values)));
         }
         // create adapter for spinnerStatus
-        spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
         ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
 
         // from date
-        txtFromDate = (TextView) view.findViewById(R.id.textViewFromDate);
         txtFromDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtFromDate));
         // to date
-        txtToDate = (TextView) view.findViewById(R.id.textViewToDate);
         txtToDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtToDate));
-        // transaction number
-        txtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
-        // notes
-        txtNotes = (EditText) view.findViewById(R.id.editTextNotes);
 
         // Reset button.
         Button resetButton = (Button) view.findViewById(R.id.resetButton);
@@ -210,29 +197,6 @@ public class SearchFragment extends Fragment
         }
 
         return view;
-    }
-
-    private void initializeAmountSelectors(View view) {
-        //create listener amount
-        OnClickListener onClickAmount = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Money amount = MoneyFactory.fromString("0");
-                Object tag = v.getTag();
-                if (tag != null && NumericHelper.isNumeric(tag.toString())) {
-                    amount = MoneyFactory.fromString(tag.toString());
-                }
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
-                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-        //From Amount
-        txtFromAmount = (TextView) view.findViewById(R.id.textViewFromAmount);
-        txtFromAmount.setOnClickListener(onClickAmount);
-        //To Amount
-        txtToAmount = (TextView) view.findViewById(R.id.textViewToAmount);
-        txtToAmount.setOnClickListener(onClickAmount);
     }
 
     @Override
@@ -276,7 +240,11 @@ public class SearchFragment extends Fragment
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        this.collectSearchCriteria();
+        View view = getView();
+        if (view != null) {
+            initializeUiControlVariables(view);
+            mSearchParameters = collectSearchCriteria();
+        }
 
         savedInstanceState.putParcelable(KEY_SEARCH_CRITERIA, mSearchParameters);
     }
@@ -305,7 +273,7 @@ public class SearchFragment extends Fragment
      * Compose arguments and execute search
      */
     public void executeSearch() {
-        collectSearchCriteria();
+        mSearchParameters = collectSearchCriteria();
 
         String where = assembleWhereClause();
 
@@ -493,7 +461,30 @@ public class SearchFragment extends Fragment
         executeSearch();
     }
 
-    private void collectSearchCriteria() {
+    private void initializeAmountSelectors(View view) {
+        //create listener amount
+        OnClickListener onClickAmount = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Money amount = MoneyFactory.fromString("0");
+                Object tag = v.getTag();
+                if (tag != null && NumericHelper.isNumeric(tag.toString())) {
+                    amount = MoneyFactory.fromString(tag.toString());
+                }
+                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
+                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        };
+        //From Amount
+        txtFromAmount = (TextView) view.findViewById(R.id.textViewFromAmount);
+        txtFromAmount.setOnClickListener(onClickAmount);
+        //To Amount
+        txtToAmount = (TextView) view.findViewById(R.id.textViewToAmount);
+        txtToAmount.setOnClickListener(onClickAmount);
+    }
+
+    private SearchParameters collectSearchCriteria() {
         // Account
         if (this.spinAccount != null) {
             int selectedAccountPosition = spinAccount.getSelectedItemPosition();
@@ -551,6 +542,8 @@ public class SearchFragment extends Fragment
         if (!TextUtils.isEmpty(txtNotes.getText())) {
             mSearchParameters.notes = txtNotes.getText().toString();
         }
+
+        return mSearchParameters;
     }
 
     private void showSearchResultsFragment(String where) {
@@ -600,5 +593,29 @@ public class SearchFragment extends Fragment
         }
         // Commit the transaction
         transaction.commit();
+    }
+
+    private void initializeUiControlVariables(View view) {
+        if (view == null) return;
+
+        spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
+
+        // Transaction Type checkboxes.
+        cbxDeposit = (CheckBox) view.findViewById(R.id.checkBoxDeposit);
+        cbxTransfer = (CheckBox) view.findViewById(R.id.checkBoxTransfer);
+        cbxWithdrawal = (CheckBox) view.findViewById(R.id.checkBoxWithdrawal);
+
+        txtSelectPayee = (TextView) view.findViewById(R.id.textViewSelectPayee);
+        txtSelectCategory = (TextView) view.findViewById(R.id.textViewSelectCategory);
+
+        spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
+
+        txtFromDate = (TextView) view.findViewById(R.id.textViewFromDate);
+        txtToDate = (TextView) view.findViewById(R.id.textViewToDate);
+
+        // transaction number
+        txtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
+        // notes
+        txtNotes = (EditText) view.findViewById(R.id.editTextNotes);
     }
 }
