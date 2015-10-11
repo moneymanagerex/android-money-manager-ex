@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -15,7 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
-
     <declare-styleable name="Theme.Money.Manager">
         <attr name="ic_action_add" format="reference"/>
         <attr name="ic_action_bell" format="reference"/>
@@ -78,7 +78,6 @@
         <attr name="headerTextViewStyle" format="reference"/>
         <attr name="headerCaptionTextViewStyle" format="reference"/>
         <attr name="theme_drawer_background_color" format="color|reference"/>
-        <attr name="holoSpinnerStyle" format="reference"/>
 
         <!-- Buttons -->
         <attr name="button_background_inactive" format="reference" />
@@ -86,6 +85,9 @@
         <!-- number input dialog / calculator -->
         <attr name="calculator_button_background" format="reference" />
         <attr name="calculator_button_operator_background" format="reference" />
+
+        <!-- spinner -->
+        <attr name="holoSpinnerStyle" format="reference"/>
 
         <!-- Toolbar -->
         <attr name="toolbarAppPopupTheme" format="reference"/>

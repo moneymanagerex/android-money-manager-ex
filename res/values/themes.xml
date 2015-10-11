@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -136,11 +137,14 @@
         <item name="listSeparatorTextViewStyle">@style/Money.TextView.ListSeparator</item>
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
         <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
-        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
 
         <!-- calculator -->
         <item name="calculator_button_background">@color/material_light_green_100</item>
         <item name="calculator_button_operator_background">@color/material_light_green_300</item>
+
+        <!-- spinner -->
+        <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
+        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
     </style>
 
 </resources>

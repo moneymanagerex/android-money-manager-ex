@@ -79,8 +79,8 @@ import info.javaperformance.money.MoneyFactory;
  * @author a.lazzari
  */
 public class AccountTransactionsFragment
-        extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, ICalculateRunningBalanceTaskCallbacks {
+    extends Fragment
+    implements LoaderManager.LoaderCallbacks<Cursor>, ICalculateRunningBalanceTaskCallbacks {
 
     private static final String ARG_ACCOUNT_ID = "arg:accountId";
     private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
@@ -740,7 +740,7 @@ public class AccountTransactionsFragment
         });
     }
 
-    private void loadAccountsInto(Spinner spinner) {
+    private void loadAccountsInto(final Spinner spinner) {
         // Load accounts into the list.
 //        Menu menu
 //        Spinner spinner = getAccountsSpinner(menu);
@@ -760,6 +760,9 @@ public class AccountTransactionsFragment
 
                 int accountId = account.getId();
                 switchAccount(accountId);
+
+                // color the spinner text
+                ((TextView) spinner.getSelectedView()).setTextColor(getResources().getColor(R.color.material_white));
             }
 
             @Override

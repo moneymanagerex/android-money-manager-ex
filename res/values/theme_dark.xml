@@ -112,11 +112,14 @@
         <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
         <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
-        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
 
         <!-- calculator -->
         <item name="calculator_button_background">@color/color_dialog_number_button</item>
         <item name="calculator_button_operator_background">@color/color_dialog_number_operator</item>
+
+        <!-- spinner -->
+        <item name="android:spinnerStyle">@style/Money.Spinner.Style.Dark</item>
+        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
 
 </resources>

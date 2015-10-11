@@ -15,15 +15,14 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-
 <resources>
 
     <style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>
 
-    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner">
-        <item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>
-        <item name="android:dropDownSelector">@drawable/app_light_darkactionbar_list_selector_holo_light</item>
-    </style>
+    <!--<style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner">-->
+        <!--<item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>-->
+        <!--<item name="android:dropDownSelector">@drawable/app_light_darkactionbar_list_selector_holo_light</item>-->
+    <!--</style>-->
 
     <style name="Money.EditText" parent="Widget.AppCompat.EditText"/>
 </resources>

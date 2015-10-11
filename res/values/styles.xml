@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -96,6 +97,7 @@
     </style>
 
     <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner" />
+    <style name="Money.Spinner.Style.Dark" parent="android:Widget.Holo.Spinner" />
 
     <style name="Money.EditText" parent="android:Widget.Holo.EditText"/>
 
