@@ -50,6 +50,10 @@ public class AccountRepository
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
     }
 
+    public int insert(Account entity) {
+        return this.insert(entity.contentValues);
+    }
+
     public Account load(int id) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Account.ACCOUNTID, "=", id);

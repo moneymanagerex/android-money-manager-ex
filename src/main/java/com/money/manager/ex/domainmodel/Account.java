@@ -111,6 +111,10 @@ public class Account
         return getString(Account.ACCOUNTNUM);
     }
 
+    public void setAccountNumber(String value) {
+        setString(ACCOUNTNUM, value);
+    }
+
     public String getStatus() {
         return getString(Account.STATUS);
     }

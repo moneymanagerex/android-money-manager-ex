@@ -16,6 +16,10 @@
  */
 package com.money.manager.ex.currency;
 
+import android.content.Context;
+
+import com.money.manager.ex.domainmodel.Currency;
+
 import org.javamoney.moneta.ExchangeRateBuilder;
 import org.javamoney.moneta.internal.convert.LocalDate;
 import org.javamoney.moneta.spi.AbstractRateProvider;
@@ -58,15 +62,17 @@ public class MmexExchangeRateProvider
 //            .set("days", 1)
             .build();
 
-    private String BASE_CURRENCY_CODE;
-
-    public MmexExchangeRateProvider() {
+    public MmexExchangeRateProvider(Context context) {
         super(CONTEXT);
         // ProviderContext context
 
         // todo: load base currency code.
         this.BASE_CURRENCY_CODE = "EUR";
+        this.context = context;
     }
+
+    private String BASE_CURRENCY_CODE;
+    private Context context;
 
     /**
      * Access the {@link ConversionContext} for this ExchangeRateProvider. Each instance of
@@ -112,15 +118,9 @@ public class MmexExchangeRateProvider
 //        }
 
         ExchangeRateBuilder builder = getBuilder(conversionQuery);
-//        ExchangeRate sourceRate = targets.get(conversionQuery.getBaseCurrency()
-//            .getCurrencyCode());
-//        ExchangeRate target = targets
-//            .get(conversionQuery.getCurrency().getCurrencyCode());
 
-        // todo: get the actual rate
-//        builder.setFactor();
-        ExchangeRate sourceRate = null;
-        ExchangeRate target = null;
+        ExchangeRate sourceRate = createExchangeRate(conversionQuery.getBaseCurrency());
+        ExchangeRate target = createExchangeRate(conversionQuery.getCurrency());
 
         return createExchangeRate(conversionQuery, builder, sourceRate, target);
     }
@@ -138,7 +138,6 @@ public class MmexExchangeRateProvider
     @Override
     public CurrencyConversion getCurrencyConversion(ConversionQuery conversionQuery) {
         return super.getCurrencyConversion(conversionQuery);
-//        return null;
     }
 
     /**
@@ -284,6 +283,22 @@ public class MmexExchangeRateProvider
         return builder;
     }
 
+    private ExchangeRate createExchangeRate(CurrencyUnit destination) {
+        // Required elements are: base, term, factor, & context.
+
+        ExchangeRateBuilder builder = new ExchangeRateBuilder(ConversionContext.ANY_CONVERSION);
+        builder.setBase(Monetary.getCurrency(BASE_CURRENCY_CODE));
+        builder.setTerm(destination);
+
+        CurrencyRepository repo = new CurrencyRepository(this.context);
+        Currency destinationCurrencyEntity = repo.loadCurrency(destination.getCurrencyCode());
+
+        Double baseConversionRate = destinationCurrencyEntity.getBaseConversionRate();
+        NumberValue value = DefaultNumberValue.of(baseConversionRate);
+        builder.setFactor(value);
+        return builder.build();
+    }
+
     private ExchangeRate createExchangeRate(ConversionQuery query, ExchangeRateBuilder builder,
                                             ExchangeRate sourceRate, ExchangeRate target) {
 
@@ -295,8 +310,7 @@ public class MmexExchangeRateProvider
                 return null;
             }
             return reverse(sourceRate);
-        } else if (BASE_CURRENCY_CODE.equals(query.getBaseCurrency()
-            .getCurrencyCode())) {
+        } else if (BASE_CURRENCY_CODE.equals(query.getBaseCurrency().getCurrencyCode())) {
             return target;
         } else {
             // Get Conversion base as derived rate: base -> EUR -> term

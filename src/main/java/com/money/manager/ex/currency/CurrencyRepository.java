@@ -99,7 +99,7 @@ public class CurrencyRepository
     private Currency loadCurrencyInternal(String selection, String[] selectionArgs) {
         Currency currency = new Currency();
 
-        Cursor cursor = openCursor(getAllColumns(), selection, selectionArgs);
+        Cursor cursor = openCursor(null, selection, selectionArgs);
         if (cursor == null) return null;
 
         if (cursor.moveToNext()) {

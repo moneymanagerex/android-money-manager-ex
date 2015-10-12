@@ -16,10 +16,13 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.MmexExchangeRateProvider;
+import com.money.manager.ex.domainmodel.Currency;
 
 import org.javamoney.moneta.FastMoney;
 import org.javamoney.moneta.Money;
@@ -27,8 +30,10 @@ import org.javamoney.moneta.RoundedMoney;
 import org.javamoney.moneta.function.MonetaryFunctions;
 import org.javamoney.moneta.function.MonetaryUtil;
 import org.javamoney.moneta.internal.convert.ECBCurrentRateProvider;
+import org.javamoney.moneta.spi.DefaultNumberValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -124,25 +129,37 @@ public class JavaMoneyTests {
 
     @Test
     public void conversion() {
+        // Given
+
+        UnitTestHelper.initializeContentProvider();
+        Context context = UnitTestHelper.getContext();
+        // set AUD rate
+        CurrencyRepository repo = new CurrencyRepository(context);
+        Currency aud = repo.loadCurrency("AUD");
+        aud.setConversionRate(2.0);
+        boolean saved = repo.update(aud);
+        assertThat(saved).isTrue();
+
+        // When
+
         CurrencyUnit euro = Monetary.getCurrency("EUR");
         MonetaryAmount euros = FastMoney.of(100, euro);
 
-        ExchangeRateProvider provider;
-//        provider = MonetaryConversions.getExchangeRateProvider();
-        provider = new MmexExchangeRateProvider();
-        //provider.getExchangeRate()
+        ExchangeRateProvider provider = new MmexExchangeRateProvider(context);
+
         CurrencyConversion audConversion = provider.getCurrencyConversion("AUD");
         ExchangeRate rate = audConversion.getExchangeRate(euros);
 
-//        ECBCurrentRateProvider ecb = new ECBCurrentRateProvider();
-//        ExchangeRateProvider provider = new MmexExchangeRateProvider();
-//        ExchangeRate audeur = provider.getExchangeRate("EUR", "AUD");
+        assertThat(rate.getFactor().compareTo(DefaultNumberValue.of(2.0))).isEqualTo(0);
+
+        ExchangeRate audeur = provider.getExchangeRate("EUR", "AUD");
+        assertThat(audeur.getFactor().compareTo(DefaultNumberValue.of(2.0))).isEqualTo(0);
 
         // requires network connection
 //        CurrencyConversion conversion = MonetaryConversions.getConversion("EUR");
 //        CurrencyConversion audConversion = MonetaryConversions.getConversion("AUD");
-//        MonetaryAmount aussies = euros.with(audConversion);
-//        assertThat(aussies).isEqualTo(FastMoney.of(144.35, "AUD"));
+        MonetaryAmount aussies = euros.with(audConversion);
+        assertThat(aussies).isEqualTo(FastMoney.of(200.0, "AUD"));
 
         Log.d("test", "the end, debug manually");
     }

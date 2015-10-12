@@ -16,18 +16,25 @@
  */
 package org.moneymanagerex.android.tests;
 
+import android.content.Context;
+
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.account.AccountStatuses;
+import com.money.manager.ex.account.AccountTypes;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test Account model.
@@ -66,5 +73,32 @@ public class AccountTests {
         Integer actual = this.account.getId();
 
         assertNull(actual);
+    }
+
+    @Test
+    public void canUpdateValueInDb() {
+        // Given
+
+        UnitTestHelper.initializeContentProvider();
+        Context context = UnitTestHelper.getContext();
+        AccountRepository repo = new AccountRepository(context);
+        Account account = Account.create("first", AccountTypes.CHECKING, AccountStatuses.OPEN,
+            true, 1);
+        String accountNumber = "blah blah";
+
+        // When
+
+        Integer id = repo.insert(account);
+
+        Account loaded = repo.load(id);
+        loaded.setAccountNumber(accountNumber);
+        repo.update(loaded);
+
+        loaded = repo.load(id);
+        String actual = loaded.getAccountNumber();
+
+        // Then
+        assertThat(id).isEqualTo(1);
+        assertThat(actual).isEqualTo(accountNumber);
     }
 }
