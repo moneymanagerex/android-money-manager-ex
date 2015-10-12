@@ -41,28 +41,28 @@ import java.util.Currency;
 /**
  * Actual helper class for accessing an SQLite database.
  */
-public class MoneyManagerOpenHelper
-        extends SQLiteOpenHelper {
+public class MmexOpenHelper
+    extends SQLiteOpenHelper {
 
-    private static final String LOGCAT = MoneyManagerOpenHelper.class.getSimpleName();
+    private static final String LOGCAT = MmexOpenHelper.class.getSimpleName();
     /*
        The version corresponds to the user version in info table, used by the desktop app.
      */
     private static final int databaseVersion = 3;
 
     // singleton
-    private static MoneyManagerOpenHelper mInstance;
+    private static MmexOpenHelper mInstance;
 
     /**
      * Returns the singleton instance of the helper for database access.
      * @param context Use Application context for database access (?)
      * @return instance of the db helper
      */
-    public static synchronized MoneyManagerOpenHelper getInstance(Context context) {
+    public static synchronized MmexOpenHelper getInstance(Context context) {
         if (mInstance == null) {
-            Log.v(LOGCAT, "MoneyManagerOpenHelper.getInstance()");
+            Log.v(LOGCAT, "MmexOpenHelper.getInstance()");
 
-            mInstance = new MoneyManagerOpenHelper(context.getApplicationContext());
+            mInstance = new MmexOpenHelper(context.getApplicationContext());
         }
         return mInstance;
     }
@@ -77,7 +77,7 @@ public class MoneyManagerOpenHelper
      * Constructor. This is where the database path gets set.
      * @param context Current context.
      */
-    private MoneyManagerOpenHelper(Context context) {
+    private MmexOpenHelper(Context context) {
         super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseVersion);
         this.mContext = context;
 

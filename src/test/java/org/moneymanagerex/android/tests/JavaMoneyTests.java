@@ -41,6 +41,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
@@ -52,6 +53,8 @@ import javax.money.convert.CurrencyConversion;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.MonetaryConversions;
+import javax.money.format.MonetaryAmountFormat;
+import javax.money.format.MonetaryFormats;
 import javax.money.spi.MonetaryRoundingsSingletonSpi;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -222,5 +225,41 @@ public class JavaMoneyTests {
         saved = repo.update(usd);
         assertThat(saved).isTrue();
 
+    }
+
+    @Test
+    public void valueConversion() {
+        // Given
+
+        MonetaryAmount money = FastMoney.of(235.243, "EUR");
+
+        // When
+
+        String text = money.toString();
+        MonetaryAmount newAmount = FastMoney.parse(text);
+
+//        double x = money.getNumber().doubleValueExact();  -> 235.243
+//        double y = money.getNumber().doubleValue();       -> 235.24300
+
+        // Then
+
+        assertThat(text).isEqualTo("EUR 235.24300");
+        assertThat(newAmount).isEqualTo(FastMoney.of(235.243, "EUR"));
+    }
+
+    @Test
+    public void formatting() {
+        // Given
+
+        MonetaryAmount amount = FastMoney.of(3162.24523, "EUR");
+        MonetaryAmountFormat format = MonetaryFormats.getAmountFormat(Locale.GERMANY);
+
+        // When
+
+        String actual = format.format(amount);
+
+        // Then
+
+        assertThat(actual).isEqualTo("3.162,25 EUR");
     }
 }

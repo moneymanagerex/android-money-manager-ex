@@ -27,9 +27,13 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DateUtils;
 
+import org.javamoney.moneta.FastMoney;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.money.MonetaryAmount;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -89,14 +93,12 @@ public class EntityBase
         contentValues.put(column, value);
     }
 
-//    protected MonetaryAmount getMonetaryAmount(String fieldName) {
-//        Double d = contentValues.getAsDouble(fieldName);
-//
-////        MonetaryAmount amt = Monetary.getDefaultAmountFactory().setNumber(d).create();
-//        MonetaryAmount dInt = Money.of(5, "EUR");
-//        MonetaryAmount dAmount = Money.of(d, "EUR");
-//        return dAmount;
-//    }
+    protected MonetaryAmount getMoneta(String fieldName, String currencyCode) {
+        Double d = contentValues.getAsDouble(fieldName);
+
+        MonetaryAmount dAmount = FastMoney.of(d, currencyCode);
+        return dAmount;
+    }
 
     protected Money getMoney(String fieldName) {
         String value = contentValues.getAsString(fieldName);

@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
@@ -17,13 +16,10 @@ import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
-import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Contains common code for repositories.
@@ -93,7 +89,7 @@ public abstract class RepositoryBase
 //     * @return A boolean indicating if there are any records that satisfy the condition.
 //     */
 //    protected boolean any(String where, String[] args) {
-//        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(context);
+//        MmexOpenHelper helper = MmexOpenHelper.getInstance(context);
 //        Cursor c = helper.getReadableDatabase().rawQuery(where, args);
 //        if (c == null) return false;
 //

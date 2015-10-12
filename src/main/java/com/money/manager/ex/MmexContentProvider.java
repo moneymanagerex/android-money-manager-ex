@@ -33,7 +33,7 @@ import com.money.manager.ex.budget.BudgetQuery;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -161,7 +161,7 @@ public class MmexContentProvider
         // find object from uri
         Object ret = getObjectFromUri(uri);
         // database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         long id = Constants.NOT_SET;
         String parse;
@@ -207,7 +207,7 @@ public class MmexContentProvider
 
         Object ret = getObjectFromUri(uri);
 
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
 
         int rowsUpdate = 0;
@@ -255,7 +255,7 @@ public class MmexContentProvider
             return 0;
         }
         // take a database reference
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(getContext());
+        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         int rowsDelete = 0;
         // check type of dataset instance.
@@ -395,7 +395,7 @@ public class MmexContentProvider
         Object sourceObject = getObjectFromUri(uri);
         // take a database reference
         Context context = getContext();
-        MoneyManagerOpenHelper databaseHelper = MoneyManagerOpenHelper.getInstance(context);
+        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(context);
 
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         if (database == null) {

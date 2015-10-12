@@ -27,7 +27,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.TableInfoTable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 

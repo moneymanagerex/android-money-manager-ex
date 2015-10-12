@@ -22,6 +22,8 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 
+import javax.money.MonetaryAmount;
+
 import info.javaperformance.money.Money;
 
 /**
@@ -146,6 +148,12 @@ public class Account
     public Money getInitialBalance() {
         return getMoney(Account.INITIALBAL);
     }
+
+//    public MonetaryAmount getInitialBalance() {
+//        // todo: get account currency?
+//        // this.getCurrencyId()
+//        return getMoneta(Account.INITIALBAL, "EUR");
+//    }
 
     public Boolean getFavorite() {
         return getBoolean(Account.FAVORITEACCT);

@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.BufferedReader;
@@ -99,7 +99,7 @@ public class MmexDatabaseUtils {
         }
 
         // close connection
-        MoneyManagerOpenHelper.getInstance(mContext).close();
+        MmexOpenHelper.getInstance(mContext).close();
 
         // change database
         // store as the default database in settings
@@ -133,7 +133,7 @@ public class MmexDatabaseUtils {
      * @return A boolean indicating whether the check was successfully completed.
      */
     public boolean checkIntegrity() {
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+        SQLiteDatabase db = MmexOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 
         boolean result = db.isDatabaseIntegrityOk();
@@ -216,7 +216,7 @@ public class MmexDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(mContext)
+        SQLiteDatabase db = MmexOpenHelper.getInstance(mContext)
                 .getReadableDatabase();
 
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);

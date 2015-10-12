@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.core;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -29,7 +28,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -47,10 +45,8 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyRepository;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.domainmodel.Category;
@@ -59,7 +55,6 @@ import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.currency.CurrencyService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
@@ -72,8 +67,6 @@ import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class Core {
@@ -285,7 +278,7 @@ public class Core {
      * @return last payee used
      */
     public TablePayee getLastPayeeUsed() {
-        MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
+        MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
         SQLiteDatabase database = helper.getReadableDatabase();
         TablePayee payee = null;
 
@@ -490,7 +483,7 @@ public class Core {
         }
 
         // close existing connection.
-        MoneyManagerOpenHelper.closeDatabase();
+        MmexOpenHelper.closeDatabase();
 
         // change database
 //        MoneyManagerApplication.setDatabasePath(context, path);

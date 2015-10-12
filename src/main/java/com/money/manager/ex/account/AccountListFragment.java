@@ -17,13 +17,11 @@
 package com.money.manager.ex.account;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
@@ -54,8 +52,8 @@ public class AccountListFragment
 
     public String mAction = Intent.ACTION_EDIT;
 
-    private static TableAccountList mAccount = new TableAccountList();
-    private static final int ID_LOADER_ACCOUNT = 0;
+//    private static TableAccountList mAccount = new TableAccountList();
+    private static final int LOADER_ACCOUNT = 0;
 
     private String mCurFilter;
 
@@ -86,7 +84,7 @@ public class AccountListFragment
 
         setListShown(false);
         // start loader
-        getLoaderManager().initLoader(ID_LOADER_ACCOUNT, null, this);
+        getLoaderManager().initLoader(LOADER_ACCOUNT, null, this);
 
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
@@ -148,15 +146,20 @@ public class AccountListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
-            case ID_LOADER_ACCOUNT:
+            case LOADER_ACCOUNT:
                 String whereClause = null;
                 String selectionArgs[] = null;
                 if (!TextUtils.isEmpty(mCurFilter)) {
                     whereClause = Account.ACCOUNTNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%"};
                 }
-                return new MmexCursorLoader(getActivity(), mAccount.getUri(), mAccount.getAllColumns(),
-                        whereClause, selectionArgs, "upper(" + Account.ACCOUNTNAME + ")");
+
+                AccountRepository repo = new AccountRepository(getActivity());
+
+                return new MmexCursorLoader(getActivity(), repo.getUri(),
+                    repo.getAllColumns(),
+                    whereClause, selectionArgs,
+                    "upper(" + Account.ACCOUNTNAME + ")");
         }
 
         return null;
@@ -165,7 +168,7 @@ public class AccountListFragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
-            case ID_LOADER_ACCOUNT:
+            case LOADER_ACCOUNT:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
                 adapter.swapCursor(null);
         }
@@ -174,7 +177,7 @@ public class AccountListFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-            case ID_LOADER_ACCOUNT:
+            case LOADER_ACCOUNT:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
                 adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
                 adapter.swapCursor(data);
@@ -198,7 +201,7 @@ public class AccountListFragment
         // the search filter, and restart the loader to do a new query
         // with this filter.
         mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, this);
+        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, this);
         return true;
     }
 
@@ -241,7 +244,7 @@ public class AccountListFragment
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                         }
                         // restart loader
-                        getLoaderManager().restartLoader(ID_LOADER_ACCOUNT, null, AccountListFragment.this);
+                        getLoaderManager().restartLoader(LOADER_ACCOUNT, null, AccountListFragment.this);
                     }
                 });
 

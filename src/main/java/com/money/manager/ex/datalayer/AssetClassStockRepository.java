@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 
@@ -68,5 +69,22 @@ public class AssetClassStockRepository
         c.close();
 
         return result;
+    }
+
+    /**
+     * Retrieves the cursor for the list of linked securities to the given asset class.
+     * @param assetClassId Id of the asset class for which to load the data.
+     * @return Cursor on the list of linked securities.
+     */
+    public Cursor fetchCursorAssignedSecurities(int assetClassId) {
+        // todo: adjust the ad-hoc query to fetch the securities linked to this asset class.
+        String sql = "SELECT * FROM ASSETCLASS_STOCK_V1 WHERE assetClassId=?";
+        String[] args = new String[] { Integer.toString(assetClassId)};
+
+        Cursor c = MmexOpenHelper.getInstance(this.context).getReadableDatabase()
+            .rawQuery(sql, args);
+
+//        c.close();
+        return c;
     }
 }

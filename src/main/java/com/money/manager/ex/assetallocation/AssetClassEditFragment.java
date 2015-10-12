@@ -1,19 +1,47 @@
+/*
+ * Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.money.manager.ex.assetallocation;
 
+import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.R;
+import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.database.MmexSimpleCursorLoader;
+import com.money.manager.ex.database.SimpleCursorLoader;
 import com.money.manager.ex.domainmodel.AssetClass;
 
 import info.javaperformance.money.Money;
@@ -24,9 +52,10 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AssetClassEditFragment
     extends Fragment
-    implements IInputAmountDialogListener {
+    implements IInputAmountDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int INPUT_ALLOCATION = 1;
+    public static final int LOADER_SECURITIES = 1;
 
     public AssetClassEditFragment() {
     }
@@ -44,6 +73,10 @@ public class AssetClassEditFragment
         View view = getView();
         initializeNameEdit(view);
         initializeAllocationPicker(view);
+
+        initializeFloatingActionButton(view);
+
+        loadData();
     }
 
     @Override
@@ -117,5 +150,63 @@ public class AssetClassEditFragment
             textView.setText(allocation.toString());
             textView.setTag(allocation.toString());
         }
+    }
+
+    private void initializeFloatingActionButton(View view) {
+        // attach fab
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
+        fab.attachToListView(listView);
+
+        fab.setVisibility(View.VISIBLE);
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // todo: select a security
+            }
+        };
+        fab.setOnClickListener(listener);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_SECURITIES:
+                // todo: initialize loader
+//                String whereClause = null;
+//                String selectionArgs[] = null;
+//                if (!TextUtils.isEmpty(mCurFilter)) {
+//                    whereClause = Account.ACCOUNTNAME + " LIKE ?";
+//                    selectionArgs = new String[]{mCurFilter + "%"};
+//                }
+//                return new MmexCursorLoader(getActivity(), mAccount.getUri(),
+//                    mAccount.getAllColumns(),
+//                    whereClause, selectionArgs, "upper(" + Account.ACCOUNTNAME + ")");
+
+                return new MmexSimpleCursorLoader(getActivity());
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_SECURITIES:
+                // todo:
+//                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+//                adapter.swapCursor(null);
+        }
+
+    }
+
+    private void loadData() {
+        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
     }
 }

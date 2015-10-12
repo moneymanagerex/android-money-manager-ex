@@ -45,6 +45,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
@@ -55,7 +56,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -657,7 +657,7 @@ public class EditTransactionCommonFunctions {
         btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(mContext);
+                MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
                 AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
 
                 String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +

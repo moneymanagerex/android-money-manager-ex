@@ -22,17 +22,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 

@@ -34,7 +34,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
-import com.money.manager.ex.database.MoneyManagerOpenHelper;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DonateDialogUtils;
@@ -71,7 +71,7 @@ public class DatabaseSettingsFragment
         //sqlite version
         Preference pSQLiteVersion = findPreference(getString(PreferenceConstants.PREF_SQLITE_VERSION));
         if (pSQLiteVersion != null) {
-            MoneyManagerOpenHelper helper = MoneyManagerOpenHelper.getInstance(getActivity().getApplicationContext());
+            MmexOpenHelper helper = MmexOpenHelper.getInstance(getActivity().getApplicationContext());
             String sqliteVersion = helper.getSQLiteVersion();
             if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
         }
@@ -119,7 +119,7 @@ public class DatabaseSettingsFragment
 
         String version = "N/A";
 
-        SQLiteDatabase db = MoneyManagerOpenHelper.getInstance(getActivity())
+        SQLiteDatabase db = MmexOpenHelper.getInstance(getActivity())
                 .getReadableDatabase();
         if (db != null) {
             int versionNumber = db.getVersion();
