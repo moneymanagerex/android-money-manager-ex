@@ -31,6 +31,8 @@ import org.javamoney.moneta.function.MonetaryFunctions;
 import org.javamoney.moneta.function.MonetaryUtil;
 import org.javamoney.moneta.internal.convert.ECBCurrentRateProvider;
 import org.javamoney.moneta.spi.DefaultNumberValue;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
@@ -60,6 +62,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class JavaMoneyTests {
+
+    @Before
+    public void setUp() {
+        UnitTestHelper.initializeContentProvider();
+    }
+
+    @After
+    public void tearDown() {
+        UnitTestHelper.resetDatabase();
+    }
 
     @Test
     public void createInstances() {
@@ -131,14 +143,8 @@ public class JavaMoneyTests {
     public void conversion() {
         // Given
 
-        UnitTestHelper.initializeContentProvider();
         Context context = UnitTestHelper.getContext();
-        // set AUD rate
-        CurrencyRepository repo = new CurrencyRepository(context);
-        Currency aud = repo.loadCurrency("AUD");
-        aud.setConversionRate(2.0);
-        boolean saved = repo.update(aud);
-        assertThat(saved).isTrue();
+        prepareCurrencies();
 
         // When
 
@@ -164,7 +170,7 @@ public class JavaMoneyTests {
         Log.d("test", "the end, debug manually");
     }
 
-    @Test
+//    @Test
     public void collections() {
         List<MonetaryAmount> amounts = new ArrayList<>();
         amounts.add(Money.of(2, "EUR"));
@@ -177,5 +183,44 @@ public class JavaMoneyTests {
         // money.isBetween
 
         //amounts.sum
+    }
+
+    @Test
+    public void conversionOverBaseCurrency() {
+        // Given
+
+        Context context = UnitTestHelper.getContext();
+        prepareCurrencies();
+
+        // When
+
+        MonetaryAmount dollars = FastMoney.of(100, "USD");
+
+        ExchangeRateProvider provider = new MmexExchangeRateProvider(context);
+        CurrencyConversion audConversion = provider.getCurrencyConversion("AUD");
+
+        MonetaryAmount aussies = dollars.with(audConversion);
+
+        // Then
+
+        assertThat(aussies).isEqualTo(FastMoney.of(133.33, "AUD"));
+    }
+
+    private void prepareCurrencies() {
+        Context context = UnitTestHelper.getContext();
+        CurrencyRepository repo = new CurrencyRepository(context);
+
+        // set AUD rate to 2.0
+        Currency aud = repo.loadCurrency("AUD");
+        aud.setConversionRate(2.0);
+        boolean saved = repo.update(aud);
+        assertThat(saved).isTrue();
+
+        // Set USD to 1.5
+        Currency usd = repo.loadCurrency("USD");
+        usd.setConversionRate(1.5);
+        saved = repo.update(usd);
+        assertThat(saved).isTrue();
+
     }
 }
