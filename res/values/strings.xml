@@ -658,4 +658,5 @@
     <string name="securities">Securities</string>
     <string name="title_activity_security_list">SecurityListActivity</string>
     <string name="no_records_found_create">No records found. To create one, tap the green plus button.</string>
+    <string name="current_value">Current Value</string>
 </resources>

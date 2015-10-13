@@ -24,10 +24,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,8 +40,10 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MmexSimpleCursorLoader;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
@@ -55,6 +60,7 @@ public class AssetClassEditFragment
 
     public static final int INPUT_ALLOCATION = 1;
     public static final int LOADER_SECURITIES = 1;
+    public static final int CONTEXT_MENU_DELETE = 1;
 
     public AssetClassEditFragment() {
     }
@@ -84,11 +90,10 @@ public class AssetClassEditFragment
 
         initializeFloatingActionButton(view);
 
-        createAdapter();
-        ListView listView = getListView();
-        if (listView != null) {
-            listView.setAdapter(mAdapter);
-        }
+        mAdapter = createAdapter();
+        ListView listView = initializeListView(mAdapter);
+
+        registerForContextMenu(listView);
 
         // setListShown(false);
         Integer id = this.assetClass.getId();
@@ -106,6 +111,8 @@ public class AssetClassEditFragment
                 break;
         }
     }
+
+    // loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -133,6 +140,42 @@ public class AssetClassEditFragment
                 mAdapter.swapCursor(null);
         }
 
+    }
+
+    // Context menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(0, CONTEXT_MENU_DELETE, 0, R.string.delete);
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        boolean result = false;
+
+        switch (item.getItemId()) {
+            case CONTEXT_MENU_DELETE:
+                // Delete
+                ListView listView = getListView();
+                if (listView == null) return false;
+
+                Cursor cursor = (Cursor) listView.getItemAtPosition(info.position);
+                Stock stock = Stock.fromCursor(cursor);
+                int stockId = stock.getId();
+
+                AssetClassStockRepository repo = new AssetClassStockRepository(getActivity());
+                int assetClassId = this.assetClass.getId();
+                boolean deleted = repo.delete(assetClassId, stockId);
+                if (!deleted) {
+                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                    handler.showMessage(getString(R.string.error));
+                }
+
+                result = true;
+                break;
+        }
+        return result;
     }
 
     public void loadData() {
@@ -230,8 +273,8 @@ public class AssetClassEditFragment
         getActivity().startActivityForResult(intent, AssetClassEditActivity.REQUEST_STOCK_ID);
     }
 
-    private void createAdapter() {
-        mAdapter = new MoneySimpleCursorAdapter(getActivity(),
+    private MoneySimpleCursorAdapter createAdapter() {
+        return new MoneySimpleCursorAdapter(getActivity(),
             android.R.layout.simple_list_item_1,
             null,
             new String[]{Stock.SYMBOL },
@@ -249,4 +292,23 @@ public class AssetClassEditFragment
         ListView listView = (ListView) view.findViewById(R.id.securitiesList);
         return listView;
     }
+
+    private ListView initializeListView(ListAdapter adapter) {
+        ListView listView = getListView();
+        if (listView == null) return null;
+
+        listView.setAdapter(adapter);
+
+        AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // todo: show context menu
+                getActivity().openContextMenu(view);
+            }
+        };
+        listView.setOnItemClickListener(onItemClickListener);
+
+        return listView;
+    }
+
 }

@@ -43,6 +43,16 @@
         android:gravity="center"
         android:text="@string/allocation" />
 
+    <!-- set value -->
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/valueTextView"
+        android:layout_width="wrap_content"
+        android:minWidth="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/value" />
+
     <!-- current allocation -->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/currentAllocationTextView"
@@ -65,7 +75,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:gravity="center_vertical|end"
-        android:text="@string/current_allocation" />
+        android:text="@string/current_value" />
 
     <!-- difference -->
     <com.money.manager.ex.view.RobotoTextView

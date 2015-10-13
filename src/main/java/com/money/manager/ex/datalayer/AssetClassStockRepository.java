@@ -51,6 +51,14 @@ public class AssetClassStockRepository
         return id > 0;
     }
 
+    public boolean delete(int assetClassId, int stockId) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(AssetClassStock.ASSETCLASSID, "=", assetClassId);
+        where.addStatement(AssetClassStock.STOCKID, "=", stockId);
+
+        return this.delete(where.getWhere(), null) > 0;
+    }
+
     public List<AssetClassStock> loadForClass(int assetClassId) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         String selection = where.getStatement(AssetClassStock.ASSETCLASSID, "=", assetClassId);

@@ -284,9 +284,10 @@ public class AssetAllocationFragment
         AssetClass allocation = service.loadAssetAllocation(data);
 
         String[] columns = new String[] {
-            MatrixCursorColumns.ID, MatrixCursorColumns.NAME, MatrixCursorColumns.ALLOCATION,
-            MatrixCursorColumns.VALUE, MatrixCursorColumns.CURRENT_ALLOCATION,
-            MatrixCursorColumns.CURRENT_VALUE, MatrixCursorColumns.DIFFERENCE
+            MatrixCursorColumns.ID, MatrixCursorColumns.NAME,
+            MatrixCursorColumns.ALLOCATION, MatrixCursorColumns.VALUE,
+            MatrixCursorColumns.CURRENT_ALLOCATION, MatrixCursorColumns.CURRENT_VALUE,
+            MatrixCursorColumns.DIFFERENCE
         };
 
         MatrixCursor cursor = new MatrixCursor(columns);

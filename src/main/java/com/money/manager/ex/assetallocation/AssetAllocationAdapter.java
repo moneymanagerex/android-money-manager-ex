@@ -64,6 +64,11 @@ public class AssetAllocationAdapter
         TextView allocationView = (TextView) view.findViewById(R.id.allocationTextView);
         allocationView.setText(value);
 
+        // set value
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
+        TextView valueView = (TextView) view.findViewById(R.id.valueTextView);
+        valueView.setText(value);
+
         // current allocation
         value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
         RobotoTextView currentAllocationView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);

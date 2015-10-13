@@ -146,6 +146,7 @@ public class CurrencyListFragment
             case 0: //EDIT
                 startCurrencyFormatActivity(currencyId);
                 break;
+
             case 1: // Chart
                 // remember the device orientation and return to it after the chart.
                 this.mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());

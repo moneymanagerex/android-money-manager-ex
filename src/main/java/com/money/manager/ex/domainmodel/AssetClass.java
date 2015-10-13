@@ -220,7 +220,7 @@ public class AssetClass
 
         // Set Value
         double allocation = getAllocation();
-        double value = allocation * 100 / totalPortfolioValue.toDouble();
+        double value = allocation * totalPortfolioValue.toDouble() / 100;
         this.value = MoneyFactory.fromDouble(value);
 
         // current allocation. Use 2 decimals for now.

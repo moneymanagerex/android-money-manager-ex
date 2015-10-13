@@ -43,7 +43,8 @@ public class AssetClassRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {AssetClass.ID + " AS _id", AssetClass.ID,
+        return new String[] {AssetClass.ID + " AS _id",
+            AssetClass.ID,
             AssetClass.PARENTID,
             AssetClass.NAME,
             AssetClass.ALLOCATION,
@@ -59,7 +60,7 @@ public class AssetClassRepository
     }
 
     public AssetClass first(String selection) {
-        return first(getAllColumns(), selection, null);
+        return first(null, selection, null);
     }
 
     public AssetClass first(String[] projection, String selection, String[] args) {
