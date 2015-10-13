@@ -65,10 +65,10 @@ public class CurrencyRepository
             new String[]{Integer.toString(currencyId)});
     }
 
-    public Currency loadCurrency(String symbol) {
+    public Currency loadCurrency(String code) {
         return loadCurrency(
             Currency.CURRENCY_SYMBOL + "=?",
-                new String[] { symbol });
+            new String[] { code });
     }
 
     public int saveExchangeRate(int currencyId, Money exchangeRate) {

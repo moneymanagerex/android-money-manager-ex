@@ -55,11 +55,13 @@ public class AssetAllocationTests {
     @Before
     public void setup() {
         this.testObject = new AssetAllocationService(UnitTestHelper.getContext());
+        UnitTestHelper.initializeContentProvider();
     }
 
     @After
     public void tearDown() {
         this.testObject = null;
+        UnitTestHelper.resetDatabase();
     }
 
     @Test
@@ -71,7 +73,6 @@ public class AssetAllocationTests {
     public void testDataLayer() {
         // Given
 
-        UnitTestHelper.initializeContentProvider();
         Context context = UnitTestHelper.getContext();
 //        StockRepository stockRepository = new StockRepository(context);
         AssetClassRepository classRepo = new AssetClassRepository(context);
@@ -102,7 +103,6 @@ public class AssetAllocationTests {
     public void testLoadingOfAllocation() {
         // Given
 
-        UnitTestHelper.initializeContentProvider();
         Context context = UnitTestHelper.getContext();
         createRecords(context);
 

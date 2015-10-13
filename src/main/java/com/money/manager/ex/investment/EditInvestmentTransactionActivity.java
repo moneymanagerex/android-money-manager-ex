@@ -31,6 +31,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -202,6 +203,8 @@ public class EditInvestmentTransactionActivity
             case ID_PURCHASE_PRICE:
                 mStock.setPurchasePrice(amount);
                 showPurchasePrice();
+//                CurrencyService currencyService = new CurrencyService(this);
+
                 if (mStock.getCurrentPrice().compareTo(MoneyFactory.fromBigDecimal(BigDecimal.ZERO)) == 0) {
                     mStock.setCurrentPrice(amount);
                     showCurrentPrice();

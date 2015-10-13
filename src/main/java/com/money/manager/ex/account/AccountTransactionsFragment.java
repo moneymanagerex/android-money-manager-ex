@@ -68,6 +68,8 @@ import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 
+import org.javamoney.moneta.FastMoney;
+
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;
@@ -137,9 +139,10 @@ public class AccountTransactionsFragment
         // get account id from the arguments first.
         mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
 
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
-        }
+        // this is already in onCreateView.
+//        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
+//            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+//        }
 
         // Set the default period.
         DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
@@ -157,9 +160,9 @@ public class AccountTransactionsFragment
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mAccountId = savedInstanceState.getInt(KEY_CONTENT);
         }
-        if (container == null) {
-            return null;
-        }
+
+        if (container == null) return null;
+
         // inflate layout
         View view = inflater.inflate(R.layout.account_fragment, container, false);
 

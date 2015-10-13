@@ -29,6 +29,7 @@ import org.javamoney.moneta.Money;
 import org.javamoney.moneta.RoundedMoney;
 import org.javamoney.moneta.function.MonetaryFunctions;
 import org.javamoney.moneta.function.MonetaryUtil;
+import org.javamoney.moneta.internal.FastMoneyAmountBuilder;
 import org.javamoney.moneta.internal.convert.ECBCurrentRateProvider;
 import org.javamoney.moneta.spi.DefaultNumberValue;
 import org.junit.After;
@@ -101,15 +102,7 @@ public class JavaMoneyTests {
         // maximum size for fast money
         // FastMoney maxFast = FastMoney.MAX_VALUE;
 
-        // Conversion
-
-//        ExchangeRateProvider provider = MonetaryConversions.getExchangeRateProvider("ECB");
-//        ExchangeRateProvider provider = new
-//        ExchangeRate rate = provider.getExchangeRate("USD", "EUR");
-//        CurrencyConversion euraud = provider.getCurrencyConversion(aussie);
-//        FastMoney aud = fast.with(euraud);
-
-        // MonetaryConversions.
+        //MonetaryAmount unknown = new FastMoneyAmountBuilder().setNumber(30).create();
 
         Log.d("test", "the end, debug manually");
     }
@@ -169,6 +162,8 @@ public class JavaMoneyTests {
 //        CurrencyConversion audConversion = MonetaryConversions.getConversion("AUD");
         MonetaryAmount aussies = euros.with(audConversion);
         assertThat(aussies).isEqualTo(FastMoney.of(200.0, "AUD"));
+
+        // check MonetaryConversions.getConversion("EUR", "AUD");
 
         Log.d("test", "the end, debug manually");
     }
@@ -261,5 +256,36 @@ public class JavaMoneyTests {
         // Then
 
         assertThat(actual).isEqualTo("3.162,25 EUR");
+    }
+
+    @Test
+    public void extremeValues() {
+        // todo: These values have XXX as currency. Use this wheen needing numbers only.
+
+        CurrencyUnit xxx = Monetary.getCurrency("XXX");
+
+        MonetaryAmount minimum = FastMoney.MIN_VALUE;
+//        assertThat(minimum).isEqualTo(FastMoney.of(-92233720368547.75808, xxx)); <- overflow
+        assertThat(minimum.toString()).isEqualTo("XXX -92233720368547.75808");
+
+        MonetaryAmount maximum = FastMoney.MAX_VALUE;
+        assertThat(maximum.toString()).isEqualTo("XXX 92233720368547.75807");
+
+        MonetaryAmount zero = FastMoney.of(0, xxx);
+        assertThat(zero.isZero()).isTrue();
+
+        MonetaryAmount random = FastMoney.of(358.46, xxx);
+        MonetaryAmount copy  = FastMoney.from(random);
+        assertThat(copy).isEqualTo(random);
+
+        // change currency
+        MonetaryAmount euros = FastMoney.of(random.getNumber(), "EUR");
+        assertThat(euros.getNumber().doubleValueExact()).isEqualTo(random.getNumber().doubleValueExact());
+        assertThat(euros.getCurrency()).isNotEqualTo(random.getCurrency());
+
+        // comparison
+        assertThat(random.isLessThan(maximum)).isTrue();
+        // can't compare different currencies
+        // assertThat(euros.isLessThan(maximum)).isTrue();
     }
 }

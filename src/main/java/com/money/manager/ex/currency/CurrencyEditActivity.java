@@ -260,8 +260,9 @@ public class CurrencyEditActivity
 //            }
         }
         //reload currency
-        CurrencyService currencyService = new CurrencyService(getApplicationContext());
-        currencyService.reInit();
+//        CurrencyService currencyService = new CurrencyService(getApplicationContext());
+//        currencyService.reInit();
+        CurrencyService.destroy();
 
         return success;
     }

@@ -54,9 +54,14 @@ public class CurrencyService {
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
     private static Map<Integer, Currency> mCurrencies;
+    /**
+     * a fast lookup for symbol -> id. i.e. EUR->2.
+     */
+    private static HashMap<String, Integer> mCurrencyCodes;
 
     public static void destroy() {
         mCurrencies = null;
+        mCurrencyCodes = null;
         mBaseCurrencyId = null;
     }
 
@@ -79,15 +84,41 @@ public class CurrencyService {
         return currency.getCode();
     }
 
-    public Boolean reInit() {
-        destroy();
-
-        return loadAllCurrencies();
+    public String getSymbolFor(int id) {
+        Currency currency = getCurrency(id);
+        return currency.getCode();
     }
+
+    public Integer getIdForSymbol(String code) {
+        Integer result = getCurrencyCodes().get(code);
+
+        if (result == null) {
+            CurrencyRepository repo = new CurrencyRepository(mContext);
+            Currency currency = repo.loadCurrency(code);
+            cacheCurrency(currency);
+        }
+
+        result = getCurrencyCodes().get(code);
+
+        return result;
+    }
+
+//    public Boolean reInit() {
+//        destroy();
+//
+//        return loadAllCurrencies();
+//    }
 
     public Map<Integer, Currency> getCurrenciesStore() {
         if (mCurrencies == null) mCurrencies = new HashMap<>();
         return mCurrencies;
+    }
+
+    public HashMap<String, Integer> getCurrencyCodes() {
+        if (mCurrencyCodes == null) {
+            mCurrencyCodes = new HashMap<>();
+        }
+        return mCurrencyCodes;
     }
 
     public List<Currency> getUsedCurrencies() {
@@ -219,14 +250,14 @@ public class CurrencyService {
 
             // cache
             if (!getCurrenciesStore().containsKey(currencyId)) {
-                getCurrenciesStore().put(currencyId, result);
+                cacheCurrency(result);
             }
         }
 
         return result;
     }
 
-    public boolean importCurrenciesFromLocaleAvaible() {
+    public boolean importCurrenciesFromAvailableLocales() {
         Locale[] locales = Locale.getAvailableLocales();
         // get map codes and symbols
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
@@ -270,19 +301,6 @@ public class CurrencyService {
         return true;
     }
 
-    public HashMap<String, String> getCurrenciesCodeAndSymbol() {
-        HashMap<String, String> map = new HashMap<>();
-        // compose map
-        String[] codes = mContext.getResources().getStringArray(R.array.currencies_code);
-        String[] symbols = mContext.getResources().getStringArray(R.array.currencies_symbol);
-
-        for (int i = 0; i < codes.length; i++) {
-            map.put(codes[i], symbols[i]);
-        }
-
-        return map;
-    }
-
     /**
      * Checks if the currency is used in any of the accounts. Useful before deletion.
      * @param currencyId Id of the currency to check.
@@ -315,43 +333,44 @@ public class CurrencyService {
         return success;
     }
 
-    /**
-     *  Load all currencies into map
-     */
-    public boolean loadAllCurrencies() {
-        boolean result = true;
-        TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-        Cursor cursor;
+//    /**
+//     *  Load all currencies into map
+//     */
+//    public boolean loadAllCurrencies() {
+//        boolean result = true;
+//        TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
+//        Cursor cursor;
+//
+//        try {
+//            cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
+//                    tableCurrency.getAllColumns(),
+//                    null, null, null);
+//            if (cursor == null) return false;
+//
+//            // load data into map
+//            while (cursor.moveToNext()) {
+//                cacheCurrencyFromCursor(cursor);
+//            }
+//            cursor.close();
+//        } catch (Exception e) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(e, "loading currencies");
+//            result = false;
+//        }
+//
+//        return result;
+//    }
 
-        try {
-            cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
-                    tableCurrency.getAllColumns(),
-                    null, null, null);
-            if (cursor == null) return false;
-
-            // load data into map
-            while (cursor.moveToNext()) {
-                cacheCurrencyFromCursor(cursor);
-            }
-            cursor.close();
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "loading currencies");
-            result = false;
-        }
-
-        return result;
-    }
-
-    private void cacheCurrencyFromCursor(Cursor cursor) {
-        Currency currency = new Currency();
-        currency.loadFromCursor(cursor);
-
-//        Integer currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
-        Integer currencyId = currency.getCurrencyId();
-        // put object into map
-        getCurrenciesStore().put(currencyId, currency);
-    }
+//    private void cacheCurrencyFromCursor(Cursor cursor) {
+//        Currency currency = new Currency();
+//        currency.loadFromCursor(cursor);
+//
+////        Integer currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+////        Integer currencyId = currency.getCurrencyId();
+//        // put object into map
+////        getCurrenciesStore().put(currencyId, currency);
+//        cacheCurrency(currency);
+//    }
 
     /**
      * Get id of base currency
@@ -409,5 +428,29 @@ public class CurrencyService {
         cursor.close();
 
         return result;
+    }
+
+    /**
+     *
+     * @return a hash map of currency code / currency symbol
+     */
+    private HashMap<String, String> getCurrenciesCodeAndSymbol() {
+        HashMap<String, String> map = new HashMap<>();
+        // compose map
+        String[] codes = mContext.getResources().getStringArray(R.array.currencies_code);
+        String[] symbols = mContext.getResources().getStringArray(R.array.currencies_symbol);
+
+        for (int i = 0; i < codes.length; i++) {
+            map.put(codes[i], symbols[i]);
+        }
+
+        return map;
+    }
+
+    private void cacheCurrency(Currency currency) {
+        // add currency
+        getCurrenciesStore().put(currency.getCurrencyId(), currency);
+        // add symbol
+        getCurrencyCodes().put(currency.getCode(), currency.getCurrencyId());
     }
 }

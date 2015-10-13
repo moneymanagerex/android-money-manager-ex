@@ -194,11 +194,11 @@ public class AccountEditActivity
 
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         spinSymbolInitialBalance.setAdapter(adapterSymbol);
-        spinSymbolInitialBalance.setSelection(mInitialBal.compareTo(MoneyFactory.fromString("0")) >= 0
+        spinSymbolInitialBalance.setSelection(mInitialBal.toDouble() >= 0
                 ? PLUS : LESS);
 
         // always use positive value. The sign is in the spinner.
-        if (mInitialBal.compareTo(MoneyFactory.fromString("0")) < 0) {
+        if (mInitialBal.toDouble() < 0) {
             mInitialBal = mInitialBal.negate();
         }
 

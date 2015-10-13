@@ -19,10 +19,8 @@ package com.money.manager.ex.currency;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DialogUtils;
 
@@ -49,7 +47,7 @@ public class ImportAllCurrenciesTask
     protected Boolean doInBackground(Void... params) {
         try {
             CurrencyService service = new CurrencyService(mContext);
-            return service.importCurrenciesFromLocaleAvaible();
+            return service.importCurrenciesFromAvailableLocales();
         } catch (Exception e) {
             throw new RuntimeException("Error in import all currencies", e);
         }
