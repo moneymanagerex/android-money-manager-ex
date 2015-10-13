@@ -414,6 +414,10 @@
             android:name=".assetallocation.AssetClassEditActivity"
             android:label="@string/title_activity_asset_class_edit" >
         </activity>
+        <activity
+            android:name=".assetallocation.SecurityListActivity"
+            android:label="@string/title_activity_security_list" >
+        </activity>
     </application>
 
 </manifest>

@@ -50,10 +50,9 @@ public class AccountListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public String mAction = Intent.ACTION_EDIT;
-
-//    private static TableAccountList mAccount = new TableAccountList();
     private static final int LOADER_ACCOUNT = 0;
+
+    public String mAction = Intent.ACTION_EDIT;
 
     private String mCurFilter;
 

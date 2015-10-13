@@ -16,12 +16,11 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import android.content.CursorLoader;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Editable;
@@ -35,13 +34,9 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
-import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.database.MmexSimpleCursorLoader;
-import com.money.manager.ex.database.SimpleCursorLoader;
 import com.money.manager.ex.domainmodel.AssetClass;
 
 import info.javaperformance.money.Money;
@@ -55,6 +50,7 @@ public class AssetClassEditFragment
     implements IInputAmountDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int INPUT_ALLOCATION = 1;
+    public static final int REQUEST_SECURITY = 1;
     public static final int LOADER_SECURITIES = 1;
 
     public AssetClassEditFragment() {
@@ -85,6 +81,66 @@ public class AssetClassEditFragment
         View view = inflater.inflate(R.layout.fragment_asset_class_edit, container, false);
 
         return view;
+    }
+
+    @Override
+    public void onFinishedInputAmountDialog(int id, Money amount) {
+        switch (id) {
+            case INPUT_ALLOCATION:
+                assetClass.setAllocation(amount.toDouble());
+                updateAllocation();
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != Activity.RESULT_OK) return;
+
+        switch (requestCode) {
+            case REQUEST_SECURITY:
+                // todo: handle selected security
+                break;
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_SECURITIES:
+                // todo: initialize loader
+//                String whereClause = null;
+//                String selectionArgs[] = null;
+//                if (!TextUtils.isEmpty(mCurFilter)) {
+//                    whereClause = Account.ACCOUNTNAME + " LIKE ?";
+//                    selectionArgs = new String[]{mCurFilter + "%"};
+//                }
+//                return new MmexCursorLoader(getActivity(), mAccount.getUri(),
+//                    mAccount.getAllColumns(),
+//                    whereClause, selectionArgs, "upper(" + Account.ACCOUNTNAME + ")");
+
+                return new MmexSimpleCursorLoader(getActivity());
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_SECURITIES:
+                // todo:
+//                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+//                adapter.swapCursor(null);
+        }
+
     }
 
     private void initializeNameEdit(View view) {
@@ -132,14 +188,8 @@ public class AssetClassEditFragment
         });
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        switch (id) {
-            case INPUT_ALLOCATION:
-                assetClass.setAllocation(amount.toDouble());
-                updateAllocation();
-                break;
-        }
+    private void loadData() {
+        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
     }
 
     private void updateAllocation() {
@@ -163,50 +213,13 @@ public class AssetClassEditFragment
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: select a security
+                // select a security
+                Intent intent = new Intent(getActivity(), SecurityListActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                getActivity().startActivityForResult(intent, REQUEST_SECURITY);
             }
         };
         fab.setOnClickListener(listener);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case LOADER_SECURITIES:
-                // todo: initialize loader
-//                String whereClause = null;
-//                String selectionArgs[] = null;
-//                if (!TextUtils.isEmpty(mCurFilter)) {
-//                    whereClause = Account.ACCOUNTNAME + " LIKE ?";
-//                    selectionArgs = new String[]{mCurFilter + "%"};
-//                }
-//                return new MmexCursorLoader(getActivity(), mAccount.getUri(),
-//                    mAccount.getAllColumns(),
-//                    whereClause, selectionArgs, "upper(" + Account.ACCOUNTNAME + ")");
-
-                return new MmexSimpleCursorLoader(getActivity());
-        }
-
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_SECURITIES:
-                // todo:
-//                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-//                adapter.swapCursor(null);
-        }
-
-    }
-
-    private void loadData() {
-        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
-    }
 }

@@ -14,56 +14,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.account;
+package com.money.manager.ex.assetallocation;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
-/**
- * Account list activity.
- */
-public class AccountListActivity
+public class SecurityListActivity
     extends BaseFragmentActivity {
 
-    public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
-    public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
-    private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
+    private static final String FRAGMENTTAG = SecurityListFragment.class.getSimpleName() + "_Fragment";
 
-    private AccountListFragment listFragment = new AccountListFragment();
+    private SecurityListFragment listFragment = new SecurityListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        setContentView(R.layout.activity_security_list);
         setContentView(R.layout.base_toolbar_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            listFragment.mAction = intent.getAction();
+            listFragment.action = intent.getAction();
         }
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment to activity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
+
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AccountListFragment fragment = (AccountListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.setResultAndFinish();
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }
