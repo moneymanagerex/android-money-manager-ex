@@ -194,11 +194,14 @@ public class AccountListFragment
 
     // End loader
 
+    /**
+     * Called when the action bar search text has changed. Update the search filter, and restart
+     * the loader to do a new query with this filter.
+     * @param newText The search text
+     * @return whether the event was handled or not
+     */
     @Override
     public boolean onQueryTextChange(String newText) {
-        // Called when the action bar search text has changed.  Update
-        // the search filter, and restart the loader to do a new query
-        // with this filter.
         mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
         getLoaderManager().restartLoader(LOADER_ACCOUNT, null, this);
         return true;
@@ -226,6 +229,24 @@ public class AccountListFragment
         }
         // return cancel
         getActivity().setResult(AccountListActivity.RESULT_CANCELED);
+    }
+
+    @Override
+    public String getSubTitle() {
+        return getString(R.string.accounts);
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        startAccountListEditActivity();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        // show context menu here.
+        getActivity().openContextMenu(v);
     }
 
     private void showDialogDeleteAccount(final int accountId) {
@@ -282,23 +303,5 @@ public class AccountListFragment
         }
         // launch activity
         startActivity(intent);
-    }
-
-    @Override
-    public String getSubTitle() {
-        return getString(R.string.accounts);
-    }
-
-    @Override
-    public void onFloatingActionButtonClickListener() {
-        startAccountListEditActivity();
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        // show context menu here.
-        getActivity().openContextMenu(v);
     }
 }

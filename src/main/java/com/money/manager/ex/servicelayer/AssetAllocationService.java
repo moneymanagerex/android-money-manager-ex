@@ -21,6 +21,8 @@ import android.database.Cursor;
 
 import com.innahema.collections.query.functions.Converter;
 import com.innahema.collections.query.queriables.Queryable;
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -133,6 +135,21 @@ public class AssetAllocationService {
         assetClass.setSortOrder(nextPosition);
 
         repository.update(assetClass);
+    }
+
+    public boolean assignStockToAssetClass(Integer stockId, Integer assetClassId) {
+        AssetClassStock link = AssetClassStock.create();
+        link.setAssetClassId(assetClassId);
+        link.setStockId(stockId);
+
+        AssetClassStockRepository repo = new AssetClassStockRepository(context);
+        boolean success = repo.insert(link);
+
+        if (!success) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.showMessage(context.getString(R.string.error));
+        }
+        return success;
     }
 
     // Private.

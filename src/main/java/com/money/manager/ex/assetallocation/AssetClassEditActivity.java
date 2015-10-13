@@ -25,11 +25,21 @@ import android.support.v4.app.FragmentManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.AssetClassStock;
+import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 public class AssetClassEditActivity
     extends BaseFragmentActivity {
+
+    public static final int REQUEST_STOCK_ID = 1;
+    public static final String INTENT_RESULT_STOCK_ID = "AssetClassEditActivity:StockId";
+    public static final String KEY_ASSET_CLASS_ID = "AssetClassEditActivity:AssetClassId";
+
+    private Integer assetClassId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +49,7 @@ public class AssetClassEditActivity
         setToolbarStandardAction(getToolbar());
 
         if (savedInstanceState != null) {
-            // todo: restore instance state
+            restoreInstanceState(savedInstanceState);
         } else {
             loadIntent();
         }
@@ -54,6 +64,20 @@ public class AssetClassEditActivity
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != Activity.RESULT_OK) return;
+
+        switch (requestCode) {
+            case REQUEST_STOCK_ID:
+                Integer stockId = data.getIntExtra(INTENT_RESULT_STOCK_ID, Constants.NOT_SET);
+                assignStockToAssetClass(stockId);
+                break;
+        }
+    }
+
+    @Override
     public boolean onActionDoneClick() {
         if (save()) {
             // set result ok and finish activity
@@ -63,6 +87,17 @@ public class AssetClassEditActivity
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(KEY_ASSET_CLASS_ID, this.assetClassId);
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        this.assetClassId = savedInstanceState.getInt(KEY_ASSET_CLASS_ID);
     }
 
     private boolean save() {
@@ -111,6 +146,8 @@ public class AssetClassEditActivity
         if (intent == null) return;
 
         int id = intent.getIntExtra(Intent.EXTRA_UID, Constants.NOT_SET);
+        this.assetClassId = id;
+
         // load class
         AssetClassRepository repo = new AssetClassRepository(this);
         AssetClass assetClass = repo.load(id);
@@ -119,5 +156,11 @@ public class AssetClassEditActivity
 
         AssetClassEditFragment fragment = getFragment();
         fragment.assetClass = assetClass;
+    }
+
+    private void assignStockToAssetClass(int stockId) {
+        AssetAllocationService service = new AssetAllocationService(this);
+        service.assignStockToAssetClass(stockId, this.assetClassId);
+        // todo: refresh data?
     }
 }

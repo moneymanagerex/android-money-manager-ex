@@ -66,7 +66,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
+ * Edit Transaction
  */
 public class EditTransactionActivity
     extends BaseFragmentActivity

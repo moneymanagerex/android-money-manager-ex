@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -50,7 +49,6 @@ public class AssetClassEditFragment
     implements IInputAmountDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int INPUT_ALLOCATION = 1;
-    public static final int REQUEST_SECURITY = 1;
     public static final int LOADER_SECURITIES = 1;
 
     public AssetClassEditFragment() {
@@ -89,19 +87,6 @@ public class AssetClassEditFragment
             case INPUT_ALLOCATION:
                 assetClass.setAllocation(amount.toDouble());
                 updateAllocation();
-                break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != Activity.RESULT_OK) return;
-
-        switch (requestCode) {
-            case REQUEST_SECURITY:
-                // todo: handle selected security
                 break;
         }
     }
@@ -214,12 +199,16 @@ public class AssetClassEditFragment
             @Override
             public void onClick(View v) {
                 // select a security
-                Intent intent = new Intent(getActivity(), SecurityListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                getActivity().startActivityForResult(intent, REQUEST_SECURITY);
+                pickStock();
             }
         };
         fab.setOnClickListener(listener);
     }
 
+    private void pickStock() {
+        Intent intent = new Intent(getActivity(), SecurityListActivity.class);
+        intent.setAction(Intent.ACTION_PICK);
+        // todo: send the list of existing stock ids to filter out.
+        getActivity().startActivityForResult(intent, AssetClassEditActivity.REQUEST_STOCK_ID);
+    }
 }

@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -49,6 +51,7 @@ public class SecurityListFragment
     public String action = Intent.ACTION_PICK;
 
     private String mCurFilter;
+    private Integer selectedStockId;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -60,15 +63,16 @@ public class SecurityListFragment
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
 
-        int layout = Intent.ACTION_PICK.equals(this.action)
-            ? android.R.layout.simple_list_item_multiple_choice
-            : android.R.layout.simple_list_item_1;
+//        int layout = Intent.ACTION_PICK.equals(this.action)
+//            ? android.R.layout.simple_list_item_multiple_choice
+//            : android.R.layout.simple_list_item_1;
+        int layout = android.R.layout.simple_list_item_1;
 
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
             layout, null,
-            new String[]{Stock.SYMBOL },
-            new int[]{android.R.id.text1}, 0);
+            new String[]{ Stock.SYMBOL },
+            new int[]{ android.R.id.text1 }, 0);
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());
@@ -80,17 +84,9 @@ public class SecurityListFragment
         getLoaderManager().initLoader(LOADER_SYMBOLS, null, this);
 
         // set icon searched
-        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(this.action));
-        setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_security_list, container, false);
-        // Temporary workaround until the fragment is finalized.
-        return inflater.inflate(R.layout.abs_list_fragment, container, false);
+//        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(this.action));
+//        setFloatingActionButtonVisible(true);
+//        setFloatingActionButtonAttachListView(true);
     }
 
     @Override
@@ -148,4 +144,41 @@ public class SecurityListFragment
                 adapter.swapCursor(null);
         }
     }
+
+    // Other
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        getLoaderManager().restartLoader(LOADER_SYMBOLS, null, this);
+        return true;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        if (this.action.equals(Intent.ACTION_PICK)) {
+            // select the current item and return.
+            Cursor c = (Cursor) l.getItemAtPosition(position);
+            Stock stock = Stock.fromCursor(c);
+            selectedStockId = stock.getId();
+
+            setResultAndFinish();
+        }
+    }
+
+    @Override
+    protected void setResult() {
+        Intent result;
+        if (Intent.ACTION_PICK.equals(this.action)) {
+            result = new Intent();
+            result.putExtra(AssetClassEditActivity.INTENT_RESULT_STOCK_ID, selectedStockId);
+            getActivity().setResult(Activity.RESULT_OK, result);
+        }
+
+        // otherwise return cancel
+        getActivity().setResult(Activity.RESULT_CANCELED);
+    }
+
 }
