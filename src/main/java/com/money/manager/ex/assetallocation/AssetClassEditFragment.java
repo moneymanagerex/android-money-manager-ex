@@ -33,10 +33,14 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.R;
+import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.database.MmexSimpleCursorLoader;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.Stock;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -55,6 +59,7 @@ public class AssetClassEditFragment
     }
 
     public AssetClass assetClass;
+    private MoneySimpleCursorAdapter mAdapter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -70,6 +75,10 @@ public class AssetClassEditFragment
 
         initializeFloatingActionButton(view);
 
+        createAdapter();
+        // todo: assign adapter.
+
+        // setListShown(false);
         loadData();
     }
 
@@ -95,18 +104,7 @@ public class AssetClassEditFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_SECURITIES:
-                // todo: initialize loader
-//                String whereClause = null;
-//                String selectionArgs[] = null;
-//                if (!TextUtils.isEmpty(mCurFilter)) {
-//                    whereClause = Account.ACCOUNTNAME + " LIKE ?";
-//                    selectionArgs = new String[]{mCurFilter + "%"};
-//                }
-//                return new MmexCursorLoader(getActivity(), mAccount.getUri(),
-//                    mAccount.getAllColumns(),
-//                    whereClause, selectionArgs, "upper(" + Account.ACCOUNTNAME + ")");
-
-                return new MmexSimpleCursorLoader(getActivity());
+                return new MmexSimpleCursorLoader(getActivity(), this.assetClass.getId());
         }
 
         return null;
@@ -114,14 +112,18 @@ public class AssetClassEditFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        switch (loader.getId()) {
+            case LOADER_SECURITIES:
+                // todo: show data
+                break;
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case LOADER_SECURITIES:
-                // todo:
+                // todo: reset adapter
 //                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
 //                adapter.swapCursor(null);
         }
@@ -210,5 +212,17 @@ public class AssetClassEditFragment
         intent.setAction(Intent.ACTION_PICK);
         // todo: send the list of existing stock ids to filter out.
         getActivity().startActivityForResult(intent, AssetClassEditActivity.REQUEST_STOCK_ID);
+    }
+
+    private void createAdapter() {
+        mAdapter = new MoneySimpleCursorAdapter(getActivity(),
+            android.R.layout.simple_list_item_1,
+            null,
+            new String[]{Stock.SYMBOL },
+            new int[]{ android.R.id.text1}, 0);
+
+//        setListAdapter(mAdapter);
+//        setListShown(false);
+
     }
 }

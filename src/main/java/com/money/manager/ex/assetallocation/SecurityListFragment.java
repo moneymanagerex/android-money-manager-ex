@@ -171,14 +171,18 @@ public class SecurityListFragment
     @Override
     protected void setResult() {
         Intent result;
-        if (Intent.ACTION_PICK.equals(this.action)) {
-            result = new Intent();
-            result.putExtra(AssetClassEditActivity.INTENT_RESULT_STOCK_ID, selectedStockId);
-            getActivity().setResult(Activity.RESULT_OK, result);
-        }
+        switch (this.action) {
+            case Intent.ACTION_PICK:
+                result = new Intent();
+                result.putExtra(AssetClassEditActivity.INTENT_RESULT_STOCK_ID, selectedStockId);
+                getActivity().setResult(Activity.RESULT_OK, result);
+                break;
 
-        // otherwise return cancel
-        getActivity().setResult(Activity.RESULT_CANCELED);
+            default:
+                // otherwise return cancel
+                getActivity().setResult(Activity.RESULT_CANCELED);
+                break;
+        }
     }
 
 }

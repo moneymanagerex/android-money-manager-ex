@@ -16,14 +16,10 @@
  */
 package com.money.manager.ex.budget;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -44,7 +40,7 @@ public class BudgetsListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final String KEY_LISTENER = "listener";
+//    private final String KEY_LISTENER = "listener";
 
     private IBudgetListCallbacks mListener;
 
@@ -89,10 +85,6 @@ public class BudgetsListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//        }
-
     }
 
 //    @Override
@@ -107,18 +99,6 @@ public class BudgetsListFragment
         super.onViewCreated(view, savedInstanceState);
 
         displayBudgets();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override

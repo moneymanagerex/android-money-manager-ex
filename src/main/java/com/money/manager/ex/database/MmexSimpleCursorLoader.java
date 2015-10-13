@@ -27,18 +27,19 @@ import com.money.manager.ex.datalayer.AssetClassStockRepository;
 public class MmexSimpleCursorLoader
     extends SimpleCursorLoader {
 
-    public MmexSimpleCursorLoader(Context context) {
+    public MmexSimpleCursorLoader(Context context, int assetClassId) {
         super(context);
 
         this.context = context;
+        this.assetClassId = assetClassId;
     }
 
     private Context context;
+    private int assetClassId;
 
     @Override
     public Cursor loadInBackground() {
         AssetClassStockRepository repo = new AssetClassStockRepository(this.context);
-        // todo: get asset class id
-        return repo.fetchCursorAssignedSecurities(1);
+        return repo.fetchCursorAssignedSecurities(this.assetClassId);
     }
 }
