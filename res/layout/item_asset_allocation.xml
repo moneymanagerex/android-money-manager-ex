@@ -21,6 +21,7 @@
     android:layout_gravity="center_horizontal"
     android:orientation="horizontal" >
 
+    <!-- asset class name -->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/assetClassTextView"
         android:layout_width="0dp"
@@ -32,6 +33,7 @@
         android:layout_weight="1"
         android:text="@string/asset_class_name" />
 
+    <!-- set allocation -->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/allocationTextView"
         android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
         android:gravity="center"
         android:text="@string/allocation" />
 
+    <!-- current allocation -->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/currentAllocationTextView"
         android:layout_width="wrap_content"
@@ -52,6 +55,19 @@
         android:gravity="center_vertical|end"
         android:text="@string/current_allocation" />
 
+    <!-- current value -->
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/currentValueTextView"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:paddingStart="1dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/current_allocation" />
+
+    <!-- difference -->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/differenceTextView"
         android:layout_width="wrap_content"

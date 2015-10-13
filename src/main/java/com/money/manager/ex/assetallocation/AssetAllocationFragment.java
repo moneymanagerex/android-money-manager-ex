@@ -91,6 +91,8 @@ public class AssetAllocationFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
+        // todo: add header
+        // getListView().addHeaderView();
         // todo: renderFooter();
 
         loadData();
@@ -289,11 +291,13 @@ public class AssetAllocationFragment
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
+        int precision = 2;
+
         for (AssetClass item : allocation.getChildren()) {
             Object[] values = new Object[] {
                 item.getId(), item.getName(), item.getAllocation(),
-                item.getValue(), item.getCurrentAllocation(),
-                item.getCurrentValue(), item.getDifference()
+                item.getValue().truncate(precision), item.getCurrentAllocation().truncate(precision),
+                item.getCurrentValue().truncate(precision), item.getDifference().truncate(precision)
             };
             cursor.addRow(values);
         }

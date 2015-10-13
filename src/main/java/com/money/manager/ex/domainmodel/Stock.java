@@ -102,11 +102,11 @@ public class Stock
     }
 
     public int getHeldAt() {
-        return getInt(HELDAT);
+        return getInteger(HELDAT);
     }
 
     public void setHeldAt(int value) {
-        setInt(HELDAT, value);
+        setInteger(HELDAT, value);
     }
 
     public String getNotes() {

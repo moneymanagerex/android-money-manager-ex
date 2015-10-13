@@ -40,6 +40,7 @@ public class AssetClassEditActivity
     public static final String KEY_ASSET_CLASS_ID = "AssetClassEditActivity:AssetClassId";
 
     private Integer assetClassId;
+    private String mAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +104,7 @@ public class AssetClassEditActivity
     private boolean save() {
         // todo: validate
 
-        boolean result = false;
+        boolean result;
 
         AssetClassEditFragment fragment = getFragment();
         AssetClass assetClass = fragment.assetClass;
@@ -145,14 +146,27 @@ public class AssetClassEditActivity
         Intent intent = getIntent();
         if (intent == null) return;
 
-        int id = intent.getIntExtra(Intent.EXTRA_UID, Constants.NOT_SET);
-        this.assetClassId = id;
+        // Insert or Edit?
+        this.mAction = intent.getAction();
 
-        // load class
-        AssetClassRepository repo = new AssetClassRepository(this);
-        AssetClass assetClass = repo.load(id);
-        // todo: show error message and return (close edit activity)
-        if (assetClass == null) return;
+        AssetClass assetClass = null;
+
+        switch (mAction) {
+            case Intent.ACTION_INSERT:
+                assetClass = AssetClass.create();
+                break;
+
+            case Intent.ACTION_EDIT:
+                int id = intent.getIntExtra(Intent.EXTRA_UID, Constants.NOT_SET);
+                this.assetClassId = id;
+
+                // load class
+                AssetClassRepository repo = new AssetClassRepository(this);
+                assetClass = repo.load(id);
+                // todo: show error message and return (close edit activity)
+                if (assetClass == null) return;
+                break;
+        }
 
         AssetClassEditFragment fragment = getFragment();
         fragment.assetClass = assetClass;
@@ -161,6 +175,10 @@ public class AssetClassEditActivity
     private void assignStockToAssetClass(int stockId) {
         AssetAllocationService service = new AssetAllocationService(this);
         service.assignStockToAssetClass(stockId, this.assetClassId);
-        // todo: refresh data?
+
+        AssetClassEditFragment fragment = getFragment();
+        if (fragment != null) {
+            fragment.loadData();
+        }
     }
 }

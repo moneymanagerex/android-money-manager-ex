@@ -559,7 +559,7 @@ public class AccountEditActivity
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         // load into Account model object.
-//        mAccountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+//        mAccountId = savedInstanceState.getInteger(KEY_ACCOUNT_ID);
         mAccount.setId(savedInstanceState.getInt(KEY_ACCOUNT_ID));
 //        mAccountName = savedInstanceState.getString(KEY_ACCOUNT_NAME);
         mAccount.setName(savedInstanceState.getString(KEY_ACCOUNT_NAME));

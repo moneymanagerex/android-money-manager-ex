@@ -130,11 +130,11 @@ public class EntityBase
         contentValues.put(fieldName, dateString);
     }
 
-    protected Integer getInt(String column) {
+    protected Integer getInteger(String column) {
         return contentValues.getAsInteger(column);
     }
 
-    protected void setInt(String fieldName, Integer value) {
+    protected void setInteger(String fieldName, Integer value) {
         contentValues.put(fieldName, value);
     }
 

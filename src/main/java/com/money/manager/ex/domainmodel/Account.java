@@ -22,8 +22,6 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 
-import javax.money.MonetaryAmount;
-
 import info.javaperformance.money.Money;
 
 /**
@@ -78,19 +76,19 @@ public class Account
     }
 
     public Integer getId() {
-        return getInt(Account.ACCOUNTID);
+        return getInteger(Account.ACCOUNTID);
     }
 
     public void setId(Integer value) {
-        setInt(Account.ACCOUNTID, value);
+        setInteger(Account.ACCOUNTID, value);
     }
 
     public Integer getCurrencyId() {
-        return getInt(Account.CURRENCYID);
+        return getInteger(Account.CURRENCYID);
     }
 
     public void setCurrencyId(Integer currencyId) {
-        setInt(Account.CURRENCYID, currencyId);
+        setInteger(Account.CURRENCYID, currencyId);
     }
 
     public String getName() {

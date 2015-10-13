@@ -20,13 +20,11 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.Query;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.domainmodel.EntityBase;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,11 +51,11 @@ public class AccountTransactionDisplay
     }
 
     public Integer getId() {
-        return getInt(QueryAllData.ID);
+        return getInteger(QueryAllData.ID);
     }
 
     public Integer getAccountId() {
-        return getInt(QueryAllData.ACCOUNTID);
+        return getInteger(QueryAllData.ACCOUNTID);
     }
 
     public String getAccountName() {
@@ -91,7 +89,7 @@ public class AccountTransactionDisplay
     }
 
     public boolean getIsSplit() {
-        int split = getInt(QueryAllData.SPLITTED);
+        int split = getInteger(QueryAllData.SPLITTED);
         return split > 0;
     }
 

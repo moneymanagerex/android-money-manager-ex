@@ -44,11 +44,11 @@ public class AccountTransaction
     }
 
     public void setAccountId(int value) {
-        setInt(ISplitTransactionsDataset.ACCOUNTID, value);
+        setInteger(ISplitTransactionsDataset.ACCOUNTID, value);
     }
 
     public void setPayeeId(int value) {
-        setInt(ISplitTransactionsDataset.PAYEEID, value);
+        setInteger(ISplitTransactionsDataset.PAYEEID, value);
     }
 
     public void setType(TransactionTypes value) {
@@ -60,10 +60,10 @@ public class AccountTransaction
     }
 
     public void setCategoryId(Integer value) {
-        setInt(ISplitTransactionsDataset.CATEGID, value);
+        setInteger(ISplitTransactionsDataset.CATEGID, value);
     }
 
     public void setSubcategoryId(Integer value) {
-        setInt(ISplitTransactionsDataset.SUBCATEGID, value);
+        setInteger(ISplitTransactionsDataset.SUBCATEGID, value);
     }
 }

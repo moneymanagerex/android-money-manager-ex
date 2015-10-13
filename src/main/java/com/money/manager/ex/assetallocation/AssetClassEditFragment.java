@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -62,6 +63,14 @@ public class AssetClassEditFragment
     private MoneySimpleCursorAdapter mAdapter;
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_asset_class_edit, container, false);
+
+        return view;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -76,18 +85,16 @@ public class AssetClassEditFragment
         initializeFloatingActionButton(view);
 
         createAdapter();
-        // todo: assign adapter.
+        ListView listView = getListView();
+        if (listView != null) {
+            listView.setAdapter(mAdapter);
+        }
 
         // setListShown(false);
-        loadData();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_asset_class_edit, container, false);
-
-        return view;
+        Integer id = this.assetClass.getId();
+        if (id != null) {
+            loadData();
+        }
     }
 
     @Override
@@ -114,7 +121,7 @@ public class AssetClassEditFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_SECURITIES:
-                // todo: show data
+                mAdapter.swapCursor(data);
                 break;
         }
     }
@@ -123,11 +130,13 @@ public class AssetClassEditFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case LOADER_SECURITIES:
-                // todo: reset adapter
-//                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-//                adapter.swapCursor(null);
+                mAdapter.swapCursor(null);
         }
 
+    }
+
+    public void loadData() {
+        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
     }
 
     private void initializeNameEdit(View view) {
@@ -175,12 +184,11 @@ public class AssetClassEditFragment
         });
     }
 
-    private void loadData() {
-        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
-    }
-
     private void updateAllocation() {
-        TextView textView = (TextView) getView().findViewById(R.id.allocationEdit);
+        View view = getView();
+        if (view == null) return;
+
+        TextView textView = (TextView) view.findViewById(R.id.allocationEdit);
         if (textView != null) {
             Money allocation = MoneyFactory.fromDouble(assetClass.getAllocation());
             //FormatUtilities.formatAmountTextView();
@@ -192,6 +200,14 @@ public class AssetClassEditFragment
     private void initializeFloatingActionButton(View view) {
         // attach fab
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+
+        if (this.assetClass.getId() == null) {
+            // new record
+            return;
+        }
+
+        // otherwise we're in edit mode.
+
         ListView listView = (ListView) view.findViewById(R.id.securitiesList);
         fab.attachToListView(listView);
 
@@ -224,5 +240,13 @@ public class AssetClassEditFragment
 //        setListAdapter(mAdapter);
 //        setListShown(false);
 
+    }
+
+    private ListView getListView() {
+        View view = getView();
+        if (view == null) return null;
+
+        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
+        return listView;
     }
 }

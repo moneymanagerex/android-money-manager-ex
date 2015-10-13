@@ -27,6 +27,6 @@ public class RecurringTransaction
     extends EntityBase {
 
     public Integer getAccountId() {
-        return getInt(QueryBillDeposits.ACCOUNTID);
+        return getInteger(QueryBillDeposits.ACCOUNTID);
     }
 }

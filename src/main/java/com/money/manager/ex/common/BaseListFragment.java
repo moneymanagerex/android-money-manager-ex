@@ -52,7 +52,7 @@ public abstract class BaseListFragment
     private boolean mMenuItemSearchIconified = true;
     // flag for tips wildcard
     private boolean isShowTipsWildcard = false;
-    // hint searchview
+    // hint search view
     private String mSearchHint = "";
 
     // abstract method
@@ -65,7 +65,6 @@ public abstract class BaseListFragment
         try {
             getActivity().setTheme(core.getThemeApplication());
         } catch (Exception e) {
-//            Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
             handler.handle(e, "setting app theme");
         }

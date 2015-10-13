@@ -61,11 +61,11 @@ public class Currency
     }
 
     public int getCurrencyId() {
-        return getInt(CURRENCYID);
+        return getInteger(CURRENCYID);
     }
 
     public void setCurrencyid(int value) {
-        setInt(CURRENCYID, value);
+        setInteger(CURRENCYID, value);
     }
 
     public String getDecimalPoint() {

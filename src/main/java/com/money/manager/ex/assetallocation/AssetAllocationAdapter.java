@@ -52,22 +52,31 @@ public class AssetAllocationAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-//        AssetClass assetClass = AssetClass.from(cursor);
+        String value;
 
+        // name
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
         TextView nameView = (TextView) view.findViewById(R.id.assetClassTextView);
-        String name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
-        nameView.setText(name);
+        nameView.setText(value);
 
+        // set allocation
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
         TextView allocationView = (TextView) view.findViewById(R.id.allocationTextView);
-        String allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
-        allocationView.setText(allocation);
+        allocationView.setText(value);
 
+        // current allocation
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
         RobotoTextView currentAllocationView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
-        String alloc = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
-        currentAllocationView.setText(alloc);
+        currentAllocationView.setText(value);
 
+        // current value
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
+        RobotoTextView currentValueView = (RobotoTextView) view.findViewById(R.id.currentValueTextView);
+        currentValueView.setText(value);
+
+        // difference (value)
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
         RobotoTextView differenceView = (RobotoTextView) view.findViewById(R.id.differenceTextView);
-        String diff = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
-        differenceView.setText(diff);
+        differenceView.setText(value);
     }
 }

@@ -75,20 +75,20 @@ public class AssetClass
         DatabaseUtils.cursorDoubleToCursorValues(c, ALLOCATION, this.contentValues);
     }
 
-    public int getId() {
-        return getInt(ID);
+    public Integer getId() {
+        return getInteger(ID);
     }
 
     public void setId(int value) {
-        setInt(ID, value);
+        setInteger(ID, value);
     }
 
     public Integer getParentId() {
-        return getInt(PARENTID);
+        return getInteger(PARENTID);
     }
 
     public void setParentId(int value) {
-        setInt(PARENTID, value);
+        setInteger(PARENTID, value);
     }
 
     public Double getAllocation() {
@@ -108,11 +108,11 @@ public class AssetClass
     }
 
     public Integer getSortOrder() {
-        return getInt(SORTORDER);
+        return getInteger(SORTORDER);
     }
 
     public void setSortOrder(int value) {
-        setInt(SORTORDER, value);
+        setInteger(SORTORDER, value);
     }
 
     public void addChild(AssetClass child) {

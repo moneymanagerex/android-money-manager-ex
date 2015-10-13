@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import com.money.manager.ex.database.TablePayee;
-
 /**
  * Payee model.
  */
@@ -34,11 +32,11 @@ public class Payee
     }
 
     public Integer getId() {
-        return getInt(Payee.PAYEEID);
+        return getInteger(Payee.PAYEEID);
     }
 
     public void setId(Integer value) {
-        setInt(Payee.PAYEEID, value);
+        setInteger(Payee.PAYEEID, value);
     }
 
     public String getName() {
@@ -50,11 +48,11 @@ public class Payee
     }
 
     public Integer getCategoryId() {
-        return getInt(Payee.CATEGID);
+        return getInteger(Payee.CATEGID);
     }
 
     public Integer getSubcategoryId() {
-        return getInt(Payee.SUBCATEGID);
+        return getInteger(Payee.SUBCATEGID);
     }
 
 }

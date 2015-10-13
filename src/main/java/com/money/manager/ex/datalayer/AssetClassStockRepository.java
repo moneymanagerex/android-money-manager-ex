@@ -78,7 +78,11 @@ public class AssetClassStockRepository
      */
     public Cursor fetchCursorAssignedSecurities(int assetClassId) {
         // todo: adjust the ad-hoc query to fetch the securities linked to this asset class.
-        String sql = "SELECT * FROM ASSETCLASS_STOCK_V1 WHERE assetClassId=?";
+        String sql =
+            "SELECT acs.ID as _id, s.* " +
+            "FROM ASSETCLASS_STOCK_V1 AS acs " +
+            "INNER JOIN STOCK_V1 AS s ON acs.stockId = s.stockId " +
+            "WHERE acs.assetClassId=?";
         String[] args = new String[] { Integer.toString(assetClassId)};
 
         Cursor c = MmexOpenHelper.getInstance(this.context).getReadableDatabase()

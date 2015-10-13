@@ -106,7 +106,7 @@ public class PayeeListFragment
         setListShown(false);
         // init sort
 //        mSort = PreferenceManager.getDefaultSharedPreferences(getActivity())
-//                .getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
+//                .getInteger(getString(PreferenceConstants.PREF_SORT_PAYEE), 0);
         mSort = settings.getPayeeSort();
 
         // start loader
@@ -129,7 +129,7 @@ public class PayeeListFragment
 
         //Check the default sort order
         final MenuItem item;
-        // PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)
+        // PreferenceManager.getDefaultSharedPreferences(getActivity()).getInteger(getString(PreferenceConstants.PREF_SORT_PAYEE), 0)
         switch (payeeSort) {
             case 0:
                 item = menu.findItem(R.id.menu_sort_name);

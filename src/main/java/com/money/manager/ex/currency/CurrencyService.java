@@ -365,7 +365,7 @@ public class CurrencyService {
 //        Currency currency = new Currency();
 //        currency.loadFromCursor(cursor);
 //
-////        Integer currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+////        Integer currencyId = cursor.getInteger(cursor.getColumnIndex(Currency.CURRENCYID));
 ////        Integer currencyId = currency.getCurrencyId();
 //        // put object into map
 ////        getCurrenciesStore().put(currencyId, currency);
