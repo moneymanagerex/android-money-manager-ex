@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import android.widget.ListView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
 
 /**
@@ -40,10 +43,12 @@ public class SecurityListFragment
 
     private static final int LOADER_SYMBOLS = 0;
 
-    public String action = Intent.ACTION_PICK;
-
     public SecurityListFragment() {
     }
+
+    public String action = Intent.ACTION_PICK;
+
+    private String mCurFilter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -95,16 +100,52 @@ public class SecurityListFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_SYMBOLS:
+                String whereClause = null;
+                String selectionArgs[] = null;
+                if (!TextUtils.isEmpty(mCurFilter)) {
+                    whereClause = Stock.SYMBOL + " LIKE ?";
+                    selectionArgs = new String[]{ mCurFilter + "%" };
+                }
+
+                StockRepository repo = new StockRepository(getActivity());
+
+                return new MmexCursorLoader(getActivity(), repo.getUri(),
+//                    repo.getAllColumns(),
+                    new String[] { "STOCKID AS _id", Stock.STOCKID, Stock.SYMBOL },
+                    whereClause, selectionArgs,
+                    "upper(" + Stock.SYMBOL + ")");
+        }
+
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case LOADER_SYMBOLS:
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
+                adapter.swapCursor(data);
 
+                if (isResumed()) {
+                    setListShown(true);
+                    if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null) {
+                        getFloatingActionButton().show(true);
+                    }
+                } else {
+                    setListShownNoAnimation(true);
+                }
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        switch (loader.getId()) {
+            case LOADER_SYMBOLS:
+                MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
+                adapter.swapCursor(null);
+        }
     }
 }
