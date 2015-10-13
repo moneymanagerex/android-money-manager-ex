@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,12 +45,12 @@ import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
+import com.shamanland.fonticon.FontIconView;
 
 import java.util.Arrays;
 
@@ -105,7 +104,8 @@ public class AccountEditActivity
     private EditText edtAccountName, edtAccountNumber, edtAccountHeldAt, edtWebsite, edtContact, edtAccessInfo, edtNotes;
     private Spinner spinSymbolInitialBalance;
     private TextView txtSelectCurrency, txtInitialBalance;
-    private ImageView imgbFavouriteAccount;
+//    private ImageView imgFavouriteAccount;
+    FontIconView imgFavouriteAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +167,8 @@ public class AccountEditActivity
         spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
         txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
         edtNotes = (EditText) findViewById(R.id.editTextNotes);
-        imgbFavouriteAccount = (ImageView) findViewById(R.id.imageViewAccountFav);
+//        imgFavouriteAccount = (ImageView) findViewById(R.id.imageViewAccountFav);
+        imgFavouriteAccount = (FontIconView) findViewById(R.id.imageViewAccountFav);
         txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
 
         // Initialize control values
@@ -221,9 +222,7 @@ public class AccountEditActivity
 
         // Favourite
 
-        imgbFavouriteAccount.setBackgroundResource(mAccount.getFavorite()
-            ? R.drawable.ic_star : R.drawable.ic_star_outline);
-        imgbFavouriteAccount.setTag(mAccount.getFavorite().toString());
+        displayFavouriteStatus();
 
         // Account Type adapters and values
 
@@ -282,21 +281,26 @@ public class AccountEditActivity
             }
         });
 
-        imgbFavouriteAccount.setOnClickListener(new OnClickListener() {
+        imgFavouriteAccount.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String status = (String) v.getTag();
+//                String status = (String) v.getTag();
                 // check empty string
-                if (TextUtils.isEmpty(status))
-                    status = String.valueOf(Boolean.FALSE);
-                if (String.valueOf(Boolean.TRUE).equalsIgnoreCase(status)) {
-                    v.setTag(String.valueOf(Boolean.FALSE));
-                } else {
-                    v.setTag(String.valueOf(Boolean.TRUE));
-                }
-                imgbFavouriteAccount.setBackgroundResource(String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag()))
-                        ? R.drawable.ic_star : R.drawable.ic_star_outline);
+//                if (TextUtils.isEmpty(status)) {
+//                    status = String.valueOf(Boolean.FALSE);
+//                }
+//                if (String.valueOf(Boolean.TRUE).equalsIgnoreCase(status)) {
+//                    v.setTag(String.valueOf(Boolean.FALSE));
+//                } else {
+//                    v.setTag(String.valueOf(Boolean.TRUE));
+//                }
+//                int imageResource = String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag()))
+//                    ? R.drawable.ic_star : R.drawable.ic_star_outline;
+//                imgFavouriteAccount.setBackgroundResource(imageResource);
+
+                mAccount.setFavorite(!mAccount.getFavorite());
+                displayFavouriteStatus();
             }
         });
 
@@ -367,7 +371,7 @@ public class AccountEditActivity
         outState.putString(KEY_STATUS, mStatus);
         outState.putString(KEY_INITIAL_BAL, txtInitialBalance.getTag().toString());
         outState.putString(KEY_NOTES, mNotes);
-//        outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgbFavouriteAccount.getTag()));
+//        outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgFavouriteAccount.getTag()));
         outState.putBoolean(KEY_FAVORITE_ACCT, mAccount.getFavorite());
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
         outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
@@ -390,6 +394,22 @@ public class AccountEditActivity
         } else {
             return false;
         }
+    }
+
+    private void displayFavouriteStatus() {
+//        int imageResource = mAccount.getFavorite() ? R.drawable.ic_star : R.drawable.ic_star_outline;
+//        int imageResource = mAccount.getFavorite()
+//            ? R.xml.ic_star
+//            : R.xml.ic_star_outline;
+//        imgFavouriteAccount.setImageResource(imageResource);
+//        imgFavouriteAccount.setBackgroundResource(imageResource);
+
+        imgFavouriteAccount.setTag(mAccount.getFavorite().toString());
+
+        int imageResource = mAccount.getFavorite()
+            ? R.string.ic_star
+            : R.string.ic_star_outline;
+        imgFavouriteAccount.setText(imageResource);
     }
 
     /**
@@ -461,7 +481,7 @@ public class AccountEditActivity
         values.put(Account.ACCESSINFO, mAccessInfo);
         values.put(Account.INITIALBAL, MoneyFactory.fromString(txtInitialBalance.getTag().toString()).toDouble() *
                 (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
-        values.put(Account.FAVORITEACCT, imgbFavouriteAccount.getTag().toString().toUpperCase());
+        values.put(Account.FAVORITEACCT, mAccount.getFavorite().toString().toUpperCase());
         values.put(Account.CURRENCYID, mCurrencyId);
 
         TableAccountList mAccountList = new TableAccountList();

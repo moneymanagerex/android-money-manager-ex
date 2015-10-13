@@ -38,7 +38,7 @@
     <string name="ic_tag">r</string>
     <string name="ic_tag_empty">s</string>
     <string name="ic_wallet">t</string>
-    <string name="ic_star">u</string>
+    <string name="ic_star_outline">u</string>
     <string name="ic_people">v</string>
     <string name="ic_chevron_down">w</string>
     <string name="ic_chevron_left">x</string>
@@ -60,4 +60,6 @@
     <string name="ic_floppy_disk">N</string>
     <string name="ic_bill">O</string>
     <string name="ic_pie_chart">P</string>
+    <string name="ic_star">Q</string>
+
 </resources>

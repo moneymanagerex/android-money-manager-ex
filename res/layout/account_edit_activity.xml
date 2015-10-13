@@ -63,13 +63,23 @@
                     android:maxLength="100"
                     android:singleLine="true" />
 
-                <ImageView
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageViewAccountFav"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:src="@xml/ic_star"-->
+                    <!--android:contentDescription="@string/favourite_account" />-->
+                <!--android:background="@android:drawable/star_off"-->
+                <com.shamanland.fonticon.FontIconView
                     android:id="@+id/imageViewAccountFav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:drawable/star_off"
-                    android:contentDescription="@string/favourite_account" />
+                    android:layout_gravity="center"
+                    android:text="@string/ic_star_outline"
+                    android:textSize="@dimen/fonticon_drawer"
+                    android:textColor="@color/material_white"
+                    android:background="@color/md_primary" />
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
