@@ -40,7 +40,7 @@
         android:minWidth="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="center_vertical|end"
         android:text="@string/allocation" />
 
     <!-- set value -->
@@ -50,7 +50,7 @@
         android:minWidth="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="center_vertical|end"
         android:text="@string/value" />
 
     <!-- current allocation -->
