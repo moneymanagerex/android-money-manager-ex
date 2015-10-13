@@ -76,9 +76,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Checking account fragment.
- * Shows the list of transactions, etc.
- * @author a.lazzari
+ * Checking account fragment. Shows the list of transactions.
  */
 public class AccountTransactionsFragment
     extends Fragment

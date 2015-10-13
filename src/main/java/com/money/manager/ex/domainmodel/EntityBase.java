@@ -90,7 +90,7 @@ public class EntityBase
     }
 
     protected void setBoolean(String column, Boolean value) {
-        contentValues.put(column, value);
+        contentValues.put(column, value.toString().toUpperCase());
     }
 
     protected MonetaryAmount getMoneta(String fieldName, String currencyCode) {
