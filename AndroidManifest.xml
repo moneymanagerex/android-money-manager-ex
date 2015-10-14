@@ -418,6 +418,10 @@
             android:name=".assetallocation.SecurityListActivity"
             android:label="@string/title_activity_security_list" >
         </activity>
+        <activity
+            android:name=".assetallocation.AssetAllocationPickerActivity"
+            android:label="@string/title_activity_asset_allocation_picker" >
+        </activity>
     </application>
 
 </manifest>

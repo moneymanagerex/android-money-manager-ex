@@ -93,6 +93,27 @@ public class AssetAllocationService {
     }
 
     /**
+     * Loads asset class name, given the id.
+     * @param id Id of the asset class.
+     * @return String name of the asset class.
+     */
+    public String loadName(int id) {
+        AssetClassRepository repo = new AssetClassRepository(this.context);
+        Cursor c = repo.openCursor(
+            new String[] { AssetClass.NAME },
+            AssetClass.ID + "=?",
+            new String[] { Integer.toString(id)}
+        );
+        if (c == null) return null;
+
+        c.moveToNext();
+        AssetClass ac = AssetClass.from(c);
+        c.close();
+
+        return ac.getName();
+    }
+
+    /**
      * Move the asset class up in the sort order.
      * Increase sort order for this item. Finds the next in order and decrease it's sort order.
      */
@@ -171,7 +192,6 @@ public class AssetAllocationService {
         c.close();
 
         return result;
-
     }
 
     private List<AssetClass> assignChildren(HashMap<Integer, AssetClass> map) {

@@ -43,10 +43,12 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MmexSimpleCursorLoader;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -85,6 +87,7 @@ public class AssetClassEditFragment
         }
 
         View view = getView();
+        initializeParentEdit(view);
         initializeNameEdit(view);
         initializeAllocationPicker(view);
 
@@ -225,6 +228,25 @@ public class AssetClassEditFragment
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         });
+    }
+
+    private void initializeParentEdit(View view) {
+        if (assetClass.getParentId() == null) return;
+
+        TextView edit = (TextView) view.findViewById(R.id.parentAssetClass);
+        if (edit == null) return;
+
+        AssetAllocationService service = new AssetAllocationService(getActivity());
+        String name = service.loadName(assetClass.getParentId());
+        edit.setText(name);
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // todo: show asset allocation selector.
+            }
+        };
+        edit.setOnClickListener(onClickListener);
     }
 
     private void updateAllocation() {
