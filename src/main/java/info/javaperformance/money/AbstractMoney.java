@@ -44,6 +44,10 @@ abstract class AbstractMoney implements Money {
         return MoneyFactory.fromBigDecimal( res );
     }
 
+    public boolean isZero() {
+        return this.toDouble() == 0;
+    }
+
     /**
      * Subtract another Money object from this one.
      *

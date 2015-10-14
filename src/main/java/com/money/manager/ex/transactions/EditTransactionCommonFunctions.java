@@ -1119,7 +1119,7 @@ public class EditTransactionCommonFunctions {
         if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
 
         // Replace the destination value only if it is zero.
-        if (destinationAmount.compareTo(MoneyFactory.fromString("0")) == 0) {
+        if (destinationAmount.isZero()) {
             Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
             displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
         }

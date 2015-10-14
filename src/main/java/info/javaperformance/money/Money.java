@@ -124,4 +124,6 @@ public interface Money extends Comparable<Money> {
      * precision. I.E If the number is negative than it will still be numerically less than {@code other}.
      */
     public int compareTo(final Money other);
+
+    public boolean isZero();
 }

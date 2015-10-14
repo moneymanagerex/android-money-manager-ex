@@ -124,7 +124,7 @@ public class SplitItemFragment
             // amount
             txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
             Money splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
-            if (!(splitTransactionAmount.compareTo(MoneyFactory.fromString("0")) == 0)) {
+            if (!(splitTransactionAmount.isZero())) {
                 // Change the sign to positive.
                 if(splitTransactionAmount.toDouble() < 0) {
                     splitTransactionAmount = splitTransactionAmount.negate();

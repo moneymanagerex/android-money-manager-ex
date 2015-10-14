@@ -26,6 +26,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.math.BigDecimal;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -77,8 +79,12 @@ public class MoneyTests {
         assertThat(actual.toString()).isEqualTo("214856");
     }
 
+    /**
+     * This is the first shot at replicating the bug in multiplication. However, everything
+     * works well here.
+     */
     @Test
-    public void bugInMultiplication() {
+    public void multiplication() {
         // Given
         Money value = MoneyFactory.fromString("2184.4983599999996");
         double divisor = 7281.6612;
@@ -90,6 +96,9 @@ public class MoneyTests {
         assertThat(actual.toString()).isEqualTo("30");
     }
 
+    /**
+     * This case demonstrates the bug in multiplication.
+     */
     @Test
     public void bugTry2() {
         // allocation is 30%
@@ -113,11 +122,46 @@ public class MoneyTests {
         assertThat(currentAllocation.toString()).isEqualTo("30");
     }
 
-    /**
-     * Exception test example.
-     */
-    @Test(expected=RuntimeException.class)
-    public void throwsException() {
-        throw new RuntimeException("bang!");
+    @Test
+    public void isZero() {
+        // Given
+        Money money = MoneyFactory.fromString("0");
+
+        // When
+        boolean actual = money.isZero();
+
+        // Then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void zeroBigDecimal() {
+        // Given
+        BigDecimal zero = new BigDecimal(0);
+        Money money = MoneyFactory.fromBigDecimal(zero);
+
+        // When
+        boolean actual = money.isZero();
+
+        // Then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void isPositive() {
+        // Given
+        Money longMoney = MoneyFactory.fromString("3");
+        Money decimalMoney = MoneyFactory.fromBigDecimal(new BigDecimal(3));
+
+        // When
+
+        // Then
+        assertThat(longMoney.toDouble() > 0).isTrue();
+        assertThat(longMoney.toDouble() < 0).isFalse();
+        assertThat(longMoney.isZero()).isFalse();
+
+        assertThat(decimalMoney.toDouble() > 0).isTrue();
+        assertThat(decimalMoney.toDouble() < 0).isFalse();
+        assertThat(decimalMoney.isZero()).isFalse();
     }
 }

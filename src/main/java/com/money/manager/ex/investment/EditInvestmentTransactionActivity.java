@@ -205,7 +205,7 @@ public class EditInvestmentTransactionActivity
                 showPurchasePrice();
 //                CurrencyService currencyService = new CurrencyService(this);
 
-                if (mStock.getCurrentPrice().compareTo(MoneyFactory.fromString("0")) == 0) {
+                if (mStock.getCurrentPrice().isZero()) {
                     mStock.setCurrentPrice(amount);
                     showCurrentPrice();
                     // recalculate value

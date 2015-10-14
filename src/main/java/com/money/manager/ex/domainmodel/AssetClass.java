@@ -209,7 +209,7 @@ public class AssetClass
      */
     public void calculateStats(Money totalPortfolioValue) {
         Money zero = MoneyFactory.fromString("0");
-        if (totalPortfolioValue.compareTo(zero) == 0) {
+        if (totalPortfolioValue.toDouble() == 0) {
             this.value = zero;
             this.currentAllocation = zero;
             this.currentValue = zero;
