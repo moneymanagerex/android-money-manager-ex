@@ -8,8 +8,6 @@ import com.money.manager.ex.utils.DateUtils;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.money.MonetaryAmount;
-
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -93,9 +91,9 @@ public class Stock
         return MoneyFactory.fromString(currentPrice);
     }
 
-    public MonetaryAmount getCurrentPrice(String currencyCode) {
-        return getMoneta(CURRENTPRICE, currencyCode);
-    }
+//    public MonetaryAmount getCurrentPrice(String currencyCode) {
+//        return getMoneta(CURRENTPRICE, currencyCode);
+//    }
 
     public void setCurrentPrice(Money currentPrice) {
         contentValues.put(CURRENTPRICE, currentPrice.toString());

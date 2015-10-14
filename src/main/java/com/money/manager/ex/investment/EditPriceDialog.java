@@ -40,7 +40,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -225,6 +224,12 @@ public class EditPriceDialog
         savedInstanceState.putString(KEY_DATE, mPriceDate);
     }
 
+    @Override
+    public void onFinishedInputAmountDialog(int id, Money amount) {
+        // set the amount on the dialog.
+        showCurrentPrice(amount, mAccountId);
+    }
+
     private void restoreInstanceState(Bundle savedInstanceState) {
         this.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT);
         this.mSymbol = savedInstanceState.getString(KEY_SYMBOL);
@@ -238,11 +243,11 @@ public class EditPriceDialog
         mCurrentPrice = currentPrice;
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        // set the amount on the dialog.
-        showCurrentPrice(amount, mAccountId);
-    }
+//    public void setParameters(int accountId, final String symbol, MonetaryAmount currentPrice) {
+//        Money money = MoneyFactory.fromString(currentPrice.getNumber().toString());
+//        setParameters(accountId, symbol, money);
+//    }
+
 
     private void showCurrentPrice(Money currentPrice, int accountId) {
         EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null);

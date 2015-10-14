@@ -27,20 +27,15 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DateUtils;
 
-import org.javamoney.moneta.FastMoney;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.money.MonetaryAmount;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
- * Created by Alen Siljak on 5/09/2015.
  */
 public class EntityBase
     implements Parcelable {
@@ -93,12 +88,22 @@ public class EntityBase
         contentValues.put(column, value.toString().toUpperCase());
     }
 
-    protected MonetaryAmount getMoneta(String fieldName, String currencyCode) {
-        Double d = contentValues.getAsDouble(fieldName);
+//    protected MonetaryAmount getMoneta(String fieldName, String currencyCode) {
+//        Double d = contentValues.getAsDouble(fieldName);
+//
+//        MonetaryAmount dAmount = FastMoney.of(d, currencyCode);
+//        return dAmount;
+//    }
 
-        MonetaryAmount dAmount = FastMoney.of(d, currencyCode);
-        return dAmount;
-    }
+//    /**
+//     * We only store the numeric value. The currency information is lost and needs to be
+//     * retrieved from elsewhere on recreation.
+//     * @param fieldName Field name into which to store the value.
+//     * @param value The value to store.
+//     */
+//    protected void setMoneta(String fieldName, MonetaryAmount value) {
+//        contentValues.put(fieldName, value.getNumber().doubleValueExact());
+//    }
 
     protected Money getMoney(String fieldName) {
         String value = contentValues.getAsString(fieldName);

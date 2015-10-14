@@ -31,6 +31,7 @@ import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -40,7 +41,6 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
@@ -59,11 +59,11 @@ import info.javaperformance.money.MoneyFactory;
 public class AccountService {
 
     public AccountService(Context context) {
-        mContext = context;
+        this.context = context;
         this.accountRepository = new AccountRepository(context);
     }
 
-    private Context mContext;
+    private Context context;
     private AccountRepository accountRepository;
 
     /**
@@ -71,7 +71,7 @@ public class AccountService {
      * @return List of accounts
      */
     public List<Account> getAccountList() {
-        AppSettings settings = new AppSettings(mContext);
+        AppSettings settings = new AppSettings(context);
 
         boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
         boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
@@ -100,7 +100,7 @@ public class AccountService {
         try {
             account = loadAccount(id);
         } catch (SQLiteDiskIOException | IllegalStateException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.handle(ex, "loading account: " + Integer.toString(id));
         }
         return account;
@@ -129,9 +129,9 @@ public class AccountService {
 
         String selection = where.getWhere();
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+        AccountTransactionRepository repo = new AccountTransactionRepository(context);
 
-        Cursor cursor = mContext.getContentResolver().query(repo.getUri(),
+        Cursor cursor = context.getContentResolver().query(repo.getUri(),
             null,
             selection,
             null,
@@ -196,6 +196,17 @@ public class AccountService {
         return total;
     }
 
+    public String getAccountCurrencyCode(int accountId) {
+        AccountRepository repo = new AccountRepository(this.context);
+        Account account = repo.query(new String[] {Account.CURRENCYID},
+            Account.ACCOUNTID + "=?",
+            new String[] { Integer.toString(accountId)});
+        int currencyId = account.getCurrencyId();
+
+        CurrencyService currencyService = new CurrencyService(this.context);
+        return currencyService.getCurrency(currencyId).getCode();
+    }
+
     /**
      * Check if the account is used in any of the transactions.
      * @param accountId id of the account
@@ -211,11 +222,11 @@ public class AccountService {
             )
         );
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+        AccountTransactionRepository repo = new AccountTransactionRepository(context);
         int txCount = repo.count(where.getWhere(), null);
 
         // investment accounts
-        StockRepository stockRepository = new StockRepository(mContext);
+        StockRepository stockRepository = new StockRepository(context);
         where.clear();
         where.addStatement(Stock.HELDAT, "=", accountId);
         int investmentCount = stockRepository.count(where.getWhere(), null);
@@ -224,7 +235,7 @@ public class AccountService {
     }
 
     public void loadTransactionAccountsToSpinner(Spinner spinner) {
-        Context context = mContext;
+        Context context = this.context;
 
         if (spinner == null) return;
 
@@ -252,7 +263,7 @@ public class AccountService {
     }
 
     public void loadInvestmentAccountsToSpinner(Spinner spinner) {
-        Context context = mContext;
+        Context context = this.context;
 
         if (spinner == null) return;
 
@@ -291,7 +302,7 @@ public class AccountService {
     }
 
     public Money loadInitialBalance(int accountId) {
-        AccountRepository repo = new AccountRepository(mContext);
+        AccountRepository repo = new AccountRepository(context);
         Account account = repo.load(accountId);
         return account.getInitialBalance();
     }
@@ -305,8 +316,8 @@ public class AccountService {
     public Money loadBalance(String where) {
         Money curTotal = MoneyFactory.fromString("0");
 
-        QueryAccountBills accountBills = new QueryAccountBills(mContext);
-        Cursor cursor = mContext.getContentResolver().query(accountBills.getUri(),
+        QueryAccountBills accountBills = new QueryAccountBills(context);
+        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
                 null,
                 where,
                 null,
@@ -327,7 +338,7 @@ public class AccountService {
         try {
             return getCursorInternal(open, favorite, accountTypes);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.handle(ex, "getting cursor in account repository");
         }
         return null;
@@ -362,6 +373,8 @@ public class AccountService {
         return result;
     }
 
+    // Private
+
     private Cursor getCursorInternal(boolean open, boolean favorite, List<String> accountTypes) {
         TableAccountList account = new TableAccountList();
 
@@ -371,7 +384,7 @@ public class AccountService {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
-        Cursor cursor = mContext.getContentResolver().query(account.getUri(),
+        Cursor cursor = context.getContentResolver().query(account.getUri(),
                 account.getAllColumns(),
                 where,
                 null,
@@ -418,7 +431,7 @@ public class AccountService {
         TableAccountList account = new TableAccountList();
         String selection = Account.ACCOUNTID + "=?";
 
-        Cursor cursor = mContext.getContentResolver().query(account.getUri(),
+        Cursor cursor = context.getContentResolver().query(account.getUri(),
                 null,
                 selection,
                 new String[]{Integer.toString(id)},
@@ -440,7 +453,7 @@ public class AccountService {
 
         Cursor cursor = getCursor(open, favorite, accountTypes);
         if (cursor == null) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.showMessage("Error reading accounts list!");
             return result;
         }

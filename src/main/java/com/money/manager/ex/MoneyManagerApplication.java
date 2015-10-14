@@ -36,6 +36,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.settings.AppSettings;
@@ -84,54 +85,7 @@ public class MoneyManagerApplication
         return myInstance;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
-
-        // save instance of application
-        myInstance = this;
-
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
-
-        // create application folder
-        Core core = new Core(getApplicationContext());
-        core.getExternalStorageDirectoryApplication();
-
-        // set default text size.
-        setTextSize(new TextView(getApplicationContext()).getTextSize());
-        // preference
-        if (appPreferences == null) {
-            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(
-                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(),
-                    appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
-        }
-
-        // Initialize font icons support.
-        FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
-    }
-
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-
-        // on terminate is never called
-        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
-    }
-
-    @Override
-    public void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-
-        // Trying to mitigate issues on some 4.2.2 devices
-        // https://code.google.com/p/android/issues/detail?id=78377
-        // ref: https://developer.android.com/tools/building/multidex.html
-        MultiDex.install(this);
-    }
+    // Static
 
     /**
      * Reads the current database path from the settings and checks for the existence of the
@@ -208,26 +162,6 @@ public class MoneyManagerApplication
         MoneyManagerApplication.mTextSize = textSize;
     }
 
-    public String getAppVersionName() {
-        try {
-            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "getting app version name");
-        }
-        return "n/a";
-    }
-
-    public String getAppVersionBuild() {
-        try {
-            return Integer.toString(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "getting app version build number");
-        }
-        return "n/a";
-    }
-
     /**
      * close process application
      */
@@ -260,7 +194,78 @@ public class MoneyManagerApplication
         }
     }
 
+    // Overrides.
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
+
+        // save instance of application
+        myInstance = this;
+
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+
+        // create application folder
+        Core core = new Core(getApplicationContext());
+        core.getExternalStorageDirectoryApplication();
+
+        // set default text size.
+        setTextSize(new TextView(getApplicationContext()).getTextSize());
+        // preference
+        if (appPreferences == null) {
+            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            RobotoView.setUserFont(Integer.parseInt(
+                appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+            RobotoView.setUserFontSize(getApplicationContext(),
+                appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
+        }
+
+        // Initialize font icons support.
+        FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+        // on terminate is never called
+        // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
+    }
+
+    @Override
+    public void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+
+        // Trying to mitigate issues on some 4.2.2 devices
+        // https://code.google.com/p/android/issues/detail?id=78377
+        // ref: https://developer.android.com/tools/building/multidex.html
+        MultiDex.install(this);
+    }
+
     // dynamic
+
+    public String getAppVersionName() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(e, "getting app version name");
+        }
+        return "n/a";
+    }
+
+    public String getAppVersionBuild() {
+        try {
+            return Integer.toString(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
+            handler.handle(e, "getting app version build number");
+        }
+        return "n/a";
+    }
 
     public Locale getAppLocale() {
         Locale locale = null;

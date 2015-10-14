@@ -103,6 +103,7 @@ public class AssetAllocationTests {
     public void testLoadingOfAllocation() {
         // Given
 
+//        String currencyCode = "EUR";
         Context context = UnitTestHelper.getContext();
         createRecords(context);
 
@@ -162,6 +163,7 @@ public class AssetAllocationTests {
     @Test
     public void calculateStockValue() {
         // Given
+//        String currencyCode = "EUR";
         Stock stock1 = Stock.getInstance();
         stock1.setNumberOfShares(50.0);
         stock1.setCurrentPrice(MoneyFactory.fromString("12.00"));

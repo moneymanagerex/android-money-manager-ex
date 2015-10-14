@@ -390,4 +390,15 @@ public class AssetAllocationService {
         }
         return sum;
     }
+
+    private double sumDouble(List<AssetClass> group, Converter<AssetClass, Double> converter) {
+        List<Double> values = Queryable.from(group)
+            .map(converter).toList();
+
+        double sum = 0;
+        for (double value : values) {
+            sum += value;
+        }
+        return sum;
+    }
 }

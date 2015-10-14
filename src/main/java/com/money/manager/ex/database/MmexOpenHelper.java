@@ -439,14 +439,14 @@ public class MmexOpenHelper
                 long newId = infoService.insertRaw(db, InfoService.BASECURRENCYID, currencyId);
                 if (newId <= 0) {
                     ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                    handler.showMessage("updating base currency on init");
+                    handler.showMessage("error inserting base currency on init");
                 }
             } else {
                 // Update the (empty) record to the default currency.
                 long updatedRecords = infoService.updateRaw(db, recordId, InfoService.BASECURRENCYID, currencyId);
                 if (updatedRecords <= 0) {
                     ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                    handler.showMessage("updating base currency on init");
+                    handler.showMessage("error updating base currency on init");
                 }
             }
 

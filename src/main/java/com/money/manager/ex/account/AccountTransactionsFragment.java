@@ -68,8 +68,6 @@ import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 
-import org.javamoney.moneta.FastMoney;
-
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;

@@ -55,6 +55,17 @@ public class AssetAllocationFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_ASSET_CLASSES = 1;
+//    private static final String PARAM_CURRENCY_CODE = "currencyCode";
+
+    public static AssetAllocationFragment create() {
+        AssetAllocationFragment fragment = new AssetAllocationFragment();
+
+//        Bundle arguments = new Bundle();
+//        arguments.putString(PARAM_CURRENCY_CODE, currencyCode);
+//        fragment.setArguments(arguments);
+
+        return fragment;
+    }
 
     public AssetAllocationFragment() {
     }
@@ -292,13 +303,15 @@ public class AssetAllocationFragment
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
-        int precision = 2;
+//        int precision = 2;
 
         for (AssetClass item : allocation.getChildren()) {
             Object[] values = new Object[] {
-                item.getId(), item.getName(), item.getAllocation(),
-                item.getValue().truncate(precision), item.getCurrentAllocation().truncate(precision),
-                item.getCurrentValue().truncate(precision), item.getDifference().truncate(precision)
+                item.getId(), item.getName(),
+                item.getAllocation(), item.getValue(),
+                item.getCurrentAllocation(),
+                item.getCurrentValue(),
+                item.getDifference()
             };
             cursor.addRow(values);
         }

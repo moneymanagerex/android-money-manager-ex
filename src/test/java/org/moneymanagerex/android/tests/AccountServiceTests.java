@@ -19,7 +19,13 @@ package org.moneymanagerex.android.tests;
 import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.account.AccountStatuses;
+import com.money.manager.ex.account.AccountTypes;
+import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.servicelayer.AccountService;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,43 +38,60 @@ import org.robolectric.annotation.Config;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * A model for test class.
+ * Account Service tests.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class BaseTests {
+public class AccountServiceTests {
+
+    private AccountService testObject;
 
     @Before
     public void setup() {
-//        Context context = UnitTestHelper.getContext();
-
         // initialize support for activities (UI)
 //        this.controller = UnitTestHelper.getController(MainActivity.class);
 //        this.activity = UnitTestHelper.getActivity(this.controller);
 
         // initialize database
         // UnitTestHelper.initializeContentProvider();
+
+        Context context = UnitTestHelper.getContext();
+        testObject = new AccountService(context);
     }
 
     @After
     public void tearDown() {
         // Reset database instance between tests.
-        // UnitTestHelper.resetDatabase();
+        UnitTestHelper.resetDatabase();
 
         // Destroy the activity controller.
 //        this.controller.destroy();
+
+        testObject = null;
     }
 
     @Test
-    public void testTemplate() {
-        assertThat(true).isTrue();
+    public void instantiation() {
+        assertThat(testObject).isNotNull();
     }
 
-    /**
-     * Exception test example.
-     */
-    @Test(expected=RuntimeException.class)
-    public void throwsException() {
-        throw new RuntimeException("bang!");
+    @Test
+    public void getAccountCurrency() {
+        // Given
+        UnitTestHelper.initializeContentProvider();
+        String expectedCode = "ISK";
+        Context context = UnitTestHelper.getContext();
+        CurrencyService currencyService = new CurrencyService(context);
+        Currency currency = currencyService.getCurrency(expectedCode);
+        AccountRepository repo = new AccountRepository(context);
+        Account account = Account.create("bank account", AccountTypes.CHECKING, AccountStatuses.OPEN,
+            false, currency.getCurrencyId());
+        int accountId = repo.insert(account);
+
+        // When
+        String actual = testObject.getAccountCurrencyCode(accountId);
+
+        // Then
+        assertThat(actual).isEqualTo(expectedCode);
     }
 }

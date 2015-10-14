@@ -72,7 +72,7 @@ public class Account
         super.loadFromCursor(c);
 
         // Reload all money values.
-        DatabaseUtils.cursorDoubleToCursorValues(c, Account.INITIALBAL, this.contentValues);
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, Account.INITIALBAL);
     }
 
     public Integer getId() {

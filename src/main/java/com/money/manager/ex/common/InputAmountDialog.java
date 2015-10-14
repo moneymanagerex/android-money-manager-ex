@@ -34,7 +34,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Currency;
 import com.shamanland.fonticon.FontIconView;
 

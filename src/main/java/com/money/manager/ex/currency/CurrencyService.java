@@ -71,6 +71,35 @@ public class CurrencyService {
 
     private Context mContext;
 
+    /**
+     * @param currencyId of the currency to be get
+     * @return an instance of class TableCurrencyFormats. Null if fail
+     */
+    public Currency getCurrency(Integer currencyId) {
+        if (currencyId == null || currencyId == Constants.NOT_SET) return null;
+
+        // check if the currency is cached.
+        Currency result =  getCurrenciesStore().get(currencyId);
+
+        // if not cached, try to load it.
+        if (result == null) {
+            CurrencyRepository repository = new CurrencyRepository(mContext);
+            result = repository.loadCurrency(currencyId);
+
+            // cache
+            if (!getCurrenciesStore().containsKey(currencyId)) {
+                cacheCurrency(result);
+            }
+        }
+
+        return result;
+    }
+
+    public Currency getCurrency(String currencyCode) {
+        int id = getIdForCode(currencyCode);
+        return getCurrency(id);
+    }
+
     public String getBaseCurrencyCode() {
         // get base currency
         int baseCurrencyId = this.getBaseCurrencyId();
@@ -89,7 +118,7 @@ public class CurrencyService {
         return currency.getCode();
     }
 
-    public Integer getIdForSymbol(String code) {
+    public Integer getIdForCode(String code) {
         Integer result = getCurrencyCodes().get(code);
 
         if (result == null) {
@@ -230,30 +259,6 @@ public class CurrencyService {
         } else {
             result = String.valueOf(value);
         }
-        return result;
-    }
-
-    /**
-     * @param currencyId of the currency to be get
-     * @return an instance of class TableCurrencyFormats. Null if fail
-     */
-    public Currency getCurrency(Integer currencyId) {
-        if (currencyId == null || currencyId == Constants.NOT_SET) return null;
-
-        // check if the currency is cached.
-        Currency result =  getCurrenciesStore().get(currencyId);
-
-        // if not cached, try to load it.
-        if (result == null) {
-            CurrencyRepository repository = new CurrencyRepository(mContext);
-            result = repository.loadCurrency(currencyId);
-
-            // cache
-            if (!getCurrenciesStore().containsKey(currencyId)) {
-                cacheCurrency(result);
-            }
-        }
-
         return result;
     }
 

@@ -25,8 +25,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.home.MainActivity;
 
 public class AssetAllocationActivity
@@ -47,13 +49,16 @@ public class AssetAllocationActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // Get the currency. Use default currency.
+        CurrencyService currencyService = new CurrencyService(this);
+        String currencyCode = currencyService.getBaseCurrencyCode();
+
         // show the fragment
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
-            AssetAllocationFragment fragment = new AssetAllocationFragment();
+            AssetAllocationFragment fragment = AssetAllocationFragment.create();
             fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
         }
-
     }
 
     @Override

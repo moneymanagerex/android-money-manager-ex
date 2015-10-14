@@ -67,7 +67,7 @@ public class CurrencyServiceTests {
         // Given
 
         // When
-        Integer id = testObject.getIdForSymbol("EUR");
+        Integer id = testObject.getIdForCode("EUR");
 
         // Then
         assertThat(id).isNotNull();
@@ -80,5 +80,16 @@ public class CurrencyServiceTests {
 
         assertThat(symbol).isNotNull();
         assertThat(symbol).isEqualTo("EUR");
+    }
+
+    @Test
+    public void gettingDefaultCurrency() {
+        // Given
+
+        // When
+        String actual = this.testObject.getBaseCurrencyCode();
+
+        // Then
+        assertThat(actual).isEqualTo("EUR");
     }
 }
