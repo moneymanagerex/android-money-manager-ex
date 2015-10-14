@@ -152,7 +152,7 @@ public class AssetAllocationFragment
                     repo.getAllColumns(),
                     null, // where
                     null, // args
-                    AssetClass.PARENTID // sort
+                    AssetClass.SORTORDER // sort
                 );
                 //break;
         }
@@ -303,15 +303,15 @@ public class AssetAllocationFragment
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
-//        int precision = 2;
+        int precision = 2;
 
         for (AssetClass item : allocation.getChildren()) {
             Object[] values = new Object[] {
                 item.getId(), item.getName(),
-                item.getAllocation(), item.getValue(),
-                item.getCurrentAllocation(),
-                item.getCurrentValue(),
-                item.getDifference()
+                item.getAllocation(), item.getValue().truncate(precision),
+                item.getCurrentAllocation().truncate(precision),
+                item.getCurrentValue().truncate(precision),
+                item.getDifference().truncate(precision)
             };
             cursor.addRow(values);
         }

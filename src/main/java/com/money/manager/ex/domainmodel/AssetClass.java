@@ -19,6 +19,7 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 import java.util.ArrayList;
@@ -220,11 +221,11 @@ public class AssetClass
 
         // Set Value
         double allocation = getAllocation();
-        double value = allocation * totalPortfolioValue.toDouble() / 100;
-        this.value = MoneyFactory.fromDouble(value);
+        this.value = totalPortfolioValue.multiply(allocation).divide(100, Constants.DEFAULT_PRECISION);
 
         // current allocation. Use 2 decimals for now.
-        this.currentAllocation = this.value.multiply(100).divide(totalPortfolioValue.toDouble(), 2);
+        double totalPortfolioValueD = totalPortfolioValue.toDouble();
+        this.currentAllocation = this.value.multiply(100).divide(totalPortfolioValueD, Constants.DEFAULT_PRECISION);
         // current value
         this.currentValue = AssetAllocationService.sumStockValues(this.stocks);
         // difference

@@ -37,9 +37,9 @@
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/allocationTextView"
         android:layout_width="wrap_content"
-        android:minWidth="50dp"
+        android:minWidth="30dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_vertical|end"
         android:gravity="center_vertical|end"
         android:text="@string/allocation" />
 
@@ -47,9 +47,11 @@
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/valueTextView"
         android:layout_width="wrap_content"
-        android:minWidth="50dp"
+        android:minWidth="65dp"
+        android:paddingStart="1dp"
+        android:paddingLeft="1dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="end"
         android:gravity="center_vertical|end"
         android:text="@string/value" />
 
@@ -57,11 +59,11 @@
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/currentAllocationTextView"
         android:layout_width="wrap_content"
-        android:minWidth="60dp"
+        android:minWidth="30dp"
         android:paddingStart="1dp"
         android:paddingLeft="1dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
+        android:layout_gravity="center_vertical|end"
         android:gravity="center_vertical|end"
         android:text="@string/current_allocation" />
 
@@ -69,11 +71,11 @@
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/currentValueTextView"
         android:layout_width="wrap_content"
-        android:minWidth="60dp"
+        android:minWidth="65dp"
         android:paddingStart="1dp"
         android:paddingLeft="1dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
+        android:layout_gravity="center_vertical|end"
         android:gravity="center_vertical|end"
         android:text="@string/current_value" />
 
@@ -81,7 +83,7 @@
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/differenceTextView"
         android:layout_width="wrap_content"
-        android:minWidth="60dp"
+        android:minWidth="65dp"
         android:paddingStart="1dp"
         android:paddingLeft="1dp"
         android:layout_height="match_parent"
