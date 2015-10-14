@@ -49,11 +49,9 @@
                 android:id="@+id/parentAssetClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/money_padding"
+                style="@style/Money.TextView.Widget.EditText"
                 android:gravity="top|start"
                 android:hint="@string/parent"
-                android:inputType="text"
-                android:maxLength="1000"
                 android:scrollHorizontally="false"
                 android:textCursorDrawable="@null" />
 

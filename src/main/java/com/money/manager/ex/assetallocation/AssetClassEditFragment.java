@@ -231,13 +231,19 @@ public class AssetClassEditFragment
     }
 
     private void initializeParentEdit(View view) {
-        if (assetClass.getParentId() == null) return;
-
         TextView edit = (TextView) view.findViewById(R.id.parentAssetClass);
         if (edit == null) return;
 
+        String name;
+
+        if (assetClass.getParentId() == null) {
+            name = getString(R.string.none);
+            edit.setText(name);
+            return;
+        }
+
         AssetAllocationService service = new AssetAllocationService(getActivity());
-        String name = service.loadName(assetClass.getParentId());
+        name = service.loadName(assetClass.getParentId());
         edit.setText(name);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {

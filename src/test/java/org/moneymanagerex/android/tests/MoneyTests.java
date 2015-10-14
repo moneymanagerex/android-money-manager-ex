@@ -17,6 +17,7 @@
 package org.moneymanagerex.android.tests;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 
 import org.junit.After;
 import org.junit.Before;
@@ -87,6 +88,29 @@ public class MoneyTests {
 
         // Then
         assertThat(actual.toString()).isEqualTo("30");
+    }
+
+    @Test
+    public void bugTry2() {
+        // allocation is 30%
+        double allocation = 30;
+        // total value
+        Money totalValue = MoneyFactory.fromString("7281.6612");
+        // money value of 30% allocation
+        double value = allocation * totalValue.toDouble() / 100;
+        Money moneyValue = MoneyFactory.fromDouble(value);
+
+        // calculate the percentage of the money value
+        double currentAllocationD = moneyValue.multiply(100)
+            .divide(totalValue.toDouble(), Constants.DEFAULT_PRECISION)
+            .toDouble();
+
+        Money currentAllocation = moneyValue.multiply(100)
+            .divide(totalValue.toDouble(), Constants.DEFAULT_PRECISION);
+
+        // it should be 30, as set initially.
+        assertThat(currentAllocationD).isEqualTo(30);
+        assertThat(currentAllocation.toString()).isEqualTo("30");
     }
 
     /**

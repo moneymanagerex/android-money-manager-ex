@@ -221,11 +221,16 @@ public class AssetClass
 
         // Set Value
         double allocation = getAllocation();
-        this.value = totalPortfolioValue.multiply(allocation).divide(100, Constants.DEFAULT_PRECISION);
+//        double value = allocation * totalPortfolioValue.toDouble() / 100;
+        this.value = totalPortfolioValue
+            .multiply(allocation)
+            .divide(100, Constants.DEFAULT_PRECISION);
 
         // current allocation. Use 2 decimals for now.
-        double totalPortfolioValueD = totalPortfolioValue.toDouble();
-        this.currentAllocation = this.value.multiply(100).divide(totalPortfolioValueD, Constants.DEFAULT_PRECISION);
+//        double totalPortfolioValueD = totalPortfolioValue.toDouble();
+        this.currentAllocation = this.value
+            .multiply(100)
+            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
         // current value
         this.currentValue = AssetAllocationService.sumStockValues(this.stocks);
         // difference
