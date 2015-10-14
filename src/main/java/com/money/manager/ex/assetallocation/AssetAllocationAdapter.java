@@ -19,14 +19,12 @@ package com.money.manager.ex.assetallocation;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.view.RobotoTextView;
 
 /**

@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ public class AssetClass
     private Money currentAllocation;
     private Money currentValue;
     private Money difference;
+    private ItemType type;
 
     @Override
     public void loadFromCursor(Cursor c) {
@@ -235,5 +237,13 @@ public class AssetClass
         this.currentValue = AssetAllocationService.sumStockValues(this.stocks);
         // difference
         this.difference = this.currentValue.subtract(this.value);
+    }
+
+    public ItemType getType() {
+        return this.type;
+    }
+
+    public void setType(ItemType value) {
+        this.type = value;
     }
 }

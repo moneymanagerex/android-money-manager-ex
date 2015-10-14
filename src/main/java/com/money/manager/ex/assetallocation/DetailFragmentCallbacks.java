@@ -16,18 +16,9 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import com.money.manager.ex.domainmodel.AssetClass;
-
 /**
- * Column names for the matrix cursor for Asset Allocation
+ * Callbacks from the Asset Allocation fragment to the activity.
  */
-public class MatrixCursorColumns {
-    public static final String ID = "_id";
-    public static final String NAME =  AssetClass.NAME;
-    public static final String ALLOCATION =  AssetClass.ALLOCATION;
-    public static final String VALUE =  "Value";
-    public static final String CURRENT_ALLOCATION = "CurrentAllocation";
-    public static final String CURRENT_VALUE =  "CurrentValue";
-    public static final String DIFFERENCE =  "Difference";
-    public static final String TYPE = "Type";
+public interface DetailFragmentCallbacks {
+    void assetClassSelected(int assetClassId);
 }

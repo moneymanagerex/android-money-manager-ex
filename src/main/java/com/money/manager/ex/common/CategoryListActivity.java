@@ -57,7 +57,10 @@ public class CategoryListActivity
         // management fragment
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
-            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
+            // todo: use replace?
+            fm.beginTransaction()
+                .add(R.id.content, listFragment, FRAGMENTTAG)
+                .commit();
         }
     }
 

@@ -16,18 +16,11 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import com.money.manager.ex.domainmodel.AssetClass;
-
 /**
- * Column names for the matrix cursor for Asset Allocation
+ * Asset Allocation list item type.
  */
-public class MatrixCursorColumns {
-    public static final String ID = "_id";
-    public static final String NAME =  AssetClass.NAME;
-    public static final String ALLOCATION =  AssetClass.ALLOCATION;
-    public static final String VALUE =  "Value";
-    public static final String CURRENT_ALLOCATION = "CurrentAllocation";
-    public static final String CURRENT_VALUE =  "CurrentValue";
-    public static final String DIFFERENCE =  "Difference";
-    public static final String TYPE = "Type";
+public enum ItemType {
+    Group,
+    Allocation,
+    Stock
 }

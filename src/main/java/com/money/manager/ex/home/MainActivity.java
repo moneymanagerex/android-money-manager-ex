@@ -1206,23 +1206,23 @@ public class MainActivity
         changeDatabase(recentDb.filePath);
     }
 
-    private void showFragment_Internal(Fragment fragment, String tagFragment) {
+    private void showFragment_Internal(Fragment fragment, String tag) {
         // Check if fragment is already added.
         if (fragment.isAdded()) return;
 
         // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
-        if (isDualPanel() && tagFragment.equalsIgnoreCase(HomeFragment.class.getName())) {
+        if (isDualPanel() && tag.equalsIgnoreCase(HomeFragment.class.getName())) {
             fragment = new Fragment();
-            tagFragment = "Empty";
+            tag = "Empty";
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left);
         // Replace whatever is in the fragment_container view with this fragment.
         if (isDualPanel()) {
-            transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
+            transaction.replace(R.id.fragmentDetail, fragment, tag);
         } else {
-            transaction.replace(R.id.fragmentContent, fragment, tagFragment);
+            transaction.replace(R.id.fragmentContent, fragment, tag);
         }
         transaction.addToBackStack(null);
         // Commit the transaction

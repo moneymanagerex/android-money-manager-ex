@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,12 +30,17 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 public class AssetAllocationActivity
-    extends BaseFragmentActivity {
+    extends BaseFragmentActivity
+    implements DetailFragmentCallbacks {
 
     private static final String FRAGMENTTAG = AssetAllocationFragment.class.getSimpleName();
+
+    private AssetClass assetAllocation;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,16 +55,12 @@ public class AssetAllocationActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // Get the currency. Use default currency.
-        CurrencyService currencyService = new CurrencyService(this);
-        String currencyCode = currencyService.getBaseCurrencyCode();
+        // load data
+        AssetAllocationService service = new AssetAllocationService(this);
+        this.assetAllocation = service.loadAssetAllocation();
 
-        // show the fragment
-        FragmentManager fm = getSupportFragmentManager();
-        if (fm.findFragmentById(R.id.content) == null) {
-            AssetAllocationFragment fragment = AssetAllocationFragment.create();
-            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
-        }
+
+        showAssetClass(this.assetAllocation);
     }
 
     @Override
@@ -82,5 +84,40 @@ public class AssetAllocationActivity
     private void setResultAndFinish() {
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    private void showAssetClass(AssetClass assetClass) {
+        // show the fragment
+        FragmentManager fm = getSupportFragmentManager();
+        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass);
+        String tag = assetClass.getId() != null
+            ? assetClass.getId().toString()
+            : "root";
+
+//        if (fm.findFragmentById(R.id.content) == null) {
+//            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
+//        }
+
+        // Replace existing fragment. Always use replace instead of add.
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+            R.anim.slide_in_right, R.anim.slide_out_left);
+        transaction.replace(R.id.content, fragment, tag);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+
+    @Override
+    public void assetClassSelected(int assetClassId) {
+        // Handling:
+        // - asset group (has children), load children
+        // - asset class (no children), show stocks
+        // - stock (no children, no stocks) do nothing, or show context menu?
+
+        AssetAllocationService service = new AssetAllocationService(this);
+        AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
+
+        showAssetClass(toShow);
     }
 }

@@ -173,6 +173,26 @@ public class AssetAllocationService {
         return success;
     }
 
+    /**
+     * Find asset allocation by id.
+     * @param childId Id of the class to find.
+     * @return asset class with the required id.
+     */
+    public AssetClass findChild(int childId, AssetClass tree) {
+        AssetClass result = null;
+
+        // iterate through all elements
+
+        Integer id = tree.getId();
+        if (id != null && id == childId) return tree;
+
+        for (AssetClass child : tree.getChildren()) {
+            result = findChild(childId, child);
+            if (result != null) break;
+        }
+        return result;
+    }
+
     // Private.
 
     private Cursor loadData() {
