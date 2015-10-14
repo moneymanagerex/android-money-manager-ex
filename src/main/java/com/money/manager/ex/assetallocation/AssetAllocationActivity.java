@@ -38,8 +38,6 @@ public class AssetAllocationActivity
     extends BaseFragmentActivity
     implements DetailFragmentCallbacks {
 
-    private static final String FRAGMENTTAG = AssetAllocationFragment.class.getSimpleName();
-
     private AssetClass assetAllocation;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +92,22 @@ public class AssetAllocationActivity
             ? assetClass.getId().toString()
             : "root";
 
-//        if (fm.findFragmentById(R.id.content) == null) {
-//            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
-//        }
-
-        // Replace existing fragment. Always use replace instead of add.
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
-            R.anim.slide_in_right, R.anim.slide_out_left);
-        transaction.replace(R.id.content, fragment, tag);
-        transaction.addToBackStack(null);
-        transaction.commit();
 
+        if (fm.findFragmentById(R.id.content) == null) {
+            tag = AssetAllocationFragment.class.getSimpleName();
+
+            transaction.add(R.id.content, fragment, tag)
+                .commit();
+            // the initial fragment does not go onto back stack.
+        } else {
+            // Replace existing fragment. Always use replace instead of add?
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+                R.anim.slide_in_right, R.anim.slide_out_left);
+            transaction.replace(R.id.content, fragment, tag);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 
     @Override
