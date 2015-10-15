@@ -107,8 +107,6 @@ public class AssetAllocationFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
-        renderFooter(this.assetClass);
-
 //        loadData();
 
         setFloatingActionButtonVisible(true);
@@ -288,6 +286,9 @@ public class AssetAllocationFragment
         Cursor matrixCursor = createMatrixCursor(assetAllocation);
         adapter.swapCursor(matrixCursor);
 
+        // refresh footer/totals
+        renderFooter(assetAllocation);
+
         if (isResumed()) {
             setListShown(true);
             if (matrixCursor != null && matrixCursor.getCount() <= 0 && getFloatingActionButton() != null)
@@ -401,10 +402,13 @@ public class AssetAllocationFragment
 //        listView.addHeaderView(view);
     }
 
+    private View mFooter;
+
     private void renderFooter(AssetClass assetClass) {
         View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
         MatrixCursorColumns values = new MatrixCursorColumns();
 
+        // todo: formatting & colours
 //        name.setTypeface(null, Typeface.BOLD_ITALIC);
 //        allocation.setTypeface(null, Typeface.BOLD_ITALIC);
 
@@ -418,8 +422,15 @@ public class AssetAllocationFragment
         UIHelpers.populateAssetClassRow(view, values);
 
         ListView listView = getListView();
+
+        // remove any footers
+        if (mFooter != null) {
+            listView.removeFooterView(mFooter);
+        }
+
+        mFooter = view;
 //        listView.addFooterView(view);
-        listView.addFooterView(view, null, false);
+        listView.addFooterView(mFooter, null, false);
     }
 
     private void raiseAssetClassSelected(int id) {
