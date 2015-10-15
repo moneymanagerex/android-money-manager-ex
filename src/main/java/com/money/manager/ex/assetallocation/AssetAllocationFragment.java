@@ -142,8 +142,8 @@ public class AssetAllocationFragment
 
     @Override
     public String getSubTitle() {
-//        return getString(R.string.asset_allocation);
-        return null;
+        AssetClass assetClass = retrieveData();
+        return assetClass.getName();
     }
 
     @Override
