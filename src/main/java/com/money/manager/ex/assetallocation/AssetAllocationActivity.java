@@ -178,7 +178,8 @@ public class AssetAllocationActivity
         if (fm.findFragmentById(R.id.content) == null) {
             tag = AssetAllocationFragment.class.getSimpleName();
 
-            transaction.add(R.id.content, fragment, tag)
+//            transaction.add(R.id.content, fragment, tag)
+            transaction.replace(R.id.content, fragment, tag)
                 .commit();
             // the initial fragment does not go onto back stack.
         } else {

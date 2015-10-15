@@ -93,7 +93,6 @@ public class HomeFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, IInputAmountDialogListener {
 
-    // ID Loader Manager
     private static final int LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
     private static final int LOADER_BILL_DEPOSITS = 3;
@@ -128,21 +127,8 @@ public class HomeFragment
     private boolean mAccountTransactionsLoaded = false;
     private boolean mInvestmentTransactionsLoaded = false;
 
-    // ?
     private int accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-//        registerForContextMenu(getListView());
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.d("test", requestCode + resultCode + data.toString());
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
