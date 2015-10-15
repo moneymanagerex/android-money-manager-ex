@@ -20,6 +20,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -37,6 +39,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
@@ -50,7 +53,6 @@ public class AssetAllocationFragment
     extends BaseListFragment {
 
     private static final int LOADER_ASSET_CLASSES = 1;
-//    private static final String PARAM_CURRENCY_CODE = "currencyCode";
 
     /**
      * Creates a new fragment that display the asset class. Shows the list of child elements
@@ -387,6 +389,7 @@ public class AssetAllocationFragment
         if (listView.getHeaderViewsCount() > 0) return;
 
         View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
+        AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
         MatrixCursorColumns values = new MatrixCursorColumns();
 
         values.name = getString(R.string.name);
@@ -396,7 +399,12 @@ public class AssetAllocationFragment
         values.currentValue = getString(R.string.current);
         values.difference = getString(R.string.difference);
 
-        UIHelpers.populateAssetClassRow(view, values);
+        UIHelpers.populateAssetClassRow(holder, values);
+
+        // formatting
+        Core core = new Core(getActivity());
+        holder.container.setBackgroundColor(core.getColourAttribute(R.attr.color_list_header));
+//        holder.container.setBackgroundResource(core.getColourAttribute(R.attr.color_list_header));
 
         listView.addHeaderView(view, null, false);
 //        listView.addHeaderView(view);
@@ -406,11 +414,8 @@ public class AssetAllocationFragment
 
     private void renderFooter(AssetClass assetClass) {
         View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
+        AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
         MatrixCursorColumns values = new MatrixCursorColumns();
-
-        // todo: formatting & colours
-//        name.setTypeface(null, Typeface.BOLD_ITALIC);
-//        allocation.setTypeface(null, Typeface.BOLD_ITALIC);
 
         values.name = getString(R.string.total);
         values.allocation = assetClass.getAllocation().toString();
@@ -419,7 +424,15 @@ public class AssetAllocationFragment
         values.currentValue = assetClass.getCurrentValue().toString();
         values.difference = assetClass.getDifference().toString();
 
-        UIHelpers.populateAssetClassRow(view, values);
+        UIHelpers.populateAssetClassRow(holder, values);
+
+        // todo: formatting & colours
+        Core core = new Core(getActivity());
+        holder.container.setBackgroundColor(core.getColourAttribute(R.attr.color_list_header));
+//        holder.container.setBackgroundResource(core.getColourAttribute(R.attr.color_list_header));
+        holder.assetClassTextView.setTypeface(null, Typeface.BOLD);
+//        holder.allocationTextView.setTypeface(null, Typeface.BOLD);
+//        holder.valueTextView.setTypeface(null, Typeface.BOLD);
 
         ListView listView = getListView();
 

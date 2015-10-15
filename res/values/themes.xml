@@ -129,6 +129,10 @@
         <item name="ic_label_outline">@drawable/ic_action_label_outline_light</item>
         <item name="ic_plusone">@drawable/ic_action_plusone_light</item>
         <item name="ic_paste">@drawable/ic_action_paste_light</item>
+
+        <!-- colors -->
+        <item name="color_list_header">@color/material_green_100</item>
+
         <!-- Shape -->
         <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
         <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>

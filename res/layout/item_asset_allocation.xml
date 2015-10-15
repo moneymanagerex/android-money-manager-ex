@@ -16,6 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_gravity="center_horizontal"

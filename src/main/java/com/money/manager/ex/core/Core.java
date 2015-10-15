@@ -499,7 +499,8 @@ public class Core {
      * @return color
      */
     public int resolveColorAttribute(int attr) {
-        return mContext.getResources().getColor(resolveIdAttribute(attr));
+        Resources.Theme currentTheme = mContext.getTheme();
+        return mContext.getResources().getColor(resolveIdAttribute(attr), currentTheme);
     }
 
     /**

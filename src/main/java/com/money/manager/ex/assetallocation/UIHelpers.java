@@ -17,10 +17,14 @@
 package com.money.manager.ex.assetallocation;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
 import android.database.MatrixCursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,32 +39,25 @@ import java.util.List;
 public class UIHelpers {
     /**
      * Populates an asset class row view.
-     * @param view The view to populate with data.
      */
-    public static void populateAssetClassRow(View view, MatrixCursorColumns values) {
+    public static void populateAssetClassRow(AssetClassViewHolder viewHolder, MatrixCursorColumns values) {
         // name
-        TextView nameView = (TextView) view.findViewById(R.id.assetClassTextView);
-        nameView.setText(values.name);
+        viewHolder.assetClassTextView.setText(values.name);
 
         // set allocation
-        TextView allocationView = (TextView) view.findViewById(R.id.allocationTextView);
-        allocationView.setText(values.allocation);
+        viewHolder.allocationTextView.setText(values.allocation);
 
         // set value
-        TextView valueView = (TextView) view.findViewById(R.id.valueTextView);
-        valueView.setText(values.value);
+        viewHolder.valueTextView.setText(values.value);
 
         // current allocation
-        RobotoTextView currentAllocationView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
-        currentAllocationView.setText(values.currentAllocation);
+        viewHolder.currentAllocationTextView.setText(values.currentAllocation);
 
         // current value
-        RobotoTextView currentValueView = (RobotoTextView) view.findViewById(R.id.currentValueTextView);
-        currentValueView.setText(values.currentValue);
+        viewHolder.currentValueTextView.setText(values.currentValue);
 
         // difference (value)
-        RobotoTextView differenceView = (RobotoTextView) view.findViewById(R.id.differenceTextView);
-        differenceView.setText(values.difference);
+        viewHolder.differenceTextView.setText(values.difference);
     }
 
     public static Fragment getVisibleFragment(FragmentActivity activity){

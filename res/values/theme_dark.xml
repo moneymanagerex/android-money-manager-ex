@@ -104,6 +104,9 @@
         <item name="ic_plusone">@drawable/ic_action_plusone_dark</item>
         <item name="ic_paste">@drawable/ic_action_paste_dark</item>
 
+        <!-- colors -->
+        <item name="color_list_header">@color/material_grey_900</item>
+
         <!-- Shape -->
         <item name="shape_background_shadow">@null</item>
         <item name="shape_white_background_shadow">@null</item>

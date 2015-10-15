@@ -16,13 +16,10 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -30,12 +27,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
@@ -44,6 +38,8 @@ public class AssetAllocationActivity
     implements DetailFragmentCallbacks, LoaderManager.LoaderCallbacks<AssetClass> {
 
     private static final int LOADER_ASSET_ALLOCATION = 1;
+
+    private AssetClass assetAllocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,33 +71,16 @@ public class AssetAllocationActivity
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void assetClassSelected(int assetClassId) {
-        // Handling:
+        // todo: Handling:
         // - asset group (has children), load children
         // - asset class (no children), show stocks
         // - stock (no children, no stocks) do nothing, or show context menu?
 
         AssetAllocationService service = new AssetAllocationService(this);
-        // todo: AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
+        AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
 
-        // todo: showAssetClass(toShow);
+        showAssetClass(toShow);
     }
 
     // Loader
@@ -113,6 +92,8 @@ public class AssetAllocationActivity
 
     @Override
     public void onLoadFinished(Loader<AssetClass> loader, final AssetClass data) {
+        this.assetAllocation = data;
+
         // Create handler to perform showing of fragment(s).
         Handler h = new Handler(Looper.getMainLooper());
         Runnable runnable = new Runnable() {
@@ -135,14 +116,10 @@ public class AssetAllocationActivity
     @Override
     public void onLoaderReset(Loader<AssetClass> loader) {
         // Remove any references to the data.
-        Log.d("data", "loader reset");
+//        Log.d("data", "loader reset");
     }
 
     // Private
-
-    private void reloadData() {
-        getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
-    }
 
     private void setResultAndFinish() {
         setResult(Activity.RESULT_OK);
@@ -160,7 +137,7 @@ public class AssetAllocationActivity
 
         AssetClass toShow;
         if (id != null) {
-            // find it again in the reloaded data
+            // todo: check; find it again in the reloaded data
             AssetAllocationService service = new AssetAllocationService(this);
             toShow = service.findChild(id, assetAllocation);
         } else {

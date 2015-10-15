@@ -50,6 +50,8 @@ public class AssetAllocationAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
+
         MatrixCursorColumns values = new MatrixCursorColumns();
 
         values.name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
@@ -59,6 +61,9 @@ public class AssetAllocationAdapter
         values.currentValue = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
         values.difference = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
 
-        UIHelpers.populateAssetClassRow(view, values);
+        UIHelpers.populateAssetClassRow(holder, values);
+
+        // view holder pattern
+        // todo: view.setTag(holder);
     }
 }
