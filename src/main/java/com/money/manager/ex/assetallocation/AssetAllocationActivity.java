@@ -78,19 +78,16 @@ public class AssetAllocationActivity
     protected void onPause() {
         super.onPause();
 
-//        unregisterObserver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-//        registerObserver();
     }
 
     @Override
     protected void onDestroy() {
-//        unregisterObserver();
         super.onDestroy();
     }
 
@@ -107,24 +104,6 @@ public class AssetAllocationActivity
         // todo: showAssetClass(toShow);
     }
 
-    @Override
-    public void assetClassDeleted(int assetClassId) {
-        // todo: redo this to use loaders and refresh the data.
-        // reloadData();
-
-//        // reload data.
-//        loadAssetAllocation();
-//        // find the currently displayed fragment
-//        AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
-//        // find which allocation is being displayed currently.
-//        int id = fragment.assetClass.getId();
-//        // find it again in the reloaded data
-//        AssetAllocationService service = new AssetAllocationService(this);
-//        AssetClass toShow = service.findChild(id, this.assetAllocation);
-//        // reload data for the fragment
-//        fragment.showData(toShow);
-    }
-
     // Loader
 
     @Override
@@ -134,8 +113,6 @@ public class AssetAllocationActivity
 
     @Override
     public void onLoadFinished(Loader<AssetClass> loader, final AssetClass data) {
-//        registerObserver(loader);
-
         // Create handler to perform showing of fragment(s).
         Handler h = new Handler(Looper.getMainLooper());
         Runnable runnable = new Runnable() {
@@ -149,27 +126,17 @@ public class AssetAllocationActivity
         // If there are no other fragments, create the initial view.
         if (fragment == null) {
             h.post(runnable);
+        } else {
+            // Otherwise, find the fragment and update the data.
+            refreshDataInFragment(data);
         }
-        // todo: Otherwise, find the fragment and update the data.
-        // showAssetClass();
     }
 
     @Override
     public void onLoaderReset(Loader<AssetClass> loader) {
         // Remove any references to the data.
-//        Log.d("data", "loader reset");
+        Log.d("data", "loader reset");
     }
-
-//    @Override
-//    public void onLoadFinished(Loader<Object> loader, Object data) {
-//        Log.d("data", "finished");
-//        loadAssetAllocation();
-//    }
-
-//    @Override
-//    public void onLoaderReset(Loader<Object> loader) {
-//        Log.d("data", "reset");
-//    }
 
     // Private
 
@@ -180,6 +147,29 @@ public class AssetAllocationActivity
     private void setResultAndFinish() {
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    private void refreshDataInFragment(AssetClass assetAllocation) {
+        // find the currently displayed fragment
+        AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
+        if (fragment == null) return;
+
+//        String tag = fragment.getTag();
+        // find which allocation is being displayed currently.
+        Integer id = fragment.assetClass.getId();
+
+        AssetClass toShow;
+        if (id != null) {
+            // find it again in the reloaded data
+            AssetAllocationService service = new AssetAllocationService(this);
+            toShow = service.findChild(id, assetAllocation);
+        } else {
+            // assume root asset allocation.
+            toShow = assetAllocation;
+        }
+
+        // reload data for the fragment
+        fragment.showData(toShow);
     }
 
     private void showAssetClass(AssetClass assetClass) {
@@ -207,30 +197,4 @@ public class AssetAllocationActivity
             transaction.commit();
         }
     }
-
-//    private void registerObserver(Loader<AssetClass> loaderObject) {
-//        AssetAllocationLoader loader = (AssetAllocationLoader) loaderObject;
-//        AssetAllocationContentObserver observer = loader.getObserver();
-//
-//        Uri assetClassUri = new AssetClassRepository(this).getUri();
-//        Uri linkUri = new AssetClassStockRepository(this).getUri();
-//
-//        getContentResolver().registerContentObserver(assetClassUri, true, observer);
-//        getContentResolver().registerContentObserver(linkUri, true, observer);
-//
-//    }
-
-//    private void unregisterObserver() {
-//        AssetAllocationLoader loader = (AssetAllocationLoader) getLoader();
-//        AssetAllocationContentObserver observer = loader.getObserver();
-//
-//        getContentResolver().unregisterContentObserver(observer);
-//    }
-
-//    private Loader<AssetClass> getLoader() {
-//        Object supportLoader = getSupportLoaderManager().getLoader(LOADER_ASSET_ALLOCATION);
-//        AssetAllocationLoader loader = (AssetAllocationLoader) supportLoader;
-//
-//        return loader;
-//    }
 }

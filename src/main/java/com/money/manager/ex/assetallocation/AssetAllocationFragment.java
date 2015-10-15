@@ -314,9 +314,7 @@ public class AssetAllocationFragment
                     if (!service.deleteAllocation(id)) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                     }
-                    // reload data
-                    raiseItemDeleted(id);
-//                    getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, AssetAllocationFragment.this);
+                    // reload data. Handled automagically. (by observer)
                 }
             });
 
@@ -496,12 +494,5 @@ public class AssetAllocationFragment
 //                .negativeText(android.R.string.cancel)
             .neutralText(android.R.string.cancel)
             .show();
-    }
-
-    private void raiseItemDeleted(int id) {
-        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
-        if (parent != null) {
-            parent.assetClassDeleted(id);
-        }
     }
 }
