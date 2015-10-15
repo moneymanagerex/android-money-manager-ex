@@ -134,6 +134,7 @@ public abstract class RepositoryBase
     }
 
     /**
+     * Warning: this works only with Asset Class entities!
      * Ref:
      * http://www.grokkingandroid.com/better-performance-with-contentprovideroperation/
      * http://www.grokkingandroid.com/android-tutorial-using-content-providers/
@@ -142,11 +143,9 @@ public abstract class RepositoryBase
      */
     protected ContentProviderResult[] bulkUpdate(EntityBase[] entities) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-//        WhereStatementGenerator where = new WhereStatementGenerator();
 
         for (EntityBase entity : entities) {
             AssetClass assetClass = (AssetClass) entity;
-//            String selection = where.getStatement(AssetClass.ID, "=", assetClass.getId());
 
             operations.add(ContentProviderOperation.newUpdate(this.getUri())
                 .withValues(entity.contentValues)
@@ -156,8 +155,8 @@ public abstract class RepositoryBase
 
         ContentProviderResult[] results = null;
         try {
-            results = context.getContentResolver().applyBatch(MmexContentProvider.getAuthority(),
-                operations);
+            results = context.getContentResolver()
+                .applyBatch(MmexContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.handle(e, "bulk updating");

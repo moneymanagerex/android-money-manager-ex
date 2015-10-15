@@ -30,4 +30,12 @@ public class MatrixCursorColumns {
     public static final String CURRENT_VALUE =  "CurrentValue";
     public static final String DIFFERENCE =  "Difference";
     public static final String TYPE = "Type";
+
+    public String name;
+    public String allocation;
+    public String value;
+    public String currentAllocation;
+    public String currentValue;
+    public String difference;
+    public ItemType type;
 }

@@ -25,18 +25,15 @@ import android.support.v4.app.FragmentManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 public class AssetClassEditActivity
     extends BaseFragmentActivity {
 
     public static final int REQUEST_STOCK_ID = 1;
-    public static final String INTENT_RESULT_STOCK_ID = "AssetClassEditActivity:StockId";
+    public static final String INTENT_RESULT_STOCK_SYMBOL = "AssetClassEditActivity:StockSymbol";
     public static final String KEY_ASSET_CLASS_ID = "AssetClassEditActivity:AssetClassId";
 
     private Integer assetClassId;
@@ -72,8 +69,9 @@ public class AssetClassEditActivity
 
         switch (requestCode) {
             case REQUEST_STOCK_ID:
-                Integer stockId = data.getIntExtra(INTENT_RESULT_STOCK_ID, Constants.NOT_SET);
-                assignStockToAssetClass(stockId);
+//                Integer stockId = data.getIntExtra(INTENT_RESULT_STOCK_SYMBOL, Constants.NOT_SET);
+                String stockSymbol = data.getStringExtra(INTENT_RESULT_STOCK_SYMBOL);
+                assignStockToAssetClass(stockSymbol);
                 break;
         }
     }
@@ -172,9 +170,9 @@ public class AssetClassEditActivity
         fragment.assetClass = assetClass;
     }
 
-    private void assignStockToAssetClass(int stockId) {
+    private void assignStockToAssetClass(String stockSymbol) {
         AssetAllocationService service = new AssetAllocationService(this);
-        service.assignStockToAssetClass(stockId, this.assetClassId);
+        service.assignStockToAssetClass(stockSymbol, this.assetClassId);
 
         AssetClassEditFragment fragment = getFragment();
         if (fragment != null) {

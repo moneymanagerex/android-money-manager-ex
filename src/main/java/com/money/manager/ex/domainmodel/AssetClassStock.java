@@ -24,7 +24,7 @@ public class AssetClassStock
 
     public static final String ID = "ID";
     public static final String ASSETCLASSID = "ASSETCLASSID";
-    public static final String STOCKID = "STOCKID";
+    public static final String STOCKSYMBOL = "STOCKSYMBOL";
 
     public static AssetClassStock create() {
         AssetClassStock entity = new AssetClassStock();
@@ -47,11 +47,11 @@ public class AssetClassStock
         setInteger(ASSETCLASSID, value);
     }
 
-    public Integer getStockId() {
-        return getInteger(STOCKID);
+    public String getStockSymbol() {
+        return getString(STOCKSYMBOL);
     }
 
-    public void setStockId(int value) {
-        setInteger(STOCKID, value);
+    public void setStockSymbol(String value) {
+        setString(STOCKSYMBOL, value);
     }
 }

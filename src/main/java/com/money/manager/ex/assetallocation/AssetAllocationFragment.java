@@ -98,6 +98,8 @@ public class AssetAllocationFragment
 
         setEmptyText(getActivity().getResources().getString(R.string.asset_classes_empty));
 
+        renderHeader();
+
         // create and link the adapter
         AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null);
         setListAdapter(adapter);
@@ -107,11 +109,7 @@ public class AssetAllocationFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
-        // todo: add header with titles
-        // getListView().addHeaderView();
-        // todo: renderFooter(); with sums
-        View footer = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
-//        getListView().addFooterView(footer);
+        renderFooter(this.assetClass);
 
 //        loadData();
 
@@ -276,7 +274,7 @@ public class AssetAllocationFragment
 
     private void confirmDelete(final int id) {
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.delete_account)
+            .setTitle(R.string.delete)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
             .setMessage(R.string.confirmDelete);
 
@@ -284,8 +282,8 @@ public class AssetAllocationFragment
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    AssetClassRepository repo = new AssetClassRepository(getActivity());
-                    if (!repo.delete(id)) {
+                    AssetAllocationService service = new AssetAllocationService(getActivity());
+                    if (!service.deleteAllocation(id)) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                     }
                     // restart loader
@@ -354,17 +352,40 @@ public class AssetAllocationFragment
 //        getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, this);
 //    }
 
-    private void renderFooter() {
-        View footer = (LinearLayout) View.inflate(getActivity(),
-            R.layout.item_generic_report_2_columns, null);
+    private void renderHeader() {
+        View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
+        MatrixCursorColumns values = new MatrixCursorColumns();
 
-        TextView txtColumn1 = (TextView) footer.findViewById(R.id.textViewColumn1);
-        TextView txtColumn2 = (TextView) footer.findViewById(R.id.textViewColumn2);
+        values.name = getString(R.string.name);
+        values.allocation = getString(R.string.allocation);
+        values.value = getString(R.string.value);
+        values.currentAllocation = getString(R.string.current);
+        values.currentValue = getString(R.string.current);
+        values.difference = getString(R.string.difference);
 
-        txtColumn1.setText(R.string.total);
-        txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
-        txtColumn2.setText(R.string.total);
-        txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
+        UIHelpers.populateAssetClassRow(view, values);
+
+        ListView listView = getListView();
+//        listView.addHeaderView(view, null, false);
+        listView.addHeaderView(view);
+    }
+
+    private void renderFooter(AssetClass assetClass) {
+//        View footer = View.inflate(getActivity(), R.layout.item_generic_report_2_columns, null);
+        View footer = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
+        MatrixCursorColumns values = new MatrixCursorColumns();
+
+//        name.setTypeface(null, Typeface.BOLD_ITALIC);
+//        allocation.setTypeface(null, Typeface.BOLD_ITALIC);
+
+        values.name = getString(R.string.total);
+        values.allocation = assetClass.getAllocation().toString();
+        values.value = assetClass.getValue().toString();
+        values.currentAllocation = assetClass.getCurrentAllocation().toString();
+        values.currentValue = assetClass.getCurrentValue().toString();
+        values.difference = assetClass.getDifference().toString();
+
+        UIHelpers.populateAssetClassRow(footer, values);
 
         ListView listView = getListView();
         listView.addFooterView(footer);

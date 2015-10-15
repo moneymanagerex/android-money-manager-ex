@@ -243,7 +243,7 @@ public class AssetAllocationTests {
 
         AssetClassStock link1 = AssetClassStock.create();
         link1.setAssetClassId(class1.getId());
-        link1.setStockId(1);
+        link1.setStockSymbol("stock.1");
         created = classStockRepo.insert(link1);
         assertThat(created).isTrue();
 
@@ -265,7 +265,7 @@ public class AssetAllocationTests {
         // add stock links
         AssetClassStock classStock1 = AssetClassStock.create();
         classStock1.setAssetClassId(class2child.getId());
-        classStock1.setStockId(2);
+        classStock1.setStockSymbol("stock.2");
         created = classStockRepo.insert(classStock1);
         assertThat(created).isTrue();
 

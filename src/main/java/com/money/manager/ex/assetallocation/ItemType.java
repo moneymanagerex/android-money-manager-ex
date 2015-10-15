@@ -22,5 +22,6 @@ package com.money.manager.ex.assetallocation;
 public enum ItemType {
     Group,
     Allocation,
-    Stock
+    Stock,
+    Footer
 }

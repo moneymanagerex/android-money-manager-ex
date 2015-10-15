@@ -22,6 +22,7 @@ import android.database.Cursor;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class AssetClassStockRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {AssetClassStock.ID + " AS _id", AssetClassStock.ID,
-            AssetClassStock.ASSETCLASSID, AssetClassStock.STOCKID };
+            AssetClassStock.ASSETCLASSID, AssetClassStock.STOCKSYMBOL };
     }
 
     public boolean insert(AssetClassStock value) {
@@ -51,10 +52,24 @@ public class AssetClassStockRepository
         return id > 0;
     }
 
-    public boolean delete(int assetClassId, int stockId) {
+    public boolean delete(int assetClassId, String stockSymbol) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AssetClassStock.ASSETCLASSID, "=", assetClassId);
-        where.addStatement(AssetClassStock.STOCKID, "=", stockId);
+        where.addStatement(AssetClassStock.STOCKSYMBOL, "=", stockSymbol);
+
+        return this.delete(where.getWhere(), null) > 0;
+    }
+
+//    public boolean deleteForStock(String symbol) {
+//        WhereStatementGenerator where = new WhereStatementGenerator();
+//        where.addStatement(AssetClassStock.STOCKSYMBOL, "=", symbol);
+//
+//        return this.delete(where.getWhere(), null) > 0;
+//    }
+
+    public boolean deleteAllForAssetClass(int assetClassId) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(AssetClassStock.ASSETCLASSID, "=", assetClassId);
 
         return this.delete(where.getWhere(), null) > 0;
     }

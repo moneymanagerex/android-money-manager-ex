@@ -59,6 +59,33 @@ public class AssetAllocationService {
 
     private Context context;
 
+    public boolean deleteAllocation(int assetClassId) {
+        ExceptionHandler handler = new ExceptionHandler(this.context, this);
+        AssetClassRepository repo = new AssetClassRepository(this.context);
+        AssetClass assetClass = repo.load(assetClassId);
+
+        // todo: use transaction? (see bulkUpdate)
+
+        // todo: if there are child elements? block for now. Later offer to delete them as well.
+
+        // delete any stock links
+        AssetClassStockRepository stockRepo = new AssetClassStockRepository(this.context);
+        boolean linksDeleted = stockRepo.deleteAllForAssetClass(assetClassId);
+        if (!linksDeleted) {
+            handler.showMessage("Error deleting stock links.");
+            return false;
+        }
+
+        // delete allocation record
+        boolean assetClassDeleted = repo.delete(assetClassId);
+        if (!assetClassDeleted) {
+            handler.showMessage("Error deleting asset class.");
+            return false;
+        }
+
+        return true;
+    }
+
     public AssetClass loadAssetAllocation() {
         // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
 
@@ -158,10 +185,10 @@ public class AssetAllocationService {
         repository.update(assetClass);
     }
 
-    public boolean assignStockToAssetClass(Integer stockId, Integer assetClassId) {
+    public boolean assignStockToAssetClass(String stockSymbol, Integer assetClassId) {
         AssetClassStock link = AssetClassStock.create();
         link.setAssetClassId(assetClassId);
-        link.setStockId(stockId);
+        link.setStockSymbol(stockSymbol);
 
         AssetClassStockRepository repo = new AssetClassStockRepository(context);
         boolean success = repo.insert(link);
@@ -247,7 +274,6 @@ public class AssetAllocationService {
     private void loadStocks(AssetClass assetClass) {
         if (assetClass.getChildren().size() > 0) {
             // Group. Load values for child elements.
-
             for (AssetClass child : assetClass.getChildren()) {
                 loadStocks(child);
             }
@@ -260,16 +286,16 @@ public class AssetAllocationService {
 
             if (assetClass.getStockLinks().size() == 0) return;
 
-            Integer[] ids = Queryable.from(assetClass.getStockLinks())
-                .map(new Converter<AssetClassStock, Integer>() {
+            String[] symbols = Queryable.from(assetClass.getStockLinks())
+                .map(new Converter<AssetClassStock, String>() {
                     @Override
-                    public Integer convert(AssetClassStock element) {
-                        return element.getStockId();
+                    public String convert(AssetClassStock element) {
+                        return element.getStockSymbol();
                     }
                 }).toArray();
 
             StockRepository stockRepo = new StockRepository(this.context);
-            assetClass.setStocks(stockRepo.load(ids));
+            assetClass.setStocks(stockRepo.loadForSymbols(symbols));
         }
     }
 

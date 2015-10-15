@@ -23,11 +23,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -51,7 +48,7 @@ public class SecurityListFragment
     public String action = Intent.ACTION_PICK;
 
     private String mCurFilter;
-    private Integer selectedStockId;
+    private String selectedStockSymbol;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -162,7 +159,7 @@ public class SecurityListFragment
             // select the current item and return.
             Cursor c = (Cursor) l.getItemAtPosition(position);
             Stock stock = Stock.fromCursor(c);
-            selectedStockId = stock.getId();
+            selectedStockSymbol = stock.getSymbol();
 
             setResultAndFinish();
         }
@@ -174,7 +171,7 @@ public class SecurityListFragment
         switch (this.action) {
             case Intent.ACTION_PICK:
                 result = new Intent();
-                result.putExtra(AssetClassEditActivity.INTENT_RESULT_STOCK_ID, selectedStockId);
+                result.putExtra(AssetClassEditActivity.INTENT_RESULT_STOCK_SYMBOL, selectedStockSymbol);
                 getActivity().setResult(Activity.RESULT_OK, result);
                 break;
 

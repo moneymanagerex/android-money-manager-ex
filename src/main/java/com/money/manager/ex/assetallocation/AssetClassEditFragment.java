@@ -165,11 +165,11 @@ public class AssetClassEditFragment
 
                 Cursor cursor = (Cursor) listView.getItemAtPosition(info.position);
                 Stock stock = Stock.fromCursor(cursor);
-                int stockId = stock.getId();
+                String stockSymbol = stock.getSymbol();
 
                 AssetClassStockRepository repo = new AssetClassStockRepository(getActivity());
                 int assetClassId = this.assetClass.getId();
-                boolean deleted = repo.delete(assetClassId, stockId);
+                boolean deleted = repo.delete(assetClassId, stockSymbol);
                 if (!deleted) {
                     ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
                     handler.showMessage(getString(R.string.error));

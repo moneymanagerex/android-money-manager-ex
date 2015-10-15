@@ -50,36 +50,15 @@ public class AssetAllocationAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        String value;
+        MatrixCursorColumns values = new MatrixCursorColumns();
 
-        // name
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
-        TextView nameView = (TextView) view.findViewById(R.id.assetClassTextView);
-        nameView.setText(value);
+        values.name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
+        values.allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
+        values.value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
+        values.currentAllocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
+        values.currentValue = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
+        values.difference = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
 
-        // set allocation
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
-        TextView allocationView = (TextView) view.findViewById(R.id.allocationTextView);
-        allocationView.setText(value);
-
-        // set value
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
-        TextView valueView = (TextView) view.findViewById(R.id.valueTextView);
-        valueView.setText(value);
-
-        // current allocation
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
-        RobotoTextView currentAllocationView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
-        currentAllocationView.setText(value);
-
-        // current value
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
-        RobotoTextView currentValueView = (RobotoTextView) view.findViewById(R.id.currentValueTextView);
-        currentValueView.setText(value);
-
-        // difference (value)
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
-        RobotoTextView differenceView = (RobotoTextView) view.findViewById(R.id.differenceTextView);
-        differenceView.setText(value);
+        UIHelpers.populateAssetClassRow(view, values);
     }
 }

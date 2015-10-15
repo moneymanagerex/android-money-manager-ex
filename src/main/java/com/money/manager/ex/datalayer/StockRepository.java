@@ -98,11 +98,24 @@ public class StockRepository
             null);
         if (c == null) return null;
 
-        List<Stock> result = new ArrayList<>();
-        while (c.moveToNext()) {
-            result.add(Stock.fromCursor(c));
-        }
-        c.close();
+        List<Stock> result = getEntities(c);
+
+        return result;
+    }
+
+    public List<Stock> loadForSymbols(String[] symbols) {
+        if (symbols.length == 0) return null;
+
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
+        String placeHolders = dbUtils.makePlaceholders(symbols.length);
+
+        Cursor c = openCursor(null,
+            Stock.STOCKID + " IN (" + placeHolders + ")",
+            symbols,
+            null);
+        if (c == null) return null;
+
+        List<Stock> result = getEntities(c);
 
         return result;
     }
@@ -234,4 +247,13 @@ public class StockRepository
         }
     }
 
+    private List<Stock> getEntities(Cursor c) {
+        List<Stock> result = new ArrayList<>();
+        while (c.moveToNext()) {
+            result.add(Stock.fromCursor(c));
+        }
+        c.close();
+
+        return result;
+    }
 }
