@@ -25,6 +25,7 @@ import android.support.v4.app.FragmentManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -35,6 +36,7 @@ public class AssetClassEditActivity
     public static final int REQUEST_STOCK_ID = 1;
     public static final String INTENT_RESULT_STOCK_SYMBOL = "AssetClassEditActivity:StockSymbol";
     public static final String KEY_ASSET_CLASS_ID = "AssetClassEditActivity:AssetClassId";
+    public static final String KEY_PARENT_ID = "AssetClassEditActivity:parentId";
 
     private Integer assetClassId;
     private String mAction;
@@ -151,7 +153,9 @@ public class AssetClassEditActivity
 
         switch (mAction) {
             case Intent.ACTION_INSERT:
-                assetClass = AssetClass.create();
+                assetClass = AssetClass.create("");
+                int parentId = intent.getIntExtra(KEY_PARENT_ID, Constants.NOT_SET);
+                assetClass.setParentId(parentId);
                 break;
 
             case Intent.ACTION_EDIT:
@@ -161,8 +165,12 @@ public class AssetClassEditActivity
                 // load class
                 AssetClassRepository repo = new AssetClassRepository(this);
                 assetClass = repo.load(id);
-                // todo: show error message and return (close edit activity)
-                if (assetClass == null) return;
+                if (assetClass == null) {
+                    ExceptionHandler handler = new ExceptionHandler(this);
+                    handler.showMessage("No asset class found in the database!");
+                    // todo: show error message and return (close edit activity)
+                    return;
+                }
                 break;
         }
 

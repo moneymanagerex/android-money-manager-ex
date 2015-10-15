@@ -21,7 +21,9 @@ import android.database.Cursor;
 
 import com.innahema.collections.query.functions.Converter;
 import com.innahema.collections.query.queriables.Queryable;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
@@ -62,7 +64,7 @@ public class AssetAllocationService {
     public boolean deleteAllocation(int assetClassId) {
         ExceptionHandler handler = new ExceptionHandler(this.context, this);
         AssetClassRepository repo = new AssetClassRepository(this.context);
-        AssetClass assetClass = repo.load(assetClassId);
+//        AssetClass assetClass = repo.load(assetClassId);
 
         // todo: use transaction? (see bulkUpdate)
 
@@ -105,8 +107,8 @@ public class AssetAllocationService {
         loadStocks(list);
 
         // Step 5: Calculate and store totals.
-        AssetClass main = AssetClass.create();
-        main.setName("Asset Allocation");
+        AssetClass main = AssetClass.create("Asset Allocation");
+        main.setType(ItemType.Group);
         main.setChildren(list);
         Money totalValue = calculateCurrentValue(list);
         main.setCurrentValue(totalValue);
@@ -125,6 +127,8 @@ public class AssetAllocationService {
      * @return String name of the asset class.
      */
     public String loadName(int id) {
+        if (id == Constants.NOT_SET) return "";
+
         AssetClassRepository repo = new AssetClassRepository(this.context);
         Cursor c = repo.openCursor(
             new String[] { AssetClass.NAME },
@@ -186,9 +190,7 @@ public class AssetAllocationService {
     }
 
     public boolean assignStockToAssetClass(String stockSymbol, Integer assetClassId) {
-        AssetClassStock link = AssetClassStock.create();
-        link.setAssetClassId(assetClassId);
-        link.setStockSymbol(stockSymbol);
+        AssetClassStock link = AssetClassStock.create(assetClassId, stockSymbol);
 
         AssetClassStockRepository repo = new AssetClassStockRepository(context);
         boolean success = repo.insert(link);
@@ -228,9 +230,9 @@ public class AssetAllocationService {
     }
 
     private HashMap<Integer, AssetClass> loadMap(Cursor c) {
-        if (c == null) return null;
-
         HashMap<Integer, AssetClass> result = new HashMap<>();
+
+        if (c == null) return result;
 
         while (c.moveToNext()) {
             AssetClass ac = AssetClass.from(c);
@@ -244,12 +246,14 @@ public class AssetAllocationService {
     private List<AssetClass> assignChildren(HashMap<Integer, AssetClass> map) {
         List<AssetClass> allocation = new ArrayList<>();
 
-        // iterate through items
+        // Iterate through all the allocations.
         for (AssetClass ac : map.values()) {
-            // add child to the parent
             Integer parentId = ac.getParentId();
             if (parentId != null) {
-                map.get(parentId).addChild(ac);
+                // add child elements to their parents based on the Id field.
+                AssetClass parent = map.get(parentId);
+                parent.setType(ItemType.Group);
+                parent.addChild(ac);
             } else {
                 // this is one of the root elements
                 allocation.add(ac);
@@ -279,6 +283,8 @@ public class AssetAllocationService {
             }
         } else {
             // No child elements. This is the actual allocation. Load value from linked stocks.
+
+            assetClass.setType(ItemType.Allocation);
 
             // load stock links
             AssetClassStockRepository classStockRepo = new AssetClassStockRepository(this.context);

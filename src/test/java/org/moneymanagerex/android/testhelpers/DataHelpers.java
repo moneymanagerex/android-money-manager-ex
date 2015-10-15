@@ -25,11 +25,17 @@ import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.domainmodel.Stock;
 
 import org.robolectric.fakes.BaseCursor;
 import org.robolectric.shadows.ShadowContentResolver;
@@ -95,5 +101,24 @@ public class DataHelpers {
 
         BaseCursor cursor = new AccountCursor();
         shadow.setCursor(cursor);
+    }
+
+    public static void createAllocation() {
+        Context context = UnitTestHelper.getContext();
+        AssetClassRepository repo = new AssetClassRepository(context);
+        AssetClassStockRepository linkRepo = new AssetClassStockRepository(context);
+        StockRepository stockRepo = new StockRepository(context);
+
+        // Stock symbols
+        Stock stock = Stock.create();
+        stock.setSymbol("VHY.ax");
+        stockRepo.insert(stock);
+
+        AssetClass stocks = AssetClass.create("stocks");
+        stocks.setAllocation(70.0);
+        repo.insert(stocks);
+
+        AssetClassStock link = AssetClassStock.create(stocks.getId(), stock.getSymbol());
+        linkRepo.insert(link);
     }
 }

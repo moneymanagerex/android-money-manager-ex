@@ -16,14 +16,14 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.content.Context;
-
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
@@ -32,39 +32,50 @@ import org.robolectric.util.ActivityController;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * A model for test class.
+ * Asset Allocation UI
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class BaseTests {
+public class AssetAllocationActivityTests {
 
-    // private ActivityController<T> controller;
-    // private T activity;
+    private ActivityController<AssetAllocationActivity> controller;
+    private AssetAllocationActivity activity;
 
     @Before
     public void setup() {
 //        Context context = UnitTestHelper.getContext();
 
         // initialize support for activities (UI)
-//        this.controller = UnitTestHelper.getController(MainActivity.class);
-//        this.activity = UnitTestHelper.getActivity(this.controller);
+        this.controller = UnitTestHelper.getController(AssetAllocationActivity.class);
+        this.activity = UnitTestHelper.getActivity(this.controller);
 
         // initialize database
-        // UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.initializeContentProvider();
     }
 
     @After
     public void tearDown() {
         // Reset database instance between tests.
-        // UnitTestHelper.resetDatabase();
+        UnitTestHelper.resetDatabase();
 
         // Destroy the activity controller.
-//        this.controller.destroy();
+        this.controller.destroy();
     }
 
     @Test
-    public void testTemplate() {
-        assertThat(true).isTrue();
+    public void instantiation() {
+        assertThat(this.activity).isNotNull();
+    }
+
+    @Test
+    public void loadAllocation() {
+        // Given
+        DataHelpers.createAllocation();
+
+        // When
+
+        // Then
+        assertThat(this.activity).isNotNull();
     }
 
     /**
@@ -74,4 +85,5 @@ public class BaseTests {
     public void throwsException() {
         throw new RuntimeException("bang!");
     }
+
 }

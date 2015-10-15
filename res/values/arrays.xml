@@ -354,4 +354,8 @@
         <item>@string/category</item>
         <item>@string/subcategory</item>
     </string-array>
+    <string-array name="new_asset_class_type">
+        <item>@string/asset_allocation</item>
+        <item>@string/stock</item>
+    </string-array>
 </resources>

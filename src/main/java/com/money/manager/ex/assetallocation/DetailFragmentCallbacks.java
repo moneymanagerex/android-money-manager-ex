@@ -21,4 +21,5 @@ package com.money.manager.ex.assetallocation;
  */
 public interface DetailFragmentCallbacks {
     void assetClassSelected(int assetClassId);
+    void assetClassDeleted(int assetClassId);
 }

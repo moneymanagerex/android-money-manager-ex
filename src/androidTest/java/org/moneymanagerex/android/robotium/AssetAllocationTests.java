@@ -125,14 +125,7 @@ public class AssetAllocationTests
 
     /*
       todo: Tasks
-      - Add sortOrder column.
-      - Add Parent column. How about groups? International Equity: EM, Europe, etc. Each group
-        should have the totals column.
-      - Create Asset Allocation model object with multiple groups/children, with totals. This is to
-        be used for quick display.
       - show pie chart for allocation.
-      - use treeview for sub-classes
-      - ability to select securities that belong to this asset class
      */
 
     /*

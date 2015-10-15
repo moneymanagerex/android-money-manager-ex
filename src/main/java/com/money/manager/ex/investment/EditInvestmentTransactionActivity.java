@@ -75,7 +75,7 @@ public class EditInvestmentTransactionActivity
         // todo: receive the account id (and read currency)
 
         // todo: change this initialization after adding editing feature.
-        mStock = Stock.getInstance();
+        mStock = Stock.create();
 
         initializeForm();
     }

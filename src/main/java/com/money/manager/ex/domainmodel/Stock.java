@@ -36,7 +36,7 @@ public class Stock
         return stock;
     }
 
-    public static Stock getInstance() {
+    public static Stock create() {
         Stock stock = new Stock();
         // Set to today.
         stock.setPurchaseDate(Calendar.getInstance().getTime());

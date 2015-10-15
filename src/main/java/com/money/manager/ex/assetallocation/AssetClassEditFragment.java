@@ -83,7 +83,7 @@ public class AssetClassEditFragment
         super.onActivityCreated(savedInstanceState);
 
         if (this.assetClass == null) {
-            this.assetClass = AssetClass.create();
+            this.assetClass = AssetClass.create("");
         }
 
         View view = getView();
@@ -252,7 +252,11 @@ public class AssetClassEditFragment
                 // todo: show asset allocation selector.
             }
         };
-        edit.setOnClickListener(onClickListener);
+        // allow changing parent only on existing items
+
+        if (getActivity().getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+            edit.setOnClickListener(onClickListener);
+        }
     }
 
     private void updateAllocation() {

@@ -60,18 +60,11 @@ public class AssetClassStockRepository
         return this.delete(where.getWhere(), null) > 0;
     }
 
-//    public boolean deleteForStock(String symbol) {
-//        WhereStatementGenerator where = new WhereStatementGenerator();
-//        where.addStatement(AssetClassStock.STOCKSYMBOL, "=", symbol);
-//
-//        return this.delete(where.getWhere(), null) > 0;
-//    }
-
     public boolean deleteAllForAssetClass(int assetClassId) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AssetClassStock.ASSETCLASSID, "=", assetClassId);
 
-        return this.delete(where.getWhere(), null) > 0;
+        return this.delete(where.getWhere(), null) >= 0;
     }
 
     public List<AssetClassStock> loadForClass(int assetClassId) {
@@ -84,7 +77,7 @@ public class AssetClassStockRepository
         List<AssetClassStock> result = new ArrayList<>();
 
         while (c.moveToNext()) {
-            AssetClassStock entity = AssetClassStock.create();
+            AssetClassStock entity = AssetClassStock.create(0, "");
             entity.loadFromCursor(c);
             result.add(entity);
         }
@@ -100,12 +93,13 @@ public class AssetClassStockRepository
      * @return Cursor on the list of linked securities.
      */
     public Cursor fetchCursorAssignedSecurities(int assetClassId) {
-        // todo: adjust the ad-hoc query to fetch the securities linked to this asset class.
+        AssetClassStockRepository repo = new AssetClassStockRepository(this.context);
+
         String sql =
             "SELECT acs.ID as _id, s.* " +
-            "FROM ASSETCLASS_STOCK_V1 AS acs " +
-            "INNER JOIN STOCK_V1 AS s ON acs.stockId = s.stockId " +
-            "WHERE acs.assetClassId=?";
+            "FROM " + repo.getSource() + " AS acs " +
+            "INNER JOIN STOCK_V1 AS s ON acs." + AssetClassStock.STOCKSYMBOL + " = s.symbol " +
+            "WHERE acs." + AssetClassStock.ASSETCLASSID + "=?";
         String[] args = new String[] { Integer.toString(assetClassId)};
 
         Cursor c = MmexOpenHelper.getInstance(this.context).getReadableDatabase()

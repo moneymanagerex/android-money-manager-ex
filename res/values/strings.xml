@@ -663,4 +663,5 @@
     <string name="parent">Parent</string>
     <string name="name">Name</string>
     <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
+    <string name="stock">Stock</string>
 </resources>

@@ -164,12 +164,12 @@ public class AssetAllocationTests {
     public void calculateStockValue() {
         // Given
 //        String currencyCode = "EUR";
-        Stock stock1 = Stock.getInstance();
+        Stock stock1 = Stock.create();
         stock1.setNumberOfShares(50.0);
         stock1.setCurrentPrice(MoneyFactory.fromString("12.00"));
         // 600
 
-        Stock stock2 = Stock.getInstance();
+        Stock stock2 = Stock.create();
         stock2.setNumberOfShares(23.45);
         stock2.setCurrentPrice(MoneyFactory.fromString("7.68"));
         // 180.096
@@ -218,14 +218,14 @@ public class AssetAllocationTests {
 
         // stock 1
         StockRepository stockRepo = new StockRepository(context);
-        Stock stock1 = Stock.getInstance();
+        Stock stock1 = Stock.create();
         stock1.setName("stock1");
         stock1.setCurrentPrice(MoneyFactory.fromString("10"));
         stock1.setNumberOfShares(3.0);
         created = stockRepo.insert(stock1);
         assertThat(created).isTrue();
         // stock 2
-        Stock stock2 = Stock.getInstance();
+        Stock stock2 = Stock.create();
         stock2.setName("stock2");
         stock2.setCurrentPrice(MoneyFactory.fromString("13.24"));
         stock2.setNumberOfShares(2.0);
@@ -235,37 +235,30 @@ public class AssetAllocationTests {
         // Asset Allocation
 
         // One root element with allocation.
-        AssetClass class1 = AssetClass.create();
-        class1.setName("class1");
+        AssetClass class1 = AssetClass.create("class1");
         class1.setAllocation(14.28);
         created = classRepo.insert(class1);
         assertThat(created).isTrue();
 
-        AssetClassStock link1 = AssetClassStock.create();
-        link1.setAssetClassId(class1.getId());
-        link1.setStockSymbol("stock.1");
+        AssetClassStock link1 = AssetClassStock.create(class1.getId(), "stock.1");
         created = classStockRepo.insert(link1);
         assertThat(created).isTrue();
 
         // One group with child allocation.
-        AssetClass class2 = AssetClass.create();
-        class2.setName("class2");
+        AssetClass class2 = AssetClass.create("class2");
         class2.setAllocation(13.00);    // this should get overwritten
         created = classRepo.insert(class2);
         assertThat(created).isTrue();
 
         // child
-        AssetClass class2child = AssetClass.create();
-        class2child.setName("class2child");
+        AssetClass class2child = AssetClass.create("class2child");
         class2child.setParentId(class2.getId());
         class2child.setAllocation(25.16);
         created = classRepo.insert(class2child);
         assertThat(created).isTrue();
 
         // add stock links
-        AssetClassStock classStock1 = AssetClassStock.create();
-        classStock1.setAssetClassId(class2child.getId());
-        classStock1.setStockSymbol("stock.2");
+        AssetClassStock classStock1 = AssetClassStock.create(class2child.getId(), "stock.2");
         created = classStockRepo.insert(classStock1);
         assertThat(created).isTrue();
 

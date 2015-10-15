@@ -26,8 +26,12 @@ public class AssetClassStock
     public static final String ASSETCLASSID = "ASSETCLASSID";
     public static final String STOCKSYMBOL = "STOCKSYMBOL";
 
-    public static AssetClassStock create() {
+    public static AssetClassStock create(int assetClassId, String stockSymbol) {
         AssetClassStock entity = new AssetClassStock();
+
+        entity.setAssetClassId(assetClassId);
+        entity.setStockSymbol(stockSymbol);
+
         return entity;
     }
 

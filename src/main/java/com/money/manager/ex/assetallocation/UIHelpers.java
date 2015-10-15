@@ -16,12 +16,18 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.app.Activity;
 import android.database.MatrixCursor;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
+
+import java.util.List;
 
 /**
  * Common UI methods.
@@ -57,5 +63,13 @@ public class UIHelpers {
         differenceView.setText(values.difference);
     }
 
-
+    public static Fragment getVisibleFragment(FragmentActivity activity){
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for(Fragment fragment : fragments){
+            if(fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
+    }
 }

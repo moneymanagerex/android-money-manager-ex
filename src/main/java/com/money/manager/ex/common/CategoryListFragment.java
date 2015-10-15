@@ -229,70 +229,6 @@ public class CategoryListFragment
         return false;
     }
 
-    public CategoryExpandableListAdapter getAdapter(Cursor data) {
-        if (data == null) return null;
-
-        mCategories.clear();
-        mSubCategories.clear();
-        mPositionToExpand.clear();
-        // create core and fixed string filter to highlight
-        Core core = new Core(getActivity().getApplicationContext());
-        String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
-
-        int key = -1;
-        List<QueryCategorySubCategory> listSubCategories = null;
-
-        // reset cursor if getting back on the fragment.
-        if (data.getPosition() > 0) {
-            data.moveToPosition(Constants.NOT_SET);
-        }
-
-        while (data.moveToNext()) {
-            if (key != data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID))) {
-                // check if listCategories > 0
-                if (mCategories.size() > 0 && listSubCategories != null) {
-                    mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
-                }
-                // save key
-                key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
-                // create instance category
-                TableCategory category = new TableCategory();
-                category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-                category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
-                // add list
-                mCategories.add(category);
-                listSubCategories = new ArrayList<QueryCategorySubCategory>();
-            }
-            // check if subcategory != -1
-            if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {
-                QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
-                // subcategory
-                subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
-                subCategory.setSubcategoryName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
-                subCategory.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-                subCategory.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
-                // add to hashmap
-                listSubCategories.add(subCategory);
-                // check if expand group
-                if (!TextUtils.isEmpty(filter)) {
-                    String normalizedText = Normalizer.normalize(subCategory.getSubcategoryName(), Normalizer.Form.NFD)
-                            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
-                    if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
-                        mPositionToExpand.add(mCategories.size() - 1);
-                    }
-                }
-            }
-        }
-        if (mCategories.size() > 0 && listSubCategories != null) {
-            mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
-        }
-
-        CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-                mLayout, mCategories, mSubCategories);
-        adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
-        return adapter;
-    }
-
     @Override
     public boolean onQueryTextChange(String newText) {
         // Called when the action bar search text has changed.  Update
@@ -334,13 +270,6 @@ public class CategoryListFragment
                         QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
         }
         return null;
-    }
-
-    /**
-     * Restart loader to view data
-     */
-    private void restartLoader() {
-        getLoaderManager().restartLoader(ID_LOADER_CATEGORYSUB, null, this);
     }
 
     @Override
@@ -438,7 +367,78 @@ public class CategoryListFragment
         showTypeSelectorDialog();
     }
 
+    public CategoryExpandableListAdapter getAdapter(Cursor data) {
+        if (data == null) return null;
+
+        mCategories.clear();
+        mSubCategories.clear();
+        mPositionToExpand.clear();
+        // create core and fixed string filter to highlight
+        Core core = new Core(getActivity().getApplicationContext());
+        String filter = mCurFilter != null ? mCurFilter.replace("%", "") : "";
+
+        int key = -1;
+        List<QueryCategorySubCategory> listSubCategories = null;
+
+        // reset cursor if getting back on the fragment.
+        if (data.getPosition() > 0) {
+            data.moveToPosition(Constants.NOT_SET);
+        }
+
+        while (data.moveToNext()) {
+            if (key != data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID))) {
+                // check if listCategories > 0
+                if (mCategories.size() > 0 && listSubCategories != null) {
+                    mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
+                }
+                // save key
+                key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
+                // create instance category
+                TableCategory category = new TableCategory();
+                category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
+                category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+                // add list
+                mCategories.add(category);
+                listSubCategories = new ArrayList<QueryCategorySubCategory>();
+            }
+            // check if subcategory != -1
+            if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {
+                QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
+                // subcategory
+                subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));
+                subCategory.setSubcategoryName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME))));
+                subCategory.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
+                subCategory.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+                // add to hashmap
+                listSubCategories.add(subCategory);
+                // check if expand group
+                if (!TextUtils.isEmpty(filter)) {
+                    String normalizedText = Normalizer.normalize(subCategory.getSubcategoryName(), Normalizer.Form.NFD)
+                        .replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+                    if ((normalizedText.indexOf(filter) >= 0) && (!mPositionToExpand.contains(mCategories.size() - 1))) {
+                        mPositionToExpand.add(mCategories.size() - 1);
+                    }
+                }
+            }
+        }
+        if (mCategories.size() > 0 && listSubCategories != null) {
+            mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
+        }
+
+        CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
+            mLayout, mCategories, mSubCategories);
+        adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
+        return adapter;
+    }
+
     // Private
+
+    /**
+     * Restart loader to view data
+     */
+    private void restartLoader() {
+        getLoaderManager().restartLoader(ID_LOADER_CATEGORYSUB, null, this);
+    }
 
     /**
      * Show alter dialog confirm delete category or sub category

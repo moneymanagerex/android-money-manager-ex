@@ -40,6 +40,7 @@ public class AssetAllocationActivity
 
     private AssetClass assetAllocation;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_asset_allocation);
@@ -54,9 +55,7 @@ public class AssetAllocationActivity
         }
 
         // load data
-        AssetAllocationService service = new AssetAllocationService(this);
-        this.assetAllocation = service.loadAssetAllocation();
-
+        loadAssetAllocation();
 
         showAssetClass(this.assetAllocation);
     }
@@ -77,6 +76,39 @@ public class AssetAllocationActivity
         super.onDestroy();
 
 //        Log.d(this.getClass().getSimpleName(), "Finishing Asset Allocation");
+    }
+
+    @Override
+    public void assetClassSelected(int assetClassId) {
+        // Handling:
+        // - asset group (has children), load children
+        // - asset class (no children), show stocks
+        // - stock (no children, no stocks) do nothing, or show context menu?
+
+        AssetAllocationService service = new AssetAllocationService(this);
+        AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
+
+        showAssetClass(toShow);
+    }
+
+    @Override
+    public void assetClassDeleted(int assetClassId) {
+        // reload data.
+        loadAssetAllocation();
+        // find the currently displayed fragment
+        AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
+        // find which allocation is being displayed currently.
+        int id = fragment.assetClass.getId();
+        // find it again in the reloaded data
+        AssetAllocationService service = new AssetAllocationService(this);
+        AssetClass toShow = service.findChild(id, this.assetAllocation);
+        // reload data for the fragment
+        fragment.showData(toShow);
+    }
+
+    private void loadAssetAllocation() {
+        AssetAllocationService service = new AssetAllocationService(this);
+        this.assetAllocation = service.loadAssetAllocation();
     }
 
     private void setResultAndFinish() {
@@ -110,16 +142,4 @@ public class AssetAllocationActivity
         }
     }
 
-    @Override
-    public void assetClassSelected(int assetClassId) {
-        // Handling:
-        // - asset group (has children), load children
-        // - asset class (no children), show stocks
-        // - stock (no children, no stocks) do nothing, or show context menu?
-
-        AssetAllocationService service = new AssetAllocationService(this);
-        AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
-
-        showAssetClass(toShow);
-    }
 }

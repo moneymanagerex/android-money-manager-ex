@@ -251,40 +251,29 @@ public class MmexContentProvider
         Object ret = getObjectFromUri(uri);
         // safety control of having the where if not clean the table
         if (TextUtils.isEmpty(selection)) {
-            Log.e(LOGCAT, "Delete not permitted because not define where clause");
-            return 0;
+            throw new IllegalArgumentException("Delete not permitted because not define where clause");
+//            Log.e(LOGCAT, "Delete not permitted because not define where clause");
+//            return 0;
         }
         // take a database reference
         MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
         int rowsDelete = 0;
-        // check type of dataset instance.
+
         if (Dataset.class.isInstance(ret)) {
             Dataset dataset = ((Dataset) ret);
             switch (dataset.getType()) {
                 case TABLE:
-                    String log = "DELETE FROM " + dataset.getSource();
-                    // compose log verbose
-                    if (StringUtils.isNotEmpty(selection)) {
-                        log += " WHERE " + selection;
-                    }
-                    if (selectionArgs != null) {
-                        log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
-                    }
-                    // open transaction
-                    //database.beginTransaction();
-                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+                    logDelete(dataset, selection, selectionArgs);
                     try {
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
-
                         rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
+
                         // committed
                         //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                         //database.setTransactionSuccessful();
-                    } catch (SQLiteException sqlLiteExc) {
-                        Log.e(LOGCAT, "SQLiteException: " + sqlLiteExc.getMessage());
-                    } catch (Exception exc) {
-                        Log.e(LOGCAT, exc.getMessage());
+                    } catch (Exception e) {
+                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                        handler.handle(e, "insert");
                     }
                     break;
                 default:
@@ -297,9 +286,7 @@ public class MmexContentProvider
         getContext().getContentResolver().notifyChange(uri, null);
         // notify dropbox data changed
         DropboxHelper.notifyDataChanged();
-        // close connection to the database
-        //databaseHelper.close();
-        // return rows delete
+
         return rowsDelete;
     }
 
@@ -490,4 +477,18 @@ public class MmexContentProvider
         if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
     }
 
+    private void logDelete(Dataset dataset, String selection, String[] selectionArgs) {
+        String log = "DELETE FROM " + dataset.getSource();
+        // compose log verbose
+        if (StringUtils.isNotEmpty(selection)) {
+            log += " WHERE " + selection;
+        }
+        if (selectionArgs != null) {
+            log += "; ARGS=" + Arrays.asList(selectionArgs).toString();
+        }
+        // open transaction
+        //database.beginTransaction();
+//                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+    }
 }

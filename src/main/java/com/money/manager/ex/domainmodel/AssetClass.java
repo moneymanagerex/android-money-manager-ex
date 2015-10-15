@@ -47,8 +47,9 @@ public class AssetClass
         return entity;
     }
 
-    public static AssetClass create() {
+    public static AssetClass create(String name) {
         AssetClass entity = new AssetClass();
+        entity.setName(name);
         entity.setAllocation(0.0);
         return entity;
     }

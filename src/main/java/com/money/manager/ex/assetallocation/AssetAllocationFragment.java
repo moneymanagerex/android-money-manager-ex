@@ -34,8 +34,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -72,7 +74,7 @@ public class AssetAllocationFragment
     public AssetAllocationFragment() {
     }
 
-    private AssetClass assetClass;
+    public AssetClass assetClass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +148,31 @@ public class AssetAllocationFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        startEditAssetClassActivityForInsert();
+        ExceptionHandler handler = new ExceptionHandler(getActivity());
+
+        // check which item to create
+        ItemType type = this.assetClass.getType();
+        if (type == null) {
+            handler.showMessage("Item type not set.");
+            return;
+        }
+
+        switch (type) {
+            case Allocation:
+                if (assetClass.getChildren().size() > 0) {
+                    startEditAssetClassActivityForInsert();
+                }
+                if (assetClass.getStockLinks().size() > 0) {
+                    // todo: show stock picker.
+                    handler.showMessage("Stock picker goes here");
+                }
+                // Offer a choice here - stocks or child allocation
+                showTypeSelectorDialog();
+                break;
+            case Group:
+                startEditAssetClassActivityForInsert();
+                break;
+        }
     }
 
     // data loader
@@ -248,7 +274,7 @@ public class AssetAllocationFragment
 
         switch (type) {
             case Allocation:
-                showAssetClass(selectedId);
+                raiseAssetClassSelected(selectedId);
                 break;
             case Stock:
                 // ?
@@ -289,8 +315,9 @@ public class AssetAllocationFragment
                     if (!service.deleteAllocation(id)) {
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
                     }
-                    // restart loader
-                    getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, AssetAllocationFragment.this);
+                    // reload data
+                    raiseItemDeleted(id);
+//                    getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, AssetAllocationFragment.this);
                 }
             });
 
@@ -308,6 +335,7 @@ public class AssetAllocationFragment
     private void startEditAssetClassActivityForInsert() {
         Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
+        intent.putExtra(AssetClassEditActivity.KEY_PARENT_ID, this.assetClass.getId());
         startActivity(intent);
     }
 
@@ -335,13 +363,14 @@ public class AssetAllocationFragment
         MatrixCursor cursor = new MatrixCursor(columns);
 
         // Now decide what data to show.
+//        ItemType type = allocation.getType();
         if (allocation.getChildren().size() > 0) {
             // group
-            allocation.setType(ItemType.Group);
+//            allocation.setType(ItemType.Group);
             fillChildren(cursor, allocation);
         } else if (allocation.getStocks().size() > 0) {
             // allocation, with stocks
-            allocation.setType(ItemType.Allocation);
+//            allocation.setType(ItemType.Allocation);
             fillStocks(cursor, allocation);
         } else {
             // either empty allocation or a stock.
@@ -396,7 +425,7 @@ public class AssetAllocationFragment
         listView.addFooterView(view, null, false);
     }
 
-    private void showAssetClass(int id) {
+    private void raiseAssetClassSelected(int id) {
         // show a fragment for selected asset class
         DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
         if (parent != null) {
@@ -434,6 +463,46 @@ public class AssetAllocationFragment
                 ItemType.Stock.toString()
             };
             cursor.addRow(values);
+        }
+    }
+
+    private void showTypeSelectorDialog() {
+        new MaterialDialog.Builder(getActivity())
+            .title(R.string.choose_type)
+            .items(R.array.new_asset_class_type)
+            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                @Override
+                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                    /**
+                     * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                     * returning false here won't allow the newly selected radio button to actually be selected.
+                     **/
+//                        showNameEntryDialog();
+
+                    switch (which) {
+                        case 0:
+                            // Asset Allocation
+                            startEditAssetClassActivityForInsert();
+                            break;
+                        case 1:
+                            // Stock
+                            // todo: pick stocks
+                            break;
+                    }
+
+                    return true;
+                }
+            })
+            .positiveText(android.R.string.ok)
+//                .negativeText(android.R.string.cancel)
+            .neutralText(android.R.string.cancel)
+            .show();
+    }
+
+    private void raiseItemDeleted(int id) {
+        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
+        if (parent != null) {
+            parent.assetClassDeleted(id);
         }
     }
 }
