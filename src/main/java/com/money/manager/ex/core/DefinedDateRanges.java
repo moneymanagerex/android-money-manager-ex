@@ -74,6 +74,10 @@ public class DefinedDateRanges {
         return null;
     }
 
+    public Context getContext() {
+        return this.context;
+    }
+
     public boolean contains(DefinedDateRangeName name) {
         return this.dateRanges.containsKey(name);
     }
@@ -158,7 +162,7 @@ public class DefinedDateRanges {
     }
 
     private DefinedDateRange create(DefinedDateRangeName key, int nameStringId, int menuResourceId) {
-        DefinedDateRange range = new DefinedDateRange(this.context);
+        DefinedDateRange range = new DefinedDateRange(getContext());
 
         range.key = key;
         range.nameResourceId = nameStringId;

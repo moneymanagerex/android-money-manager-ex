@@ -93,7 +93,7 @@ public class AssetClassStockRepository
      * @return Cursor on the list of linked securities.
      */
     public Cursor fetchCursorAssignedSecurities(int assetClassId) {
-        AssetClassStockRepository repo = new AssetClassStockRepository(this.context);
+        AssetClassStockRepository repo = new AssetClassStockRepository(getContext());
 
         String sql =
             "SELECT acs.ID as _id, s.* " +
@@ -102,7 +102,7 @@ public class AssetClassStockRepository
             "WHERE acs." + AssetClassStock.ASSETCLASSID + "=?";
         String[] args = new String[] { Integer.toString(assetClassId)};
 
-        Cursor c = MmexOpenHelper.getInstance(this.context).getReadableDatabase()
+        Cursor c = MmexOpenHelper.getInstance(getContext()).getReadableDatabase()
             .rawQuery(sql, args);
 
 //        c.close();

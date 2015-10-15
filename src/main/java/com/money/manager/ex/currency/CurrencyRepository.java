@@ -75,7 +75,7 @@ public class CurrencyRepository
         ContentValues contentValues = new ContentValues();
         contentValues.put(Currency.BASECONVRATE, exchangeRate.toString());
 
-        int result = context.getContentResolver().update(this.getUri(),
+        int result = getContext().getContentResolver().update(this.getUri(),
             contentValues,
             Currency.CURRENCYID + "=?",
             new String[] { Integer.toString(currencyId) });
@@ -90,7 +90,7 @@ public class CurrencyRepository
         try {
             result = loadCurrencyInternal(selection, selectionArgs);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "loading currency");
         }
         return result;

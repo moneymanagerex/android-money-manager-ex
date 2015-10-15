@@ -65,7 +65,10 @@ public class UIHelpers {
 
     public static Fragment getVisibleFragment(FragmentActivity activity){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
         List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments == null) return null;
+
         for(Fragment fragment : fragments){
             if(fragment != null && fragment.isVisible())
                 return fragment;

@@ -72,11 +72,11 @@ public class AccountRepository
      * @return QueryAccountBills entity.
      */
     public QueryAccountBills loadAccountBills(int id) {
-        QueryAccountBills result = new QueryAccountBills(context);
+        QueryAccountBills result = new QueryAccountBills(getContext());
 
         String selection = QueryAccountBills.ACCOUNTID + "=?";
 
-        Cursor cursor = context.getContentResolver().query(
+        Cursor cursor = getContext().getContentResolver().query(
                 result.getUri(),
                 result.getAllColumns(),
                 selection,
@@ -100,7 +100,7 @@ public class AccountRepository
 
         String selection = Account.ACCOUNTNAME + "=?";
 
-        Cursor cursor = context.getContentResolver().query(
+        Cursor cursor = getContext().getContentResolver().query(
                 this.getUri(),
                 new String[] { Account.ACCOUNTID },
                 selection,

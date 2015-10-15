@@ -99,6 +99,7 @@ public class AssetAllocationService {
     public AssetClass loadAssetAllocation(Cursor c) {
         // Step 2: Fill a hash map with one pass through cursor.
         HashMap<Integer, AssetClass> map = loadMap(c);
+        c.close();
 
         // Step 3: Assign children to their parents.
         List<AssetClass> list = assignChildren(map);
@@ -238,7 +239,7 @@ public class AssetAllocationService {
             AssetClass ac = AssetClass.from(c);
             result.put(ac.getId(), ac);
         }
-        c.close();
+//        c.close();
 
         return result;
     }
@@ -249,7 +250,7 @@ public class AssetAllocationService {
         // Iterate through all the allocations.
         for (AssetClass ac : map.values()) {
             Integer parentId = ac.getParentId();
-            if (parentId != null) {
+            if (parentId != null && parentId != Constants.NOT_SET) {
                 // add child elements to their parents based on the Id field.
                 AssetClass parent = map.get(parentId);
                 parent.setType(ItemType.Group);
@@ -375,7 +376,7 @@ public class AssetAllocationService {
             }
 
             // Allocation
-            double setAllocation = getAllocationSum(children);
+            Money setAllocation = getAllocationSum(children);
             allocation.setAllocation(setAllocation);
             // Value
             Money setValue = getValueSum(children);
@@ -396,18 +397,18 @@ public class AssetAllocationService {
 
     }
 
-    private double getAllocationSum(List<AssetClass> group) {
-        List<Double> allocations = Queryable.from(group)
-            .map(new Converter<AssetClass, Double>() {
+    private Money getAllocationSum(List<AssetClass> group) {
+        List<Money> allocations = Queryable.from(group)
+            .map(new Converter<AssetClass, Money>() {
                 @Override
-                public Double convert(AssetClass element) {
+                public Money convert(AssetClass element) {
                     return element.getAllocation();
                 }
             }).toList();
 
-        double sum = 0.0;
-        for (double allocation : allocations) {
-            sum += allocation;
+        Money sum = MoneyFactory.fromString("0");
+        for (Money allocation : allocations) {
+            sum = sum.add(allocation);
         }
         return sum;
     }

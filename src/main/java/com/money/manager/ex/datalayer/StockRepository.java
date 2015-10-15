@@ -84,7 +84,7 @@ public class StockRepository
     public List<Stock> load(Integer[] ids) {
         if (ids.length == 0) return null;
 
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(ids.length);
         String[] idParams = new String[ids.length];
 
@@ -106,7 +106,7 @@ public class StockRepository
     public List<Stock> loadForSymbols(String[] symbols) {
         if (symbols.length == 0) return null;
 
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(symbols.length);
 
         Cursor c = openCursor(null,
@@ -123,7 +123,7 @@ public class StockRepository
     public ContentValues loadContentValues(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        Cursor cursor = context.getContentResolver().query(this.getUri(),
+        Cursor cursor = getContext().getContentResolver().query(this.getUri(),
                 null,
                 Stock.STOCKID + "=?",
                 new String[] { Integer.toString(id)},
@@ -172,7 +172,7 @@ public class StockRepository
     public int[] findIdsBySymbol(String symbol) {
         int[] result = null;
 
-        Cursor cursor = context.getContentResolver().query(this.getUri(),
+        Cursor cursor = getContext().getContentResolver().query(this.getUri(),
                 new String[]{ Stock.STOCKID },
                 Stock.SYMBOL + "=?", new String[]{symbol},
                 null);

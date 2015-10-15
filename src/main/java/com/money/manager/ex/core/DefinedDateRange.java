@@ -20,8 +20,6 @@ import android.content.Context;
 
 /**
  * Represent one selectable date range, i.e. Last 7 Days, Current Month, etc.
- *
- * Created by Alen Siljak on 23/09/2015.
  */
 public class DefinedDateRange {
 

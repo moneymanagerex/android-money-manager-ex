@@ -109,7 +109,7 @@ public class AssetClassEditFragment
     public void onFinishedInputAmountDialog(int id, Money amount) {
         switch (id) {
             case INPUT_ALLOCATION:
-                assetClass.setAllocation(amount.toDouble());
+                assetClass.setAllocation(amount);
                 updateAllocation();
                 break;
         }
@@ -221,7 +221,7 @@ public class AssetClassEditFragment
             @Override
             public void onClick(View v) {
                 InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
-                    MoneyFactory.fromDouble(assetClass.getAllocation()),
+                    assetClass.getAllocation(),
                     null);
                 dialog.roundToCurrencyDecimals = false;
                 dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
@@ -265,7 +265,7 @@ public class AssetClassEditFragment
 
         TextView textView = (TextView) view.findViewById(R.id.allocationEdit);
         if (textView != null) {
-            Money allocation = MoneyFactory.fromDouble(assetClass.getAllocation());
+            Money allocation = assetClass.getAllocation();
             //FormatUtilities.formatAmountTextView();
             textView.setText(allocation.toString());
             textView.setTag(allocation.toString());

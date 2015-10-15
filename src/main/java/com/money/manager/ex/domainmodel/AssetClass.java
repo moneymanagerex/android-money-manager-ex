@@ -50,7 +50,7 @@ public class AssetClass
     public static AssetClass create(String name) {
         AssetClass entity = new AssetClass();
         entity.setName(name);
-        entity.setAllocation(0.0);
+        entity.setAllocation(MoneyFactory.fromString("0"));
         return entity;
     }
 
@@ -95,12 +95,12 @@ public class AssetClass
         setInteger(PARENTID, value);
     }
 
-    public Double getAllocation() {
-        return getDouble(ALLOCATION);
+    public Money getAllocation() {
+        return getMoney(ALLOCATION);
     }
 
-    public void setAllocation(Double value) {
-        setDouble(ALLOCATION, value);
+    public void setAllocation(Money value) {
+        setMoney(ALLOCATION, value);
     }
 
     public String getName() {
@@ -223,10 +223,10 @@ public class AssetClass
         // see the service for the formulas.
 
         // Set Value
-        double allocation = getAllocation();
+        Money allocation = getAllocation();
 //        double value = allocation * totalPortfolioValue.toDouble() / 100;
         this.value = totalPortfolioValue
-            .multiply(allocation)
+            .multiply(allocation.toDouble())
             .divide(100, Constants.DEFAULT_PRECISION);
 
         // current allocation. Use 2 decimals for now.

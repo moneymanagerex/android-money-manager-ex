@@ -30,16 +30,14 @@ public class MmexSimpleCursorLoader
     public MmexSimpleCursorLoader(Context context, int assetClassId) {
         super(context);
 
-        this.context = context;
         this.assetClassId = assetClassId;
     }
 
-    private Context context;
     private int assetClassId;
 
     @Override
     public Cursor loadInBackground() {
-        AssetClassStockRepository repo = new AssetClassStockRepository(this.context);
+        AssetClassStockRepository repo = new AssetClassStockRepository(getContext());
         return repo.fetchCursorAssignedSecurities(this.assetClassId);
     }
 }

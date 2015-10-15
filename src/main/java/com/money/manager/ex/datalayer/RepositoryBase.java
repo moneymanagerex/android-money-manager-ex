@@ -33,7 +33,7 @@ public abstract class RepositoryBase
         this.context = context.getApplicationContext();
     }
 
-    protected Context context;
+    private Context context;
 
 //    protected EntityBase get(int id) {
 //        context.getContentResolver().query(this.getUri(),
@@ -49,6 +49,10 @@ public abstract class RepositoryBase
         c.close();
 
         return result;
+    }
+
+    public Context getContext() {
+        return this.context;
     }
 
     public Cursor openCursor(String[] projection, String selection, String[] args) {
@@ -171,4 +175,5 @@ public abstract class RepositoryBase
         );
         return result;
     }
+
 }
