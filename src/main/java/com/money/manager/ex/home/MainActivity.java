@@ -197,28 +197,6 @@ public class MainActivity
         }
     }
 
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
-            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
-        if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
-            isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
-        if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
-            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
-        }
-
-        Core core = new Core(this);
-        if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
-                && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                getSupportFragmentManager().popBackStack();
-            }
-        }
-
-        if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
-            this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -1236,16 +1214,16 @@ public class MainActivity
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
         // payee
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
-                .withText(getString(R.string.payees))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            .withText(getString(R.string.payees))
+            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
         // where money goes
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
-                .withText(getString(R.string.menu_report_where_money_goes))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            .withText(getString(R.string.menu_report_where_money_goes))
+            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
         // where money comes from
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
-                .withText(getString(R.string.menu_report_where_money_comes_from))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+            .withText(getString(R.string.menu_report_where_money_comes_from))
+            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
         // where money comes from
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
                 .withText(getString(R.string.categories))
@@ -1255,5 +1233,27 @@ public class MainActivity
                 .withText(getString(R.string.menu_report_income_vs_expenses))
                 .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
+            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
+        if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
+            isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+        if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
+            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
+        }
+
+        Core core = new Core(this);
+        if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
+            && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+
+        if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
+            this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
+        }
     }
 }

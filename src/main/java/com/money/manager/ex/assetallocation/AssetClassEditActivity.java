@@ -17,10 +17,14 @@
 package com.money.manager.ex.assetallocation;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;

@@ -47,8 +47,7 @@ import com.shamanland.fonticon.FontIconDrawable;
  * A placeholder fragment containing a simple view.
  */
 public class AssetAllocationFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseListFragment {
 
     private static final int LOADER_ASSET_CLASSES = 1;
 //    private static final String PARAM_CURRENCY_CODE = "currencyCode";
@@ -177,47 +176,47 @@ public class AssetAllocationFragment
 
     // data loader
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        switch (id) {
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+////        switch (id) {
+////            case LOADER_ASSET_CLASSES:
+////                // create cursor loader
+////                AssetClassRepository repo = new AssetClassRepository(getActivity());
+////
+////                return new MmexCursorLoader(getActivity(), repo.getUri(),
+////                    repo.getAllColumns(),
+////                    null, // where
+////                    null, // args
+////                    AssetClass.SORTORDER // sort
+////                );
+////                //break;
+////        }
+//        return null;
+//    }
+
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        switch (loader.getId()) {
 //            case LOADER_ASSET_CLASSES:
-//                // create cursor loader
-//                AssetClassRepository repo = new AssetClassRepository(getActivity());
+////                adapter.swapCursor(data);
+//                // create asset allocation matrix cursor
+//                AssetAllocationService service = new AssetAllocationService(getActivity());
+//                AssetClass allocation = service.loadAssetAllocation(data);
 //
-//                return new MmexCursorLoader(getActivity(), repo.getUri(),
-//                    repo.getAllColumns(),
-//                    null, // where
-//                    null, // args
-//                    AssetClass.SORTORDER // sort
-//                );
-//                //break;
+//                showData(allocation);
+//                break;
 //        }
-        return null;
-    }
+//    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case LOADER_ASSET_CLASSES:
-//                adapter.swapCursor(data);
-                // create asset allocation matrix cursor
-                AssetAllocationService service = new AssetAllocationService(getActivity());
-                AssetClass allocation = service.loadAssetAllocation(data);
-
-                showData(allocation);
-                break;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_ASSET_CLASSES:
-                AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
-                adapter.swapCursor(null);
-                break;
-        }
-    }
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        switch (loader.getId()) {
+//            case LOADER_ASSET_CLASSES:
+//                AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
+//                adapter.swapCursor(null);
+//                break;
+//        }
+//    }
 
     // Context menu
 

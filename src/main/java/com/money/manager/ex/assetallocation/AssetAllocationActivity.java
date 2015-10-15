@@ -18,32 +18,31 @@ package com.money.manager.ex.assetallocation;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 public class AssetAllocationActivity
     extends BaseFragmentActivity
-    implements DetailFragmentCallbacks {
+    implements DetailFragmentCallbacks, LoaderManager.LoaderCallbacks<AssetClass> {
+
+    private static final int LOADER_ASSET_ALLOCATION = 1;
 
     private AssetClass assetAllocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_asset_allocation);
+
         setContentView(R.layout.base_toolbar_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -55,9 +54,11 @@ public class AssetAllocationActivity
         }
 
         // load data
-        loadAssetAllocation();
+        // Ref: http://developer.android.com/guide/components/loaders.html
+        getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, this);
 
-        showAssetClass(this.assetAllocation);
+//        loadAssetAllocation();
+//        showAssetClass(this.assetAllocation);
     }
 
     @Override
@@ -104,6 +105,41 @@ public class AssetAllocationActivity
         AssetClass toShow = service.findChild(id, this.assetAllocation);
         // reload data for the fragment
         fragment.showData(toShow);
+    }
+
+    // Loader
+
+    @Override
+    public Loader<AssetClass> onCreateLoader(int id, Bundle args) {
+        return new AssetAllocationLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<AssetClass> loader, AssetClass data) {
+        Log.d("data", "finished");
+        loadAssetAllocation();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<AssetClass> loader) {
+        Log.d("data", "reset");
+    }
+
+//    @Override
+//    public void onLoadFinished(Loader<Object> loader, Object data) {
+//        Log.d("data", "finished");
+//        loadAssetAllocation();
+//    }
+
+//    @Override
+//    public void onLoaderReset(Loader<Object> loader) {
+//        Log.d("data", "reset");
+//    }
+
+    // Private
+
+    private void reloadData() {
+        getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
     }
 
     private void loadAssetAllocation() {
