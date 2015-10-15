@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -53,6 +54,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 public class AssetAllocationFragment
     extends BaseListFragment {
 
+    public static final int REQUEST_STOCK_ID = 1;
     public static final String PARAM_ASSET_CLASS_ID = "assetClassId";
 
     /**
@@ -109,8 +111,6 @@ public class AssetAllocationFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setListShown(false);
 
-//        loadData();
-
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
 
@@ -138,6 +138,21 @@ public class AssetAllocationFragment
     public void onDestroyView() {
         super.onDestroyView();
         setListAdapter(null);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_CANCELED) return;
+
+        switch (requestCode) {
+            case REQUEST_STOCK_ID:
+                // get the stock id
+                String symbol = data.getStringExtra(SecurityListFragment.INTENT_RESULT_STOCK_SYMBOL);
+                assignStockToAssetClass(symbol);
+                break;
+        }
     }
 
     @Override
@@ -287,8 +302,9 @@ public class AssetAllocationFragment
     }
 
     public void showData(AssetClass assetAllocation) {
-        AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
         Cursor matrixCursor = createMatrixCursor(assetAllocation);
+
+        AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
         adapter.swapCursor(matrixCursor);
 
         // refresh footer/totals
@@ -366,15 +382,12 @@ public class AssetAllocationFragment
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
-        // Now decide what data to show.
 //        ItemType type = allocation.getType();
         if (allocation.getChildren().size() > 0) {
             // group
-//            allocation.setType(ItemType.Group);
             fillChildren(cursor, allocation);
         } else if (allocation.getStocks().size() > 0) {
             // allocation, with stocks
-//            allocation.setType(ItemType.Allocation);
             fillStocks(cursor, allocation);
         } else {
             // either empty allocation or a stock.
@@ -527,7 +540,7 @@ public class AssetAllocationFragment
                             break;
                         case 1:
                             // Stock
-                            // todo: pick stocks
+                            pickStock();
                             break;
                     }
 
@@ -539,4 +552,19 @@ public class AssetAllocationFragment
             .neutralText(android.R.string.cancel)
             .show();
     }
+
+    private void pickStock() {
+        Intent intent = new Intent(getActivity(), SecurityListActivity.class);
+        intent.setAction(Intent.ACTION_PICK);
+        intent.putExtra(SecurityListActivity.EXTRA_ASSET_CLASS_ID, this.getAssetClassId());
+        // ref: http://stackoverflow.com/questions/6147884/onactivityresult-not-being-called-in-fragment
+        startActivityForResult(intent, REQUEST_STOCK_ID);
+        // continues in onActivityResult
+    }
+
+    private void assignStockToAssetClass(String stockSymbol) {
+        AssetAllocationService service = new AssetAllocationService(getActivity());
+        service.assignStockToAssetClass(stockSymbol, getAssetClassId());
+    }
+
 }

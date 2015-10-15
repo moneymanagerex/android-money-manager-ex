@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
@@ -68,6 +69,12 @@ public class AssetAllocationActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     // Asset Class display fragment

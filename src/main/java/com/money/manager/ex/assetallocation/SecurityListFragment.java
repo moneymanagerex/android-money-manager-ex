@@ -40,7 +40,20 @@ public class SecurityListFragment
     extends BaseListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String INTENT_RESULT_STOCK_SYMBOL = "SecurityListFragment:StockSymbol";
+
     private static final int LOADER_SYMBOLS = 0;
+    private static final String PARAM_ASSET_CLASS_ID = "assetClassId";
+
+    public static SecurityListFragment create(Integer assetClassId) {
+        SecurityListFragment instance = new SecurityListFragment();
+
+        Bundle params = new Bundle();
+        params.putInt(PARAM_ASSET_CLASS_ID, assetClassId);
+        instance.setArguments(params);
+
+        return instance;
+    }
 
     public SecurityListFragment() {
     }
@@ -95,6 +108,8 @@ public class SecurityListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_SYMBOLS:
+                // todo: ignore all the symbols already linked to the assetClassId
+
                 String whereClause = null;
                 String selectionArgs[] = null;
                 if (!TextUtils.isEmpty(mCurFilter)) {
@@ -171,7 +186,7 @@ public class SecurityListFragment
         switch (this.action) {
             case Intent.ACTION_PICK:
                 result = new Intent();
-                result.putExtra(AssetClassEditActivity.INTENT_RESULT_STOCK_SYMBOL, selectedStockSymbol);
+                result.putExtra(INTENT_RESULT_STOCK_SYMBOL, selectedStockSymbol);
                 getActivity().setResult(Activity.RESULT_OK, result);
                 break;
 

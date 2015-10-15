@@ -21,15 +21,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 public class SecurityListActivity
     extends BaseFragmentActivity {
 
+    public static final String EXTRA_ASSET_CLASS_ID = "assetClassId";
     private static final String FRAGMENTTAG = SecurityListFragment.class.getSimpleName() + "_Fragment";
-
-    private SecurityListFragment listFragment = new SecurityListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,10 @@ public class SecurityListActivity
         setContentView(R.layout.base_toolbar_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // get asset class id
+        int assetClassId = getAssetClassId();
+        SecurityListFragment listFragment = SecurityListFragment.create(assetClassId);
 
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
@@ -51,4 +55,13 @@ public class SecurityListActivity
 
     }
 
+    private Integer getAssetClassId() {
+        Intent intent = getIntent();
+        if (intent == null) return null;
+
+        int assetClassId = intent.getIntExtra(EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
+        if (assetClassId == Constants.NOT_SET) return null;
+
+        return assetClassId;
+    }
 }

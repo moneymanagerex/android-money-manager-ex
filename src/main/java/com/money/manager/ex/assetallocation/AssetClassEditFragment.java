@@ -58,17 +58,17 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AssetClassEditFragment
     extends Fragment
-    implements IInputAmountDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
+    implements IInputAmountDialogListener {
 
     public static final int INPUT_ALLOCATION = 1;
-    public static final int LOADER_SECURITIES = 1;
+//    public static final int LOADER_SECURITIES = 1;
     public static final int CONTEXT_MENU_DELETE = 1;
 
     public AssetClassEditFragment() {
     }
 
     public AssetClass assetClass;
-    private MoneySimpleCursorAdapter mAdapter;
+//    private MoneySimpleCursorAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,18 +91,18 @@ public class AssetClassEditFragment
         initializeNameEdit(view);
         initializeAllocationPicker(view);
 
-        initializeFloatingActionButton(view);
+//        initializeFloatingActionButton(view);
 
-        mAdapter = createAdapter();
-        ListView listView = initializeListView(mAdapter);
+//        mAdapter = createAdapter();
+//        ListView listView = initializeListView(mAdapter);
 
-        registerForContextMenu(listView);
+//        registerForContextMenu(listView);
 
         // setListShown(false);
-        Integer id = this.assetClass.getId();
-        if (id != null) {
-            loadData();
-        }
+//        Integer id = this.assetClass.getId();
+//        if (id != null) {
+//            loadData();
+//        }
     }
 
     @Override
@@ -117,33 +117,33 @@ public class AssetClassEditFragment
 
     // loader
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case LOADER_SECURITIES:
-                return new MmexSimpleCursorLoader(getActivity(), this.assetClass.getId());
-        }
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        switch (id) {
+//            case LOADER_SECURITIES:
+//                return new MmexSimpleCursorLoader(getActivity(), this.assetClass.getId());
+//        }
+//
+//        return null;
+//    }
 
-        return null;
-    }
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        switch (loader.getId()) {
+//            case LOADER_SECURITIES:
+//                mAdapter.swapCursor(data);
+//                break;
+//        }
+//    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case LOADER_SECURITIES:
-                mAdapter.swapCursor(data);
-                break;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()) {
-            case LOADER_SECURITIES:
-                mAdapter.swapCursor(null);
-        }
-
-    }
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        switch (loader.getId()) {
+//            case LOADER_SECURITIES:
+//                mAdapter.swapCursor(null);
+//        }
+//
+//    }
 
     // Context menu
 
@@ -154,36 +154,36 @@ public class AssetClassEditFragment
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         boolean result = false;
 
         switch (item.getItemId()) {
-            case CONTEXT_MENU_DELETE:
-                // Delete
-                ListView listView = getListView();
-                if (listView == null) return false;
-
-                Cursor cursor = (Cursor) listView.getItemAtPosition(info.position);
-                Stock stock = Stock.fromCursor(cursor);
-                String stockSymbol = stock.getSymbol();
-
-                AssetClassStockRepository repo = new AssetClassStockRepository(getActivity());
-                int assetClassId = this.assetClass.getId();
-                boolean deleted = repo.delete(assetClassId, stockSymbol);
-                if (!deleted) {
-                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                    handler.showMessage(getString(R.string.error));
-                }
-
-                result = true;
-                break;
+//            case CONTEXT_MENU_DELETE:
+//                // Delete
+//                ListView listView = getListView();
+//                if (listView == null) return false;
+//
+//                Cursor cursor = (Cursor) listView.getItemAtPosition(info.position);
+//                Stock stock = Stock.fromCursor(cursor);
+//                String stockSymbol = stock.getSymbol();
+//
+//                AssetClassStockRepository repo = new AssetClassStockRepository(getActivity());
+//                int assetClassId = this.assetClass.getId();
+//                boolean deleted = repo.delete(assetClassId, stockSymbol);
+//                if (!deleted) {
+//                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+//                    handler.showMessage(getString(R.string.error));
+//                }
+//
+//                result = true;
+//                break;
         }
         return result;
     }
 
-    public void loadData() {
-        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
-    }
+//    public void loadData() {
+//        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
+//    }
 
     private void initializeNameEdit(View view) {
         final EditText edit = (EditText) view.findViewById(R.id.nameEdit);
@@ -272,75 +272,75 @@ public class AssetClassEditFragment
         }
     }
 
-    private void initializeFloatingActionButton(View view) {
-        // attach fab
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+//    private void initializeFloatingActionButton(View view) {
+//        // attach fab
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+//
+//        if (this.assetClass.getId() == null) {
+//            // new record
+//            return;
+//        }
+//
+//        // otherwise we're in edit mode.
+//
+//        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
+//        fab.attachToListView(listView);
+//
+//        fab.setVisibility(View.VISIBLE);
+//
+//        View.OnClickListener listener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // select a security
+//                pickStock();
+//            }
+//        };
+//        fab.setOnClickListener(listener);
+//    }
 
-        if (this.assetClass.getId() == null) {
-            // new record
-            return;
-        }
+//    private void pickStock() {
+//        Intent intent = new Intent(getActivity(), SecurityListActivity.class);
+//        intent.setAction(Intent.ACTION_PICK);
+//        // send the list of existing stock ids to filter out.
+//        getActivity().startActivityForResult(intent, AssetClassEditActivity.REQUEST_STOCK_ID);
+//    }
 
-        // otherwise we're in edit mode.
+//    private MoneySimpleCursorAdapter createAdapter() {
+//        return new MoneySimpleCursorAdapter(getActivity(),
+//            android.R.layout.simple_list_item_1,
+//            null,
+//            new String[]{Stock.SYMBOL },
+//            new int[]{ android.R.id.text1}, 0);
+//
+////        setListAdapter(mAdapter);
+////        setListShown(false);
+//
+//    }
 
-        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
-        fab.attachToListView(listView);
+//    private ListView getListView() {
+//        View view = getView();
+//        if (view == null) return null;
+//
+//        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
+//        return listView;
+//    }
 
-        fab.setVisibility(View.VISIBLE);
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // select a security
-                pickStock();
-            }
-        };
-        fab.setOnClickListener(listener);
-    }
-
-    private void pickStock() {
-        Intent intent = new Intent(getActivity(), SecurityListActivity.class);
-        intent.setAction(Intent.ACTION_PICK);
-        // todo: send the list of existing stock ids to filter out.
-        getActivity().startActivityForResult(intent, AssetClassEditActivity.REQUEST_STOCK_ID);
-    }
-
-    private MoneySimpleCursorAdapter createAdapter() {
-        return new MoneySimpleCursorAdapter(getActivity(),
-            android.R.layout.simple_list_item_1,
-            null,
-            new String[]{Stock.SYMBOL },
-            new int[]{ android.R.id.text1}, 0);
-
-//        setListAdapter(mAdapter);
-//        setListShown(false);
-
-    }
-
-    private ListView getListView() {
-        View view = getView();
-        if (view == null) return null;
-
-        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
-        return listView;
-    }
-
-    private ListView initializeListView(ListAdapter adapter) {
-        ListView listView = getListView();
-        if (listView == null) return null;
-
-        listView.setAdapter(adapter);
-
-        AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // todo: show context menu
-                getActivity().openContextMenu(view);
-            }
-        };
-        listView.setOnItemClickListener(onItemClickListener);
-
-        return listView;
-    }
+//    private ListView initializeListView(ListAdapter adapter) {
+//        ListView listView = getListView();
+//        if (listView == null) return null;
+//
+//        listView.setAdapter(adapter);
+//
+//        AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // show context menu
+//                getActivity().openContextMenu(view);
+//            }
+//        };
+//        listView.setOnItemClickListener(onItemClickListener);
+//
+//        return listView;
+//    }
 
 }

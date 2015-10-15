@@ -292,8 +292,9 @@ public class AssetAllocationService {
             assetClass.setType(ItemType.Allocation);
 
             // load stock links
-            AssetClassStockRepository classStockRepo = new AssetClassStockRepository(this.context);
-            assetClass.setStockLinks(classStockRepo.loadForClass(assetClass.getId()));
+            AssetClassStockRepository linkRepo = new AssetClassStockRepository(this.context);
+            List<AssetClassStock> links = linkRepo.loadForClass(assetClass.getId());
+            assetClass.setStockLinks(links);
 
             if (assetClass.getStockLinks().size() == 0) return;
 
@@ -306,7 +307,8 @@ public class AssetAllocationService {
                 }).toArray();
 
             StockRepository stockRepo = new StockRepository(this.context);
-            assetClass.setStocks(stockRepo.loadForSymbols(symbols));
+            List<Stock> stocks = stockRepo.loadForSymbols(symbols);
+            assetClass.setStocks(stocks);
         }
     }
 

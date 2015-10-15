@@ -236,7 +236,7 @@ public class AssetAllocationTests {
 
         // One root element with allocation.
         AssetClass class1 = AssetClass.create("class1");
-        class1.setAllocation(14.28);
+        class1.setAllocation(MoneyFactory.fromString("14.28"));
         created = classRepo.insert(class1);
         assertThat(created).isTrue();
 
@@ -246,14 +246,14 @@ public class AssetAllocationTests {
 
         // One group with child allocation.
         AssetClass class2 = AssetClass.create("class2");
-        class2.setAllocation(13.00);    // this should get overwritten
+        class2.setAllocation(MoneyFactory.fromString("13"));    // this should get overwritten
         created = classRepo.insert(class2);
         assertThat(created).isTrue();
 
         // child
         AssetClass class2child = AssetClass.create("class2child");
         class2child.setParentId(class2.getId());
-        class2child.setAllocation(25.16);
+        class2child.setAllocation(MoneyFactory.fromString("25.16"));
         created = classRepo.insert(class2child);
         assertThat(created).isTrue();
 

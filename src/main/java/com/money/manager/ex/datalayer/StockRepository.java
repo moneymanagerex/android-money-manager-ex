@@ -110,7 +110,7 @@ public class StockRepository
         String placeHolders = dbUtils.makePlaceholders(symbols.length);
 
         Cursor c = openCursor(null,
-            Stock.STOCKID + " IN (" + placeHolders + ")",
+            Stock.SYMBOL + " IN (" + placeHolders + ")",
             symbols,
             null);
         if (c == null) return null;

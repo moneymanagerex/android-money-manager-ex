@@ -37,8 +37,6 @@ import com.money.manager.ex.servicelayer.AssetAllocationService;
 public class AssetClassEditActivity
     extends BaseFragmentActivity {
 
-    public static final int REQUEST_STOCK_ID = 1;
-    public static final String INTENT_RESULT_STOCK_SYMBOL = "AssetClassEditActivity:StockSymbol";
     public static final String KEY_ASSET_CLASS_ID = "AssetClassEditActivity:AssetClassId";
     public static final String KEY_PARENT_ID = "AssetClassEditActivity:parentId";
 
@@ -67,20 +65,19 @@ public class AssetClassEditActivity
         return true;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != Activity.RESULT_OK) return;
-
-        switch (requestCode) {
-            case REQUEST_STOCK_ID:
-//                Integer stockId = data.getIntExtra(INTENT_RESULT_STOCK_SYMBOL, Constants.NOT_SET);
-                String stockSymbol = data.getStringExtra(INTENT_RESULT_STOCK_SYMBOL);
-                assignStockToAssetClass(stockSymbol);
-                break;
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (resultCode != Activity.RESULT_OK) return;
+//
+//        switch (requestCode) {
+//            case REQUEST_STOCK_ID:
+//                String stockSymbol = data.getStringExtra(INTENT_RESULT_STOCK_SYMBOL);
+//                assignStockToAssetClass(stockSymbol);
+//                break;
+//        }
+//    }
 
     @Override
     public boolean onActionDoneClick() {
@@ -138,12 +135,9 @@ public class AssetClassEditActivity
 
 //        Fragment fragment = fm.findFragmentByTag(tag);
         Fragment fragment = fm.findFragmentById(R.id.fragment);
-        if (fragment != null) {
-            return (AssetClassEditFragment) fragment;
-        } else {
-            return null;
-        }
+        if (fragment == null) return null;
 
+        return (AssetClassEditFragment) fragment;
     }
 
     private void loadIntent() {
@@ -180,15 +174,5 @@ public class AssetClassEditActivity
 
         AssetClassEditFragment fragment = getFragment();
         fragment.assetClass = assetClass;
-    }
-
-    private void assignStockToAssetClass(String stockSymbol) {
-        AssetAllocationService service = new AssetAllocationService(this);
-        service.assignStockToAssetClass(stockSymbol, this.assetClassId);
-
-        AssetClassEditFragment fragment = getFragment();
-        if (fragment != null) {
-            fragment.loadData();
-        }
     }
 }

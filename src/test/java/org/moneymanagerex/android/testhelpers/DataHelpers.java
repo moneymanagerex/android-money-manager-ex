@@ -115,7 +115,7 @@ public class DataHelpers {
         stockRepo.insert(stock);
 
         AssetClass stocks = AssetClass.create("stocks");
-        stocks.setAllocation(70.0);
+        stocks.setAllocation(MoneyFactory.fromString("70"));
         repo.insert(stocks);
 
         AssetClassStock link = AssetClassStock.create(stocks.getId(), stock.getSymbol());
