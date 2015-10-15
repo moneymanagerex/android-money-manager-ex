@@ -211,6 +211,10 @@ public class AssetAllocationService {
     public AssetClass findChild(int childId, AssetClass tree) {
         AssetClass result = null;
 
+        if (childId == Constants.NOT_SET) {
+            return tree;
+        }
+
         // iterate through all elements
 
         Integer id = tree.getId();

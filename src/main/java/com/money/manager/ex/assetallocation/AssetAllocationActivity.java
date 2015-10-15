@@ -70,6 +70,8 @@ public class AssetAllocationActivity
         }
     }
 
+    // Asset Class display fragment
+
     @Override
     public void assetClassSelected(int assetClassId) {
         // todo: Handling:
@@ -81,6 +83,13 @@ public class AssetAllocationActivity
         AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
 
         showAssetClass(toShow);
+    }
+
+    @Override
+    public AssetClass getAssetClass(int id) {
+        AssetAllocationService service = new AssetAllocationService(this);
+        AssetClass result = service.findChild(id, this.assetAllocation);
+        return result;
     }
 
     // Loader
@@ -133,11 +142,11 @@ public class AssetAllocationActivity
 
 //        String tag = fragment.getTag();
         // find which allocation is being displayed currently.
-        Integer id = fragment.assetClass.getId();
+        Integer id = fragment.getArguments().getInt(AssetAllocationFragment.PARAM_ASSET_CLASS_ID);
 
         AssetClass toShow;
         if (id != null) {
-            // todo: check; find it again in the reloaded data
+            // todo: find it again in the reloaded data
             AssetAllocationService service = new AssetAllocationService(this);
             toShow = service.findChild(id, assetAllocation);
         } else {
@@ -152,7 +161,7 @@ public class AssetAllocationActivity
     private void showAssetClass(AssetClass assetClass) {
         // show the fragment
         FragmentManager fm = getSupportFragmentManager();
-        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass);
+        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass.getId());
         String tag = assetClass.getId() != null
             ? assetClass.getId().toString()
             : "root";

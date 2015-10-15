@@ -16,9 +16,12 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import com.money.manager.ex.domainmodel.AssetClass;
+
 /**
  * Callbacks from the Asset Allocation fragment to the activity.
  */
 public interface DetailFragmentCallbacks {
     void assetClassSelected(int assetClassId);
+    AssetClass getAssetClass(int id);
 }

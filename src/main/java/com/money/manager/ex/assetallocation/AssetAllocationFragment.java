@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
@@ -52,30 +53,29 @@ import com.shamanland.fonticon.FontIconDrawable;
 public class AssetAllocationFragment
     extends BaseListFragment {
 
-    private static final int LOADER_ASSET_CLASSES = 1;
+    public static final String PARAM_ASSET_CLASS_ID = "assetClassId";
 
     /**
      * Creates a new fragment that display the asset class. Shows the list of child elements
      * and sum from the sent asset class.
-     * @param assetClass Asset Class to show.
+     * @param assetClassId Id of the Asset Class to show.
      * @return Fragment
      */
-    public static AssetAllocationFragment create(AssetClass assetClass) {
+    public static AssetAllocationFragment create(Integer assetClassId) {
         AssetAllocationFragment fragment = new AssetAllocationFragment();
 
-//        Bundle arguments = new Bundle();
-//        arguments.putString(PARAM_CURRENCY_CODE, currencyCode);
-//        fragment.setArguments(arguments);
-
-        fragment.assetClass = assetClass;
+        Bundle arguments = new Bundle();
+        if (assetClassId == null) {
+            assetClassId = Constants.NOT_SET;
+        }
+        arguments.putInt(PARAM_ASSET_CLASS_ID, assetClassId);
+        fragment.setArguments(arguments);
 
         return fragment;
     }
 
     public AssetAllocationFragment() {
     }
-
-    public AssetClass assetClass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,8 @@ public class AssetAllocationFragment
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
 
-        showData(this.assetClass);
+        AssetClass assetClass = retrieveData();
+        showData(assetClass);
     }
 
     @Override
@@ -149,8 +150,10 @@ public class AssetAllocationFragment
     public void onFloatingActionButtonClickListener() {
         ExceptionHandler handler = new ExceptionHandler(getActivity());
 
+        AssetClass assetClass = retrieveData();
+
         // check which item to create
-        ItemType type = this.assetClass.getType();
+        ItemType type = assetClass.getType();
         if (type == null) {
             handler.showMessage("Item type not set.");
             return;
@@ -333,9 +336,10 @@ public class AssetAllocationFragment
     }
 
     private void startEditAssetClassActivityForInsert() {
+
         Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
-        intent.putExtra(AssetClassEditActivity.KEY_PARENT_ID, this.assetClass.getId());
+        intent.putExtra(AssetClassEditActivity.KEY_PARENT_ID, this.getAssetClassId());
         startActivity(intent);
     }
 
@@ -485,6 +489,22 @@ public class AssetAllocationFragment
             };
             cursor.addRow(values);
         }
+    }
+
+    private int getAssetClassId() {
+        return getArguments().getInt(PARAM_ASSET_CLASS_ID);
+    }
+
+    private AssetClass retrieveData() {
+        AssetClass result = null;
+
+        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
+        if (parent != null) {
+            int id = getAssetClassId();
+            result = parent.getAssetClass(id);
+        }
+
+        return result;
     }
 
     private void showTypeSelectorDialog() {
