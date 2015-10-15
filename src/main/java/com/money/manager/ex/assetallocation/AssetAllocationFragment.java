@@ -20,30 +20,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
-
-import info.javaperformance.money.Money;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -84,21 +80,22 @@ public class AssetAllocationFragment
 
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 //        View view = inflater.inflate(R.layout.fragment_asset_allocation, container, false);
-//
-//        return view;
-//    }
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        return view;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(getActivity().getResources().getString(R.string.asset_classes_empty));
-
         renderHeader();
+
+        setEmptyText(getActivity().getResources().getString(R.string.asset_classes_empty));
 
         // create and link the adapter
         AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null);
@@ -133,6 +130,12 @@ public class AssetAllocationFragment
         super.onPause();
 
 //        unregisterObserver();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        setListAdapter(null);
     }
 
     @Override
@@ -353,6 +356,9 @@ public class AssetAllocationFragment
 //    }
 
     private void renderHeader() {
+        ListView listView = getListView();
+        if (listView.getHeaderViewsCount() > 0) return;
+
         View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
         MatrixCursorColumns values = new MatrixCursorColumns();
 
@@ -365,14 +371,12 @@ public class AssetAllocationFragment
 
         UIHelpers.populateAssetClassRow(view, values);
 
-        ListView listView = getListView();
-//        listView.addHeaderView(view, null, false);
-        listView.addHeaderView(view);
+        listView.addHeaderView(view, null, false);
+//        listView.addHeaderView(view);
     }
 
     private void renderFooter(AssetClass assetClass) {
-//        View footer = View.inflate(getActivity(), R.layout.item_generic_report_2_columns, null);
-        View footer = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
+        View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
         MatrixCursorColumns values = new MatrixCursorColumns();
 
 //        name.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -385,10 +389,11 @@ public class AssetAllocationFragment
         values.currentValue = assetClass.getCurrentValue().toString();
         values.difference = assetClass.getDifference().toString();
 
-        UIHelpers.populateAssetClassRow(footer, values);
+        UIHelpers.populateAssetClassRow(view, values);
 
         ListView listView = getListView();
-        listView.addFooterView(footer);
+//        listView.addFooterView(view);
+        listView.addFooterView(view, null, false);
     }
 
     private void showAssetClass(int id) {
