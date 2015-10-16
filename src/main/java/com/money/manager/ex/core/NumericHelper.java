@@ -64,61 +64,23 @@ public class NumericHelper {
         return result;
     }
 
-    public String getNumberFormatted(Money value, int decimals, String decimalSeparator, String groupSeparator) {
-//        value = roundNumber(value, decimals);
-        value = value.truncate(decimals);
+    /**
+     * Truncate the amount to the currency precision setting.
+     * @return Amount truncated to the currency precision.
+     */
+    public Money truncateToCurrency(Money amount, Currency currency) {
+        int scale = currency.getScale();
+        int precision = getNumberOfDecimals(scale);
 
-        // set format
-        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
-        // getDecimalPoint()
-        if (!(TextUtils.isEmpty(decimalSeparator))) {
-            formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
-        }
-        // getGroupSeparator()
-        if (!(TextUtils.isEmpty(groupSeparator))) {
-            formatSymbols.setGroupingSeparator(groupSeparator.charAt(0));
-        }
-
-        // All these use locale-dependent formatting.
-//        DecimalFormat formatter = new DecimalFormat();
-//        Locale appLocale = MoneyManagerApplication.getInstanceApp().getLocale();
-//        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(appLocale);
-        String pattern = NumericPatternGenerator.getPattern(decimals);
-        DecimalFormat formatter = new DecimalFormat(pattern);
-
-        formatter.setGroupingSize(3);
-        formatter.setDecimalFormatSymbols(formatSymbols);
-
-        formatter.setMaximumFractionDigits(decimals);
-        formatter.setMinimumFractionDigits(decimals);
-
-//        Double number = value.toDouble();
-        String result = formatter.format(value.toBigDecimal());
-        return result;
-    }
-
-//    public String getNumberFormatted(Money value, TableCurrencyFormats currency) {
-//        if (currency == null) {
-//            currency = this.getCurrencyService().getBaseCurrency();
-//        }
-//
-//        return getNumberFormatted(value, currency.getScale(), currency.getDecimalPoint(),
-//                    currency.getGroupSeparator());
-//    }
-
-    public String getNumberFormatted(Money value, double scale, String decimalPoint, String groupSeparator) {
-        // Round the number first.
-        int decimals = getNumberOfDecimals(scale);
-
-        return getNumberFormatted(value, decimals, decimalPoint, groupSeparator);
+        return amount.truncate(precision);
     }
 
     /**
      * Extracts the number of decimal places from scale/precision value.
-     * @param scale
-     * @return
+     * @param scale Scale, usually from the currency.
+     * @return Number of decimals to use (precision?).
      */
-    public int getNumberOfDecimals(double scale) {
+    public int getNumberOfDecimals(int scale) {
         double decimals = Math.log(scale) / Math.log(10.0);
         int result = (int) Math.round(decimals);
         return result;
@@ -126,37 +88,6 @@ public class NumericHelper {
 
     public String removeBlanks(String input) {
         return input.replace(" ", "");
-    }
-
-    /**
-     *
-     * @param value value to format
-     * @param showSymbols Whether to include the currency symbol in the output.
-     * @return formatted value
-     */
-    public String getValueFormatted(Money value, boolean showSymbols, Currency currency) {
-        String result = this.getNumberFormatted(value, currency.getScale(),
-                currency.getDecimalPoint(), currency.getGroupSeparator());
-
-        // check suffix
-        if ((showSymbols) && (!TextUtils.isEmpty(currency.getSfxSymbol()))) {
-            result = result + " " + currency.getSfxSymbol();
-        }
-        // check prefix
-        if (((showSymbols) && !TextUtils.isEmpty(currency.getPfxSymbol()))) {
-            result = currency.getPfxSymbol() + " " + result;
-        }
-
-        return result;
-    }
-
-    /**
-     *
-     * @param value value to format
-     * @return value formatted
-     */
-    public String getValueFormatted(Money value, Currency currency) {
-        return getValueFormatted(value, true, currency);
     }
 
     /**

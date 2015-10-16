@@ -17,9 +17,11 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
@@ -30,6 +32,7 @@ import com.money.manager.ex.settings.AppSettings;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -37,7 +40,6 @@ import info.javaperformance.money.Money;
 
 /**
  * Utilities to assist with formatting dates and numbers.
- * Created by Alen on 26/09/2015.
  */
 public class FormatUtilities {
 
@@ -80,27 +82,33 @@ public class FormatUtilities {
 
     public String formatWithLocale(Money amount) {
         // Use the number of decimals from the base currency.
-        int decimals = this.getNumberOfDecimalsForBaseCurrency();
+        int scale = this.getScaleForBaseCurrency();
+
+
         // separators from the locale.
         String decimalSeparator = getDecimalSeparatorForAppLocale();
         String groupSeparator = getGroupingSeparatorForAppLocale();
 
-        return this.numericHelper.getNumberFormatted(amount, decimals, decimalSeparator, groupSeparator);
+        return getNumberFormatted(amount, scale, decimalSeparator, groupSeparator);
     }
 
-    public int getNumberOfDecimalsForBaseCurrency() {
+    public Context getContext() {
+        return this.context;
+    }
+
+    public int getScaleForBaseCurrency() {
         CurrencyService service = new CurrencyService(context);
         Currency baseCurrency = service.getBaseCurrency();
         if (baseCurrency == null) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
             handler.showMessage(context.getString(R.string.base_currency_not_set));
-            // arbitrary setting
-            return 2;
+
+            return Constants.DEFAULT_PRECISION;
         }
 
-        double scale = baseCurrency.getScale();
-        int decimals = this.numericHelper.getNumberOfDecimals(scale);
-        return decimals;
+        int scale = baseCurrency.getScale();
+//        int decimals = this.numericHelper.getNumberOfDecimals(scale);
+        return scale;
     }
 
     public String getDecimalSeparatorForAppLocale() {
@@ -124,4 +132,75 @@ public class FormatUtilities {
 
         return separator;
     }
+
+    /**
+     *
+     * @param value value to format
+     * @param showSymbols Whether to include the currency symbol in the output.
+     * @return formatted value
+     */
+    public String getValueFormatted(Money value, boolean showSymbols, Currency currency) {
+        String result = this.getNumberFormatted(value, currency.getScale(),
+            currency.getDecimalPoint(), currency.getGroupSeparator());
+
+        // check suffix
+        if ((showSymbols) && (!TextUtils.isEmpty(currency.getSfxSymbol()))) {
+            result = result + " " + currency.getSfxSymbol();
+        }
+        // check prefix
+        if (((showSymbols) && !TextUtils.isEmpty(currency.getPfxSymbol()))) {
+            result = currency.getPfxSymbol() + " " + result;
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param value value to format
+     * @return value formatted
+     */
+    public String getValueFormatted(Money value, Currency currency) {
+        return getValueFormatted(value, true, currency);
+    }
+
+    public String getNumberFormatted(Money value, int scale, String decimalSeparator, String groupSeparator) {
+        int decimals = this.numericHelper.getNumberOfDecimals(scale);
+
+        value = value.truncate(decimals);
+
+        // set format
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        // getDecimalPoint()
+        if (!(TextUtils.isEmpty(decimalSeparator))) {
+            formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
+        }
+        // getGroupSeparator()
+        if (!(TextUtils.isEmpty(groupSeparator))) {
+            formatSymbols.setGroupingSeparator(groupSeparator.charAt(0));
+        }
+
+        // All these use locale-dependent formatting.
+//        DecimalFormat formatter = new DecimalFormat();
+//        Locale appLocale = MoneyManagerApplication.getInstanceApp().getLocale();
+//        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(appLocale);
+        String pattern = NumericPatternGenerator.getPattern(decimals);
+        DecimalFormat formatter = new DecimalFormat(pattern);
+
+        formatter.setGroupingSize(3);
+        formatter.setDecimalFormatSymbols(formatSymbols);
+
+        formatter.setMaximumFractionDigits(decimals);
+        formatter.setMinimumFractionDigits(decimals);
+
+        String result = formatter.format(value.toBigDecimal());
+        return result;
+    }
+
+//    public String getNumberFormatted(Money value, double scale, String decimalPoint, String groupSeparator) {
+//        // Round the number first.
+//        int decimals = getNumberOfDecimals(scale);
+//
+//        return getNumberFormatted(value, decimals, decimalPoint, groupSeparator);
+//    }
 }

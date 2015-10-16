@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -70,6 +71,10 @@ public class CurrencyService {
     }
 
     private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
 
     /**
      * @param currencyId of the currency to be get
@@ -245,7 +250,7 @@ public class CurrencyService {
         // find currency id
         if (currencyId != null) {
             Currency tableCurrency = getCurrency(currencyId);
-            NumericHelper helper = new NumericHelper(mContext);
+//            NumericHelper helper = new NumericHelper(mContext);
 
             if (tableCurrency == null) {
                 // no currency
@@ -254,7 +259,8 @@ public class CurrencyService {
 //                result = String.format("%.2f", value);
             } else {
                 // formatted value
-                result = helper.getValueFormatted(value, tableCurrency);
+                FormatUtilities formats = new FormatUtilities(getContext());
+                result = formats.getValueFormatted(value, tableCurrency);
             }
         } else {
             result = String.valueOf(value);
@@ -268,7 +274,7 @@ public class CurrencyService {
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
         java.util.Currency localeCurrency;
         Currency newCurrency;
-        CurrencyRepository repo = new CurrencyRepository(mContext);
+        CurrencyRepository repo = new CurrencyRepository(getContext());
         Currency existingCurrency;
 
         for (Locale locale : locales) {
@@ -298,7 +304,7 @@ public class CurrencyService {
 
                 repo.insert(newCurrency);
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                 handler.handle(e, "importing currencies from locale " + locale.getDisplayName());
             }
         }
@@ -312,7 +318,7 @@ public class CurrencyService {
      * @return A boolean indicating if the currency is in use.
      */
     public boolean isCurrencyUsed(int currencyId) {
-        AccountRepository accountRepository = new AccountRepository(mContext);
+        AccountRepository accountRepository = new AccountRepository(getContext());
         return accountRepository.anyAccountsUsingCurrency(currencyId);
     }
 
@@ -324,58 +330,19 @@ public class CurrencyService {
      */
     public Boolean saveBaseCurrencyId(Integer currencyId) {
 
-        InfoService infoService = new InfoService(mContext);
+        InfoService infoService = new InfoService(getContext());
         boolean success = infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
 
         // cache the new base currency
         if (success) {
             mBaseCurrencyId = currencyId;
         } else {
-            Toast.makeText(mContext, mContext.getString(R.string.error_saving_default_currency), Toast.LENGTH_SHORT)
+            Toast.makeText(getContext(), getContext().getString(R.string.error_saving_default_currency), Toast.LENGTH_SHORT)
                     .show();
         }
 
         return success;
     }
-
-//    /**
-//     *  Load all currencies into map
-//     */
-//    public boolean loadAllCurrencies() {
-//        boolean result = true;
-//        TableCurrencyFormats tableCurrency = new TableCurrencyFormats();
-//        Cursor cursor;
-//
-//        try {
-//            cursor = mContext.getContentResolver().query(tableCurrency.getUri(),
-//                    tableCurrency.getAllColumns(),
-//                    null, null, null);
-//            if (cursor == null) return false;
-//
-//            // load data into map
-//            while (cursor.moveToNext()) {
-//                cacheCurrencyFromCursor(cursor);
-//            }
-//            cursor.close();
-//        } catch (Exception e) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(e, "loading currencies");
-//            result = false;
-//        }
-//
-//        return result;
-//    }
-
-//    private void cacheCurrencyFromCursor(Cursor cursor) {
-//        Currency currency = new Currency();
-//        currency.loadFromCursor(cursor);
-//
-////        Integer currencyId = cursor.getInteger(cursor.getColumnIndex(Currency.CURRENCYID));
-////        Integer currencyId = currency.getCurrencyId();
-//        // put object into map
-////        getCurrenciesStore().put(currencyId, currency);
-//        cacheCurrency(currency);
-//    }
 
     /**
      * Get id of base currency

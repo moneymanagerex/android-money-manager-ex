@@ -112,12 +112,12 @@ public class Currency
         setString(GROUP_SEPARATOR, value);
     }
 
-    public Double getScale() {
-        return getDouble(SCALE);
+    public Integer getScale() {
+        return getInteger(SCALE);
     }
 
-    public void setScale(double value) {
-        setDouble(SCALE, value);
+    public void setScale(int value) {
+        setInteger(SCALE, value);
     }
 
     public String getSfxSymbol() {

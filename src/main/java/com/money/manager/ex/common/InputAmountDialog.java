@@ -51,22 +51,25 @@ public class InputAmountDialog
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
+    private static final String KEY_ROUNDING = "InputAmountDialog:Rounding";
 
-    public static InputAmountDialog getInstance(int id, Money amount) {
-        return getInstance(id, amount, null);
+    public static InputAmountDialog getInstance(int viewId, Money amount) {
+        return getInstance(viewId, amount, null);
     }
 
     public static InputAmountDialog getInstance(int id, Money amount, Integer currencyId) {
-        Bundle args = new Bundle();
-        args.putInt("id", id);
-        String amountString = amount == null ? "0" : amount.toString();
-        args.putString("amount", amountString);
-
         InputAmountDialog dialog = new InputAmountDialog();
-        dialog.setArguments(args);
-        dialog.mDisplayCurrencyId = currencyId;
+
+        Bundle args = new Bundle();
+        args.putInt(KEY_ID_VIEW, id);
+        String amountString = amount == null ? "0" : amount.toString();
+        args.putString(KEY_AMOUNT, amountString);
+
+        args.putInt(KEY_CURRENCY_ID, currencyId);
         // the default value is True.
-        dialog.roundToCurrencyDecimals = true;
+        args.putBoolean(KEY_ROUNDING, true);
+
+        dialog.setArguments(args);
 
         return dialog;
     }
@@ -90,7 +93,7 @@ public class InputAmountDialog
 
     private int mIdView;
     private Money mAmount;
-    private Integer mDisplayCurrencyId;
+    private Integer mCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
     private IInputAmountDialogListener mListener;
@@ -132,27 +135,13 @@ public class InputAmountDialog
         mCurrencyService = new CurrencyService(getContext());
         this.formatUtilities = new FormatUtilities(getActivity());
 
+        // get arguments
+        restoreArguments();
+
         if (savedInstanceState != null) {
             restoreSavedInstanceState(savedInstanceState);
-            return;
-        }
-
-        // not in restored state. new dialog
-
-        mIdView = getArguments().getInt("id");
-        // Display the existing amount, if any has been passed into the dialog.
-        NumericHelper numericHelper = new NumericHelper(getContext());
-        Currency currency = mCurrencyService.getCurrency(mDisplayCurrencyId);
-
-        Money amount = MoneyFactory.fromString(getArguments().getString("amount"));
-        if (currency != null) {
-            // no currency and no base currency set.
-            int decimals = numericHelper.getNumberOfDecimals(currency.getScale());
-            mAmount = this.roundToCurrencyDecimals
-                    ? amount.truncate(decimals)
-                    : amount;
         } else {
-            mAmount = amount;
+            initializeNewDialog();
         }
     }
 
@@ -296,7 +285,7 @@ public class InputAmountDialog
 //        savedInstanceState.putDouble(KEY_AMOUNT, mAmount.doubleValue());
         savedInstanceState.putString(KEY_AMOUNT, mAmount.toString());
 
-        if (mDisplayCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mDisplayCurrencyId);
+        if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
 
         mExpression = txtMain.getText().toString();
@@ -328,9 +317,10 @@ public class InputAmountDialog
         if (exp.length() > 0) {
             try {
                 Double result = new ExpressionBuilder(exp).build().evaluate();
-                // Truncate the result to the default precision.
+
+                int precision = getPrecision();
                 mAmount = MoneyFactory.fromString(Double.toString(result))
-                        .truncate(Constants.DEFAULT_PRECISION);
+                        .truncate(precision);
             } catch (IllegalArgumentException ex) {
                 // Just display the last valid value.
                 refreshFormattedAmount();
@@ -358,17 +348,30 @@ public class InputAmountDialog
     public String getFormattedAmount() {
         String result;
 
-        if (mDisplayCurrencyId == null) {
+        if (mCurrencyId == null) {
             FormatUtilities format = new FormatUtilities(getActivity());
             result = format.formatWithLocale(mAmount);
         } else {
-            result = mCurrencyService.getCurrencyFormatted(mDisplayCurrencyId, mAmount);
+            result = mCurrencyService.getCurrencyFormatted(mCurrencyId, mAmount);
         }
 
         return result;
     }
 
     // private
+
+    private int getPrecision() {
+        // if using a currency and currency precision is required, use that.
+        if (this.roundToCurrencyDecimals && this.mCurrencyId != null) {
+            Currency currency = this.mCurrencyService.getCurrency(mCurrencyId);
+            // get precision from the currency
+            NumericHelper helper = new NumericHelper(getActivity());
+            return helper.getNumberOfDecimals(currency.getScale());
+        } else {
+            // use default precision
+            return Constants.DEFAULT_PRECISION;
+        }
+    }
 
     private String deleteLastCharacterFrom(String number) {
         // check length
@@ -388,13 +391,15 @@ public class InputAmountDialog
     }
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_ID_VIEW)) {
+            mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
+        }
         if (savedInstanceState.containsKey(KEY_AMOUNT)) {
             mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
         }
-        if (savedInstanceState.containsKey(KEY_CURRENCY_ID))
-            mDisplayCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
-        if (savedInstanceState.containsKey(KEY_ID_VIEW))
-            mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
+        if (savedInstanceState.containsKey(KEY_CURRENCY_ID)) {
+            mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+        }
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
         }
@@ -413,7 +418,7 @@ public class InputAmountDialog
     }
 
     private boolean isCurrencySet() {
-        return this.mDisplayCurrencyId != null && this.mDisplayCurrencyId != Constants.NOT_SET;
+        return this.mCurrencyId != null && this.mCurrencyId != Constants.NOT_SET;
     }
 
     private Money getAmount() {
@@ -422,10 +427,8 @@ public class InputAmountDialog
         // to round or not? Handle case when no base currency set.
         if (this.roundToCurrencyDecimals && isCurrencySet()) {
             NumericHelper numericHelper = new NumericHelper(getContext());
-            int decimals = numericHelper.getNumberOfDecimals(
-                    mCurrencyService.getCurrency(mDisplayCurrencyId).getScale());
-
-            result = mAmount.truncate(decimals);
+            Currency currency = mCurrencyService.getCurrency(mCurrencyId);
+            result = numericHelper.truncateToCurrency(mAmount, currency);
         } else {
             result = mAmount;
         }
@@ -444,15 +447,16 @@ public class InputAmountDialog
     }
 
     private String getFormattedAmountForEditing(Money amount) {
-        NumericHelper helper = new NumericHelper(getContext());
+//        NumericHelper helper = new NumericHelper(getContext());
+        FormatUtilities formats = new FormatUtilities(getActivity());
 
         String result;
         if(this.roundToCurrencyDecimals) {
             // use decimals from the display currency.
-            Currency displayCurrency = mCurrencyService.getCurrency(mDisplayCurrencyId);
+            Currency displayCurrency = mCurrencyService.getCurrency(mCurrencyId);
             if (displayCurrency != null) {
                 // but decimal and group separators from the base currency.
-                result = helper.getNumberFormatted(amount, displayCurrency.getScale(),
+                result = formats.getNumberFormatted(amount, displayCurrency.getScale(),
                     formatUtilities.getDecimalSeparatorForAppLocale(),
                     formatUtilities.getGroupingSeparatorForAppLocale());
             } else {
@@ -464,6 +468,30 @@ public class InputAmountDialog
         }
 
         return result;
+    }
+
+    private void initializeNewDialog() {
+        // not in restored state. new dialog
+
+        // Display the existing amount, if any has been passed into the dialog.
+        NumericHelper numericHelper = new NumericHelper(getContext());
+        Currency currency = mCurrencyService.getCurrency(mCurrencyId);
+
+        Money amount = MoneyFactory.fromString(getArguments().getString(KEY_AMOUNT));
+        if (currency != null && this.roundToCurrencyDecimals) {
+            mAmount = numericHelper.truncateToCurrency(amount, currency);
+        } else {
+            // no currency and no base currency set.
+            mAmount = amount;
+        }
+    }
+
+    private void restoreArguments() {
+        Bundle args = getArguments();
+
+        this.mIdView = args.getInt(KEY_ID_VIEW);
+        this.mCurrencyId = args.getInt(KEY_CURRENCY_ID);
+        this.roundToCurrencyDecimals = args.getBoolean(KEY_ROUNDING);
     }
 
     private void showAmountInEntryField() {
