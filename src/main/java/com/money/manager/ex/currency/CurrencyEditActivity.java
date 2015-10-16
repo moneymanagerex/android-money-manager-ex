@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -35,15 +36,13 @@ import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
 /**
- *
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
+ * Edit currency
  */
 public class CurrencyEditActivity
         extends BaseFragmentActivity {
 
     // key intent
     public static final String KEY_CURRENCY_ID = "CurrencyEditActivity:CurrencyId";
-    private static final String LOGCAT = CurrencyEditActivity.class.getSimpleName();
     // save-instance key
     private static final String KEY_CURRENCY_NAME = "CurrencyEditActivity:CurrencyName";
     private static final String KEY_CURRENCY_SYMBOL = "CurrencyEditActivity:CurrencySymbol";
@@ -61,15 +60,11 @@ public class CurrencyEditActivity
     private Integer mCurrencyId;
     // type of action
     private String mIntentAction = "";
-
-    private EditText edtCurrencyName, edtUnitName, edtCentsName, edtPrefix, edtSuffix,
-            edtDecimal, edtGroup, edtScale, edtConversion;
-    private Spinner spinCurrencySymbol;
+    CurrencyEditViewHolder holder;
 
     @Override
     public boolean onActionCancelClick() {
         finish();
-//        return super.onActionCancelClick();
         return true;
     }
 
@@ -90,32 +85,12 @@ public class CurrencyEditActivity
         setContentView(R.layout.currency_edit_activity);
         setToolbarStandardAction(getToolbar());
 
-        edtCurrencyName = (EditText) findViewById(R.id.editTextCurrencyName);
-        spinCurrencySymbol = (Spinner) findViewById(R.id.spinCurrencySymbol);
-        edtUnitName = (EditText) findViewById(R.id.editTextUnitName);
-        edtCentsName = (EditText) findViewById(R.id.editTextCentsName);
-        edtPrefix = (EditText) findViewById(R.id.editTextPrefixSymbol);
-        edtSuffix = (EditText) findViewById(R.id.editTextSuffixSymbol);
-        edtDecimal = (EditText) findViewById(R.id.editTextDecimalChar);
-        edtGroup = (EditText) findViewById(R.id.editTextGroupChar);
-        edtScale = (EditText) findViewById(R.id.editTextScale);
-        edtConversion = (EditText) findViewById(R.id.editTextConversion);
+
+        this.holder = CurrencyEditViewHolder.initialize(this);
 
         // save instance
         if (savedInstanceState != null) {
-            mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
-            edtCurrencyName.setText(savedInstanceState.getString(KEY_CURRENCY_NAME));
-            spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code)).indexOf(savedInstanceState.getString(KEY_CURRENCY_SYMBOL)), true);
-            edtUnitName.setText(savedInstanceState.getString(KEY_UNIT_NAME));
-            edtCentsName.setText(savedInstanceState.getString(KEY_CENTS_NAME));
-            edtPrefix.setText(savedInstanceState.getString(KEY_PREFIX_SYMBOL));
-            edtSuffix.setText(savedInstanceState.getString(KEY_SUFFIX_SYMBOL));
-            edtDecimal.setText(savedInstanceState.getString(KEY_DECIMAL_CHAR));
-            edtGroup.setText(savedInstanceState.getString(KEY_GROUP_CHAR));
-            edtScale.setText(savedInstanceState.getString(KEY_SCALE));
-            edtConversion.setText(savedInstanceState.getString(KEY_CONVERSION_TO_BASE));
-            // action
-            mIntentAction = savedInstanceState.getString(KEY_ACTION);
+            restoreInstanceState(savedInstanceState);
         }
         // manage intent
         if (getIntent() != null) {
@@ -130,41 +105,42 @@ public class CurrencyEditActivity
             mIntentAction = getIntent().getAction();
         }
 
-        // check default values for scale and baseconvrate
+        // check default values for scale and base conversion rate
         if (Intent.ACTION_INSERT.equalsIgnoreCase(mIntentAction)) {
-            if (TextUtils.isEmpty(edtScale.getText()))
-                edtScale.setText("100");
-            if (TextUtils.isEmpty(edtConversion.getText()))
-                edtConversion.setText("1");
+            if (TextUtils.isEmpty(holder.edtScale.getText()))
+                holder.edtScale.setText("100");
+            if (TextUtils.isEmpty(holder.edtConversion.getText()))
+                holder.edtConversion.setText("1");
             // set default separator
             DecimalFormatSymbols symbols = ((DecimalFormat) DecimalFormat.getInstance()).getDecimalFormatSymbols();
-            if (TextUtils.isEmpty(edtDecimal.getText()))
-                edtDecimal.setText(Character.toString(symbols.getDecimalSeparator()));
-            if (TextUtils.isEmpty(edtGroup.getText()))
-                edtGroup.setText(Character.toString(symbols.getGroupingSeparator()));
+            if (TextUtils.isEmpty(holder.edtDecimal.getText()))
+                holder.edtDecimal.setText(Character.toString(symbols.getDecimalSeparator()));
+            if (TextUtils.isEmpty(holder.edtGroup.getText()))
+                holder.edtGroup.setText(Character.toString(symbols.getGroupingSeparator()));
             // set default symbols
-            if (TextUtils.isEmpty(edtPrefix.getText()))
-                edtPrefix.setText(symbols.getCurrencySymbol());
+            if (TextUtils.isEmpty(holder.edtPrefix.getText()))
+                holder.edtPrefix.setText(symbols.getCurrencySymbol());
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // save the state of object
+
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId);
-        outState.putString(KEY_CURRENCY_NAME, edtCurrencyName.getText().toString());
-        if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-            outState.putString(KEY_CURRENCY_SYMBOL, getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()]);
+        outState.putString(KEY_CURRENCY_NAME, holder.edtCurrencyName.getText().toString());
+        if (holder.spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
+            outState.putString(KEY_CURRENCY_SYMBOL, getResources()
+                .getStringArray(R.array.currencies_code)[holder.spinCurrencySymbol.getSelectedItemPosition()]);
         }
-        outState.putString(KEY_UNIT_NAME, edtCurrencyName.getText().toString());
-        outState.putString(KEY_CENTS_NAME, edtCentsName.getText().toString());
-        outState.putString(KEY_PREFIX_SYMBOL, edtPrefix.getText().toString());
-        outState.putString(KEY_SUFFIX_SYMBOL, edtSuffix.getText().toString());
-        outState.putString(KEY_DECIMAL_CHAR, edtDecimal.getText().toString());
-        outState.putString(KEY_GROUP_CHAR, edtGroup.getText().toString());
-        outState.putString(KEY_SCALE, edtScale.getText().toString());
-        outState.putString(KEY_CONVERSION_TO_BASE, edtConversion.getText().toString());
+        outState.putString(KEY_UNIT_NAME, holder.edtCurrencyName.getText().toString());
+        outState.putString(KEY_CENTS_NAME, holder.edtCentsName.getText().toString());
+        outState.putString(KEY_PREFIX_SYMBOL, holder.edtPrefix.getText().toString());
+        outState.putString(KEY_SUFFIX_SYMBOL, holder.edtSuffix.getText().toString());
+        outState.putString(KEY_DECIMAL_CHAR, holder.edtDecimal.getText().toString());
+        outState.putString(KEY_GROUP_CHAR, holder.edtGroup.getText().toString());
+        outState.putString(KEY_SCALE, holder.edtScale.getText().toString());
+        outState.putString(KEY_CONVERSION_TO_BASE, holder.edtConversion.getText().toString());
     }
 
     private boolean loadData(int currencyId) {
@@ -177,21 +153,40 @@ public class CurrencyEditActivity
             return false;
         }
         // populate values
-        edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
-        spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
+        holder.edtCurrencyName.setText(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
+        holder.spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
             .indexOf(cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL))), true);
-        edtUnitName.setText(cursor.getString(cursor.getColumnIndex(Currency.UNIT_NAME)));
-        edtCentsName.setText(cursor.getString(cursor.getColumnIndex(Currency.CENT_NAME)));
-        edtPrefix.setText(cursor.getString(cursor.getColumnIndex(Currency.PFX_SYMBOL)));
-        edtSuffix.setText(cursor.getString(cursor.getColumnIndex(Currency.SFX_SYMBOL)));
-        edtDecimal.setText(cursor.getString(cursor.getColumnIndex(Currency.DECIMAL_POINT)));
-        edtGroup.setText(cursor.getString(cursor.getColumnIndex(Currency.GROUP_SEPARATOR)));
-        edtScale.setText(cursor.getString(cursor.getColumnIndex(Currency.SCALE)));
-        edtConversion.setText(cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE)));
+        holder.edtUnitName.setText(cursor.getString(cursor.getColumnIndex(Currency.UNIT_NAME)));
+        holder.edtCentsName.setText(cursor.getString(cursor.getColumnIndex(Currency.CENT_NAME)));
+        holder.edtPrefix.setText(cursor.getString(cursor.getColumnIndex(Currency.PFX_SYMBOL)));
+        holder.edtSuffix.setText(cursor.getString(cursor.getColumnIndex(Currency.SFX_SYMBOL)));
+        holder.edtDecimal.setText(cursor.getString(cursor.getColumnIndex(Currency.DECIMAL_POINT)));
+        holder.edtGroup.setText(cursor.getString(cursor.getColumnIndex(Currency.GROUP_SEPARATOR)));
+        holder.edtScale.setText(cursor.getString(cursor.getColumnIndex(Currency.SCALE)));
+        holder.edtConversion.setText(cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE)));
 
         cursor.close();
 
         return true;
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
+
+        holder.edtCurrencyName.setText(savedInstanceState.getString(KEY_CURRENCY_NAME));
+        holder.spinCurrencySymbol.setSelection(Arrays.asList(getResources().getStringArray(R.array.currencies_code))
+            .indexOf(savedInstanceState.getString(KEY_CURRENCY_SYMBOL)), true);
+        holder.edtUnitName.setText(savedInstanceState.getString(KEY_UNIT_NAME));
+        holder.edtCentsName.setText(savedInstanceState.getString(KEY_CENTS_NAME));
+        holder.edtPrefix.setText(savedInstanceState.getString(KEY_PREFIX_SYMBOL));
+        holder.edtSuffix.setText(savedInstanceState.getString(KEY_SUFFIX_SYMBOL));
+        holder.edtDecimal.setText(savedInstanceState.getString(KEY_DECIMAL_CHAR));
+        holder.edtGroup.setText(savedInstanceState.getString(KEY_GROUP_CHAR));
+        holder.edtScale.setText(savedInstanceState.getString(KEY_SCALE));
+        holder.edtConversion.setText(savedInstanceState.getString(KEY_CONVERSION_TO_BASE));
+
+        // action
+        mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
 
     /**
@@ -200,7 +195,7 @@ public class CurrencyEditActivity
      * @return true if data is valid
      */
     private boolean validateData() {
-        if (TextUtils.isEmpty(edtCurrencyName.getText().toString())) {
+        if (TextUtils.isEmpty(holder.edtCurrencyName.getText().toString())) {
             Toast.makeText(getApplicationContext(), R.string.currency_name_empty, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -213,55 +208,52 @@ public class CurrencyEditActivity
      * @return true if data is update into database
      */
     private boolean save() {
-        if (!validateData()) {
-            return false;
-        }
+        if (!validateData()) return false;
 
         Currency currency = new Currency();
-        currency.setCurrencyid(mCurrencyId);
 
-        currency.setName(edtCurrencyName.getText().toString().trim());
+        currency.setName(holder.edtCurrencyName.getText().toString().trim());
 
-        if (spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-            String code = getResources().getStringArray(R.array.currencies_code)[spinCurrencySymbol.getSelectedItemPosition()];
+        if (holder.spinCurrencySymbol.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
+            String code = getResources()
+                .getStringArray(R.array.currencies_code)[holder.spinCurrencySymbol.getSelectedItemPosition()];
             currency.setCode(code);
         }
 
-        currency.setUnitName(edtUnitName.getText().toString().trim());
+        currency.setUnitName(holder.edtUnitName.getText().toString().trim());
 
-        currency.contentValues.put(Currency.CENT_NAME, edtCentsName.getText().toString().trim());
-        currency.contentValues.put(Currency.PFX_SYMBOL, edtPrefix.getText().toString().trim());
-        currency.contentValues.put(Currency.SFX_SYMBOL, edtSuffix.getText().toString().trim());
-        currency.contentValues.put(Currency.DECIMAL_POINT, edtDecimal.getText().toString().trim());
-        currency.contentValues.put(Currency.GROUP_SEPARATOR, edtGroup.getText().toString().trim());
-        currency.contentValues.put(Currency.SCALE, edtScale.getText().toString().trim());
-        currency.contentValues.put(Currency.BASECONVRATE, edtConversion.getText().toString().trim());
+        currency.setCentName(holder.edtCentsName.getText().toString().trim());
+        currency.setPfxSymbol(holder.edtPrefix.getText().toString().trim());
+        currency.setSfxSymbol(holder.edtSuffix.getText().toString().trim());
+        currency.setDecimalPoint(holder.edtDecimal.getText().toString().trim());
+        currency.setGroupSeparator(holder.edtGroup.getText().toString().trim());
+        // todo: convert to integer
+        currency.contentValues.put(Currency.SCALE, holder.edtScale.getText().toString().trim());
+        // todo: convert to double
+        currency.contentValues.put(Currency.BASECONVRATE, holder.edtConversion.getText().toString().trim());
 //        currency.setConversionRate();
 
         CurrencyRepository repo = new CurrencyRepository(getApplicationContext());
 
         // update data
-        boolean success = false;
-        if (Intent.ACTION_INSERT.equals(mIntentAction)) {
-            success = repo.insert(currency);
+        boolean success;
+        switch (mIntentAction) {
+            case Intent.ACTION_INSERT:
+                success = repo.insert(currency);
+                break;
 
-//            if (!success) {
-//                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-//                Log.w(LOGCAT, "Inserting new currency failed!");
-//                return false;
-//            }
-        } else {
-            success = repo.update(currency);
+            // todo: use ACTION_EDIT explicitely.
+            default:
+                // Add Id value only when updating.
+                if (mCurrencyId != Constants.NOT_SET) {
+                    currency.setCurrencyid(mCurrencyId);
+                }
 
-//            if (!success) {
-//                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-//                Log.w(LOGCAT, "Update of currency with id:" + Integer.toString(mCurrencyId) + " failed!");
-//                return false;
-//            }
+                success = repo.update(currency);
+                break;
         }
-        //reload currency
-//        CurrencyService currencyService = new CurrencyService(getApplicationContext());
-//        currencyService.reInit();
+
+        // destroy currency cache.
         CurrencyService.destroy();
 
         return success;

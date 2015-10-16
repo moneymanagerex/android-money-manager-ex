@@ -56,6 +56,14 @@ public class Currency
         return getDouble(BASECONVRATE);
     }
 
+    public String getCentName() {
+        return getString(CENT_NAME);
+    }
+
+    public void setCentName(String value) {
+        setString(CENT_NAME, value);
+    }
+
     public String getCode() {
         return getString(CURRENCY_SYMBOL);
     }
@@ -114,6 +122,10 @@ public class Currency
 
     public String getSfxSymbol() {
         return getString(SFX_SYMBOL);
+    }
+
+    public void setSfxSymbol(String value) {
+        setString(SFX_SYMBOL, value);
     }
 
     public void setConversionRate(Double value) {
