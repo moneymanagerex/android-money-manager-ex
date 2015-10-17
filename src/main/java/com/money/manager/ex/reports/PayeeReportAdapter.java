@@ -35,7 +35,8 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Adapter for the Payee report.
  */
-public class PayeeReportAdapter extends CursorAdapter {
+public class PayeeReportAdapter
+    extends CursorAdapter {
     private LayoutInflater mInflater;
 
     @SuppressWarnings("deprecation")
