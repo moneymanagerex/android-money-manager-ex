@@ -142,14 +142,10 @@ public class MmexContentProvider
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         try {
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (IllegalStateException | SQLiteDiskIOException | IllegalArgumentException ex) {
-            // This happens when the database is changed by all the asynchronous loaders still
-            // have references to the already-closed database helper.
-            // Just log for now. The reload is done automatically so should be no harm.
-
+        } catch (Exception e) {
             Context context = getContext();
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ex, "content provider.query " + uri);
+            handler.handle(e, "content provider.query " + uri);
         }
         return null;
     }
