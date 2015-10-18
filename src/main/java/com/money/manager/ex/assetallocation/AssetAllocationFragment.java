@@ -56,6 +56,7 @@ public class AssetAllocationFragment
 
     public static final int REQUEST_STOCK_ID = 1;
     public static final String PARAM_ASSET_CLASS_ID = "assetClassId";
+    public static final String PARAM_DECIMAL_PLACES = "decimalPlaces";
 
     /**
      * Creates a new fragment that display the asset class. Shows the list of child elements
@@ -63,7 +64,7 @@ public class AssetAllocationFragment
      * @param assetClassId Id of the Asset Class to show.
      * @return Fragment
      */
-    public static AssetAllocationFragment create(Integer assetClassId) {
+    public static AssetAllocationFragment create(Integer assetClassId, int decimalPlaces) {
         AssetAllocationFragment fragment = new AssetAllocationFragment();
 
         Bundle arguments = new Bundle();
@@ -71,6 +72,7 @@ public class AssetAllocationFragment
             assetClassId = Constants.NOT_SET;
         }
         arguments.putInt(PARAM_ASSET_CLASS_ID, assetClassId);
+        arguments.putInt(PARAM_DECIMAL_PLACES, decimalPlaces);
         fragment.setArguments(arguments);
 
         return fragment;
@@ -102,8 +104,9 @@ public class AssetAllocationFragment
 
         setEmptyText(getActivity().getResources().getString(R.string.asset_classes_empty));
 
+        int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
         // create and link the adapter
-        AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null);
+        AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null, decimalPlaces);
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());

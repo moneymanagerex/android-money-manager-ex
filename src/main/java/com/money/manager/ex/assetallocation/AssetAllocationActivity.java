@@ -31,6 +31,8 @@ import android.view.MenuItem;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
@@ -166,9 +168,14 @@ public class AssetAllocationActivity
     }
 
     private void showAssetClass(AssetClass assetClass) {
+        // Round to decimals from the base currency.
+        CurrencyService currencyService = new CurrencyService(this);
+        int scale = currencyService.getBaseCurrency().getScale();
+        int decimals = new NumericHelper(this).getNumberOfDecimals(scale);
+
         // show the fragment
         FragmentManager fm = getSupportFragmentManager();
-        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass.getId());
+        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass.getId(), decimals);
         String tag = assetClass.getId() != null
             ? assetClass.getId().toString()
             : "root";

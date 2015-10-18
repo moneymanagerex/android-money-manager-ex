@@ -64,7 +64,6 @@ public class AssetAllocationService {
     public boolean deleteAllocation(int assetClassId) {
         ExceptionHandler handler = new ExceptionHandler(this.context, this);
         AssetClassRepository repo = new AssetClassRepository(this.context);
-//        AssetClass assetClass = repo.load(assetClassId);
 
         // todo: use transaction? (see bulkUpdate)
 
@@ -114,9 +113,7 @@ public class AssetAllocationService {
         Money totalValue = calculateCurrentValue(list);
         main.setCurrentValue(totalValue);
 
-        // Step 6: Calculate current allocation and difference.
-//        calculateCurrentAllocation(main, totalValue);
-        // difference
+        // Step 6: Calculate all the derived values.
         calculateStats(main, totalValue);
 
         return main;
@@ -336,35 +333,6 @@ public class AssetAllocationService {
         return result;
     }
 
-//    private Money calculateCurrentAllocation(AssetClass allocation, Money totalValue) {
-//        Money result;
-//
-//        if (allocation.getChildren().size() > 0) {
-//            // Group.
-//            result = MoneyFactory.fromString("0");
-//
-//            // iterate children
-//            for (AssetClass child : allocation.getChildren()) {
-//                // find edge node
-//                result = result.add(calculateCurrentAllocation(child, totalValue));
-//            }
-//        } else {
-//            // Allocation. Calculate current allocation as percentage of total value.
-//            // current allocation = current Value * 100 / total value
-//            Double totalValueD = totalValue.toDouble();
-//            Money currentAllocation = allocation.getCurrentValue()
-//                .multiply(100)
-//                .divide(totalValueD, 2);
-//            // Using 2 decimal places for allocation values.
-//
-//            result = currentAllocation;
-//        }
-//
-//        allocation.setCurrentAllocation(result);
-//
-//        return result;
-//    }
-
     /**
      * Calculate all dependent statistics for allocation records.
      * @param allocation Asset Class/Allocation record
@@ -470,14 +438,14 @@ public class AssetAllocationService {
         return sum;
     }
 
-    private double sumDouble(List<AssetClass> group, Converter<AssetClass, Double> converter) {
-        List<Double> values = Queryable.from(group)
-            .map(converter).toList();
-
-        double sum = 0;
-        for (double value : values) {
-            sum += value;
-        }
-        return sum;
-    }
+//    private double sumDouble(List<AssetClass> group, Converter<AssetClass, Double> converter) {
+//        List<Double> values = Queryable.from(group)
+//            .map(converter).toList();
+//
+//        double sum = 0;
+//        for (double value : values) {
+//            sum += value;
+//        }
+//        return sum;
+//    }
 }

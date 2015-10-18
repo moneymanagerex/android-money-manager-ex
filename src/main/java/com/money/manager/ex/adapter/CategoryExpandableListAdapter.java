@@ -144,12 +144,7 @@ public class CategoryExpandableListAdapter
                     Integer childId = Integer.parseInt(ids[1]);
                     setIdChildChecked(groupId, childId);
                     // close
-                    FragmentActivity activity = (FragmentActivity) mContext;
-                    CategoryListFragment fragment =
-                            (CategoryListFragment) activity
-                                    .getSupportFragmentManager()
-                                    .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
-                    fragment.setResultAndFinish();
+                    closeFragment();
                 }
             });
 
@@ -228,12 +223,7 @@ public class CategoryExpandableListAdapter
                         Integer groupId = Integer.parseInt(tag);
                         setIdGroupChecked(groupId);
                         // close
-                        FragmentActivity activity = (FragmentActivity) mContext;
-                        CategoryListFragment fragment =
-                                (CategoryListFragment) activity
-                                        .getSupportFragmentManager()
-                                        .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
-                        fragment.setResultAndFinish();
+                        closeFragment();
                     }
                 });
             }
@@ -274,5 +264,13 @@ public class CategoryExpandableListAdapter
 		mIdGroupChecked = idGroup;
 		mIdChildChecked = idChild;
 	}
-	
+
+	private void closeFragment() {
+        FragmentActivity activity = (FragmentActivity) mContext;
+        CategoryListFragment fragment =
+            (CategoryListFragment) activity
+                .getSupportFragmentManager()
+                .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
+        fragment.setResultAndFinish();
+    }
 }

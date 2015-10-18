@@ -66,8 +66,8 @@ import java.util.List;
  * when selecting the category for a transaction.
  */
 public class CategoryListFragment
-        extends BaseExpandableListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseExpandableListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
 
@@ -87,16 +87,6 @@ public class CategoryListFragment
 
     private ArrayList<Integer> mPositionToExpand;
     private String mCurFilter;
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
-            outState.putInt(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
-            outState.putInt(KEY_ID_CHILD, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdChildChecked());
-            outState.putString(KEY_CUR_FILTER, mCurFilter);
-        }
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -237,6 +227,16 @@ public class CategoryListFragment
         mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
         restartLoader();
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
+            outState.putInt(KEY_ID_GROUP, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdGroupChecked());
+            outState.putInt(KEY_ID_CHILD, ((CategoryExpandableListAdapter) getExpandableListAdapter()).getIdChildChecked());
+            outState.putString(KEY_CUR_FILTER, mCurFilter);
+        }
     }
 
     // Data loader
@@ -686,6 +686,9 @@ public class CategoryListFragment
 
                         adapter.setIdChildChecked(data.getCategId(), data.getSubCategId());
                         adapter.notifyDataSetChanged();
+
+                        // select sub-categories immediately.
+                        setResultAndFinish();
                     }
                     return false;
                 }

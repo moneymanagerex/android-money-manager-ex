@@ -27,17 +27,22 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Adapter for the Asset Allocation list.
  */
 public class AssetAllocationAdapter
     extends CursorAdapter {
 
-    public AssetAllocationAdapter(Context context, Cursor cursor) {
+    public AssetAllocationAdapter(Context context, Cursor cursor, int decimalPlaces) {
         super(context, cursor, -1);
 
-        mContext = context;
+        this.decimalPlaces = decimalPlaces;
     }
+
+    private int decimalPlaces;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -56,9 +61,17 @@ public class AssetAllocationAdapter
 
         values.name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
         values.allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
-        values.value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
+
+        String value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
+        Money moneyValue = MoneyFactory.fromString(value).truncate(this.decimalPlaces);
+        values.value = moneyValue.toString();
+
         values.currentAllocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
-        values.currentValue = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
+
+        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
+        moneyValue = MoneyFactory.fromString(value);
+        values.currentValue = moneyValue.toString();
+
         values.difference = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
 
         UIHelpers.populateAssetClassRow(holder, values);
