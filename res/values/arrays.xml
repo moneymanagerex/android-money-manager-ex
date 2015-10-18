@@ -263,6 +263,7 @@
         <item>@string/locale_bs</item>
         <item>@string/locale_cs</item>
         <item>@string/locale_de</item>
+        <item>@string/locale_el</item>
         <item>@string/locale_en</item>
         <item>@string/locale_es</item>
         <item>@string/locale_fr</item>
@@ -284,6 +285,7 @@
         <item>bs</item>
         <item>cs</item>
         <item>de</item>
+        <item>el</item>
         <item>en</item>
         <item>es</item>
         <item>fr</item>

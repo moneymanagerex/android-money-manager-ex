@@ -145,7 +145,6 @@ public class MainActivity
         MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
         mTracker = application.getDefaultTracker();
 
-        Core core = new Core(this);
         // Initialize the map for recent entries that link to drawer menu items.
         this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
 
@@ -161,6 +160,7 @@ public class MainActivity
                 pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
                 if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
                 // Open this database.
+                Core core = new Core(this);
                 boolean databaseOpened = core.changeDatabase(pathFile);
                 if (!databaseOpened) {
                     Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");

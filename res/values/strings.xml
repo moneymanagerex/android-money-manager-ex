@@ -503,23 +503,24 @@
     <!-- languages -->
     <string name="locale_application">Application Language</string>
     <string name="locale_bs" translatable="false">Bosanski</string>
-    <string name="locale_cs">Czech</string>
-    <string name="locale_de">German</string>
-    <string name="locale_en">English</string>
-    <string name="locale_es">Spanish</string>
-    <string name="locale_fr">French</string>
-    <string name="locale_he">Hebrew</string>
-    <string name="locale_hu">Hungarian</string>
-    <string name="locale_it">Italian</string>
-    <string name="locale_ja">Japanese</string>
-    <string name="locale_nl">Dutch</string>
-    <string name="locale_pl">Polish</string>
-    <string name="locale_pt">Portuguese</string>
-    <string name="locale_pt_BR">Portuguese, Brazilian</string>
-    <string name="locale_ru">Russian</string>
-    <string name="locale_vi">Vietnamese</string>
-    <string name="locale_zh_rCN">Chinese Simplified</string>
-    <string name="locale_zh_rTW">Chinese Traditional</string>
+    <string name="locale_cs" translatable="false">Čeština</string>
+    <string name="locale_de" translatable="false">Deutsch</string>
+    <string name="locale_el" translatable="false">Ελληνικά</string>
+    <string name="locale_en" translatable="false">English</string>
+    <string name="locale_es" translatable="false">Español</string>
+    <string name="locale_fr" translatable="false">Français</string>
+    <string name="locale_he" translatable="false">עברית</string>
+    <string name="locale_hu" translatable="false">Magyar</string>
+    <string name="locale_it" translatable="false">Italiano</string>
+    <string name="locale_ja" translatable="false">日本語</string>
+    <string name="locale_nl" translatable="false">Nederlands</string>
+    <string name="locale_pl" translatable="false">Polski</string>
+    <string name="locale_pt" translatable="false">Português</string>
+    <string name="locale_pt_BR" translatable="false">Português Brasileiro</string>
+    <string name="locale_ru" translatable="false">Русский</string>
+    <string name="locale_vi" translatable="false">Tiếng Việt</string>
+    <string name="locale_zh_rCN" translatable="false">简体中文</string>
+    <string name="locale_zh_rTW" translatable="false">正體中文</string>
 
     <string name="transaction_cancel_confirm">Are you sure you want to discard this transaction?</string>
     <string name="keep_editing">Keep editing</string>

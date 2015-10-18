@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="October 18, 2015" versionName="2.23">
+        <changelogtext>All available languages displayed in their original version.</changelogtext>
+        <changelogtext>Added Greek language.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="October 6, 2015" versionName="2.22.1">
         <changelogtext>Solved quick-switching of databases.</changelogtext>
         <changelogtext>Dropdown for switching investment account watchlists. Option to see all symbols at once.</changelogtext>
