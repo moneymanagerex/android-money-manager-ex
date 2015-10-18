@@ -198,9 +198,9 @@ public class Core {
      * @param languageToLoad language to load for the locale
      * @return and indicator whether the operation was successful
      */
-    public static boolean changeLocaleApp(Context context, String languageToLoad) {
+    public static boolean changeAppLocale(Context context, String languageToLoad) {
+        Locale locale;
         try {
-            Locale locale;
             if (!TextUtils.isEmpty(languageToLoad)) {
                 locale = new Locale(languageToLoad);
                 // Below method is not available in emulator 4.1.1 (?!).
@@ -208,7 +208,8 @@ public class Core {
             } else {
                 locale = Locale.getDefault();
             }
-            Locale.setDefault(locale);
+            // http://developer.android.com/reference/java/util/Locale.html#setDefault%28java.util.Locale%29
+//            Locale.setDefault(locale);
 
             // change locale to configuration
             Resources resources = context.getResources();

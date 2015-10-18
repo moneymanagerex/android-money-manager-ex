@@ -70,7 +70,8 @@ public class GeneralSettingsFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    setSummaryListPreference(preference, String.valueOf(newValue), R.array.application_locale_values, R.array.application_locale_entries);
+                    String language = String.valueOf(newValue);
+                    setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
                     MainActivity.setRestartActivity(true);
                     return true;
                 }

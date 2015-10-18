@@ -464,20 +464,6 @@
     <string name="search_text_contain_title">Searching by text contents and not by text beginning with</string>
     <string name="search_text_contain_summary">Search payee, categories, currencies, etc… by contents and not by starting characters</string>
     <string name="rate_application">Rate Application</string>
-    <!-- 20140314 -->
-    <string name="locale_application">Application Language</string>
-    <string name="locale_cs">Czech</string>
-    <string name="locale_en">English</string>
-    <string name="locale_es">Spanish</string>
-    <string name="locale_fr">French</string>
-    <string name="locale_he">Hebrew</string>
-    <string name="locale_it">Italian</string>
-    <string name="locale_pt">Portuguese</string>
-    <string name="locale_pt_BR">Portuguese, Brazilian</string>
-    <string name="locale_ru">Russian</string>
-    <string name="locale_vi">Vietnamese</string>
-    <string name="locale_zh_rCN">Chinese Simplified</string>
-    <string name="locale_zh_rTW">Chinese Traditional</string>
 
     <string name="start_currency_exchange_rates">Updating the exchange rates of currencies. Please wait…</string>
     <string name="update_currency_exchange_rates">Updating the exchange rate:\n%1$s</string>
@@ -512,14 +498,29 @@
     <string name="bank_accounts">Bank Accounts</string>
     <string name="term_accounts">Term Accounts</string>
     <string name="credit_card_accounts">Credit Card Accounts</string>
-    <string name="locale_hu">Hungarian</string>
     <string name="montly_last_days">Monthly (last day)</string>
     <string name="montly_last_bussines_day">Monthly (last business day)</string>
-    <string name="locale_bs">Bosnian</string>
+    <!-- languages -->
+    <string name="locale_application">Application Language</string>
+    <string name="locale_bs" translatable="false">Bosanski</string>
+    <string name="locale_cs">Czech</string>
     <string name="locale_de">German</string>
+    <string name="locale_en">English</string>
+    <string name="locale_es">Spanish</string>
+    <string name="locale_fr">French</string>
+    <string name="locale_he">Hebrew</string>
+    <string name="locale_hu">Hungarian</string>
+    <string name="locale_it">Italian</string>
     <string name="locale_ja">Japanese</string>
     <string name="locale_nl">Dutch</string>
     <string name="locale_pl">Polish</string>
+    <string name="locale_pt">Portuguese</string>
+    <string name="locale_pt_BR">Portuguese, Brazilian</string>
+    <string name="locale_ru">Russian</string>
+    <string name="locale_vi">Vietnamese</string>
+    <string name="locale_zh_rCN">Chinese Simplified</string>
+    <string name="locale_zh_rTW">Chinese Traditional</string>
+
     <string name="transaction_cancel_confirm">Are you sure you want to discard this transaction?</string>
     <string name="keep_editing">Keep editing</string>
     <string name="discard">Discard</string>

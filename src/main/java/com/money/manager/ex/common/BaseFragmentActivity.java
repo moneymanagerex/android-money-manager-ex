@@ -19,6 +19,7 @@ package com.money.manager.ex.common;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,7 @@ public abstract class BaseFragmentActivity
 
         AppSettings settings = new AppSettings(this);
         String locale = settings.getGeneralSettings().getApplicationLanguage();
-        Core.changeLocaleApp(getApplicationContext(), locale);
+        Core.changeAppLocale(getApplicationContext(), locale);
 
         super.onCreate(savedInstance);
 
@@ -207,7 +208,8 @@ public abstract class BaseFragmentActivity
             Core core = new Core(this);
             this.setTheme(core.getThemeApplication());
         } catch (Exception e) {
-            Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(e, "setting theme");
         }
     }
 }
