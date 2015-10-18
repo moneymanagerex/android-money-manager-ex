@@ -276,6 +276,7 @@
         <item>@string/locale_pt</item>
         <item>@string/locale_pt_BR</item>
         <item>@string/locale_ru</item>
+        <item>@string/locale_tr</item>
         <item>@string/locale_vi</item>
         <item>@string/locale_zh_rCN</item>
         <item>@string/locale_zh_rTW</item>
@@ -298,6 +299,7 @@
         <item>pt</item>
         <item>pt-BR</item>
         <item>ru</item>
+        <item>tr</item>
         <item>vi</item>
         <item>zh-rCN</item>
         <item>zh-rTW</item>

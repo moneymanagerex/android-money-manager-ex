@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">一個簡單易用的管理個人財務、銀行帳戶、家庭預算等的應用程式。</string>
   <string name="application_credits">MoneyManagerEx for Android 專案使用 ActionBarSherlock 程式庫</string>
@@ -371,19 +371,6 @@
   <string name="search_text_contain_title">由文字內容搜尋，且不是以文字開頭的文件</string>
   <string name="search_text_contain_summary">由內容而非起始的文字搜尋受帳人、類型、貨幣等</string>
   <string name="rate_application">幫我們評分</string>
-  <string name="locale_application">應用程式語言</string>
-  <string name="locale_cs">捷克文</string>
-  <string name="locale_en">英語</string>
-  <string name="locale_es">西班牙文</string>
-  <string name="locale_fr">法文</string>
-  <string name="locale_he">希伯來文</string>
-  <string name="locale_it">義大利文</string>
-  <string name="locale_pt">葡萄牙文</string>
-  <string name="locale_pt_BR">巴西葡萄牙文</string>
-  <string name="locale_ru">俄語</string>
-  <string name="locale_vi">越南文</string>
-  <string name="locale_zh_rCN">簡體中文</string>
-  <string name="locale_zh_rTW">正體中文</string>
   <string name="start_currency_exchange_rates">更新匯率中，請稍候...</string>
   <string name="update_currency_exchange_rates">更新匯率:\n%1$s</string>
   <string name="success_currency_exchange_rates">已更新所有的貨幣匯率</string>
@@ -413,14 +400,9 @@
   <string name="bank_accounts">銀行帳戶</string>
   <string name="term_accounts">定期存款帳戶</string>
   <string name="credit_card_accounts">信用卡帳戶</string>
-  <string name="locale_hu">匈牙利語</string>
   <string name="montly_last_days">每月 (最後一天)</string>
   <string name="montly_last_bussines_day">每月 (最後一個工作日)</string>
-  <string name="locale_bs">波士尼亞文</string>
-  <string name="locale_de">德語</string>
-  <string name="locale_ja">日語</string>
-  <string name="locale_nl">荷蘭語</string>
-  <string name="locale_pl">波蘭語</string>
+  <string name="locale_application">應用程式語言</string>
   <string name="transaction_cancel_confirm">你確定要放棄這筆交易？</string>
   <string name="keep_editing">繼續編輯</string>
   <string name="discard">放棄</string>
@@ -523,7 +505,6 @@
   <string name="configure">配置</string>
   <string name="add_widget">新增小工具</string>
   <string name="single_account">單一帳戶</string>
-  <string name="title_activity_edit_investment_transaction">EditInvestmentTransactionActivity</string>
   <string name="watchlist">觀察名單</string>
   <string name="purchase_date">購買日期</string>
   <string name="stock_name">股票名稱</string>
@@ -536,5 +517,4 @@
   <string name="value">價值</string>
   <string name="view_transactions">查看交易紀錄</string>
   <string name="error_downloading_symbol">下載價格錯誤</string>
-  <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Prosta i łatwa w użyciu aplikacja do zarządzania osobistymi wydatkami, kontami bankowymi, rodzinnym budżetem itp.</string>
   <string name="application_credits">MoneyManagerEx dla Androida używa biblioteki ActionBarSherlock</string>
@@ -353,19 +353,6 @@
   <string name="search_text_contain_title">Wyszukiwanie w zawartości tekstów, a nie w ich początkach</string>
   <string name="search_text_contain_summary">Wyszukuj w całych nazwach płatników, kategorii, walut itd., a nie tylko w ich początkach</string>
   <string name="rate_application">Oceń aplikację</string>
-  <string name="locale_application">Język aplikacji</string>
-  <string name="locale_cs">Czeski</string>
-  <string name="locale_en">Angielski</string>
-  <string name="locale_es">Hiszpański</string>
-  <string name="locale_fr">Francuski</string>
-  <string name="locale_he">Hebrajski</string>
-  <string name="locale_it">Włoski</string>
-  <string name="locale_pt">Portugalski</string>
-  <string name="locale_pt_BR">Portugalski, Brazylia</string>
-  <string name="locale_ru">Rosyjski</string>
-  <string name="locale_vi">Wietnamski</string>
-  <string name="locale_zh_rCN">Chiński uproszczony</string>
-  <string name="locale_zh_rTW">Chiński tradycyjny</string>
   <string name="start_currency_exchange_rates">Aktualizowanie kursów wymiany walut. Proszę czekać&#8230;</string>
   <string name="update_currency_exchange_rates">Aktualizowanie kursu wymiany waluty:\n%1$s</string>
   <string name="success_currency_exchange_rates">Wszystkie kursy wymiany walut zostały pomyślnie zaktualizowane</string>
@@ -394,14 +381,9 @@
   <string name="bank_accounts">Konta bankowe</string>
   <string name="term_accounts">Lokata terminowa</string>
   <string name="credit_card_accounts">Konta kart kredytowych</string>
-  <string name="locale_hu">Węgierski</string>
   <string name="montly_last_days">Miesięczne (ostatni dzień)</string>
   <string name="montly_last_bussines_day">Miesięczne (ostatni dzień roboczy)</string>
-  <string name="locale_bs">Bośniacki</string>
-  <string name="locale_de">Niemiecki</string>
-  <string name="locale_ja">Japoński</string>
-  <string name="locale_nl">Duński</string>
-  <string name="locale_pl">Polski</string>
+  <string name="locale_application">Język aplikacji</string>
   <string name="transaction_cancel_confirm">Czy na pewno chcesz odrzucić tę transakcję?</string>
   <string name="keep_editing">Kontynuuj edycję</string>
   <string name="discard">Odrzuć</string>
@@ -486,4 +468,22 @@
   <string name="unhandled_crash">Nieoczekiwany błąd. Proszę prześlij do nas informację z logiem błędu.</string>
   <string name="title_activity_currency_rates_report">Kursy walut</string>
   <string name="frequency">Częstotliwość</string>
+  <string name="current_database">Bieżąca baza danych</string>
+  <string name="title_activity_password">Wprowadź hasło bazy danych</string>
+  <string name="income_expense_period">Okres przychodu/wydatku</string>
+  <string name="appwidget_text">PRZYKŁAD</string>
+  <string name="configure">Konfiguruj</string>
+  <string name="add_widget">Dodaj Widżet</string>
+  <string name="single_account">Jedno konto</string>
+  <string name="watchlist">Lista obserwowanych</string>
+  <string name="purchase_date">Data Zakupu</string>
+  <string name="stock_name">Nazwa akcji</string>
+  <string name="symbol">Symbol</string>
+  <string name="number_of_shares">Liczba akcji</string>
+  <string name="purchase_price">Cena zakupu</string>
+  <string name="current_price">Aktualna Cena</string>
+  <string name="commission">Prowizja</string>
+  <string name="value">Wartość</string>
+  <string name="view_transactions">Zobacz transakcje</string>
+  <string name="error_downloading_symbol">Błąd pobierania cena symbolu</string>
 </resources>

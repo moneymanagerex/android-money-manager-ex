@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Μια απλή και εύκολη στη χρήση της εφαρμογή για τη διαχείριση των προσωπικών οικονομικών, τραπεζικών λογαριασμών, οικογενειακών προϋπολογισμών, και ούτω καθεξής.</string>
   <string name="application_credits">Το MoneyManagerEx για Android Project χρησιμοποιεί τη βιβλιοθήκη ActionBarSherlock</string>
@@ -358,19 +358,6 @@
   <string name="search_text_contain_title">Αναζήτηση από το περιεχόμενο κειμένου και όχι από το κείμενο με το οποίο ξεκινά</string>
   <string name="search_text_contain_summary">Αναζήτηση δικαιούχου, κατηγοριών, νομισμάτων, κλπ..., από το περιεχόμενο και όχι από την έναρξη χαρακτήρων</string>
   <string name="rate_application">Ποσοστό εφαρμογής</string>
-  <string name="locale_application">Εφαρμογή γλώσσας</string>
-  <string name="locale_cs">Τσέχικα</string>
-  <string name="locale_en">Αγγλικά</string>
-  <string name="locale_es">Ισπανικά</string>
-  <string name="locale_fr">Γαλλικά</string>
-  <string name="locale_he">Εβραϊκά</string>
-  <string name="locale_it">Ιταλικά</string>
-  <string name="locale_pt">Πορτογαλικά</string>
-  <string name="locale_pt_BR">Πορτογαλικά, βραζιλιάνικα</string>
-  <string name="locale_ru">Ρωσικά</string>
-  <string name="locale_vi">Βιετναμέζικα</string>
-  <string name="locale_zh_rCN">Κινεζικά (απλοποιημένα)</string>
-  <string name="locale_zh_rTW">Κινεζικά (παραδοσιακά)</string>
   <string name="start_currency_exchange_rates">Γίνεται ενημέρωση των συναλλαγματικών ισοτιμιών των νομισμάτων. Παρακαλώ περίμενε...</string>
   <string name="update_currency_exchange_rates">Γίνεται ενημέρωση του ποσοστού ανταλλαγής: \n%1$s</string>
   <string name="success_currency_exchange_rates">Έχουν ενημερωθεί με επιτυχία όλες τις συναλλαγματικές ισοτιμίες των νομισμάτων</string>
@@ -399,14 +386,9 @@
   <string name="bank_accounts">Τραπεζικός Λογαριασμός</string>
   <string name="term_accounts">Όρος λογαριασμών</string>
   <string name="credit_card_accounts">Λογαριασμοί πιστωτικών καρτών</string>
-  <string name="locale_hu">Ουγγρικά</string>
   <string name="montly_last_days">Μηνιαία (τελευταία ημέρα)</string>
   <string name="montly_last_bussines_day">Μηνιαία (τελευταία εργάσιμη ημέρα)</string>
-  <string name="locale_bs">Βοσνιακά</string>
-  <string name="locale_de">Γερμανικά</string>
-  <string name="locale_ja">Ιαπωνικά</string>
-  <string name="locale_nl">Ολλανδικά</string>
-  <string name="locale_pl">Πολωνικά</string>
+  <string name="locale_application">Εφαρμογή γλώσσας</string>
   <string name="transaction_cancel_confirm">Είστε βέβαιοι ότι θέλετε να απορρίψετε αυτή τη συναλλαγή;</string>
   <string name="keep_editing">Διατήρηση επεξεργασίας</string>
   <string name="discard">Απόρριψη</string>

@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">個人の財政状況や銀行口座、家族の予算などを管理する、シンプルで使いやすいアプリケーションです。</string>
   <string name="application_credits">MoneyManagerEx for Android プロジェクトは、ActionBarSherlock ライブラリーを使用しています。</string>
@@ -371,19 +371,6 @@
   <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
   <string name="search_text_contain_summary">開始文字ではなく含まれる文字で、支払先、カテゴリー、通貨、等&#8230; を検索します</string>
   <string name="rate_application">アプリケーションの評価</string>
-  <string name="locale_application">アプリケーションの言語</string>
-  <string name="locale_cs">チェコ語</string>
-  <string name="locale_en">英語</string>
-  <string name="locale_es">スペイン語</string>
-  <string name="locale_fr">フランス語</string>
-  <string name="locale_he">ヘブライ語</string>
-  <string name="locale_it">イタリア語</string>
-  <string name="locale_pt">ポルトガル語</string>
-  <string name="locale_pt_BR">ポルトガル語、ブラジル語</string>
-  <string name="locale_ru">ロシア語</string>
-  <string name="locale_vi">ベトナム語</string>
-  <string name="locale_zh_rCN">簡体中国語</string>
-  <string name="locale_zh_rTW">繁体中国語</string>
   <string name="start_currency_exchange_rates">通貨の為替レートを更新しています。しばらくお待ちください&#8230;</string>
   <string name="update_currency_exchange_rates">為替レートを更新中: \n%1$s</string>
   <string name="success_currency_exchange_rates">通貨の為替レートをすべて正常に更新しました</string>
@@ -413,14 +400,9 @@
   <string name="bank_accounts">銀行口座</string>
   <string name="term_accounts">定期アカウント</string>
   <string name="credit_card_accounts">クレジット カード アカウント</string>
-  <string name="locale_hu">ハンガリー語</string>
   <string name="montly_last_days">毎月 (最終日)</string>
   <string name="montly_last_bussines_day">毎月 (最終営業日)</string>
-  <string name="locale_bs">ボスニア語</string>
-  <string name="locale_de">ドイツ語</string>
-  <string name="locale_ja">日本語</string>
-  <string name="locale_nl">オランダ語</string>
-  <string name="locale_pl">ポーランド語</string>
+  <string name="locale_application">アプリケーションの言語</string>
   <string name="transaction_cancel_confirm">この取引を破棄してもよろしいですか?</string>
   <string name="keep_editing">編集を続ける</string>
   <string name="discard">破棄</string>
@@ -523,7 +505,6 @@
   <string name="configure">構成</string>
   <string name="add_widget">ウィジェットを追加</string>
   <string name="single_account">単一アカウント</string>
-  <string name="title_activity_edit_investment_transaction">EditInvestmentTransactionActivity</string>
   <string name="watchlist">ウォッチリスト</string>
   <string name="purchase_date">購入日</string>
   <string name="stock_name">銘柄名</string>
@@ -536,5 +517,4 @@
   <string name="value">価値</string>
   <string name="view_transactions">取引の表示</string>
   <string name="error_downloading_symbol">シンボルの価格をダウンロード中にエラー</string>
-  <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

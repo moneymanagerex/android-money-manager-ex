@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Une application simple et facile à utiliser pour gérer ses finances personnelles, comptes bancaires, budget familial…</string>
   <string name="application_credits">MoneyManagerEx pour Android utilise ActionBarSherlock library</string>
@@ -364,19 +364,6 @@
   <string name="search_text_contain_title">Rechercher dans le contenu du texte et non pas en de début de mot</string>
   <string name="search_text_contain_summary">Rechercher des bénéficiaires, devises, etc ... par contenu et non par les caractères du début</string>
   <string name="rate_application">Noter l\'application</string>
-  <string name="locale_application">Langue</string>
-  <string name="locale_cs">Tchèque</string>
-  <string name="locale_en">Anglais</string>
-  <string name="locale_es">Espagnol</string>
-  <string name="locale_fr">Français</string>
-  <string name="locale_he">Hébreu</string>
-  <string name="locale_it">Italien</string>
-  <string name="locale_pt">Portugais</string>
-  <string name="locale_pt_BR">Portugais (Brésil)</string>
-  <string name="locale_ru">Russe</string>
-  <string name="locale_vi">Vietnamien</string>
-  <string name="locale_zh_rCN">Chinois simplifié</string>
-  <string name="locale_zh_rTW">Chinois traditionnel</string>
   <string name="start_currency_exchange_rates">Mise à jour des taux de change des devises. Veuillez patienter...</string>
   <string name="update_currency_exchange_rates">Mise à jour du taux de change:\n%1$s</string>
   <string name="success_currency_exchange_rates">Tous les taux de change des monnaies ont été mis à jour avec succès</string>
@@ -406,14 +393,9 @@
   <string name="bank_accounts">Comptes bancaires</string>
   <string name="term_accounts">Comptes à terme</string>
   <string name="credit_card_accounts">Comptes de carte de crédit</string>
-  <string name="locale_hu">Hongrois</string>
   <string name="montly_last_days">Mensuel (dernier jour)</string>
   <string name="montly_last_bussines_day">Mensuel (dernier jour ouvrable)</string>
-  <string name="locale_bs">Bosnien</string>
-  <string name="locale_de">Allemand</string>
-  <string name="locale_ja">Japonais</string>
-  <string name="locale_nl">Néerlandais</string>
-  <string name="locale_pl">Polonais</string>
+  <string name="locale_application">Langue</string>
   <string name="transaction_cancel_confirm">Voulez-vous vraiment abandonner ces modifications ?</string>
   <string name="keep_editing">Continuer</string>
   <string name="discard">Abandonner</string>

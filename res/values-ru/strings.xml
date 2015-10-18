@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Простое и легкое в использовании приложение для управления личными финансами, банковским счетам, семейным бюджетом, и т.д.</string>
   <string name="application_credits">Проект MoneyManagerEx для Android использует библиотеку ActionBarSherlock</string>
@@ -371,19 +371,6 @@
   <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
   <string name="search_text_contain_summary">Поиск среди контрагентов, категорий, валют и.т.д.&#8230; по всему содержимому текста, а не только с начала строки</string>
   <string name="rate_application">Оценить приложение</string>
-  <string name="locale_application">Язык приложения</string>
-  <string name="locale_cs">чешский</string>
-  <string name="locale_en">Английский</string>
-  <string name="locale_es">Испанский</string>
-  <string name="locale_fr">Французский</string>
-  <string name="locale_he">Иврит</string>
-  <string name="locale_it">Итальянский</string>
-  <string name="locale_pt">Португальский</string>
-  <string name="locale_pt_BR">Португальский, Бразильский</string>
-  <string name="locale_ru">Русский</string>
-  <string name="locale_vi">Vietnamese</string>
-  <string name="locale_zh_rCN">Китайский (упрощенный)</string>
-  <string name="locale_zh_rTW">Китайский (традиционный)</string>
   <string name="start_currency_exchange_rates">Обновление курсов валют. Пожалуйста подождите&#8230;</string>
   <string name="update_currency_exchange_rates">Обновляем обменный курс:\n%1$s</string>
   <string name="success_currency_exchange_rates">Все обменные курсы были успешно обновлены</string>
@@ -413,14 +400,9 @@
   <string name="bank_accounts">Банковские Счета</string>
   <string name="term_accounts">Срочные Депозиты</string>
   <string name="credit_card_accounts">Счета Кредитной Карты</string>
-  <string name="locale_hu">Венгерский</string>
   <string name="montly_last_days">Ежемесячно (в последний день)</string>
   <string name="montly_last_bussines_day">Ежемесячно (последний рабочий день)</string>
-  <string name="locale_bs">Боснийский</string>
-  <string name="locale_de">Немецкий</string>
-  <string name="locale_ja">Японский</string>
-  <string name="locale_nl">Нидерландский</string>
-  <string name="locale_pl">Польский</string>
+  <string name="locale_application">Язык приложения</string>
   <string name="transaction_cancel_confirm">Вы уверены, что не хотите сохранить изменения ?</string>
   <string name="keep_editing">Продолжить редактирование</string>
   <string name="discard">Не сохранять</string>

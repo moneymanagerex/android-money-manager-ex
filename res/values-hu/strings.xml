@@ -5,7 +5,7 @@
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
-  ~ as published by the Free Software Foundation; either version 2
+  ~ as published by the Free Software Foundation; either version 3
   ~ of the License, or (at your option) any later version.
   ~
   ~ This program is distributed in the hope that it will be useful,
@@ -16,7 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Egy egyszerű és könnyen használható alkalmazás, amely segít, hogy kézben tartsa pénzügyeit, kezelje a bankszámláit és a családi költségvetést.</string>
   <string name="application_credits">A Money Manager Ex for Android az ActionBarSherlock library használatával készült</string>
@@ -357,19 +357,6 @@
   <string name="search_text_contain_title">Keresés a szöveg tartalmában</string>
   <string name="search_text_contain_summary">Partner, kategória, pénznem, stb&#8230; keresése tartalom, és nem kezdő karakter alapján is</string>
   <string name="rate_application">Alkalmazás értékelése</string>
-  <string name="locale_application">Alkalmazás nyelve</string>
-  <string name="locale_cs">Cseh</string>
-  <string name="locale_en">Angol</string>
-  <string name="locale_es">Spanyol</string>
-  <string name="locale_fr">Francia</string>
-  <string name="locale_he">Héber</string>
-  <string name="locale_it">Olasz</string>
-  <string name="locale_pt">Portugál</string>
-  <string name="locale_pt_BR">Portugál, Brazil</string>
-  <string name="locale_ru">Orosz</string>
-  <string name="locale_vi">Vietnámi</string>
-  <string name="locale_zh_rCN">Egyszerű kínai</string>
-  <string name="locale_zh_rTW">Hagyományos kínai</string>
   <string name="start_currency_exchange_rates">Pénznemek árfolyamának frissítése. Kérem várjon&#8230;</string>
   <string name="update_currency_exchange_rates">Árfolyam frissítés:\n%1$s</string>
   <string name="success_currency_exchange_rates">Minden pénznem árfolyamának frissítése sikeresen megtörtént</string>
@@ -398,14 +385,9 @@
   <string name="bank_accounts">Bankszámlák</string>
   <string name="term_accounts">Határidős számlák</string>
   <string name="credit_card_accounts">Hitelkártya számlák</string>
-  <string name="locale_hu">Magyar</string>
   <string name="montly_last_days">Havi (utolsó nap)</string>
   <string name="montly_last_bussines_day">Havi (utolsó munkanap)</string>
-  <string name="locale_bs">Bosnyák</string>
-  <string name="locale_de">Német</string>
-  <string name="locale_ja">Japán</string>
-  <string name="locale_nl">Holland</string>
-  <string name="locale_pl">Lengyel</string>
+  <string name="locale_application">Alkalmazás nyelve</string>
   <string name="transaction_cancel_confirm">Biztosan elveti ezt a tranzakciót?</string>
   <string name="keep_editing">Szerkesztés folytatása</string>
   <string name="discard">Elvet</string>
