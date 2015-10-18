@@ -20,6 +20,7 @@
         <changelogtext>All available languages displayed in their original version.</changelogtext>
         <changelogtext>Added Greek and Turkish languages.</changelogtext>
         <changelogtext>Updated translations.</changelogtext>
+        <changelogtext>By popular demand: adding back the Category selector on transfers.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="October 6, 2015" versionName="2.22.1">
         <changelogtext>Solved quick-switching of databases.</changelogtext>

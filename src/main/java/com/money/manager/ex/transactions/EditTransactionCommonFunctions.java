@@ -122,7 +122,7 @@ public class EditTransactionCommonFunctions {
     public ViewHolder viewHolder;
     public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
     public TextView accountFromLabel, txtToAccount;
-    public TextView txtSelectPayee, txtAmountTo, txtAmount, categoryTextView;
+    public TextView txtSelectPayee, txtAmountTo, txtAmount;
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
@@ -153,7 +153,7 @@ public class EditTransactionCommonFunctions {
 
         // Category / Split
         splitButton = (FontIconView) mParent.findViewById(R.id.splitButton);
-        categoryTextView = (TextView) mParent.findViewById(R.id.textViewCategory);
+        this.viewHolder.categoryTextView = (TextView) mParent.findViewById(R.id.textViewCategory);
 
         // Account
         viewHolder.spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
@@ -436,7 +436,7 @@ public class EditTransactionCommonFunctions {
         // keep the dataset name for later.
         this.mDatasetName = datasetName;
 
-        this.categoryTextView.setOnClickListener(new View.OnClickListener() {
+        this.viewHolder.categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isSplitSelected()) {
@@ -912,41 +912,34 @@ public class EditTransactionCommonFunctions {
      * Reflect the transaction type change. Show and hide controls appropriately.
      */
     public void onTransactionTypeChange(TransactionTypes transactionType) {
-        // hide and show
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
         accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
-
         tableRowAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-//        txtToAccount.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-//        viewHolder.spinAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-
         tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
         tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
-        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-
-        splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
-
-        categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+//        splitButton.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
+//        this.viewHolder.categoryTextView.setVisibility(isTransfer ? View.GONE : View.VISIBLE);
 
         refreshControlHeaders();
     }
 
     public void refreshCategoryName() {
         // validation
-        if (categoryTextView == null) return;
+        if (this.viewHolder.categoryTextView == null) return;
 
-        categoryTextView.setText("");
+        this.viewHolder.categoryTextView.setText("");
 
         if (isSplitSelected()) {
             // Split transaction. Show ...
-            categoryTextView.setText("\u2026");
+            this.viewHolder.categoryTextView.setText("\u2026");
         } else {
             if (!TextUtils.isEmpty(categoryName)) {
-                categoryTextView.setText(categoryName);
+                this.viewHolder.categoryTextView.setText(categoryName);
                 if (!TextUtils.isEmpty(subCategoryName)) {
-                    categoryTextView.setText(Html.fromHtml(categoryTextView.getText() + " : <i>" + subCategoryName + "</i>"));
+                    this.viewHolder.categoryTextView.setText(Html.fromHtml(
+                        this.viewHolder.categoryTextView.getText() + " : <i>" + subCategoryName + "</i>"));
                 }
             }
         }
