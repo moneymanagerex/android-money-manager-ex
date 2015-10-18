@@ -600,7 +600,7 @@ public class HomeFragment
         int currencyId = account.getCurrencyId();
 
         InputAmountDialog dialog = InputAmountDialog.getInstance(REQUEST_BALANCE_ACCOUNT,
-                MoneyFactory.fromString("0"), currencyId);
+                MoneyFactory.fromString("0"), currencyId, true);
         dialog.setTargetFragment(this, REQUEST_BALANCE_ACCOUNT);
         dialog.show(getActivity().getSupportFragmentManager(), TAG_BALANCE_ACCOUNT);
 

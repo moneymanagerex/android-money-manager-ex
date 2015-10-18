@@ -134,7 +134,6 @@ public class AssetAllocationActivity
     @Override
     public void onLoaderReset(Loader<AssetClass> loader) {
         // Remove any references to the data.
-//        Log.d("data", "loader reset");
     }
 
     // Private

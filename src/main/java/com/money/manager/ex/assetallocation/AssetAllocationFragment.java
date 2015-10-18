@@ -104,9 +104,8 @@ public class AssetAllocationFragment
 
         setEmptyText(getActivity().getResources().getString(R.string.asset_classes_empty));
 
-        int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
         // create and link the adapter
-        AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null, decimalPlaces);
+        AssetAllocationAdapter adapter = new AssetAllocationAdapter(getActivity(), null);
         setListAdapter(adapter);
 
         registerForContextMenu(getListView());
@@ -419,6 +418,8 @@ public class AssetAllocationFragment
         values.currentValue = getString(R.string.current);
         values.difference = getString(R.string.difference);
 
+        int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
+
         UIHelpers.populateAssetClassRow(holder, values);
 
         // formatting
@@ -436,13 +437,14 @@ public class AssetAllocationFragment
         View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
         AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
         MatrixCursorColumns values = new MatrixCursorColumns();
+        int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
 
         values.name = getString(R.string.total);
         values.allocation = assetClass.getAllocation().toString();
-        values.value = assetClass.getValue().toString();
+        values.value = assetClass.getValue().truncate(decimalPlaces).toString();
         values.currentAllocation = assetClass.getCurrentAllocation().toString();
-        values.currentValue = assetClass.getCurrentValue().toString();
-        values.difference = assetClass.getDifference().toString();
+        values.currentValue = assetClass.getCurrentValue().truncate(decimalPlaces).toString();
+        values.difference = assetClass.getDifference().truncate(decimalPlaces).toString();
 
         UIHelpers.populateAssetClassRow(holder, values);
 

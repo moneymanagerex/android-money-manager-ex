@@ -36,13 +36,10 @@ import info.javaperformance.money.MoneyFactory;
 public class AssetAllocationAdapter
     extends CursorAdapter {
 
-    public AssetAllocationAdapter(Context context, Cursor cursor, int decimalPlaces) {
+    public AssetAllocationAdapter(Context context, Cursor cursor) {
         super(context, cursor, -1);
 
-        this.decimalPlaces = decimalPlaces;
     }
-
-    private int decimalPlaces;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -61,17 +58,9 @@ public class AssetAllocationAdapter
 
         values.name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
         values.allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
-
-        String value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
-        Money moneyValue = MoneyFactory.fromString(value).truncate(this.decimalPlaces);
-        values.value = moneyValue.toString();
-
+        values.value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
         values.currentAllocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
-
-        value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
-        moneyValue = MoneyFactory.fromString(value);
-        values.currentValue = moneyValue.toString();
-
+        values.currentValue = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
         values.difference = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
 
         UIHelpers.populateAssetClassRow(holder, values);

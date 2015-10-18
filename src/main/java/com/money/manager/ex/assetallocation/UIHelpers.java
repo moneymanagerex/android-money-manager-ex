@@ -33,6 +33,9 @@ import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.List;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Common UI methods.
  */

@@ -54,10 +54,15 @@ public class InputAmountDialog
     private static final String KEY_ROUNDING = "InputAmountDialog:Rounding";
 
     public static InputAmountDialog getInstance(int viewId, Money amount) {
-        return getInstance(viewId, amount, null);
+        return getInstance(viewId, amount, null, false);
     }
 
-    public static InputAmountDialog getInstance(int id, Money amount, Integer currencyId) {
+    public static InputAmountDialog getInstance(int viewId, Money amount, int currencyId) {
+        return getInstance(viewId, amount, currencyId, true);
+    }
+
+    public static InputAmountDialog getInstance(int id, Money amount, Integer currencyId,
+                                                boolean roundToCurrencyDecimals) {
         InputAmountDialog dialog = new InputAmountDialog();
 
         Bundle args = new Bundle();
@@ -65,9 +70,9 @@ public class InputAmountDialog
         String amountString = amount == null ? "0" : amount.toString();
         args.putString(KEY_AMOUNT, amountString);
 
+        if (currencyId == null) currencyId = Constants.NOT_SET;
         args.putInt(KEY_CURRENCY_ID, currencyId);
-        // the default value is True.
-        args.putBoolean(KEY_ROUNDING, true);
+        args.putBoolean(KEY_ROUNDING, roundToCurrencyDecimals);
 
         dialog.setArguments(args);
 

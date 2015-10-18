@@ -90,6 +90,7 @@ public class AssetClassEditFragment
         initializeParentEdit(view);
         initializeNameEdit(view);
         initializeAllocationPicker(view);
+        // todo: show sort order value
 
 //        initializeFloatingActionButton(view);
 
@@ -221,9 +222,7 @@ public class AssetClassEditFragment
             @Override
             public void onClick(View v) {
                 InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
-                    assetClass.getAllocation(),
-                    null);
-                dialog.roundToCurrencyDecimals = false;
+                    assetClass.getAllocation());
                 dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
