@@ -116,6 +116,9 @@ public class HomeFragment
     private ProgressBar prgAccountBills;
     private FloatingActionButton mFloatingActionButton;
 
+    /**
+     * List of account types in lowercase (i.e. checking, investment, ...)
+     */
     private List<String> mAccountTypes = new ArrayList<>();
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
@@ -903,7 +906,8 @@ public class HomeFragment
         if (mTotalsByType == null || mTotalsByType.size() <= 0) return;
 
         // get investment accounts
-        String investmentTitle = getString(R.string.investment);
+//        String investmentTitle = getString(R.string.investment);
+        String investmentTitle = AccountTypes.INVESTMENT.toString().toLowerCase();
         HashMap<Integer, QueryAccountBills> investmentAccounts = new HashMap<>();
         List<QueryAccountBills> investmentAccountList = mAccountsByType.get(investmentTitle);
         if (investmentAccountList == null) return;
@@ -982,9 +986,10 @@ public class HomeFragment
             double totalReconciled = accountTransaction.getReconciledBaseConvRate();
             mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(totalReconciled));
 
-            String accountType = accountTransaction.getAccountType();
+            String accountType = accountTransaction.getAccountType().toLowerCase();
             QueryAccountBills totalForType;
             if (mAccountTypes.indexOf(accountType) == -1) {
+                // add to the list of account types
                 mAccountTypes.add(accountType);
 
                 totalForType = new QueryAccountBills(getActivity());
