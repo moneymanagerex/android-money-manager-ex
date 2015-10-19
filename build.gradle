@@ -152,6 +152,8 @@ dependencies {
         fileTree(include: '*.jar', dir: 'libs'),
         // androidSVG
         project(':androidSVG_12'),
+//        'com.caverock:androidsvg:1.2.1',
+//        'com.caverock:androidsvg:1.2.2-beta-1',
         // Replacing lib files with maven repositories
         'com.opencsv:opencsv:3.5',
         'net.objecthunter:exp4j:0.4.5',
