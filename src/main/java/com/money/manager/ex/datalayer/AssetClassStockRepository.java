@@ -52,6 +52,13 @@ public class AssetClassStockRepository
         return id > 0;
     }
 
+    public boolean delete(String stockSymbol) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(AssetClassStock.STOCKSYMBOL, "=", stockSymbol);
+
+        return this.delete(where.getWhere(), null) > 0;
+    }
+
     public boolean delete(int assetClassId, String stockSymbol) {
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AssetClassStock.ASSETCLASSID, "=", assetClassId);

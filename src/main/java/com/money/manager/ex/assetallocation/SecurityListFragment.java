@@ -30,7 +30,10 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
 
 /**
@@ -108,19 +111,22 @@ public class SecurityListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_SYMBOLS:
-                // todo: ignore all the symbols already linked to the assetClassId
-
                 String whereClause = null;
                 String selectionArgs[] = null;
+
+                // ignore all the symbols already linked
+                whereClause = Stock.SYMBOL + " NOT IN (SELECT " + AssetClassStock.STOCKSYMBOL +
+                    " FROM " + new AssetClassStockRepository(getActivity()).getSource() + ")";
+
+
                 if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = Stock.SYMBOL + " LIKE ?";
+                    whereClause += " AND " + Stock.SYMBOL + " LIKE ?";
                     selectionArgs = new String[]{ mCurFilter + "%" };
                 }
 
                 StockRepository repo = new StockRepository(getActivity());
 
                 return new MmexCursorLoader(getActivity(), repo.getUri(),
-//                    repo.getAllColumns(),
                     new String[] { "STOCKID AS _id", Stock.STOCKID, Stock.SYMBOL },
                     whereClause, selectionArgs,
                     "upper(" + Stock.SYMBOL + ")");

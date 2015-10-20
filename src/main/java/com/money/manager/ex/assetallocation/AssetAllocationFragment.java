@@ -43,6 +43,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -178,65 +179,26 @@ public class AssetAllocationFragment
 
         switch (type) {
             case Allocation:
+                boolean handled = false;
                 if (assetClass.getChildren().size() > 0) {
                     startEditAssetClassActivityForInsert();
+                    handled = true;
                 }
                 if (assetClass.getStockLinks().size() > 0) {
-                    // todo: show stock picker.
-                    handler.showMessage("Stock picker goes here");
+                    pickStock();
+                    handled = true;
                 }
                 // Offer a choice here - stocks or child allocation
-                showTypeSelectorDialog();
+                if (!handled) {
+                    showTypeSelectorDialog();
+                }
                 break;
+
             case Group:
                 startEditAssetClassActivityForInsert();
                 break;
         }
     }
-
-    // data loader
-
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-////        switch (id) {
-////            case LOADER_ASSET_CLASSES:
-////                // create cursor loader
-////                AssetClassRepository repo = new AssetClassRepository(getActivity());
-////
-////                return new MmexCursorLoader(getActivity(), repo.getUri(),
-////                    repo.getAllColumns(),
-////                    null, // where
-////                    null, // args
-////                    AssetClass.SORTORDER // sort
-////                );
-////                //break;
-////        }
-//        return null;
-//    }
-
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        switch (loader.getId()) {
-//            case LOADER_ASSET_CLASSES:
-////                adapter.swapCursor(data);
-//                // create asset allocation matrix cursor
-//                AssetAllocationService service = new AssetAllocationService(getActivity());
-//                AssetClass allocation = service.loadAssetAllocation(data);
-//
-//                showData(allocation);
-//                break;
-//        }
-//    }
-
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        switch (loader.getId()) {
-//            case LOADER_ASSET_CLASSES:
-//                AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
-//                adapter.swapCursor(null);
-//                break;
-//        }
-//    }
 
     // Context menu
 
@@ -245,18 +207,29 @@ public class AssetAllocationFragment
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        int id = (int) info.id;
+        MatrixCursorColumns item = getSelectedItemType(info);
+        // This is the id of the item selected in the list.
+        // int id = (int) info.id;
+
         menu.setHeaderTitle(getString(R.string.asset_allocation));
 
         MenuInflater inflater = this.getActivity().getMenuInflater();
-        inflater.inflate(R.menu.contextmenu_asset_allocation, menu);
+        if (item.type.equals(ItemType.Stock)) {
+            inflater.inflate(R.menu.contextmenu_asset_allocation_stock, menu);
+        } else {
+            inflater.inflate(R.menu.contextmenu_asset_allocation, menu);
+        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         boolean handled = false;
+
+        // find out what is the type of the selected item.
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int id = (int) info.id;
+        MatrixCursorColumns selectedItem = getSelectedItemType(info);
+        int id = selectedItem.id;
+
         AssetAllocationService service = new AssetAllocationService(getActivity());
 
         switch (item.getItemId()) {
@@ -275,8 +248,12 @@ public class AssetAllocationFragment
                 break;
 
             case R.id.menu_delete:
-                confirmDelete(id);
+                confirmDelete(selectedItem);
                 handled = true;
+                break;
+
+            default:
+                super.onContextItemSelected(item);
                 break;
         }
         return handled;
@@ -324,7 +301,23 @@ public class AssetAllocationFragment
 
     // private
 
-    private void confirmDelete(final int id) {
+    private void deleteAllocation(MatrixCursorColumns item) {
+        AssetAllocationService service = new AssetAllocationService(getActivity());
+        if (!service.deleteAllocation(item.id)) {
+            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+        }
+        // reload data. Handled automagically. (by observer)
+    }
+
+    private void deleteStockLink(MatrixCursorColumns item) {
+        // remove stock link
+        String symbol = item.name;
+
+        AssetClassStockRepository repo = new AssetClassStockRepository(getActivity());
+        repo.delete(symbol);
+    }
+
+    private void confirmDelete(final MatrixCursorColumns item) {
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
@@ -334,11 +327,11 @@ public class AssetAllocationFragment
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    AssetAllocationService service = new AssetAllocationService(getActivity());
-                    if (!service.deleteAllocation(id)) {
-                        Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+                    if (item.type.equals(ItemType.Stock)) {
+                        deleteStockLink(item);
+                    } else {
+                        deleteAllocation(item);
                     }
-                    // reload data. Handled automagically. (by observer)
                 }
             });
 
@@ -511,6 +504,18 @@ public class AssetAllocationFragment
 
     private int getAssetClassId() {
         return getArguments().getInt(PARAM_ASSET_CLASS_ID);
+    }
+
+    private MatrixCursorColumns getSelectedItemType(AdapterView.AdapterContextMenuInfo info) {
+        Object fromAdapter = getListAdapter().getItem(info.position);
+        MatrixCursor cursor = (MatrixCursor) fromAdapter;
+
+        // todo: see how to solve this.
+        cursor.moveToPosition(info.position - 1);
+
+        MatrixCursorColumns result = MatrixCursorColumns.fromCursor(cursor);
+
+        return result;
     }
 
     private AssetClass retrieveData() {
