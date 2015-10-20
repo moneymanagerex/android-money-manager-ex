@@ -25,12 +25,15 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.settings.AppSettings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,14 +46,6 @@ import info.javaperformance.money.MoneyFactory;
  * Functions for the Asset Allocation
  */
 public class AssetAllocationService {
-
-    public static Money sumStockValues(List<Stock> stocks) {
-        Money sum = MoneyFactory.fromString("0");
-        for (Stock stock : stocks) {
-            sum = sum.add(stock.getValue());
-        }
-        return sum;
-    }
 
     public AssetAllocationService(Context context) {
         this.context = context;
@@ -85,6 +80,10 @@ public class AssetAllocationService {
         }
 
         return true;
+    }
+
+    public Context getContext() {
+        return this.context;
     }
 
     public AssetClass loadAssetAllocation() {
@@ -129,9 +128,9 @@ public class AssetAllocationService {
 
         AssetClassRepository repo = new AssetClassRepository(this.context);
         Cursor c = repo.openCursor(
-            new String[] { AssetClass.NAME },
+            new String[]{AssetClass.NAME},
             AssetClass.ID + "=?",
-            new String[] { Integer.toString(id)}
+            new String[]{Integer.toString(id)}
         );
         if (c == null) return null;
 
@@ -366,7 +365,8 @@ public class AssetAllocationService {
             allocation.setDifference(difference);
         } else {
             // Allocation. Calculate all stats on the spot.
-            allocation.calculateStats(totalValue);
+            //allocation.calculateStats(totalValue);
+            calculateStatsFor(allocation, totalValue);
         }
 
     }
@@ -438,14 +438,67 @@ public class AssetAllocationService {
         return sum;
     }
 
-//    private double sumDouble(List<AssetClass> group, Converter<AssetClass, Double> converter) {
-//        List<Double> values = Queryable.from(group)
-//            .map(converter).toList();
-//
-//        double sum = 0;
-//        for (double value : values) {
-//            sum += value;
-//        }
-//        return sum;
-//    }
+    /*
+                              Group      Asset Class
+     allocation               sum        setAllocation <= the only set value!
+     value                    sum        totalValue * setAllocation / 100
+     Current allocation       sum        value * 100 / totalValue
+     current value            sum        value of all stocks (numStocks * price) in base currency!
+     difference               sum        currentValue - setValue
+
+     */
+
+    /**
+     * The magic happens here. Calculate all dependent variables.
+     * @param totalPortfolioValue The total value of the portfolio, in base currency.
+     */
+    private void calculateStatsFor(AssetClass item, Money totalPortfolioValue) {
+        Money zero = MoneyFactory.fromString("0");
+        if (totalPortfolioValue.toDouble() == 0) {
+            item.setValue(zero);
+            item.setCurrentAllocation(zero);
+            item.setCurrentValue(zero);
+            item.setDifference(zero);
+            return;
+        }
+
+        // Set Value
+        Money allocation = item.getAllocation();
+        // value = allocation * totalPortfolioValue / 100;
+        Money value = totalPortfolioValue
+            .multiply(allocation.toDouble())
+            .divide(100, Constants.DEFAULT_PRECISION);
+        item.setValue(value);
+
+        // Current allocation.
+        Money currentAllocation = value
+            .multiply(100)
+            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
+        item.setCurrentAllocation(currentAllocation);
+
+        // current value
+        Money currentValue = sumStockValues(item.getStocks());
+        item.setCurrentValue(currentValue);
+
+        // difference
+        Money difference = currentValue.subtract(value);
+        item.setDifference(difference);
+    }
+
+    private Money sumStockValues(List<Stock> stocks) {
+        Money sum = MoneyFactory.fromString("0");
+        CurrencyService currencyService = new CurrencyService(getContext());
+        AccountRepository repo = new AccountRepository(getContext());
+        int baseCurrencyId = currencyService.getBaseCurrencyId();
+
+        for (Stock stock : stocks) {
+            // convert the stock value to the base currency.
+            int accountId = stock.getHeldAt();
+            int currencyId = repo.loadCurrencyIdFor(accountId);
+            Money value = currencyService.doCurrencyExchange(baseCurrencyId, stock.getValue(), currencyId);
+
+            sum = sum.add(value);
+        }
+        return sum;
+    }
 }

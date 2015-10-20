@@ -16,9 +16,15 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.domainmodel.AssetClass;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Column names for the matrix cursor for Asset Allocation
@@ -33,19 +39,45 @@ public class MatrixCursorColumns {
     public static final String DIFFERENCE =  "Difference";
     public static final String TYPE = "Type";
 
-    public static MatrixCursorColumns fromCursor(Cursor cursor) {
+    public static MatrixCursorColumns fromCursor(Context context, Cursor cursor) {
         MatrixCursorColumns values = new MatrixCursorColumns();
-
-//        int position = cursor.getPosition();
-//        int count = cursor.getCount();
+        FormatUtilities format = new FormatUtilities(context);
+        String display;
+        Money value;
 
         values.id = (int) cursor.getLong(cursor.getColumnIndex(MatrixCursorColumns.ID));
         values.name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
         values.allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
-        values.value = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
+
+        String valueString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));
+        if (!TextUtils.isEmpty(valueString)) {
+            value = MoneyFactory.fromString(valueString);
+            display = format.getValueFormattedInBaseCurrency(value);
+        } else {
+            display = "";
+        }
+        values.value = display;
+
         values.currentAllocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_ALLOCATION));
-        values.currentValue = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
-        values.difference = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
+
+        valueString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.CURRENT_VALUE));
+        if (!TextUtils.isEmpty(valueString)) {
+            value = MoneyFactory.fromString(valueString);
+            display = format.getValueFormattedInBaseCurrency(value);
+        } else {
+            display = "";
+        }
+        values.currentValue = display;
+
+        valueString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
+        if (!TextUtils.isEmpty(valueString)) {
+            value = MoneyFactory.fromString(valueString);
+            display = format.getValueFormattedInBaseCurrency(value);
+        } else {
+            display = "";
+        }
+        values.difference = display;
+
         String typeString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.TYPE));
         values.type = ItemType.valueOf(typeString);
 

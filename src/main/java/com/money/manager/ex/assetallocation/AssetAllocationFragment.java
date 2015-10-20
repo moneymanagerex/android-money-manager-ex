@@ -43,6 +43,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
@@ -431,13 +432,14 @@ public class AssetAllocationFragment
         AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
         MatrixCursorColumns values = new MatrixCursorColumns();
         int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
+        FormatUtilities format = new FormatUtilities(getActivity());
 
         values.name = getString(R.string.total);
         values.allocation = assetClass.getAllocation().toString();
-        values.value = assetClass.getValue().truncate(decimalPlaces).toString();
+        values.value = format.getValueFormattedInBaseCurrency(assetClass.getValue().truncate(decimalPlaces));
         values.currentAllocation = assetClass.getCurrentAllocation().toString();
-        values.currentValue = assetClass.getCurrentValue().truncate(decimalPlaces).toString();
-        values.difference = assetClass.getDifference().truncate(decimalPlaces).toString();
+        values.currentValue = format.getValueFormattedInBaseCurrency(assetClass.getCurrentValue().truncate(decimalPlaces));
+        values.difference = format.getValueFormattedInBaseCurrency(assetClass.getDifference().truncate(decimalPlaces));
 
         UIHelpers.populateAssetClassRow(holder, values);
 
@@ -510,10 +512,10 @@ public class AssetAllocationFragment
         Object fromAdapter = getListAdapter().getItem(info.position);
         MatrixCursor cursor = (MatrixCursor) fromAdapter;
 
-        // todo: see how to solve this.
+        // todo: see how to solve this. Location has to be modified because of the header row.
         cursor.moveToPosition(info.position - 1);
 
-        MatrixCursorColumns result = MatrixCursorColumns.fromCursor(cursor);
+        MatrixCursorColumns result = MatrixCursorColumns.fromCursor(getActivity(), cursor);
 
         return result;
     }

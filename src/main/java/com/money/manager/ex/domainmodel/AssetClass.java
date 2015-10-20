@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
@@ -194,50 +195,6 @@ public class AssetClass
 
     public void setDifference(Money value) {
         this.difference = value;
-    }
-
-    /*
-                              Group      Asset Class
-     allocation               sum        setAllocation <= the only set value!
-     value                    sum        setAllocation * 100 / totalValue
-     Current allocation       sum        value * 100 / totalValue
-     current value            sum        value of all stocks (numStocks * price) in base currency!
-     difference               sum        currentValue - setValue
-
-     */
-
-    /**
-     * The magic happens here. Calculate all dependent variables.
-     * @param totalPortfolioValue The total value of the portfolio, in base currency.
-     */
-    public void calculateStats(Money totalPortfolioValue) {
-        Money zero = MoneyFactory.fromString("0");
-        if (totalPortfolioValue.toDouble() == 0) {
-            this.value = zero;
-            this.currentAllocation = zero;
-            this.currentValue = zero;
-            this.difference = zero;
-            return;
-        }
-
-        // see the service for the formulas.
-
-        // Set Value
-        Money allocation = getAllocation();
-//        double value = allocation * totalPortfolioValue.toDouble() / 100;
-        this.value = totalPortfolioValue
-            .multiply(allocation.toDouble())
-            .divide(100, Constants.DEFAULT_PRECISION);
-
-        // current allocation. Use 2 decimals for now.
-//        double totalPortfolioValueD = totalPortfolioValue.toDouble();
-        this.currentAllocation = this.value
-            .multiply(100)
-            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
-        // current value
-        this.currentValue = AssetAllocationService.sumStockValues(this.stocks);
-        // difference
-        this.difference = this.currentValue.subtract(this.value);
     }
 
     public ItemType getType() {

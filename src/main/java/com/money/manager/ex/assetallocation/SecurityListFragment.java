@@ -73,7 +73,7 @@ public class SecurityListFragment
         // set show search
         setShowMenuItemSearch(true);
         // set default value
-        setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
+        setEmptyText(getActivity().getResources().getString(R.string.no_records_found_create));
         setHasOptionsMenu(true);
 
 //        int layout = Intent.ACTION_PICK.equals(this.action)
@@ -111,7 +111,7 @@ public class SecurityListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_SYMBOLS:
-                String whereClause = null;
+                String whereClause;
                 String selectionArgs[] = null;
 
                 // ignore all the symbols already linked

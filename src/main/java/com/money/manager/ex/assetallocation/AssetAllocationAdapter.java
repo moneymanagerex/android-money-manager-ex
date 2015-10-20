@@ -54,8 +54,7 @@ public class AssetAllocationAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
 
-        MatrixCursorColumns values = MatrixCursorColumns.fromCursor(cursor);
-
+        MatrixCursorColumns values = MatrixCursorColumns.fromCursor(context, cursor);
 
         UIHelpers.populateAssetClassRow(holder, values);
 

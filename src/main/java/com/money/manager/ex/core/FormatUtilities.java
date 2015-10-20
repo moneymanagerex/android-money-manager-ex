@@ -197,6 +197,11 @@ public class FormatUtilities {
         return result;
     }
 
+    public String getValueFormattedInBaseCurrency(Money value) {
+        CurrencyService service = new CurrencyService(getContext());
+        return getValueFormatted(value, service.getBaseCurrency());
+    }
+
 //    public String getNumberFormatted(Money value, double scale, String decimalPoint, String groupSeparator) {
 //        // Round the number first.
 //        int decimals = getNumberOfDecimals(scale);
