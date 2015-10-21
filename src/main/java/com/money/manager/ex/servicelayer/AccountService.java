@@ -297,8 +297,24 @@ public class AccountService {
         spinner.setAdapter(cursorAdapter);
     }
 
-    public List<Account> loadAccounts(boolean open, boolean favorite, List<String> accountTypes) {
-        return loadAccounts_content(open, favorite, accountTypes);
+    public List<Account> loadAccounts(boolean openOnly, boolean favoriteOnly, List<String> accountTypes) {
+        List<Account> result = new ArrayList<>();
+
+        Cursor cursor = getCursor(openOnly, favoriteOnly, accountTypes);
+        if (cursor == null) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.showMessage("Error reading accounts list!");
+            return result;
+        }
+
+        while (cursor.moveToNext()) {
+            Account account = new Account();
+            account.loadFromCursor(cursor);
+            result.add(account);
+        }
+        cursor.close();
+
+        return result;
     }
 
     public Money loadInitialBalance(int accountId) {
@@ -365,20 +381,20 @@ public class AccountService {
         return list;
     }
 
-    public List<Account> getTransactionAccounts(boolean open, boolean favorite) {
+    public List<Account> getTransactionAccounts(boolean openOnly, boolean favoriteOnly) {
         List<String> accountTypeNames = getTransactionAccountTypeNames();
 
-        List<Account> result = loadAccounts(open, favorite, accountTypeNames);
+        List<Account> result = loadAccounts(openOnly, favoriteOnly, accountTypeNames);
 
         return result;
     }
 
     // Private
 
-    private Cursor getCursorInternal(boolean open, boolean favorite, List<String> accountTypes) {
+    private Cursor getCursorInternal(boolean openOnly, boolean favoriteOnly, List<String> accountTypes) {
         TableAccountList account = new TableAccountList();
 
-        String where = getWhereFilterFor(open, favorite);
+        String where = getWhereFilterFor(openOnly, favoriteOnly);
 
         if (accountTypes != null && accountTypes.size() > 0) {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
@@ -393,14 +409,14 @@ public class AccountService {
         return cursor;
     }
 
-    private String getWhereFilterFor(boolean open, boolean favorite) {
+    private String getWhereFilterFor(boolean openOnly, boolean favoriteOnly) {
         StringBuilder where = new StringBuilder();
 
-        if (open) {
+        if (openOnly) {
             where.append("LOWER(STATUS)='open'");
         }
-        if (favorite) {
-            if (open) {
+        if (favoriteOnly) {
+            if (openOnly) {
                 where.append(" AND ");
             }
             where.append("LOWER(FAVORITEACCT)='true'");
@@ -415,6 +431,7 @@ public class AccountService {
         where.append(" IN (");
         for(String type : accountTypes) {
             if (accountTypes.indexOf(type) > 0) {
+                // if not first, add comma before the type name
                 where.append(',');
             }
 
@@ -447,25 +464,4 @@ public class AccountService {
 
         return account;
     }
-
-    private List<Account> loadAccounts_content(boolean open, boolean favorite, List<String> accountTypes) {
-        List<Account> result = new ArrayList<>();
-
-        Cursor cursor = getCursor(open, favorite, accountTypes);
-        if (cursor == null) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.showMessage("Error reading accounts list!");
-            return result;
-        }
-
-        while (cursor.moveToNext()) {
-            Account account = new Account();
-            account.loadFromCursor(cursor);
-            result.add(account);
-        }
-        cursor.close();
-
-        return result;
-    }
-
 }

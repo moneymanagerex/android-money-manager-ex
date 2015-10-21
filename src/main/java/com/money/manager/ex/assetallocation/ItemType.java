@@ -23,5 +23,6 @@ public enum ItemType {
     Group,
     Allocation,
     Stock,
+    Cash,
     Footer
 }

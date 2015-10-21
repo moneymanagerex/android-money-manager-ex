@@ -23,6 +23,7 @@ import com.innahema.collections.query.functions.Converter;
 import com.innahema.collections.query.queriables.Queryable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
@@ -30,6 +31,7 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
@@ -86,6 +88,10 @@ public class AssetAllocationService {
         return this.context;
     }
 
+    /**
+     * Main entry point when no data is loaded yet..
+     * @return Asset Allocation, see the method with the cursor parameter.
+     */
     public AssetClass loadAssetAllocation() {
         // http://docs.mongodb.org/manual/tutorial/model-tree-structures/
 
@@ -94,25 +100,35 @@ public class AssetAllocationService {
         return loadAssetAllocation(c);
     }
 
+    /**
+     * Main entry point.
+     * @param c Cursor with asset classes, from which to load the Asset Allocation.
+     * @return Full Asset Allocation with all the calculated fields.
+     */
     public AssetClass loadAssetAllocation(Cursor c) {
-        // Step 2: Fill a hash map with one pass through cursor.
-        HashMap<Integer, AssetClass> map = loadMap(c);
-        c.close();
-
-        // Step 3: Assign children to their parents.
-        List<AssetClass> list = assignChildren(map);
-
-        // Step 4: Load stock links and stocks
-        loadStocks(list);
-
-        // Step 5: Calculate and store totals.
+        // Main asset allocation object.
         AssetClass main = AssetClass.create("Asset Allocation");
         main.setType(ItemType.Group);
+
+        // Fill a hash map with one pass through cursor, for easier fetching of asset classes.
+        HashMap<Integer, AssetClass> map = loadMap(c);
+        c.close();
+        // Assign children to their parents.
+        List<AssetClass> list = assignChildren(map);
+
+        // Load stock links and stocks to asset allocations.
+        loadStocks(list);
+
         main.setChildren(list);
+
+        // create automatic Cash asset class by taking cash amounts from investment accounts.
+        // todo: addCash(main);
+
+        // Calculate and store current Value amounts.
         Money totalValue = calculateCurrentValue(list);
         main.setCurrentValue(totalValue);
 
-        // Step 6: Calculate all the derived values.
+        // Calculate all the derived values.
         calculateStats(main, totalValue);
 
         return main;
@@ -225,6 +241,45 @@ public class AssetAllocationService {
 
     // Private.
 
+    /**
+     * Add Cash as a separate, automatic asset class that uses all the cash amounts from
+     * the investment accounts.
+     * @param assetAllocation Main asset allocation object.
+     */
+    private void addCash(AssetClass assetAllocation) {
+        // get all investment accounts, their currencies and cash balances.
+        AccountRepository repo = new AccountRepository(getContext());
+        AccountService accountService = new AccountService(getContext());
+        List<String> investmentAccounts = new ArrayList<>();
+        investmentAccounts.add(AccountTypes.INVESTMENT.toString());
+        CurrencyService currencyService = new CurrencyService(getContext());
+        int destinationCurrency = currencyService.getBaseCurrencyId();
+        Money zero = MoneyFactory.fromDouble(0);
+
+        List<Account> accounts = accountService.loadAccounts(false, false, investmentAccounts);
+
+        Money sum = MoneyFactory.fromDouble(0);
+
+        // Get the balances in base currency.
+        for (Account account : accounts) {
+            int sourceCurrency = account.getCurrencyId();
+            Money amountInBase = currencyService.doCurrencyExchange(destinationCurrency,
+                account.getInitialBalance(), sourceCurrency);
+            sum = sum.add(amountInBase);
+        }
+
+        // add the cash asset class
+        // todo: the allocation needs to be editable!
+        AssetClass cash = AssetClass.create(getContext().getString(R.string.cash));
+        cash.setType(ItemType.Cash);
+        cash.setAllocation(zero);
+        cash.setCurrentAllocation(zero);
+        cash.setDifference(zero);
+        cash.setValue(sum);
+
+        assetAllocation.addChild(cash);
+    }
+
     private Cursor loadData() {
         Cursor c = repository.openCursor(null, null, null, AssetClass.PARENTID);
         return c;
@@ -308,21 +363,33 @@ public class AssetAllocationService {
         }
     }
 
-    private Money calculateCurrentValue(List<AssetClass> allocation) {
-        // iterate recursively
-        Money result = MoneyFactory.fromString("0");
+    private Money calculateCurrentValue(List<AssetClass> allocations) {
+        Money result = MoneyFactory.fromDouble(0);
 
-        for (AssetClass ac : allocation) {
+        for (AssetClass ac : allocations) {
             Money itemValue;
 
-            if (ac.getChildren().size() > 0) {
-                // Group. Calculate for children.
+            ItemType type = ac.getType();
+            switch (type) {
+                case Group:
+                    // Group. Calculate for children.
+                    itemValue = calculateCurrentValue(ac.getChildren());
+                    break;
 
-                itemValue = calculateCurrentValue(ac.getChildren());
-            } else {
-                // Allocation. get value of all stocks.
+                case Allocation:
+                    // Allocation. get value of all stocks.
+                    itemValue = sumStockValues(ac.getStocks());
+                    break;
 
-                itemValue = sumStockValues(ac.getStocks());
+                case Cash:
+                    itemValue = ac.getValue();
+                    break;
+
+                default:
+                    ExceptionHandler handler = new ExceptionHandler(getContext());
+                    handler.showMessage("encountered an item with no type set!");
+                    itemValue = MoneyFactory.fromDouble(0);
+                    break;
             }
 
             ac.setCurrentValue(itemValue);
@@ -340,33 +407,40 @@ public class AssetAllocationService {
     private void calculateStats(AssetClass allocation, Money totalValue) {
         List<AssetClass> children = allocation.getChildren();
 
-        // Group or allocation?
-        if (children.size() > 0) {
-            // Group. Calculate stats for children *and* get the summaries here.
-            for (AssetClass child : children) {
-                // find edge node
-                calculateStats(child, totalValue);
-            }
+        ItemType type = allocation.getType();
+        switch (type) {
+            case Group:
+                // Group. Calculate stats for children *and* get the summaries here.
+                for (AssetClass child : children) {
+                    // find edge node
+                    calculateStats(child, totalValue);
+                }
 
-            // Allocation
-            Money setAllocation = getAllocationSum(children);
-            allocation.setAllocation(setAllocation);
-            // Value
-            Money setValue = getValueSum(children);
-            allocation.setValue(setValue);
-            // current allocation
-            Money currentAllocation = getCurrentAllocationSum(children);
-            allocation.setCurrentAllocation(currentAllocation);
-            // current value
-            Money currentValue = getCurrentValueSum(children);
-            allocation.setCurrentValue(currentValue);
-            // difference
-            Money difference = getDifferenceSum(children);
-            allocation.setDifference(difference);
-        } else {
-            // Allocation. Calculate all stats on the spot.
-            //allocation.calculateStats(totalValue);
-            calculateStatsFor(allocation, totalValue);
+                // Allocation
+                Money setAllocation = getAllocationSum(children);
+                allocation.setAllocation(setAllocation);
+                // Value
+                Money setValue = getValueSum(children);
+                allocation.setValue(setValue);
+                // current allocation
+                Money currentAllocation = getCurrentAllocationSum(children);
+                allocation.setCurrentAllocation(currentAllocation);
+                // current value
+                Money currentValue = getCurrentValueSum(children);
+                allocation.setCurrentValue(currentValue);
+                // difference
+                Money difference = getDifferenceSum(children);
+                allocation.setDifference(difference);
+                break;
+
+            case Allocation:
+                // Allocation. Calculate all stats.
+                calculateStatsFor(allocation, totalValue);
+                break;
+
+            case Cash:
+                // todo: nothing for now. Keep the value only.
+                break;
         }
 
     }
