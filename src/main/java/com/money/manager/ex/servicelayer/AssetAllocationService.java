@@ -470,15 +470,15 @@ public class AssetAllocationService {
             .divide(100, Constants.DEFAULT_PRECISION);
         item.setValue(value);
 
-        // Current allocation.
-        Money currentAllocation = value
-            .multiply(100)
-            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
-        item.setCurrentAllocation(currentAllocation);
-
         // current value
         Money currentValue = sumStockValues(item.getStocks());
         item.setCurrentValue(currentValue);
+
+        // Current allocation.
+        Money currentAllocation = currentValue
+            .multiply(100)
+            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
+        item.setCurrentAllocation(currentAllocation);
 
         // difference
         Money difference = currentValue.subtract(value);
