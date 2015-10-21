@@ -16,25 +16,11 @@
  */
 package com.money.manager.ex.assetallocation;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
-import android.database.MatrixCursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.View;
-import android.widget.TextView;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.List;
-
-import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
 
 /**
  * Common UI methods.

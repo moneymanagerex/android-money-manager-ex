@@ -47,18 +47,23 @@ public class AssetAllocationAdapter
 
         View view = inflater.inflate(R.layout.item_asset_allocation, parent, false);
 
+        // view holder pattern
+        AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
+        view.setTag(holder);
+
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
+        Object tag = view.getTag();
+        if (tag == null) return;
+
+        AssetClassViewHolder holder = (AssetClassViewHolder) tag;
 
         MatrixCursorColumns values = MatrixCursorColumns.fromCursor(context, cursor);
 
         UIHelpers.populateAssetClassRow(holder, values);
 
-        // view holder pattern
-        // todo: view.setTag(holder);
     }
 }

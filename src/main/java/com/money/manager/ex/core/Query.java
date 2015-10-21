@@ -21,10 +21,9 @@ import android.os.Parcelable;
 
 /**
  * Contains the parameters for a query
- * Created by Alen Siljak on 11/09/2015.
  */
 public class Query
-    implements Parcelable{
+    implements Parcelable {
 
     public final static Parcelable.Creator<Query> CREATOR = new Parcelable.Creator<Query>() {
         public Query createFromParcel(Parcel source) {

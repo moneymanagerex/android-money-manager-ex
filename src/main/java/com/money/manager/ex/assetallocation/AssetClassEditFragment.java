@@ -182,10 +182,6 @@ public class AssetClassEditFragment
         return result;
     }
 
-//    public void loadData() {
-//        getLoaderManager().restartLoader(LOADER_SECURITIES, null, this);
-//    }
-
     private void initializeNameEdit(View view) {
         final EditText edit = (EditText) view.findViewById(R.id.nameEdit);
         if (edit == null) return;

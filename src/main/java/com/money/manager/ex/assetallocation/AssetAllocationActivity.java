@@ -41,6 +41,7 @@ public class AssetAllocationActivity
     implements DetailFragmentCallbacks, LoaderManager.LoaderCallbacks<AssetClass> {
 
     private static final int LOADER_ASSET_ALLOCATION = 1;
+    private static final String KEY_ASSET_ALLOCATION = "assetAllocation";
 
     private AssetClass assetAllocation;
 
@@ -60,6 +61,30 @@ public class AssetAllocationActivity
 
         // Ref: http://developer.android.com/guide/components/loaders.html
         getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save allocation?
+        outState.putParcelable(KEY_ASSET_ALLOCATION, this.assetAllocation);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // restore allocation.
+        this.assetAllocation = savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // reload data
+        //getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
     }
 
     @Override

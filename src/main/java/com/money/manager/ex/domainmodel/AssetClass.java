@@ -16,14 +16,15 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.assetallocation.ItemType;
-import com.money.manager.ex.servicelayer.AssetAllocationService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,8 @@ import info.javaperformance.money.MoneyFactory;
  * Asset Class
  */
 public class AssetClass
-    extends EntityBase {
+    extends EntityBase
+    implements Serializable {
 
     public static final String ID = "ID";
     public static final String PARENTID = "PARENTID";
@@ -54,6 +56,19 @@ public class AssetClass
         entity.setAllocation(MoneyFactory.fromString("0"));
         return entity;
     }
+
+    public final static Parcelable.Creator<AssetClass> CREATOR = new Parcelable.Creator<AssetClass>() {
+        public AssetClass createFromParcel(Parcel source) {
+            AssetClass record = new AssetClass();
+            record.readFromParcel(source);
+            return record;
+        }
+
+        @Override
+        public AssetClass[] newArray(int size) {
+            return new AssetClass[size];
+        }
+    };
 
     public AssetClass() {
         super();
@@ -78,6 +93,17 @@ public class AssetClass
 
         // Reload all money values.
         DatabaseUtils.cursorDoubleToCursorValues(c, ALLOCATION, this.contentValues);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+
+        // todo: now just save calculated fields
+    }
+
+    public void readFromParcel(Parcel source) {
+        Log.d("test", source.toString());
     }
 
     public Integer getId() {

@@ -119,7 +119,9 @@ public class AssetAllocationFragment
         setFloatingActionButtonAttachListView(true);
 
         AssetClass assetClass = retrieveData();
-        showData(assetClass);
+        if (assetClass != null) {
+            showData(assetClass);
+        }
     }
 
     @Override
@@ -162,6 +164,8 @@ public class AssetAllocationFragment
     @Override
     public String getSubTitle() {
         AssetClass assetClass = retrieveData();
+        if (assetClass == null) return null;
+
         return assetClass.getName();
     }
 
@@ -505,7 +509,8 @@ public class AssetAllocationFragment
     }
 
     private int getAssetClassId() {
-        return getArguments().getInt(PARAM_ASSET_CLASS_ID);
+        Bundle arguments = getArguments();
+        return arguments.getInt(PARAM_ASSET_CLASS_ID);
     }
 
     private MatrixCursorColumns getSelectedItemType(AdapterView.AdapterContextMenuInfo info) {

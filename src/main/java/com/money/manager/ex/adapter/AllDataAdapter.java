@@ -101,7 +101,7 @@ public class AllDataAdapter
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = mInflater.inflate(R.layout.item_alldata_account, parent, false);
 
-        // holder
+        // view holder pattern
         AllDataViewHolder holder = new AllDataViewHolder();
         // take a pointer of object UI
         holder.linDate = (LinearLayout) view.findViewById(R.id.linearLayoutDate);
