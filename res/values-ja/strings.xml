@@ -42,6 +42,7 @@
   <string name="version">バージョン</string>
   <string name="build">ビルド</string>
   <string name="path">データベースのパス</string>
+  <string name="database_version">データベースのバージョン</string>
   <string name="title_show_tutorial">チュートリアルを表示</string>
   <string name="summary_show_tutorial">次回の実行時にチュートリアルを表示しますか?</string>
   <string name="preferences_behaviour_focus_filter_title">セレクターでフィルター</string>
@@ -443,6 +444,7 @@
   <string name="edit_price">価格を編集</string>
   <string name="price_updated">価格を更新しました</string>
   <string name="all_prices_updated">すべての価格が更新されました。</string>
+  <string name="download_complete">ダウンロードが完了しました。</string>
   <string name="confirm_price_download">オンラインでセキュリティの価格を更新しますか?</string>
   <string name="starting_price_update">価格のダウンロード中、しばらくお待ちください&#8230;</string>
   <string name="database_migrate_14_to_20">V1.4 からデータベースを移行します</string>
@@ -451,6 +453,7 @@
   <string name="database_migrate_14_to_20_success">データベースの移行に成功しました。</string>
   <string name="database_migrate_14_to_20_complete">移行は完了しました。このデータベースを使用するには設定を閉じてください。</string>
   <string name="database_migrate_14_to_20_intro">データベースが以前の場所で検出されました。下のボタンをタップすると、SD カードに移行して使用します。</string>
+  <string name="clear_recent_files_list">最近使ったファイルをクリア</string>
   <string name="export_prices">価格をエクスポート</string>
   <string name="purge_history">価格の履歴を削除</string>
   <string name="purge_history_confirmation">アカウントの完全な価格の履歴をすべて削除しますか?</string>
@@ -494,6 +497,7 @@
   <string name="update_available">利用可能な更新</string>
   <string name="update_on_dropbox">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
   <string name="currencies_empty">通貨が見つかりませんでした。作成するには、緑のプラスボタンをタップします。</string>
+  <string name="currency_not_found">通貨が見つかりません</string>
   <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
   <string name="current_database">現在のデータベース</string>
   <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
@@ -517,4 +521,24 @@
   <string name="value">価値</string>
   <string name="view_transactions">取引の表示</string>
   <string name="error_downloading_symbol">シンボルの価格をダウンロード中にエラー</string>
+  <string name="other">その他</string>
+  <string name="cleared">クリアしました</string>
+  <string name="delete_success">アイテムを削除しました</string>
+  <string name="asset_allocation">資産の割当て</string>
+  <string name="asset_classes_empty">資産分類が定義されていません。作成するには、緑のプラスボタンをタップします。</string>
+  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
+  <string name="asset_class_name">資産分類名</string>
+  <string name="allocation">割当て</string>
+  <string name="current_allocation">現在の割当て</string>
+  <string name="move_up">上に移動</string>
+  <string name="move_down">下に移動</string>
+  <string name="securities">証券</string>
+  <string name="title_activity_security_list">SecurityListActivity</string>
+  <string name="no_records_found_create">レコードが見つかりません。作成するには緑のプラスボタンをタップします。</string>
+  <string name="current_value">現在価値</string>
+  <string name="current">現在</string>
+  <string name="parent">親</string>
+  <string name="name">名前</string>
+  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
+  <string name="stock">株式</string>
 </resources>

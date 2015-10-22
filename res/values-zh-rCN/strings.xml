@@ -42,6 +42,7 @@
   <string name="version">版本</string>
   <string name="build">Build</string>
   <string name="path">数据库路径</string>
+  <string name="database_version">数据库版本</string>
   <string name="title_show_tutorial">显示教程</string>
   <string name="summary_show_tutorial">是否在下次运行时显示教程？</string>
   <string name="preferences_behaviour_focus_filter_title">在选择列表中显示搜索框</string>
@@ -443,6 +444,7 @@
   <string name="edit_price">编辑价格</string>
   <string name="price_updated">价格已更新</string>
   <string name="all_prices_updated">所有价格均已更新。</string>
+  <string name="download_complete">下载已完成</string>
   <string name="confirm_price_download">您确定要在线更新安全价格吗？</string>
   <string name="starting_price_update">正在下载价格 请稍候&#8230;</string>
   <string name="database_migrate_14_to_20">从 v1.4 迁移数据库</string>
@@ -451,11 +453,12 @@
   <string name="database_migrate_14_to_20_success">数据库迁移成功。</string>
   <string name="database_migrate_14_to_20_complete">迁移完成。请关闭设置面板以开始使用。</string>
   <string name="database_migrate_14_to_20_intro">在旧位置发现数据库。轻触下方按钮可将其迁移到 SD 卡中使用。</string>
+  <string name="clear_recent_files_list">清除最近使用的文件</string>
   <string name="export_prices">汇出价格</string>
   <string name="purge_history">清除历史记录价格</string>
   <string name="purge_history_confirmation">你想要删除所有账户的完整价格历史记录吗?</string>
   <string name="purge_history_complete">价格历史记录已被清除。</string>
-  <string name="purge_history_failed">价格历史不能被清除。</string>
+  <string name="purge_history_failed">无法清除价格历史。</string>
   <string name="create_db">创建数据库</string>
   <string name="create_db_summary">创建一个新的数据库文件</string>
   <string name="create_db_hint">请提供文件名称</string>
@@ -494,6 +497,7 @@
   <string name="update_available">更新可用</string>
   <string name="update_on_dropbox">Dropbox 上存在一个已更新的数据库文件可以使用。是否需要更新？</string>
   <string name="currencies_empty">没有找到可用的币种。轻触绿色加号按钮可添加一个币种。</string>
+  <string name="currency_not_found">未找到货币</string>
   <string name="homepage">我们的主页是 http://android.moneymanagerex.org/</string>
   <string name="current_database">当前数据库</string>
   <string name="about_logcat_header">您可以通过单击下面的按钮向我们发送应用程序日志。</string>
@@ -517,4 +521,20 @@
   <string name="value">市值</string>
   <string name="view_transactions">查看交易记录</string>
   <string name="error_downloading_symbol">下载该股票价格时发生错误</string>
+  <string name="other">其他</string>
+  <string name="cleared">已清除</string>
+  <string name="delete_success">已删除</string>
+  <string name="asset_allocation">资产配置</string>
+  <string name="asset_classes_empty">未定义可用的资产类别。轻触绿色加号按钮可新建一个资产类别。</string>
+  <string name="asset_class_name">资产类别名称</string>
+  <string name="allocation">分配</string>
+  <string name="current_allocation">当前分配</string>
+  <string name="move_up">向上移动</string>
+  <string name="move_down">向下移动</string>
+  <string name="securities">证券</string>
+  <string name="no_records_found_create">没有找到记录。轻触绿色加号按钮可新建一个记录。</string>
+  <string name="current_value">当前价值</string>
+  <string name="current">当前</string>
+  <string name="name">名称</string>
+  <string name="stock">股票</string>
 </resources>

@@ -42,6 +42,7 @@
   <string name="version">Версия</string>
   <string name="build">Номер сборки</string>
   <string name="path">Путь к базе данных</string>
+  <string name="database_version">Версия базы данных</string>
   <string name="title_show_tutorial">Показать учебник</string>
   <string name="summary_show_tutorial">Показать учебник на следующий раз?</string>
   <string name="preferences_behaviour_focus_filter_title">Фокус на поле фильтра</string>
@@ -443,6 +444,7 @@
   <string name="edit_price">Редактировать цену</string>
   <string name="price_updated">Цены обновлены</string>
   <string name="all_prices_updated">Все цены обновлены.</string>
+  <string name="download_complete">Загрузка завершена.</string>
   <string name="confirm_price_download">Вы хотите обновить цены безопасности онлайн ?</string>
   <string name="starting_price_update">Загрузка цен, пожалуйста, подождите...</string>
   <string name="database_migrate_14_to_20">Перенос базы данных с v1.4</string>
@@ -451,6 +453,7 @@
   <string name="database_migrate_14_to_20_success">Перенос базы данных выполнен успешно.</string>
   <string name="database_migrate_14_to_20_complete">Перенос завершен. Закройте настройки, чтобы начать использовать эту базу данных.</string>
   <string name="database_migrate_14_to_20_intro">База данных была обнаружена на старом месте. Нажмите на кнопку ниже, чтобы перенести на SD-карту  и использовать.</string>
+  <string name="clear_recent_files_list">Очистить недавние файлы</string>
   <string name="export_prices">Экспорт цен</string>
   <string name="purge_history">Очистить историю цен</string>
   <string name="purge_history_confirmation">Вы хотите удалить историю цен для всех счетов?</string>
@@ -494,6 +497,7 @@
   <string name="update_available">Имеется обновление</string>
   <string name="update_on_dropbox">Обновленная база данных доступна в Dropbox. Желаете обновить?</string>
   <string name="currencies_empty">Валюты не найдены. Чтобы создать валюту, нажмите на кнопку с зеленым плюсом.</string>
+  <string name="currency_not_found">Валюта не найдена</string>
   <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Текущая база данных</string>
   <string name="about_logcat_header">Вы можете отправить нам лог приложения, нажав на кнопку ниже.</string>
@@ -517,4 +521,21 @@
   <string name="value">Значение</string>
   <string name="view_transactions">Просмотр транзакций</string>
   <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
+  <string name="other">Другое</string>
+  <string name="cleared">Очищено</string>
+  <string name="delete_success">Элемент удален</string>
+  <string name="asset_allocation">Распределение активов</string>
+  <string name="asset_classes_empty">Классы активов не были определены. Чтобы его создать, нажмите на зеленую кнопку.</string>
+  <string name="asset_class_name">Название класса активов</string>
+  <string name="allocation">Распределение</string>
+  <string name="current_allocation">Текущее распределение</string>
+  <string name="move_up">Поднять выше</string>
+  <string name="move_down">Опустить ниже</string>
+  <string name="securities">Ценные бумаги</string>
+  <string name="no_records_found_create">Нет ни одной записи. Чтобы ее создать, нажмите на зеленую кнопку.</string>
+  <string name="current_value">Текущее значение</string>
+  <string name="current">Текущее</string>
+  <string name="parent">Родительское</string>
+  <string name="name">Название</string>
+  <string name="stock">Запас</string>
 </resources>
