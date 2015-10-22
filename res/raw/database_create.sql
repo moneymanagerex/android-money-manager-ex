@@ -286,6 +286,7 @@ INSERT INTO "CURRENCYFORMATS_V1" VALUES(148,'Vanuatu vatu','VT','','.',' ','',''
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(149,'Vietnamese dong','₫','','.',' ','','',1,1,'VND');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(150,'Samoan tala','WS$','','.',' ','','',100,1,'WST');
 INSERT INTO "CURRENCYFORMATS_V1" VALUES(151,'Yemeni rial','','','.',' ','','',1,1,'YER');
+INSERT INTO "CURRENCYFORMATS_V1" VALUES(152,'Venezuelan Bolívar','Bs.','','.',',','bolívar','céntimos',100,1,'VEF');
 
 -- Describe INFOTABLE_V1
 CREATE TABLE INFOTABLE_V1(
