@@ -151,10 +151,11 @@
                 <Spinner
                     android:id="@+id/spinnerStatus"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:prompt="@string/status"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    />
 
             </LinearLayout>
 
