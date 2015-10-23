@@ -122,7 +122,7 @@ public class EntityBase
         contentValues.put(fieldName, dateString);
     }
 
-    protected Integer getInteger(String column) {
+    protected Integer getInt(String column) {
         return contentValues.getAsInteger(column);
     }
 

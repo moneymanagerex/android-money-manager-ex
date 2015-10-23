@@ -137,7 +137,7 @@ public class AccountTransactionsFragment
 
         // this is already in onCreateView.
 //        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-//            mAccountId = savedInstanceState.getInteger(KEY_CONTENT);
+//            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
 //        }
 
         // Set the default period.

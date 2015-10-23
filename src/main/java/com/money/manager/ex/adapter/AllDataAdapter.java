@@ -358,7 +358,7 @@ public class AllDataAdapter
 
 //    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
 //        try {
-//            int transId = cursor.getInteger(cursor.getColumnIndex(ID));
+//            int transId = cursor.getInt(cursor.getColumnIndex(ID));
 //
 //            String date = cursor.getString(cursor.getColumnIndex(DATE));
 //

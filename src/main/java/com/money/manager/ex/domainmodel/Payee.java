@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
+
 /**
  * Payee model.
  */
@@ -28,11 +30,15 @@ public class Payee
     public static final String SUBCATEGID = "SUBCATEGID";
 
     public Payee() {
+        super();
+    }
 
+    public Payee(ContentValues contentValues) {
+        super(contentValues);
     }
 
     public Integer getId() {
-        return getInteger(PAYEEID);
+        return getInt(PAYEEID);
     }
 
     public void setId(Integer value) {
@@ -48,11 +54,11 @@ public class Payee
     }
 
     public Integer getCategoryId() {
-        return getInteger(Payee.CATEGID);
+        return getInt(Payee.CATEGID);
     }
 
     public Integer getSubcategoryId() {
-        return getInteger(Payee.SUBCATEGID);
+        return getInt(Payee.SUBCATEGID);
     }
 
 }

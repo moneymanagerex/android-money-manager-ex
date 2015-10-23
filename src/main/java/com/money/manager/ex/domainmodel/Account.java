@@ -94,7 +94,7 @@ public class Account
     }
 
     public Integer getId() {
-        return getInteger(Account.ACCOUNTID);
+        return getInt(Account.ACCOUNTID);
     }
 
     public void setId(Integer value) {
@@ -102,7 +102,7 @@ public class Account
     }
 
     public Integer getCurrencyId() {
-        return getInteger(Account.CURRENCYID);
+        return getInt(Account.CURRENCYID);
     }
 
     public void setCurrencyId(Integer currencyId) {

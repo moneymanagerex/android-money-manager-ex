@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentValues;
 import android.content.Context;
 
+import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Payee;
 
@@ -51,4 +53,9 @@ public class PayeeRepository
         return result > 0;
     }
 
+    public Payee load(int id) {
+        ContentValues cv = single(Payee.PAYEEID + "=?", DatabaseUtilities.getArgsForId(id));
+        Payee payee = new Payee(cv);
+        return payee;
+    }
 }

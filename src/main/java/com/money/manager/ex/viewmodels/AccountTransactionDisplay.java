@@ -51,11 +51,11 @@ public class AccountTransactionDisplay
     }
 
     public Integer getId() {
-        return getInteger(QueryAllData.ID);
+        return getInt(QueryAllData.ID);
     }
 
     public Integer getAccountId() {
-        return getInteger(QueryAllData.ACCOUNTID);
+        return getInt(QueryAllData.ACCOUNTID);
     }
 
     public String getAccountName() {
@@ -89,7 +89,7 @@ public class AccountTransactionDisplay
     }
 
     public boolean getIsSplit() {
-        int split = getInteger(QueryAllData.SPLITTED);
+        int split = getInt(QueryAllData.SPLITTED);
         return split > 0;
     }
 

@@ -19,7 +19,6 @@ package com.money.manager.ex.recurring.transactions;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -35,8 +34,6 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
@@ -47,10 +44,8 @@ import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
-import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.transactions.YesNoDialogListener;
@@ -352,7 +347,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        mCommonFunctions.selectSubcategoryName();
+        mCommonFunctions.displayCategoryName();
 
         return true;
     }

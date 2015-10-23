@@ -21,8 +21,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Parcel;
 
-import com.money.manager.ex.utils.DateUtils;
-
 import java.util.Date;
 
 /**
@@ -54,7 +52,7 @@ public class StockHistory
     }
 
     public int getHistId() {
-        return getInteger(HISTID);
+        return getInt(HISTID);
     }
 
     public Date getDate() {

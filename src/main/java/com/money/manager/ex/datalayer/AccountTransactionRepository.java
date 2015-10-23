@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentValues;
 import android.content.Context;
 
+import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.domainmodel.AccountTransaction;
@@ -52,4 +54,9 @@ public class AccountTransactionRepository
                 ISplitTransactionsDataset.TOTRANSAMOUNT};
     }
 
+    public AccountTransaction load(int id) {
+        ContentValues cv = single(AccountTransaction.TRANSID + "=?", DatabaseUtilities.getArgsForId(id));
+        AccountTransaction tx = new AccountTransaction(cv);
+        return tx;
+    }
 }

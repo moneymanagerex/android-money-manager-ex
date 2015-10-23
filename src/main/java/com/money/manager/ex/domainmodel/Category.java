@@ -52,4 +52,7 @@ public class Category
         contentValues = in.readParcelable(ContentValues.class.getClassLoader());
     }
 
+    public String getName() {
+        return getString(CATEGNAME);
+    }
 }

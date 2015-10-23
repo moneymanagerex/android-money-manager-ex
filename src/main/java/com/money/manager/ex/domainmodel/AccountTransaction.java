@@ -16,10 +16,16 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
+
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.utils.DateUtils;
+
+import java.util.Date;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Account Transaction entity. Table checkingaccount_v1.
@@ -43,27 +49,102 @@ public class AccountTransaction
         return tx;
     }
 
+    public AccountTransaction() {
+        super();
+    }
+
+    public AccountTransaction(ContentValues contentValues) {
+        super(contentValues);
+    }
+
+    public int getId() {
+        return getInt(TRANSID);
+    }
+
+    public int getAccountId() {
+        return getInt(ISplitTransactionsDataset.ACCOUNTID);
+    }
+
     public void setAccountId(int value) {
         setInteger(ISplitTransactionsDataset.ACCOUNTID, value);
     }
 
-    public void setPayeeId(int value) {
-        setInteger(ISplitTransactionsDataset.PAYEEID, value);
-    }
-
-    public void setType(TransactionTypes value) {
-        setString(ISplitTransactionsDataset.TRANSCODE, value.name());
+    public Money getAmount() {
+        Double amount = getDouble(ISplitTransactionsDataset.TRANSAMOUNT);
+        Money result = MoneyFactory.fromDouble(amount);
+        return result;
     }
 
     public void setAmount(Money value) {
         setMoney(ISplitTransactionsDataset.TRANSAMOUNT, value);
     }
 
+    public Money getAmountTo() {
+        Double amount = getDouble(ISplitTransactionsDataset.TOTRANSAMOUNT);
+        Money result = MoneyFactory.fromDouble(amount);
+        return result;
+    }
+
+    public int getCategoryId() {
+        return getInt(ISplitTransactionsDataset.CATEGID);
+    }
+
     public void setCategoryId(Integer value) {
         setInteger(ISplitTransactionsDataset.CATEGID, value);
+    }
+
+    public String getDateAsString() {
+        return getString(ISplitTransactionsDataset.TRANSDATE);
+    }
+
+    public Date getDate() {
+        String dateString = getDateAsString();
+        return DateUtils.getDateFromIsoString(dateString);
+    }
+
+    public String getNotes() {
+        return getString(ISplitTransactionsDataset.NOTES);
+    }
+
+    public int getPayeeId() {
+        return getInt(ISplitTransactionsDataset.PAYEEID);
+    }
+
+    public void setPayeeId(int value) {
+        setInteger(ISplitTransactionsDataset.PAYEEID, value);
+    }
+
+    public String getStatus() {
+        return getString(ISplitTransactionsDataset.STATUS);
+    }
+
+    public int getSubcategoryId() {
+        return getInt(ISplitTransactionsDataset.SUBCATEGID);
     }
 
     public void setSubcategoryId(Integer value) {
         setInteger(ISplitTransactionsDataset.SUBCATEGID, value);
     }
+
+    public int getToAccountId() {
+        return getInt(ISplitTransactionsDataset.TOACCOUNTID);
+    }
+
+    public String getTransCode() {
+        return getString(ISplitTransactionsDataset.TRANSCODE);
+    }
+
+    public String getTransactionNumber() {
+        return getString(ISplitTransactionsDataset.TRANSACTIONNUMBER);
+    }
+
+    public TransactionTypes getTransType() {
+        String code = getTransCode();
+        return TransactionTypes.valueOf(code);
+    }
+
+    public void setType(TransactionTypes value) {
+        setString(ISplitTransactionsDataset.TRANSCODE, value.name());
+    }
+
 }

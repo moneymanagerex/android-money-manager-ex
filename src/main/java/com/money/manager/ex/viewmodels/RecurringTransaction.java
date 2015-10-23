@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.viewmodels;
 
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.domainmodel.EntityBase;
 
@@ -28,6 +27,6 @@ public class RecurringTransaction
     extends EntityBase {
 
     public Integer getAccountId() {
-        return getInteger(QueryBillDeposits.ACCOUNTID);
+        return getInt(QueryBillDeposits.ACCOUNTID);
     }
 }

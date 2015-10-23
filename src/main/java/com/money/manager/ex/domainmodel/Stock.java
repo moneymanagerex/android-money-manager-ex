@@ -99,7 +99,7 @@ public class Stock
     }
 
     public int getHeldAt() {
-        return getInteger(HELDAT);
+        return getInt(HELDAT);
     }
 
     public void setHeldAt(int value) {

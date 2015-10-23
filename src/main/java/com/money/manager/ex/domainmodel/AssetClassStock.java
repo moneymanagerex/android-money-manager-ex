@@ -44,7 +44,7 @@ public class AssetClassStock
     }
 
     public Integer getAssetClassId() {
-        return getInteger(ASSETCLASSID);
+        return getInt(ASSETCLASSID);
     }
 
     public void setAssetClassId(int value) {

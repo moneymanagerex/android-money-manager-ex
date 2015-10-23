@@ -107,7 +107,7 @@ public class AssetClass
     }
 
     public Integer getId() {
-        return getInteger(ID);
+        return getInt(ID);
     }
 
     public void setId(int value) {
@@ -115,7 +115,7 @@ public class AssetClass
     }
 
     public Integer getParentId() {
-        return getInteger(PARENTID);
+        return getInt(PARENTID);
     }
 
     public void setParentId(int value) {
@@ -139,7 +139,7 @@ public class AssetClass
     }
 
     public Integer getSortOrder() {
-        return getInteger(SORTORDER);
+        return getInt(SORTORDER);
     }
 
     public void setSortOrder(int value) {

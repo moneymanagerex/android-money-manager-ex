@@ -49,6 +49,8 @@ import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -250,14 +252,14 @@ public class EditTransactionCommonFunctions {
         }
 
         // Category and subcategory
-        int categoryId = this.categoryId;
-        int subCategoryId = this.subCategoryId;
-        if (isTransfer || isSplitSelected()) {
-            categoryId = Constants.NOT_SET;
-            subCategoryId = Constants.NOT_SET;
-        }
-        values.put(ISplitTransactionsDataset.CATEGID, categoryId);
-        values.put(ISplitTransactionsDataset.SUBCATEGID, subCategoryId);
+//        int categoryId = this.categoryId;
+//        int subCategoryId = this.subCategoryId;
+//        if (isTransfer || isSplitSelected()) {
+//            categoryId = Constants.NOT_SET;
+//            subCategoryId = Constants.NOT_SET;
+//        }
+        values.put(ISplitTransactionsDataset.CATEGID, this.categoryId);
+        values.put(ISplitTransactionsDataset.SUBCATEGID, this.subCategoryId);
 
         values.put(ISplitTransactionsDataset.FOLLOWUPID, Constants.NOT_SET);
         values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, this.edtTransNumber.getText().toString());
@@ -995,19 +997,13 @@ public class EditTransactionCommonFunctions {
      * @return true if the data selected
      */
     public boolean selectPayeeName(int payeeId) {
-        TablePayee payee = new TablePayee();
-        Cursor cursor = mParent.getContentResolver().query(payee.getUri(),
-                payee.getAllColumns(),
-                Payee.PAYEEID + "=?",
-                new String[]{Integer.toString(payeeId)}, null);
-        // check if cursor is valid and open
-        if (cursor == null) return false;
-
-        if (cursor.moveToFirst()) {
-            // set payee name
-            payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
+        PayeeRepository repo = new PayeeRepository(getContext());
+        Payee payee = repo.load(payeeId);
+        if (payee != null) {
+            this.payeeName = payee.getName();
+        } else {
+            this.payeeName = null;
         }
-        cursor.close();
 
         return true;
     }
@@ -1015,47 +1011,25 @@ public class EditTransactionCommonFunctions {
     /**
      * Loads info for Category and Subcategory
      *
-     * @param categoryId Id of the category to load.
-     * @param subCategoryId Id of the subcategory to load.
      * @return A boolean indicating whether the operation was successful.
      */
-    public boolean selectSubcategoryName() {
-        // don't load anything if category & sub-category are not set.
+    public boolean displayCategoryName() {
         if(categoryId <= 0 && subCategoryId <= 0) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
-        // todo: Category category = categoryRepository.g
-
-        TableCategory category = new TableCategory();
-        TableSubCategory subCategory = new TableSubCategory();
-        Cursor cursor;
-        // category
-        cursor = getContext().getContentResolver().query(category.getUri(), category.getAllColumns(),
-            Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            this.categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
+        Category category = categoryRepository.load(categoryId);
+        if (category != null) {
+            this.categoryName = category.getName();
         } else {
             this.categoryName = null;
         }
-        if (cursor != null) {
-            cursor.close();
-        }
 
-        // sub-category
-
-        cursor = getContext().getContentResolver().query(subCategory.getUri(),
-            subCategory.getAllColumns(),
-            Subcategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)},
-            null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            this.subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
+        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
+        Subcategory subcategory = subRepo.load(subCategoryId);
+        if (subcategory != null) {
+            this.subCategoryName = subcategory.getName();
         } else {
             this.subCategoryName = null;
-        }
-        if (cursor != null) {
-            cursor.close();
         }
 
         return true;

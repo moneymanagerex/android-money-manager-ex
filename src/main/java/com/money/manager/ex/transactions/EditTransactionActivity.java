@@ -19,7 +19,6 @@ package com.money.manager.ex.transactions;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,8 +31,6 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -47,10 +44,8 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
-import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -280,38 +275,27 @@ public class EditTransactionActivity
      * @return true if data selected, false nothing
      */
     private boolean loadCheckingAccountInternal(int transId, boolean duplicate) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(getApplicationContext());
+        AccountTransactionRepository repo = new AccountTransactionRepository(this);
+        AccountTransaction tx = repo.load(transId);
+        if (tx == null) return false;
 
-        Cursor cursor = getContentResolver().query(repo.getUri(),
-                repo.getAllColumns(),
-                AccountTransaction.TRANSID + "=?",
-                new String[]{Integer.toString(transId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
-        }
-
-        // take a data
         if (!duplicate) {
-            mTransId = cursor.getInt(cursor.getColumnIndex(AccountTransaction.TRANSID));
+            mTransId = tx.getId();
         }
-        mCommonFunctions.accountId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID));
-        mCommonFunctions.toAccountId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.TOACCOUNTID));
-        String transCode = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
-        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.STATUS));
-        mCommonFunctions.amount = MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
-        mCommonFunctions.amountTo = MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
-        mCommonFunctions.payeeId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
-        mCommonFunctions.categoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.CATEGID));
-        mCommonFunctions.subCategoryId = cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
-        mCommonFunctions.mTransNumber = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER));
-        mCommonFunctions.mNotes = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.NOTES));
+        mCommonFunctions.accountId = tx.getAccountId();
+        mCommonFunctions.toAccountId = tx.getToAccountId();
+        mCommonFunctions.transactionType = tx.getTransType();
+        mCommonFunctions.status = tx.getStatus();
+        mCommonFunctions.amount = tx.getAmount();
+        mCommonFunctions.amountTo = tx.getAmountTo();
+        mCommonFunctions.payeeId = tx.getPayeeId();
+        mCommonFunctions.categoryId = tx.getCategoryId();
+        mCommonFunctions.subCategoryId = tx.getSubcategoryId();
+        mCommonFunctions.mTransNumber = tx.getTransactionNumber();
+        mCommonFunctions.mNotes = tx.getNotes();
         if (!duplicate) {
-            mCommonFunctions.mDate = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSDATE));
+            mCommonFunctions.mDate = tx.getDateAsString();
         }
-
-        cursor.close();
 
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
@@ -324,7 +308,6 @@ public class EditTransactionActivity
                     split.setSplitTransId(Constants.NOT_SET);
                 }
             }
-
         }
 
         // convert status in uppercase string
@@ -336,7 +319,7 @@ public class EditTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        mCommonFunctions.selectSubcategoryName();
+        mCommonFunctions.displayCategoryName();
 
         return true;
     }
@@ -380,7 +363,7 @@ public class EditTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        mCommonFunctions.selectSubcategoryName();
+        mCommonFunctions.displayCategoryName();
 
         // handle splits
         createSplitCategoriesFromRecurringTransaction();
@@ -426,7 +409,7 @@ public class EditTransactionActivity
 
         if (savedInstanceState == null) {
             mCommonFunctions.accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID,
-                    Constants.NOT_SET);
+                Constants.NOT_SET);
 
             // Edit transaction.
 
@@ -469,7 +452,7 @@ public class EditTransactionActivity
                                 mCommonFunctions.categoryId = payee.getCategId();
                                 mCommonFunctions.subCategoryId = payee.getSubCategId();
                                 // load category and subcategory name
-                                mCommonFunctions.selectSubcategoryName();
+                                mCommonFunctions.displayCategoryName();
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {
@@ -590,7 +573,7 @@ public class EditTransactionActivity
         AccountTransactionRepository repo = new AccountTransactionRepository(getApplicationContext());
 
         // Insert or update?
-        if (Intent.ACTION_INSERT.equals(mIntentAction) || Intent.ACTION_PASTE.equals(mIntentAction)) {
+        if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
             // insert
             Uri insert = getContentResolver().insert(repo.getUri(), values);
             if (insert == null) {
@@ -662,7 +645,7 @@ public class EditTransactionActivity
         if (mCommonFunctions.mSplitTransactionsDeleted != null && !mCommonFunctions.mSplitTransactionsDeleted.isEmpty()) {
             for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
-                //put value
+
                 values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
                         mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 

@@ -36,23 +36,6 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     private Context context;
-//    private String idColumn;
-
-//    protected EntityBase load(int id, Class<T> clazz) throws IllegalAccessException, InstantiationException {
-//        Cursor c = openCursor(this.getAllColumns(),
-//            this.idColumn + "=?",
-//            new String[] { Integer.toString(id)}
-//        );
-//        if (c == null) return null;
-//
-//        T instance = clazz.newInstance();
-//
-//        instance.loadFromCursor(c);
-//
-//        c.close();
-//
-//        return instance;
-//    }
 
     public int count(String selection, String[] args) {
         Cursor c = openCursor(null, selection, args);

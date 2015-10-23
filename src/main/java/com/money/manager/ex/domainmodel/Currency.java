@@ -19,8 +19,6 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import java.security.PublicKey;
-
 /**
  * Currency entity
  */
@@ -71,7 +69,7 @@ public class Currency
     }
 
     public int getCurrencyId() {
-        return getInteger(CURRENCYID);
+        return getInt(CURRENCYID);
     }
 
     public void setCurrencyid(int value) {
@@ -115,7 +113,7 @@ public class Currency
     }
 
     public Integer getScale() {
-        return getInteger(SCALE);
+        return getInt(SCALE);
     }
 
     public void setScale(int value) {

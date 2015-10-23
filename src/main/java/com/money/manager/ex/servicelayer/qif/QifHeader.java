@@ -128,7 +128,7 @@ L5,000.00
     }
 
     private TableAccountList loadAccount(Cursor cursor) {
-//        int accountId = cursor.getInteger(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
+//        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
         int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
         AccountService service = new AccountService(mContext);
         TableAccountList account = service.getTableAccountList(accountId);
