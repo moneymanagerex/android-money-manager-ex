@@ -27,6 +27,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
@@ -59,11 +60,11 @@ import info.javaperformance.money.MoneyFactory;
 public class AccountService {
 
     public AccountService(Context context) {
-        this.context = context;
+        this.mContext = context.getApplicationContext();
         this.accountRepository = new AccountRepository(context);
     }
 
-    private Context context;
+    private Context mContext;
     private AccountRepository accountRepository;
 
     /**
@@ -71,7 +72,7 @@ public class AccountService {
      * @return List of accounts
      */
     public List<Account> getAccountList() {
-        AppSettings settings = new AppSettings(context);
+        AppSettings settings = new AppSettings(getContext());
 
         boolean favourite = settings.getLookAndFeelSettings().getViewFavouriteAccounts();
         boolean open = settings.getLookAndFeelSettings().getViewOpenAccounts();
@@ -91,6 +92,10 @@ public class AccountService {
         return loadAccounts(open, favorite, null);
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     /**
      * @param id account id to be search
      * @return Account, return null if account id not find
@@ -100,7 +105,7 @@ public class AccountService {
         try {
             account = loadAccount(id);
         } catch (SQLiteDiskIOException | IllegalStateException ex) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "loading account: " + Integer.toString(id));
         }
         return account;
@@ -129,9 +134,9 @@ public class AccountService {
 
         String selection = where.getWhere();
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(context);
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
-        Cursor cursor = context.getContentResolver().query(repo.getUri(),
+        Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
             null,
             selection,
             null,
@@ -197,13 +202,13 @@ public class AccountService {
     }
 
     public String getAccountCurrencyCode(int accountId) {
-        AccountRepository repo = new AccountRepository(this.context);
+        AccountRepository repo = new AccountRepository(getContext());
         Account account = repo.query(new String[] {Account.CURRENCYID},
             Account.ACCOUNTID + "=?",
             new String[] { Integer.toString(accountId)});
         int currencyId = account.getCurrencyId();
 
-        CurrencyService currencyService = new CurrencyService(this.context);
+        CurrencyService currencyService = new CurrencyService(getContext());
         return currencyService.getCurrency(currencyId).getCode();
     }
 
@@ -222,11 +227,11 @@ public class AccountService {
             )
         );
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(context);
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int txCount = repo.count(where.getWhere(), null);
 
         // investment accounts
-        StockRepository stockRepository = new StockRepository(context);
+        StockRepository stockRepository = new StockRepository(getContext());
         where.clear();
         where.addStatement(Stock.HELDAT, "=", accountId);
         int investmentCount = stockRepository.count(where.getWhere(), null);
@@ -235,23 +240,16 @@ public class AccountService {
     }
 
     public void loadTransactionAccountsToSpinner(Spinner spinner) {
-        Context context = this.context;
-
         if (spinner == null) return;
 
-        if (context == null) {
-            Log.e(this.getClass().getSimpleName(), "Context not sent when loading accounts");
-            return;
-        }
-
-        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
+        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
 
         Cursor cursor = this.getCursor(settings.getViewOpenAccounts(),
             settings.getViewFavouriteAccounts(), this.getTransactionAccountTypeNames());
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getContext(),
             android.R.layout.simple_spinner_item,
             cursor,
             new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
@@ -263,30 +261,29 @@ public class AccountService {
     }
 
     public void loadInvestmentAccountsToSpinner(Spinner spinner) {
-        Context context = this.context;
-
         if (spinner == null) return;
 
-        if (context == null) {
-            Log.e(this.getClass().getSimpleName(), "Context not sent when loading accounts");
-            return;
-        }
+//        if (context == null) {
+//            Log.e(this.getClass().getSimpleName(), "Context not sent when loading accounts");
+//            return;
+//        }
 
-        AccountRepository repo = new AccountRepository(context);
+        AccountRepository repo = new AccountRepository(getContext());
         Cursor cursor = repo.getInvestmentAccountsCursor(true);
 
         // append All Accounts item
         MatrixCursor extras = new MatrixCursor(new String[] { "_id", Account.ACCOUNTID,
             Account.ACCOUNTNAME, Account.INITIALBAL });
+        String title = getContext().getString(R.string.all_accounts);
         extras.addRow(new String[] { Integer.toString(Constants.NOT_SET),
-            Integer.toString(Constants.NOT_SET), "All Accounts", "0.0" });
+            Integer.toString(Constants.NOT_SET), title, "0.0" });
         Cursor[] cursors = { extras, cursor };
         Cursor extendedCursor = new MergeCursor(cursors);
 
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getContext(),
             android.R.layout.simple_spinner_item,
             extendedCursor,
             new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
@@ -302,7 +299,7 @@ public class AccountService {
 
         Cursor cursor = getCursor(openOnly, favoriteOnly, accountTypes);
         if (cursor == null) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage("Error reading accounts list!");
             return result;
         }
@@ -318,7 +315,7 @@ public class AccountService {
     }
 
     public Money loadInitialBalance(int accountId) {
-        AccountRepository repo = new AccountRepository(context);
+        AccountRepository repo = new AccountRepository(getContext());
         Account account = repo.load(accountId);
         return account.getInitialBalance();
     }
@@ -332,8 +329,8 @@ public class AccountService {
     public Money loadBalance(String where) {
         Money curTotal = MoneyFactory.fromString("0");
 
-        QueryAccountBills accountBills = new QueryAccountBills(context);
-        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
+        QueryAccountBills accountBills = new QueryAccountBills(getContext());
+        Cursor cursor = getContext().getContentResolver().query(accountBills.getUri(),
                 null,
                 where,
                 null,
@@ -354,7 +351,7 @@ public class AccountService {
         try {
             return getCursorInternal(open, favorite, accountTypes);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "getting cursor in account repository");
         }
         return null;
@@ -400,7 +397,7 @@ public class AccountService {
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
-        Cursor cursor = context.getContentResolver().query(account.getUri(),
+        Cursor cursor = getContext().getContentResolver().query(account.getUri(),
                 account.getAllColumns(),
                 where,
                 null,
@@ -448,7 +445,7 @@ public class AccountService {
         TableAccountList account = new TableAccountList();
         String selection = Account.ACCOUNTID + "=?";
 
-        Cursor cursor = context.getContentResolver().query(account.getUri(),
+        Cursor cursor = getContext().getContentResolver().query(account.getUri(),
                 null,
                 selection,
                 new String[]{Integer.toString(id)},

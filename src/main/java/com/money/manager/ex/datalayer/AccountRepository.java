@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
@@ -55,6 +56,8 @@ public class AccountRepository
     }
 
     public Account load(int id) {
+        if (id == Constants.NOT_SET) return null;
+
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Account.ACCOUNTID, "=", id);
 

@@ -667,4 +667,6 @@
     <string name="name">Name</string>
     <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
     <string name="stock">Stock</string>
+
+    <string name="all_accounts">All Accounts</string>
 </resources>

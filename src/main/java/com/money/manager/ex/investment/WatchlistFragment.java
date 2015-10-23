@@ -361,7 +361,13 @@ public class WatchlistFragment
         boolean result = false;
 
         try {
-            result = export.exportPrices(mDataFragment.getListAdapter(), mAccount.getName());
+            String prefix;
+            if (mAccount != null) {
+                prefix = mAccount.getName();
+            } else {
+                prefix = getActivity().getString(R.string.all_accounts);
+            }
+            result = export.exportPrices(mDataFragment.getListAdapter(), prefix);
         } catch (IOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
             handler.handle(ex, "exporting stock prices");
