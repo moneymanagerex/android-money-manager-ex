@@ -92,7 +92,7 @@ public class CurrencyService {
             result = repository.loadCurrency(currencyId);
 
             // cache
-            if (!getCurrenciesStore().containsKey(currencyId)) {
+            if (result != null && !getCurrenciesStore().containsKey(currencyId)) {
                 cacheCurrency(result);
             }
         }
