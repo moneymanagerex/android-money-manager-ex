@@ -37,11 +37,12 @@
             android:id="@+id/profile_image"
             android:layout_marginTop="2dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_logo_money_manager_ex"
-            app:border_width="1dp"
-            app:border_color="@color/material_green_50"/>
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/material_green_50"/>
 
         <TextView
             android:id="@+id/textViewUserName"

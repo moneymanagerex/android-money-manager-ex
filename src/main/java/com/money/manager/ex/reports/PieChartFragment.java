@@ -34,9 +34,9 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.PercentFormatter;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 
@@ -44,8 +44,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class PieChartFragment extends Fragment implements OnChartValueSelectedListener {
-    // LOGCAT
+public class PieChartFragment
+    extends Fragment
+    implements OnChartValueSelectedListener {
+
     private static final String LOGCAT = PieChartFragment.class.getSimpleName();
     private static final Integer MAX_NUM_ITEMS = 12;
     // key arguments
