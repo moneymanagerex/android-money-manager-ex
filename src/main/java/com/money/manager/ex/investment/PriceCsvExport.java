@@ -50,7 +50,7 @@ public class PriceCsvExport
      *
      * The price date is set to today until the price history is used.
      * @param adapter Adapter containing the data records (in the visible list, for example).
-     * @param filePrefix Prefix for the exported file name.
+     * @param filePrefix Prefix for the exported file name (generally account name).
      */
     public boolean exportPrices(ListAdapter adapter, String filePrefix)
             throws IOException {

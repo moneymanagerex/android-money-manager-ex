@@ -17,7 +17,6 @@
 package com.money.manager.ex.investment;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -71,17 +70,18 @@ public class WatchlistFragment
         extends Fragment
         implements IPriceUpdaterFeedback, IWatchlistItemsFragmentEventHandler {
 
-    private static final String KEY_CONTENT = "WatchlistFragment:StockId";
-    private static final String ARG_ACCOUNT_ID = "WatchlistFragment:AccountId";
+    //private static final String KEY_CONTENT = "WatchlistFragment:StockId";
+    private static final String KEY_ACCOUNT_ID = "WatchlistFragment:AccountId";
+    private static final String KEY_ACCOUNT = "WatchlistFragment:Account";
 
     /**
      * @param accountId ID Account to be display
-     * @return instance of Wathchlist fragment with transactions for the given account.
+     * @return instance of Watchlist fragment with transactions for the given account.
      */
     public static WatchlistFragment newInstance(int accountId) {
         WatchlistFragment fragment = new WatchlistFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ACCOUNT_ID, accountId);
+        args.putInt(KEY_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
         fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
@@ -92,15 +92,11 @@ public class WatchlistFragment
     private WatchlistItemsFragment mDataFragment;
     private String mNameFragment;
 
-    private Integer mAccountId = null;
-    private String mAccountName;
-
     private Account mAccount;
 
     private ImageView imgAccountFav, imgGotoAccount;
     ViewGroup mListHeader;
 
-    private Context mContext;
     // price update counter. Used to know when all the prices are done downloading.
     private int mUpdateCounter;
     private int mToUpdateTotal;
@@ -109,29 +105,26 @@ public class WatchlistFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get arguments
-        mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
+        loadAccount();
 
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+        if ((savedInstanceState != null)) {
+            mAccount = savedInstanceState.getParcelable(KEY_ACCOUNT);
         }
 
-        mContext = getActivity();
         mUpdateCounter = 0;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+        if ((savedInstanceState != null)) {
+            mAccount = savedInstanceState.getParcelable(KEY_ACCOUNT);
         }
 
         if (container == null) return null;
         View view = inflater.inflate(R.layout.account_fragment, container, false);
 
         if (mAccount == null) {
-            AccountRepository repo = new AccountRepository(getActivity());
-            mAccount = repo.load(mAccountId);
+            loadAccount();
         }
 
         initializeListHeader(inflater);
@@ -141,11 +134,10 @@ public class WatchlistFragment
 
         mDataFragment = WatchlistItemsFragment.newInstance(this);
         // set arguments and settings of fragment
-//        mDataFragment.setArguments(prepareArgsForChildFragment());
         Bundle arguments = new Bundle();
-        arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, mAccountId);
+        arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
         mDataFragment.setArguments(arguments);
-//        mDataFragment.accountId = mAccountId;
+
         mDataFragment.setListHeader(mListHeader);
         mDataFragment.setAutoStarLoader(false);
 
@@ -155,10 +147,8 @@ public class WatchlistFragment
 
         // refresh user interface
         if (mAccount != null) {
-            mAccountName = mAccount.getName();
             setImageViewFavorite();
         }
-        // set has option menu
         setHasOptionsMenu(true);
 
         return view;
@@ -250,8 +240,8 @@ public class WatchlistFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mAccountId != null)
-            outState.putInt(KEY_CONTENT, mAccountId);
+
+        outState.putParcelable(KEY_ACCOUNT, mAccount);
     }
 
     /**
@@ -282,7 +272,7 @@ public class WatchlistFragment
 
     /**
      * Price update requested from the securities list context menu.
-     * @param symbol
+     * @param symbol Stock symbol for which to fetch the price.
      */
     @Override
     public void onPriceUpdateRequested(String symbol) {
@@ -295,7 +285,7 @@ public class WatchlistFragment
         List<String> symbols = new ArrayList<>();
         symbols.add(symbol);
 
-        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(mContext, this);
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
         updater.downloadPrices(symbols);
     }
 
@@ -326,6 +316,8 @@ public class WatchlistFragment
     public void setNameFragment(String fragmentName) {
         this.mNameFragment = fragmentName;
     }
+
+    // Private
 
     private void completePriceUpdate() {
         // this call is made from async task so have to get back to the main thread.
@@ -369,46 +361,13 @@ public class WatchlistFragment
         boolean result = false;
 
         try {
-            result = export.exportPrices(mDataFragment.getListAdapter(), mAccountName);
+            result = export.exportPrices(mDataFragment.getListAdapter(), mAccount.getName());
         } catch (IOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
             handler.handle(ex, "exporting stock prices");
         }
 
         // todo: handle result. (?)
-    }
-
-    private void purgePriceHistory() {
-        new AlertDialogWrapper.Builder(getContext())
-                .setTitle(R.string.purge_history)
-                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-                .setMessage(R.string.purge_history_confirmation)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StockHistoryRepository history = new StockHistoryRepository(mContext);
-                        int deleted = history.deletePriceHistory();
-
-                        if (deleted > 0) {
-                            DropboxHelper.notifyDataChanged();
-                            Toast.makeText(mContext, mContext.getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
-                                    .show();
-                        } else {
-                            Toast.makeText(mContext, mContext.getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
-                .show();
     }
 
     private void confirmPriceUpdate() {
@@ -442,6 +401,14 @@ public class WatchlistFragment
                 .show();
     }
 
+    private int getAccountId() {
+        if (mAccount == null) {
+            return Constants.NOT_SET;
+        }
+
+        return mAccount.getId();
+    }
+
     private ActionBar getActionBar() {
         if (!(getActivity() instanceof AppCompatActivity)) return null;
 
@@ -450,23 +417,29 @@ public class WatchlistFragment
         return actionBar;
     }
 
-    private void loadAccountsInto(Spinner spinner) {
-        // Load accounts into the list.
-//        Menu menu
-//        Spinner spinner = getAccountsSpinner(menu);
+    private void initializeAccountsSelector() {
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return;
+
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        actionBar.setCustomView(R.layout.spinner);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        Spinner spinner = getAccountsSpinner();
         if (spinner == null) return;
 
+        // Load accounts into the spinner.
         AccountService accountService = new AccountService(getActivity());
         accountService.loadInvestmentAccountsToSpinner(spinner);
 
-        // handle switching of accounts.
+        // handle account switching.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // switch account.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
-                Account account = new Account();
-                account.loadFromCursor(cursor);
+                Account account = Account.from(cursor);
 
                 int accountId = account.getId();
                 switchAccount(accountId);
@@ -477,6 +450,7 @@ public class WatchlistFragment
 
             }
         });
+
     }
 
     private void initializeListHeader(LayoutInflater inflater) {
@@ -497,9 +471,9 @@ public class WatchlistFragment
                 AccountRepository repo = new AccountRepository(getActivity());
 
                 // update
-                if (mContext.getContentResolver().update(repo.getUri(), values,
+                if (getActivity().getContentResolver().update(repo.getUri(), values,
                     Account.ACCOUNTID + "=?",
-                    new String[]{Integer.toString(mAccountId)}) != 1) {
+                    new String[]{Integer.toString(getAccountId())}) != 1) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
                 } else {
                     setImageViewFavorite();
@@ -512,8 +486,8 @@ public class WatchlistFragment
         imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, AccountEditActivity.class);
-                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, getAccountId());
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
             }
@@ -521,15 +495,6 @@ public class WatchlistFragment
     }
 
     private Spinner getAccountsSpinner() {
-//        Spinner spinner = null;
-//
-//        MenuItem item = menu.findItem(R.id.menuAccountSelector);
-//        if (item != null) {
-//            spinner = (Spinner) MenuItemCompat.getActionView(item);
-//        }
-//
-//        return spinner;
-
         // get from custom view, not the menu.
 
         ActionBar actionBar = getActionBar();
@@ -537,6 +502,46 @@ public class WatchlistFragment
 
         Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
         return spinner;
+    }
+
+    private void loadAccount() {
+        int accountId = getArguments().getInt(KEY_ACCOUNT_ID);
+        this.mAccount = new AccountRepository(getActivity()).load(accountId);
+    }
+
+    private void purgePriceHistory() {
+        new AlertDialogWrapper.Builder(getContext())
+            .setTitle(R.string.purge_history)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.purge_history_confirmation)
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    StockHistoryRepository history = new StockHistoryRepository(getActivity());
+                    int deleted = history.deletePriceHistory();
+
+                    if (deleted > 0) {
+                        DropboxHelper.notifyDataChanged();
+                        Toast.makeText(getActivity(),
+                            getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
+                            .show();
+                    } else {
+                        Toast.makeText(getActivity(),
+                            getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
+                            .show();
+                    }
+
+                    dialog.dismiss();
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            })
+            .create()
+            .show();
     }
 
     /**
@@ -557,7 +562,7 @@ public class WatchlistFragment
             cursor.moveToPosition(i);
             String accountIdString = cursor.getString(cursor.getColumnIndex(Account.ACCOUNTID));
             int accountId = Integer.parseInt(accountIdString);
-            if (accountId == mAccountId) {
+            if (accountId == getAccountId()) {
                 position = i;
                 break;
             }
@@ -567,10 +572,11 @@ public class WatchlistFragment
     }
 
     private void switchAccount(int accountId) {
-        if (accountId == mAccountId) return;
+        if (accountId == getAccountId()) return;
 
         // switch account. Reload transactions.
-        mAccountId = accountId;
+        mAccount = new AccountRepository(getActivity()).load(accountId);
+
         mDataFragment.accountId = accountId;
         mDataFragment.reloadData();
 
@@ -585,20 +591,5 @@ public class WatchlistFragment
             }
             mListHeader.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void initializeAccountsSelector() {
-        ActionBar actionBar = getActionBar();
-        if (actionBar == null) return;
-
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        actionBar.setCustomView(R.layout.spinner);
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        Spinner spinner = getAccountsSpinner();
-        if (spinner == null) return;
-
-        loadAccountsInto(spinner);
     }
 }
