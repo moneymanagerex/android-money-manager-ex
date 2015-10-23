@@ -19,31 +19,33 @@ package com.money.manager.ex.datalayer;
 import android.content.ContentValues;
 import android.content.Context;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Subcategory;
 
 /**
  * A repository for Subcategories.
- * Incomplete.
  */
 public class SubcategoryRepository
     extends RepositoryBase {
 
     public SubcategoryRepository(Context context) {
         super(context, "subcategory_v1", DatasetType.TABLE, "subcategory");
-
     }
 
     @Override
     public String[] getAllColumns() {
-        return new String[] {"SUBCATEGID AS _id",
+        return new String[] { "SUBCATEGID AS _id",
             Subcategory.SUBCATEGID,
             Subcategory.SUBCATEGNAME,
-            Subcategory.CATEGID };
+            Subcategory.CATEGID
+        };
     }
 
     public Subcategory load(int id) {
+        if (id == Constants.NOT_SET) return null;
+
         ContentValues cv = single(Subcategory.SUBCATEGID, DatabaseUtilities.getArgsForId(id));
         Subcategory subcategory = new Subcategory(cv);
         return subcategory;

@@ -19,6 +19,7 @@ package com.money.manager.ex.datalayer;
 import android.content.ContentValues;
 import android.content.Context;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
@@ -55,6 +56,8 @@ public class AccountTransactionRepository
     }
 
     public AccountTransaction load(int id) {
+        if (id == Constants.NOT_SET) return null;
+
         ContentValues cv = single(AccountTransaction.TRANSID + "=?", DatabaseUtilities.getArgsForId(id));
         AccountTransaction tx = new AccountTransaction(cv);
         return tx;
