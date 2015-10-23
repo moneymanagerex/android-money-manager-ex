@@ -46,7 +46,7 @@ public class SubcategoryRepository
     public Subcategory load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(Subcategory.SUBCATEGID, DatabaseUtilities.getArgsForId(id));
+        ContentValues cv = single(Subcategory.SUBCATEGID + "=?", DatabaseUtilities.getArgsForId(id));
         Subcategory subcategory = new Subcategory(cv);
         return subcategory;
     }
