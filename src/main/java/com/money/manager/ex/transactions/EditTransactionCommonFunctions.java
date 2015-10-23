@@ -46,6 +46,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
@@ -261,6 +266,10 @@ public class EditTransactionCommonFunctions {
         return values;
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public String getTransactionType() {
         if (transactionType == null) {
             return null;
@@ -281,16 +290,6 @@ public class EditTransactionCommonFunctions {
     public boolean getDirty() {
         return mDirty;
     }
-
-//    public int getSourceCurrencyId() {
-////        return this.AccountList.get(
-////                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
-//        AccountRepository repo = new AccountRepository(mContext);
-//        Account account = repo.query(new String[] { Account.CURRENCYID },
-//            Account.ACCOUNTID + "=?",
-//            new String[] { Integer.toString(this.accountId)});
-//        return account.getCurrencyId();
-//    }
 
     public FontIconView getTransferButtonIcon() {
         return (FontIconView) mParent.findViewById(R.id.transferButtonIcon);
@@ -493,7 +492,7 @@ public class EditTransactionCommonFunctions {
                     try {
                         Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
-                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                            .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         viewHolder.txtSelectDate.setTag(date);
                         dateUtils.formatExtendedDate(viewHolder.txtSelectDate, date);
                     } catch (Exception e) {
@@ -508,12 +507,12 @@ public class EditTransactionCommonFunctions {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime((Date) viewHolder.txtSelectDate.getTag());
                 DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
                 dialog.setCloseOnSingleTapDay(true);
 
                 // Set first day of the week.
                 int firstDayOfWeek = Calendar.getInstance(MoneyManagerApplication.getInstanceApp().getAppLocale())
-                        .getFirstDayOfWeek();
+                    .getFirstDayOfWeek();
 //                dialog.setFirstDayOfWeek(Calendar.MONDAY);
                 dialog.setFirstDayOfWeek(firstDayOfWeek);
 
@@ -661,11 +660,11 @@ public class EditTransactionCommonFunctions {
                 AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
 
                 String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
-                        repo.getSource() + " WHERE " +
-                        ISplitTransactionsDataset.ACCOUNTID + "=?";
+                    repo.getSource() + " WHERE " +
+                    ISplitTransactionsDataset.ACCOUNTID + "=?";
 
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
-                        new String[]{Integer.toString(accountId)});
+                    new String[]{Integer.toString(accountId)});
                 if (cursor == null) return;
 
                 if (cursor.moveToFirst()) {
@@ -677,7 +676,7 @@ public class EditTransactionCommonFunctions {
                         try {
                             Money transactionNumber = MoneyFactory.fromString(transNumber);
                             edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
-                                    .toString());
+                                .toString());
                         } catch (Exception e) {
                             ExceptionHandler handler = new ExceptionHandler(mContext, this);
                             handler.handle(e, "adding transaction number");
@@ -1009,6 +1008,55 @@ public class EditTransactionCommonFunctions {
             payeeName = cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME));
         }
         cursor.close();
+
+        return true;
+    }
+
+    /**
+     * Loads info for Category and Subcategory
+     *
+     * @param categoryId Id of the category to load.
+     * @param subCategoryId Id of the subcategory to load.
+     * @return A boolean indicating whether the operation was successful.
+     */
+    public boolean selectSubcategoryName() {
+        // don't load anything if category & sub-category are not set.
+        if(categoryId <= 0 && subCategoryId <= 0) return false;
+
+        CategoryRepository categoryRepository = new CategoryRepository(getContext());
+        // todo: Category category = categoryRepository.g
+
+        TableCategory category = new TableCategory();
+        TableSubCategory subCategory = new TableSubCategory();
+        Cursor cursor;
+        // category
+        cursor = getContext().getContentResolver().query(category.getUri(), category.getAllColumns(),
+            Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
+        if ((cursor != null) && (cursor.moveToFirst())) {
+            // set category name and sub category name
+            this.categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
+        } else {
+            this.categoryName = null;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        // sub-category
+
+        cursor = getContext().getContentResolver().query(subCategory.getUri(),
+            subCategory.getAllColumns(),
+            Subcategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)},
+            null);
+        if ((cursor != null) && (cursor.moveToFirst())) {
+            // set category name and sub category name
+            this.subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
+        } else {
+            this.subCategoryName = null;
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
 
         return true;
     }

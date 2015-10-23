@@ -87,7 +87,7 @@ public class EditTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account_transaction);
 
-        mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, this);
 
         DropboxHelper dropbox = DropboxHelper.getInstance();
         if (dropbox == null) {
@@ -263,60 +263,6 @@ public class EditTransactionActivity
         return true;
     }
 
-    /**
-     * Loads info for Category and Subcategory
-     *
-     * @param categoryId Id of the category to load.
-     * @param subCategoryId Id of the subcategory to load.
-     * @return A boolean indicating whether the operation was successful.
-     */
-    public boolean loadCategorySubName(int categoryId, int subCategoryId) {
-        try {
-            return loadCategorySubNameInternal(categoryId, subCategoryId);
-        } catch (IllegalStateException ex) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(ex, "loading category & subcategory names");
-        }
-        return false;
-    }
-
-    private boolean loadCategorySubNameInternal(int categoryId, int subCategoryId) {
-        // don't load anything if category & sub-category are not set.
-        if(categoryId <= 0 && subCategoryId <= 0) return false;
-
-        TableCategory category = new TableCategory();
-        TableSubCategory subCategory = new TableSubCategory();
-        Cursor cursor;
-        // category
-        cursor = getContentResolver().query(category.getUri(), category.getAllColumns(),
-                Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            mCommonFunctions.categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
-        } else {
-            mCommonFunctions.categoryName = null;
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        // sub-category
-
-        cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
-            Subcategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            mCommonFunctions.subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
-        } else {
-            mCommonFunctions.subCategoryName = null;
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        return true;
-    }
-
     public boolean loadCheckingAccount(int transId, boolean duplicate) {
         try {
             return loadCheckingAccountInternal(transId, duplicate);
@@ -390,7 +336,7 @@ public class EditTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        loadCategorySubName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
+        mCommonFunctions.selectSubcategoryName();
 
         return true;
     }
@@ -434,7 +380,7 @@ public class EditTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        loadCategorySubName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
+        mCommonFunctions.selectSubcategoryName();
 
         // handle splits
         createSplitCategoriesFromRecurringTransaction();
@@ -523,7 +469,7 @@ public class EditTransactionActivity
                                 mCommonFunctions.categoryId = payee.getCategId();
                                 mCommonFunctions.subCategoryId = payee.getSubCategId();
                                 // load category and subcategory name
-                                loadCategorySubName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
+                                mCommonFunctions.selectSubcategoryName();
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {

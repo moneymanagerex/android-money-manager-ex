@@ -13,7 +13,6 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Stock entity.
- * Created by Alen on 5/09/2015.
  */
 public class Stock
     extends EntityBase {
@@ -52,6 +51,11 @@ public class Stock
 
     public Stock() {
         // default constructor.
+    }
+
+    @Override
+    public String getIdColumnName() {
+        return STOCKID;
     }
 
     @Override

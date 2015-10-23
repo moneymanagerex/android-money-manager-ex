@@ -38,4 +38,7 @@ public class CategoryRepository
         return new String[] {"CATEGID AS _id", Category.CATEGID, Category.CATEGNAME};
     }
 
+//    public Category load(int id) {
+//
+//    }
 }

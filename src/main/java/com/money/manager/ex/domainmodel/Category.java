@@ -16,13 +16,38 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
+import android.os.Parcel;
+
 /**
  * Category
  */
 public class Category
-    extends EntityBase {
+    extends EntityBase
+    implements IEntity {
 
     public static final String CATEGID = "CATEGID";
     public static final String CATEGNAME = "CATEGNAME";
+
+    public static final Creator<Category> CREATOR = new Creator<Category>() {
+        @Override
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
+
+    @Override
+    public String getIdColumnName() {
+        return CATEGID;
+    }
+
+    protected Category(Parcel in) {
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+    }
 
 }

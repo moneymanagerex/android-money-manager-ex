@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Contains common code for repositories.
  */
-public abstract class RepositoryBase
+public abstract class RepositoryBase<T extends EntityBase>
     extends Dataset {
 
     public RepositoryBase(Context context, String source, DatasetType type, String basePath) {
@@ -35,9 +35,14 @@ public abstract class RepositoryBase
 
     private Context context;
 
-//    protected EntityBase get(int id) {
+    // todo: need to get the ID field
+//    protected EntityBase load(int id) {
+//        T entity;
 //        context.getContentResolver().query(this.getUri(),
-//                )
+//            this.getAllColumns(),
+//            entity.getIdColumnName() + "=?",
+//            new String[] { Integer.toString(entity.getId())},
+//            null);
 //
 //    }
 

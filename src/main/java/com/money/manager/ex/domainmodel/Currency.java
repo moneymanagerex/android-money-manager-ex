@@ -19,6 +19,8 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import java.security.PublicKey;
+
 /**
  * Currency entity
  */
@@ -41,6 +43,11 @@ public class Currency
         Currency currency = new Currency();
         currency.loadFromCursor(c);
         return currency;
+    }
+
+    @Override
+    public String getIdColumnName() {
+        return CURRENCYID;
     }
 
     @Override

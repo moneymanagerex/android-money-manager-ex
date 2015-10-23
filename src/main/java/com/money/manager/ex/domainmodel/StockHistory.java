@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Parcel;
 
 import com.money.manager.ex.utils.DateUtils;
 
@@ -35,6 +37,15 @@ public class StockHistory
     public static final String VALUE = "VALUE";
     public static final String UPDTYPE = "UPDTYPE";
 
+    public StockHistory() {
+        super();
+    }
+
+    @Override
+    public String getIdColumnName() {
+        return HISTID;
+    }
+
     @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
@@ -43,9 +54,13 @@ public class StockHistory
         DatabaseUtils.cursorDoubleToCursorValues(c, VALUE, this.contentValues);
     }
 
-//    public String getDateString() {
-//        return getString(DATE);
-//    }
+    protected StockHistory(Parcel in) {
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+    }
+
+    public int getHistId() {
+        return getInteger(HISTID);
+    }
 
     public Date getDate() {
         return getDate(DATE);

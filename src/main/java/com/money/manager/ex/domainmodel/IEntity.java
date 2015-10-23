@@ -14,25 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.viewmodels;
-
-import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.domainmodel.EntityBase;
+package com.money.manager.ex.domainmodel;
 
 /**
- * Record from All Data adapter. Used for recurring transactions lists.
- * Source is QueryBillDeposits.
+ * Interface for all entities.
  */
-public class RecurringTransaction
-    extends EntityBase {
-
-    public Integer getAccountId() {
-        return getInteger(QueryBillDeposits.ACCOUNTID);
-    }
-
-    @Override
-    public String getIdColumnName() {
-        return "";
-    }
+public interface IEntity {
+    String getIdColumnName();
+//    Integer getId();
 }

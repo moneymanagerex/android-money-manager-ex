@@ -256,10 +256,10 @@ public class RecurringTransactionListFragment
      */
     private void startRecurringTransactionActivity(Integer billDepositsId, int purposeCode) {
         // create intent, set Bill Deposits ID
-        Intent intent = new Intent(getActivity(), RecurringTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), EditRecurringTransactionActivity.class);
         // check transId not null
         if (billDepositsId != null) {
-            intent.putExtra(RecurringTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
+            intent.putExtra(EditRecurringTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);

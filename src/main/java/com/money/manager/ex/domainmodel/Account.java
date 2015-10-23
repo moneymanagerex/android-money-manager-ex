@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Parcel;
 
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
@@ -63,8 +65,24 @@ public class Account
         return account;
     }
 
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
+
     public Account() {
         super();
+    }
+
+    protected Account(Parcel in) {
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
     }
 
     @Override
@@ -73,6 +91,11 @@ public class Account
 
         // Reload all money values.
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, Account.INITIALBAL);
+    }
+
+    @Override
+    public String getIdColumnName() {
+        return ACCOUNTID;
     }
 
     public Integer getId() {

@@ -42,6 +42,11 @@ public class AccountTransactionDisplay
     extends EntityBase {
 
     @Override
+    public String getIdColumnName() {
+        return QueryAllData.ID;
+    }
+
+    @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
 

@@ -37,8 +37,21 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
-public class EntityBase
-    implements Parcelable {
+abstract public class EntityBase
+    implements Parcelable, IEntity {
+
+    // Implement this in child classes:
+//    public static final Creator<EntityBase> CREATOR = new Creator<EntityBase>() {
+//        @Override
+//        public EntityBase createFromParcel(Parcel in) {
+//            return new EntityBase(in);
+//        }
+//
+//        @Override
+//        public EntityBase[] newArray(int size) {
+//            return new EntityBase[size];
+//        }
+//    };
 
     /**
      * Default constructor.
@@ -54,21 +67,15 @@ public class EntityBase
      */
     protected Cursor mCursor;
 
-    protected EntityBase(Parcel in) {
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+//    protected EntityBase(Parcel in) {
+//        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+//    }
+
+    abstract public String getIdColumnName();
+
+    public Integer getId() {
+        return getInteger(getIdColumnName());
     }
-
-    public static final Creator<EntityBase> CREATOR = new Creator<EntityBase>() {
-        @Override
-        public EntityBase createFromParcel(Parcel in) {
-            return new EntityBase(in);
-        }
-
-        @Override
-        public EntityBase[] newArray(int size) {
-            return new EntityBase[size];
-        }
-    };
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();

@@ -62,15 +62,14 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Recurring transactions are stored in BillsDeposits table.
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class RecurringTransactionActivity
+public class EditRecurringTransactionActivity
         extends BaseFragmentActivity
         implements IInputAmountDialogListener, YesNoDialogListener {
 
-    private static final String LOGCAT = RecurringTransactionActivity.class.getSimpleName();
+    private static final String LOGCAT = EditRecurringTransactionActivity.class.getSimpleName();
 
-    public static final String KEY_MODEL = "RecurringTransactionActivity:Model";
+    public static final String KEY_MODEL = "EditRecurringTransactionActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
     public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
@@ -353,7 +352,7 @@ public class RecurringTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
-        selectSubcategoryName(mCommonFunctions.categoryId, mCommonFunctions.subCategoryId);
+        mCommonFunctions.selectSubcategoryName();
 
         return true;
     }
@@ -369,41 +368,6 @@ public class RecurringTransactionActivity
 
         edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
         edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
-    }
-
-    /**
-     * Query info of Category and Subcategory
-     *
-     * @param categoryId Id of the category
-     * @param subCategoryId Id of the sub-category
-     * @return indicator whether the operation was successful.
-     */
-    private boolean selectSubcategoryName(int categoryId, int subCategoryId) {
-        TableCategory category = new TableCategory();
-        TableSubCategory subCategory = new TableSubCategory();
-        Cursor cursor;
-        // category
-        cursor = getContentResolver().query(category.getUri(), category.getAllColumns(),
-                Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)}, null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            mCommonFunctions.categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
-            cursor.close();
-        } else {
-            mCommonFunctions.categoryName = null;
-        }
-        // sub-category
-        cursor = getContentResolver().query(subCategory.getUri(), subCategory.getAllColumns(),
-            Subcategory.SUBCATEGID + "=?", new String[]{Integer.toString(subCategoryId)}, null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            mCommonFunctions.subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
-            cursor.close();
-        } else {
-            mCommonFunctions.subCategoryName = null;
-        }
-
-        return true;
     }
 
     /**
