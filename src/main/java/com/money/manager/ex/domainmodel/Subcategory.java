@@ -26,8 +26,4 @@ public class Subcategory
     public static final String SUBCATEGNAME = "SUBCATEGNAME";
     public static final String CATEGID = "CATEGID";
 
-    @Override
-    public String getIdColumnName() {
-        return SUBCATEGID;
-    }
 }

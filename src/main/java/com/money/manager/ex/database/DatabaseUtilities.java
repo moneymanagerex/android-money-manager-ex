@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.domainmodel;
+package com.money.manager.ex.database;
 
 /**
- * Interface for all entities.
+ * Helper functions when working with data.
  */
-public interface IEntity {
-    String getIdColumnName();
-//    Integer getId();
+public class DatabaseUtilities {
+    public static String[] getArgsForId(int id) {
+        String[] result = new String[] { Integer.toString(id) };
+        return result;
+    }
 }

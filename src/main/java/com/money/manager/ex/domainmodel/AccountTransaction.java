@@ -66,9 +66,4 @@ public class AccountTransaction
     public void setSubcategoryId(Integer value) {
         setInteger(ISplitTransactionsDataset.SUBCATEGID, value);
     }
-
-    @Override
-    public String getIdColumnName() {
-        return TRANSID;
-    }
 }

@@ -116,7 +116,7 @@ public class MmexContentProvider
                 new TablePayee(),
                 new TableSplitTransactions(),
             new StockRepository(context),
-            new StockHistoryRepository(),
+            new StockHistoryRepository(context),
             new SubcategoryRepository(context),
                 new QueryAccountBills(getContext()),
                 new QueryCategorySubCategory(getContext()),

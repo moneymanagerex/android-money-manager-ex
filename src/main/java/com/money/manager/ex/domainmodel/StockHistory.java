@@ -42,11 +42,6 @@ public class StockHistory
     }
 
     @Override
-    public String getIdColumnName() {
-        return HISTID;
-    }
-
-    @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
 

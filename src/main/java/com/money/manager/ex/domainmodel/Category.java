@@ -23,8 +23,7 @@ import android.os.Parcel;
  * Category
  */
 public class Category
-    extends EntityBase
-    implements IEntity {
+    extends EntityBase {
 
     public static final String CATEGID = "CATEGID";
     public static final String CATEGNAME = "CATEGNAME";
@@ -41,9 +40,12 @@ public class Category
         }
     };
 
-    @Override
-    public String getIdColumnName() {
-        return CATEGID;
+    public Category() {
+        super();
+    }
+
+    public Category(ContentValues contentValues) {
+        super(contentValues);
     }
 
     protected Category(Parcel in) {

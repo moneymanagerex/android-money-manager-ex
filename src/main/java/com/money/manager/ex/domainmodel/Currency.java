@@ -46,11 +46,6 @@ public class Currency
     }
 
     @Override
-    public String getIdColumnName() {
-        return CURRENCYID;
-    }
-
-    @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
 

@@ -54,11 +54,6 @@ public class Stock
     }
 
     @Override
-    public String getIdColumnName() {
-        return STOCKID;
-    }
-
-    @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);
 

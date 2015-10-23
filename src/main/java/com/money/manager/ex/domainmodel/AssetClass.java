@@ -74,11 +74,6 @@ public class AssetClass
         super();
     }
 
-    @Override
-    public String getIdColumnName() {
-        return ID;
-    }
-
     // temporary values
     private List<Stock> stocks;
     private List<AssetClassStock> stockLinks;

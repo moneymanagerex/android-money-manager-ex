@@ -93,11 +93,6 @@ public class Account
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, Account.INITIALBAL);
     }
 
-    @Override
-    public String getIdColumnName() {
-        return ACCOUNTID;
-    }
-
     public Integer getId() {
         return getInteger(Account.ACCOUNTID);
     }

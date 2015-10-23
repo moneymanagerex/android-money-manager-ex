@@ -25,25 +25,18 @@ import info.javaperformance.money.Money;
  * Stock History
  */
 public class StockHistoryRepository
-        extends Dataset {
+    extends RepositoryBase<StockHistory> {
 
-    /**
-     * Constructor for content provider.
-     */
-    public StockHistoryRepository() {
-        super(TABLE_NAME, DatasetType.TABLE, "stockhistory");
-    }
+    private static final String TABLE_NAME = "stockhistory_v1";
 
     /**
      * Constructor that is used when instantiating manually.
      */
     public StockHistoryRepository(Context context) {
-        super(TABLE_NAME, DatasetType.TABLE, "stockhistory");
+        super(context, TABLE_NAME, DatasetType.TABLE, "stockhistory");
 
         mContext = context.getApplicationContext();
     }
-
-    private static final String TABLE_NAME = "stockhistory_v1";
 
     private enum UpdateType {
         Online(1),

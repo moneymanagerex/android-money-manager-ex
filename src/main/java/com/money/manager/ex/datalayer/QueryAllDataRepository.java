@@ -17,7 +17,8 @@ public class QueryAllDataRepository
     extends RepositoryBase {
 
     public QueryAllDataRepository(Context context) {
-        super(context, RawFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
+        super(context, RawFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY,
+            "queryalldata");
     }
 
     @Override

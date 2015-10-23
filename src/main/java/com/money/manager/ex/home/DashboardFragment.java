@@ -204,7 +204,7 @@ public class DashboardFragment
 
     // End loader
 
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     private String prepareQueryTopWithdrawals() {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         ViewMobileData mobileData = new ViewMobileData(getContext());

@@ -30,9 +30,4 @@ public class RecurringTransaction
     public Integer getAccountId() {
         return getInteger(QueryBillDeposits.ACCOUNTID);
     }
-
-    @Override
-    public String getIdColumnName() {
-        return "";
-    }
 }

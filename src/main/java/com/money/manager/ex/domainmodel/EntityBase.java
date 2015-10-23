@@ -37,21 +37,20 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
-abstract public class EntityBase
-    implements Parcelable, IEntity {
+public class EntityBase
+    implements Parcelable {
 
-    // Implement this in child classes:
-//    public static final Creator<EntityBase> CREATOR = new Creator<EntityBase>() {
-//        @Override
-//        public EntityBase createFromParcel(Parcel in) {
-//            return new EntityBase(in);
-//        }
-//
-//        @Override
-//        public EntityBase[] newArray(int size) {
-//            return new EntityBase[size];
-//        }
-//    };
+    public static final Creator<EntityBase> CREATOR = new Creator<EntityBase>() {
+        @Override
+        public EntityBase createFromParcel(Parcel in) {
+            return new EntityBase(in);
+        }
+
+        @Override
+        public EntityBase[] newArray(int size) {
+            return new EntityBase[size];
+        }
+    };
 
     /**
      * Default constructor.
@@ -60,22 +59,20 @@ abstract public class EntityBase
         contentValues = new ContentValues();
     }
 
+    protected EntityBase(ContentValues contentValues) {
+        this.contentValues = contentValues;
+    }
+
+    protected EntityBase(Parcel in) {
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+    }
+
     public ContentValues contentValues;
 
     /**
      * Contains the pointer to the actual data when loading from content provider.
      */
     protected Cursor mCursor;
-
-//    protected EntityBase(Parcel in) {
-//        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
-//    }
-
-    abstract public String getIdColumnName();
-
-    public Integer getId() {
-        return getInteger(getIdColumnName());
-    }
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();
@@ -94,23 +91,6 @@ abstract public class EntityBase
     protected void setBoolean(String column, Boolean value) {
         contentValues.put(column, value.toString().toUpperCase());
     }
-
-//    protected MonetaryAmount getMoneta(String fieldName, String currencyCode) {
-//        Double d = contentValues.getAsDouble(fieldName);
-//
-//        MonetaryAmount dAmount = FastMoney.of(d, currencyCode);
-//        return dAmount;
-//    }
-
-//    /**
-//     * We only store the numeric value. The currency information is lost and needs to be
-//     * retrieved from elsewhere on recreation.
-//     * @param fieldName Field name into which to store the value.
-//     * @param value The value to store.
-//     */
-//    protected void setMoneta(String fieldName, MonetaryAmount value) {
-//        contentValues.put(fieldName, value.getNumber().doubleValueExact());
-//    }
 
     protected Money getMoney(String fieldName) {
         String value = contentValues.getAsString(fieldName);

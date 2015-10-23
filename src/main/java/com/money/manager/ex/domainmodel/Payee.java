@@ -31,9 +31,8 @@ public class Payee
 
     }
 
-    @Override
-    public String getIdColumnName() {
-        return PAYEEID;
+    public Integer getId() {
+        return getInteger(PAYEEID);
     }
 
     public void setId(Integer value) {

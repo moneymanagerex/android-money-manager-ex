@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
@@ -31,19 +32,26 @@ public abstract class RepositoryBase<T extends EntityBase>
         super(source, type, basePath);
 
         this.context = context.getApplicationContext();
+//        this.idColumn = idColumn;
     }
 
     private Context context;
+//    private String idColumn;
 
-    // todo: need to get the ID field
-//    protected EntityBase load(int id) {
-//        T entity;
-//        context.getContentResolver().query(this.getUri(),
-//            this.getAllColumns(),
-//            entity.getIdColumnName() + "=?",
-//            new String[] { Integer.toString(entity.getId())},
-//            null);
+//    protected EntityBase load(int id, Class<T> clazz) throws IllegalAccessException, InstantiationException {
+//        Cursor c = openCursor(this.getAllColumns(),
+//            this.idColumn + "=?",
+//            new String[] { Integer.toString(id)}
+//        );
+//        if (c == null) return null;
 //
+//        T instance = clazz.newInstance();
+//
+//        instance.loadFromCursor(c);
+//
+//        c.close();
+//
+//        return instance;
 //    }
 
     public int count(String selection, String[] args) {
@@ -181,4 +189,19 @@ public abstract class RepositoryBase<T extends EntityBase>
         return result;
     }
 
+    protected ContentValues single(String selection, String[] selectionArgs) {
+        Cursor c = openCursor(getAllColumns(),
+            selection,
+            selectionArgs);
+        if (c == null) return null;
+
+        c.moveToNext();
+
+        ContentValues contentValues = new ContentValues();
+        DatabaseUtils.cursorRowToContentValues(c, contentValues);
+
+        c.close();
+
+        return contentValues;
+    }
 }

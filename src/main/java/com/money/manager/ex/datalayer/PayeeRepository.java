@@ -34,8 +34,12 @@ public class PayeeRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[] { "PAYEEID AS _id", Payee.PAYEEID, Payee.PAYEENAME, Payee.CATEGID,
-                Payee.SUBCATEGID };
+        return new String[] { "PAYEEID AS _id",
+            Payee.PAYEEID,
+            Payee.PAYEENAME,
+            Payee.CATEGID,
+            Payee.SUBCATEGID
+        };
     }
 
     public int add(Payee entity) {

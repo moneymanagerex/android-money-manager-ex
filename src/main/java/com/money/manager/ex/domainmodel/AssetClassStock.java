@@ -39,11 +39,6 @@ public class AssetClassStock
         super();
     }
 
-    @Override
-    public String getIdColumnName() {
-        return ID;
-    }
-
     public void setId(int value) {
         setInteger(ID, value);
     }
