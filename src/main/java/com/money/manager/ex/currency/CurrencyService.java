@@ -201,7 +201,7 @@ public class CurrencyService {
      * @return Id of base currency
      */
     public int getBaseCurrencyId() {
-        int result = Constants.NOT_SET;
+        int result;
 
         // lazy loading the base currency id.
         if (mBaseCurrencyId == null) {
@@ -209,11 +209,20 @@ public class CurrencyService {
             if(baseCurrencyId != null) {
                 setBaseCurrencyId(baseCurrencyId);
                 result = baseCurrencyId;
+            } else {
+                // No base currency set yet. Try to get it from the system.
+                java.util.Currency systemCurrency = this.getSystemDefaultCurrency();
+                CurrencyRepository repo = new CurrencyRepository(getContext());
+                Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
+
+                result = defaultCurrency.getCurrencyId();
+                setBaseCurrencyId(result);
             }
         } else {
             result = mBaseCurrencyId;
         }
 
+        mBaseCurrencyId = result;
         return result;
     }
 
