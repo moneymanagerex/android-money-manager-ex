@@ -310,12 +310,8 @@ public class GeneralSettingsFragment
         ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_default_account));
         if (preference == null) return;
 
-        // show default summary
-//        preference.setSummary(getString(R.string.default_account_summary));
-
-        AccountService accountService = new AccountService(getActivity().getApplicationContext());
+        AccountService accountService = new AccountService(getActivity());
         List<Account> accounts = accountService.getAccountList(false, false);
-        if (accounts == null || accounts.size() == 0) return;
 
         // the list is already sorted by name.
 
@@ -324,10 +320,10 @@ public class GeneralSettingsFragment
         // Add the null value so that the setting can be disabled.
         entries[0] = getString(R.string.none);
         entryValues[0] = "-1";
-        // list of currency
+        // list of currencies
         for (int i = 1; i < accounts.size() + 1; i++) {
             entries[i] = accounts.get(i-1).getName();
-            entryValues[i] = ((Integer) accounts.get(i-1).getId()).toString();
+            entryValues[i] = accounts.get(i-1).getId().toString();
         }
         // set value
         preference.setEntries(entries);
