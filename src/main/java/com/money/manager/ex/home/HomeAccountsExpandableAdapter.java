@@ -23,7 +23,6 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter for the Home screen expandable accounts list.
- * Created by Alen Siljak on 15/07/2015.
  */
 public class HomeAccountsExpandableAdapter
         extends BaseExpandableListAdapter {
