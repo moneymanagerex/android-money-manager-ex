@@ -34,6 +34,11 @@ set lang=nl
 set locale=NL
 call copy_translation.bat %src_root% %dest_root% %lang% %locale%
 
+:: Finnish
+set lang=fi
+set locale=FI
+call copy_translation.bat %src_root% %dest_root% %lang% %locale%
+
 :: French
 set lang=fr
 set locale=FR
