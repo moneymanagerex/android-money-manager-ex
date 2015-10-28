@@ -16,3 +16,7 @@ gulp.task('default', function() {
   ' to execute a task:');
   console.log('copy => copy files')
 });
+
+gulp.task('deploy', function() {
+  console.log("The deployment script goes here...");
+});
