@@ -379,7 +379,13 @@ public class CurrencyListFragment
 
     @Override
     public String getSubTitle() {
-        return getString(R.string.currencies);
+        String result;
+//        if (mShowOnlyUsedCurrencies) {
+//            result = getString(R.string.currencies_used);
+//        } else {
+            result = getString(R.string.currencies);
+//        }
+        return result;
     }
 
     @Override

@@ -212,15 +212,14 @@ public class CurrencyService {
             } else {
                 // No base currency set yet. Try to get it from the system.
                 java.util.Currency systemCurrency = this.getSystemDefaultCurrency();
-                CurrencyRepository repo = new CurrencyRepository(getContext());
-                Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
-
-                if (defaultCurrency == null) {
+                if (systemCurrency == null) {
                     // could not get base currency from the system. Use Euro.
                     //Currency euro = repo.loadCurrency("EUR");
                     //result = euro.getCurrencyId();
                     result = 2;
                 } else {
+                    CurrencyRepository repo = new CurrencyRepository(getContext());
+                    Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
                     result = defaultCurrency.getCurrencyId();
                 }
             }
