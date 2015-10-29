@@ -110,6 +110,10 @@ public class AccountTransactionDisplay
         return getString(QueryAllData.Subcategory);
     }
 
+    public int getToAccountId() {
+        return getInt(QueryAllData.TOACCOUNTID);
+    }
+
     public Money getToAmount() {
         return getMoney(QueryAllData.ToAmount);
     }
