@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="October 28, 2015" versionName="2.23.1">
+    <changelogversion changeDate="October 28, 2015" versionName="2.23.2">
+        <changelogtext>Explicitely setting the base currency if one is not found.</changelogtext>
         <changelogtext>Stability improvements based on user feedback.</changelogtext>
         <changelogtext>All available languages displayed in their original version.</changelogtext>
         <changelogtext>Added Greek and Turkish languages.</changelogtext>
