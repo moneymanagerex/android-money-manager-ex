@@ -241,17 +241,9 @@ public class AllDataAdapter
         mCheckedPosition.clear();
     }
 
-//    public int getCheckedCount() {
-//        return mCheckedPosition.size();
-//    }
-
     public SparseBooleanArray getPositionsChecked() {
         return mCheckedPosition;
     }
-
-//    public boolean getPositionChecked(int position) {
-//        return mCheckedPosition.get(position);
-//    }
 
     /**
      * Set checked in position
@@ -353,29 +345,6 @@ public class AllDataAdapter
 
         this.requestingBalanceUpdate.clear();
     }
-
-    // Private
-
-//    private void calculateBalanceAmount(Cursor cursor, AllDataViewHolder holder) {
-//        try {
-//            int transId = cursor.getInt(cursor.getColumnIndex(ID));
-//
-//            String date = cursor.getString(cursor.getColumnIndex(DATE));
-//
-//            CalculateRunningBalanceTask balanceAmount = new CalculateRunningBalanceTask();
-//            balanceAmount.setAccountId(getAccountId());
-//            balanceAmount.setDate(date);
-//            balanceAmount.setTextView(holder.txtBalance);
-//            balanceAmount.setContext(context);
-//            balanceAmount.setCurrencyId(getCurrencyId());
-//            balanceAmount.setTransId(transId);
-//            // execute thread
-//            balanceAmount.execute();
-//        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(context, this);
-//            handler.handle(ex, "calculating balance amount");
-//        }
-//    }
 
     /**
      * Display the running balance on account transactions list, or days left on

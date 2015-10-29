@@ -82,8 +82,8 @@ import info.javaperformance.money.MoneyFactory;
  * Fragment that displays the transactions.
  */
 public class AllDataListFragment
-        extends BaseListFragment
-        implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
+    extends BaseListFragment
+    implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
     /**
      * Create a new instance of AllDataListFragment with accountId params
@@ -270,7 +270,7 @@ public class AllDataListFragment
 
                 // Show totals
                 if (this.mShowFooter) {
-                    this.updateTotalFooter(data);
+                    this.updateFooter(data);
                 }
         }
     }
@@ -587,8 +587,15 @@ public class AllDataListFragment
         listView.addFooterView(footer);
     }
 
-    private void updateTotalFooter(Cursor data) {
+    private void updateFooter(Cursor data) {
         if (data == null) return;
+
+        String display;
+
+        // number of records
+         display = Integer.toString(data.getCount()) + " " + getString(R.string.records) + ", ";
+
+        // sum
 
         Money total = MoneyFactory.fromString("0");
 
@@ -599,7 +606,9 @@ public class AllDataListFragment
         TextView txtColumn2 = (TextView) this.footer.findViewById(R.id.textViewColumn2);
 
         CurrencyService currencyService = new CurrencyService(getContext());
-        txtColumn2.setText(currencyService.getBaseCurrencyFormatted(total));
+        display += currencyService.getBaseCurrencyFormatted(total);
+
+        txtColumn2.setText(display);
     }
 
     private Money getTotalFromCursor(Cursor cursor) {
