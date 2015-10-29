@@ -84,7 +84,7 @@ public class PayeeReportFragment
         txtColumn1.setTypeface(null, Typeface.BOLD_ITALIC);
         txtColumn2.setText(R.string.total);
         txtColumn2.setTypeface(null, Typeface.BOLD_ITALIC);
-        //add to listview
+        //add to list view
         //getListView().addFooterView(mFooterListView);
 
         //set adapter
@@ -216,6 +216,7 @@ public class PayeeReportFragment
         Cursor cursor = adapter.getCursor();
         if (cursor == null) return;
         if (!cursor.moveToFirst()) return;
+
         ArrayList<ValuePieEntry> arrayList = new ArrayList<ValuePieEntry>();
         while (!cursor.isAfterLast()) {
             ValuePieEntry item = new ValuePieEntry();
@@ -234,6 +235,7 @@ public class PayeeReportFragment
             // move to next record
             cursor.moveToNext();
         }
+
         Bundle args = new Bundle();
         args.putSerializable(PieChartFragment.KEY_CATEGORIES_VALUES, arrayList);
         //get fragment manager

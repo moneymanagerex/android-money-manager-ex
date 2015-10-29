@@ -215,14 +215,20 @@ public class CurrencyService {
                 CurrencyRepository repo = new CurrencyRepository(getContext());
                 Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
 
-                result = defaultCurrency.getCurrencyId();
-                setBaseCurrencyId(result);
+                if (defaultCurrency == null) {
+                    // could not get base currency from the system. Use Euro.
+                    //Currency euro = repo.loadCurrency("EUR");
+                    //result = euro.getCurrencyId();
+                    result = 2;
+                } else {
+                    result = defaultCurrency.getCurrencyId();
+                }
             }
         } else {
             result = mBaseCurrencyId;
         }
 
-        mBaseCurrencyId = result;
+        setBaseCurrencyId(result);
         return result;
     }
 
