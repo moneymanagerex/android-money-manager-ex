@@ -43,14 +43,12 @@ public class AssetAllocationActivityTests {
 
     @Before
     public void setup() {
-//        Context context = UnitTestHelper.getContext();
+        // initialize database
+        UnitTestHelper.initializeContentProvider();
 
         // initialize support for activities (UI)
         this.controller = UnitTestHelper.getController(AssetAllocationActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
-
-        // initialize database
-        UnitTestHelper.initializeContentProvider();
     }
 
     @After

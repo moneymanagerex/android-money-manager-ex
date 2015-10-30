@@ -106,6 +106,8 @@ public class AssetAllocationService {
      * @return Full Asset Allocation with all the calculated fields.
      */
     public AssetClass loadAssetAllocation(Cursor c) {
+        if (c == null) return null;
+
         // Main asset allocation object.
         AssetClass main = AssetClass.create("Asset Allocation");
         main.setType(ItemType.Group);

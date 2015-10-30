@@ -56,7 +56,7 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
-        Cursor cursor = context.getContentResolver().query(getUri(),
+        Cursor cursor = getContext().getContentResolver().query(getUri(),
             projection,
             selection,
             args,
@@ -102,7 +102,7 @@ public abstract class RepositoryBase<T extends EntityBase>
 //    }
 
     protected int insert(ContentValues values) {
-        Uri insertUri = context.getContentResolver().insert(this.getUri(),
+        Uri insertUri = getContext().getContentResolver().insert(this.getUri(),
             values);
         if (insertUri == null) return Constants.NOT_SET;
 
@@ -112,13 +112,13 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected int bulkInsert(ContentValues[] items) {
-        return context.getContentResolver().bulkInsert(this.getUri(), items);
+        return getContext().getContentResolver().bulkInsert(this.getUri(), items);
     }
 
     protected boolean update(int id, ContentValues values, String where) {
         boolean result = false;
 
-        int updateResult = context.getContentResolver().update(this.getUri(),
+        int updateResult = getContext().getContentResolver().update(this.getUri(),
             values,
             where,
             null
@@ -155,7 +155,7 @@ public abstract class RepositoryBase<T extends EntityBase>
 
         ContentProviderResult[] results = null;
         try {
-            results = context.getContentResolver()
+            results = getContext().getContentResolver()
                 .applyBatch(MmexContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
@@ -165,7 +165,7 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected int delete(String where, String[] args) {
-        int result = context.getContentResolver().delete(this.getUri(),
+        int result = getContext().getContentResolver().delete(this.getUri(),
             where,
             args
         );

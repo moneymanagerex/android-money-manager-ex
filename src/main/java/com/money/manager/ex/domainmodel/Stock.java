@@ -40,11 +40,24 @@ public class Stock
         // Set to today.
         stock.setPurchaseDate(Calendar.getInstance().getTime());
 
+        stock.setName("");
+        stock.setHeldAt(0);
+
         stock.setNumberOfShares(0.0);
         stock.setPurchasePrice(MoneyFactory.fromString("0"));
         stock.setCommission(MoneyFactory.fromString("0"));
-        // should this be null?
         stock.setCurrentPrice(MoneyFactory.fromString("0"));
+
+        return stock;
+    }
+
+    public static Stock create(String date, String name, String purchasePrice, String currentPrice) {
+        Stock stock = Stock.create();
+
+        stock.setPurchaseDate(date);
+        stock.setName(name);
+        stock.setPurchasePrice(MoneyFactory.fromString(purchasePrice));
+        stock.setCurrentPrice(MoneyFactory.fromString(currentPrice));
 
         return stock;
     }
@@ -143,6 +156,10 @@ public class Stock
     public Money getPurchasePrice() {
         String purchasePrice = contentValues.getAsString(PURCHASEPRICE);
         return MoneyFactory.fromString(purchasePrice);
+    }
+
+    public void setPurchaseDate(String value) {
+        setString(PURCHASEDATE, value);
     }
 
     public void setPurchasePrice(Money value) {

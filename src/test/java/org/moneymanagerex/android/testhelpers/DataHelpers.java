@@ -23,6 +23,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
@@ -34,8 +35,10 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.servicelayer.AccountService;
 
 import org.robolectric.fakes.BaseCursor;
 import org.robolectric.shadows.ShadowContentResolver;
@@ -108,10 +111,21 @@ public class DataHelpers {
         AssetClassRepository repo = new AssetClassRepository(context);
         AssetClassStockRepository linkRepo = new AssetClassStockRepository(context);
         StockRepository stockRepo = new StockRepository(context);
+        AccountRepository accountRepo = new AccountRepository(context);
+
+        // Currency
+        CurrencyService currencyService = new CurrencyService(context);
+        Currency eur = currencyService.getCurrency("EUR");
+
+        // Investment account
+        Account account = Account.create("investment", AccountTypes.INVESTMENT, AccountStatuses.OPEN,
+            true, eur.getCurrencyId());
+        int accountId = accountRepo.insert(account);
 
         // Stock symbols
         Stock stock = Stock.create();
         stock.setSymbol("VHY.ax");
+        stock.setHeldAt(accountId);
         stockRepo.insert(stock);
 
         AssetClass stocks = AssetClass.create("stocks");
