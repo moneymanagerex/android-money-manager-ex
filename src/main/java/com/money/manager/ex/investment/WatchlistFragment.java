@@ -121,7 +121,7 @@ public class WatchlistFragment
         }
 
         if (container == null) return null;
-        View view = inflater.inflate(R.layout.account_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_account_transactions, container, false);
 
         if (mAccount == null) {
             loadAccount();

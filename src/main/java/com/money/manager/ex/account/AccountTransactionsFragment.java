@@ -160,7 +160,7 @@ public class AccountTransactionsFragment
         if (container == null) return null;
 
         // inflate layout
-        View view = inflater.inflate(R.layout.account_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_account_transactions, container, false);
 
         // take object AccountList
         if (mAccount == null) {
@@ -613,87 +613,6 @@ public class AccountTransactionsFragment
         return actionBar;
     }
 
-    private void initAccountsDropdown(Menu menu) {
-        // Hide the toolbar title?
-//        AppCompatActivity toolbarActivity = (AppCompatActivity) getActivity();
-//        ActionBar actionBar = toolbarActivity.getSupportActionBar();
-//        toolbarActivity.setSupportActionBar(toolbar);
-//        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setLogo(R.drawable.ic_logo_money_manager_ex);
-//        actionBar.setDisplayUseLogoEnabled(true);
-//        actionBar.setDisplayShowHomeEnabled(true);
-
-        // Load accounts into the list.
-        Spinner spinner = getAccountsSpinner();
-        if (spinner == null) return;
-
-        AccountService accountService = new AccountService(getActivity());
-        accountService.loadTransactionAccountsToSpinner(spinner);
-
-        // handle switching of accounts.
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // switch account.
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
-                Account account = new Account();
-                account.loadFromCursor(cursor);
-
-                int accountId = account.getId();
-                if (accountId != mAccountId) {
-                    // switch account. Reload transactions.
-                    mAccountId = accountId;
-                    mAllDataListFragment.AccountId = accountId;
-                    mAllDataListFragment.loadData(prepareQuery());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
-
-    /**
-     * To be used for the Transaction Type filter.
-     * @param menu
-     */
-    private void initTransactionTypeDropdown(Menu menu) {
-        MenuItem item = menu.findItem(R.id.menuAccountSelector);
-        Spinner spinner = null;
-        if (item != null) {
-            spinner = (Spinner) MenuItemCompat.getActionView(item);
-        }
-        if (spinner == null) return;
-
-        // todo: fill statuses
-        //loadTransactionAccountsToSpinner(getActivity(), spinner);
-
-        // handle switching of accounts.
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // switch account.
-//                Spinner spinner1 = (Spinner) adapterView;
-//                Account account = getAccountAtPosition(spinner1, i);
-//                int accountId = account.getAccountId();
-//                if (accountId != mAccountId) {
-//                    // switch account. Reload transactions.
-//                    mAccountId = accountId;
-//                    mAllDataListFragment.AccountId = accountId;
-//                    mAllDataListFragment.loadData(prepareQuery());
-//                }
-                // todo: handle change.
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
-
     private void initializeListHeader(LayoutInflater inflater) {
         mListHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
         // take reference text view from layout
@@ -740,9 +659,6 @@ public class AccountTransactionsFragment
     }
 
     private void loadAccountsInto(final Spinner spinner) {
-        // Load accounts into the list.
-//        Menu menu
-//        Spinner spinner = getAccountsSpinner(menu);
         if (spinner == null) return;
 
         AccountService accountService = new AccountService(getActivity());
@@ -826,19 +742,15 @@ public class AccountTransactionsFragment
         // switch account. Reload transactions.
         mAccountId = accountId;
         mAllDataListFragment.AccountId = accountId;
-//        mAllDataListFragment.loadData();
         mAllDataListFragment.loadData(prepareQuery());
 
         // hide account details bar if all accounts are selected
         if (accountId == Constants.NOT_SET) {
-//            mDataFragment.setListHeader(null);
             mAllDataListFragment.getListView().removeHeaderView(mListHeader);
-//            mListHeader.setVisibility(View.GONE);
         } else {
             if (mAllDataListFragment.getListView().getHeaderViewsCount() == 0) {
                 mAllDataListFragment.getListView().addHeaderView(mListHeader);
             }
-//            mListHeader.setVisibility(View.VISIBLE);
         }
     }
 
