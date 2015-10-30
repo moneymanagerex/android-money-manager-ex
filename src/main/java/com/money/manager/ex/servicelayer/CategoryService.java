@@ -127,7 +127,7 @@ public class CategoryService {
      * @return A boolean indicating if the category is in use.
      */
     public boolean isCategoryUsed(int categoryId) {
-        CategoryRepository repo = new CategoryRepository(getContext());
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
         return links > 0;
     }
