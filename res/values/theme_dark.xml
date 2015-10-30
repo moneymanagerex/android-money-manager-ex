@@ -110,7 +110,7 @@
         <!-- Shape -->
         <item name="shape_background_shadow">@null</item>
         <item name="shape_white_background_shadow">@null</item>
-        <item name="shape_rectangle_backgroud_dark">@null</item>
+        <item name="shape_rectangle_background_dark">@null</item>
         <!-- TextView -->
         <item name="listSeparatorTextViewStyle">?android:attr/listSeparatorTextViewStyle</item>
         <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
@@ -122,6 +122,8 @@
 
         <!-- spinner -->
         <item name="android:spinnerStyle">@style/Money.Spinner.Style.Dark</item>
+        <!--<item name="android:spinnerItemStyle">@style/Money.Spinner.Style.Dark</item>-->
+        <!--<item name="android:spinnerDropDownItemStyle">@style/Money.Spinner.Style</item>-->
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
 

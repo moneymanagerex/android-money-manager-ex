@@ -255,7 +255,8 @@ public class AccountService {
             new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
             adapterRowViews,
             SimpleCursorAdapter.NO_SELECTION);
-        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cursorAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
 
         spinner.setAdapter(cursorAdapter);
     }

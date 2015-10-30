@@ -73,7 +73,7 @@
         <attr name="theme_background_color" format="color|reference"/>
         <attr name="shape_background_shadow" format="reference"/>
         <attr name="shape_white_background_shadow" format="reference"/>
-        <attr name="shape_rectangle_backgroud_dark" format="reference"/>
+        <attr name="shape_rectangle_background_dark" format="reference"/>
         <attr name="listSeparatorTextViewStyle" format="reference"/>
         <attr name="headerTextViewStyle" format="reference"/>
         <attr name="headerCaptionTextViewStyle" format="reference"/>
