@@ -450,11 +450,9 @@ public class CategoryListFragment
 
         if (categoryIds.subCategId <= 0) {
             values.put(Category.CATEGID, categoryIds.categId);
-//            canDelete = new TableCategory().canDelete(getActivity(), values, TableCategory.class.getName());
             canDelete = !service.isCategoryUsed(categoryIds.categId);
         } else {
             values.put(Subcategory.SUBCATEGID, categoryIds.subCategId);
-//            canDelete = new TableSubCategory().canDelete(getActivity(), values, TableSubCategory.class.getName());
             canDelete = !service.isSubcategoryUsed(categoryIds.categId);
         }
         if (!(canDelete)) {

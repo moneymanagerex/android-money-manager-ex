@@ -25,6 +25,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
@@ -53,7 +54,7 @@ public class CategoryService {
 
         String selection = Category.CATEGNAME + "=?";
 
-        Cursor cursor = mContext.getContentResolver().query(
+        Cursor cursor = getContext().getContentResolver().query(
                 mCategory.getUri(),
                 new String[] { Category.CATEGID },
                 selection,
@@ -77,7 +78,7 @@ public class CategoryService {
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
 
-        Uri result = mContext.getContentResolver()
+        Uri result = getContext().getContentResolver()
                 .insert(mCategory.getUri(), values);
         long id = ContentUris.parseId(result);
 
@@ -90,7 +91,7 @@ public class CategoryService {
     public List<TableCategory> getCategoryList() {
         List<TableCategory> listCategories = new ArrayList<>();
 
-        Cursor cursor = mContext.getContentResolver().query(new TableCategory().getUri(),
+        Cursor cursor = getContext().getContentResolver().query(new TableCategory().getUri(),
                 null, null, null, Category.CATEGNAME);
         if (cursor == null) return listCategories;
 
@@ -113,7 +114,7 @@ public class CategoryService {
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
 
-        int result = mContext.getContentResolver().update(mCategory.getUri(),
+        int result = getContext().getContentResolver().update(mCategory.getUri(),
                 values,
                 Category.CATEGID + "=" + id, null);
 
@@ -126,15 +127,18 @@ public class CategoryService {
      * @return A boolean indicating if the category is in use.
      */
     public boolean isCategoryUsed(int categoryId) {
-        CategoryRepository repo = new CategoryRepository(mContext);
+        CategoryRepository repo = new CategoryRepository(getContext());
         int links = repo.count(Category.CATEGID + "=?", new String[]{Integer.toString(categoryId)});
         return links > 0;
     }
 
     public boolean isSubcategoryUsed(int subcategoryId) {
-        SubcategoryRepository repo = new SubcategoryRepository(mContext);
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(Subcategory.SUBCATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
         return links > 0;
     }
 
+    private Context getContext() {
+        return mContext;
+    }
 }

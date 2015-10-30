@@ -25,7 +25,7 @@ import android.view.KeyEvent;
 import com.money.manager.ex.R;
 
 /**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
+ * List of categories.
  */
 public class CategoryListActivity
         extends BaseFragmentActivity {
