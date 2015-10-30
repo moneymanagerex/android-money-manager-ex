@@ -22,7 +22,6 @@ import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDiskIOException;
-import android.util.Log;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
@@ -256,7 +255,7 @@ public class AccountService {
             adapterRowViews,
             SimpleCursorAdapter.NO_SELECTION);
 //        cursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cursorAdapter.setDropDownViewResource(R.layout.toolbar_spinner_dropdown_item);
+        cursorAdapter.setDropDownViewResource(R.layout.toolbar_spinner_item_dropdown);
 
         spinner.setAdapter(cursorAdapter);
     }
