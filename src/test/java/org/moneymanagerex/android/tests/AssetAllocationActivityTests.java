@@ -53,11 +53,10 @@ public class AssetAllocationActivityTests {
 
     @After
     public void tearDown() {
-        // Reset database instance between tests.
-        UnitTestHelper.resetDatabase();
-
         // Destroy the activity controller.
         this.controller.destroy();
+        // Reset database instance between tests.
+        UnitTestHelper.resetDatabase();
     }
 
     @Test
