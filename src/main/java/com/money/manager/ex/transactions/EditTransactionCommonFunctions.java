@@ -1002,7 +1002,7 @@ public class EditTransactionCommonFunctions {
         if (payee != null) {
             this.payeeName = payee.getName();
         } else {
-            this.payeeName = null;
+            this.payeeName = "";
         }
 
         return true;

@@ -178,7 +178,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             selectionArgs);
         if (c == null) return null;
 
-        c.moveToNext();
+        if (!c.moveToNext()) return null;
 
         ContentValues contentValues = new ContentValues();
         DatabaseUtils.cursorRowToContentValues(c, contentValues);
