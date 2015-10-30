@@ -126,7 +126,7 @@ public class AccountTransaction
         setInteger(ISplitTransactionsDataset.SUBCATEGID, value);
     }
 
-    public int getToAccountId() {
+    public Integer getToAccountId() {
         return getInt(ISplitTransactionsDataset.TOACCOUNTID);
     }
 

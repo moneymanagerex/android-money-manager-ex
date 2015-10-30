@@ -261,9 +261,9 @@ public class EditTransactionActivity
     public boolean loadCheckingAccount(int transId, boolean duplicate) {
         try {
             return loadCheckingAccountInternal(transId, duplicate);
-        } catch (SQLiteDiskIOException ex) {
+        } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(ex, "loading checking account");
+            handler.handle(e, "loading checking account");
         }
         return false;
     }
@@ -283,7 +283,8 @@ public class EditTransactionActivity
             mTransId = tx.getId();
         }
         mCommonFunctions.accountId = tx.getAccountId();
-        mCommonFunctions.toAccountId = tx.getToAccountId();
+        Integer toAccountId = tx.getToAccountId();
+        mCommonFunctions.toAccountId = toAccountId == null ? Constants.NOT_SET : toAccountId;
         mCommonFunctions.transactionType = tx.getTransType();
         mCommonFunctions.status = tx.getStatus();
         mCommonFunctions.amount = tx.getAmount();
