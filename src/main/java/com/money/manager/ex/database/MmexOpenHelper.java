@@ -48,7 +48,7 @@ public class MmexOpenHelper
     /*
        The version corresponds to the user version in info table, used by the desktop app.
      */
-    private static final int databaseVersion = 3;
+    private static final int databaseVersion = 4;
 
     // singleton
     private static MmexOpenHelper mInstance;

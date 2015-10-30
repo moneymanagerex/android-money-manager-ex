@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="November 1, 2015" versionName="3.0.0">
+        <changelogtext>Introducing Asset Allocation concept. First version.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="October 29, 2015" versionName="2.23.3">
         <changelogtext>Explicitely setting the base currency if one is not found.</changelogtext>
         <changelogtext>Stability improvements based on user feedback.</changelogtext>
