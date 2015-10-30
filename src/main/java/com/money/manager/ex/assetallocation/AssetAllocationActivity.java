@@ -59,8 +59,14 @@ public class AssetAllocationActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // Ref: http://developer.android.com/guide/components/loaders.html
-        getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, this);
+        if (savedInstanceState != null) {
+            // use existing asset allocation
+            this.assetAllocation = savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION);
+        } else {
+            // Load asset allocation
+            // Ref: http://developer.android.com/guide/components/loaders.html
+            getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, this);
+        }
     }
 
     @Override
@@ -71,13 +77,13 @@ public class AssetAllocationActivity
         outState.putParcelable(KEY_ASSET_ALLOCATION, this.assetAllocation);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        // restore allocation.
-        this.assetAllocation = savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION);
-    }
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//
+//        // restore allocation. This does not work.
+//        this.assetAllocation = savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION);
+//    }
 
     @Override
     protected void onResume() {

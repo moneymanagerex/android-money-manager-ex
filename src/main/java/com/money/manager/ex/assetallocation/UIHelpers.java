@@ -37,13 +37,17 @@ public class UIHelpers {
         viewHolder.allocationTextView.setText(values.allocation);
 
         // set value
-        viewHolder.valueTextView.setText(values.value);
+        if (viewHolder.valueTextView != null) {
+            viewHolder.valueTextView.setText(values.value);
+        }
 
         // current allocation
         viewHolder.currentAllocationTextView.setText(values.currentAllocation);
 
         // current value
-        viewHolder.currentValueTextView.setText(values.currentValue);
+        if (viewHolder.currentValueTextView != null) {
+            viewHolder.currentValueTextView.setText(values.currentValue);
+        }
 
         // difference (value)
         viewHolder.differenceTextView.setText(values.difference);

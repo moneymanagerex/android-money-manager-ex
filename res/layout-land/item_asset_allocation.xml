@@ -37,24 +37,24 @@
     <!-- set allocation -->
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/allocationTextView"
-        android:minWidth="60dp"
         android:layout_width="wrap_content"
+        android:minWidth="60dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical|end"
         android:gravity="center_vertical|end"
         android:text="@string/allocation" />
 
     <!-- set value -->
-    <!--<com.money.manager.ex.view.RobotoTextView-->
-        <!--android:id="@+id/valueTextView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:minWidth="65dp"-->
-        <!--android:paddingStart="1dp"-->
-        <!--android:paddingLeft="1dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="end"-->
-        <!--android:gravity="center_vertical|end"-->
-        <!--android:text="@string/value" />-->
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/valueTextView"
+        android:minWidth="90dp"
+        android:layout_width="wrap_content"
+        android:paddingStart="1dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center_vertical|end"
+        android:text="@string/value" />
 
     <!-- current allocation -->
     <com.money.manager.ex.view.RobotoTextView
@@ -69,16 +69,16 @@
         android:text="@string/current_allocation" />
 
     <!-- current value -->
-    <!--<com.money.manager.ex.view.RobotoTextView-->
-        <!--android:id="@+id/currentValueTextView"-->
-        <!--android:minWidth="65dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:paddingStart="1dp"-->
-        <!--android:paddingLeft="1dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center_vertical|end"-->
-        <!--android:gravity="center_vertical|end"-->
-        <!--android:text="@string/current_value" />-->
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/currentValueTextView"
+        android:minWidth="90dp"
+        android:layout_width="wrap_content"
+        android:paddingStart="1dp"
+        android:paddingLeft="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|end"
+        android:gravity="center_vertical|end"
+        android:text="@string/current_value" />
 
     <!-- difference -->
     <com.money.manager.ex.view.RobotoTextView
