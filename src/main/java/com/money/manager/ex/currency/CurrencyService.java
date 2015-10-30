@@ -182,7 +182,15 @@ public class CurrencyService {
         Currency fromCurrencyFormats = getCurrency(fromCurrencyId);
         Currency toCurrencyFormats = getCurrency(toCurrencyId);
         // check if exists from and to currencies
-        if (fromCurrencyFormats == null || toCurrencyFormats == null) return null;
+        if (fromCurrencyFormats == null || toCurrencyFormats == null) {
+            String message = fromCurrencyFormats == null
+                ? "currency " + fromCurrencyId + " not loaded."
+                : "";
+            message += toCurrencyFormats == null
+                ? " currency " + toCurrencyId + " not loaded."
+                : "";
+            throw new RuntimeException(message);
+        }
 
         // exchange
         double toConversionRate = toCurrencyFormats.getBaseConversionRate();

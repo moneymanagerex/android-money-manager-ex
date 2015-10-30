@@ -50,6 +50,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
@@ -270,7 +271,12 @@ public class AllDataListFragment
 
                 // Show totals
                 if (this.mShowFooter) {
-                    this.updateFooter(data);
+                    try {
+                        this.updateFooter(data);
+                    } catch (Exception e) {
+                        ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                        handler.handle(e, "displaying footer");
+                    }
                 }
         }
     }
