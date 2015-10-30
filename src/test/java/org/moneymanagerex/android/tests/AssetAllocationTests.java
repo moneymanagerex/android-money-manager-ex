@@ -77,7 +77,7 @@ public class AssetAllocationTests {
 //        StockRepository stockRepository = new StockRepository(context);
         AssetClassRepository classRepo = new AssetClassRepository(context);
         AssetClassStockRepository classStockRepo = new AssetClassStockRepository(context);
-        Double expectedAllocation = 14.28;
+        Money expectedAllocation = MoneyFactory.fromDouble(14.28);
         int expectedAssetClassId = 1;
 
         // save
