@@ -1103,11 +1103,11 @@ public class MainActivity
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
 
         // Asset Allocation
-        if (BuildConfig.DEBUG) {
-            menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
-                .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
-        }
+//        if (BuildConfig.DEBUG) {
+        menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
+            .withText(getString(R.string.asset_allocation))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+//        }
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
