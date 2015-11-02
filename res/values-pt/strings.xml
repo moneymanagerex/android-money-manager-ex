@@ -516,4 +516,5 @@
   <string name="value">Valor</string>
   <string name="view_transactions">Ver transações</string>
   <string name="error_downloading_symbol">Erro ao transferir o preço para o símbolo</string>
+  <string name="all_accounts">Todas as Contas</string>
 </resources>

@@ -517,4 +517,5 @@
   <string name="value">價值</string>
   <string name="view_transactions">查看交易紀錄</string>
   <string name="error_downloading_symbol">下載價格錯誤</string>
+  <string name="all_accounts">所有帳戶</string>
 </resources>

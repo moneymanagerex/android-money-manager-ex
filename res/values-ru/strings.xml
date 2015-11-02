@@ -538,4 +538,5 @@
   <string name="parent">Родительское</string>
   <string name="name">Название</string>
   <string name="stock">Запас</string>
+  <string name="all_accounts">Все счета</string>
 </resources>

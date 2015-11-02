@@ -490,4 +490,5 @@
   <string name="value">Değer</string>
   <string name="view_transactions">İşlemleri görüntüle</string>
   <string name="error_downloading_symbol">Fiyat sembolü indirilirken hata oluştu</string>
+  <string name="all_accounts">Tüm Hesaplar</string>
 </resources>

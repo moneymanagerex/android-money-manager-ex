@@ -520,7 +520,7 @@
   <string name="commission">佣金</string>
   <string name="value">市值</string>
   <string name="view_transactions">查看交易记录</string>
-  <string name="error_downloading_symbol">下载该股票价格时发生错误</string>
+  <string name="error_downloading_symbol">下载价格时发生错误</string>
   <string name="other">其他</string>
   <string name="cleared">已清除</string>
   <string name="delete_success">已删除</string>
@@ -537,4 +537,5 @@
   <string name="current">当前</string>
   <string name="name">名称</string>
   <string name="stock">股票</string>
+  <string name="all_accounts">所有账户</string>
 </resources>

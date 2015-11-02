@@ -513,4 +513,5 @@
   <string name="price_date">Datum cijene</string>
   <string name="value">Vrijednost</string>
   <string name="error_downloading_symbol">Greška pri preuzimanja cijena za simbol</string>
+  <string name="all_accounts">Svi računi</string>
 </resources>

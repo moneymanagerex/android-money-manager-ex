@@ -512,4 +512,5 @@
   <string name="commission">Comisión</string>
   <string name="value">Valor</string>
   <string name="view_transactions">Ver transacciones</string>
+  <string name="all_accounts">Todas las cuentas</string>
 </resources>

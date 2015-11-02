@@ -56,7 +56,7 @@
   <string name="account_name">Název účtu</string>
   <string name="account_type">Typ účtu</string>
   <string name="account_number">Číslo účtu</string>
-  <string name="account_held_at">Účet veden v</string>
+  <string name="account_held_at">Instituce, ve které je účet veden</string>
   <string name="account_status">Stav účtu</string>
   <string name="favourite_account">Oblíbený účet</string>
   <string name="select_currency">Vyberte měnu</string>
@@ -77,7 +77,7 @@
   <string name="edit_payeeName">Upravit příjemce</string>
   <string name="delete_payee">Odstranit příjemce</string>
   <string name="payee">Příjemce</string>
-  <string name="select_payee">Vybrat příjemce</string>
+  <string name="select_payee">Vyberte příjemce</string>
   <string name="payee_empty_list">Nenalezen žádný příjemce. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření.</string>
   <string name="from">Od</string>
   <string name="db_payee_update_failed">Aktualizace příjemce se nezdařila</string>
@@ -139,7 +139,7 @@
   <string name="summary">Celkem</string>
   <string name="sync">Synchronizace</string>
   <string name="synchronize">Synchronizovat</string>
-  <string name="open">Otevřít</string>
+  <string name="open">Otevřený</string>
   <string name="user">Uživatel</string>
   <string name="upload">Nahrát</string>
   <string name="username">Uživatelské jméno</string>
@@ -175,7 +175,7 @@
   <string name="widget_summary">Celkem</string>
   <string name="widget_all_accounts">Všechny účty</string>
   <string name="widget_add_transaction">Přidat transakci</string>
-  <string name="none">Žádný(á)</string>
+  <string name="none">Žádný</string>
   <string name="once">Jednou</string>
   <string name="weekly">Týden</string>
   <string name="bi_weekly">2 týdny</string>
@@ -222,6 +222,7 @@
   <string name="income">Příjmy</string>
   <string name="expenses">Výdaje</string>
   <string name="difference">Rozdíl</string>
+  <string name="no_data">Nenalezeny žádné záznamy. Zkuste změnit nastavení zobrazeného období nebo klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření. </string>
   <string name="month">Měsíc</string>
   <string name="year">Rok</string>
   <string name="menu_reports">Sestavy</string>
@@ -246,7 +247,7 @@
   <string name="export_data_in_progress">Exportuji data. Čekejte prosím&#8230;</string>
   <string name="export_file_complete">Data byla úspěšně uložena do souboru %1$s</string>
   <string name="export_file_failed">Export souboru %1$s selhal</string>
-  <string name="donate_header">MoneyManagerEx pro Android je poskytován zdarma. Je-li tato aplikace podle vašich představ, můžete podpořit vývojový tým obdarováním.</string>
+  <string name="donate_header">Aplikace MoneyManagerEx pro Android je poskytována zdarma. Pokud se vám aplikace líbí, můžete přispět na její vývoj a podpořit tak vývojářský tým.</string>
   <string name="donate_in_app_title">Nákupy v aplikaci Google Play</string>
   <string name="donate_in_app_description">Přispět přes Nákupy v aplikaci Google Play.</string>
   <string name="donate_in_app_spinner_text">Vyberte částku příspěvku</string>
@@ -259,7 +260,7 @@
   <string name="donate_bitcoin">Přijímáme také dary v BitCoin měně.</string>
   <string name="donate_license">Z licenčních důvodů společnosti Google nemůžeme umístit odkazy pro přispění přímo do aplikace.</string>
   <string name="donate_button_text">Přispět</string>
-  <string name="homepage_button">Otevřít domovskou stránku</string>
+  <string name="homepage_button">Otevřít stránku projektu</string>
   <string name="android_sqlite_vesion">Verze SQLite</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
@@ -360,11 +361,11 @@
   <string name="show_chart">Zobrazit graf</string>
   <string name="add_transaction">Přidat transakci</string>
   <string name="welcome_header">Vítejte v MoneyManagerEx</string>
-  <string name="welcome_body">Všechny transakce v MoneyManagerEx spadají pod účty.\n\nAktuálně nemáte žádné viditelné účty. Prosím, upravte filtr viditelných účtů v nastavení a nebo\n\nklepněte pro přístup k účtům.</string>
-  <string name="welcome_body_dropbox">Pokud již používáte aplikaci MoneyManagerEx na Windows, Max OS nebo Linux, můžete použít vzájemnou synchronizaci databází pomocí Dropbox</string>
+  <string name="welcome_body">Všechny transakce v MoneyManagerEx spadají pod účty.\n\nAktuálně nemáte žádné viditelné účty. Prosím, upravte filtr viditelných účtů v nastavení a nebo vytvořte nový účet.</string>
+  <string name="welcome_body_dropbox">Pokud již používáte aplikaci MoneyManagerEx na Windows, Mac OS nebo Linuxu, můžete použít vzájemnou synchronizaci databází pomocí služby Dropbox.</string>
   <string name="configure_dropbox">Nastavit Dropbox</string>
-  <string name="search_text_contain_title">Hledání v textu podle obsahu a nikoli počátečních písmen</string>
-  <string name="search_text_contain_summary">Hledání příjemců, kategorií, měn, apod&#8230; podle obsahu a nikoli počátečních písmen</string>
+  <string name="search_text_contain_title">Hledání podle obsahu</string>
+  <string name="search_text_contain_summary">Hledání příjemců, kategorií, měn, apod. podle obsahu a nikoli podle počátečních písmen</string>
   <string name="rate_application">Hodnocení aplikace</string>
   <string name="start_currency_exchange_rates">Aktualizuji směnné kurzy měn. Čekejte prosím&#8230;</string>
   <string name="update_currency_exchange_rates">Aktualizuji směnný kurz:\n%1$s</string>
@@ -506,7 +507,9 @@
   <string name="commission">Poplatek</string>
   <string name="value">Hodnota</string>
   <string name="view_transactions">Zobrazit transakce</string>
+  <string name="other">Další</string>
   <string name="move_up">Posunout nahoru</string>
   <string name="move_down">Posunout dolů</string>
   <string name="no_records_found_create">Nenalezen žádný záznam. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření.</string>
+  <string name="all_accounts">Všechny účty</string>
 </resources>
