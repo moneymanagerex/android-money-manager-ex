@@ -1223,12 +1223,12 @@ public class MainActivity
             .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
         // where money comes from
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
-                .withText(getString(R.string.categories))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));// where money comes from
+            .withText(getString(R.string.categories))
+            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));// where money comes from
         // income vs. expenses
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
-                .withText(getString(R.string.menu_report_income_vs_expenses))
-                .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
+            .withText(getString(R.string.menu_report_income_vs_expenses))
+            .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
     }
 

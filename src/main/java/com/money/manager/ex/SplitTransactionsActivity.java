@@ -42,7 +42,6 @@ import info.javaperformance.money.MoneyFactory;
 public class SplitTransactionsActivity
     extends BaseFragmentActivity
     implements ISplitItemFragmentCallbacks {
-    // IInputAmountDialogListener
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
@@ -56,8 +55,6 @@ public class SplitTransactionsActivity
     private static int mIdTag = 0x8000;
 
     public TransactionTypes mParentTransactionType;
-
-//    private SplitItemFragment mInputAmountClickHandler;
 
     /**
      * The name of the entity to create when adding split transactions.
@@ -177,14 +174,6 @@ public class SplitTransactionsActivity
         if (mSplitDeleted != null)
             outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
     }
-
-//    @Override
-//    public void onFinishedInputAmountDialog(int id, Money amount) {
-//        SplitItemFragment fragment = getInputAmountClickHandler();
-//        if (fragment != null && fragment.isVisible() && fragment.isResumed()) {
-//            fragment.onFinishedInputAmountDialog(id, amount);
-//        }
-//    }
 
     /**
      * Returns all split categories created on the form.

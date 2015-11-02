@@ -243,8 +243,6 @@ public class HomeFragment
                 break;
 
             case LOADER_INCOME_EXPENSES:
-                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-
                 // todo: Get custom period. pref_income_expense_footer_period
 //                String period = new AppSettings(getContext()).getBehaviourSettings().getIncomeExpensePeriod();
 //                String transactionsFilter = generator.getWhereClauseForPeriod(period);
@@ -256,6 +254,8 @@ public class HomeFragment
                         " AND " +
                     QueryReportIncomeVsExpenses.Year + "=" +
                             Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+
+                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
 
                 result = new MmexCursorLoader(getActivity(), report.getUri(),
                         report.getAllColumns(),

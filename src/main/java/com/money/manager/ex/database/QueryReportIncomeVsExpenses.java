@@ -37,26 +37,13 @@ public class QueryReportIncomeVsExpenses
     public QueryReportIncomeVsExpenses(Context context) {
         super("", DatasetType.QUERY, "report_income_vs_expenses");
 
-        this.mContext = context.getApplicationContext();
-
         initialize(context, null);
     }
-
-    private Context mContext;
 
     @Override
     public String[] getAllColumns() {
         return new String[]{"ROWID AS _id", Year, Month, Income, Expenses, Transfers};
     }
-
-    /**
-     * add a WHERE clause for the base (mobiledata) query
-     * @param whereStatement where statement to use for filtering the underlying data
-     */
-     public void filterTransactionsSource(String whereStatement) {
-         // add WHERE statements to the base query (mobiledata)
-         initialize(mContext, whereStatement);
-     }
 
     private void initialize(Context context, String whereStatement) {
         ViewMobileData mobileData = new ViewMobileData(context);
