@@ -56,7 +56,6 @@ public class EditTransactionTests
         solo = UiTestHelpersRobotium.setUp(this);
     }
 
-
     @After
     public void tearDown() throws Exception {
         super.tearDown();

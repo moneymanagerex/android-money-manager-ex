@@ -78,7 +78,7 @@ public class EditCheckingTransactionActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_account_transaction);
+        setContentView(R.layout.activity_edit_checking_account_transaction);
 
         mCommonFunctions = new EditTransactionCommonFunctions(this, this);
 

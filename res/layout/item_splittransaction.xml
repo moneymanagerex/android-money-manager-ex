@@ -95,7 +95,7 @@
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/total_amount" />
+                    android:text="@string/amount" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/editTextTotAmount"
@@ -105,7 +105,7 @@
                     android:layout_weight="1"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/total_amount"
+                    android:hint="@string/amount"
                     android:textStyle="bold" />
             </TableRow>
         </TableLayout>

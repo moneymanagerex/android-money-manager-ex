@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(AndroidJUnit4.class)
 public class TestSample
-        extends ActivityInstrumentationTestCase2<MainActivity> {
+    extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private Solo solo;
 
