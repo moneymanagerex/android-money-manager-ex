@@ -1,5 +1,7 @@
 package com.money.manager.ex.domainmodel;
 
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -83,6 +85,13 @@ public class SplitTransaction
     @Override
     public void setSubCategId(int subCategId) {
         setInteger(SUBCATEGID, subCategId);
+    }
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        loadFromCursor(c);
+
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SplitTransaction.SPLITTRANSAMOUNT);
     }
 
     public int getTransId() {

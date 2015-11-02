@@ -247,7 +247,7 @@ public class EditCheckingTransactionActivity
         for(int i = 0; i <= splitTemplates.size() - 1; i++) {
             TableBudgetSplitTransactions record = (TableBudgetSplitTransactions) splitTemplates.get(i);
 
-            TableSplitTransactions newSplit = new TableSplitTransactions();
+            SplitTransaction newSplit = new SplitTransaction();
             newSplit.setSplitTransAmount(record.getSplitTransAmount());
             newSplit.setCategId(record.getCategId());
             newSplit.setSubCategId(record.getSubCategId());

@@ -54,6 +54,7 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -114,7 +115,7 @@ public class MmexContentProvider
                 new TableCurrencyFormats(),
                 new TableInfoTable(),
                 new TablePayee(),
-                new TableSplitTransactions(),
+            new SplitCategoriesRepository(context),
             new StockRepository(context),
             new StockHistoryRepository(context),
             new SubcategoryRepository(context),

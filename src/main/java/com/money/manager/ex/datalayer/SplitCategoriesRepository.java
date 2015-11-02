@@ -52,20 +52,20 @@ public class SplitCategoriesRepository
      * @return list of split categories for the given transaction.
      */
     public ArrayList<ISplitTransactionsDataset> loadSplitCategoriesFor(int transId) {
-        Cursor curSplit = getContext().getContentResolver()
-                .query(getUri(), null,
-                    SplitTransaction.TRANSID + "=" + Integer.toString(transId),
-                    null,
-                    SplitTransaction.SPLITTRANSID);
+        Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
+            SplitTransaction.TRANSID + "=" + Integer.toString(transId),
+            null,
+            SplitTransaction.SPLITTRANSID);
         if (curSplit == null) return null;
 
         ArrayList<ISplitTransactionsDataset> listSplitTrans = new ArrayList<>();
 
         while (curSplit.moveToNext()) {
-            // todo:
-//            SplitTransaction obj = new SplitTransaction();
-            TableSplitTransactions obj = new TableSplitTransactions();
-            obj.setValueFromCursor(curSplit);
+//            TableSplitTransactions obj = new TableSplitTransactions();
+//            obj.setValueFromCursor(curSplit);
+            SplitTransaction obj = new SplitTransaction();
+            obj.loadFromCursor(curSplit);
+
             listSplitTrans.add(obj);
             curSplit.moveToNext();
         }
