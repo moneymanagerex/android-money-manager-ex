@@ -86,10 +86,7 @@ public class TableBudgetSplitTransactions
         return splitTransAmount;
     }
 
-    /**
-     * @return the splitTransId
-     */
-    public Integer getSplitTransId() {
+    public int getId() {
         return splitTransId;
     }
 
@@ -121,10 +118,7 @@ public class TableBudgetSplitTransactions
         this.splitTransAmount = splitTransAmount;
     }
 
-    /**
-     * @param splitTransId the splitTransId to set
-     */
-    public void setSplitTransId(int splitTransId) {
+    public void setId(int splitTransId) {
         this.splitTransId = splitTransId;
     }
 
@@ -150,7 +144,7 @@ public class TableBudgetSplitTransactions
 
 		// set values
 		if (c.getColumnIndex(SPLITTRANSID) != -1) 
-			setSplitTransId(c.getInt(c.getColumnIndex(SPLITTRANSID)));
+			setId(c.getInt(c.getColumnIndex(SPLITTRANSID)));
 		if (c.getColumnIndex(TRANSID) != -1) 
 			setTransId(c.getInt(c.getColumnIndex(TRANSID)));
 		if (c.getColumnIndex(CATEGID) != -1) 
@@ -170,7 +164,7 @@ public class TableBudgetSplitTransactions
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(getSplitTransId());
+        dest.writeInt(getId());
         dest.writeInt(getTransId());
         dest.writeInt(getCategId());
         dest.writeInt(getSubCategId());
@@ -178,7 +172,7 @@ public class TableBudgetSplitTransactions
     }
 
     public void readToParcel(Parcel source) {
-        setSplitTransId(source.readInt());
+        setId(source.readInt());
         setTransId(source.readInt());
         setCategId(source.readInt());
         setSubCategId(source.readInt());

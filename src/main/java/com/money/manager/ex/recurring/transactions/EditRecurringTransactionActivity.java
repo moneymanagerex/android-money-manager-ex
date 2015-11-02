@@ -429,7 +429,7 @@ public class EditRecurringTransactionActivity
                         mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount().toString());
                 values.put(TableBudgetSplitTransactions.TRANSID, mBillDepositsId);
 
-                if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == Constants.NOT_SET) {
+                if (mCommonFunctions.mSplitTransactions.get(i).getId() == Constants.NOT_SET) {
                     // insert data
                     Uri insert = getContentResolver().insert(mCommonFunctions.mSplitTransactions.get(i).getUri(this),
                         values);
@@ -443,7 +443,7 @@ public class EditRecurringTransactionActivity
                     if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(this),
                         values,
                         SplitCategory.SPLITTRANSID + "=?",
-                            new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
+                            new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
                         return false;
@@ -463,7 +463,7 @@ public class EditRecurringTransactionActivity
                 // update data
                 if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(this),
                     SplitCategory.SPLITTRANSID + "=?",
-                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
+                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");
                     return false;

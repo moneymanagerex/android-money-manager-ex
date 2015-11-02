@@ -1284,7 +1284,7 @@ public class EditTransactionCommonFunctions {
 
         for(int i = 0; i < mSplitTransactions.size(); i++) {
             ISplitTransactionsDataset split = mSplitTransactions.get(i);
-            int id = split.getSplitTransId();
+            int id = split.getId();
             ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
 
             if(id == -1) {

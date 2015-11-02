@@ -304,7 +304,7 @@ public class EditCheckingTransactionActivity
             if (duplicate && (mCommonFunctions.mSplitTransactions != null)) {
                 // Reset ids so that the transactions get inserted on save.
                 for (ISplitTransactionsDataset split : mCommonFunctions.mSplitTransactions) {
-                    split.setSplitTransId(Constants.NOT_SET);
+                    split.setId(Constants.NOT_SET);
                 }
             }
         }
@@ -619,7 +619,7 @@ public class EditCheckingTransactionActivity
                         mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount().toString());
                 values.put(SplitCategory.TRANSID, mTransId);
 
-                if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == -1) {
+                if (mCommonFunctions.mSplitTransactions.get(i).getId() == -1) {
                     // insert data
                     if (getContentResolver().insert(mCommonFunctions.mSplitTransactions.get(i).getUri(this), values) == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
@@ -630,7 +630,7 @@ public class EditCheckingTransactionActivity
                     // update data
                     if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(this), values,
                             SplitCategory.SPLITTRANSID + "=?",
-                            new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
+                            new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Update split transaction failed!");
                         return false;
@@ -651,7 +651,7 @@ public class EditCheckingTransactionActivity
                 // update data
                 if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(this),
                     SplitCategory.SPLITTRANSID + "=?",
-                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
+                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
                     return false;

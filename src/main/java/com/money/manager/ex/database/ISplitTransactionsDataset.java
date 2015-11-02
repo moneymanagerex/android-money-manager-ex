@@ -53,7 +53,8 @@ public interface ISplitTransactionsDataset
      */
     Money getSplitTransAmount();
 
-    Integer getSplitTransId();
+//    Integer getSplitTransId();
+    int getId();
 
     int getSubCategId();
 
@@ -66,7 +67,7 @@ public interface ISplitTransactionsDataset
      */
     void setSplitTransAmount(Money splitTransAmount);
 
-    void setSplitTransId(int splitTransId);
+    void setId(int splitTransId);
 
     void setSubCategId(int subCategId);
 }

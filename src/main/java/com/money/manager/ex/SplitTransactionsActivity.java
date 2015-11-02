@@ -165,7 +165,7 @@ public class SplitTransactionsActivity
             mSplitDeleted = new ArrayList<>();
         }
         // add item to delete
-        if (object.getSplitTransId() != -1) {
+        if (object.getId() != -1) {
             // not new split transaction
             mSplitDeleted.add(object);
         }
@@ -203,14 +203,6 @@ public class SplitTransactionsActivity
 
         return splitCategories;
     }
-
-//    public SplitItemFragment getInputAmountClickHandler() {
-//        return mInputAmountClickHandler;
-//    }
-
-//    public void setInputAmountClickHandler(SplitItemFragment mFragmentInputAmountClick) {
-//        this.mInputAmountClickHandler = mFragmentInputAmountClick;
-//    }
 
     /**
      * Set the visibility of the floating button.
@@ -254,9 +246,9 @@ public class SplitTransactionsActivity
     }
 
     private void addFragmentChild(ISplitTransactionsDataset object) {
-        int tagNumber = object.getSplitTransId() == null || object.getSplitTransId() == -1
+        int tagNumber = object.getId() == -1
             ? mIdTag++
-            : object.getSplitTransId();
+            : object.getId();
         String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
 
         SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
