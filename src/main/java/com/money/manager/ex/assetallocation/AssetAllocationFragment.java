@@ -127,17 +127,11 @@ public class AssetAllocationFragment
     @Override
     public void onResume() {
         super.onResume();
-
-//        registerContentObserver();
-
-//        reloadData();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
-//        unregisterObserver();
     }
 
     @Override
@@ -308,6 +302,8 @@ public class AssetAllocationFragment
 
     private void deleteAllocation(MatrixCursorColumns item) {
         AssetAllocationService service = new AssetAllocationService(getActivity());
+        //AssetClass root = retrieveData();
+
         if (!service.deleteAllocation(item.id)) {
             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
         }

@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -151,7 +152,6 @@ public class AccountRepository
 
     public Account query(String[] projection, String selection, String[] args) {
         Cursor c = openCursor(projection, selection, args);
-
         if (c == null) return null;
 
         Account account = null;
@@ -160,7 +160,6 @@ public class AccountRepository
             account = new Account();
             account.loadFromCursor(c);
         }
-
         c.close();
 
         return account;

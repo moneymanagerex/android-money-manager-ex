@@ -20,7 +20,9 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains common code for repositories.
@@ -72,7 +74,7 @@ public abstract class RepositoryBase<T extends EntityBase>
 //        ContentValues[] result = new ContentValues[c.getCount()];
 //
 //        while (c.moveToNext()) {
-//            DatabaseUtils
+//            DatabaseUtils.
 //        }
 //        c.close();
 //
@@ -83,23 +85,42 @@ public abstract class RepositoryBase<T extends EntityBase>
         return insert(entity.contentValues);
     }
 
-//    /**
-//     * Check if any records satisfy the condition.
-//     * @param where Selection statement / where.
-//     * @return A boolean indicating if there are any records that satisfy the condition.
-//     */
-//    protected boolean any(String where, String[] args) {
-//        MmexOpenHelper helper = MmexOpenHelper.getInstance(context);
-//        Cursor c = helper.getReadableDatabase().rawQuery(where, args);
-//        if (c == null) return false;
-//
-//        boolean result = false;
-//        c.moveToNext();
-//        // todo: result =
-//        DatabaseUtils.dumpCurrentRow(c);
-//        c.close();
-//        return result;
+    // Protected
+
+//    protected List<ContentValues> query(String selection) {
+//        return query(null, selection, null, null);
 //    }
+//
+//    protected List<ContentValues> query(String[] projection, String selection, String[] args) {
+//        return query(projection, selection, args, null);
+//    }
+//
+//    protected List<ContentValues> query(String selection, String[] args, String sort) {
+//        return query(null, selection, args, sort);
+//    }
+
+    /**
+     * Warning!
+     * This works *only* if there are no numeric/double values. Otherwise, these will be cut to
+     * the first 6 digits.
+     */
+    protected ContentValues[] query(String[] projection, String selection, String[] args, String sort) {
+        Cursor c = openCursor(projection, selection, args, sort);
+        if (c == null) return null;
+
+        List<ContentValues> result = new ArrayList<>();
+
+        while (c.moveToNext()) {
+            ContentValues values = new ContentValues();
+            DatabaseUtils.cursorRowToContentValues(c, values);
+
+            result.add(values);
+        }
+        c.close();
+
+        ContentValues[] array = new ContentValues[result.size()];
+        return result.toArray(array);
+    }
 
     protected int insert(ContentValues values) {
         Uri insertUri = getContext().getContentResolver().insert(this.getUri(),
@@ -170,6 +191,27 @@ public abstract class RepositoryBase<T extends EntityBase>
             args
         );
         return result;
+    }
+
+    protected ContentProviderResult[] bulkDelete(List<Integer> ids) {
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
+        for (int id : ids) {
+            operations.add(ContentProviderOperation.newDelete(this.getUri())
+//                .withValues(entity.contentValues)
+                .withSelection(AssetClass.ID + "=?", new String[]{Integer.toString(id)})
+                .build());
+        }
+
+        ContentProviderResult[] results = null;
+        try {
+            results = getContext().getContentResolver()
+                .applyBatch(MmexContentProvider.getAuthority(), operations);
+        } catch (RemoteException | OperationApplicationException e) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(e, "bulk updating");
+        }
+        return results;
     }
 
     protected ContentValues single(String selection, String[] selectionArgs) {

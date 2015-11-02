@@ -20,6 +20,7 @@ import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.innahema.collections.query.functions.Converter;
 import com.innahema.collections.query.queriables.Queryable;
@@ -28,6 +29,8 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,6 +60,29 @@ public class AssetClassRepository
         where.addStatement(AssetClass.ID, "=", id);
 
         return first(where.getWhere());
+    }
+
+    /**
+     * Loads ids for all child records.
+     * @param id Id of the parent item.
+     * @return List of ids of the child asset classes.
+     */
+    public List<Integer> loadAllChildrenIds(int id) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(AssetClass.PARENTID, "=", id);
+
+        String[] fields = new String[] { AssetClass.ID };
+
+        ContentValues[] results = query(fields, where.getWhere(), null, null);
+
+        List<Integer> result = Queryable.from(results).map(new Converter<ContentValues, Integer>() {
+            @Override
+            public Integer convert(ContentValues element) {
+                return element.getAsInteger(AssetClass.ID);
+            }
+        }).toList();
+
+        return result;
     }
 
     public AssetClass first(String selection) {
@@ -115,13 +141,6 @@ public class AssetClassRepository
 
         ContentValues[] values = new ContentValues[entities.size()];
 
-//        int i = 0;
-//
-//        for (AssetClass entity : entities) {
-//            values[i] = entity.contentValues;
-//            i++;
-//        }
-
         contentValues.toArray(values);
 
         int records = bulkInsert(values);
@@ -146,7 +165,19 @@ public class AssetClassRepository
     }
 
     public boolean delete(int id) {
-        int result = delete(AssetClass.ID + "=?", new String[] { Integer.toString(id)});
+        int result = delete(AssetClass.ID + "=?", new String[]{Integer.toString(id)});
         return result > 0;
+    }
+
+    public boolean deleteAll(List<Integer> ids) {
+        if (ids.size() == 0) return true;
+
+        ContentProviderResult[] results = bulkDelete(ids);
+
+        for (ContentProviderResult result : results) {
+            Log.d("test", result.toString());
+        }
+
+        return true;
     }
 }

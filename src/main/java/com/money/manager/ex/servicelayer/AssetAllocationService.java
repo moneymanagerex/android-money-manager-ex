@@ -59,15 +59,17 @@ public class AssetAllocationService {
     private Context context;
 
     public boolean deleteAllocation(int assetClassId) {
-        ExceptionHandler handler = new ExceptionHandler(this.context, this);
-        AssetClassRepository repo = new AssetClassRepository(this.context);
+        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+        AssetClassRepository repo = new AssetClassRepository(getContext());
 
         // todo: use transaction? (see bulkUpdate)
 
-        // todo: if there are child elements? block for now. Later offer to delete them as well.
+        // Delete all child elements.
+        List<Integer> childIds = getAllChildrenIds(assetClassId);
+        repo.deleteAll(childIds);
 
         // delete any stock links
-        AssetClassStockRepository stockRepo = new AssetClassStockRepository(this.context);
+        AssetClassStockRepository stockRepo = new AssetClassStockRepository(getContext());
         boolean linksDeleted = stockRepo.deleteAllForAssetClass(assetClassId);
         if (!linksDeleted) {
             handler.showMessage("Error deleting stock links.");
@@ -82,6 +84,22 @@ public class AssetAllocationService {
         }
 
         return true;
+    }
+
+    public List<Integer> getAllChildrenIds(int assetClassId) {
+        List<Integer> ids = new ArrayList<>();
+
+        AssetClassRepository repo = new AssetClassRepository(getContext());
+        List<Integer> childIds = repo.loadAllChildrenIds(assetClassId);
+
+        ids.addAll(childIds);
+
+        // iterate recursively and get all children's children ids.
+        for (int childId : childIds) {
+            ids.addAll(getAllChildrenIds(childId));
+        }
+
+        return ids;
     }
 
     public Context getContext() {
@@ -310,6 +328,13 @@ public class AssetAllocationService {
             if (parentId != null && parentId != Constants.NOT_SET) {
                 // add child elements to their parents based on the Id field.
                 AssetClass parent = map.get(parentId);
+
+                // delete any orphans
+                if (parent == null) {
+                    deleteAllocation(ac.getId());
+                    continue;
+                }
+
                 parent.setType(ItemType.Group);
                 parent.addChild(ac);
             } else {
