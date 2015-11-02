@@ -26,7 +26,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -56,7 +55,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
@@ -484,7 +483,7 @@ public class AccountTransactionsFragment
      */
     private void startCheckingAccountActivity(Integer transId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
         intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
         // check transId not null
         if (transId != null) {

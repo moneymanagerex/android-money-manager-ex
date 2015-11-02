@@ -27,7 +27,7 @@ import info.javaperformance.money.Money;
  * and on recurring transactions.
  */
 public interface ISplitTransactionsDataset
-        extends Parcelable {
+    extends Parcelable {
 
     String ACCOUNTID = "ACCOUNTID";
     String CATEGID = "CATEGID";

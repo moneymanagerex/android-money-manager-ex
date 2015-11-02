@@ -61,6 +61,10 @@ public class AccountTransaction
         return getInt(TRANSID);
     }
 
+    public void setId(int id) {
+        setInteger(TRANSID, id);
+    }
+
     public int getAccountId() {
         return getInt(ISplitTransactionsDataset.ACCOUNTID);
     }

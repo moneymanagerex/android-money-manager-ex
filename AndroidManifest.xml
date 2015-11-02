@@ -215,7 +215,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".transactions.EditTransactionActivity"
+            android:name=".transactions.EditCheckingTransactionActivity"
             android:label="@string/new_edit_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />

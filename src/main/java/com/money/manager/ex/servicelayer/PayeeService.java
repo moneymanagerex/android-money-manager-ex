@@ -85,15 +85,19 @@ public class PayeeService {
         return result;
     }
 
-    public int createNew(String name) {
-        if (TextUtils.isEmpty(name)) return Constants.NOT_SET;
+    public Payee createNew(String name) {
+        if (TextUtils.isEmpty(name)) return null;
 
         name = name.trim();
 
         Payee payee = new Payee();
         payee.setName(name);
 
-        return this.payeeRepository.add(payee);
+        int id = this.payeeRepository.add(payee);
+
+        payee.setId(id);
+
+        return payee;
     }
 
     public boolean exists(String name) {

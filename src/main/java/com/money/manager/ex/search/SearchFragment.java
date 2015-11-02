@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.domainmodel.SplitTransaction;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
@@ -358,8 +359,8 @@ public class SearchFragment extends Fragment
             where.addStatement("(" +
                 "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
                 " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
-                    " FROM " + TableSplitTransactions.TABLE_NAME +
-                    " WHERE " + TableSplitTransactions.TRANSID + "=" + QueryAllData.ID + ")" +
+                    " FROM " + SplitTransaction.TABLE_NAME +
+                    " WHERE " + SplitTransaction.TRANSID + "=" + QueryAllData.ID + ")" +
                 ")" +
             ")");
 
@@ -369,8 +370,8 @@ public class SearchFragment extends Fragment
                 where.addStatement("(" +
                     "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
                         " OR (" + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
-                            " FROM " + TableSplitTransactions.TABLE_NAME +
-                            " WHERE " + TableSplitTransactions.TRANSID + " = " + QueryAllData.ID + ")" +
+                            " FROM " + SplitTransaction.TABLE_NAME +
+                            " WHERE " + SplitTransaction.TRANSID + " = " + QueryAllData.ID + ")" +
                         ")" +
                 ")");
             }

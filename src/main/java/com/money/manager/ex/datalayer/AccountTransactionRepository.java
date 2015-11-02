@@ -16,13 +16,16 @@
  */
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 
 /**
@@ -61,5 +64,22 @@ public class AccountTransactionRepository
         ContentValues cv = single(AccountTransaction.TRANSID + "=?", DatabaseUtilities.getArgsForId(id));
         AccountTransaction tx = new AccountTransaction(cv);
         return tx;
+    }
+
+    public AccountTransaction insert(AccountTransaction item) {
+        Uri insert = getContext().getContentResolver().insert(getUri(), item.contentValues);
+        long id = ContentUris.parseId(insert);
+
+        item.setId((int) id);
+
+        return item;
+    }
+
+    public boolean update(AccountTransaction item) {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(AccountTransaction.TRANSID, "=", item.getId());
+
+        boolean saved = update(item.getId(), item.contentValues, where.getWhere());
+        return saved;
     }
 }

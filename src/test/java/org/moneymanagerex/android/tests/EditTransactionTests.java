@@ -6,7 +6,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,13 +28,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EditTransactionTests {
 
     private Context context;
-    private ActivityController<EditTransactionActivity> controller;
-//    private EditTransactionActivity activity;
+    private ActivityController<EditCheckingTransactionActivity> controller;
+//    private EditCheckingTransactionActivity activity;
 
     @Before
     public void setUp() {
         this.context = UnitTestHelper.getContext();
-        this.controller = UnitTestHelper.getController(EditTransactionActivity.class);
+        this.controller = UnitTestHelper.getController(EditCheckingTransactionActivity.class);
 //        this.activity = UnitTestHelper.getActivity(this.controller);
     }
 
@@ -59,7 +59,7 @@ public class EditTransactionTests {
 
         // FAILS, because FontIcon can't be instantiated by Robolectric.
 
-        EditTransactionActivity activity = UnitTestHelper.getActivity(this.controller);
+        EditCheckingTransactionActivity activity = UnitTestHelper.getActivity(this.controller);
 
         // now create a transaction
         activity.findViewById(R.id.textViewAmount).performClick();

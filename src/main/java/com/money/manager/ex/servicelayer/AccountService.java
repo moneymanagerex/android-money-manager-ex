@@ -27,6 +27,7 @@ import android.widget.Spinner;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
@@ -65,6 +66,18 @@ public class AccountService {
 
     private Context mContext;
     private AccountRepository accountRepository;
+
+    public Account createAccount(String name, AccountTypes accountType, AccountStatuses status,
+                                 boolean favourite, int currencyId) {
+        Account account = Account.create(name, accountType, status, favourite, currencyId);
+
+        // save
+        AccountRepository repo = new AccountRepository(getContext());
+        int id = repo.insert(account);
+        account.setId(id);
+
+        return account;
+    }
 
     /**
      * Loads account list, applying the current preferences for Open & Favourite accounts.

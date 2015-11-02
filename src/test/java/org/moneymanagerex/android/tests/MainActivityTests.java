@@ -24,6 +24,7 @@ import android.view.View;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
@@ -32,6 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
@@ -46,8 +48,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Test the MainActivity.
- *
- * Created by Alen Siljak on 22/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -121,6 +121,19 @@ public class MainActivityTests {
         this.controller.pause().resume();
 
         testHomeFragment(homeFragment);
+    }
+
+    @Test
+    public void incomeExpenseQuery() {
+        // Given
+
+        // When
+        // Create a split transaction
+        DataHelpers.createSplitTransaction();
+
+        // Then
+        // Check the income/expense for the month
+
     }
 
     // Private

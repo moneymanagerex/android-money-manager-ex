@@ -23,6 +23,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.core.DatabaseField;
+import com.money.manager.ex.domainmodel.SplitTransaction;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,36 +34,31 @@ public class TableSplitTransactions
 	extends Dataset
 	implements Parcelable, ISplitTransactionsDataset {
 
-	// FIELD NAMES
-	public static final String SPLITTRANSID = "SPLITTRANSID";
-	public static final String TRANSID = "TRANSID";
-	public static final String CATEGID = "CATEGID";
-	public static final String SUBCATEGID = "SUBCATEGID";
-	public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
-
-	@DatabaseField(columnName = SPLITTRANSID)
+	@DatabaseField(columnName = SplitTransaction.SPLITTRANSID)
 	private int splitTransId = -1;
-	@DatabaseField(columnName = TRANSID)
+	@DatabaseField(columnName = SplitTransaction.TRANSID)
 	private int transId = -1;
-	@DatabaseField(columnName = CATEGID)
+	@DatabaseField(columnName = SplitTransaction.CATEGID)
 	private int categId = -1;
-	@DatabaseField(columnName = SUBCATEGID)
+	@DatabaseField(columnName = SplitTransaction.SUBCATEGID)
 	private int subCategId = -1;
-	@DatabaseField(columnName = SPLITTRANSAMOUNT)
+	@DatabaseField(columnName = SplitTransaction.SPLITTRANSAMOUNT)
 	private Money splitTransAmount = MoneyFactory.fromString("0");
 
     ContentValues contentValues = new ContentValues();
 
 	public TableSplitTransactions() {
-		super(TABLE_NAME, DatasetType.TABLE, "splittransaction");
+		super(SplitTransaction.TABLE_NAME, DatasetType.TABLE, "splittransaction");
 	}
-
-	public static String TABLE_NAME = "SPLITTRANSACTIONS_V1";
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] {"SPLITTRANSID AS _id", SPLITTRANSID, TRANSID, CATEGID,
-				SUBCATEGID, SPLITTRANSAMOUNT };
+		return new String[] {"SPLITTRANSID AS _id",
+			SplitTransaction.SPLITTRANSID,
+			SplitTransaction.TRANSID,
+			SplitTransaction.CATEGID,
+			SplitTransaction.SUBCATEGID,
+			SplitTransaction.SPLITTRANSAMOUNT };
 	}
 
 	/**
@@ -140,19 +136,19 @@ public class TableSplitTransactions
 		if (c == null) return;
 
         DatabaseUtils.cursorRowToContentValues(c, this.contentValues);
-        DatabaseUtils.cursorDoubleToCursorValues(c, SPLITTRANSAMOUNT, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, SplitTransaction.SPLITTRANSAMOUNT, this.contentValues);
 
-		if (c.getColumnIndex(SPLITTRANSID) != -1)
-			setSplitTransId(c.getInt(c.getColumnIndex(SPLITTRANSID)));
-		if (c.getColumnIndex(TRANSID) != -1) 
-			setTransId(c.getInt(c.getColumnIndex(TRANSID)));
-		if (c.getColumnIndex(CATEGID) != -1) 
-			setCategId(c.getInt(c.getColumnIndex(CATEGID)));
-		if (c.getColumnIndex(SUBCATEGID) != -1) 
-			setSubCategId(c.getInt(c.getColumnIndex(SUBCATEGID)));
-		if (c.getColumnIndex(SPLITTRANSAMOUNT) != -1) {
+		if (c.getColumnIndex(SplitTransaction.SPLITTRANSID) != -1)
+			setSplitTransId(c.getInt(c.getColumnIndex(SplitTransaction.SPLITTRANSID)));
+		if (c.getColumnIndex(SplitTransaction.TRANSID) != -1)
+			setTransId(c.getInt(c.getColumnIndex(SplitTransaction.TRANSID)));
+		if (c.getColumnIndex(SplitTransaction.CATEGID) != -1)
+			setCategId(c.getInt(c.getColumnIndex(SplitTransaction.CATEGID)));
+		if (c.getColumnIndex(SplitTransaction.SUBCATEGID) != -1)
+			setSubCategId(c.getInt(c.getColumnIndex(SplitTransaction.SUBCATEGID)));
+		if (c.getColumnIndex(SplitTransaction.SPLITTRANSAMOUNT) != -1) {
 //            double amount = c.getDouble(c.getColumnIndex(SPLITTRANSAMOUNT));
-            String amount = this.contentValues.getAsString(SPLITTRANSAMOUNT);
+            String amount = this.contentValues.getAsString(SplitTransaction.SPLITTRANSAMOUNT);
             setSplitTransAmount(MoneyFactory.fromString(amount));
         }
 	}

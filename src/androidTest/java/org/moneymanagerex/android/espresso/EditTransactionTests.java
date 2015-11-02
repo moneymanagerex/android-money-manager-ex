@@ -20,7 +20,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -50,8 +50,8 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 public class EditTransactionTests {
 
     @Rule
-    public final ActivityTestRule<EditTransactionActivity> activityRule =
-            new ActivityTestRule<>(EditTransactionActivity.class);
+    public final ActivityTestRule<EditCheckingTransactionActivity> activityRule =
+            new ActivityTestRule<>(EditCheckingTransactionActivity.class);
 
     @Before
     public void setUp() {

@@ -388,12 +388,12 @@ public class PayeeListFragment
                         // check if action in update or insert
                         switch (type) {
                             case INSERT:
-                                int newId = service.createNew(name);
-                                if (newId != Constants.NOT_SET) {
+                                Payee payee = service.createNew(name);
+                                if (payee != null) {
                                     // Created a new payee. But only if picking a payee for another activity.
                                     if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
                                         // Select it and close.
-                                        sendResultToActivity(newId, name);
+                                        sendResultToActivity(payee.getId(), name);
                                         return;
                                     }
                                 } else {

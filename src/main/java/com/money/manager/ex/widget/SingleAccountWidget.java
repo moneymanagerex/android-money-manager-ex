@@ -18,7 +18,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -174,7 +174,7 @@ public class SingleAccountWidget
     }
 
     private void initializeNewTransactionCommand(Context context, RemoteViews views) {
-        Intent intent = new Intent(context, EditTransactionActivity.class);
+        Intent intent = new Intent(context, EditCheckingTransactionActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 

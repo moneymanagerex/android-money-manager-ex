@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.domainmodel.SplitTransaction;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
@@ -297,7 +298,7 @@ public class EditRecurringTransactionActivity
 
     @Override
     public boolean onActionDoneClick() {
-        if (updateData()) {
+        if (saveData()) {
             // set result ok, send broadcast to update widgets and finish activity
             setResult(RESULT_OK);
             finish();
@@ -386,7 +387,7 @@ public class EditRecurringTransactionActivity
      *
      * @return true if update data successful
      */
-    private boolean updateData() {
+    private boolean saveData() {
         if (!validateData()) {
             return false;
         }
@@ -440,7 +441,7 @@ public class EditRecurringTransactionActivity
                 } else {
                     // update data
                     if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(), values,
-                            TableSplitTransactions.SPLITTRANSID + "=?",
+                        SplitTransaction.SPLITTRANSID + "=?",
                             new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(LOGCAT, "Update split transaction failed!");
@@ -455,12 +456,12 @@ public class EditRecurringTransactionActivity
             for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
                 //put value
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
+                values.put(SplitTransaction.SPLITTRANSAMOUNT,
                         mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 
                 // update data
                 if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),
-                        TableSplitTransactions.SPLITTRANSID + "=?",
+                    SplitTransaction.SPLITTRANSID + "=?",
                         new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(LOGCAT, "Delete split transaction failed!");

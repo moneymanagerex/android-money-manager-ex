@@ -34,7 +34,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
@@ -139,7 +139,7 @@ public class RecurringTransactionListFragment
                 date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
                 date = DateUtils.getDateNextOccurrence(date, repeats, instances);
                 if (date != null) {
-                    Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
+                    Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
                     intent.setAction(Intent.ACTION_INSERT);
                     intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
                     intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,

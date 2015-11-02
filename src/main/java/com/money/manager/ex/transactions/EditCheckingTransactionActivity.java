@@ -19,7 +19,6 @@ package com.money.manager.ex.transactions;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +30,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.domainmodel.SplitTransaction;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -61,9 +61,9 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Edit Transaction
+ * activity for editing Checking Account Transaction
  */
-public class EditTransactionActivity
+public class EditCheckingTransactionActivity
     extends BaseFragmentActivity
     implements IInputAmountDialogListener, YesNoDialogListener {
 
@@ -457,8 +457,8 @@ public class EditTransactionActivity
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {
-                            ExceptionHandler handler = new ExceptionHandler(EditTransactionActivity.this,
-                                    EditTransactionActivity.this);
+                            ExceptionHandler handler = new ExceptionHandler(EditCheckingTransactionActivity.this,
+                                    EditCheckingTransactionActivity.this);
                             handler.handle(e, "loading default payee");
                         }
                         return Boolean.FALSE;
@@ -526,9 +526,10 @@ public class EditTransactionActivity
         } else {
             // create payee if it does not exist
             if (parameters.payeeName != null) {
-                PayeeService newPayee = new PayeeService(this);
-                mCommonFunctions.payeeId = newPayee.createNew(parameters.payeeName);
-                mCommonFunctions.payeeName = parameters.payeeName;
+                PayeeService payeeService = new PayeeService(this);
+                Payee payee = payeeService.createNew(parameters.payeeName);
+                mCommonFunctions.payeeId = payee.getId();
+                mCommonFunctions.payeeName = payee.getName();
             }
         }
 
@@ -568,28 +569,25 @@ public class EditTransactionActivity
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
-        // content value for insert or update data
-        ContentValues values = getContentValues(isTransfer);
-
-        AccountTransactionRepository repo = new AccountTransactionRepository(getApplicationContext());
+        AccountTransactionRepository repo = new AccountTransactionRepository(this);
+        AccountTransaction tx = new AccountTransaction();
+        tx.contentValues = mCommonFunctions.getContentValues(isTransfer);
 
         // Insert or update?
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
             // insert
-            Uri insert = getContentResolver().insert(repo.getUri(), values);
-            if (insert == null) {
+            tx = repo.insert(tx);
+            int id = tx.getId();
+            if (id == Constants.NOT_SET) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
                 return false;
             }
-            long id = ContentUris.parseId(insert);
             mTransId = (int) id;
         } else {
             // update
-            if (getContentResolver().update(repo.getUri(),
-                    values,
-                    AccountTransaction.TRANSID + "=?",
-                    new String[]{Integer.toString(mTransId)}) <= 0) {
+            boolean updated = repo.update(tx);
+            if (!updated) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");
                 return false;
@@ -598,8 +596,8 @@ public class EditTransactionActivity
 
         // Split Categories
 
-        // Delete any split categories if split is unchecked.
         if(!mCommonFunctions.isSplitSelected()) {
+            // Delete any split categories if split is unchecked.
             mCommonFunctions.removeAllSplitCategories();
         }
 
@@ -615,13 +613,13 @@ public class EditTransactionActivity
                     continue;
                 }
 
-                values.clear();
+                ContentValues values = new ContentValues();
                 //put value
                 values.put(TableSplitTransactions.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
                 values.put(TableSplitTransactions.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
+                values.put(SplitTransaction.SPLITTRANSAMOUNT,
                         mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount().toString());
-                values.put(TableSplitTransactions.TRANSID, mTransId);
+                values.put(SplitTransaction.TRANSID, mTransId);
 
                 if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == -1) {
                     // insert data
@@ -633,7 +631,7 @@ public class EditTransactionActivity
                 } else {
                     // update data
                     if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(), values,
-                            TableSplitTransactions.SPLITTRANSID + "=?",
+                            SplitTransaction.SPLITTRANSID + "=?",
                             new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Update split transaction failed!");
@@ -644,15 +642,17 @@ public class EditTransactionActivity
         }
         // deleted old split transaction
         if (mCommonFunctions.mSplitTransactionsDeleted != null && !mCommonFunctions.mSplitTransactionsDeleted.isEmpty()) {
+            ContentValues values = new ContentValues();
+
             for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
 
-                values.put(TableSplitTransactions.SPLITTRANSAMOUNT,
-                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
+                values.put(SplitTransaction.SPLITTRANSAMOUNT,
+                    mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 
                 // update data
                 if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),
-                        TableSplitTransactions.SPLITTRANSID + "=?",
+                    SplitTransaction.SPLITTRANSID + "=?",
                         new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
@@ -663,8 +663,10 @@ public class EditTransactionActivity
 
         // update category and subcategory payee
         if ((!isTransfer) && (mCommonFunctions.payeeId > 0) && !hasSplitCategories) {
+            ContentValues values = new ContentValues();
+
             // clear content value for update categoryId, subCategoryId
-            values.clear();
+            // values.clear();
             // set categoryId and subCategoryId
             values.put(Payee.CATEGID, mCommonFunctions.categoryId);
             values.put(Payee.SUBCATEGID, mCommonFunctions.subCategoryId);
@@ -680,7 +682,8 @@ public class EditTransactionActivity
 
         //update recurring transaction
         if (mRecurringTransactionId > Constants.NOT_SET && !(TextUtils.isEmpty(mNextOccurrence))) {
-            values.clear();
+            ContentValues values = new ContentValues();
+            //values.clear();
 
             // handle transactions that do not repeat any more.
             String transactionDate = values.getAsString(ISplitTransactionsDataset.TRANSDATE);
@@ -694,11 +697,5 @@ public class EditTransactionActivity
             }
         }
         return true;
-    }
-
-    private ContentValues getContentValues(boolean isTransfer) {
-        ContentValues values = mCommonFunctions.getContentValues(isTransfer);
-
-        return values;
     }
 }

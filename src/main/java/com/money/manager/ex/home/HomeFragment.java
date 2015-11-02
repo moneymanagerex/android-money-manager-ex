@@ -56,7 +56,7 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -175,7 +175,7 @@ public class HomeFragment
         mFloatingActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
+                Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
                 intent.setAction(Intent.ACTION_INSERT);
                 startActivity(intent);
             }
@@ -579,7 +579,7 @@ public class HomeFragment
         }
 
         // open a new transaction screen to create a transaction to balance to the entered amount.
-        Intent intent = new Intent(getContext(), EditTransactionActivity.class);
+        Intent intent = new Intent(getContext(), EditCheckingTransactionActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         // add balance and transaction type and payee
         IntentDataParameters params = new IntentDataParameters();

@@ -55,9 +55,11 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.domainmodel.SplitTransaction;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.transactions.EditTransactionActivity;
+import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.servicelayer.qif.QifExport;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
@@ -720,19 +722,17 @@ public class AllDataListFragment
                 DropboxHelper.setAutoUploadDisabled(true);
 
                 for (int transactionId : transactionIds) {
-                    // First delete any splits.
-                    // See if there are any split records.
-                    TableSplitTransactions split = new TableSplitTransactions();
-                    Cursor curSplit = getActivity().getContentResolver().query(split.getUri(), null,
-                            TableSplitTransactions.TRANSID + "=" + Integer.toString(transactionId),
-                            null, TableSplitTransactions.SPLITTRANSID);
+                    // First delete any splits. See if there are any split records.
+                    SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
+                    Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
+                        SplitTransaction.TRANSID + "=" + Integer.toString(transactionId),
+                        null, SplitTransaction.SPLITTRANSID);
                     int splitCount = curSplit.getCount();
                     curSplit.close();
 
                     if (splitCount > 0) {
-                        TableSplitTransactions splits = new TableSplitTransactions();
-                        int deleteResult = getActivity().getContentResolver().delete(splits.getUri(),
-                                TableSplitTransactions.TRANSID + "=?",
+                        int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
+                            SplitTransaction.TRANSID + "=?",
                                 new String[]{Integer.toString(transactionId)});
                         if (deleteResult != splitCount) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -791,7 +791,7 @@ public class AllDataListFragment
      */
     private void startEditAccountTransactionActivity(Integer transId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), EditTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
         // check transId not null
         if (transId != null) {
             intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
@@ -922,7 +922,7 @@ public class AllDataListFragment
         int[] ids = convertArrayListToArray(transIds);
         Intent[] intents = new Intent[transactionCount];
         for (int i = 0; i < transactionCount; i++) {
-            intents[i] = new Intent(getActivity(), EditTransactionActivity.class);
+            intents[i] = new Intent(getActivity(), EditCheckingTransactionActivity.class);
             intents[i].putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, ids[i]);
             intents[i].setAction(Intent.ACTION_PASTE);
         }
