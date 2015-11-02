@@ -21,8 +21,7 @@ import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.TableSplitTransactions;
-import com.money.manager.ex.domainmodel.SplitTransaction;
+import com.money.manager.ex.domainmodel.SplitCategory;
 
 import java.util.ArrayList;
 
@@ -33,17 +32,17 @@ public class SplitCategoriesRepository
     extends RepositoryBase {
 
     public SplitCategoriesRepository(Context context) {
-        super(context, SplitTransaction.TABLE_NAME, DatasetType.TABLE, "splittransaction");
+        super(context, SplitCategory.TABLE_NAME, DatasetType.TABLE, "splittransaction");
     }
 
     @Override
     public String[] getAllColumns() {
         return new String[] {"SPLITTRANSID AS _id",
-            SplitTransaction.SPLITTRANSID,
-            SplitTransaction.TRANSID,
-            SplitTransaction.CATEGID,
-            SplitTransaction.SUBCATEGID,
-            SplitTransaction.SPLITTRANSAMOUNT };
+            SplitCategory.SPLITTRANSID,
+            SplitCategory.TRANSID,
+            SplitCategory.CATEGID,
+            SplitCategory.SUBCATEGID,
+            SplitCategory.SPLITTRANSAMOUNT };
     }
 
     /**
@@ -53,17 +52,15 @@ public class SplitCategoriesRepository
      */
     public ArrayList<ISplitTransactionsDataset> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitTransaction.TRANSID + "=" + Integer.toString(transId),
+            SplitCategory.TRANSID + "=" + Integer.toString(transId),
             null,
-            SplitTransaction.SPLITTRANSID);
+            SplitCategory.SPLITTRANSID);
         if (curSplit == null) return null;
 
         ArrayList<ISplitTransactionsDataset> listSplitTrans = new ArrayList<>();
 
         while (curSplit.moveToNext()) {
-//            TableSplitTransactions obj = new TableSplitTransactions();
-//            obj.setValueFromCursor(curSplit);
-            SplitTransaction obj = new SplitTransaction();
+            SplitCategory obj = new SplitCategory();
             obj.loadFromCursor(curSplit);
 
             listSplitTrans.add(obj);
@@ -74,8 +71,10 @@ public class SplitCategoriesRepository
         return listSplitTrans;
     }
 
-    public void insert() {
-
+    public SplitCategory insert(SplitCategory item) {
+        int id = this.insert(item.contentValues);
+        item.setId(id);
+        return item;
     }
 
 }

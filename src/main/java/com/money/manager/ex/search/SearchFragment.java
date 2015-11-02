@@ -35,7 +35,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.money.manager.ex.domainmodel.SplitTransaction;
+import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
@@ -46,7 +46,6 @@ import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.database.QueryAllData;
@@ -359,8 +358,8 @@ public class SearchFragment extends Fragment
             where.addStatement("(" +
                 "(" + QueryAllData.CategID + "=" + Integer.toString(categorySub.categId) + ") " +
                 " OR (" + categorySub.categId + " IN (select " + QueryAllData.CategID +
-                    " FROM " + SplitTransaction.TABLE_NAME +
-                    " WHERE " + SplitTransaction.TRANSID + "=" + QueryAllData.ID + ")" +
+                    " FROM " + SplitCategory.TABLE_NAME +
+                    " WHERE " + SplitCategory.TRANSID + "=" + QueryAllData.ID + ")" +
                 ")" +
             ")");
 
@@ -370,8 +369,8 @@ public class SearchFragment extends Fragment
                 where.addStatement("(" +
                     "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
                         " OR (" + categorySub.subCategId + " IN (select " + QueryAllData.SubcategID +
-                            " FROM " + SplitTransaction.TABLE_NAME +
-                            " WHERE " + SplitTransaction.TRANSID + " = " + QueryAllData.ID + ")" +
+                            " FROM " + SplitCategory.TABLE_NAME +
+                            " WHERE " + SplitCategory.TRANSID + " = " + QueryAllData.ID + ")" +
                         ")" +
                 ")");
             }

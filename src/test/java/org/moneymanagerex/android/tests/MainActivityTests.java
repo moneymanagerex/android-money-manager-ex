@@ -133,7 +133,7 @@ public class MainActivityTests {
 
         // Then
         // Check the income/expense for the month
-
+        
     }
 
     // Private

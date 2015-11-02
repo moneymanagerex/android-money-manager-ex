@@ -51,7 +51,7 @@ public class SplitItemFragment
 
     private static final String ARG_CURRENCY_ID = "CurrencyId";
     private static final String ARG_SPLIT = "arg:split";
-    public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitTransaction";
+    public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitCategory";
     private static final int REQUEST_PICK_CATEGORY = 1;
     private static final int REQUEST_AMOUNT = 2;
 

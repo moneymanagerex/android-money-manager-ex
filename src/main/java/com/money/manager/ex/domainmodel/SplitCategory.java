@@ -1,5 +1,6 @@
 package com.money.manager.ex.domainmodel;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
@@ -7,6 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +19,7 @@ import info.javaperformance.money.MoneyFactory;
  * Incomplete
  * Split Category for checking account transaction.
  */
-public class SplitTransaction
+public class SplitCategory
     extends EntityBase
     implements ISplitTransactionsDataset {
 
@@ -29,22 +31,42 @@ public class SplitTransaction
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-    public final static Parcelable.Creator<SplitTransaction> CREATOR = new Parcelable.Creator<SplitTransaction>() {
-        public SplitTransaction createFromParcel(Parcel source) {
-            SplitTransaction splitTransactions = new SplitTransaction();
+    public final static Parcelable.Creator<SplitCategory> CREATOR = new Parcelable.Creator<SplitCategory>() {
+        public SplitCategory createFromParcel(Parcel source) {
+            SplitCategory splitTransactions = new SplitCategory();
             splitTransactions.readToParcel(source);
             return splitTransactions;
         }
 
         @Override
-        public SplitTransaction[] newArray(int size) {
-            return new SplitTransaction[size];
+        public SplitCategory[] newArray(int size) {
+            return new SplitCategory[size];
         }
     };
 
+    public final static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
+                                             double amount) {
+        SplitCategory entity = new SplitCategory();
+
+        entity.setCategId(categoryId);
+        entity.setSubCategId(subcategoryId);
+        entity.setSplitTransAmount(MoneyFactory.fromDouble(amount));
+        entity.setTransId(transactionId);
+
+        return entity;
+    }
+
     @Override
-    public Uri getUri() {
-        return null;
+    public Uri getUri(Context context) {
+        return new SplitCategoriesRepository(context).getUri();
+    }
+
+    public int getId() {
+        return getInt(SPLITTRANSID);
+    }
+
+    public void setId(int value) {
+        setInteger(SPLITTRANSID, value);
     }
 
     @Override
@@ -91,7 +113,7 @@ public class SplitTransaction
     public void loadFromCursor(Cursor c) {
         loadFromCursor(c);
 
-        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SplitTransaction.SPLITTRANSAMOUNT);
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SplitCategory.SPLITTRANSAMOUNT);
     }
 
     public int getTransId() {

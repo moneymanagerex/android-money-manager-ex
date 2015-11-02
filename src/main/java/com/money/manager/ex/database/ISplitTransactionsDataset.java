@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.database;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Parcelable;
 
@@ -43,7 +44,7 @@ public interface ISplitTransactionsDataset
     String TRANSDATE = "TRANSDATE";
     String FOLLOWUPID = "FOLLOWUPID";
 
-    Uri getUri();
+    Uri getUri(Context context);
 
     int getCategId();
 

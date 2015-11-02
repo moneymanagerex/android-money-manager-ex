@@ -28,7 +28,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
-import com.money.manager.ex.datalayer.QueryAllDataRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -38,6 +37,7 @@ import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -120,9 +120,11 @@ public class DataHelpers {
             TransactionTypes.Withdrawal, 1, -1, amount);
         txRepo.insert(tx);
         // split categories
-
         SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(context);
-        //splitRepo.in
+        SplitCategory split1 = SplitCategory.create(tx.getId(), 1, -1, 25);
+        splitRepo.insert(split1);
+        SplitCategory split2 = SplitCategory.create(tx.getId(), 1, -1, 25);
+        splitRepo.insert(split2);
     }
 
     private static void setFakeCursor() {

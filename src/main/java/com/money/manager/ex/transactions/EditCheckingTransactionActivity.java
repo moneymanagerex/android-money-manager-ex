@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.transactions;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,7 +29,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.domainmodel.SplitTransaction;
+import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -45,7 +44,6 @@ import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.TablePayee;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -122,7 +120,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.initPayeeControls();
 
         // Category
-        mCommonFunctions.initCategoryControls(TableSplitTransactions.class.getSimpleName());
+        mCommonFunctions.initCategoryControls(SplitCategory.class.getSimpleName());
 
         // Split Categories
         mCommonFunctions.initSplitCategories();
@@ -247,7 +245,7 @@ public class EditCheckingTransactionActivity
         for(int i = 0; i <= splitTemplates.size() - 1; i++) {
             TableBudgetSplitTransactions record = (TableBudgetSplitTransactions) splitTemplates.get(i);
 
-            SplitTransaction newSplit = new SplitTransaction();
+            SplitCategory newSplit = new SplitCategory();
             newSplit.setSplitTransAmount(record.getSplitTransAmount());
             newSplit.setCategId(record.getCategId());
             newSplit.setSubCategId(record.getSubCategId());
@@ -615,23 +613,23 @@ public class EditCheckingTransactionActivity
 
                 ContentValues values = new ContentValues();
                 //put value
-                values.put(TableSplitTransactions.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
-                values.put(TableSplitTransactions.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
-                values.put(SplitTransaction.SPLITTRANSAMOUNT,
+                values.put(SplitCategory.CATEGID, mCommonFunctions.mSplitTransactions.get(i).getCategId());
+                values.put(SplitCategory.SUBCATEGID, mCommonFunctions.mSplitTransactions.get(i).getSubCategId());
+                values.put(SplitCategory.SPLITTRANSAMOUNT,
                         mCommonFunctions.mSplitTransactions.get(i).getSplitTransAmount().toString());
-                values.put(SplitTransaction.TRANSID, mTransId);
+                values.put(SplitCategory.TRANSID, mTransId);
 
                 if (mCommonFunctions.mSplitTransactions.get(i).getSplitTransId() == -1) {
                     // insert data
-                    if (getContentResolver().insert(mCommonFunctions.mSplitTransactions.get(i).getUri(), values) == null) {
+                    if (getContentResolver().insert(mCommonFunctions.mSplitTransactions.get(i).getUri(this), values) == null) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new split transaction failed!");
                         return false;
                     }
                 } else {
                     // update data
-                    if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(), values,
-                            SplitTransaction.SPLITTRANSID + "=?",
+                    if (getContentResolver().update(mCommonFunctions.mSplitTransactions.get(i).getUri(this), values,
+                            SplitCategory.SPLITTRANSID + "=?",
                             new String[]{Integer.toString(mCommonFunctions.mSplitTransactions.get(i).getSplitTransId())}) <= 0) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Update split transaction failed!");
@@ -647,12 +645,12 @@ public class EditCheckingTransactionActivity
             for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
                 values.clear();
 
-                values.put(SplitTransaction.SPLITTRANSAMOUNT,
+                values.put(SplitCategory.SPLITTRANSAMOUNT,
                     mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 
                 // update data
-                if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(),
-                    SplitTransaction.SPLITTRANSID + "=?",
+                if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(this),
+                    SplitCategory.SPLITTRANSID + "=?",
                         new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");

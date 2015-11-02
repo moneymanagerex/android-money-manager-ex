@@ -57,7 +57,7 @@ import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.domainmodel.SplitTransaction;
+import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.R;
@@ -71,7 +71,6 @@ import com.money.manager.ex.home.DrawerMenuItemAdapter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
@@ -725,14 +724,14 @@ public class AllDataListFragment
                     // First delete any splits. See if there are any split records.
                     SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
                     Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                        SplitTransaction.TRANSID + "=" + Integer.toString(transactionId),
-                        null, SplitTransaction.SPLITTRANSID);
+                        SplitCategory.TRANSID + "=" + Integer.toString(transactionId),
+                        null, SplitCategory.SPLITTRANSID);
                     int splitCount = curSplit.getCount();
                     curSplit.close();
 
                     if (splitCount > 0) {
                         int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
-                            SplitTransaction.TRANSID + "=?",
+                            SplitCategory.TRANSID + "=?",
                                 new String[]{Integer.toString(transactionId)});
                         if (deleteResult != splitCount) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();

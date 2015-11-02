@@ -17,8 +17,10 @@
 package com.money.manager.ex.database;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -59,7 +61,12 @@ public class TableBudgetSplitTransactions
 
         this.contentValues = new ContentValues();
 	}
-	
+
+    @Override
+    public Uri getUri(Context context) {
+        return getUri();
+    }
+
 	@Override
 	public String[] getAllColumns() {
 		return new String[] { "SPLITTRANSID AS _id", SPLITTRANSID, TRANSID, CATEGID, SUBCATEGID, SPLITTRANSAMOUNT};

@@ -27,9 +27,8 @@ import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBudgetSplitTransactions;
-import com.money.manager.ex.database.TableSplitTransactions;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
+import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.transactions.ISplitItemFragmentCallbacks;
 import com.money.manager.ex.transactions.SplitItemFragment;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
@@ -62,7 +61,7 @@ public class SplitTransactionsActivity
 
     /**
      * The name of the entity to create when adding split transactions.
-     * Needed to distinguish between TableSplitTransactions and TableBudgetSplitTransactions.
+     * Needed to distinguish between SplitCategory and TableBudgetSplitTransactions.
      */
     private String EntityTypeName = null;
     private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
@@ -249,7 +248,7 @@ public class SplitTransactionsActivity
         if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
             addFragmentChild(new TableBudgetSplitTransactions());
         } else {
-            addFragmentChild(new TableSplitTransactions());
+            addFragmentChild(new SplitCategory());
         }
     }
 

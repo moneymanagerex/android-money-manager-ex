@@ -12,7 +12,7 @@ import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.database.TableSplitTransactions;
+import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.view.RobotoTextView;
 
 import org.junit.After;
@@ -91,7 +91,7 @@ public class SplitCategoriesActivityTests {
 
         assertThat(activity).isNotNull();
         assertThat(activity.getIntent().getStringExtra(SplitTransactionsActivity.KEY_DATASET_TYPE))
-                .isEqualTo(TableSplitTransactions.class.getSimpleName());
+                .isEqualTo(SplitCategory.class.getSimpleName());
 
         // enter number
         Fragment fragment = activity.getSupportFragmentManager().getFragments().get(0);
@@ -118,7 +118,7 @@ public class SplitCategoriesActivityTests {
         // Recurring transactions
         // TableBudgetSplitTransactions.class.getSimpleName()
         // Account Transactions
-        String datasetName = TableSplitTransactions.class.getSimpleName();
+        String datasetName = SplitCategory.class.getSimpleName();
         TransactionTypes transactionType = TransactionTypes.Withdrawal;
         ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
         ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;

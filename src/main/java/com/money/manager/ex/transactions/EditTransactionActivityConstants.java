@@ -25,7 +25,7 @@ public class EditTransactionActivityConstants {
     public static final String KEY_NOTES = "AllDataActivity:Notes";
     public static final String KEY_TRANS_NUMBER = "AllDataActivity:TransNumber";
     public static final String KEY_NEXT_OCCURRENCE = "AllDataActivity:NextOccurrence";
-    public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitTransaction";
+    public static final String KEY_SPLIT_TRANSACTION = "AllDataActivity:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "AllDataActivity:SplitTransactionDeleted";
     public static final String KEY_ACTION = "AllDataActivity:Action";
 }
