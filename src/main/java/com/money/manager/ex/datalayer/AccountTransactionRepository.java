@@ -16,10 +16,8 @@
  */
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatabaseUtilities;
@@ -67,10 +65,11 @@ public class AccountTransactionRepository
     }
 
     public AccountTransaction insert(AccountTransaction item) {
-        Uri insert = getContext().getContentResolver().insert(getUri(), item.contentValues);
-        long id = ContentUris.parseId(insert);
+        item.contentValues.remove(AccountTransaction.TRANSID);
 
-        item.setId((int) id);
+        int id = insert(item.contentValues);
+
+        item.setId(id);
 
         return item;
     }

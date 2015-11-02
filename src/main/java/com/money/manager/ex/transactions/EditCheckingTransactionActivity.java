@@ -570,6 +570,7 @@ public class EditCheckingTransactionActivity
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
         AccountTransaction tx = new AccountTransaction();
         tx.contentValues = mCommonFunctions.getContentValues(isTransfer);
+        tx.setId(this.mTransId);
 
         // Insert or update?
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
