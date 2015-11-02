@@ -89,11 +89,11 @@
                 android:gravity="end" />
 
             <!-- securities -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/securities"/>
+            <!--<com.money.manager.ex.view.RobotoTextView-->
+                <!--style="@style/Money.TextView.Header.Caption"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/securities"/>-->
             <!--<ListView-->
                 <!--android:id="@+id/securitiesList"-->
                 <!--android:layout_weight="1"-->
