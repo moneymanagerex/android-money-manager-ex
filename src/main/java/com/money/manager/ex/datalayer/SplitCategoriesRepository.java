@@ -64,7 +64,6 @@ public class SplitCategoriesRepository
             obj.loadFromCursor(curSplit);
 
             listSplitTrans.add(obj);
-            curSplit.moveToNext();
         }
         curSplit.close();
 
