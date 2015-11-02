@@ -18,7 +18,6 @@ package org.moneymanagerex.android.tests;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -30,8 +29,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchFragment;
 
@@ -67,14 +64,14 @@ public class SearchActivityTests {
         this.controller = UnitTestHelper.getController(SearchActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
 
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
         UnitTestHelper.setupLog();
     }
 
     @After
     public void tearDown() {
         this.controller.destroy();
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
     }
 
     @Test

@@ -127,7 +127,7 @@ public class CurrencyService {
         Integer result = getCurrencyCodes().get(code);
 
         if (result == null) {
-            CurrencyRepository repo = new CurrencyRepository(mContext);
+            CurrencyRepository repo = new CurrencyRepository(getContext());
             Currency currency = repo.loadCurrency(code);
             cacheCurrency(currency);
         }

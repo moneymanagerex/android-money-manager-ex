@@ -35,13 +35,13 @@ import org.robolectric.annotation.Config;
 public class DataGenerationTests {
     @Before
     public void setUp() {
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
         UnitTestHelper.setupLog();
     }
 
     @After
     public void tearDown() {
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
     }
 
     @Test

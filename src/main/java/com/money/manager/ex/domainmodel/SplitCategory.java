@@ -33,9 +33,9 @@ public class SplitCategory
 
     public final static Parcelable.Creator<SplitCategory> CREATOR = new Parcelable.Creator<SplitCategory>() {
         public SplitCategory createFromParcel(Parcel source) {
-            SplitCategory splitTransactions = new SplitCategory();
-            splitTransactions.readToParcel(source);
-            return splitTransactions;
+            SplitCategory split = new SplitCategory();
+            split.readFromParcel(source);
+            return split;
         }
 
         @Override
@@ -80,7 +80,7 @@ public class SplitCategory
     }
 
     @Override
-    public int getSplitTransId() {
+    public Integer getSplitTransId() {
         return getInt(SPLITTRANSID);
     }
 
@@ -124,7 +124,16 @@ public class SplitCategory
         setInteger(TRANSID, value);
     }
 
-    public void readToParcel(Parcel source) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(getSplitTransId());
+        dest.writeInt(getTransId());
+        dest.writeInt(getCategId());
+        dest.writeInt(getSubCategId());
+        dest.writeString(getSplitTransAmount().toString());
+    }
+
+    public void readFromParcel(Parcel source) {
         setSplitTransId(source.readInt());
         setTransId(source.readInt());
         setCategId(source.readInt());

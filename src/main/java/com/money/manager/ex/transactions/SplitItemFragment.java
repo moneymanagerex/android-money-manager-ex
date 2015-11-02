@@ -46,8 +46,8 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class SplitItemFragment
-        extends Fragment
-        implements IInputAmountDialogListener {
+    extends Fragment
+    implements IInputAmountDialogListener {
 
     private static final String ARG_CURRENCY_ID = "CurrencyId";
     private static final String ARG_SPLIT = "arg:split";
@@ -58,14 +58,11 @@ public class SplitItemFragment
     public static SplitItemFragment newInstance(ISplitTransactionsDataset split, Integer currencyId) {
         SplitItemFragment fragment = new SplitItemFragment();
 
-        // todo: this is how arguments should be used to get saved for recreate.
         Bundle args = new Bundle();
         args.putInt(ARG_CURRENCY_ID, currencyId);
         args.putParcelable(ARG_SPLIT, split);
         fragment.setArguments(args);
 
-//        fragment.mSplitTransaction = split;
-//        fragment.currencyId = currencyId;
         return fragment;
     }
 
@@ -73,7 +70,6 @@ public class SplitItemFragment
     private ISplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtAmount;
     private Spinner spinTransCode;
-//    private Integer currencyId;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

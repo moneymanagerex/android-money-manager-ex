@@ -43,7 +43,7 @@ public class CurrencyServiceTests {
     @Before
     public void setup() {
         // initialize database
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
 
         Context context = UnitTestHelper.getContext();
         testObject = new CurrencyService(context);
@@ -54,7 +54,7 @@ public class CurrencyServiceTests {
         testObject = null;
 
         // Reset database instance between tests.
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
     }
 
     @Test

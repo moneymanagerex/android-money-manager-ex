@@ -89,10 +89,10 @@ public class UnitTestHelper {
 
     /**
      * Initialize the content provider explicitly as it is not executed automatically.
-     * Also, call resetDatabase after each test, in @After.
+     * Also, call teardownDatabase after each test, in @After.
      * @return initialized Content Provider, if needed.
      */
-    public static ContentProvider initializeContentProvider() {
+    public static ContentProvider setupContentProvider() {
         ContentProvider contentProvider = new MmexContentProvider();
 //        shadowOf(contentProvider).getContext();
         contentProvider.onCreate();
@@ -115,7 +115,7 @@ public class UnitTestHelper {
     /**
      * Reset database helper instance. Use after every test on @After.
      */
-    public static void resetDatabase() {
+    public static void teardownDatabase() {
         resetSingleton(MmexOpenHelper.class, "mInstance");
     }
 

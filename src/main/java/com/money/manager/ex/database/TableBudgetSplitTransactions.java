@@ -32,8 +32,8 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class TableBudgetSplitTransactions
-        extends Dataset
-        implements Parcelable, ISplitTransactionsDataset {
+    extends Dataset
+    implements Parcelable, ISplitTransactionsDataset {
 
 	// FIELDS
 	public static final String SPLITTRANSID = "SPLITTRANSID";
@@ -89,7 +89,7 @@ public class TableBudgetSplitTransactions
     /**
      * @return the splitTransId
      */
-    public int getSplitTransId() {
+    public Integer getSplitTransId() {
         return splitTransId;
     }
 

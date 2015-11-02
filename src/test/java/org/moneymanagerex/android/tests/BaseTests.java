@@ -50,13 +50,13 @@ public class BaseTests {
 //        this.activity = UnitTestHelper.getActivity(this.controller);
 
         // initialize database
-        // UnitTestHelper.initializeContentProvider();
+        // UnitTestHelper.setupContentProvider();
     }
 
     @After
     public void tearDown() {
         // Reset database instance between tests.
-        // UnitTestHelper.resetDatabase();
+        // UnitTestHelper.teardownDatabase();
 
         // Destroy the activity controller.
 //        this.controller.destroy();

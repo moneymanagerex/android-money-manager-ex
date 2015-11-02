@@ -248,12 +248,15 @@ public class SplitTransactionsActivity
         if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
             addFragmentChild(new TableBudgetSplitTransactions());
         } else {
-            addFragmentChild(new SplitCategory());
+            addFragmentChild(SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
+                Constants.NOT_SET, 0));
         }
     }
 
     private void addFragmentChild(ISplitTransactionsDataset object) {
-        int tagNumber = object.getSplitTransId() == -1 ? mIdTag++ : object.getSplitTransId();
+        int tagNumber = object.getSplitTransId() == null || object.getSplitTransId() == -1
+            ? mIdTag++
+            : object.getSplitTransId();
         String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
 
         SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);

@@ -20,11 +20,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.TextView;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
-import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
@@ -58,6 +58,8 @@ public class MainActivityTests {
 
     @Before
     public void setUp() {
+        UnitTestHelper.setupContentProvider();
+
         this.controller = UnitTestHelper.getController(MainActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
     }
@@ -65,6 +67,8 @@ public class MainActivityTests {
     @After
     public void tearDown() {
         this.controller.destroy();
+
+        UnitTestHelper.teardownDatabase();
     }
 
     /**
@@ -126,14 +130,21 @@ public class MainActivityTests {
     @Test
     public void incomeExpenseQuery() {
         // Given
-
-        // When
         // Create a split transaction
         DataHelpers.createSplitTransaction();
+        this.controller = UnitTestHelper.getController(MainActivity.class);
+        this.activity = UnitTestHelper.getActivity(this.controller);
+
+        // When
+        TextView incomeTextView = (TextView) this.activity.findViewById(R.id.textViewIncome);
+        String income = incomeTextView.getText().toString();
+        TextView expenseTextView = (TextView) this.activity.findViewById(R.id.textViewExpenses);
 
         // Then
         // Check the income/expense for the month
-        
+        assertThat(incomeTextView).isNotNull();
+        assertThat(income).isEqualToIgnoringCase("100");
+        assertThat(expenseTextView).isNotNull();
     }
 
     // Private

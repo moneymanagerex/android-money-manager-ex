@@ -52,7 +52,7 @@ public class SplitCategoriesActivityTests {
     @Before
     public void setUp() {
         // set up the content provider
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
         // todo: insert any data here, if needed.
 
         this.controller = UnitTestHelper.getController(SplitTransactionsActivity.class);
@@ -63,7 +63,7 @@ public class SplitCategoriesActivityTests {
         this.controller.destroy();
 
         // destroy db helper
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
     }
 
     @Test

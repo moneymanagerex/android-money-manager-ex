@@ -79,7 +79,7 @@ public class AccountTests {
     public void canUpdateValueInDb() {
         // Given
 
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
         Context context = UnitTestHelper.getContext();
         AccountRepository repo = new AccountRepository(context);
         Account account = Account.create("first", AccountTypes.CHECKING, AccountStatuses.OPEN,

@@ -68,12 +68,12 @@
 //
 //    @Before
 //    public void setUp() {
-//        UnitTestHelper.initializeContentProvider();
+//        UnitTestHelper.setupContentProvider();
 //    }
 //
 //    @After
 //    public void tearDown() {
-//        UnitTestHelper.resetDatabase();
+//        UnitTestHelper.teardownDatabase();
 //    }
 //
 //    @Test

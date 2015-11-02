@@ -53,7 +53,7 @@ public class AccountServiceTests {
 //        this.activity = UnitTestHelper.getActivity(this.controller);
 
         // initialize database
-        // UnitTestHelper.initializeContentProvider();
+        // UnitTestHelper.setupContentProvider();
 
         Context context = UnitTestHelper.getContext();
         testObject = new AccountService(context);
@@ -62,7 +62,7 @@ public class AccountServiceTests {
     @After
     public void tearDown() {
         // Reset database instance between tests.
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
 
         // Destroy the activity controller.
 //        this.controller.destroy();
@@ -78,7 +78,7 @@ public class AccountServiceTests {
     @Test
     public void getAccountCurrency() {
         // Given
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
         String expectedCode = "ISK";
         Context context = UnitTestHelper.getContext();
         CurrencyService currencyService = new CurrencyService(context);

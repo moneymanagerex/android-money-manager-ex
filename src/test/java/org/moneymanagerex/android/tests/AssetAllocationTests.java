@@ -35,9 +35,6 @@ import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -55,13 +52,13 @@ public class AssetAllocationTests {
     @Before
     public void setup() {
         this.testObject = new AssetAllocationService(UnitTestHelper.getContext());
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
     }
 
     @After
     public void tearDown() {
         this.testObject = null;
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
     }
 
     @Test

@@ -44,7 +44,7 @@ public class AssetAllocationActivityTests {
     @Before
     public void setup() {
         // initialize database
-        UnitTestHelper.initializeContentProvider();
+        UnitTestHelper.setupContentProvider();
 
         // initialize support for activities (UI)
         this.controller = UnitTestHelper.getController(AssetAllocationActivity.class);
@@ -56,7 +56,7 @@ public class AssetAllocationActivityTests {
         // Destroy the activity controller.
         this.controller.destroy();
         // Reset database instance between tests.
-        UnitTestHelper.resetDatabase();
+        UnitTestHelper.teardownDatabase();
     }
 
     @Test
