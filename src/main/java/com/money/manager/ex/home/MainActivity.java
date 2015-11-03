@@ -81,6 +81,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
+import com.money.manager.ex.utils.MyFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -134,10 +135,19 @@ public class MainActivity
     private boolean mIsDualPanel = false;
     private Tracker mTracker;
     private RecentDatabasesProvider recentDbs;
+    private boolean mInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // show tutorial
+        boolean tutorialShown = showTutorial();
+
+        // Restore state. Check authentication, etc.
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
+        }
 
         // Obtain the shared Tracker instance.
         MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
@@ -146,52 +156,16 @@ public class MainActivity
         // Initialize the map for recent entries that link to drawer menu items.
         this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
 
-        // close any existing notifications.
+        // Close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 
-        // check intent is valid
-        if (getIntent() != null && getIntent().getData() != null) {
-            String pathFile = getIntent().getData().getEncodedPath();
-            // decode
-            try {
-                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
-                // Open this database.
-                Core core = new Core(this);
-                boolean databaseOpened = core.changeDatabase(pathFile);
-                if (!databaseOpened) {
-                    Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
-                    throw new RuntimeException("Could not open database: " + pathFile);
-                }
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "opening database from intent");
-            }
-        }
+        createLayout();
 
-        // check authentication
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
-
-        // create a connection to dropbox
-        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
-
-        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
-
-        // Read something from the database at this stage so that the db file gets created.
-        InfoService infoService = new InfoService(getApplicationContext());
-        String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
-
-        // Creating fragments and showing recurring transaction notifications.
-        createLayout(savedInstanceState);
-
-        // show tutorial
-        boolean tutorialShown = showTutorial();
         if (!tutorialShown) {
-            // continue manually
-            initializeAfterTutorial();
+            // Skipped tutorial because it was seen in the past.
+            onTutorialComplete();
+            // Otherwise continue at onActivityResult after tutorial closed.
         }
     }
 
@@ -200,7 +174,7 @@ public class MainActivity
         super.onStart();
 
         // check if has pass-code and authenticate
-        if (!isAuthenticated) {
+        if (mInitialized && !isAuthenticated) {
             Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode() && !isInAuthentication) {
                 Intent intent = new Intent(this, PasscodeActivity.class);
@@ -235,6 +209,7 @@ public class MainActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
         if (mDrawerToggle != null) {
             try {
                 mDrawerToggle.syncState();
@@ -277,8 +252,7 @@ public class MainActivity
                 break;
 
             case REQUEST_TUTORIAL:
-                // Continue initialization.
-                initializeAfterTutorial();
+                onTutorialComplete();
                 break;
         }
     }
@@ -492,6 +466,17 @@ public class MainActivity
         }
     }
 
+    // Permissions
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
+        // cancellation
+        if (permissions.length == 0) return;
+
+        // Currently the request code does not matter. We ask for read/write permissions.
+        initialize();
+    }
+
     // Custom methods
 
     public void checkDropboxForUpdates() {
@@ -532,7 +517,7 @@ public class MainActivity
         MainActivity.mRestartActivity = mRestart;
     }
 
-    public void createLayout(Bundle savedInstanceState) {
+    public void createLayout() {
         setContentView(R.layout.main_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -543,64 +528,50 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
+        initializeDrawer();
+    }
+
+    private void displayLastViewedFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+        if (!savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) return;
+
+        String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+
+        if (TextUtils.isEmpty(className)) {
+            className = HomeFragment.class.getName();
+        }
+
+        if (className.contains(AccountTransactionsFragment.class.getSimpleName())) {
+            showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+        } else {
+            Class fragmentClass = null;
+            try {
+                fragmentClass = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "instantiating class: " + className);
+            }
+            showFragment(fragmentClass);
+        }
+    }
+
+    private void displayDefaultFragment() {
         // show main navigation fragment
         String homeFragmentTag = HomeFragment.class.getSimpleName();
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
-                .findFragmentByTag(homeFragmentTag);
+            .findFragmentByTag(homeFragmentTag);
+
         if (fragment == null) {
             // fragment create
             fragment = new HomeFragment();
-            // add to stack
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContent, fragment, homeFragmentTag)
-                .commit();
-        } else {
-            Core core = new Core(this);
-            if (core.isTablet()) {
-                getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, homeFragmentTag)
-                    .commit();
-            }
         }
 
-        // manage fragment
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
-            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-            // check if className is null, then setting Home Fragment
-            if (TextUtils.isEmpty(className)) {
-                className = HomeFragment.class.getName();
-            }
-            if (className.contains(AccountTransactionsFragment.class.getSimpleName())) {
-                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-            } else {
-                Class fragmentClass = null;
-                try {
-                    fragmentClass = Class.forName(className);
-                } catch (ClassNotFoundException e) {
-                    ExceptionHandler handler = new ExceptionHandler(this, this);
-                    handler.handle(e, "instantiating class: " + className);
-                }
-                showFragment(fragmentClass);
-            }
-        }
-
-        // navigation drawer
-        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-
-        // set a custom shadow that overlays the main content when the drawer opens
-        if (mDrawer != null) {
-            mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
-            mDrawer.setDrawerListener(mDrawerToggle);
-
-            // create drawer menu
-            initializeDrawerVariables();
-//            createLinearDrawer();
-            createExpandableDrawer();
-
-            // enable ActionBar app icon to behave as action to toggle nav drawer
-            setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-        }
+//        Core core = new Core(this);
+//        if (core.isTablet()) {
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.fragmentContent, fragment, homeFragmentTag)
+            .commit();
+//        }
     }
 
     /**
@@ -614,9 +585,26 @@ public class MainActivity
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
     }
 
-    private void initializeAfterTutorial() {
-        // show change log dialog
+    // Private.
 
+    private void initialize() {
+        handleIntent();
+
+        // create a connection to dropbox
+        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+
+        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
+
+        // Read something from the database at this stage so that the db file gets created.
+        InfoService infoService = new InfoService(getApplicationContext());
+        String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
+
+        // fragments
+        displayDefaultFragment();
+        //todo: displayLastViewedFragment(savedInstanceState);
+
+
+        // show change log dialog
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
 
@@ -641,6 +629,27 @@ public class MainActivity
             checkDropboxForUpdates();
             this.hasStarted = true;
         }
+
+        this.mInitialized = true;
+    }
+
+    private void initializeDrawer() {
+        // navigation drawer
+        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // set a custom shadow that overlays the main content when the drawer opens
+        if (mDrawer == null) return;
+
+        mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
+        mDrawer.setDrawerListener(mDrawerToggle);
+
+        // create drawer menu
+        initializeDrawerVariables();
+        createExpandableDrawer();
+
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
 //    /**
@@ -667,6 +676,16 @@ public class MainActivity
 //        exitDialog.create().show();
 //    }
 
+    private void onTutorialComplete() {
+        // Request external storage permissions.
+        MyFileUtils fileUtils = new MyFileUtils(this);
+        boolean showingDialog = fileUtils.requestExternalStoragePermissions(this);
+        // async, continue at onRequestPermissionsResult().
+        if (!showingDialog) {
+            initialize();
+        }
+    }
+
     /**
      * Pick the database file to use.
      *
@@ -690,25 +709,6 @@ public class MainActivity
 
         // Note that the selected file is handled in onActivityResult.
     }
-
-//    /**
-//     * Reload all fragment into activity
-//     */
-//    public void reloadAllFragment() {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        if (fragmentManager != null) {
-//            // content
-//            Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContent);
-//            if (fragment != null)
-//                fragment.onResume();
-//            // check if is dual panel
-//            if (isDualPanel()) {
-//                fragment = fragmentManager.findFragmentById(R.id.fragmentDetail);
-//                if (fragment != null)
-//                    fragment.onResume();
-//            }
-//        }
-//    }
 
     /**
      * for the change setting restart process application
@@ -849,7 +849,6 @@ public class MainActivity
         // else show tutorial.
         Intent intent = new Intent(this, TutorialActivity.class);
         startActivityForResult(intent, REQUEST_TUTORIAL);
-//        startActivity(intent);
         // Tutorial is marked as seen when OK on the last page is clicked.
 
         // Continued at onActivityResult.
@@ -899,9 +898,6 @@ public class MainActivity
 
     // Private
 
-    /**
-     * drawer management
-     */
     private void initializeDrawerVariables() {
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
 
@@ -1163,6 +1159,27 @@ public class MainActivity
         restartActivity();
     }
 
+    private void handleIntent() {
+        if (getIntent() == null || getIntent().getData() == null) return;
+
+        String pathFile = getIntent().getData().getEncodedPath();
+        // decode
+        try {
+            pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
+            // Open this database.
+            Core core = new Core(this);
+            boolean databaseOpened = core.changeDatabase(pathFile);
+            if (!databaseOpened) {
+                Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
+                throw new RuntimeException("Could not open database: " + pathFile);
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(this, this);
+            handler.handle(e, "opening database from intent");
+        }
+    }
+
     /**
      * called when quick-switching the recent databases from the navigation menu.
      * @param recentDb selected recent database entry
@@ -1241,6 +1258,8 @@ public class MainActivity
             isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
         }
 
+        // todo: this code is suspicious. Try opening another activity, then rotate device,
+        // and then come back to this activity and see what this does. Lots of crashes report this.
         Core core = new Core(this);
         if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
             && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
