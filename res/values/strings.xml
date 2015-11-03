@@ -17,7 +17,7 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+           tools:ignore="MissingTranslation">
 
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
@@ -672,4 +672,6 @@
 
     <string name="all_accounts">All Accounts</string>
     <string name="records">records</string>
+    <!-- db password entry -->
+    <string name="enter_password">Enter password</string>
 </resources>
