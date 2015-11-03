@@ -81,6 +81,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
+import com.money.manager.ex.utils.MyFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -134,6 +135,8 @@ public class MainActivity
     private boolean mIsDualPanel = false;
     private Tracker mTracker;
     private RecentDatabasesProvider recentDbs;
+    // used temporarily during initialization while checking permissions.
+    private Bundle tempSavedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,52 +149,17 @@ public class MainActivity
         // Initialize the map for recent entries that link to drawer menu items.
         this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
 
-        // close any existing notifications.
+        // Close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 
-        // check intent is valid
-        if (getIntent() != null && getIntent().getData() != null) {
-            String pathFile = getIntent().getData().getEncodedPath();
-            // decode
-            try {
-                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
-                // Open this database.
-                Core core = new Core(this);
-                boolean databaseOpened = core.changeDatabase(pathFile);
-                if (!databaseOpened) {
-                    Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
-                    throw new RuntimeException("Could not open database: " + pathFile);
-                }
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "opening database from intent");
-            }
-        }
-
-        // check authentication
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
-
-        // create a connection to dropbox
-        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
-
-        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
-
-        // Read something from the database at this stage so that the db file gets created.
-        InfoService infoService = new InfoService(getApplicationContext());
-        String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
-
-        // Creating fragments and showing recurring transaction notifications.
-        createLayout(savedInstanceState);
+        // saved for methods that are called asynchronously.
+        this.tempSavedInstanceState = savedInstanceState;
 
         // show tutorial
         boolean tutorialShown = showTutorial();
         if (!tutorialShown) {
-            // continue manually
-            initializeAfterTutorial();
+            onTutorialComplete();
         }
     }
 
@@ -278,7 +246,8 @@ public class MainActivity
 
             case REQUEST_TUTORIAL:
                 // Continue initialization.
-                initializeAfterTutorial();
+                //initializeAfterTutorial();
+                onTutorialComplete();
                 break;
         }
     }
@@ -492,6 +461,18 @@ public class MainActivity
         }
     }
 
+    // Permissions
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
+        // cancellation
+        if (permissions.length == 0) return;
+
+        // Currently the request code does not matter. We ask for read/write permissions and then
+        // continue initializing the app/database.
+        initialize();
+    }
+
     // Custom methods
 
     public void checkDropboxForUpdates() {
@@ -614,9 +595,31 @@ public class MainActivity
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
     }
 
-    private void initializeAfterTutorial() {
-        // show change log dialog
+    private void initialize() {
+        Bundle savedInstanceState = this.tempSavedInstanceState;
 
+        handleIntent();
+
+        // check authentication
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
+        }
+
+        // create a connection to dropbox
+        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+
+        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
+
+        // Read something from the database at this stage so that the db file gets created.
+        InfoService infoService = new InfoService(getApplicationContext());
+        String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
+
+        // Creating fragments and showing recurring transaction notifications.
+        createLayout(savedInstanceState);
+
+        // if we are here, the tutorial has completed.
+
+        // show change log dialog
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
 
@@ -641,6 +644,9 @@ public class MainActivity
             checkDropboxForUpdates();
             this.hasStarted = true;
         }
+
+        // Remove reference.
+        this.tempSavedInstanceState = null;
     }
 
 //    /**
@@ -666,6 +672,13 @@ public class MainActivity
 //        // show dialog
 //        exitDialog.create().show();
 //    }
+
+    private void onTutorialComplete() {
+        // Request external storage permissions.
+        MyFileUtils fileUtils = new MyFileUtils(this);
+        fileUtils.requestExternalStoragePermissions(this);
+        // async, continue at onRequestPermissionsResult().
+    }
 
     /**
      * Pick the database file to use.
@@ -1161,6 +1174,28 @@ public class MainActivity
         // restart this activity
         setRestartActivity(true);
         restartActivity();
+    }
+
+    private void handleIntent() {
+        // check intent is valid
+        if (getIntent() != null && getIntent().getData() != null) {
+            String pathFile = getIntent().getData().getEncodedPath();
+            // decode
+            try {
+                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
+                // Open this database.
+                Core core = new Core(this);
+                boolean databaseOpened = core.changeDatabase(pathFile);
+                if (!databaseOpened) {
+                    Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
+                    throw new RuntimeException("Could not open database: " + pathFile);
+                }
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "opening database from intent");
+            }
+        }
     }
 
     /**

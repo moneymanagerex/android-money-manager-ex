@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.core;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -30,6 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -80,8 +82,13 @@ public class Core {
 
     public Core(Context context) {
         super();
-        // todo: getApplicationContext
+        // todo: getApplicationContext?
         this.mContext = context;
+        // .getApplicationContext() == null ? context.getApplicationContext() : context;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     /**
@@ -319,27 +326,28 @@ public class Core {
     public File getExternalStorageDirectoryApplication() {
         //get external storage
         File externalStorage;
-        File folderOutput;
         externalStorage = Environment.getExternalStorageDirectory();
+
         if (externalStorage != null && externalStorage.exists() && externalStorage.isDirectory() && externalStorage.canWrite()) {
             //create folder to copy database
-            folderOutput = new File(externalStorage + File.separator + mContext.getPackageName());
-            //make a directory
+            File folderOutput = new File(externalStorage + File.separator + getContext().getPackageName());
             if (!folderOutput.exists()) {
                 folderOutput = new File(externalStorage + "/MoneyManagerEx");
                 if (!folderOutput.exists()) {
-                    if (!folderOutput.mkdirs()) return mContext.getFilesDir();
+                    //make a directory
+                    if (!folderOutput.mkdirs()) {
+                        return mContext.getFilesDir();
+                    }
                 }
             }
-            //folder create
             return folderOutput;
         } else {
-            return mContext.getFilesDir();
+            return getContext().getFilesDir();
         }
     }
 
     /**
-     * Get dropbox application directory on external storage
+     * Get dropbox application directory on external storage.
      *
      * @return directory created if not exists
      */
