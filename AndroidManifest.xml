@@ -424,7 +424,7 @@
         </activity>
         <activity
             android:name=".database.EnterPasswordActivity"
-            android:label="@string/title_activity_enter_password">
+            android:label="@string/enter_password">
         </activity>
     </application>
 
