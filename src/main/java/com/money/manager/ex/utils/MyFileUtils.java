@@ -28,26 +28,36 @@ public class MyFileUtils {
 
     /**
      * Dangerous permissions have to be requested at runtime as of API 23 (Android M, 6).
+     * @return boolean indicating whether the request permission dialog is displayed and should be
+     * handled asynchronously.
      */
-    public void requestExternalStoragePermissions(Activity activity) {
+    public boolean requestExternalStoragePermissions(Activity activity) {
+        boolean requestingRead = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             // Read external storage available only as of API 16.
-            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, activity,
-                PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+            requestingRead = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
+                activity, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
         }
 
         // Check write permission.
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, activity,
-            PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+        boolean requestingWrite = requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            activity, PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+
+        return requestingRead && requestingWrite;
     }
 
-    private void requestPermission(String permission, Activity activity, int requestId) {
-        int allowed = ContextCompat.checkSelfPermission(context, permission);
+    private boolean requestPermission(String permission, Activity activity, int requestId) {
+        boolean requesting = false;
+        int permissionResult = ContextCompat.checkSelfPermission(context, permission);
 
-        if (allowed != PackageManager.PERMISSION_GRANTED) {
+        if (permissionResult != PackageManager.PERMISSION_GRANTED) {
+            requesting = true;
             ActivityCompat.requestPermissions(activity, new String[]{ permission }, requestId);
         }
+
+        return requesting;
+
         /*
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {

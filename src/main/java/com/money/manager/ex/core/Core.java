@@ -467,7 +467,7 @@ public class Core {
      * @return true if running on the tablet, otherwise false
      */
     public boolean isTablet() {
-        int layout = mContext.getResources().getConfiguration().screenLayout;
+        int layout = getContext().getResources().getConfiguration().screenLayout;
         return ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
                 ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
     }
