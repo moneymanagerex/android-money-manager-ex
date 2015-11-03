@@ -83,7 +83,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/new_account"
+                android:text="@string/create_new_account"
+                android:textSize="18sp"
+                app:typeface="roboto_light" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/divider_ice_cream_sandwich" />
+
+            <com.money.manager.ex.view.RobotoButton
+                android:id="@+id/buttonOpenDatabase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/open_database"
                 android:textSize="18sp"
                 app:typeface="roboto_light" />
 

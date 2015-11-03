@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="" versionName="">
+        <changelogtext>Asking for storage permissions on Android M.</changelogtext>
+        <changelogtext>Adding option to open existing database to Welcome screen.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="November 3, 2015" versionName="3.0.3">
         <changelogtext>Corrected income/expense report when transactions contain split categories.</changelogtext>
         <changelogtext>Introducing Asset Allocation concept. First version.</changelogtext>

@@ -428,6 +428,7 @@
     <string name="repeating_transactions">Recurring Transactions</string>
     <string name="theme_holo_light">Holo Light</string>
     <string name="new_account">New Account</string>
+    <string name="create_new_account">Create new account</string>
     <!--<string name="edit_account">Edit Account</string>-->
     <!--<string name="new_currency">New Currency</string>-->
     <!--<string name="edit_currency">Edit Currency</string>-->
@@ -458,7 +459,7 @@
     <string name="show_chart">Show Chart</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="welcome_header">Welcome to MoneyManagerEx!</string>
-    <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Please either adjust the filter for visible accounts in the Settings, or\n\nTouch to begin enter your accounts.</string>
+    <string name="welcome_body">All transactions in MoneyManagerEx belong to accounts.\n\nYou currently have no visible accounts. Either adjust the filter for visible accounts in the Settings, or select one of the options below.</string>
     <string name="welcome_body_dropbox">If you already use MoneyManagerEx on Windows, Linux or Mac link this application with Dropbox to synchronize your database</string>
     <string name="configure_dropbox">Configure Dropbox</string>
     <!-- 20140115 -->

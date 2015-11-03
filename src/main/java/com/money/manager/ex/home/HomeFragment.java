@@ -661,6 +661,19 @@ public class HomeFragment
             });
         }
 
+        Button btnOpenDatabase = (Button) view.findViewById(R.id.buttonOpenDatabase);
+        if (btnOpenDatabase != null) {
+            btnOpenDatabase.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity parent = (MainActivity) getActivity();
+                    if (parent != null) {
+                        parent.openDatabasePicker();
+                    }
+                }
+            });
+        }
+
         // link to dropbox
         Button btnLinkDropbox = (Button) view.findViewById(R.id.buttonLinkDropbox);
         if (btnLinkDropbox != null) {

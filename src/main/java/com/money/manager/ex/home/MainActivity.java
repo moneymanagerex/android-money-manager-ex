@@ -293,7 +293,7 @@ public class MainActivity
                 dropbox.synchronizeDropbox();
                 break;
             case R.id.menu_open_database:
-                pickFile(Environment.getExternalStorageDirectory());
+                openDatabasePicker();
                 break;
             case R.id.menu_account:
                 showFragment(AccountListFragment.class);
@@ -894,6 +894,10 @@ public class MainActivity
         }
 
         dialog.show();
+    }
+
+    public void openDatabasePicker() {
+        pickFile(Environment.getExternalStorageDirectory());
     }
 
     // Private
