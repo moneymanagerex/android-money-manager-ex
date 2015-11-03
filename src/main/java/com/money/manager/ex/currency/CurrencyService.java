@@ -47,8 +47,6 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * This class implements all the methods of utility for the management of currencies.
- *
- * @author lazzari.ale@gmail.com
  */
 public class CurrencyService {
 
