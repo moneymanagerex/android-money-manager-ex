@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -56,6 +55,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
@@ -100,6 +100,9 @@ public class MainActivity
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
     public static final int REQUEST_TUTORIAL = 3;
+    public static final int REQUEST_PASSWORD = 4;
+
+    public static final String EXTRA_DATABASE_PATH = "dbPath";
 
     public DropboxHelper mDropboxHelper;
 
@@ -227,7 +230,7 @@ public class MainActivity
         switch (requestCode) {
             case REQUEST_PICKFILE_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    changeDatabase(data.getData().getPath());
+                    requestDatabaseChange(data.getData().getPath());
                 }
                 break;
 
@@ -254,6 +257,14 @@ public class MainActivity
             case REQUEST_TUTORIAL:
                 onTutorialComplete();
                 break;
+
+            case REQUEST_PASSWORD:
+                if (resultCode == RESULT_OK && data != null) {
+                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
+                    String password = data.getStringExtra(PasswordActivity.EXTRA_PASSWORD);
+
+                    changeDatabase(dbPath, password);
+                }
         }
     }
 
@@ -695,6 +706,7 @@ public class MainActivity
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
         intent.setType("file/*");
+
         if (MoneyManagerApplication.getInstanceApp().isUriAvailable(getApplicationContext(), intent)) {
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE_CODE);
@@ -1136,13 +1148,27 @@ public class MainActivity
     }
 
     /**
-     * Change application database.
+     * Change the database.
      *
-     * @param dbFilePath new path of databases
+     * @param dbFilePath The path to the database file.
      */
-    private void changeDatabase(String dbFilePath) {
+    private void requestDatabaseChange(String dbFilePath) {
         Log.v(LOGCAT, "Change database: " + dbFilePath);
 
+        // handle encrypted database(s)
+        if (dbFilePath.contains(".emb")) {
+            // request password
+            Intent intent = new Intent(this, PasswordActivity.class);
+            //intent.setAction(Intent.A.INTENT_REQUEST_PASSWORD);
+            intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
+            startActivityForResult(intent, REQUEST_PASSWORD);
+            // continues onActivityResult.
+        } else {
+            changeDatabase(dbFilePath, null);
+        }
+    }
+
+    private void changeDatabase(String dbFilePath, String password) {
         Core core = new Core(getApplicationContext());
         core.changeDatabase(dbFilePath);
 
@@ -1150,13 +1176,6 @@ public class MainActivity
         if (!this.recentDbs.contains(dbFilePath)) {
             this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
-
-        // reset db through provider
-//        StockRepository repo = new StockRepository(this);
-//        MmexContentProvider provider = (MmexContentProvider) this.getContentResolver()
-//            .acquireContentProviderClient(repo.getUri())
-//            .getLocalContentProvider();
-
 
         // restart this activity
         setRestartActivity(true);
@@ -1199,7 +1218,7 @@ public class MainActivity
             : "";
         mDropboxHelper.setLinkedRemoteFile(dropboxPath);
 
-        changeDatabase(recentDb.filePath);
+        requestDatabaseChange(recentDb.filePath);
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {

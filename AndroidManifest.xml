@@ -197,6 +197,16 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.mmb"/>
+                <data android:pathPattern=".*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb"/>
             </intent-filter>
         </activity>
         <activity
@@ -375,11 +385,6 @@
             android:name=".core.ExceptionHandlerActivity"
             android:label="@string/error">
         </activity>
-        <activity
-            android:name=".PasswordActivity"
-            android:label="@string/title_activity_password"
-            android:windowSoftInputMode="adjustResize|stateVisible">
-        </activity>
 
         <receiver
             android:name=".widget.SingleAccountWidget"
@@ -423,7 +428,7 @@
             android:label="@string/title_activity_asset_allocation_picker">
         </activity>
         <activity
-            android:name=".database.EnterPasswordActivity"
+            android:name=".database.PasswordActivity"
             android:label="@string/enter_password">
         </activity>
     </application>

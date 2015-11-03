@@ -33,7 +33,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 
 public class PasscodeActivity
-		extends FragmentActivity {
+	extends FragmentActivity {
 
 	public static final String INTENT_REQUEST_PASSWORD = "com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD";
 	public static final String INTENT_MESSAGE_TEXT = "INTENT_MESSAGE_TEXT";
@@ -91,8 +91,10 @@ public class PasscodeActivity
 			}
 		};
 		// arrays of button id
-		int ids[] = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2, R.id.buttonPasscode3, R.id.buttonPasscode4, R.id.buttonPasscode5,
-				R.id.buttonPasscode6, R.id.buttonPasscode7, R.id.buttonPasscode8, R.id.buttonPasscode9 };
+		int ids[] = { R.id.buttonPasscode0, R.id.buttonPasscode1, R.id.buttonPasscode2,
+			R.id.buttonPasscode3,
+			R.id.buttonPasscode4, R.id.buttonPasscode5,
+			R.id.buttonPasscode6, R.id.buttonPasscode7, R.id.buttonPasscode8, R.id.buttonPasscode9 };
 		for (int i : ids) {
 			ImageButton button = (ImageButton) findViewById(i);
 			button.setOnClickListener(clickListener);
