@@ -19,6 +19,7 @@ package com.money.manager.ex.currency;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
@@ -222,11 +223,20 @@ public class CurrencyService {
                     // could not get base currency from the system. Use Euro.
                     //Currency euro = repo.loadCurrency("EUR");
                     //result = euro.getCurrencyId();
+                    Log.w("CurrencyService", "system default currency is null!");
                     result = 2;
                 } else {
                     CurrencyRepository repo = new CurrencyRepository(getContext());
                     Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
-                    result = defaultCurrency.getCurrencyId();
+
+                    if (defaultCurrency != null) {
+                        result = defaultCurrency.getCurrencyId();
+                    } else {
+                        // currency not found.
+                        Log.w("CurrencyService", "currency " + systemCurrency.getCurrencyCode() +
+                            "not found!");
+                        result = 2;
+                    }
                 }
             }
         } else {
