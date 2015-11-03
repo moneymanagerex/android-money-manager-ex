@@ -192,7 +192,9 @@ dependencies {
         'com.android.support:support-annotations:23.0.1',
         'com.squareup.retrofit:retrofit:2.0.0-beta2',
         'com.squareup.retrofit:converter-gson:2.0.0-beta2',
-        'com.innahema:collections-query:0.2.9'
+        'com.innahema:collections-query:0.2.9',
+            // encryption
+            'net.zetetic:android-database-sqlcipher:3.3.1-2'
     )
 
     // Robolectric, unit testing
