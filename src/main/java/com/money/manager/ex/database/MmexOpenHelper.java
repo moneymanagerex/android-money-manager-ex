@@ -20,12 +20,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteOpenHelper;
-
+//import net.sqlcipher.database.SQLiteDatabase;
+//import net.sqlcipher.database.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.TextureView;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
@@ -87,7 +87,7 @@ public class MmexOpenHelper
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
 
         // Initialize database encryption.
-        SQLiteDatabase.loadLibs(getContext());
+//        SQLiteDatabase.loadLibs(getContext());
 
         Log.v(LOGCAT, "event onCreate( )");
     }
@@ -95,12 +95,12 @@ public class MmexOpenHelper
     private Context mContext;
     private String mPassword = "";
 
-//    @Override
-//    public void onConfigure(SQLiteDatabase db) {
-//        super.onConfigure(db);
-//        Log.v(LOGCAT, "event onConfigure( )");
-//        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
-//    }
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        Log.v(LOGCAT, "event onConfigure( )");
+        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+    }
 
     public Context getContext() {
         return this.mContext;
@@ -161,15 +161,16 @@ public class MmexOpenHelper
         mInstance = null;
     }
 
-    public SQLiteDatabase getReadableDatabase() {
-        return this.getReadableDatabase(this.mPassword);
-    }
+//    public SQLiteDatabase getReadableDatabase() {
+//        return this.getReadableDatabase(this.mPassword);
+//    }
 
     @Override
-    public SQLiteDatabase getReadableDatabase(String password) {
+    public SQLiteDatabase getReadableDatabase() {
+        // String password
         SQLiteDatabase db = null;
         try {
-            db = super.getReadableDatabase(password);
+            db = super.getReadableDatabase();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening readable database");
@@ -177,14 +178,15 @@ public class MmexOpenHelper
         return db;
     }
 
-    public SQLiteDatabase getWritableDatabase() {
-        return getWritableDatabase(this.mPassword);
-    }
+//    public SQLiteDatabase getWritableDatabase() {
+//        return getWritableDatabase(this.mPassword);
+//    }
 
     @Override
-    public SQLiteDatabase getWritableDatabase(String password) {
+    public SQLiteDatabase getWritableDatabase() {
+        // String password
         try {
-            return getWritableDatabase_Internal(password);
+            return getWritableDatabase_Internal();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening writable database");
@@ -200,8 +202,10 @@ public class MmexOpenHelper
         return !TextUtils.isEmpty(this.mPassword);
     }
 
-    private SQLiteDatabase getWritableDatabase_Internal(String password) {
-        SQLiteDatabase db = super.getWritableDatabase(password);
+    private SQLiteDatabase getWritableDatabase_Internal() {
+        // String password
+
+        SQLiteDatabase db = super.getWritableDatabase();
 
         if (db != null) {
             db.rawQuery("PRAGMA journal_mode=OFF", null).close();
@@ -245,7 +249,7 @@ public class MmexOpenHelper
         Cursor cursor = null;
         SQLiteDatabase database;
         try {
-            database = getReadableDatabase(this.mPassword);
+            database = getReadableDatabase();
             if (database != null) {
                 cursor = database.rawQuery("select sqlite_version() AS sqlite_version", null);
                 if (cursor != null && cursor.moveToFirst()) {

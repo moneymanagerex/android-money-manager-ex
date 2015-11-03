@@ -86,8 +86,6 @@ import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
