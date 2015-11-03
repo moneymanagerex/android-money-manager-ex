@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.core;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -27,11 +26,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -478,7 +476,7 @@ public class Core {
      * @param path new database
      * @return indicator whether the operation was successful
      */
-    public boolean changeDatabase(String path) {
+    public boolean changeDatabase(String path, String password) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "switching database to: " + path);
 
         File file = new File(path);
@@ -497,8 +495,9 @@ public class Core {
         MmexOpenHelper.closeDatabase();
 
         // change database
-//        MoneyManagerApplication.setDatabasePath(context, path);
         new AppSettings(mContext).getDatabaseSettings().setDatabasePath(path);
+
+        MmexOpenHelper.getInstance(getContext()).setPassword(password);
 
         return true;
     }

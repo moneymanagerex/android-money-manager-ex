@@ -88,12 +88,39 @@ public class MoneyManagerApplication
     // Static
 
     /**
+     * Returns only the directory name for the databases. This is where the new databases are
+     * created by default.
+     * @return String containing the path to the default directory for storing databases.
+     */
+    public static String getDatabaseDirectory(Context context) {
+        Core core = new Core(context);
+        File defaultFolder = core.getExternalStorageDirectoryApplication();
+        String databasePath;
+
+        if (defaultFolder.getAbsoluteFile().exists()) {
+            databasePath = defaultFolder.toString();
+        } else {
+            String internalFolder;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                internalFolder = context.getApplicationInfo().dataDir;
+            } else {
+                internalFolder = "/data/data/" + context.getApplicationContext().getPackageName();
+            }
+            // add databases
+            internalFolder += "/databases"; // "/data.mmb";
+            databasePath = internalFolder;
+        }
+
+        return databasePath;
+    }
+
+    /**
      * Reads the current database path from the settings and checks for the existence of the
      * database file.
      * Creates a default database file if the one from settings is not found. Sets this file as
      * the default database.
      * @param context Executing context.
-     * @return path database file
+     * @return Full path to the current database file.
      */
     public static String getDatabasePath(Context context) {
         DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
@@ -125,33 +152,6 @@ public class MoneyManagerApplication
         }
 
         return defaultPath;
-    }
-
-    /**
-     * Returns only the directory name for the databases. This is where the new databases are
-     * created by default.
-     * @return String containing the path to the default directory for storing databases.
-     */
-    public static String getDatabaseDirectory(Context context) {
-        Core core = new Core(context);
-        File defaultFolder = core.getExternalStorageDirectoryApplication();
-        String databasePath;
-
-        if (defaultFolder.getAbsoluteFile().exists()) {
-            databasePath = defaultFolder.toString();
-        } else {
-            String internalFolder;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                internalFolder = context.getApplicationInfo().dataDir;
-            } else {
-                internalFolder = "/data/data/" + context.getApplicationContext().getPackageName();
-            }
-            // add databases
-            internalFolder += "/databases"; // "/data.mmb";
-            databasePath = internalFolder;
-        }
-
-        return databasePath;
     }
 
     public static float getTextSize() {

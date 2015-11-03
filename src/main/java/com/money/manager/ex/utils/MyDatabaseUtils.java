@@ -18,7 +18,7 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.util.Log;
 import android.widget.Toast;
@@ -39,12 +39,19 @@ import java.util.regex.Pattern;
 
 /**
  * Various database-related utility functions
- *
- * Created by Alen Siljak on 20/07/2015.
  */
-public class MmexDatabaseUtils {
+public class MyDatabaseUtils {
 
-    public MmexDatabaseUtils(Context context){
+    public static String[] getArgsForId(int id) {
+        String[] result = new String[] { Integer.toString(id) };
+        return result;
+    }
+
+    public static boolean isEncryptedDatabase(String dbPath) {
+        return dbPath.contains(".emb");
+    }
+
+    public MyDatabaseUtils(Context context){
         mContext = context.getApplicationContext();
     }
 
@@ -80,6 +87,8 @@ public class MmexDatabaseUtils {
         }
         return result;
     }
+
+    // Private
 
     private boolean createDatabase_Internal(String filename)
             throws IOException {
@@ -132,13 +141,13 @@ public class MmexDatabaseUtils {
      * Runs SQLite pragma check on the database file.
      * @return A boolean indicating whether the check was successfully completed.
      */
-    public boolean checkIntegrity() {
-        SQLiteDatabase db = MmexOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
-
-        boolean result = db.isDatabaseIntegrityOk();
-        return result;
-    }
+//    public boolean checkIntegrity() {
+//        SQLiteDatabase db = MmexOpenHelper.getInstance(mContext)
+//                .getReadableDatabase();
+//
+//        boolean result = db.isDatabaseIntegrityOk();
+//        return result;
+//    }
 
     /**
      * Checks if all the required tables are present.

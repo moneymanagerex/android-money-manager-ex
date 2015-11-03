@@ -20,9 +20,9 @@ import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 
 /**
  * Payee repository
@@ -52,14 +52,14 @@ public class PayeeRepository
     public boolean delete(int id) {
         if (id == Constants.NOT_SET) return false;
 
-        int result = delete(Payee.PAYEEID + "=?", DatabaseUtilities.getArgsForId(id));
+        int result = delete(Payee.PAYEEID + "=?", MyDatabaseUtils.getArgsForId(id));
         return result > 0;
     }
 
     public Payee load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(Payee.PAYEEID + "=?", DatabaseUtilities.getArgsForId(id));
+        ContentValues cv = single(Payee.PAYEEID + "=?", MyDatabaseUtils.getArgsForId(id));
         Payee payee = new Payee(cv);
         return payee;
     }

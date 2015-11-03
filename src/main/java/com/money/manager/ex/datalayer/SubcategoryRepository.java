@@ -20,9 +20,9 @@ import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Subcategory;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 
 /**
  * A repository for Subcategories.
@@ -46,7 +46,7 @@ public class SubcategoryRepository
     public Subcategory load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(Subcategory.SUBCATEGID + "=?", DatabaseUtilities.getArgsForId(id));
+        ContentValues cv = single(Subcategory.SUBCATEGID + "=?", MyDatabaseUtils.getArgsForId(id));
         Subcategory subcategory = new Subcategory(cv);
         return subcategory;
     }

@@ -4,7 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabase;
 import android.net.Uri;
 
 import com.money.manager.ex.core.ExceptionHandler;
@@ -12,7 +12,6 @@ import com.money.manager.ex.database.TableInfoTable;
 
 /**
  * Access and manipulation of the info in the Info Table
- * Created by Alen Siljak on 12/08/2015.
  */
 public class InfoService {
 

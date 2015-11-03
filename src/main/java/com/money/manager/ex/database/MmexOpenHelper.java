@@ -20,9 +20,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
@@ -83,16 +86,24 @@ public class MmexOpenHelper
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
 
+        // Initialize database encryption.
+        SQLiteDatabase.loadLibs(getContext());
+
         Log.v(LOGCAT, "event onCreate( )");
     }
 
     private Context mContext;
+    private String mPassword = "";
 
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        Log.v(LOGCAT, "event onConfigure( )");
-        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+//    @Override
+//    public void onConfigure(SQLiteDatabase db) {
+//        super.onConfigure(db);
+//        Log.v(LOGCAT, "event onConfigure( )");
+//        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+//    }
+
+    public Context getContext() {
+        return this.mContext;
     }
 
     /**
@@ -133,12 +144,12 @@ public class MmexOpenHelper
         updateDatabase(db, oldVersion, newVersion);
     }
 
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // nothing to do for now.
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
-            " to " + Integer.toString(newVersion));
-    }
+//    @Override
+//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//        // nothing to do for now.
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
+//            " to " + Integer.toString(newVersion));
+//    }
 
     @Override
     public synchronized void close() {
@@ -150,11 +161,15 @@ public class MmexOpenHelper
         mInstance = null;
     }
 
-    @Override
     public SQLiteDatabase getReadableDatabase() {
+        return this.getReadableDatabase(this.mPassword);
+    }
+
+    @Override
+    public SQLiteDatabase getReadableDatabase(String password) {
         SQLiteDatabase db = null;
         try {
-            db = super.getReadableDatabase();
+            db = super.getReadableDatabase(password);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening readable database");
@@ -162,10 +177,14 @@ public class MmexOpenHelper
         return db;
     }
 
-    @Override
     public SQLiteDatabase getWritableDatabase() {
+        return getWritableDatabase(this.mPassword);
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase(String password) {
         try {
-            return getWritableDatabase_Internal();
+            return getWritableDatabase_Internal(password);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening writable database");
@@ -173,68 +192,16 @@ public class MmexOpenHelper
         return null;
     }
 
-    /**
-     * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're
-     * encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class.
-     * So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
-     *
-     * @param db  the database
-     * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
-     * @since versionCode = 12 Version = 0.5.2
-     */
-    public void execSQL(SQLiteDatabase db, String sql) throws SQLException {
-        db.execSQL(sql);
+    public void setPassword(String password) {
+        this.mPassword = password;
     }
 
-    /**
-     * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're
-     * encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class.
-     * So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
-     *
-     * @param db       the database
-     * @param sql      the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
-     * @param bindArgs only byte[], String, Long and Double are supported in bindArgs.
-     * @since versionCode = 12 Version = 0.5.2
-     */
-    public void execSQL(SQLiteDatabase db, String sql, Object[] bindArgs) throws SQLException {
-        db.execSQL(sql, bindArgs);
+    public boolean hasPassword() {
+        return !TextUtils.isEmpty(this.mPassword);
     }
 
-    /**
-     * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're
-     * encouraged to use insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class.
-     * So, do not set journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
-     *
-     * @param sql the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
-     * @since versionCode = 12 Version = 0.5.2
-     */
-    public void execSQL(String sql) throws SQLException {
-        execSQL(this.getWritableDatabase(), sql);
-    }
-
-    /**
-     * Execute a single SQL statement that is NOT a SELECT or any other SQL statement that returns data.
-     * It has no means to return any data (such as the number of affected rows). Instead, you're encouraged to use
-     * insert(String, String, ContentValues), update(String, ContentValues, String, String[]), et al, when possible.
-     * When using enableWriteAheadLogging(), journal_mode is automatically managed by this class. So, do not set
-     * journal_mode using "PRAGMA journal_mode'" statement if your app is using enableWriteAheadLogging()
-     *
-     * @param sql      the SQL statement to be executed. Multiple statements separated by semicolons are not supported.
-     * @param bindArgs only byte[], String, Long and Double are supported in bindArgs.
-     * @since versionCode = 12 Version = 0.5.2
-     */
-    public void execSQL(String sql, Object[] bindArgs) throws SQLException {
-        execSQL(this.getWritableDatabase(), sql, bindArgs);
-    }
-
-    private SQLiteDatabase getWritableDatabase_Internal() {
-        SQLiteDatabase db = super.getWritableDatabase();
+    private SQLiteDatabase getWritableDatabase_Internal(String password) {
+        SQLiteDatabase db = super.getWritableDatabase(password);
 
         if (db != null) {
             db.rawQuery("PRAGMA journal_mode=OFF", null).close();
@@ -278,7 +245,7 @@ public class MmexOpenHelper
         Cursor cursor = null;
         SQLiteDatabase database;
         try {
-            database = getReadableDatabase();
+            database = getReadableDatabase(this.mPassword);
             if (database != null) {
                 cursor = database.rawQuery("select sqlite_version() AS sqlite_version", null);
                 if (cursor != null && cursor.moveToFirst()) {

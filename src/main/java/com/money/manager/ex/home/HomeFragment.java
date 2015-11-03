@@ -74,7 +74,7 @@ import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.IntentDataParameters;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 
 import java.math.BigDecimal;
@@ -283,7 +283,7 @@ public class HomeFragment
 
                 String selection = "";
                 if (accountList != null && accountList.length > 0) {
-                    MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
+                    MyDatabaseUtils databaseUtils = new MyDatabaseUtils(getActivity());
                     selection = Stock.HELDAT + " IN (" + databaseUtils.makePlaceholders(investmentAccounts.size()) + ")";
                 }
 

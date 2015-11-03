@@ -40,9 +40,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
@@ -51,7 +49,7 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.ArrayList;
@@ -218,7 +216,7 @@ public class CurrencyListFragment
                             }
                         }
 
-                        MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
+                        MyDatabaseUtils databaseUtils = new MyDatabaseUtils(getActivity());
                         whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
                                 databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
                         arguments.addAll(symbols);

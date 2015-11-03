@@ -20,11 +20,11 @@ import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 
 /**
  * Repository for Checking Account records.
@@ -59,7 +59,7 @@ public class AccountTransactionRepository
     public AccountTransaction load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(AccountTransaction.TRANSID + "=?", DatabaseUtilities.getArgsForId(id));
+        ContentValues cv = single(AccountTransaction.TRANSID + "=?", MyDatabaseUtils.getArgsForId(id));
         AccountTransaction tx = new AccountTransaction(cv);
         return tx;
     }

@@ -18,12 +18,11 @@ package com.money.manager.ex.datalayer;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.support.v4.database.DatabaseUtilsCompat;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.DatabaseUtilities;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 
 /**
  * A repository for Categories.
@@ -45,7 +44,7 @@ public class CategoryRepository
     public Category load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(Category.CATEGID + "=?", DatabaseUtilities.getArgsForId(id));
+        ContentValues cv = single(Category.CATEGID + "=?", MyDatabaseUtils.getArgsForId(id));
         Category category = new Category(cv);
         return category;
     }

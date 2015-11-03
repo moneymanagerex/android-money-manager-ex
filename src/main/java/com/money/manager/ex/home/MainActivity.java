@@ -55,6 +55,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionsFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
@@ -81,8 +82,11 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.tutorial.TutorialActivity;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -601,11 +605,25 @@ public class MainActivity
     private void initialize() {
         handleIntent();
 
-        // create a connection to dropbox
-        mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+        // show change log dialog
+        Core core = new Core(this);
+        if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
 
+        // create a connection to dropbox
+        this.mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+
+        // check if we require a password.
+        String dbPath = MoneyManagerApplication.getDatabasePath(this);
+        if (MyDatabaseUtils.isEncryptedDatabase(dbPath) && !MmexOpenHelper.getInstance(this).hasPassword()) {
+            requestDatabasePassword(dbPath);
+        } else {
+            initializeDatabaseAccess();
+        }
+    }
+
+    private void initializeDatabaseAccess() {
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(getApplicationContext());
         String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
@@ -614,13 +632,7 @@ public class MainActivity
         displayDefaultFragment();
         //todo: displayLastViewedFragment(savedInstanceState);
 
-
-        // show change log dialog
-        Core core = new Core(this);
-        if (core.isToDisplayChangelog()) core.showChangelog();
-
         // start notification for recurring transaction
-
         if (!isRecurringTransactionStarted) {
             AppSettings settings = new AppSettings(this);
             boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
@@ -1156,13 +1168,8 @@ public class MainActivity
         Log.v(LOGCAT, "Change database: " + dbFilePath);
 
         // handle encrypted database(s)
-        if (dbFilePath.contains(".emb")) {
-            // request password
-            Intent intent = new Intent(this, PasswordActivity.class);
-            //intent.setAction(Intent.A.INTENT_REQUEST_PASSWORD);
-            intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
-            startActivityForResult(intent, REQUEST_PASSWORD);
-            // continues onActivityResult.
+        if (MyDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
+            requestDatabasePassword(dbFilePath);
         } else {
             changeDatabase(dbFilePath, null);
         }
@@ -1170,7 +1177,7 @@ public class MainActivity
 
     private void changeDatabase(String dbFilePath, String password) {
         Core core = new Core(getApplicationContext());
-        core.changeDatabase(dbFilePath);
+        core.changeDatabase(dbFilePath, password);
 
         // Store the name into the recent files list.
         if (!this.recentDbs.contains(dbFilePath)) {
@@ -1191,12 +1198,13 @@ public class MainActivity
             pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
             // Open this database.
-            Core core = new Core(this);
-            boolean databaseOpened = core.changeDatabase(pathFile);
-            if (!databaseOpened) {
-                Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
-                throw new RuntimeException("Could not open database: " + pathFile);
-            }
+            requestDatabaseChange(pathFile);
+//            Core core = new Core(this);
+//            boolean databaseOpened = core.changeDatabase(pathFile);
+//            if (!databaseOpened) {
+//                Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
+//                throw new RuntimeException("Could not open database: " + pathFile);
+//            }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this, this);
             handler.handle(e, "opening database from intent");
@@ -1294,5 +1302,14 @@ public class MainActivity
         if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
             this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
         }
+    }
+
+    private void requestDatabasePassword(String dbFilePath) {
+        // request password
+        Intent intent = new Intent(this, PasswordActivity.class);
+        //intent.setAction(Intent.A.INTENT_REQUEST_PASSWORD);
+        intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
+        startActivityForResult(intent, REQUEST_PASSWORD);
+        // continues onActivityResult.
     }
 }
