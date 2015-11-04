@@ -376,15 +376,22 @@ public class AssetAllocationService {
 
             if (assetClass.getStockLinks().size() == 0) return;
 
-            String[] symbols = Queryable.from(assetClass.getStockLinks())
-                .map(new Converter<AssetClassStock, String>() {
-                    @Override
-                    public String convert(AssetClassStock element) {
-                        return element.getStockSymbol();
-                    }
-                }).toArray();
+//            String[] symbols = Queryable.from(assetClass.getStockLinks())
+//                .map(new Converter<AssetClassStock, String>() {
+//                    @Override
+//                    public String convert(AssetClassStock element) {
+//                        return element.getStockSymbol();
+//                    }
+//                }).toArray();
 
-            StockRepository stockRepo = new StockRepository(this.context);
+            int size = assetClass.getStockLinks().size();
+            String[] symbols = new String[size];
+            for (int i = 0; i < size; i++) {
+                AssetClassStock link = assetClass.getStockLinks().get(i);
+                symbols[i] = link.getStockSymbol();
+            }
+
+            StockRepository stockRepo = new StockRepository(getContext());
             List<Stock> stocks = stockRepo.loadForSymbols(symbols);
             assetClass.setStocks(stocks);
         }
