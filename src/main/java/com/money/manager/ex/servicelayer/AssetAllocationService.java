@@ -19,8 +19,6 @@ package com.money.manager.ex.servicelayer;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.innahema.collections.query.functions.Converter;
-import com.innahema.collections.query.queriables.Queryable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
@@ -35,7 +33,6 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
-import com.money.manager.ex.settings.AppSettings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -480,13 +477,10 @@ public class AssetAllocationService {
     }
 
     private Money getAllocationSum(List<AssetClass> group) {
-        List<Money> allocations = Queryable.from(group)
-            .map(new Converter<AssetClass, Money>() {
-                @Override
-                public Money convert(AssetClass element) {
-                    return element.getAllocation();
-                }
-            }).toList();
+        List<Money> allocations = new ArrayList<>();
+        for (AssetClass item : group) {
+            allocations.add(item.getAllocation());
+        }
 
         Money sum = MoneyFactory.fromString("0");
         for (Money allocation : allocations) {
@@ -496,52 +490,33 @@ public class AssetAllocationService {
     }
 
     private Money getValueSum(List<AssetClass> group) {
-        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
-            @Override
-            public Money convert(AssetClass element) {
-                return element.getValue();
-            }
-        };
-        return getMoneySum(group, converter);
+        Money sum = MoneyFactory.fromDouble(0);
+        for (AssetClass item : group) {
+            sum.add(item.getValue());
+        }
+        return sum;
     }
 
     private Money getCurrentAllocationSum(List<AssetClass> group) {
-        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
-            @Override
-            public Money convert(AssetClass element) {
-                return element.getCurrentAllocation();
-            }
-        };
-        return getMoneySum(group, converter);
+        Money sum = MoneyFactory.fromDouble(0);
+        for (AssetClass item : group) {
+            sum.add(item.getCurrentAllocation());
+        }
+        return sum;
     }
 
     private Money getCurrentValueSum(List<AssetClass> group) {
-        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
-            @Override
-            public Money convert(AssetClass element) {
-                return element.getCurrentValue();
-            }
-        };
-        return getMoneySum(group, converter);
+        Money sum = MoneyFactory.fromDouble(0);
+        for (AssetClass item : group) {
+            sum.add(item.getCurrentValue());
+        }
+        return sum;
     }
 
     private Money getDifferenceSum(List<AssetClass> group) {
-        Converter<AssetClass, Money> converter = new Converter<AssetClass, Money>() {
-            @Override
-            public Money convert(AssetClass element) {
-                return element.getDifference();
-            }
-        };
-        return getMoneySum(group, converter);
-    }
-
-    private Money getMoneySum(List<AssetClass> group, Converter<AssetClass, Money> converter) {
-        List<Money> values = Queryable.from(group)
-            .map(converter).toList();
-
-        Money sum = MoneyFactory.fromString("0");
-        for (Money value : values) {
-            sum = sum.add(value);
+        Money sum = MoneyFactory.fromDouble(0);
+        for (AssetClass item : group) {
+            sum.add(item.getDifference());
         }
         return sum;
     }

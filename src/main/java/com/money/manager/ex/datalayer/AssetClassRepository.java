@@ -22,15 +22,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.innahema.collections.query.functions.Converter;
-import com.innahema.collections.query.queriables.Queryable;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,12 +72,17 @@ public class AssetClassRepository
 
         ContentValues[] results = query(fields, where.getWhere(), null, null);
 
-        List<Integer> result = Queryable.from(results).map(new Converter<ContentValues, Integer>() {
-            @Override
-            public Integer convert(ContentValues element) {
-                return element.getAsInteger(AssetClass.ID);
-            }
-        }).toList();
+//        List<Integer> result = Queryable.from(results).map(new Converter<ContentValues, Integer>() {
+//            @Override
+//            public Integer convert(ContentValues element) {
+//                return element.getAsInteger(AssetClass.ID);
+//            }
+//        }).toList();
+
+        List<Integer> result = new ArrayList<>();
+        for (ContentValues item : results) {
+            result.add(item.getAsInteger(AssetClass.ID));
+        }
 
         return result;
     }
@@ -130,14 +132,19 @@ public class AssetClassRepository
     }
 
     public boolean bulkInsert(List<AssetClass> entities) {
-        List<ContentValues> contentValues = Queryable.from(entities)
-            .map(new Converter<AssetClass, ContentValues>() {
-                @Override
-                public ContentValues convert(AssetClass element) {
-                    return element.contentValues;
-                }
-            })
-            .toList();
+//        List<ContentValues> contentValues = Queryable.from(entities)
+//            .map(new Converter<AssetClass, ContentValues>() {
+//                @Override
+//                public ContentValues convert(AssetClass element) {
+//                    return element.contentValues;
+//                }
+//            })
+//            .toList();
+
+        List<ContentValues> contentValues = new ArrayList<>();
+        for (AssetClass entity : entities) {
+            contentValues.add(entity.contentValues);
+        }
 
         ContentValues[] values = new ContentValues[entities.size()];
 
