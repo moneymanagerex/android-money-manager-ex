@@ -754,17 +754,19 @@ public class MainActivity
 //                this.recreate();
 //            }
 
-            restartApp();
+            finish();
+
+            startMainActivity();
         }
         // set state a false
         setRestartActivity(false);
     }
 
-    public void restartApp() {
-        Intent i = getBaseContext().getPackageManager()
+    public void startMainActivity() {
+        Intent intent = getBaseContext().getPackageManager()
             .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
 //    public void showDashboardFragment() {
