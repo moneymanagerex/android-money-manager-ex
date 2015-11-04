@@ -22,28 +22,29 @@ import android.database.Cursor;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.WhereStatementGenerator;
-import com.money.manager.ex.domainmodel.SplitCategory;
+import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 
 import java.util.ArrayList;
 
 /**
- * Repository for Split Categories (TableSplitTransaction).
+ * Repository for Recurring Split Categories (TableBudgetSplitTransactions).
  */
-public class SplitCategoriesRepository
+public class SplitRecurringCategoriesRepository
     extends RepositoryBase {
 
-    public SplitCategoriesRepository(Context context) {
-        super(context, SplitCategory.TABLE_NAME, DatasetType.TABLE, "splittransaction");
+    public SplitRecurringCategoriesRepository(Context context) {
+        super(context, SplitRecurringCategory.TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions");
     }
 
     @Override
     public String[] getAllColumns() {
         return new String[] {"SPLITTRANSID AS _id",
-            SplitCategory.SPLITTRANSID,
-            SplitCategory.TRANSID,
-            SplitCategory.CATEGID,
-            SplitCategory.SUBCATEGID,
-            SplitCategory.SPLITTRANSAMOUNT };
+            SplitRecurringCategory.SPLITTRANSID,
+            SplitRecurringCategory.TRANSID,
+            SplitRecurringCategory.CATEGID,
+            SplitRecurringCategory.SUBCATEGID,
+            SplitRecurringCategory.SPLITTRANSAMOUNT };
     }
 
     /**
@@ -53,15 +54,15 @@ public class SplitCategoriesRepository
      */
     public ArrayList<ISplitTransactionsDataset> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitCategory.TRANSID + "=" + Integer.toString(transId),
+            SplitRecurringCategory.TRANSID + "=" + Integer.toString(transId),
             null,
-            SplitCategory.SPLITTRANSID);
+            SplitRecurringCategory.SPLITTRANSID);
         if (curSplit == null) return null;
 
         ArrayList<ISplitTransactionsDataset> listSplitTrans = new ArrayList<>();
 
         while (curSplit.moveToNext()) {
-            SplitCategory obj = new SplitCategory();
+            SplitRecurringCategory obj = new SplitRecurringCategory();
             obj.loadFromCursor(curSplit);
 
             listSplitTrans.add(obj);
@@ -71,9 +72,9 @@ public class SplitCategoriesRepository
         return listSplitTrans;
     }
 
-    public boolean insert(SplitCategory item) {
+    public boolean insert(SplitRecurringCategory item) {
         // Remove any existing id value.
-        item.contentValues.remove(SplitCategory.SPLITTRANSID);
+        item.contentValues.remove(SplitRecurringCategory.SPLITTRANSID);
 
         int id = this.insert(item.contentValues);
         item.setId(id);
@@ -81,9 +82,9 @@ public class SplitCategoriesRepository
         return id > 0;
     }
 
-    public boolean update(SplitCategory entity) {
+    public boolean update(SplitRecurringCategory entity) {
         WhereStatementGenerator where = new WhereStatementGenerator();
-        where.addStatement(SplitCategory.SPLITTRANSID, "=", entity.getId());
+        where.addStatement(SplitRecurringCategory.SPLITTRANSID, "=", entity.getId());
 
         return update(entity.getId(), entity.contentValues, where.getWhere());
     }

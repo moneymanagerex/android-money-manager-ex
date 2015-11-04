@@ -26,9 +26,9 @@ import android.view.View;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.domainmodel.SplitCategory;
+import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.transactions.ISplitItemFragmentCallbacks;
 import com.money.manager.ex.transactions.SplitItemFragment;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
@@ -58,7 +58,7 @@ public class SplitTransactionsActivity
 
     /**
      * The name of the entity to create when adding split transactions.
-     * Needed to distinguish between SplitCategory and TableBudgetSplitTransactions.
+     * Needed to distinguish between SplitCategory and SplitRecurringCategory.
      */
     private String EntityTypeName = null;
     private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
@@ -225,9 +225,9 @@ public class SplitTransactionsActivity
 
     private void addSplitTransaction() {
         // find which split transactions data set to instantiate.
-        String recurringSplitName = TableBudgetSplitTransactions.class.getSimpleName();
+        String recurringSplitName = SplitRecurringCategory.class.getSimpleName();
         if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
-            addFragmentChild(new TableBudgetSplitTransactions());
+            addFragmentChild(new SplitRecurringCategory());
         } else {
             addFragmentChild(SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
                 Constants.NOT_SET, 0));

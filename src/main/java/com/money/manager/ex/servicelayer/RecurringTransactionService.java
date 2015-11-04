@@ -27,7 +27,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.database.TableBillsDeposits;
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
+import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -49,7 +50,10 @@ public class RecurringTransactionService {
     public Context mContext;
 
     private TableBillsDeposits mRecurringTransaction;
-    private TableBudgetSplitTransactions mSplitCategories = new TableBudgetSplitTransactions();
+
+    public Context getContext() {
+        return mContext;
+    }
 
     /**
      * Skip next occurrence.
@@ -167,9 +171,11 @@ public class RecurringTransactionService {
 
         // delete them
 
+        SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
+
         int deleteResult = mContext.getContentResolver().delete(
-                mSplitCategories.getUri(),
-                TableBudgetSplitTransactions.TRANSID + "=" + this.RecurringTransactionId, null);
+            repo.getUri(),
+            SplitRecurringCategory.TRANSID + "=" + this.RecurringTransactionId, null);
         if (deleteResult != 0) {
             result = true;
         } else {
@@ -186,22 +192,19 @@ public class RecurringTransactionService {
      * @return array list of all related split transactions
      */
     public ArrayList<ISplitTransactionsDataset> loadSplitTransactions() {
-        ArrayList<ISplitTransactionsDataset> listSplitTrans = new ArrayList<>();
+        ArrayList<ISplitTransactionsDataset> result = new ArrayList<>();
 
-        Cursor curSplit = this.getCursorForSplitTransactions();
+        Cursor cursor = this.getCursorForSplitTransactions();
+        if (cursor == null) return result;
 
-        if (curSplit != null && curSplit.moveToFirst()) {
-            while (!curSplit.isAfterLast()) {
-                TableBudgetSplitTransactions obj = new TableBudgetSplitTransactions();
-                obj.setValueFromCursor(curSplit);
+        while (cursor.moveToNext()) {
+            SplitRecurringCategory entity = new SplitRecurringCategory();
+            entity.loadFromCursor(cursor);
 
-                listSplitTrans.add(obj);
-
-                curSplit.moveToNext();
-            }
+            result.add(entity);
         }
 
-        return listSplitTrans;
+        return result;
     }
 
     /**
@@ -209,11 +212,14 @@ public class RecurringTransactionService {
      * @return cursor for all the related split transactions
      */
     private Cursor getCursorForSplitTransactions(){
+        SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
+
         return mContext.getContentResolver().query(
-                mSplitCategories.getUri(), null,
-                TableBudgetSplitTransactions.TRANSID + "=" + Integer.toString(this.RecurringTransactionId),
-                null,
-                TableBudgetSplitTransactions.SPLITTRANSID);
+            repo.getUri(),
+            null,
+            SplitRecurringCategory.TRANSID + "=" + Integer.toString(this.RecurringTransactionId),
+            null,
+            SplitRecurringCategory.SPLITTRANSID);
     }
 
     private boolean load() {

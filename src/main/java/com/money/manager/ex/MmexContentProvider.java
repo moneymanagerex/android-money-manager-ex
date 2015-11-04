@@ -41,7 +41,6 @@ import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.TableBillsDeposits;
-import com.money.manager.ex.database.TableBudgetSplitTransactions;
 import com.money.manager.ex.database.BudgetTable;
 import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -54,6 +53,7 @@ import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.dropbox.DropboxHelper;
@@ -107,7 +107,7 @@ public class MmexContentProvider
 //                new TableAssets(),
                 new TableBillsDeposits(),
                 new BudgetTable(),
-                new TableBudgetSplitTransactions(),
+            new SplitRecurringCategoriesRepository(context),
                 new BudgetYear(),
             new CategoryRepository(context),
             new AccountTransactionRepository(context),
