@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,9 +43,16 @@ public class SplitRecurringCategory
         }
     };
 
-    @Override
-    public Uri getUri(Context context) {
-        return null;
+    public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
+                                       double amount) {
+        SplitRecurringCategory entity = new SplitRecurringCategory();
+
+        entity.setCategId(categoryId);
+        entity.setSubCategId(subcategoryId);
+        entity.setSplitTransAmount(MoneyFactory.fromDouble(amount));
+        entity.setTransId(transactionId);
+
+        return entity;
     }
 
     public Integer getId() {
@@ -56,7 +64,7 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public int getCategId() {
+    public Integer getCategId() {
         return getInt(CATEGID);
     }
 
@@ -66,7 +74,7 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public int getSubCategId() {
+    public Integer getSubCategId() {
         return getInt(SUBCATEGID);
     }
 
@@ -92,7 +100,7 @@ public class SplitRecurringCategory
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SPLITTRANSAMOUNT);
     }
 
-    public int getTransId() {
+    public Integer getTransId() {
         return getInt(TRANSID);
     }
 
@@ -102,9 +110,15 @@ public class SplitRecurringCategory
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(getId());
-        dest.writeInt(getTransId());
-        dest.writeInt(getCategId());
+        int id = getId() == null ? Constants.NOT_SET : getId();
+        dest.writeInt(id);
+
+        int transId = getTransId() == null ? Constants.NOT_SET : getTransId();
+        dest.writeInt(transId);
+
+        int categoryId = getCategId() == null ? Constants.NOT_SET : getCategId();
+        dest.writeInt(categoryId);
+
         dest.writeInt(getSubCategId());
         dest.writeString(getSplitTransAmount().toString());
     }

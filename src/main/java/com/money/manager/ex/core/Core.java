@@ -374,6 +374,9 @@ public class Core {
      * @return category : sub-category
      */
     public String getCategSubName(int categoryId, int subCategoryId) {
+        // validation
+        if (categoryId == Constants.NOT_SET && subCategoryId == Constants.NOT_SET) return null;
+
         String categoryName = null;
         String subCategoryName, ret;
         TableCategory category = new TableCategory();

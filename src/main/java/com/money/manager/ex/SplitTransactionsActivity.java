@@ -227,7 +227,8 @@ public class SplitTransactionsActivity
         // find which split transactions data set to instantiate.
         String recurringSplitName = SplitRecurringCategory.class.getSimpleName();
         if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
-            addFragmentChild(new SplitRecurringCategory());
+            addFragmentChild(SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
+                Constants.NOT_SET, 0));
         } else {
             addFragmentChild(SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
                 Constants.NOT_SET, 0));
@@ -235,7 +236,7 @@ public class SplitTransactionsActivity
     }
 
     private void addFragmentChild(ISplitTransactionsDataset object) {
-        int tagNumber = object.getId() == -1
+        int tagNumber = object.getId() == null || object.getId() == Constants.NOT_SET
             ? mIdTag++
             : object.getId();
         String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);

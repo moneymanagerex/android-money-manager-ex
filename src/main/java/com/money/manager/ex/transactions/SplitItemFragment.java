@@ -85,29 +85,10 @@ public class SplitItemFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_PICK_CATEGORY:
-                TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
-                if (txtSelectCategory != null) {
-                    txtSelectCategory.setText(null);
-                    if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                        mSplitTransaction.setCategId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1));
-                        mSplitTransaction.setSubCategId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1));
-                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId()));
-                    }
-                }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (container == null)
-            return null;
+        if (container == null) return null;
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
             mSplitTransaction = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
@@ -120,14 +101,14 @@ public class SplitItemFragment
             // amount
             txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
             Money splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
-            if (!(splitTransactionAmount.isZero())) {
+            if (splitTransactionAmount != null && !(splitTransactionAmount.isZero())) {
                 // Change the sign to positive.
                 if(splitTransactionAmount.toDouble() < 0) {
                     splitTransactionAmount = splitTransactionAmount.negate();
                 }
 
                 FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount,
-                        this.getCurrencyId());
+                    this.getCurrencyId());
             }
             txtAmount.setOnClickListener(new OnClickListener() {
 
@@ -142,20 +123,19 @@ public class SplitItemFragment
                     }
 
                     InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
-                            amount, SplitItemFragment.this.getCurrencyId());
+                        amount, SplitItemFragment.this.getCurrencyId());
                     dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
 
-            // type
+            // Transaction Type
             spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
             String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
             ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
             adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTransCode.setAdapter(adapterTrans);
             // find the split transaction type.
-//            SpinTransCode.setSelection(mSplitTransaction.getSplitTransAmount() >= 0 ? 0 : 1, true);
             int transactionTypeSelection = getTransactionTypeSelection();
             spinTransCode.setSelection(transactionTypeSelection);
 
@@ -192,6 +172,24 @@ public class SplitItemFragment
         }
 
         return layout;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_PICK_CATEGORY:
+                TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
+                if (txtSelectCategory != null) {
+                    txtSelectCategory.setText(null);
+                    if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                        mSplitTransaction.setCategId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1));
+                        mSplitTransaction.setSubCategId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1));
+                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId()));
+                    }
+                }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

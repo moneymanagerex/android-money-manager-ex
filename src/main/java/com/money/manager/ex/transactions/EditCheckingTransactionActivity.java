@@ -644,8 +644,9 @@ public class EditCheckingTransactionActivity
                 values.put(SplitCategory.SPLITTRANSAMOUNT,
                     mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
 
-                // update data
-                if (getContentResolver().delete(mCommonFunctions.mSplitTransactionsDeleted.get(i).getUri(this),
+                SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+                // todo: use repo to delete the record.
+                if (getContentResolver().delete(splitRepo.getUri(),
                     SplitCategory.SPLITTRANSID + "=?",
                         new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();

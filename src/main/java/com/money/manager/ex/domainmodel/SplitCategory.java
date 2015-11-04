@@ -1,15 +1,12 @@
 package com.money.manager.ex.domainmodel;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ISplitTransactionsDataset;
-import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +14,6 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Incomplete
  * Split Category for checking account transaction.
  */
 public class SplitCategory
@@ -58,11 +54,6 @@ public class SplitCategory
         return entity;
     }
 
-    @Override
-    public Uri getUri(Context context) {
-        return new SplitCategoriesRepository(context).getUri();
-    }
-
     public Integer getId() {
         return getInt(SPLITTRANSID);
     }
@@ -72,7 +63,7 @@ public class SplitCategory
     }
 
     @Override
-    public int getCategId() {
+    public Integer getCategId() {
         return getInt(CATEGID);
     }
 
@@ -82,7 +73,7 @@ public class SplitCategory
     }
 
     @Override
-    public int getSubCategId() {
+    public Integer getSubCategId() {
         return getInt(SUBCATEGID);
     }
 

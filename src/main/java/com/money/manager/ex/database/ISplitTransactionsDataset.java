@@ -44,29 +44,27 @@ public interface ISplitTransactionsDataset
     String TRANSDATE = "TRANSDATE";
     String FOLLOWUPID = "FOLLOWUPID";
 
-    Uri getUri(Context context);
+    Integer getId();
 
-    int getCategId();
+    Integer getCategId();
+
+    Integer getSubCategId();
 
     /**
      * @return the splitTransAmount
      */
     Money getSplitTransAmount();
 
-    Integer getId();
-
-    int getSubCategId();
-
     // Setters
 
+    void setId(int splitTransId);
+
     void setCategId(int categId);
+
+    void setSubCategId(int subCategId);
 
     /**
      * @param splitTransAmount the splitTransAmount to set
      */
     void setSplitTransAmount(Money splitTransAmount);
-
-    void setId(int splitTransId);
-
-    void setSubCategId(int subCategId);
 }
