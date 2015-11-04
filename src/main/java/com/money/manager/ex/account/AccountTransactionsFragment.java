@@ -626,16 +626,10 @@ public class AccountTransactionsFragment
             public void onClick(View v) {
                 // set status account
                 mAccount.setFavorite(!(mAccount.getFavorite()));
-                // populate content values for update
-//                ContentValues values = new ContentValues();
-//                values.put(Account.FAVORITEACCT, mAccount.getFavorite());
+
                 AccountRepository repo = new AccountRepository(getActivity());
                 boolean updated = repo.update(mAccount);
-                // update
-//                if (getActivity().getContentResolver().update(repo.getUri(),
-//                    values,
-//                    Account.ACCOUNTID + "=?",
-//                    new String[]{Integer.toString(mAccountId)}) != 1) {
+
                 if (!updated) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
                 } else {
