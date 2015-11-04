@@ -453,7 +453,6 @@ public class EditTransactionCommonFunctions {
                 // results are handled in onActivityResult.
             }
         });
-
     }
 
     private void showSplitCategoriesForm(String datasetName) {
