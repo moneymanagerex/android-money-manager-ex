@@ -25,7 +25,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 public class CategoriesReportActivity
-        extends BaseFragmentActivity {
+    extends BaseFragmentActivity {
     
     public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
     public static final String REPORT_TITLE = "CategoriesReportActivity:Title";
@@ -61,8 +61,8 @@ public class CategoriesReportActivity
         //insert fragment
         if (fm.findFragmentById(R.id.fragmentContent) == null) {
             fm.beginTransaction()
-                    .add(R.id.fragmentContent, fragment, CategoriesReportFragment.class.getSimpleName())
-                    .commit();
+                .add(R.id.fragmentContent, fragment, CategoriesReportFragment.class.getSimpleName())
+                .commit();
         }
     }
 }

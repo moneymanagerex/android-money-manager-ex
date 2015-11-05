@@ -95,15 +95,15 @@ public class MmexOpenHelper
     private Context mContext;
     private String mPassword = "";
 
+    public Context getContext() {
+        return this.mContext;
+    }
+
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         Log.v(LOGCAT, "event onConfigure( )");
         db.rawQuery("PRAGMA journal_mode=OFF", null).close();
-    }
-
-    public Context getContext() {
-        return this.mContext;
     }
 
     /**
@@ -144,12 +144,12 @@ public class MmexOpenHelper
         updateDatabase(db, oldVersion, newVersion);
     }
 
-//    @Override
-//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        // nothing to do for now.
-//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
-//            " to " + Integer.toString(newVersion));
-//    }
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // nothing to do for now.
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
+            " to " + Integer.toString(newVersion));
+    }
 
     @Override
     public synchronized void close() {

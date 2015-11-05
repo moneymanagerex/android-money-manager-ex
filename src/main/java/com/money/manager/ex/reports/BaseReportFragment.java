@@ -40,8 +40,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public abstract class BaseReportFragment
-        extends BaseListFragment
-        implements LoaderCallbacks<Cursor> {
+    extends BaseListFragment
+    implements LoaderCallbacks<Cursor> {
 
     protected static final int ID_LOADER = 1;
     protected static final String KEY_ITEM_SELECTED = "PayeeReportFragment:ItemSelected";
@@ -53,10 +53,6 @@ public abstract class BaseReportFragment
     protected String mWhereClause = null;
     protected Date mDateFrom = null;
     protected Date mDateTo = null;
-
-    protected View addListViewHeaderFooter(int layout) {
-        return View.inflate(getActivity(), layout, null);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -225,6 +221,10 @@ public abstract class BaseReportFragment
             outState.putSerializable(KEY_FROM_DATE, mDateFrom);
         if (mDateTo != null)
             outState.putSerializable(KEY_TO_DATE, mDateTo);
+    }
+
+    protected View addListViewHeaderFooter(int layout) {
+        return View.inflate(getActivity(), layout, null);
     }
 
     /**

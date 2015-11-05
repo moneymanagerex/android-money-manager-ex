@@ -58,10 +58,9 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Categories report fragment.
- * Created by Alen Siljak on 06/07/2015.
  */
 public class CategoriesReportFragment
-        extends BaseReportFragment {
+    extends BaseReportFragment {
 
     private LinearLayout mListViewFooter;
 
@@ -120,6 +119,7 @@ public class CategoriesReportFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         super.onLoadFinished(loader, data);
+
         switch (loader.getId()) {
             case ID_LOADER:
                 //parse cursor for calculate total

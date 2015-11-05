@@ -58,6 +58,10 @@ public class MyDatabaseUtils {
 
     private Context mContext;
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public String makePlaceholders(int len) {
         if (len < 1) {
             // It will lead to an invalid query anyway ..
@@ -142,13 +146,13 @@ public class MyDatabaseUtils {
      * Runs SQLite pragma check on the database file.
      * @return A boolean indicating whether the check was successfully completed.
      */
-//    public boolean checkIntegrity() {
-//        SQLiteDatabase db = MmexOpenHelper.getInstance(mContext)
-//                .getReadableDatabase();
-//
-//        boolean result = db.isDatabaseIntegrityOk();
-//        return result;
-//    }
+    public boolean checkIntegrity() {
+        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext())
+                .getReadableDatabase();
+
+        boolean result = db.isDatabaseIntegrityOk();
+        return result;
+    }
 
     /**
      * Checks if all the required tables are present.

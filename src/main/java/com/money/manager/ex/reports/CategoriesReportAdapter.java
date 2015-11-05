@@ -35,10 +35,9 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter for the Categories report.
- * Created by Alen Siljak on 06/07/2015.
  */
 public class CategoriesReportAdapter
-        extends CursorAdapter {
+    extends CursorAdapter {
 
     private LayoutInflater mInflater;
 
