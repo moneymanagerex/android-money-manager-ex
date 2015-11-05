@@ -78,7 +78,7 @@ public class DatabaseSettingsFragment
         }
 
         // Check integrity
-//        initDatabaseIntegrityOption();
+        initDatabaseIntegrityOption();
 
         // Migration of databases from version 1.4 to the location in 2.0.
         setVisibilityOfMigrationButton();
@@ -267,35 +267,35 @@ public class DatabaseSettingsFragment
         preference.setOnPreferenceClickListener(clickListener);
     }
 
-//    private void initDatabaseIntegrityOption() {
-//        Preference preference = findPreference(getString(R.string.pref_database_check_integrity));
-//        if (preference == null) return;
-//
-//        preference.setSummary(getString(R.string.db_check_integrity_summary));
-//
-//        Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
-//                boolean result;
-//                try {
-//                    result = db.checkIntegrity();
-//
-//                    if (result) {
-//                        showToast(R.string.db_check_integrity_success, Toast.LENGTH_SHORT);
-//                    } else {
-//                        showToast(R.string.db_check_integrity_error, Toast.LENGTH_SHORT);
-//                    }
-//                } catch (Exception ex) {
-//                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-//                    handler.handle(ex, "checking integrity");
-//                }
-//                return false;
-//            }
-//        };
-//
-//        preference.setOnPreferenceClickListener(clickListener);
-//    }
+    private void initDatabaseIntegrityOption() {
+        Preference preference = findPreference(getString(R.string.pref_database_check_integrity));
+        if (preference == null) return;
+
+        preference.setSummary(getString(R.string.db_check_integrity_summary));
+
+        Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
+                boolean result;
+                try {
+                    result = db.checkIntegrity();
+
+                    if (result) {
+                        showToast(R.string.db_check_integrity_success, Toast.LENGTH_SHORT);
+                    } else {
+                        showToast(R.string.db_check_integrity_error, Toast.LENGTH_SHORT);
+                    }
+                } catch (Exception ex) {
+                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                    handler.handle(ex, "checking integrity");
+                }
+                return false;
+            }
+        };
+
+        preference.setOnPreferenceClickListener(clickListener);
+    }
 
     private void initExportDbOption() {
         final Preference pMoveDatabase = findPreference(getString(PreferenceConstants.PREF_DATABASE_BACKUP));
