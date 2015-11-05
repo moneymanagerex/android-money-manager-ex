@@ -16,10 +16,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="November 4, 2015" versionName="3.1.0">
+    <changelogversion changeDate="November 5, 2015" versionName="3.1.1">
+        <changelogtext>Removing Collection Query library in Asset Allocation.</changelogtext>
         <changelogtext>Asking for storage permissions on Android M.</changelogtext>
         <changelogtext>Adding option to open existing database to Welcome screen.</changelogtext>
         <changelogtext>Corrections for split categories in recurring transactions.</changelogtext>
+        <changelogtext>Other minor improvements.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="November 3, 2015" versionName="3.0.3">
         <changelogtext>Corrected income/expense report when transactions contain split categories.</changelogtext>
