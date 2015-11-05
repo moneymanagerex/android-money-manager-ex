@@ -165,6 +165,9 @@ public class MainActivity
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 
+        // create a connection to dropbox
+        this.mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+
         createLayout();
 
         if (!tutorialShown) {
@@ -608,9 +611,6 @@ public class MainActivity
         if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
-
-        // create a connection to dropbox
-        this.mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 
         // check if we require a password.
         String dbPath = MoneyManagerApplication.getDatabasePath(this);
@@ -1096,30 +1096,30 @@ public class MainActivity
 
         // Home
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
-                .withText(getString(R.string.home))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+            .withText(getString(R.string.home))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
 
         // Open database
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
-                .withText(getString(R.string.open_database))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+            .withText(getString(R.string.open_database))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
 
         // Dropbox synchronize
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
-                    .withText(getString(R.string.synchronize))
-                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
+                .withText(getString(R.string.synchronize))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
         }
 
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
-                .withText(getString(R.string.entities))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+            .withText(getString(R.string.entities))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
 
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
-                .withText(getString(R.string.repeating_transactions))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+            .withText(getString(R.string.repeating_transactions))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
 
         // Budgets
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
@@ -1127,16 +1127,14 @@ public class MainActivity
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
 
         // Asset Allocation
-//        if (BuildConfig.DEBUG) {
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
             .withText(getString(R.string.asset_allocation))
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
-//        }
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
-                .withText(getString(R.string.search))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
+            .withText(getString(R.string.search))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
         // reports
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
