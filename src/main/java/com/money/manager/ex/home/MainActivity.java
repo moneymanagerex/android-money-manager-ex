@@ -573,7 +573,7 @@ public class MainActivity
 
     private void displayDefaultFragment() {
         // show main navigation fragment
-        String homeFragmentTag = HomeFragment.class.getSimpleName();
+        final String homeFragmentTag = HomeFragment.class.getSimpleName();
         HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
             .findFragmentByTag(homeFragmentTag);
 
@@ -584,9 +584,16 @@ public class MainActivity
 
 //        Core core = new Core(this);
 //        if (core.isTablet()) {
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.fragmentContent, fragment, homeFragmentTag)
-            .commit();
+        final HomeFragment finalFragment = fragment;
+        // ref: http://stackoverflow.com/a/14178962/202166
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
+                    .commit();
+            }
+        });
 //        }
     }
 
