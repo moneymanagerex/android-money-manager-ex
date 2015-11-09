@@ -56,8 +56,8 @@ import info.javaperformance.money.Money;
  * The list of securities.
  */
 public class WatchlistItemsFragment
-        extends BaseListFragment
-        implements LoaderCallbacks<Cursor> {
+    extends BaseListFragment
+    implements LoaderCallbacks<Cursor> {
 
     public static final int ID_LOADER_WATCHLIST = 1;
     public static final String KEY_ACCOUNT_ID = "WatchlistItemsFragment:AccountId";
@@ -201,10 +201,6 @@ public class WatchlistItemsFragment
         cursor.moveToPosition(cursorPosition);
 
         Stock stock = Stock.fromCursor(cursor);
-//        ContentValues contents = new ContentValues();
-        // get Symbol from cursor
-//        DatabaseUtils.cursorStringToContentValuesIfPresent(cursor, contents, Stock.SYMBOL);
-//        String symbol = contents.getAsString(Stock.SYMBOL);
         String symbol = stock.getSymbol();
 
         boolean result = false;
@@ -218,11 +214,7 @@ public class WatchlistItemsFragment
                 break;
             case 1:
                 // Edit price
-//                DatabaseUtils.cursorIntToContentValuesIfPresent(cursor, contents, Stock.HELDAT);
-//                int accountId = contents.getAsInteger(Stock.HELDAT);
                 int accountId = stock.getHeldAt();
-//                DatabaseUtils.cursorDoubleToContentValuesIfPresent(cursor, contents, Stock.CURRENTPRICE);
-//                Money currentPrice = MoneyFactory.fromString(contents.getAsString(Stock.CURRENTPRICE));
                 Money currentPrice = stock.getCurrentPrice();
 
                 EditPriceDialog dialog = new EditPriceDialog();

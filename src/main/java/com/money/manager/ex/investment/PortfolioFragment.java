@@ -33,9 +33,7 @@ import com.money.manager.ex.R;
 public class PortfolioFragment extends Fragment {
     private static final String ARG_ACCOUNT_ID = "accountId";
 
-    // TODO: Rename and change types of parameters
     private Integer mAccountId;
-
 
     public PortfolioFragment() {
         // Required empty public constructor
@@ -60,17 +58,25 @@ public class PortfolioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_ACCOUNT_ID);
+            mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+
+        if (container == null) return null;
+        View view = inflater.inflate(R.layout.fragment_account_transactions, container, false);
+
+//        TextView textView = new TextView(getActivity());
+//        textView.setText(R.string.hello_blank_fragment);
+//        return textView;
+
+        return view;
     }
 
 }

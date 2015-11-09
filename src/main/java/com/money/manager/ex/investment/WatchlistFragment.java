@@ -67,10 +67,9 @@ import info.javaperformance.money.Money;
  * Not sure why it was done in two fragments. Probably because the list can not have additional items?
  */
 public class WatchlistFragment
-        extends Fragment
-        implements IPriceUpdaterFeedback, IWatchlistItemsFragmentEventHandler {
+    extends Fragment
+    implements IPriceUpdaterFeedback, IWatchlistItemsFragmentEventHandler {
 
-    //private static final String KEY_CONTENT = "WatchlistFragment:StockId";
     private static final String KEY_ACCOUNT_ID = "WatchlistFragment:AccountId";
     private static final String KEY_ACCOUNT = "WatchlistFragment:Account";
 
