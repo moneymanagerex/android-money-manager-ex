@@ -134,11 +134,6 @@ public class AccountTransactionsFragment
         // get account id from the arguments first.
         mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
 
-        // this is already in onCreateView.
-//        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-//            mAccountId = savedInstanceState.getInt(KEY_CONTENT);
-//        }
-
         // Set the default period.
         DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
                 .getShowTransactions();
