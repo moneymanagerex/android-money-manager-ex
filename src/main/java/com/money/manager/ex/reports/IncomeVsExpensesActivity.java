@@ -24,8 +24,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 public class IncomeVsExpensesActivity extends BaseFragmentActivity {
-//    private static final String LOGCAT = IncomeVsExpensesActivity.class.getSimpleName();
-//    private static CurrencyService currencyService;
 
     public static final int SUBTOTAL_MONTH = 99;
 

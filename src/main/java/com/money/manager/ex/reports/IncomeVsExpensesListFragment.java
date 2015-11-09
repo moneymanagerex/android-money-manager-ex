@@ -339,17 +339,26 @@ public class IncomeVsExpensesListFragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object positionObj = parent.getItemAtPosition(position);
                 Cursor cursor = (Cursor) positionObj;
+                if (cursor == null) return; // i.e. footer row.
                 IncomeVsExpenseReportEntity entity = IncomeVsExpenseReportEntity.from(cursor);
+                SearchParameters params = new SearchParameters();
 
                 // show the details for the selected month/year.
                 CalendarUtils calendar = new CalendarUtils();
                 calendar.setYear(entity.getYear());
-                calendar.setMonth(entity.getMonth() - 1);
+                int month = entity.getMonth();
+                if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
+                    calendar.setMonth(entity.getMonth() - 1);
+                } else {
+                    // full year
+                    calendar.setMonth(Calendar.JANUARY);
+                }
                 calendar.setFirstDayOfMonth();
-
-                SearchParameters params = new SearchParameters();
                 params.dateFrom = calendar.getTime();
 
+                if (month == IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
+                    calendar.setMonth(Calendar.DECEMBER);
+                }
                 calendar.setLastDayOfMonth();
                 params.dateTo = calendar.getTime();
 
