@@ -55,60 +55,27 @@ import java.util.Calendar;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Report
- * Created by Alen Siljak on 6/07/2015.
+ * Income/Expense Report, list.
  */
 public class IncomeVsExpensesListFragment
-        extends ListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends ListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ID_LOADER_REPORT = 1;
     private static final int ID_LOADER_YEARS = 2;
     private static final String SORT_ASCENDING = "ASC";
     private static final String SORT_DESCENDING = "DESC";
     private static final String KEY_BUNDLE_YEAR = "IncomeVsExpensesListFragment:Years";
+
     private View mFooterListView;
     private SparseBooleanArray mYearsSelected = new SparseBooleanArray();
     private String mSort = SORT_ASCENDING;
-
-    /**
-     * Add footer to ListView
-     *
-     * @return View of footer
-     */
-    private View addListViewFooter() {
-        TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
-        TextView txtYear = (TextView) row.findViewById(R.id.textViewYear);
-        txtYear.setText(getString(R.string.total));
-        txtYear.setTypeface(null, Typeface.BOLD);
-        TextView txtMonth = (TextView) row.findViewById(R.id.textViewMonth);
-        txtMonth.setText(null);
-        return row;
-    }
-
-    /**
-     * Add header to ListView
-     */
-    private View addListViewHeader() {
-        TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
-        int[] ids = new int[]{
-                R.id.textViewYear, R.id.textViewMonth, R.id.textViewIncome,
-                R.id.textViewExpenses, R.id.textViewDifference
-        };
-        for (int id : ids) {
-            TextView textView = (TextView) row.findViewById(id);
-            textView.setTypeface(null, Typeface.BOLD);
-            textView.setSingleLine(true);
-        }
-        getListView().addHeaderView(row);
-
-        return row;
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_BUNDLE_YEAR) &&
                 savedInstanceState.getIntArray(KEY_BUNDLE_YEAR) != null) {
             for (int year : savedInstanceState.getIntArray(KEY_BUNDLE_YEAR)) {
@@ -142,16 +109,17 @@ public class IncomeVsExpensesListFragment
         setListAdapter(adapter);
         setListShown(false);
         // start loader
-        //startLoader();
-        getLoaderManager().restartLoader(ID_LOADER_YEARS, null, this);
+        //getLoaderManager().restartLoader(ID_LOADER_YEARS, null, this);
+        getLoaderManager().initLoader(ID_LOADER_YEARS, null, this);
     }
+
+    // Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String selection = null;
         switch (id) {
             case ID_LOADER_REPORT:
-                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getString(KEY_BUNDLE_YEAR) != null) {
                     selection = QueryReportIncomeVsExpenses.Year + " IN (" + args.getString(KEY_BUNDLE_YEAR) + ")";
                     if (!TextUtils.isEmpty(selection)) {
@@ -162,9 +130,12 @@ public class IncomeVsExpensesListFragment
                 if (TextUtils.isEmpty(selection)) {
                     selection = "1=2";
                 }
-                return new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
-                        selection, null,
-                        QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+                QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+
+                return new MmexCursorLoader(getActivity(), report.getUri(),
+                    report.getAllColumns(),
+                    selection, null,
+                    QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
 
             case ID_LOADER_YEARS:
                 ViewMobileData mobileData = new ViewMobileData(getContext());
@@ -177,20 +148,6 @@ public class IncomeVsExpensesListFragment
                         null);
         }
         return null;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
-        // fix menu char
-        MenuItem itemChart = menu.findItem(R.id.menu_chart);
-        if (itemChart != null) {
-            Activity activity = getActivity();
-            if (activity instanceof IncomeVsExpensesActivity) {
-                itemChart.setVisible(!((IncomeVsExpensesActivity) activity).mIsDualPanel);
-            }
-        }
     }
 
     @Override
@@ -227,7 +184,6 @@ public class IncomeVsExpensesListFragment
                 if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
-
                         @Override
                         public void run() {
                             showChart();
@@ -235,6 +191,7 @@ public class IncomeVsExpensesListFragment
                     }, 1 * 1000);
                 }
                 break;
+
             case ID_LOADER_YEARS:
                 if (data != null && data.moveToFirst()) {
                     while (!data.isAfterLast()) {
@@ -246,6 +203,22 @@ public class IncomeVsExpensesListFragment
                     }
                     startLoader();
                 }
+        }
+    }
+
+    // Menu
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_report_income_vs_expenses, menu);
+        // fix menu char
+        MenuItem itemChart = menu.findItem(R.id.menu_chart);
+        if (itemChart != null) {
+            Activity activity = getActivity();
+            if (activity instanceof IncomeVsExpensesActivity) {
+                itemChart.setVisible(!((IncomeVsExpensesActivity) activity).mIsDualPanel);
+            }
         }
     }
 
@@ -265,6 +238,22 @@ public class IncomeVsExpensesListFragment
 
         return super.onOptionsItemSelected(item);
     }
+
+    //
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<Integer> years = new ArrayList<Integer>();
+        for (int i = 0; i < mYearsSelected.size(); i++) {
+            if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
+                years.add(mYearsSelected.keyAt(i));
+            }
+        }
+        outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
+    }
+
+    // Other
 
     public void showDialogYears() {
         ArrayList<String> years = new ArrayList<String>();
@@ -299,16 +288,40 @@ public class IncomeVsExpensesListFragment
                 .show();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        ArrayList<Integer> years = new ArrayList<Integer>();
-        for (int i = 0; i < mYearsSelected.size(); i++) {
-            if (mYearsSelected.get(mYearsSelected.keyAt(i))) {
-                years.add(mYearsSelected.keyAt(i));
-            }
+    // Private
+
+    /**
+     * Add footer to ListView
+     *
+     * @return View of footer
+     */
+    private View addListViewFooter() {
+        TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
+        TextView txtYear = (TextView) row.findViewById(R.id.textViewYear);
+        txtYear.setText(getString(R.string.total));
+        txtYear.setTypeface(null, Typeface.BOLD);
+        TextView txtMonth = (TextView) row.findViewById(R.id.textViewMonth);
+        txtMonth.setText(null);
+        return row;
+    }
+
+    /**
+     * Add header to ListView
+     */
+    private View addListViewHeader() {
+        TableRow row = (TableRow) View.inflate(getActivity(), R.layout.tablerow_income_vs_expenses, null);
+        int[] ids = new int[]{
+            R.id.textViewYear, R.id.textViewMonth, R.id.textViewIncome,
+            R.id.textViewExpenses, R.id.textViewDifference
+        };
+        for (int id : ids) {
+            TextView textView = (TextView) row.findViewById(id);
+            textView.setTypeface(null, Typeface.BOLD);
+            textView.setSingleLine(true);
         }
-        outState.putIntArray(KEY_BUNDLE_YEAR, ArrayUtils.toPrimitive(years.toArray(new Integer[0])));
+        getListView().addHeaderView(row);
+
+        return row;
     }
 
     /**

@@ -22,13 +22,15 @@ import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
 public class PortfolioActivity
     extends BaseFragmentActivity {
 
-    @Override
+    private static final String FRAGMENT_TAG = PortfolioFragment.class.getSimpleName();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -37,15 +39,17 @@ public class PortfolioActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        PortfolioFragment listFragment = PortfolioFragment.newInstance();
+        // todo: pass the correct account id.
+        PortfolioFragment listFragment = PortfolioFragment.newInstance(Constants.NOT_SET);
         Intent intent = getIntent();
-        if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            listFragment.mAction = intent.getAction();
-        }
+        // todo: action
+//        if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
+//            listFragment.mAction = intent.getAction();
+//        }
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment to activity
         if (fm.findFragmentById(R.id.content) == null) {
-            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
+            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENT_TAG).commit();
         }
 
     }

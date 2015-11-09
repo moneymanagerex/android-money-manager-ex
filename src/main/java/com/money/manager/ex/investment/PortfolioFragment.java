@@ -85,9 +85,10 @@ public class PortfolioFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // hide the title
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
+        // todo: uncomment this after setting the correct fragment type.
+//        ActionBar actionBar = getActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayShowTitleEnabled(false);
+//        }
     }
 }
