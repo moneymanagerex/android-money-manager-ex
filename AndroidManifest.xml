@@ -431,6 +431,10 @@
             android:name=".database.PasswordActivity"
             android:label="@string/enter_password">
         </activity>
+        <activity
+            android:name=".investment.PortfolioActivity"
+            android:label="@string/title_activity_portfolio">
+        </activity>
     </application>
 
 </manifest>

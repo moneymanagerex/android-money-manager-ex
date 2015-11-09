@@ -14,36 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.account;
+package com.money.manager.ex.investment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
-/**
- * Account list activity.
- */
-public class AccountListActivity
+public class PortfolioActivity
     extends BaseFragmentActivity {
-
-    public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
-    public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";
-    private static final String FRAGMENTTAG = AccountListActivity.class.getSimpleName() + "_Fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        setContentView(R.layout.activity_portfolio);
         setContentView(R.layout.base_toolbar_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        AccountListFragment listFragment = new AccountListFragment();
+        PortfolioFragment listFragment = PortfolioFragment.newInstance();
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             listFragment.mAction = intent.getAction();
@@ -53,16 +47,7 @@ public class AccountListActivity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
+
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AccountListFragment fragment = (AccountListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null) {
-                fragment.setResultAndFinish();
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }

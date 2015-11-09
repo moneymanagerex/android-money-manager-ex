@@ -47,8 +47,8 @@ import com.shamanland.fonticon.FontIconDrawable;
  * List of accounts.
  */
 public class AccountListFragment
-        extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_ACCOUNT = 0;
 
