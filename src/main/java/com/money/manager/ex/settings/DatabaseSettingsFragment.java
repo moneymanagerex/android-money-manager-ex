@@ -26,9 +26,11 @@ import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -107,8 +109,8 @@ public class DatabaseSettingsFragment
                 // notification
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), DatabaseSettingsFragment.this);
                 String message = success
-                        ? getString(R.string.cleared)
-                        : getString(R.string.error);
+                    ? getString(R.string.cleared)
+                    : getString(R.string.error);
                 handler.showMessage(message);
                 return false;
             }
@@ -254,6 +256,11 @@ public class DatabaseSettingsFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
+
+                if (BuildConfig.DEBUG) {
+                    Log.d(this.getClass().getSimpleName(), "checking db schema");
+                }
+
                 boolean result = db.checkSchema();
                 if (result) {
                     showToast(R.string.db_check_schema_success, Toast.LENGTH_SHORT);
@@ -279,6 +286,10 @@ public class DatabaseSettingsFragment
                 MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
                 boolean result;
                 try {
+                    if (BuildConfig.DEBUG) {
+                        Log.d(this.getClass().getSimpleName(), "checking db integrity.");
+                    }
+
                     result = db.checkIntegrity();
 
                     if (result) {
