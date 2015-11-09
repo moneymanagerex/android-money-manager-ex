@@ -24,7 +24,8 @@ import com.money.manager.ex.utils.RawFileUtils;
 /**
  */
 public class QueryAllData
-        extends Dataset {
+    extends Dataset {
+
     // FIELDS
     public static final String ID = "ID";
     public static final String TransactionType = "TransactionType";

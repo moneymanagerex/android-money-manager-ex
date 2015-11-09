@@ -25,7 +25,6 @@ import android.widget.ListView;
 
 /**
  * Click listener for the linear drawer.
- * Created by Alen Siljak on 21/07/2015.
  */
 public class DrawerItemClickListener
         implements ListView.OnItemClickListener {

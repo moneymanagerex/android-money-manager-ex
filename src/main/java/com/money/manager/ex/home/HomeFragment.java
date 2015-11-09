@@ -76,6 +76,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.IntentDataParameters;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
+import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -249,10 +250,10 @@ public class HomeFragment
 //                report.filterTransactionsSource(transactionsFilter);
 
                 String whereStatement =
-                    QueryReportIncomeVsExpenses.Month + "="
+                    IncomeVsExpenseReportEntity.Month + "="
                     + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
                         " AND " +
-                    QueryReportIncomeVsExpenses.Year + "=" +
+                        IncomeVsExpenseReportEntity.YEAR + "=" +
                             Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
@@ -361,8 +362,8 @@ public class HomeFragment
                 double income = 0, expenses = 0;
                 if (data != null) {
                     while (data.moveToNext()) {
-                        expenses = data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
-                        income = data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+                        expenses = data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
+                        income = data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
                     }
                 }
                 TextView txtIncome = (TextView) getActivity().findViewById(R.id.textViewIncome);

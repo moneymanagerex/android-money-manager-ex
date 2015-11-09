@@ -52,6 +52,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.view.RobotoTextView;
+import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -156,11 +157,10 @@ public class DashboardFragment
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 return new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
-                        QueryReportIncomeVsExpenses.Month + "=" +
-                        Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
-                        " AND " + QueryReportIncomeVsExpenses.Year + "=" +
-                        Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
-                        null, null);
+                    IncomeVsExpenseReportEntity.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                    " AND " +
+                    IncomeVsExpenseReportEntity.YEAR + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
+                    null, null);
             case ID_LOADER_SCREEN2:
                 return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), null,
                         prepareQueryTopWithdrawals(), null, null);
@@ -269,11 +269,11 @@ public class DashboardFragment
         String[] titles = new String[3];
 
         // incomes and expenses
-        incomes[1] = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-        expenses[1] = Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses)));
+        incomes[1] = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income));
+        expenses[1] = Math.abs(cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses)));
         // titles
-        int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
-        int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
+        int year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
+        int month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
         // format month
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, 1);

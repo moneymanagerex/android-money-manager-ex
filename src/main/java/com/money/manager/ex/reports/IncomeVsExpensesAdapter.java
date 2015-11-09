@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
+import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,13 +60,13 @@ public class IncomeVsExpensesAdapter
         TextView txtDifference = (TextView) view.findViewById(R.id.textViewDifference);
         // take data
         int year, month;
-        year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
-        month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
+        year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
+        month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, 1);
         double income = 0, expenses = 0;
-        expenses = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
-        income = cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income));
+        expenses = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
+        income = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income));
         // attach data
         txtYear.setText(Integer.toString(year));
         //txtMonth.setText(new SimpleDateFormat("MMMM").format(new Date(year, month - 1, 1)));

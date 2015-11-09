@@ -17,6 +17,7 @@
 package com.money.manager.ex.reports;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -27,11 +28,13 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -44,7 +47,11 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.search.SearchParameters;
+import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.IntentUtils;
+import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -85,6 +92,8 @@ public class IncomeVsExpensesListFragment
             mYearsSelected.put(Calendar.getInstance().get(Calendar.YEAR), true);
         }
 
+        initializeListView();
+
         // set home button
 //            ActionBarActivity activity = (ActionBarActivity) getActivity();
 //        AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -92,18 +101,6 @@ public class IncomeVsExpensesListFragment
             //activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        }
 
-        // set listview
-        setEmptyText(getString(R.string.no_data));
-
-        // add header and footer
-        try {
-            setListAdapter(null);
-            addListViewHeader();
-            mFooterListView = addListViewFooter();
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "adding header and footer in income vs expense report");
-        }
         // create adapter
         IncomeVsExpensesAdapter adapter = new IncomeVsExpensesAdapter(getActivity(), null);
         setListAdapter(adapter);
@@ -121,7 +118,7 @@ public class IncomeVsExpensesListFragment
         switch (id) {
             case ID_LOADER_REPORT:
                 if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getString(KEY_BUNDLE_YEAR) != null) {
-                    selection = QueryReportIncomeVsExpenses.Year + " IN (" + args.getString(KEY_BUNDLE_YEAR) + ")";
+                    selection = IncomeVsExpenseReportEntity.YEAR + " IN (" + args.getString(KEY_BUNDLE_YEAR) + ")";
                     if (!TextUtils.isEmpty(selection)) {
                         selection = "(" + selection + ")";
                     }
@@ -135,7 +132,7 @@ public class IncomeVsExpensesListFragment
                 return new MmexCursorLoader(getActivity(), report.getUri(),
                     report.getAllColumns(),
                     selection, null,
-                    QueryReportIncomeVsExpenses.Year + " " + mSort + ", " + QueryReportIncomeVsExpenses.Month + " " + mSort);
+                    IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
 
             case ID_LOADER_YEARS:
                 ViewMobileData mobileData = new ViewMobileData(getContext());
@@ -170,9 +167,9 @@ public class IncomeVsExpensesListFragment
                 if (data == null) return;
 
                 while (data.moveToNext()) {
-                    if (data.getInt(data.getColumnIndex(QueryReportIncomeVsExpenses.Month)) != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
-                        income += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Income));
-                        expenses += data.getDouble(data.getColumnIndex(QueryReportIncomeVsExpenses.Expenses));
+                    if (data.getInt(data.getColumnIndex(IncomeVsExpenseReportEntity.Month)) != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
+                        income += data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Income));
+                        expenses += data.getDouble(data.getColumnIndex(IncomeVsExpenseReportEntity.Expenses));
                     }
                 }
                 updateListViewFooter(mFooterListView, income, expenses);
@@ -324,6 +321,45 @@ public class IncomeVsExpensesListFragment
         return row;
     }
 
+    private void initializeListView() {
+        setEmptyText(getString(R.string.no_data));
+
+        // add header and footer
+        try {
+            setListAdapter(null);
+            addListViewHeader();
+            mFooterListView = addListViewFooter();
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.handle(e, "adding header and footer in income vs expense report");
+        }
+
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object positionObj = parent.getItemAtPosition(position);
+                Cursor cursor = (Cursor) positionObj;
+                IncomeVsExpenseReportEntity entity = IncomeVsExpenseReportEntity.from(cursor);
+
+                // show the details for the selected month/year.
+                CalendarUtils calendar = new CalendarUtils();
+                calendar.setYear(entity.getYear());
+                calendar.setMonth(entity.getMonth() - 1);
+                calendar.setFirstDayOfMonth();
+
+                SearchParameters params = new SearchParameters();
+                params.dateFrom = calendar.getTime();
+
+                calendar.setLastDayOfMonth();
+                params.dateTo = calendar.getTime();
+
+                IntentUtils intentUtils = new IntentUtils(getActivity());
+                Intent intent = intentUtils.getIntentForSearch(params);
+                startActivity(intent);
+            }
+        });
+    }
+
     /**
      * Start loader with arrays year
      *
@@ -405,14 +441,14 @@ public class IncomeVsExpensesListFragment
         cursor.moveToPosition(-1);
         // cycle cursor
         while (cursor.moveToNext()) {
-            int month = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Month));
+            int month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
             // check if not subtotal
             if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                 // incomes and expenses
-                incomes.add(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Income)));
-                expenses.add(Math.abs(cursor.getDouble(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Expenses))));
+                incomes.add(cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income)));
+                expenses.add(Math.abs(cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Expenses))));
                 // titles
-                int year = cursor.getInt(cursor.getColumnIndex(QueryReportIncomeVsExpenses.Year));
+                int year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
 
                 // format month
                 Calendar calendar = Calendar.getInstance();

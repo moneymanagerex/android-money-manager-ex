@@ -63,8 +63,18 @@ public class CalendarUtils {
         return this;
     }
 
+    /**
+     * Set the month for the current calendar.
+     * @param month Month value i.e. Calendar.January. NOT ordinal, i.e. November != 11.
+     * @return
+     */
     public CalendarUtils setMonth(int month) {
         mCalendar.set(Calendar.MONTH, month);
+        return this;
+    }
+
+    public CalendarUtils setYear(int year) {
+        mCalendar.set(Calendar.YEAR, year);
         return this;
     }
 

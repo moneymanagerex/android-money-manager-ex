@@ -21,18 +21,12 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import org.apache.commons.lang3.StringUtils;
 
 public class QueryReportIncomeVsExpenses
     extends Dataset {
-
-    //field name
-    public static final String Year = "Year";
-    public static final String Month = "Month";
-    public static final String Income = "Income";
-    public static final String Expenses = "Expenses";
-    public static final String Transfers = "Transfers";
 
     public QueryReportIncomeVsExpenses(Context context) {
         super("", DatasetType.QUERY, "report_income_vs_expenses");
@@ -42,7 +36,12 @@ public class QueryReportIncomeVsExpenses
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{"ROWID AS _id", Year, Month, Income, Expenses, Transfers};
+        return new String[]{"ROWID AS _id",
+            IncomeVsExpenseReportEntity.YEAR,
+            IncomeVsExpenseReportEntity.Month,
+            IncomeVsExpenseReportEntity.Income,
+            IncomeVsExpenseReportEntity.Expenses,
+            IncomeVsExpenseReportEntity.Transfers};
     }
 
     private void initialize(Context context, String whereStatement) {

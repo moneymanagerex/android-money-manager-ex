@@ -53,6 +53,7 @@ import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.IntentUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -236,7 +237,10 @@ public class PayeeListFragment
                 parameters.payeeId = payee.getId();
                 parameters.payeeName = payee.getName();
 
-                showSearchActivityFor(parameters);
+//                showSearchActivityFor(parameters);
+                IntentUtils intentUtils = new IntentUtils(getActivity());
+                Intent intent = intentUtils.getIntentForSearch(parameters);
+                startActivity(intent);
         }
         return false;
     }
@@ -250,7 +254,7 @@ public class PayeeListFragment
                 String whereClause = null;
                 String selectionArgs[] = null;
                 if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause = Payee.PAYEENAME + " LIKE ?";// + mCurFilter + "%'";
+                    whereClause = Payee.PAYEENAME + " LIKE ?"; // + mCurFilter + "%'";
                     selectionArgs = new String[]{mCurFilter + '%'};
                 }
                 return new MmexCursorLoader(getActivity(), mPayee.getUri(),
@@ -460,11 +464,11 @@ public class PayeeListFragment
         getLoaderManager().restartLoader(ID_LOADER_PAYEE, null, this);
     }
 
-    private void showSearchActivityFor(SearchParameters parameters) {
-        Intent intent = new Intent(getActivity(), SearchActivity.class);
-        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
-        intent.setAction(Intent.ACTION_INSERT);
-        startActivity(intent);
-    }
+//    private void showSearchActivityFor(SearchParameters parameters) {
+//        Intent intent = new Intent(getActivity(), SearchActivity.class);
+//        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+//        intent.setAction(Intent.ACTION_INSERT);
+//        startActivity(intent);
+//    }
 
 }
