@@ -957,6 +957,8 @@ public class HomeFragment
             if (baseCurrencyId == Constants.NOT_SET) {
                 // avoid crash if no Base currency set. Explicitly use the account currency.
                 baseCurrencyId = currencyId;
+                ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+                handler.showMessage(getString(R.string.base_currency_not_set));
             }
 
             Money amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId,
