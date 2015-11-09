@@ -17,6 +17,7 @@
 -->
 <changelog bulletedList="true">
     <changelogversion changeDate="November 6, 2015" versionName="3.1.2">
+        <changelogtext>Enabled drill-down in Income/Expense report.</changelogtext>
         <changelogtext>Removing Collection Query library in Asset Allocation.</changelogtext>
         <changelogtext>Asking for storage permissions on Android M.</changelogtext>
         <changelogtext>Adding option to open existing database to Welcome screen.</changelogtext>
