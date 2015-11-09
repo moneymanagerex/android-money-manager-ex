@@ -881,8 +881,6 @@ public class HomeFragment
     }
 
     private void renderAccountsList(Cursor cursor) {
-        // Accounts list
-
         linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
         linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
 
@@ -919,7 +917,6 @@ public class HomeFragment
         if (mTotalsByType == null || mTotalsByType.size() <= 0) return;
 
         // get investment accounts
-//        String investmentTitle = getString(R.string.investment);
         String investmentTitle = AccountTypes.INVESTMENT.toString().toLowerCase();
         HashMap<Integer, QueryAccountBills> investmentAccounts = new HashMap<>();
         List<QueryAccountBills> investmentAccountList = mAccountsByType.get(investmentTitle);
@@ -957,6 +954,11 @@ public class HomeFragment
 
             // currency
             int currencyId = account.getCurrencyId();
+            if (baseCurrencyId == Constants.NOT_SET) {
+                // avoid crash if no Base currency set. Explicitly use the account currency.
+                baseCurrencyId = currencyId;
+            }
+
             Money amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId,
                     MoneyFactory.fromDouble(amount), currencyId);
             if (amountInBaseCurrency == null) {
@@ -965,11 +967,8 @@ public class HomeFragment
             double currentTotalInBase = account.getTotalBaseConvRate();
             account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency.toDouble());
 
-//            total += amountInBaseCurrency;
             total = total.add(amountInBaseCurrency);
         }
-
-        // show totals for each account
 
         // show total for all investment accounts
         QueryAccountBills investmentTotalRecord = mTotalsByType.get(investmentTitle);

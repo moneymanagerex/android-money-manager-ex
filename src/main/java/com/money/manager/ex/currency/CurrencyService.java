@@ -174,6 +174,7 @@ public class CurrencyService {
 
     public Money doCurrencyExchange(Integer toCurrencyId, Money amount, Integer fromCurrencyId) {
         if (toCurrencyId == null || fromCurrencyId == null) return amount;
+        if (toCurrencyId == Constants.NOT_SET || fromCurrencyId == Constants.NOT_SET) return amount;
 
         // handle same currencies
         if (toCurrencyId.equals(fromCurrencyId)) return amount;
