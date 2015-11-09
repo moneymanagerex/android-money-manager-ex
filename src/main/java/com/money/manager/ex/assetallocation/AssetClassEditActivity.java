@@ -95,7 +95,9 @@ public class AssetClassEditActivity
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(KEY_ASSET_CLASS_ID, this.assetClassId);
+        if (this.assetClassId != null) {
+            outState.putInt(KEY_ASSET_CLASS_ID, this.assetClassId);
+        }
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
