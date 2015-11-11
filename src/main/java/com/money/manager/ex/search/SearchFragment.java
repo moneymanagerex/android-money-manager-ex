@@ -53,6 +53,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.utils.DateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -342,7 +343,7 @@ public class SearchFragment extends Fragment
 
         // from date
         if (mSearchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, ">=", mSearchParameters.dateFrom.toString());
+            where.addStatement(QueryAllData.Date, ">=", mSearchParameters.dateFrom.format(Constants.ISO_DATE_FORMAT));
         }
         // to date
         if (mSearchParameters.dateTo != null) {
@@ -437,8 +438,10 @@ public class SearchFragment extends Fragment
         }
 
         // Date from
-        txtFromDate.setTag(mSearchParameters.dateFrom.toString());
-        txtFromDate.setText(DateUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
+        if (mSearchParameters.dateFrom != null) {
+            txtFromDate.setTag(mSearchParameters.dateFrom.format(Constants.ISO_DATE_FORMAT));
+        }
+        txtFromDate.setText(DateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
         // Date to
         txtToDate.setTag(mSearchParameters.dateTo);
         txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));

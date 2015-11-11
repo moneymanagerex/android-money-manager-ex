@@ -50,8 +50,9 @@ public class OnDateButtonClickListener
         @Override
         public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
             try {
-                Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(Integer.toString(year) +
-                        "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+                String dateString = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
+                Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                    .parse(dateString);
 
                 // Save the actual value as tag.
                 mTextView.setTag(date);

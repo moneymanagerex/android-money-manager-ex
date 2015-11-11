@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.utils;
 
+import android.content.Context;
 import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
@@ -51,6 +52,12 @@ public class DateTimeUtils {
         int year = datePicker.getYear();
 
         return new DateTime(year, month, day, 0, 0, 0, 0);
+    }
+
+    public static String getUserStringFromDateTime(Context ctx, DateTime date) {
+        if (date == null) return "";
+
+        return date.format(DateUtils.getUserDatePattern(ctx));
     }
 
     public static void setDatePicker(DateTime date, DatePicker datePicker) {

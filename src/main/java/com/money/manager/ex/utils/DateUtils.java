@@ -96,10 +96,6 @@ public class DateUtils {
         return getStringFromDate(ctx, date, getUserDatePattern(ctx));
     }
 
-    public static String getUserStringFromDateTime(Context ctx, DateTime date) {
-        return date.format(getUserDatePattern(ctx));
-    }
-
     public static String getStringFromDate(Date date, String pattern) {
         if (date == null) return null;
 
