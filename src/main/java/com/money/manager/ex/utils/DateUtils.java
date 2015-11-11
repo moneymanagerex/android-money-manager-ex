@@ -37,6 +37,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import hirondelle.date4j.DateTime;
+
 /**
  * Date utilities
  */
@@ -92,6 +94,10 @@ public class DateUtils {
      */
     public static String getUserStringFromDate(Context ctx, Date date) {
         return getStringFromDate(ctx, date, getUserDatePattern(ctx));
+    }
+
+    public static String getUserStringFromDateTime(Context ctx, DateTime date) {
+        return date.format(getUserDatePattern(ctx));
     }
 
     public static String getStringFromDate(Date date, String pattern) {

@@ -28,16 +28,21 @@ import android.view.View;
 import android.widget.DatePicker;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.DateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+
+import hirondelle.date4j.DateTime;
 
 public abstract class BaseReportFragment
     extends BaseListFragment
@@ -51,7 +56,7 @@ public abstract class BaseReportFragment
 
     protected int mItemSelected = R.id.menu_all_time;
     protected String mWhereClause = null;
-    protected Date mDateFrom = null;
+    protected DateTime mDateFrom = null;
     protected Date mDateTo = null;
 
     @Override
@@ -63,12 +68,15 @@ public abstract class BaseReportFragment
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
 
-        //item selected
+        // Restore instance state.
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_ITEM_SELECTED))
                 mItemSelected = savedInstanceState.getInt(KEY_ITEM_SELECTED);
-            if (savedInstanceState.containsKey(KEY_FROM_DATE))
-                mDateFrom = (Date) savedInstanceState.getSerializable(KEY_FROM_DATE);
+            if (savedInstanceState.containsKey(KEY_FROM_DATE)) {
+//                mDateFrom = (Date) savedInstanceState.getSerializable(KEY_FROM_DATE);
+                String dateFromString = savedInstanceState.getString(KEY_FROM_DATE);
+                mDateFrom = new DateTime(dateFromString);
+            }
             if (savedInstanceState.containsKey(KEY_TO_DATE))
                 mDateTo = (Date) savedInstanceState.getSerializable(KEY_TO_DATE);
         }
@@ -137,8 +145,6 @@ public abstract class BaseReportFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String whereClause = null;
-
         // todo: replace this complex way of querying and find the start/end dates for ViewMobileData.Date.
         CalendarUtils calendar = new CalendarUtils();
 
@@ -148,7 +154,10 @@ public abstract class BaseReportFragment
             case R.id.menu_current_month:
 //                whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth) + " AND " +
 //                    ViewMobileData.Year + "=" + Integer.toString(currentYear);
-                mDateFrom = calendar.setFirstDayOfMonth().setTimeToBeginningOfDay().getTime();
+//                DateTime startDate = DateTime.today(TimeZone.getDefault());
+
+//                mDateFrom = calendar.setFirstDayOfMonth().setTimeToBeginningOfDay().getTime();
+                mDateFrom = DateTimeUtils.today().getStartOfMonth();
                 mDateTo = calendar.setLastDayOfMonth().setTimeToEndOfDay().getTime();
                 break;
 
@@ -158,23 +167,28 @@ public abstract class BaseReportFragment
 //                } else {
 //                    whereClause = ViewMobileData.Month + "=" + Integer.toString(currentMonth - 1) + " AND " + ViewMobileData.Year + "=" + Integer.toString(currentYear);
 //                }
-                mDateFrom = calendar.setNow().addMonth(-1).setFirstDayOfMonth().setTimeToBeginningOfDay().getTime();
+//                Calendar dateFrom = calendar.setNow().addMonth(-1).setFirstDayOfMonth().setTimeToBeginningOfDay().getTime();
+                Calendar dateFrom = calendar.setNow().addMonth(-1).setFirstDayOfMonth().setTimeToBeginningOfDay().getCalendar();
+                mDateFrom = DateTimeUtils.from(dateFrom);
                 mDateTo = calendar.setLastDayOfMonth().setTimeToEndOfDay().getTime();
                 break;
             case R.id.menu_last_30_days:
 //                whereClause = "(julianday(date('now')) - julianday(" + ViewMobileData.Date + ") <= 30)";
-                mDateFrom = calendar.setNow().addDays(-30).setTimeToBeginningOfDay().getTime();
+                dateFrom = calendar.setNow().addDays(-30).setTimeToBeginningOfDay().getCalendar();
+                mDateFrom = DateTimeUtils.from(dateFrom);
                 mDateTo = calendar.setNow().setTimeToEndOfDay().getTime();
                 break;
             case R.id.menu_current_year:
 //                whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear);
-                mDateFrom = calendar.setNow().setMonth(Calendar.JANUARY).setFirstDayOfMonth().getTime();
+                dateFrom = calendar.setNow().setMonth(Calendar.JANUARY).setFirstDayOfMonth().getCalendar();
+                mDateFrom = DateTimeUtils.from(dateFrom);
                 mDateTo = calendar.setMonth(Calendar.DECEMBER).setLastDayOfMonth().getTime();
                 break;
             case R.id.menu_last_year:
 //                whereClause = ViewMobileData.Year + "=" + Integer.toString(currentYear - 1);
-                mDateFrom = calendar.setNow().addYear(-1).setMonth(Calendar.JANUARY)
-                        .setFirstDayOfMonth().getTime();
+                dateFrom = calendar.setNow().addYear(-1).setMonth(Calendar.JANUARY)
+                        .setFirstDayOfMonth().getCalendar();
+                mDateFrom = DateTimeUtils.from(dateFrom);
                 mDateTo = calendar.setMonth(Calendar.DECEMBER).setLastDayOfMonth().getTime();
                 break;
             case R.id.menu_all_time:
@@ -192,9 +206,11 @@ public abstract class BaseReportFragment
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + DateUtils.getIsoStringDate(mDateFrom) +
-                "' AND " +
+            // todo: mDateFrom.format(Constants.ISO_DATE_FORMAT) ?
+            whereClause = ViewMobileData.Date + " >= '" + mDateFrom.toString() + "' AND " +
                 ViewMobileData.Date + " <= '" + DateUtils.getIsoStringDate(mDateTo) + "'";
         }
 
@@ -217,8 +233,10 @@ public abstract class BaseReportFragment
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_ITEM_SELECTED, mItemSelected);
         outState.putString(KEY_WHERE_CLAUSE, getWhereClause());
-        if (mDateFrom != null)
-            outState.putSerializable(KEY_FROM_DATE, mDateFrom);
+        if (mDateFrom != null) {
+//            outState.putSerializable(KEY_FROM_DATE, mDateFrom);
+            outState.putString(KEY_FROM_DATE, mDateFrom.toString());
+        }
         if (mDateTo != null)
             outState.putSerializable(KEY_TO_DATE, mDateTo);
     }
@@ -263,13 +281,13 @@ public abstract class BaseReportFragment
                         DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
                         DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-                        mDateFrom = DateUtils.getDateFromDatePicker(fromDatePicker);
+                        mDateFrom = DateTimeUtils.fromDatePicker(fromDatePicker);
                         mDateTo = DateUtils.getDateFromDatePicker(toDatePicker);
 
-                        String whereClause = ViewMobileData.Date + ">='" +
-                                DateUtils.getIsoStringDate(mDateFrom) + "' AND " +
-                                ViewMobileData.Date + "<='" +
-                                DateUtils.getIsoStringDate(mDateTo) + "'";
+                        // format(Constants.ISO_DATE_FORMAT)
+                        String whereClause =
+                            ViewMobileData.Date + ">='" + mDateFrom.toString() + "' AND " +
+                            ViewMobileData.Date + "<='" + DateUtils.getIsoStringDate(mDateTo) + "'";
                         //compose bundle
                         Bundle args = new Bundle();
                         args.putString(KEY_WHERE_CLAUSE, whereClause);
@@ -281,14 +299,14 @@ public abstract class BaseReportFragment
                 })
                 .show();
         // set date if is null
-        if (mDateFrom == null) mDateFrom = Calendar.getInstance().getTime();
+        if (mDateFrom == null) mDateFrom = DateTimeUtils.today();
         if (mDateTo == null) mDateTo = Calendar.getInstance().getTime();
 
         View view = dialog.getCustomView();
         DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
         DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-        DateUtils.setDateToDatePicker(mDateFrom, fromDatePicker);
+        DateTimeUtils.setDatePicker(mDateFrom, fromDatePicker);
         DateUtils.setDateToDatePicker(mDateTo, toDatePicker);
     }
 }

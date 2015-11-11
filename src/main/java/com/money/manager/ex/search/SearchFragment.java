@@ -60,6 +60,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -341,7 +342,7 @@ public class SearchFragment extends Fragment
 
         // from date
         if (mSearchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mSearchParameters.dateFrom));
+            where.addStatement(QueryAllData.Date, ">=", mSearchParameters.dateFrom.toString());
         }
         // to date
         if (mSearchParameters.dateTo != null) {
@@ -436,8 +437,8 @@ public class SearchFragment extends Fragment
         }
 
         // Date from
-        txtFromDate.setTag(mSearchParameters.dateFrom);
-        txtFromDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateFrom));
+        txtFromDate.setTag(mSearchParameters.dateFrom.toString());
+        txtFromDate.setText(DateUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
         // Date to
         txtToDate.setTag(mSearchParameters.dateTo);
         txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
@@ -519,7 +520,7 @@ public class SearchFragment extends Fragment
 
         // Date from
         if (txtFromDate.getTag() != null) {
-            mSearchParameters.dateFrom = (Date) txtFromDate.getTag();
+            mSearchParameters.dateFrom = new DateTime(txtFromDate.getTag().toString());
         }
         // Date to
         if (txtToDate.getTag() != null) {

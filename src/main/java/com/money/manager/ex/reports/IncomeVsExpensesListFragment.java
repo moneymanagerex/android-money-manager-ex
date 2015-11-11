@@ -49,6 +49,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.DateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.IntentUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
@@ -59,6 +60,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import hirondelle.date4j.DateTime;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -354,7 +356,9 @@ public class IncomeVsExpensesListFragment
                     calendar.setMonth(Calendar.JANUARY);
                 }
                 calendar.setFirstDayOfMonth();
-                params.dateFrom = calendar.getTime();
+//                params.dateFrom = calendar.getTime();
+                params.dateFrom = DateTimeUtils.from(calendar.getCalendar());
+//                params.dateFrom = new DateTime(entity.getYear(), entity.getMonth(), )
 
                 if (month == IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                     calendar.setMonth(Calendar.DECEMBER);

@@ -24,6 +24,7 @@ public class Constants {
     public static final int DEFAULT_PRECISION = 4;
     // Database
     public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
+    public static final String ISO_DATE_FORMAT = "YYYY-MM-DD";
     public static final String MOBILE_DATA_PATTERN = "%%mobiledata%%";
     public static final String LONG_DATE_PATTERN = "EEEE, dd MMMM yyyy";
 

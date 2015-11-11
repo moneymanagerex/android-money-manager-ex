@@ -195,7 +195,8 @@ dependencies {
 //        'com.innahema:collections-query:0.2.9'
             // encryption
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
-            'de.greenrobot:eventbus:2.4.0'
+            'de.greenrobot:eventbus:2.4.0',
+            'com.darwinsys:hirondelle-date4j:1.5.1'
     )
 
     // Robolectric, unit testing

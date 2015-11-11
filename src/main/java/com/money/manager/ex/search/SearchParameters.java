@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
+import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -44,7 +45,7 @@ public class SearchParameters implements Parcelable {
     public Money amountTo;
 
     // Date
-    public Date dateFrom;
+    public DateTime dateFrom;
     public Date dateTo;
 
     public Integer payeeId = null;
@@ -75,7 +76,7 @@ public class SearchParameters implements Parcelable {
 
         String dateString = in.readString();
         if (!StringUtils.isEmpty(dateString)) {
-            dateFrom = DateUtils.getDateFromIsoString(dateString);
+            dateFrom = new DateTime(dateString);
         }
 
         dateString = in.readString();
@@ -121,7 +122,7 @@ public class SearchParameters implements Parcelable {
         parcel.writeString(amountFrom != null ? amountFrom.toString() : null);
         parcel.writeString(amountTo != null ? amountTo.toString() : null);
 
-        parcel.writeString(DateUtils.getIsoStringDate(dateFrom));
+        parcel.writeString(dateFrom.toString());
         parcel.writeString(DateUtils.getIsoStringDate(dateTo));
 
         parcel.writeValue(payeeId);
