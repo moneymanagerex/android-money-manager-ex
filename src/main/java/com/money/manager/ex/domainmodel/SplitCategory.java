@@ -109,7 +109,8 @@ public class SplitCategory
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(getId());
+        int id = getId() == null ? Constants.NOT_SET : getId();
+        dest.writeInt(id);
         dest.writeInt(getTransId());
         dest.writeInt(getCategoryId());
         dest.writeInt(getSubcategoryId());
