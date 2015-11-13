@@ -206,7 +206,7 @@ public class SearchFragment extends Fragment
         switch (requestCode) {
             case REQUEST_PICK_PAYEE:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, -1));
+                    txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                     txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
                 }
                 break;
@@ -214,9 +214,9 @@ public class SearchFragment extends Fragment
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     //create class for store data
                     CategorySub categorySub = new CategorySub();
-                    categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1);
+                    categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                     categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                    categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1);
+                    categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                     categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                     //save into button
                     displayCategory(categorySub);
@@ -366,7 +366,7 @@ public class SearchFragment extends Fragment
             ")");
 
             // subcategory
-            if (categorySub.subCategId != -1) {
+            if (categorySub.subCategId != Constants.NOT_SET) {
                 // Subcategory. Also check the splits.
                 where.addStatement("(" +
                     "(" + QueryAllData.SubcategID + "=" + Integer.toString(categorySub.subCategId) + ") " +
