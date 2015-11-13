@@ -16,6 +16,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="November 13, 2015" versionName="2015.11.13">
+        <changelogtext>Adding drill-down view of transactions in Income/Expense report.</changelogtext>
+        <changelogtext>Updated Android support library. Possible solution for some Samsung devices with Android 4.2.2.</changelogtext>
+        <changelogtext>Introducing new date manipulation library.</changelogtext>
+        <changelogtext>Switching version numbering scheme.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="November 6, 2015" versionName="3.1.2">
         <changelogtext>Enabled drill-down in Income/Expense report.</changelogtext>
         <changelogtext>Removing Collection Query library in Asset Allocation.</changelogtext>

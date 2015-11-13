@@ -63,7 +63,7 @@ public class AboutFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        String text, version = "", build = "";
+        String text, version, build;
         View view = inflater.inflate(R.layout.about_fragment, container, false);
 
         BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
@@ -75,7 +75,7 @@ public class AboutFragment extends Fragment {
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
         version = ((MoneyManagerApplication) getActivity().getApplication()).getAppVersionName();
         build = ((MoneyManagerApplication) getActivity().getApplication()).getAppVersionBuild();
-        txtVersion.setText(txtVersion.getText() + " " + version + " (" + getString(R.string.build) + " " + build + ")");
+        txtVersion.setText(getString(R.string.version) + " " + version + " (" + getString(R.string.build) + " " + build + ")");
 
         // Send Feedback
         TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
