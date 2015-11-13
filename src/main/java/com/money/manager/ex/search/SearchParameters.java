@@ -122,7 +122,8 @@ public class SearchParameters implements Parcelable {
         parcel.writeString(amountFrom != null ? amountFrom.toString() : null);
         parcel.writeString(amountTo != null ? amountTo.toString() : null);
 
-        parcel.writeString(dateFrom.toString());
+        String dateString = dateFrom != null ? dateFrom.toString() : "";
+        parcel.writeString(dateString);
         parcel.writeString(DateUtils.getIsoStringDate(dateTo));
 
         parcel.writeValue(payeeId);
