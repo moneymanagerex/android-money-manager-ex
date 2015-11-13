@@ -51,6 +51,7 @@ import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
+import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -108,8 +109,8 @@ public class EditTransactionCommonFunctions {
     public String payeeName;
     public int categoryId = Constants.NOT_SET;  // Category
     public int subCategoryId = Constants.NOT_SET;
-    public Money amountTo = MoneyFactory.fromString("0");
-    public Money amount = MoneyFactory.fromString("0"); // amount
+    public Money amountTo = MoneyFactory.fromDouble(0);
+    public Money amount = MoneyFactory.fromDouble(0); // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
@@ -252,12 +253,8 @@ public class EditTransactionCommonFunctions {
         }
 
         // Category and subcategory
-//        int categoryId = this.categoryId;
-//        int subCategoryId = this.subCategoryId;
         if (isTransfer || isSplitSelected()) {
-//            categoryId = Constants.NOT_SET;
             this.categoryId = Constants.NOT_SET;
-//            subCategoryId = Constants.NOT_SET;
             this.subCategoryId = Constants.NOT_SET;
         }
         values.put(ISplitTransactionsDataset.CATEGID, this.categoryId);
