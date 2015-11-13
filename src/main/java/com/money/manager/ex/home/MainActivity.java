@@ -582,19 +582,21 @@ public class MainActivity
             fragment = new HomeFragment();
         }
 
-//        Core core = new Core(this);
-//        if (core.isTablet()) {
         final HomeFragment finalFragment = fragment;
         // ref: http://stackoverflow.com/a/14178962/202166
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
-                    .commit();
+                try {
+                    getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
+                        .commit();
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
+                    handler.handle(e, "showing initial fragments");
+                }
             }
         });
-//        }
     }
 
     /**
