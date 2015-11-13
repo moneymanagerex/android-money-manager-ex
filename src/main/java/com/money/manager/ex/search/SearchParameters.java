@@ -17,7 +17,6 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Class that contains the search parameters.
  * Used as a DTO and to store the values.
- * Created by Alen on 13/07/2015.
  */
 public class SearchParameters implements Parcelable {
 

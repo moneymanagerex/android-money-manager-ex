@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion changeDate="unknown" versionName="upcoming">
+        <changelogtext>Corrected date conversion issues with the new library.</changelogtext>
+    </changelogversion>
     <changelogversion changeDate="November 13, 2015" versionName="2015.11.13-746">
         <changelogtext>Adding drill-down view of transactions in Income/Expense report.</changelogtext>
         <changelogtext>Updated Android support library. Possible solution for some Samsung devices with Android 4.2.2.</changelogtext>

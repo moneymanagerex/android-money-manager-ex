@@ -19,6 +19,8 @@ package com.money.manager.ex.utils;
 import android.content.Context;
 import android.widget.DatePicker;
 
+import com.money.manager.ex.Constants;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -40,9 +42,10 @@ public class DateTimeUtils {
      * @return The DateTime instance of the date.
      */
     public static DateTime from(Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat();
-        String date = sdf.format(calendar);
-//        String date = calendar.toString();
+        if (calendar == null) return null;
+
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        String date = sdf.format(calendar.getTime());
         return new DateTime(date);
     }
 

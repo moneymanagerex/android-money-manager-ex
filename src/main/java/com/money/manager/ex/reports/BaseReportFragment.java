@@ -147,7 +147,6 @@ public abstract class BaseReportFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // todo: replace this complex way of querying and find the start/end dates for ViewMobileData.Date.
         CalendarUtils calendar = new CalendarUtils();
 
 //        int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -211,9 +210,8 @@ public abstract class BaseReportFragment
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            // todo: mDateFrom.format(Constants.ISO_DATE_FORMAT) ?
-            whereClause = ViewMobileData.Date + " >= '" + mDateFrom.toString() + "' AND " +
-                ViewMobileData.Date + " <= '" + DateUtils.getIsoStringDate(mDateTo) + "'";
+            whereClause = ViewMobileData.Date + " >= '" + FormatUtilities.getIsoDateFrom(mDateFrom) +
+                "' AND " + ViewMobileData.Date + " <= '" + DateUtils.getIsoStringDate(mDateTo) + "'";
         }
 
         //check item
