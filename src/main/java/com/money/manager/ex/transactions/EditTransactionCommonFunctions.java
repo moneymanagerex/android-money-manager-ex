@@ -254,10 +254,12 @@ public class EditTransactionCommonFunctions {
         // Category and subcategory
 //        int categoryId = this.categoryId;
 //        int subCategoryId = this.subCategoryId;
-//        if (isTransfer || isSplitSelected()) {
+        if (isTransfer || isSplitSelected()) {
 //            categoryId = Constants.NOT_SET;
+            this.categoryId = Constants.NOT_SET;
 //            subCategoryId = Constants.NOT_SET;
-//        }
+            this.subCategoryId = Constants.NOT_SET;
+        }
         values.put(ISplitTransactionsDataset.CATEGID, this.categoryId);
         values.put(ISplitTransactionsDataset.SUBCATEGID, this.subCategoryId);
 
