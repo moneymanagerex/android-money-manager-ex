@@ -23,11 +23,11 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 
@@ -75,16 +75,16 @@ public class CalculateRunningBalanceTask
     }
 
     private boolean runTask() {
-        String selection = "(" + ISplitTransactionsDataset.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
-                " OR " + ISplitTransactionsDataset.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " +
-            "AND (" + ISplitTransactionsDataset.TRANSDATE + "<'" + getDate() +
-                "' OR (" + ISplitTransactionsDataset.TRANSDATE + "='" + getDate() +
+        String selection = "(" + ITransactionEntity.ACCOUNTID + "=" + Integer.toString(getAccountId()) +
+                " OR " + ITransactionEntity.TOACCOUNTID + "=" + Integer.toString(getAccountId()) + ") " +
+            "AND (" + ITransactionEntity.TRANSDATE + "<'" + getDate() +
+                "' OR (" + ITransactionEntity.TRANSDATE + "='" + getDate() +
                     "' AND " + AccountTransaction.TRANSID + "<=" + Integer.toString(getTransId()) + ")) " +
-            "AND " + ISplitTransactionsDataset.STATUS + "<>'V'";
+            "AND " + ITransactionEntity.STATUS + "<>'V'";
 
         // sorting required for the correct balance calculation.
-        String sort = ISplitTransactionsDataset.TRANSDATE + " DESC, " +
-            ISplitTransactionsDataset.TRANSCODE + ", " +
+        String sort = ITransactionEntity.TRANSDATE + " DESC, " +
+            ITransactionEntity.TRANSCODE + ", " +
             AccountTransaction.TRANSID + " DESC";
 
         AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
@@ -96,22 +96,22 @@ public class CalculateRunningBalanceTask
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String transType = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
+                String transType = cursor.getString(cursor.getColumnIndex(ITransactionEntity.TRANSCODE));
 
                 // Some users have invalid Transaction Type. Should we check .contains()?
 
                 switch (TransactionTypes.valueOf(transType)) {
                     case Withdrawal:
-                        total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                        total -= cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
                         break;
                     case Deposit:
-                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                        total += cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
                         break;
                     case Transfer:
-                        if (cursor.getInt(cursor.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID)) == getAccountId()) {
-                            total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+                        if (cursor.getInt(cursor.getColumnIndex(ITransactionEntity.ACCOUNTID)) == getAccountId()) {
+                            total -= cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
                         } else {
-                            total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
+                            total += cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT));
                         }
                         break;
                 }

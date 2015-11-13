@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
@@ -51,6 +51,7 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.transactions.YesNoDialogListener;
+import com.money.manager.ex.viewmodels.RecurringTransaction;
 
 import java.text.SimpleDateFormat;
 
@@ -112,7 +113,8 @@ public class EditRecurringTransactionActivity
 
         mRecurringTransaction = new TableBillsDeposits().initialize();
 
-        mCommonFunctions = new EditTransactionCommonFunctions(getApplicationContext(), this);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, this,
+            new RecurringTransaction());
 
         setToolbarStandardAction(getToolbar());
 
@@ -255,7 +257,7 @@ public class EditRecurringTransactionActivity
 
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.categoryId);
+        outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
@@ -332,7 +334,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.amount = tx.amount;
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
-        mCommonFunctions.categoryId = tx.categoryId;
+        mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
         mCommonFunctions.subCategoryId = tx.subCategoryId;
         mCommonFunctions.mTransNumber = tx.transactionNumber;
         mCommonFunctions.mNotes = tx.notes;
@@ -340,7 +342,8 @@ public class EditRecurringTransactionActivity
         mFrequencies = tx.repeats;
 
         // load split transactions only if no category selected.
-        if (mCommonFunctions.categoryId == Constants.NOT_SET && mCommonFunctions.mSplitTransactions == null) {
+        if ((mCommonFunctions.transactionEntity.getCategoryId() == null || mCommonFunctions.transactionEntity.getCategoryId() == Constants.NOT_SET)
+            && mCommonFunctions.mSplitTransactions == null) {
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(recurringTransactionId, this);
             mCommonFunctions.mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
@@ -355,7 +358,7 @@ public class EditRecurringTransactionActivity
     }
 
     /**
-     * refersh UI control times repeated
+     * refresh the UI control times repeated
      */
     public void refreshTimesRepeated() {
         txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
@@ -424,7 +427,7 @@ public class EditRecurringTransactionActivity
         if (hasSplitTransaction) {
             SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
 
-            for (ISplitTransactionsDataset item : mCommonFunctions.mSplitTransactions) {
+            for (ITransactionEntity item : mCommonFunctions.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
                 splitEntity.setTransId(mBillDepositsId);
@@ -453,7 +456,7 @@ public class EditRecurringTransactionActivity
                 values.clear();
                 //put value
                 values.put(SplitCategory.SPLITTRANSAMOUNT,
-                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
+                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getAmount().toString());
 
                 SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
                 // todo: use repo to delete the record.
@@ -471,7 +474,7 @@ public class EditRecurringTransactionActivity
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
-            values.put(Payee.CATEGID, mCommonFunctions.categoryId);
+            values.put(Payee.CATEGID, mCommonFunctions.transactionEntity.getCategoryId());
             values.put(Payee.SUBCATEGID, mCommonFunctions.subCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
@@ -518,7 +521,7 @@ public class EditRecurringTransactionActivity
 
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-        mCommonFunctions.categoryId = savedInstanceState.getInt(KEY_CATEGORY_ID);
+        mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(KEY_CATEGORY_ID));
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);

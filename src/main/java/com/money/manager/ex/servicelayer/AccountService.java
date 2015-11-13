@@ -33,8 +33,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.TableAccountList;
@@ -136,13 +136,13 @@ public class AccountService {
         // load all transactions on the account before and on given date.
         where.addStatement(
             where.concatenateOr(
-                where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", accountId),
-                where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", accountId)
+                where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
+                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
             )
         );
 
-        where.addStatement(ISplitTransactionsDataset.TRANSDATE, "<=", isoDate);
-        where.addStatement(ISplitTransactionsDataset.STATUS, "<>", TransactionStatuses.VOID.getCode());
+        where.addStatement(ITransactionEntity.TRANSDATE, "<=", isoDate);
+        where.addStatement(ITransactionEntity.STATUS, "<>", TransactionStatuses.VOID.getCode());
 
         String selection = where.getWhere();
 
@@ -161,47 +161,47 @@ public class AccountService {
         // calculate balance.
         while (cursor.moveToNext()) {
             tx.contentValues.clear();
-            String transType = cursor.getString(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
+            String transType = cursor.getString(cursor.getColumnIndex(ITransactionEntity.TRANSCODE));
 
             // Some users have invalid Transaction Type. Should we check .contains()?
 
             switch (TransactionTypes.valueOf(transType)) {
                 case Withdrawal:
-//                    total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
-                    DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TRANSAMOUNT,
+//                    total -= cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
+                    DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                             tx.contentValues, QueryAllData.Amount);
 //                    total = total.subtract(BigDecimal.valueOf(
-//                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+//                        cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT))));
                     amount = tx.getAmount();
                     total = total.subtract(amount);
                     break;
                 case Deposit:
-                    DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TRANSAMOUNT,
+                    DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                             tx.contentValues, QueryAllData.Amount);
-//                    total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+//                    total += cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
 //                    total = total.add(BigDecimal.valueOf(
-//                        cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+//                        cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT))));
                     amount = tx.getAmount();
                     total = total.add(amount);
                     break;
                 case Transfer:
-                    DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.ACCOUNTID,
+                    DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.ACCOUNTID,
                             tx.contentValues, QueryAllData.ACCOUNTID);
 
                     if (tx.getAccountId().equals(accountId)) {
-                        DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TRANSAMOUNT,
+                        DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                                 tx.contentValues, QueryAllData.Amount);
-//                        total -= cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT));
+//                        total -= cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
 //                        total = total.subtract(BigDecimal.valueOf(
-//                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT))));
+//                            cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT))));
                         amount = tx.getAmount();
                         total = total.subtract(amount);
                     } else {
-//                        total += cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT));
-                        DatabaseUtils.cursorDoubleToContentValues(cursor, ISplitTransactionsDataset.TOTRANSAMOUNT,
+//                        total += cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT));
+                        DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TOTRANSAMOUNT,
                                 tx.contentValues, QueryAllData.Amount);
 //                        total = total.add(BigDecimal.valueOf(
-//                            cursor.getDouble(cursor.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT))));
+//                            cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT))));
                         amount = tx.getAmount();
                         total = total.add(amount);
                     }
@@ -234,8 +234,8 @@ public class AccountService {
         // transactional accounts
         where.addStatement(
             where.concatenateOr(
-                where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", accountId),
-                where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", accountId)
+                where.getStatement(ITransactionEntity.ACCOUNTID, "=", accountId),
+                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", accountId)
             )
         );
 

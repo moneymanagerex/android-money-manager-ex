@@ -45,13 +45,11 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.MmexOpenHelper;
-import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
-import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -63,7 +61,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -96,18 +93,23 @@ public class EditTransactionCommonFunctions {
 
     public static final String DATEPICKER_TAG = "datepicker";
 
-    public EditTransactionCommonFunctions(Context context, BaseFragmentActivity parentActivity) {
+    public EditTransactionCommonFunctions(Context context, BaseFragmentActivity parentActivity,
+                                          ITransactionEntity transactionEntity) {
+        super();
+
         mContext = context.getApplicationContext();
         mParent = parentActivity;
+        this.transactionEntity = transactionEntity;
     }
 
     // Model
+    public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
     public String mDate = "";   // datepicker value
     public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    public int categoryId = Constants.NOT_SET;  // Category
+//    public int categoryId = Constants.NOT_SET;  // Category
     public int subCategoryId = Constants.NOT_SET;
     public Money amountTo = MoneyFactory.fromDouble(0);
     public Money amount = MoneyFactory.fromDouble(0); // amount
@@ -123,8 +125,8 @@ public class EditTransactionCommonFunctions {
     public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 
-    public ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
-    public ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
+    public ArrayList<ITransactionEntity> mSplitTransactions = null;
+    public ArrayList<ITransactionEntity> mSplitTransactionsDeleted = null;
 
     // Controls
     public ViewHolder viewHolder;
@@ -220,17 +222,17 @@ public class EditTransactionCommonFunctions {
 
         // Date
         String transactionDate = DateUtils.getIsoStringDate((Date) viewHolder.txtSelectDate.getTag());
-        values.put(ISplitTransactionsDataset.TRANSDATE, transactionDate);
+        values.put(ITransactionEntity.TRANSDATE, transactionDate);
 
         // Transaction Type
-        values.put(ISplitTransactionsDataset.TRANSCODE, this.getTransactionType());
+        values.put(ITransactionEntity.TRANSCODE, this.getTransactionType());
 
         // Status
-        values.put(ISplitTransactionsDataset.STATUS, this.status);
+        values.put(ITransactionEntity.STATUS, this.status);
 
         // Amount
         Money amount = MoneyFactory.fromString(this.txtAmount.getTag().toString());
-        values.put(ISplitTransactionsDataset.TRANSAMOUNT, amount.toDouble());
+        values.put(ITransactionEntity.TRANSAMOUNT, amount.toDouble());
 
         // Amount To
         Money amountTo;
@@ -240,29 +242,30 @@ public class EditTransactionCommonFunctions {
             // Use the Amount value.
             amountTo = MoneyFactory.fromString(this.txtAmount.getTag().toString());
         }
-        values.put(ISplitTransactionsDataset.TOTRANSAMOUNT, amountTo.toDouble());
+        values.put(ITransactionEntity.TOTRANSAMOUNT, amountTo.toDouble());
 
         // Accounts & Payee
-        values.put(ISplitTransactionsDataset.ACCOUNTID, this.accountId);
+        values.put(ITransactionEntity.ACCOUNTID, this.accountId);
         if (isTransfer) {
-            values.put(ISplitTransactionsDataset.TOACCOUNTID, this.toAccountId);
-            values.put(ISplitTransactionsDataset.PAYEEID, Constants.NOT_SET);
+            values.put(ITransactionEntity.TOACCOUNTID, this.toAccountId);
+            values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
         } else {
-            values.put(ISplitTransactionsDataset.TOACCOUNTID, Constants.NOT_SET);
-            values.put(ISplitTransactionsDataset.PAYEEID, this.payeeId);
+            values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
+            values.put(ITransactionEntity.PAYEEID, this.payeeId);
         }
 
         // Category and subcategory
         if (isTransfer || isSplitSelected()) {
-            this.categoryId = Constants.NOT_SET;
+//            this.categoryId = Constants.NOT_SET;
+            this.transactionEntity.setCategoryId(Constants.NOT_SET);
             this.subCategoryId = Constants.NOT_SET;
         }
-        values.put(ISplitTransactionsDataset.CATEGID, this.categoryId);
-        values.put(ISplitTransactionsDataset.SUBCATEGID, this.subCategoryId);
+        values.put(ITransactionEntity.CATEGID, this.transactionEntity.getCategoryId());
+        values.put(ITransactionEntity.SUBCATEGID, this.subCategoryId);
 
-        values.put(ISplitTransactionsDataset.FOLLOWUPID, Constants.NOT_SET);
-        values.put(ISplitTransactionsDataset.TRANSACTIONNUMBER, this.edtTransNumber.getText().toString());
-        values.put(ISplitTransactionsDataset.NOTES, this.edtNotes.getText().toString());
+        values.put(ITransactionEntity.FOLLOWUPID, Constants.NOT_SET);
+        values.put(ITransactionEntity.TRANSACTIONNUMBER, this.edtTransNumber.getText().toString());
+        values.put(ITransactionEntity.NOTES, this.edtNotes.getText().toString());
 
         return values;
     }
@@ -659,9 +662,9 @@ public class EditTransactionCommonFunctions {
                 MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
                 AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
 
-                String query = "SELECT MAX(CAST(" + ISplitTransactionsDataset.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                String query = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                     repo.getSource() + " WHERE " +
-                    ISplitTransactionsDataset.ACCOUNTID + "=?";
+                    ITransactionEntity.ACCOUNTID + "=?";
 
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
                     new String[]{Integer.toString(accountId)});
@@ -776,7 +779,7 @@ public class EditTransactionCommonFunctions {
                 payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
-                if (!isSplitSelected() && categoryId == Constants.NOT_SET) {
+                if (!isSplitSelected() && this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
                     if (setCategoryFromPayee(payeeId)) {
                         refreshCategoryName(); // refresh UI
                     }
@@ -799,7 +802,7 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
                 subCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                 subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
@@ -816,7 +819,7 @@ public class EditTransactionCommonFunctions {
                 if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
                     Money splitSum = MoneyFactory.fromString("0");
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
-                        splitSum = splitSum.add(mSplitTransactions.get(i).getSplitTransAmount());
+                        splitSum = splitSum.add(mSplitTransactions.get(i).getAmount());
                     }
                     displayAmountFormatted(txtAmount, splitSum,
                             !transactionType.equals(TransactionTypes.Transfer)
@@ -1012,10 +1015,10 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean displayCategoryName() {
-        if(categoryId <= 0 && subCategoryId <= 0) return false;
+        if(this.transactionEntity.getCategoryId() <= 0 && subCategoryId <= 0) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
-        Category category = categoryRepository.load(categoryId);
+        Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
         if (category != null) {
             this.categoryName = category.getName();
         } else {
@@ -1052,12 +1055,13 @@ public class EditTransactionCommonFunctions {
         if ((curPayee != null) && (curPayee.moveToFirst())) {
             // check if category is valid
             if (curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)) != Constants.NOT_SET) {
-                categoryId = curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID));
+                this.transactionEntity.setCategoryId(curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)));
                 subCategoryId = curPayee.getInt(curPayee.getColumnIndex(Payee.SUBCATEGID));
                 // create instance of query
                 QueryCategorySubCategory category = new QueryCategorySubCategory(mParent.getApplicationContext());
                 // compose selection
-                String where = "CATEGID=" + Integer.toString(categoryId) + " AND SUBCATEGID=" + Integer.toString(subCategoryId);
+                String where = "CATEGID=" + Integer.toString(this.transactionEntity.getCategoryId()) +
+                    " AND SUBCATEGID=" + Integer.toString(subCategoryId);
                 Cursor curCategory = mParent.getContentResolver().query(category.getUri(),
                         category.getAllColumns(), where, null, null);
                 // check cursor is valid
@@ -1241,7 +1245,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // Category is required if tx is not a split or transfer.
-        if (categoryId == Constants.NOT_SET && (!isSplitSelected()) && !isTransfer) {
+        if (this.transactionEntity.getCategoryId() == Constants.NOT_SET && (!isSplitSelected()) && !isTransfer) {
             Core.alertDialog(mParent, R.string.error_category_not_selected);
             return false;
         }
@@ -1281,9 +1285,9 @@ public class EditTransactionCommonFunctions {
         if(mSplitTransactions == null) return;
 
         for(int i = 0; i < mSplitTransactions.size(); i++) {
-            ISplitTransactionsDataset split = mSplitTransactions.get(i);
+            ITransactionEntity split = mSplitTransactions.get(i);
             int id = split.getId();
-            ArrayList<ISplitTransactionsDataset> deletedSplits = getDeletedSplitCategories();
+            ArrayList<ITransactionEntity> deletedSplits = getDeletedSplitCategories();
 
             if(id == -1) {
                 // Remove any newly created splits.
@@ -1299,7 +1303,7 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public ArrayList<ISplitTransactionsDataset> getDeletedSplitCategories() {
+    public ArrayList<ITransactionEntity> getDeletedSplitCategories() {
         if(mSplitTransactionsDeleted == null){
             mSplitTransactionsDeleted = new ArrayList<>();
         }

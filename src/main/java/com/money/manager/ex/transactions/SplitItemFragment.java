@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,7 +39,7 @@ import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -55,7 +54,7 @@ public class SplitItemFragment
     private static final int REQUEST_PICK_CATEGORY = 1;
     private static final int REQUEST_AMOUNT = 2;
 
-    public static SplitItemFragment newInstance(ISplitTransactionsDataset split, Integer currencyId) {
+    public static SplitItemFragment newInstance(ITransactionEntity split, Integer currencyId) {
         SplitItemFragment fragment = new SplitItemFragment();
 
         Bundle args = new Bundle();
@@ -66,7 +65,7 @@ public class SplitItemFragment
         return fragment;
     }
 
-    private ISplitTransactionsDataset mSplitTransaction;
+    private ITransactionEntity mSplitTransaction;
     private ISplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtAmount;
     private Spinner spinTransCode;
@@ -100,7 +99,7 @@ public class SplitItemFragment
         if (layout != null) {
             // amount
             txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
-            Money splitTransactionAmount = mSplitTransaction.getSplitTransAmount();
+            Money splitTransactionAmount = mSplitTransaction.getAmount();
             if (splitTransactionAmount != null && !(splitTransactionAmount.isZero())) {
                 // Change the sign to positive.
                 if(splitTransactionAmount.toDouble() < 0) {
@@ -141,7 +140,7 @@ public class SplitItemFragment
 
             // category and subcategory
             TextView txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
-            String buttonText = core.getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId());
+            String buttonText = core.getCategSubName(mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId());
             txtSelectCategory.setText(buttonText);
 
             txtSelectCategory.setOnClickListener(new OnClickListener() {
@@ -182,9 +181,9 @@ public class SplitItemFragment
                 if (txtSelectCategory != null) {
                     txtSelectCategory.setText(null);
                     if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                        mSplitTransaction.setCategId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1));
-                        mSplitTransaction.setSubCategId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1));
-                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(mSplitTransaction.getCategId(), mSplitTransaction.getSubCategId()));
+                        mSplitTransaction.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1));
+                        mSplitTransaction.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1));
+                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId()));
                     }
                 }
         }
@@ -202,7 +201,7 @@ public class SplitItemFragment
     @Override
     public void onFinishedInputAmountDialog(int id, Money amount) {
         if (txtAmount.getId() == id) {
-            mSplitTransaction.setSplitTransAmount(amount);
+            mSplitTransaction.setAmount(amount);
 
             FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount, getCurrencyId());
 
@@ -234,12 +233,12 @@ public class SplitItemFragment
      *                              Withdrawal is -.
      * @return Split Transaction
      */
-    public ISplitTransactionsDataset getSplitTransaction(TransactionTypes parentTransactionType) {
+    public ITransactionEntity getSplitTransaction(TransactionTypes parentTransactionType) {
         Object tag = txtAmount.getTag();
 
         if (tag == null) {
             // handle 0 values.
-            mSplitTransaction.setSplitTransAmount(MoneyFactory.fromString("0"));
+            mSplitTransaction.setAmount(MoneyFactory.fromString("0"));
             return mSplitTransaction;
         }
 
@@ -253,10 +252,10 @@ public class SplitItemFragment
 
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
-//            mSplitTransaction.setSplitTransAmount(amount.doubleValue() * -1);
-            mSplitTransaction.setSplitTransAmount(amount.negate());
+//            mSplitTransaction.setAmount(amount.doubleValue() * -1);
+            mSplitTransaction.setAmount(amount.negate());
         } else {
-            mSplitTransaction.setSplitTransAmount(amount);
+            mSplitTransaction.setAmount(amount);
         }
 
         return mSplitTransaction;
@@ -269,7 +268,7 @@ public class SplitItemFragment
 
         SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
         boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
-        Money amount = mSplitTransaction.getSplitTransAmount();
+        Money amount = mSplitTransaction.getAmount();
         if(parentIsWithdrawal){
             // parent is Withdrawal.
             transactionTypeSelection = amount.toDouble() >= 0

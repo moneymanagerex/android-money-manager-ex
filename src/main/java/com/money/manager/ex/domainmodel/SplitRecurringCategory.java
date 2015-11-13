@@ -1,14 +1,12 @@
 package com.money.manager.ex.domainmodel;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,7 +18,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class SplitRecurringCategory
     extends EntityBase
-    implements ISplitTransactionsDataset {
+    implements ITransactionEntity {
 
     public static String TABLE_NAME = "budgetsplittransactions_v1";
 
@@ -47,9 +45,9 @@ public class SplitRecurringCategory
                                        double amount) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
-        entity.setCategId(categoryId);
-        entity.setSubCategId(subcategoryId);
-        entity.setSplitTransAmount(MoneyFactory.fromDouble(amount));
+        entity.setCategoryId(categoryId);
+        entity.setSubcategoryId(subcategoryId);
+        entity.setAmount(MoneyFactory.fromDouble(amount));
         entity.setTransId(transactionId);
 
         return entity;
@@ -64,32 +62,32 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public Integer getCategId() {
+    public Integer getCategoryId() {
         return getInt(CATEGID);
     }
 
     @Override
-    public Money getSplitTransAmount() {
+    public Money getAmount() {
         return getMoney(SPLITTRANSAMOUNT);
     }
 
     @Override
-    public Integer getSubCategId() {
+    public Integer getSubcategoryId() {
         return getInt(SUBCATEGID);
     }
 
     @Override
-    public void setCategId(int categId) {
+    public void setCategoryId(int categId) {
         setInteger(CATEGID, categId);
     }
 
     @Override
-    public void setSplitTransAmount(Money splitTransAmount) {
+    public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
     }
 
     @Override
-    public void setSubCategId(int subCategId) {
+    public void setSubcategoryId(int subCategId) {
         setInteger(SUBCATEGID, subCategId);
     }
 
@@ -116,21 +114,21 @@ public class SplitRecurringCategory
         int transId = getTransId() == null ? Constants.NOT_SET : getTransId();
         dest.writeInt(transId);
 
-        int categoryId = getCategId() == null ? Constants.NOT_SET : getCategId();
+        int categoryId = getCategoryId() == null ? Constants.NOT_SET : getCategoryId();
         dest.writeInt(categoryId);
 
-        dest.writeInt(getSubCategId());
-        dest.writeString(getSplitTransAmount().toString());
+        dest.writeInt(getSubcategoryId());
+        dest.writeString(getAmount().toString());
     }
 
     public void readFromParcel(Parcel source) {
         setId(source.readInt());
         setTransId(source.readInt());
-        setCategId(source.readInt());
-        setSubCategId(source.readInt());
+        setCategoryId(source.readInt());
+        setSubcategoryId(source.readInt());
         String amount = source.readString();
         if (StringUtils.isNotEmpty(amount)) {
-            setSplitTransAmount(MoneyFactory.fromString(amount));
+            setAmount(MoneyFactory.fromString(amount));
         }
     }
 }

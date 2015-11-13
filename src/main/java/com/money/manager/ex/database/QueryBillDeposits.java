@@ -22,7 +22,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.utils.RawFileUtils;
 
 /**
- * @author lazzari.ale@gmail.com
+ * A dataset for the query that fetches recurring transactions.
  */
 public class QueryBillDeposits
         extends Dataset {

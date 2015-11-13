@@ -17,17 +17,16 @@
 
 package com.money.manager.ex.database;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Parcelable;
 
 import info.javaperformance.money.Money;
 
 /**
- * Interface for Split Category entity. Used by split categories on account transactions
- * and on recurring transactions.
+ * Interface for Split Category entity.
+ * This is a common transaction (the common fields in Account & Recurring transactions).
+ * A subset is used by split categories on account transactions and on recurring transactions.
  */
-public interface ISplitTransactionsDataset
+public interface ITransactionEntity
     extends Parcelable {
 
     String ACCOUNTID = "ACCOUNTID";
@@ -46,25 +45,25 @@ public interface ISplitTransactionsDataset
 
     Integer getId();
 
-    Integer getCategId();
+    Integer getCategoryId();
 
-    Integer getSubCategId();
+    Integer getSubcategoryId();
 
     /**
      * @return the splitTransAmount
      */
-    Money getSplitTransAmount();
+    Money getAmount();
 
     // Setters
 
     void setId(int splitTransId);
 
-    void setCategId(int categId);
+    void setCategoryId(int categId);
 
-    void setSubCategId(int subCategId);
+    void setSubcategoryId(int subCategId);
 
     /**
      * @param splitTransAmount the splitTransAmount to set
      */
-    void setSplitTransAmount(Money splitTransAmount);
+    void setAmount(Money splitTransAmount);
 }

@@ -18,8 +18,9 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.Date;
@@ -31,7 +32,8 @@ import info.javaperformance.money.MoneyFactory;
  * Account Transaction entity. Table checkingaccount_v1.
  */
 public class AccountTransaction
-    extends EntityBase {
+    extends EntityBase
+    implements ITransactionEntity {
 
     public static final String TRANSID = "TRANSID";
 
@@ -51,13 +53,16 @@ public class AccountTransaction
 
     public AccountTransaction() {
         super();
+
+        this.setCategoryId(Constants.NOT_SET);
+        this.setSubcategoryId(Constants.NOT_SET);
     }
 
     public AccountTransaction(ContentValues contentValues) {
         super(contentValues);
     }
 
-    public int getId() {
+    public Integer getId() {
         return getInt(TRANSID);
     }
 
@@ -66,39 +71,39 @@ public class AccountTransaction
     }
 
     public int getAccountId() {
-        return getInt(ISplitTransactionsDataset.ACCOUNTID);
+        return getInt(ITransactionEntity.ACCOUNTID);
     }
 
     public void setAccountId(int value) {
-        setInteger(ISplitTransactionsDataset.ACCOUNTID, value);
+        setInteger(ITransactionEntity.ACCOUNTID, value);
     }
 
     public Money getAmount() {
-        Double amount = getDouble(ISplitTransactionsDataset.TRANSAMOUNT);
+        Double amount = getDouble(ITransactionEntity.TRANSAMOUNT);
         Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
 
     public void setAmount(Money value) {
-        setMoney(ISplitTransactionsDataset.TRANSAMOUNT, value);
+        setMoney(ITransactionEntity.TRANSAMOUNT, value);
     }
 
     public Money getAmountTo() {
-        Double amount = getDouble(ISplitTransactionsDataset.TOTRANSAMOUNT);
+        Double amount = getDouble(ITransactionEntity.TOTRANSAMOUNT);
         Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
 
-    public int getCategoryId() {
-        return getInt(ISplitTransactionsDataset.CATEGID);
+    public Integer getCategoryId() {
+        return getInt(ITransactionEntity.CATEGID);
     }
 
-    public void setCategoryId(Integer value) {
-        setInteger(ISplitTransactionsDataset.CATEGID, value);
+    public void setCategoryId(int value) {
+        setInteger(ITransactionEntity.CATEGID, value);
     }
 
     public String getDateAsString() {
-        return getString(ISplitTransactionsDataset.TRANSDATE);
+        return getString(ITransactionEntity.TRANSDATE);
     }
 
     public Date getDate() {
@@ -107,39 +112,39 @@ public class AccountTransaction
     }
 
     public String getNotes() {
-        return getString(ISplitTransactionsDataset.NOTES);
+        return getString(ITransactionEntity.NOTES);
     }
 
     public int getPayeeId() {
-        return getInt(ISplitTransactionsDataset.PAYEEID);
+        return getInt(ITransactionEntity.PAYEEID);
     }
 
     public void setPayeeId(int value) {
-        setInteger(ISplitTransactionsDataset.PAYEEID, value);
+        setInteger(ITransactionEntity.PAYEEID, value);
     }
 
     public String getStatus() {
-        return getString(ISplitTransactionsDataset.STATUS);
+        return getString(ITransactionEntity.STATUS);
     }
 
-    public int getSubcategoryId() {
-        return getInt(ISplitTransactionsDataset.SUBCATEGID);
+    public Integer getSubcategoryId() {
+        return getInt(ITransactionEntity.SUBCATEGID);
     }
 
-    public void setSubcategoryId(Integer value) {
-        setInteger(ISplitTransactionsDataset.SUBCATEGID, value);
+    public void setSubcategoryId(int value) {
+        setInteger(ITransactionEntity.SUBCATEGID, value);
     }
 
     public Integer getToAccountId() {
-        return getInt(ISplitTransactionsDataset.TOACCOUNTID);
+        return getInt(ITransactionEntity.TOACCOUNTID);
     }
 
     public String getTransCode() {
-        return getString(ISplitTransactionsDataset.TRANSCODE);
+        return getString(ITransactionEntity.TRANSCODE);
     }
 
     public String getTransactionNumber() {
-        return getString(ISplitTransactionsDataset.TRANSACTIONNUMBER);
+        return getString(ITransactionEntity.TRANSACTIONNUMBER);
     }
 
     public TransactionTypes getTransType() {
@@ -148,7 +153,7 @@ public class AccountTransaction
     }
 
     public void setType(TransactionTypes value) {
-        setString(ISplitTransactionsDataset.TRANSCODE, value.name());
+        setString(ITransactionEntity.TRANSCODE, value.name());
     }
 
 }

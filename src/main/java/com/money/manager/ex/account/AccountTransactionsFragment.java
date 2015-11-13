@@ -52,7 +52,7 @@ import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
@@ -417,8 +417,8 @@ public class AccountTransactionsFragment
 //            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
         where.addStatement(
             where.concatenateOr(
-                where.getStatement(ISplitTransactionsDataset.TOACCOUNTID, "=", mAccountId),
-                where.getStatement(ISplitTransactionsDataset.ACCOUNTID, "=", mAccountId)
+                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", mAccountId),
+                where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
         ));
 
         where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));

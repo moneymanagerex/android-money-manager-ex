@@ -21,7 +21,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.NumericHelper;
 
 import java.math.BigDecimal;
 
@@ -65,37 +64,37 @@ public class TableBillsDeposits
 	@Override
 	public String[] getAllColumns() {
 		return new String [] {BDID + " AS _id", BDID,
-                ISplitTransactionsDataset.ACCOUNTID,
-                ISplitTransactionsDataset.TOACCOUNTID,
-                ISplitTransactionsDataset.PAYEEID,
-                ISplitTransactionsDataset.TRANSCODE,
-                ISplitTransactionsDataset.TRANSAMOUNT,
-                ISplitTransactionsDataset.STATUS,
-                ISplitTransactionsDataset.TRANSACTIONNUMBER,
-                ISplitTransactionsDataset.NOTES,
-                ISplitTransactionsDataset.CATEGID,
-                ISplitTransactionsDataset.SUBCATEGID,
-                ISplitTransactionsDataset.TRANSDATE,
-                ISplitTransactionsDataset.FOLLOWUPID,
-                ISplitTransactionsDataset.TOTRANSAMOUNT,
+                ITransactionEntity.ACCOUNTID,
+                ITransactionEntity.TOACCOUNTID,
+                ITransactionEntity.PAYEEID,
+                ITransactionEntity.TRANSCODE,
+                ITransactionEntity.TRANSAMOUNT,
+                ITransactionEntity.STATUS,
+                ITransactionEntity.TRANSACTIONNUMBER,
+                ITransactionEntity.NOTES,
+                ITransactionEntity.CATEGID,
+                ITransactionEntity.SUBCATEGID,
+                ITransactionEntity.TRANSDATE,
+                ITransactionEntity.FOLLOWUPID,
+                ITransactionEntity.TOTRANSAMOUNT,
                 REPEATS, NEXTOCCURRENCEDATE, NUMOCCURRENCES};
 	}
 	
 	@Override
 	public void setValueFromCursor(Cursor c) {
 		this.id = c.getInt(c.getColumnIndex(TableBillsDeposits.BDID));
-		this.accountId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.ACCOUNTID));
-		this.toAccountId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.TOACCOUNTID));
-		this.transactionCode = c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSCODE));
+		this.accountId = c.getInt(c.getColumnIndex(ITransactionEntity.ACCOUNTID));
+		this.toAccountId = c.getInt(c.getColumnIndex(ITransactionEntity.TOACCOUNTID));
+		this.transactionCode = c.getString(c.getColumnIndex(ITransactionEntity.TRANSCODE));
 //		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
-		status = c.getString(c.getColumnIndex(ISplitTransactionsDataset.STATUS));
-		amount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TRANSAMOUNT)));
-		this.totalAmount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ISplitTransactionsDataset.TOTRANSAMOUNT)));
-		payeeId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.PAYEEID));
-		categoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.CATEGID));
-		subCategoryId = c.getInt(c.getColumnIndex(ISplitTransactionsDataset.SUBCATEGID));
-		transactionNumber = c.getString(c.getColumnIndex(ISplitTransactionsDataset.TRANSACTIONNUMBER));
-		notes = c.getString(c.getColumnIndex(ISplitTransactionsDataset.NOTES));
+		status = c.getString(c.getColumnIndex(ITransactionEntity.STATUS));
+		amount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ITransactionEntity.TRANSAMOUNT)));
+		this.totalAmount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT)));
+		payeeId = c.getInt(c.getColumnIndex(ITransactionEntity.PAYEEID));
+		categoryId = c.getInt(c.getColumnIndex(ITransactionEntity.CATEGID));
+		subCategoryId = c.getInt(c.getColumnIndex(ITransactionEntity.SUBCATEGID));
+		transactionNumber = c.getString(c.getColumnIndex(ITransactionEntity.TRANSACTIONNUMBER));
+		notes = c.getString(c.getColumnIndex(ITransactionEntity.NOTES));
 		nextOccurrence = c.getString(c.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
 		repeats = c.getInt(c.getColumnIndex(TableBillsDeposits.REPEATS));
 		numOccurrence = c.getInt(c.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));

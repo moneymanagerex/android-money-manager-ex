@@ -16,7 +16,7 @@
  */
 package com.money.manager.ex.transactions;
 
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 
 /**
  * Callbacks from the individual split item fragment.
@@ -24,5 +24,5 @@ import com.money.manager.ex.database.ISplitTransactionsDataset;
  * Created by Alen Siljak on 28/09/2015.
  */
 public interface ISplitItemFragmentCallbacks {
-    void onRemoveItem(ISplitTransactionsDataset object);
+    void onRemoveItem(ITransactionEntity object);
 }

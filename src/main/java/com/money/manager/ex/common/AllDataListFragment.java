@@ -53,7 +53,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
@@ -675,7 +675,7 @@ public class AllDataListFragment
             // content value for updates
             ContentValues values = new ContentValues();
             // set new state
-            values.put(ISplitTransactionsDataset.STATUS, status.toUpperCase());
+            values.put(ITransactionEntity.STATUS, status.toUpperCase());
 
             AccountTransactionRepository repo = new AccountTransactionRepository(getActivity());
 

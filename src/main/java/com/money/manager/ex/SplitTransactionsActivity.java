@@ -27,11 +27,11 @@ import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.transactions.ISplitItemFragmentCallbacks;
 import com.money.manager.ex.transactions.SplitItemFragment;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +61,8 @@ public class SplitTransactionsActivity
      * Needed to distinguish between SplitCategory and SplitRecurringCategory.
      */
     private String EntityTypeName = null;
-    private ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
-    private ArrayList<ISplitTransactionsDataset> mSplitDeleted = null;
+    private ArrayList<ITransactionEntity> mSplitTransactions = null;
+    private ArrayList<ITransactionEntity> mSplitDeleted = null;
     private FloatingActionButton mFloatingActionButton;
     private Integer currencyId = Constants.NOT_SET;
 
@@ -127,18 +127,18 @@ public class SplitTransactionsActivity
 
     @Override
     public boolean onActionDoneClick() {
-        ArrayList<ISplitTransactionsDataset> allSplitTransactions = getAllSplitCategories();
+        ArrayList<ITransactionEntity> allSplitTransactions = getAllSplitCategories();
         Money total = MoneyFactory.fromString("0");
 
         // check data
         for (int i = 0; i < allSplitTransactions.size(); i++) {
-            ISplitTransactionsDataset splitTransactions = allSplitTransactions.get(i);
-            if (splitTransactions.getCategId() == -1 && splitTransactions.getSubCategId() == -1) {
+            ITransactionEntity splitTransactions = allSplitTransactions.get(i);
+            if (splitTransactions.getCategoryId() == -1 && splitTransactions.getSubcategoryId() == -1) {
                 Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected);
                 return false;
             }
 
-            total = total.add(splitTransactions.getSplitTransAmount());
+            total = total.add(splitTransactions.getAmount());
         }
 
         // total amount must not be negative.
@@ -157,7 +157,7 @@ public class SplitTransactionsActivity
     }
 
     @Override
-    public void onRemoveItem(ISplitTransactionsDataset object) {
+    public void onRemoveItem(ITransactionEntity object) {
         if (mSplitDeleted == null) {
             mSplitDeleted = new ArrayList<>();
         }
@@ -179,8 +179,8 @@ public class SplitTransactionsActivity
      * Returns all split categories created on the form.
      * @return List of Split Transactions that are displayed.
      */
-    public ArrayList<ISplitTransactionsDataset> getAllSplitCategories() {
-        ArrayList<ISplitTransactionsDataset> splitCategories = new ArrayList<>();
+    public ArrayList<ITransactionEntity> getAllSplitCategories() {
+        ArrayList<ITransactionEntity> splitCategories = new ArrayList<>();
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
 
         for(Fragment fragment:fragments) {
@@ -235,7 +235,7 @@ public class SplitTransactionsActivity
         }
     }
 
-    private void addFragmentChild(ISplitTransactionsDataset object) {
+    private void addFragmentChild(ITransactionEntity object) {
         int tagNumber = object.getId() == null || object.getId() == Constants.NOT_SET
             ? mIdTag++
             : object.getId();

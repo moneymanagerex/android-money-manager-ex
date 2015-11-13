@@ -243,14 +243,8 @@ public class EditPriceDialog
         mCurrentPrice = currentPrice;
     }
 
-//    public void setParameters(int accountId, final String symbol, MonetaryAmount currentPrice) {
-//        Money money = MoneyFactory.fromString(currentPrice.getNumber().toString());
-//        setParameters(accountId, symbol, money);
-//    }
-
-
     private void showCurrentPrice(Money currentPrice, int accountId) {
-        EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null);
+        EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null, null);
         commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
 
         AccountRepository accountRepository = new AccountRepository(mContext);

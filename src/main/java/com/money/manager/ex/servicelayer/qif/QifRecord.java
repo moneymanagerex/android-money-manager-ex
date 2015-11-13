@@ -22,7 +22,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
@@ -139,12 +139,12 @@ public class QifRecord {
         // retrieve splits
         SplitCategoriesRepository repo = new SplitCategoriesRepository(mContext);
         int transactionId = transaction.getId();
-        ArrayList<ISplitTransactionsDataset> splits = repo.loadSplitCategoriesFor(transactionId);
+        ArrayList<ITransactionEntity> splits = repo.loadSplitCategoriesFor(transactionId);
         if (splits == null) return Constants.EMPTY_STRING;
 
         String transactionType = transaction.getTransactionTypeName();
 
-        for(ISplitTransactionsDataset split : splits) {
+        for(ITransactionEntity split : splits) {
             String splitRecord = getSplitCategory(split, transactionType);
             builder.append(splitRecord);
         }
@@ -152,7 +152,7 @@ public class QifRecord {
         return builder.toString();
     }
 
-    private String getSplitCategory(ISplitTransactionsDataset split, String transactionType) {
+    private String getSplitCategory(ITransactionEntity split, String transactionType) {
         StringBuilder builder = new StringBuilder();
         Core core = new Core(mContext);
 
@@ -161,13 +161,13 @@ public class QifRecord {
         // E = memo in split
 
         // category
-        String category = core.getCategSubName(split.getCategId(), split.getSubCategId());
+        String category = core.getCategSubName(split.getCategoryId(), split.getSubcategoryId());
         builder.append("S");
         builder.append(category);
         builder.append(System.lineSeparator());
 
         // amount
-        Money amount = split.getSplitTransAmount();
+        Money amount = split.getAmount();
         // handle sign
         if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Withdrawal)) {
             amount = amount.negate();

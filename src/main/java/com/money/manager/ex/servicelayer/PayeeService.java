@@ -22,7 +22,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
@@ -109,7 +109,7 @@ public class PayeeService {
 
     public boolean isPayeeUsed(int payeeId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
-        int links = repo.count(ISplitTransactionsDataset.PAYEEID + "=?", new String[]{Integer.toString(payeeId)});
+        int links = repo.count(ITransactionEntity.PAYEEID + "=?", new String[]{Integer.toString(payeeId)});
         return links > 0;
     }
 

@@ -16,17 +16,57 @@
  */
 package com.money.manager.ex.viewmodels;
 
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.domainmodel.EntityBase;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Record from All Data adapter. Used for recurring transactions lists.
  * Source is QueryBillDeposits.
  */
 public class RecurringTransaction
-    extends EntityBase {
+    extends EntityBase
+    implements ITransactionEntity {
+
+    public Integer getId() {
+        return getInt(QueryBillDeposits.BDID);
+    }
+
+    public void setId(int id) {
+        setInteger(QueryBillDeposits.BDID, id);
+    }
 
     public Integer getAccountId() {
-        return getInt(QueryBillDeposits.ACCOUNTID);
+        return getInt(ITransactionEntity.ACCOUNTID);
     }
+
+    public Money getAmount() {
+        Double amount = getDouble(ITransactionEntity.TRANSAMOUNT);
+        Money result = MoneyFactory.fromDouble(amount);
+        return result;
+    }
+
+    public void setAmount(Money value) {
+        setMoney(ITransactionEntity.TRANSAMOUNT, value);
+    }
+
+    public Integer getCategoryId() {
+        return getInt(ITransactionEntity.CATEGID);
+    }
+
+    public void setCategoryId(int value) {
+        setInteger(ITransactionEntity.CATEGID, value);
+    }
+
+    public Integer getSubcategoryId() {
+        return getInt(ITransactionEntity.SUBCATEGID);
+    }
+
+    public void setSubcategoryId(int value) {
+        setInteger(ITransactionEntity.SUBCATEGID, value);
+    }
+
 }

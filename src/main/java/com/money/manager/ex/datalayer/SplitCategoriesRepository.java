@@ -20,7 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.SplitCategory;
 
@@ -51,14 +51,14 @@ public class SplitCategoriesRepository
      * @param transId Id of the main transaction for which to load the splits.
      * @return list of split categories for the given transaction.
      */
-    public ArrayList<ISplitTransactionsDataset> loadSplitCategoriesFor(int transId) {
+    public ArrayList<ITransactionEntity> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
             SplitCategory.TRANSID + "=" + Integer.toString(transId),
             null,
             SplitCategory.SPLITTRANSID);
         if (curSplit == null) return null;
 
-        ArrayList<ISplitTransactionsDataset> listSplitTrans = new ArrayList<>();
+        ArrayList<ITransactionEntity> listSplitTrans = new ArrayList<>();
 
         while (curSplit.moveToNext()) {
             SplitCategory obj = new SplitCategory();

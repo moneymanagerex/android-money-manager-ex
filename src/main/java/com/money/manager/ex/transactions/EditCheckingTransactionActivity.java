@@ -38,7 +38,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
@@ -80,7 +80,7 @@ public class EditCheckingTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this, this);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, this, new AccountTransaction());
 
         DropboxHelper dropbox = DropboxHelper.getInstance();
         if (dropbox == null) {
@@ -188,7 +188,7 @@ public class EditCheckingTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.txtAmount.getTag().toString());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.categoryId);
+        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
         outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
@@ -232,13 +232,13 @@ public class EditCheckingTransactionActivity
 
     private boolean createSplitCategoriesFromRecurringTransaction() {
         // check if category and sub-category are not set.
-        if(!(mCommonFunctions.categoryId <= 0 && mCommonFunctions.subCategoryId <= 0)) return false;
+        if(!(mCommonFunctions.transactionEntity.getCategoryId() <= 0 && mCommonFunctions.subCategoryId <= 0)) return false;
 
         // Adding transactions to the split list will set the Split checkbox and the category name.
 
         // create split transactions
         RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
-        ArrayList<ISplitTransactionsDataset> splitTemplates = recurringTransaction.loadSplitTransactions();
+        ArrayList<ITransactionEntity> splitTemplates = recurringTransaction.loadSplitTransactions();
         if(mCommonFunctions.mSplitTransactions == null) mCommonFunctions.mSplitTransactions = new ArrayList<>();
 
         // For each of the templates, create a new record.
@@ -246,9 +246,9 @@ public class EditCheckingTransactionActivity
             SplitRecurringCategory record = (SplitRecurringCategory) splitTemplates.get(i);
 
             SplitCategory newSplit = new SplitCategory();
-            newSplit.setSplitTransAmount(record.getSplitTransAmount());
-            newSplit.setCategId(record.getCategId());
-            newSplit.setSubCategId(record.getSubCategId());
+            newSplit.setAmount(record.getAmount());
+            newSplit.setCategoryId(record.getCategoryId());
+            newSplit.setSubcategoryId(record.getSubcategoryId());
 
             mCommonFunctions.mSplitTransactions.add(newSplit);
         }
@@ -288,7 +288,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.amount = tx.getAmount();
         mCommonFunctions.amountTo = tx.getAmountTo();
         mCommonFunctions.payeeId = tx.getPayeeId();
-        mCommonFunctions.categoryId = tx.getCategoryId();
+        mCommonFunctions.transactionEntity.setCategoryId(tx.getCategoryId());
         mCommonFunctions.subCategoryId = tx.getSubcategoryId();
         mCommonFunctions.mTransNumber = tx.getTransactionNumber();
         mCommonFunctions.mNotes = tx.getNotes();
@@ -303,7 +303,7 @@ public class EditCheckingTransactionActivity
 
             if (duplicate && (mCommonFunctions.mSplitTransactions != null)) {
                 // Reset ids so that the transactions get inserted on save.
-                for (ISplitTransactionsDataset split : mCommonFunctions.mSplitTransactions) {
+                for (ITransactionEntity split : mCommonFunctions.mSplitTransactions) {
                     split.setId(Constants.NOT_SET);
                 }
             }
@@ -352,7 +352,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.amount = tx.amount;
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
-        mCommonFunctions.categoryId = tx.categoryId;
+        mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
         mCommonFunctions.subCategoryId = tx.subCategoryId;
         mCommonFunctions.mTransNumber = tx.transactionNumber;
         mCommonFunctions.mNotes = tx.notes;
@@ -383,7 +383,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
-        mCommonFunctions.categoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID);
+        mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID));
         mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
@@ -448,7 +448,7 @@ public class EditCheckingTransactionActivity
                                 // get id payee and category
                                 mCommonFunctions.payeeId = payee.getPayeeId();
                                 mCommonFunctions.payeeName = payee.getPayeeName();
-                                mCommonFunctions.categoryId = payee.getCategId();
+                                mCommonFunctions.transactionEntity.setCategoryId(payee.getCategId());
                                 mCommonFunctions.subCategoryId = payee.getSubCategId();
                                 // load category and subcategory name
                                 mCommonFunctions.displayCategoryName();
@@ -533,14 +533,14 @@ public class EditCheckingTransactionActivity
 
         // category
         if (parameters.categoryId > 0) {
-            mCommonFunctions.categoryId = parameters.categoryId;
+            mCommonFunctions.transactionEntity.setCategoryId(parameters.categoryId);
             mCommonFunctions.categoryName = parameters.categoryName;
         } else {
             // No id sent.
             // create a category if it was sent but does not exist (id not found by the parser).
             if (parameters.categoryName != null) {
                 CategoryService newCategory = new CategoryService(this);
-                mCommonFunctions.categoryId = newCategory.createNew(parameters.categoryName);
+                mCommonFunctions.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
                 mCommonFunctions.categoryName = parameters.categoryName;
             }
         }
@@ -606,11 +606,11 @@ public class EditCheckingTransactionActivity
         if (hasSplitCategories) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
 
-            for (ISplitTransactionsDataset split : mCommonFunctions.mSplitTransactions) {
+            for (ITransactionEntity split : mCommonFunctions.mSplitTransactions) {
                 SplitCategory entity = (SplitCategory) split;
 
                 // do nothing if the split is marked for deletion.
-                ArrayList<ISplitTransactionsDataset> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
+                ArrayList<ITransactionEntity> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
                 if(deletedSplits.contains(split)) {
                     continue;
                 }
@@ -642,7 +642,7 @@ public class EditCheckingTransactionActivity
                 values.clear();
 
                 values.put(SplitCategory.SPLITTRANSAMOUNT,
-                    mCommonFunctions.mSplitTransactionsDeleted.get(i).getSplitTransAmount().toString());
+                    mCommonFunctions.mSplitTransactionsDeleted.get(i).getAmount().toString());
 
                 SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
                 // todo: use repo to delete the record.
@@ -663,7 +663,7 @@ public class EditCheckingTransactionActivity
             // clear content value for update categoryId, subCategoryId
             // values.clear();
             // set categoryId and subCategoryId
-            values.put(Payee.CATEGID, mCommonFunctions.categoryId);
+            values.put(Payee.CATEGID, mCommonFunctions.transactionEntity.getCategoryId());
             values.put(Payee.SUBCATEGID, mCommonFunctions.subCategoryId);
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
@@ -681,7 +681,7 @@ public class EditCheckingTransactionActivity
             //values.clear();
 
             // handle transactions that do not repeat any more.
-            String transactionDate = values.getAsString(ISplitTransactionsDataset.TRANSDATE);
+            String transactionDate = values.getAsString(ITransactionEntity.TRANSDATE);
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
             if(mNextOccurrence.equals(transactionDate)) {
                 // The next occurrence date is the same as the current. Expired.

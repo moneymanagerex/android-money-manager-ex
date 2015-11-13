@@ -21,7 +21,7 @@ import android.content.Context;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.utils.MyDatabaseUtils;
@@ -41,19 +41,19 @@ public class AccountTransactionRepository
     public String[] getAllColumns() {
         return new String[] {
                 "TRANSID AS _id", AccountTransaction.TRANSID,
-                ISplitTransactionsDataset.ACCOUNTID,
-                ISplitTransactionsDataset.TOACCOUNTID,
-                ISplitTransactionsDataset.PAYEEID,
-                ISplitTransactionsDataset.TRANSCODE,
-                ISplitTransactionsDataset.TRANSAMOUNT,
-                ISplitTransactionsDataset.STATUS,
-                ISplitTransactionsDataset.TRANSACTIONNUMBER,
-                ISplitTransactionsDataset.NOTES,
-                ISplitTransactionsDataset.CATEGID,
-                ISplitTransactionsDataset.SUBCATEGID,
-                ISplitTransactionsDataset.TRANSDATE,
-                ISplitTransactionsDataset.FOLLOWUPID,
-                ISplitTransactionsDataset.TOTRANSAMOUNT};
+                ITransactionEntity.ACCOUNTID,
+                ITransactionEntity.TOACCOUNTID,
+                ITransactionEntity.PAYEEID,
+                ITransactionEntity.TRANSCODE,
+                ITransactionEntity.TRANSAMOUNT,
+                ITransactionEntity.STATUS,
+                ITransactionEntity.TRANSACTIONNUMBER,
+                ITransactionEntity.NOTES,
+                ITransactionEntity.CATEGID,
+                ITransactionEntity.SUBCATEGID,
+                ITransactionEntity.TRANSDATE,
+                ITransactionEntity.FOLLOWUPID,
+                ITransactionEntity.TOTRANSAMOUNT};
     }
 
     public AccountTransaction load(int id) {

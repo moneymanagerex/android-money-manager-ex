@@ -11,7 +11,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.ISplitTransactionsDataset;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.view.RobotoTextView;
 
@@ -120,8 +120,8 @@ public class SplitCategoriesActivityTests {
         // Account Transactions
         String datasetName = SplitCategory.class.getSimpleName();
         TransactionTypes transactionType = TransactionTypes.Withdrawal;
-        ArrayList<ISplitTransactionsDataset> mSplitTransactions = null;
-        ArrayList<ISplitTransactionsDataset> mSplitTransactionsDeleted = null;
+        ArrayList<ITransactionEntity> mSplitTransactions = null;
+        ArrayList<ITransactionEntity> mSplitTransactionsDeleted = null;
         int currencyId = 2;
 
         Context context = UnitTestHelper.getContext();
