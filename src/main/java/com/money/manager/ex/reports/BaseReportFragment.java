@@ -27,10 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
@@ -272,32 +274,31 @@ public abstract class BaseReportFragment
 
     private void showDialogCustomDates() {
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                .customView(R.layout.dialog_choose_date_report, false)
-                .positiveText(android.R.string.ok)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        View view = dialog.getCustomView();
-                        DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
-                        DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
+            .customView(R.layout.dialog_choose_date_report, false)
+            .positiveText(android.R.string.ok)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    View view = materialDialog.getCustomView();
+                    DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
+                    DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-                        mDateFrom = DateTimeUtils.fromDatePicker(fromDatePicker);
-                        mDateTo = DateUtils.getDateFromDatePicker(toDatePicker);
+                    mDateFrom = DateTimeUtils.fromDatePicker(fromDatePicker);
+                    mDateTo = DateUtils.getDateFromDatePicker(toDatePicker);
 
-                        // format(Constants.ISO_DATE_FORMAT)
-                        String whereClause =
-                            ViewMobileData.Date + ">='" + mDateFrom.toString() + "' AND " +
-                            ViewMobileData.Date + "<='" + DateUtils.getIsoStringDate(mDateTo) + "'";
-                        //compose bundle
-                        Bundle args = new Bundle();
-                        args.putString(KEY_WHERE_CLAUSE, whereClause);
-                        //starts loader
-                        startLoader(args);
+                    String whereClause =
+                        ViewMobileData.Date + ">='" + FormatUtilities.getIsoDateFrom(mDateFrom) + "' AND " +
+                        ViewMobileData.Date + "<='" + DateUtils.getIsoStringDate(mDateTo) + "'";
 
-                        super.onPositive(dialog);
-                    }
-                })
-                .show();
+                    Bundle args = new Bundle();
+                    args.putString(KEY_WHERE_CLAUSE, whereClause);
+
+                    startLoader(args);
+
+                    //super.onPositive(dialog);
+                }
+            })
+            .show();
         // set date if is null
         if (mDateFrom == null) mDateFrom = DateTimeUtils.today();
         if (mDateTo == null) mDateTo = Calendar.getInstance().getTime();

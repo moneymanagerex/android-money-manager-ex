@@ -57,7 +57,12 @@ public class DateTimeUtils {
     public static String getUserStringFromDateTime(Context ctx, DateTime date) {
         if (date == null) return "";
 
-        return date.format(DateUtils.getUserDatePattern(ctx));
+        String userDatePattern = DateUtils.getUserDatePattern(ctx);
+
+        // Must convert to uppercase.
+        String dateFormat = userDatePattern.toUpperCase();
+
+        return date.format(dateFormat);
     }
 
     public static void setDatePicker(DateTime date, DatePicker datePicker) {

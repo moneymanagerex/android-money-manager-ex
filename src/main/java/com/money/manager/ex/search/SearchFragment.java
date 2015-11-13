@@ -343,7 +343,7 @@ public class SearchFragment extends Fragment
 
         // from date
         if (mSearchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, ">=", mSearchParameters.dateFrom.format(Constants.ISO_DATE_FORMAT));
+            where.addStatement(QueryAllData.Date, ">=", FormatUtilities.getIsoDateFrom(mSearchParameters.dateFrom));
         }
         // to date
         if (mSearchParameters.dateTo != null) {
@@ -439,11 +439,11 @@ public class SearchFragment extends Fragment
 
         // Date from
         if (mSearchParameters.dateFrom != null) {
-            txtFromDate.setTag(mSearchParameters.dateFrom.format(Constants.ISO_DATE_FORMAT));
+            txtFromDate.setTag(FormatUtilities.getIsoDateFrom(mSearchParameters.dateFrom));
         }
         txtFromDate.setText(DateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
         // Date to
-        txtToDate.setTag(mSearchParameters.dateTo);
+        txtToDate.setTag(DateUtils.getIsoStringDate(mSearchParameters.dateTo));
         txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
         // Payee
         txtSelectPayee.setTag(mSearchParameters.payeeId);
@@ -527,7 +527,8 @@ public class SearchFragment extends Fragment
         }
         // Date to
         if (txtToDate.getTag() != null) {
-            mSearchParameters.dateTo = (Date) txtToDate.getTag();
+            String dateString = txtToDate.getTag().toString();
+            mSearchParameters.dateTo = DateUtils.getDateFromIsoString(dateString);
         }
         // Payee
         if (txtSelectPayee.getTag() != null) {

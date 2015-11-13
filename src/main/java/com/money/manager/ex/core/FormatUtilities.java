@@ -36,6 +36,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 
 /**
@@ -70,6 +71,17 @@ public class FormatUtilities {
         }
 
         view.setTag(amount);
+    }
+
+    public static String getIsoDateFrom(int year, int month, int day) {
+        String dateString = Integer.toString(year) + "-" +
+            String.format("%02d", month) + "-" +
+            String.format("%02d", day);
+        return dateString;
+    }
+
+    public static String getIsoDateFrom(DateTime dateTime) {
+        return dateTime.format(Constants.ISO_DATE_FORMAT);
     }
 
     public FormatUtilities(Context context) {

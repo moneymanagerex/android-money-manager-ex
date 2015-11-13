@@ -8,11 +8,15 @@ import android.widget.TextView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.utils.DateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import hirondelle.date4j.DateTime;
 
 /**
  * Click listener
@@ -50,14 +54,18 @@ public class OnDateButtonClickListener
         @Override
         public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
             try {
-                String dateString = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
-                Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-                    .parse(dateString);
+                String dateString = FormatUtilities.getIsoDateFrom(year, monthOfYear + 1, dayOfMonth);
 
                 // Save the actual value as tag.
-                mTextView.setTag(date);
+                mTextView.setTag(dateString);
+
+//                Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+//                    .parse(dateString);
                 // display the selected value in user-formatted pattern
-                mTextView.setText(DateUtils.getUserStringFromDate(mParent.getApplicationContext(), date));
+//                mTextView.setText(DateUtils.getUserStringFromDate(mParent.getApplicationContext(), date));
+
+                DateTime date = new DateTime(dateString);
+                mTextView.setText(DateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date));
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, this);
                 handler.handle(e, "date selected in search");
