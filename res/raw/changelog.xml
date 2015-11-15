@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
-    <changelogversion changeDate="unknown" versionName="upcoming">
+    <changelogversion versionName="2015.11.15-748">
         <changelogtext>Corrected date conversion issues with the new library.</changelogtext>
     </changelogversion>
     <changelogversion changeDate="November 13, 2015" versionName="2015.11.13-746">
