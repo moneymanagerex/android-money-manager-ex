@@ -62,8 +62,8 @@ import info.javaperformance.money.MoneyFactory;
  * Recurring transactions are stored in BillsDeposits table.
  */
 public class EditRecurringTransactionActivity
-        extends BaseFragmentActivity
-        implements IInputAmountDialogListener, YesNoDialogListener {
+    extends BaseFragmentActivity
+    implements IInputAmountDialogListener, YesNoDialogListener {
 
     private static final String LOGCAT = EditRecurringTransactionActivity.class.getSimpleName();
 
@@ -257,7 +257,10 @@ public class EditRecurringTransactionActivity
 
         outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
+        int categoryId = mCommonFunctions.transactionEntity.getCategoryId() != null
+            ? mCommonFunctions.transactionEntity.getCategoryId()
+            : Constants.NOT_SET;
+        outState.putInt(KEY_CATEGORY_ID, categoryId);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);

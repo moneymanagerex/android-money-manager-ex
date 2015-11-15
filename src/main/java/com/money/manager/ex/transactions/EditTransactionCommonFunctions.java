@@ -779,7 +779,8 @@ public class EditTransactionCommonFunctions {
                 payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
-                if (!isSplitSelected() && this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
+                if (!isSplitSelected() && this.transactionEntity.getCategoryId() != null
+                    && this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
                     if (setCategoryFromPayee(payeeId)) {
                         refreshCategoryName(); // refresh UI
                     }
