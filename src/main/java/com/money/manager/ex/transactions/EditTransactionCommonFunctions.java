@@ -1246,7 +1246,8 @@ public class EditTransactionCommonFunctions {
         }
 
         // Category is required if tx is not a split or transfer.
-        if (this.transactionEntity.getCategoryId() == Constants.NOT_SET && (!isSplitSelected()) && !isTransfer) {
+        if ((this.transactionEntity.getCategoryId() == null || this.transactionEntity.getCategoryId() == Constants.NOT_SET) &&
+            (!isSplitSelected()) && !isTransfer) {
             Core.alertDialog(mParent, R.string.error_category_not_selected);
             return false;
         }

@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2015.11.15-748">
+    <changelogversion versionName="2015.11.15-749">
         <changelogtext>Corrected issues with creation of new recurring transactions.</changelogtext>
         <changelogtext>Corrected date conversion issues with the new library.</changelogtext>
     </changelogversion>

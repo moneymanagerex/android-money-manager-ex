@@ -60,7 +60,7 @@ android {
         multiDexEnabled true
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 748
+        versionCode 749
         versionName '2015.11.15'
         // 601 = 1.4.17, stable
 
