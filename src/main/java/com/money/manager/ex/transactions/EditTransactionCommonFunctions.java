@@ -125,14 +125,13 @@ public class EditTransactionCommonFunctions {
     public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 
-    public ArrayList<ITransactionEntity> mSplitTransactions = null;
-    public ArrayList<ITransactionEntity> mSplitTransactionsDeleted = null;
+    public ArrayList<ITransactionEntity> mSplitTransactions;
+    public ArrayList<ITransactionEntity> mSplitTransactionsDeleted;
 
     // Controls
     public ViewHolder viewHolder;
     public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
     public TextView accountFromLabel, txtToAccount;
-    public TextView txtSelectPayee, txtAmountTo, txtAmount;
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
     public RelativeLayout withdrawalButton, depositButton, transferButton;
@@ -157,7 +156,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
 
         // Payee
-        txtSelectPayee = (TextView) mParent.findViewById(R.id.textViewPayee);
+        this.viewHolder.txtSelectPayee = (TextView) mParent.findViewById(R.id.textViewPayee);
         removePayeeButton = (FontIconView) mParent.findViewById(R.id.removePayeeButton);
         tableRowPayee = (ViewGroup) mParent.findViewById(R.id.tableRowPayee);
 
@@ -177,8 +176,8 @@ public class EditTransactionCommonFunctions {
         amountHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmount);
         amountToHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmountTo);
 
-        txtAmount = (TextView) mParent.findViewById(R.id.textViewAmount);
-        txtAmountTo = (TextView) mParent.findViewById(R.id.textViewTotAmount);
+        viewHolder.txtAmount = (TextView) mParent.findViewById(R.id.textViewAmount);
+        viewHolder.txtAmountTo = (TextView) mParent.findViewById(R.id.textViewTotAmount);
         tableRowAmountTo = (ViewGroup) mParent.findViewById(R.id.tableRowAmountTo);
 
         // Transaction Type
@@ -213,6 +212,33 @@ public class EditTransactionCommonFunctions {
     }
 
     /**
+     * Loads info for Category and Subcategory
+     *
+     * @return A boolean indicating whether the operation was successful.
+     */
+    public boolean displayCategoryName() {
+        if(this.transactionEntity.getCategoryId() <= 0 && subCategoryId <= 0) return false;
+
+        CategoryRepository categoryRepository = new CategoryRepository(getContext());
+        Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
+        if (category != null) {
+            this.categoryName = category.getName();
+        } else {
+            this.categoryName = null;
+        }
+
+        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
+        Subcategory subcategory = subRepo.load(subCategoryId);
+        if (subcategory != null) {
+            this.subCategoryName = subcategory.getName();
+        } else {
+            this.subCategoryName = null;
+        }
+
+        return true;
+    }
+
+    /**
      * Get content values for saving data.
      * @param isTransfer
      * @return
@@ -231,16 +257,16 @@ public class EditTransactionCommonFunctions {
         values.put(ITransactionEntity.STATUS, this.status);
 
         // Amount
-        Money amount = MoneyFactory.fromString(this.txtAmount.getTag().toString());
+        Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
         values.put(ITransactionEntity.TRANSAMOUNT, amount.toDouble());
 
         // Amount To
         Money amountTo;
         if (isTransfer) {
-            amountTo = MoneyFactory.fromString(this.txtAmountTo.getTag().toString());
+            amountTo = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
         } else {
             // Use the Amount value.
-            amountTo = MoneyFactory.fromString(this.txtAmount.getTag().toString());
+            amountTo = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
         }
         values.put(ITransactionEntity.TOTRANSAMOUNT, amountTo.toDouble());
 
@@ -357,8 +383,8 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     accountId = mAccountIdList.get(position);
-                    Money amount = MoneyFactory.fromString(txtAmount.getTag().toString());
-                    displayAmountFormatted(txtAmount, amount, accountId);
+                    Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
+                    displayAmountFormatted(viewHolder.txtAmount, amount, accountId);
                     refreshControlHeaders();
                 }
             }
@@ -381,8 +407,8 @@ public class EditTransactionCommonFunctions {
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
                     toAccountId = mAccountIdList.get(position);
-                    Money amount = MoneyFactory.fromString(txtAmountTo.getTag().toString());
-                    displayAmountFormatted(txtAmountTo, amount , toAccountId);
+                    Money amount = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
+                    displayAmountFormatted(viewHolder.txtAmountTo, amount , toAccountId);
                     refreshControlHeaders();
                 }
             }
@@ -401,7 +427,7 @@ public class EditTransactionCommonFunctions {
                 // Get currency id from the account for which the amount has been modified.
                 Integer currencyId = null;
                 int selectedPosition;
-                if (v.equals(txtAmountTo)) {
+                if (v.equals(viewHolder.txtAmountTo)) {
                     selectedPosition = viewHolder.spinAccountTo.getSelectedItemPosition();
                     if (selectedPosition >= 0 && selectedPosition < AccountList.size()) {
                         currencyId = AccountList.get(selectedPosition).getCurrencyId();
@@ -423,12 +449,12 @@ public class EditTransactionCommonFunctions {
         };
 
         // amount
-        displayAmountFormatted(txtAmount, amount, accountId);
-        txtAmount.setOnClickListener(onClickAmount);
+        displayAmountFormatted(viewHolder.txtAmount, amount, accountId);
+        viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
-        displayAmountFormatted(txtAmountTo, amountTo, toAccountId);
-        txtAmountTo.setOnClickListener(onClickAmount);
+        displayAmountFormatted(viewHolder.txtAmountTo, amountTo, toAccountId);
+        viewHolder.txtAmountTo.setOnClickListener(onClickAmount);
     }
 
     /**
@@ -455,20 +481,6 @@ public class EditTransactionCommonFunctions {
                 // results are handled in onActivityResult.
             }
         });
-    }
-
-    private void showSplitCategoriesForm(String datasetName) {
-        Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
-        intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
-        intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
-        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
-        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
-
-        AccountRepository repo = new AccountRepository(mContext);
-        Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
-        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, fromCurrencyId);
-
-        mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }
 
     public void initDateSelector() {
@@ -550,7 +562,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initPayeeControls() {
-        txtSelectPayee.setOnClickListener(new View.OnClickListener() {
+        this.viewHolder.txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mParent, PayeeActivity.class);
@@ -583,6 +595,7 @@ public class EditTransactionCommonFunctions {
 
                 // if the split has just been set, show the splits dialog immediately?
                 if (isSplitSelected()) {
+                    createSplitForCategoryAndAmount();
                     showSplitCategoriesForm(mDatasetName);
                 }
             }
@@ -822,7 +835,7 @@ public class EditTransactionCommonFunctions {
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
                         splitSum = splitSum.add(mSplitTransactions.get(i).getAmount());
                     }
-                    displayAmountFormatted(txtAmount, splitSum,
+                    displayAmountFormatted(viewHolder.txtAmount, splitSum,
                             !transactionType.equals(TransactionTypes.Transfer)
                                     ? accountId
                                     : toAccountId);
@@ -893,13 +906,15 @@ public class EditTransactionCommonFunctions {
         refreshCategoryName();
 
         // enable/disable Amount field.
-        txtAmount.setEnabled(!mSplitSelected);
-        txtAmountTo.setEnabled(!mSplitSelected);
+        viewHolder.txtAmount.setEnabled(!mSplitSelected);
+        viewHolder.txtAmountTo.setEnabled(!mSplitSelected);
 
         int buttonColour, buttonBackground;
-        if (mSplitSelected) {
+        if (isSplitSelected()) {
             buttonColour = R.color.button_foreground_active;
             buttonBackground = R.color.button_background_active;
+            // #188: if there is a Category selected and we are switching to Split Categories.
+
         } else {
             buttonColour = R.color.button_foreground_inactive;
             Core core = new Core(mContext);
@@ -979,11 +994,11 @@ public class EditTransactionCommonFunctions {
      */
     public void refreshPayeeName() {
         // write into text button payee name
-        if (txtSelectPayee != null) {
+        if (this.viewHolder.txtSelectPayee != null) {
             String text = !TextUtils.isEmpty(payeeName)
                     ? payeeName : "";
 
-            txtSelectPayee.setText(text);
+            this.viewHolder.txtSelectPayee.setText(text);
         }
     }
 
@@ -1005,33 +1020,6 @@ public class EditTransactionCommonFunctions {
             this.payeeName = payee.getName();
         } else {
             this.payeeName = "";
-        }
-
-        return true;
-    }
-
-    /**
-     * Loads info for Category and Subcategory
-     *
-     * @return A boolean indicating whether the operation was successful.
-     */
-    public boolean displayCategoryName() {
-        if(this.transactionEntity.getCategoryId() <= 0 && subCategoryId <= 0) return false;
-
-        CategoryRepository categoryRepository = new CategoryRepository(getContext());
-        Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
-        if (category != null) {
-            this.categoryName = category.getName();
-        } else {
-            this.categoryName = null;
-        }
-
-        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
-        Subcategory subcategory = subRepo.load(subCategoryId);
-        if (subcategory != null) {
-            this.subCategoryName = subcategory.getName();
-        } else {
-            this.subCategoryName = null;
         }
 
         return true;
@@ -1090,93 +1078,6 @@ public class EditTransactionCommonFunctions {
         mDirty = dirty;
     }
 
-    // Private
-
-    private void addMissingAccountToSelectors(AccountRepository accountRepository, int accountId) {
-        if (accountId <= 0) return;
-
-        // #316. In case the account from recurring transaction is not in the visible list,
-        // load it separately.
-        Account savedAccount;
-        if (!mAccountIdList.contains(accountId)) {
-            savedAccount = accountRepository.load(accountId);
-
-            if (savedAccount != null) {
-                this.AccountList.add(savedAccount);
-                mAccountNameList.add(savedAccount.getName());
-                mAccountIdList.add(savedAccount.getId());
-            }
-        }
-    }
-
-    private void cancelActivity() {
-        mParent.setResult(Activity.RESULT_CANCELED);
-        mParent.finish();
-    }
-
-    private void convertAndDisplayAmount(boolean isSourceAmount, int fromCurrencyId, int toCurrencyId,
-                                         Money amount) {
-        CurrencyService currencyService = new CurrencyService(mContext);
-        TextView destinationTextView = txtAmountTo;
-
-        if (!isSourceAmount) {
-            fromCurrencyId = getDestinationCurrencyId();
-            AccountRepository repo = new AccountRepository(mContext);
-//            toCurrencyId = getSourceCurrencyId();
-            toCurrencyId = repo.loadCurrencyIdFor(this.accountId);
-
-            destinationTextView = txtAmount;
-        }
-
-        Integer destinationAccountId = isSourceAmount
-                ? this.toAccountId
-                : this.accountId;
-
-        // get the destination value.
-        Money destinationAmount = MoneyFactory.fromString(destinationTextView.getTag().toString());
-        if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
-
-        // Replace the destination value only if it is zero.
-        if (destinationAmount.isZero()) {
-            Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
-        }
-    }
-
-    private void onTransferSelected() {
-        // The user is switching to Transfer transaction type.
-
-        if(hasSplitCategories()) {
-            // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
-
-            DialogFragment dialog = new YesNoDialog();
-            Bundle args = new Bundle();
-            args.putString("title", mParent.getString(R.string.warning));
-            args.putString("message", mParent.getString(R.string.no_transfer_splits));
-            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
-            dialog.setArguments(args);
-//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
-
-            dialog.show(mParent.getSupportFragmentManager(), "tag");
-
-            // Dialog result is handled in onDialogPositiveClick or onDialogNegativeClick
-            // in the respective activity classes!
-            return;
-        }
-
-        // un-check split.
-        setSplit(false);
-    }
-
-    private void refreshDestinationAmount() {
-        displayAmountFormatted(this.txtAmountTo, this.amountTo, this.toAccountId);
-    }
-
-    private void refreshSourceAmount() {
-        displayAmountFormatted(this.txtAmount, this.amount, this.accountId);
-    }
-
     public void selectTransactionType(TransactionTypes transactionType) {
         this.previousTransactionType = this.transactionType;
         this.transactionType = transactionType;
@@ -1231,7 +1132,7 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-            Money amountTo = MoneyFactory.fromString(txtAmountTo.getTag().toString());
+            Money amountTo = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
             if (amountTo.toDouble() <= 0) {
                 Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
                 return false;
@@ -1239,7 +1140,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-        Money amount = MoneyFactory.fromString(txtAmount.getTag().toString());
+        Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
         if (amount.toDouble() <= 0) {
             Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
@@ -1254,7 +1155,7 @@ public class EditTransactionCommonFunctions {
 
         // Split records must exist if split is checked.
         if (isSplitSelected()
-                && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+            && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(mParent, R.string.error_split_transaction_empty);
             return false;
         }
@@ -1312,4 +1213,142 @@ public class EditTransactionCommonFunctions {
         return mSplitTransactionsDeleted;
     }
 
+    // Private
+
+    private void addMissingAccountToSelectors(AccountRepository accountRepository, int accountId) {
+        if (accountId <= 0) return;
+
+        // #316. In case the account from recurring transaction is not in the visible list,
+        // load it separately.
+        Account savedAccount;
+        if (!mAccountIdList.contains(accountId)) {
+            savedAccount = accountRepository.load(accountId);
+
+            if (savedAccount != null) {
+                this.AccountList.add(savedAccount);
+                mAccountNameList.add(savedAccount.getName());
+                mAccountIdList.add(savedAccount.getId());
+            }
+        }
+    }
+
+    private void cancelActivity() {
+        mParent.setResult(Activity.RESULT_CANCELED);
+        mParent.finish();
+    }
+
+    private void convertAndDisplayAmount(boolean isSourceAmount, int fromCurrencyId, int toCurrencyId,
+                                         Money amount) {
+        CurrencyService currencyService = new CurrencyService(mContext);
+        TextView destinationTextView = viewHolder.txtAmountTo;
+
+        if (!isSourceAmount) {
+            fromCurrencyId = getDestinationCurrencyId();
+            AccountRepository repo = new AccountRepository(mContext);
+//            toCurrencyId = getSourceCurrencyId();
+            toCurrencyId = repo.loadCurrencyIdFor(this.accountId);
+
+            destinationTextView = viewHolder.txtAmount;
+        }
+
+        Integer destinationAccountId = isSourceAmount
+                ? this.toAccountId
+                : this.accountId;
+
+        // get the destination value.
+        Money destinationAmount = MoneyFactory.fromString(destinationTextView.getTag().toString());
+        if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
+
+        // Replace the destination value only if it is zero.
+        if (destinationAmount.isZero()) {
+            Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
+        }
+    }
+
+    /**
+     * Use the existing amount and,
+     * if there is a Category selected, and we are enabling Splits, use the selected category for
+     * the initial split record.
+     */
+    private void createSplitForCategoryAndAmount() {
+        // Add the new split record.
+        ITransactionEntity entity = SplitItemFactory.create(this.mDatasetName);
+        // now use the existing amount
+        entity.setAmount(this.amount);
+
+        // Add category
+
+        if (this.transactionEntity.getCategoryId() == null || this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
+            return;
+        }
+
+        // This category should not be inside the any existing splits, then.
+        if (!this.getSplitTransactions().isEmpty()) {
+            for (ITransactionEntity split : this.mSplitTransactions) {
+                if (split.getCategoryId().equals(this.transactionEntity.getCategoryId())) {
+                    return;
+                }
+            }
+        }
+
+        entity.setCategoryId(this.transactionEntity.getCategoryId());
+
+        this.getSplitTransactions().add(entity);
+    }
+
+    private ArrayList<ITransactionEntity> getSplitTransactions() {
+        if (mSplitTransactions == null) {
+            mSplitTransactions = new ArrayList<>();
+        }
+        return mSplitTransactions;
+    }
+
+    private void onTransferSelected() {
+        // The user is switching to Transfer transaction type.
+
+        if(hasSplitCategories()) {
+            // Prompt the user to confirm deleting split categories.
+            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+
+            DialogFragment dialog = new YesNoDialog();
+            Bundle args = new Bundle();
+            args.putString("title", mParent.getString(R.string.warning));
+            args.putString("message", mParent.getString(R.string.no_transfer_splits));
+            args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
+            dialog.setArguments(args);
+//        dialog.setTargetFragment(this, REQUEST_REMOVE_SPLIT_WHEN_TRANSACTION);
+
+            dialog.show(mParent.getSupportFragmentManager(), "tag");
+
+            // Dialog result is handled in onDialogPositiveClick or onDialogNegativeClick
+            // in the respective activity classes!
+            return;
+        }
+
+        // un-check split.
+        setSplit(false);
+    }
+
+    private void refreshDestinationAmount() {
+        displayAmountFormatted(viewHolder.txtAmountTo, this.amountTo, this.toAccountId);
+    }
+
+    private void refreshSourceAmount() {
+        displayAmountFormatted(viewHolder.txtAmount, this.amount, this.accountId);
+    }
+
+    private void showSplitCategoriesForm(String datasetName) {
+        Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
+        intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
+        intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
+        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
+        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+
+        AccountRepository repo = new AccountRepository(mContext);
+        Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
+        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, fromCurrencyId);
+
+        mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+    }
 }

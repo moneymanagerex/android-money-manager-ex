@@ -105,12 +105,11 @@ public class SplitItemFragment
                 if(splitTransactionAmount.toDouble() < 0) {
                     splitTransactionAmount = splitTransactionAmount.negate();
                 }
-
-                FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount,
-                    this.getCurrencyId());
             }
-            txtAmount.setOnClickListener(new OnClickListener() {
+            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount,
+                this.getCurrencyId());
 
+            txtAmount.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Object tag = v.getTag();

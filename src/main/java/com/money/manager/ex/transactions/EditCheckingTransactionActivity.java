@@ -181,11 +181,11 @@ public class EditCheckingTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
-                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
+            new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.txtAmountTo.getTag().toString());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.txtAmount.getTag().toString());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.viewHolder.txtAmount.getTag().toString());
         outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
@@ -194,7 +194,8 @@ public class EditCheckingTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
         outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
+        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
+            mCommonFunctions.mSplitTransactionsDeleted);
         outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
         // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
@@ -221,7 +222,6 @@ public class EditCheckingTransactionActivity
     @Override
     public boolean onActionDoneClick() {
         if (saveData()) {
-            // set result ok and finish activity
             setResult(RESULT_OK);
             finish();
             return true;

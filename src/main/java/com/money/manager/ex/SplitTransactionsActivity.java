@@ -28,9 +28,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.transactions.ISplitItemFragmentCallbacks;
+import com.money.manager.ex.transactions.SplitItemFactory;
 import com.money.manager.ex.transactions.SplitItemFragment;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class SplitTransactionsActivity
      * The name of the entity to create when adding split transactions.
      * Needed to distinguish between SplitCategory and SplitRecurringCategory.
      */
-    private String EntityTypeName = null;
+    private String entityTypeName = null;
     private ArrayList<ITransactionEntity> mSplitTransactions = null;
     private ArrayList<ITransactionEntity> mSplitDeleted = null;
     private FloatingActionButton mFloatingActionButton;
@@ -71,18 +70,7 @@ public class SplitTransactionsActivity
         super.onCreate(savedInstanceState);
 
         // load intent
-        Intent intent = getIntent();
-        if (intent != null) {
-            this.EntityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
-
-            int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-            mParentTransactionType = TransactionTypes.values()[transactionType];
-
-            this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
-
-            mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
-            mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
-        }
+        handleIntent();
 
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
@@ -209,6 +197,21 @@ public class SplitTransactionsActivity
 
     // Private
 
+    private void handleIntent() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
+
+        int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
+        mParentTransactionType = TransactionTypes.values()[transactionType];
+
+        this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+
+        mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
+        mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
+    }
+
     private void setUpFloatingButton() {
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         if (mFloatingActionButton != null) {
@@ -225,26 +228,20 @@ public class SplitTransactionsActivity
 
     private void addSplitTransaction() {
         // find which split transactions data set to instantiate.
-        String recurringSplitName = SplitRecurringCategory.class.getSimpleName();
-        if (EntityTypeName != null && EntityTypeName.contains(recurringSplitName)) {
-            addFragmentChild(SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                Constants.NOT_SET, 0));
-        } else {
-            addFragmentChild(SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                Constants.NOT_SET, 0));
-        }
+        ITransactionEntity entity = SplitItemFactory.create(this.entityTypeName);
+        addFragmentChild(entity);
     }
 
-    private void addFragmentChild(ITransactionEntity object) {
-        int tagNumber = object.getId() == null || object.getId() == Constants.NOT_SET
+    private void addFragmentChild(ITransactionEntity entity) {
+        int tagNumber = entity.getId() == null || entity.getId() == Constants.NOT_SET
             ? mIdTag++
-            : object.getId();
+            : entity.getId();
         String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
 
         SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
 
         if (fragment == null) {
-            fragment = SplitItemFragment.newInstance(object, this.currencyId);
+            fragment = SplitItemFragment.newInstance(entity, this.currencyId);
             fragment.setOnSplitItemCallback(this);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // animation

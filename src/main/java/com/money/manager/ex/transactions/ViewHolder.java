@@ -8,6 +8,7 @@ import android.widget.TextView;
  */
 public class ViewHolder {
     public TextView txtSelectDate, categoryTextView;
+    public TextView txtSelectPayee;
     public Spinner spinAccount, spinAccountTo, spinStatus;
-
+    public TextView txtAmountTo, txtAmount;
 }

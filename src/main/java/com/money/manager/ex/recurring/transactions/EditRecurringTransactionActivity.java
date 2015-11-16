@@ -241,7 +241,7 @@ public class EditRecurringTransactionActivity
 
         // Amount To
         String value = "";
-        Object tag = mCommonFunctions.txtAmountTo.getTag();
+        Object tag = mCommonFunctions.viewHolder.txtAmountTo.getTag();
         if (tag != null) {
             value = tag.toString();
         }
@@ -249,7 +249,7 @@ public class EditRecurringTransactionActivity
 
         // amount
         value = "";
-        tag = mCommonFunctions.txtAmount.getTag();
+        tag = mCommonFunctions.viewHolder.txtAmount.getTag();
         if (tag != null) {
             value = tag.toString();
         }
