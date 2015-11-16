@@ -244,8 +244,8 @@ public class AccountEditActivity
         String[] mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
         mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
         ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
-        adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinAccountStatus.setAdapter(adapterAccountStatus);
+        adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (!(TextUtils.isEmpty(mStatus))) {
             if (Arrays.asList(mAccountStatusValues).indexOf(mStatus) >= 0) {
                 spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mStatus), true);
