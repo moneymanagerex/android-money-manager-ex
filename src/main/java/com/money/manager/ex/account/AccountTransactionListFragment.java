@@ -75,27 +75,27 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Checking account fragment. Shows the list of transactions.
  */
-public class AccountTransactionsFragment
+public class AccountTransactionListFragment
     extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor>, ICalculateRunningBalanceTaskCallbacks {
 
     private static final String ARG_ACCOUNT_ID = "arg:accountId";
-    private static final String KEY_CONTENT = "AccountTransactionsFragment:AccountId";
+    private static final String KEY_CONTENT = "AccountTransactionListFragment:AccountId";
     private static final int ID_LOADER_SUMMARY = 2;
 
     /**
      * @param accountId Id of the Account to be displayed
      * @return initialized instance of Account Fragment.
      */
-    public static AccountTransactionsFragment newInstance(int accountId) {
-        AccountTransactionsFragment fragment = new AccountTransactionsFragment();
+    public static AccountTransactionListFragment newInstance(int accountId) {
+        AccountTransactionListFragment fragment = new AccountTransactionListFragment();
 
         Bundle args = new Bundle();
         args.putInt(ARG_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
         // set name of child fragment
-        fragment.setFragmentName(AccountTransactionsFragment.class.getSimpleName() + "_" +
+        fragment.setFragmentName(AccountTransactionListFragment.class.getSimpleName() + "_" +
             Integer.toString(accountId));
 
         return fragment;
@@ -220,7 +220,7 @@ public class AccountTransactionsFragment
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
 
         // Transaction Type picker
-        // todo: inflater.inflate(R.menu.menu_transaction_types_selector, menu);
+        inflater.inflate(R.menu.menu_transaction_types_selector, menu);
 //        initTransactionTypeDropdown(menu);
 
         // call create option menu of fragment

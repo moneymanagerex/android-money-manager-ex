@@ -52,7 +52,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
-import com.money.manager.ex.account.AccountTransactionsFragment;
+import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.database.MmexOpenHelper;
@@ -430,8 +430,8 @@ public class MainActivity
         if (core.isTablet()) {
             Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
             if (fragment != null) {
-                if (fragment instanceof AccountTransactionsFragment) {
-                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionsFragment) fragment).getFragmentName());
+                if (fragment instanceof AccountTransactionListFragment) {
+                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionListFragment) fragment).getFragmentName());
                 } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
                     outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
                 }
@@ -561,7 +561,7 @@ public class MainActivity
             className = HomeFragment.class.getName();
         }
 
-        if (className.contains(AccountTransactionsFragment.class.getSimpleName())) {
+        if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
             showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
         } else {
             Class fragmentClass = null;
@@ -865,10 +865,10 @@ public class MainActivity
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
-        String tag = AccountTransactionsFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        AccountTransactionsFragment fragment = (AccountTransactionsFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
-            fragment = AccountTransactionsFragment.newInstance(accountId);
+            fragment = AccountTransactionListFragment.newInstance(accountId);
         }
         // show fragment
         showFragment(fragment, tag);
