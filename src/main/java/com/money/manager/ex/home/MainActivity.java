@@ -57,6 +57,11 @@ import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
+import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
+import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
+import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
@@ -622,6 +627,18 @@ public class MainActivity
 
     public void onEvent(RequestWatchlistFragmentEvent event) {
         showWatchlistFragment(event.accountId);
+    }
+
+    public void onEvent(RequestOpenDatabaseEvent event) {
+        openDatabasePicker();
+    }
+
+    public void onEvent(UsernameLoadedEvent event) {
+        setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());
+    }
+
+    public void onEvent(AccountsTotalLoadedEvent event) {
+        setDrawerTotalAccounts(event.amount);
     }
 
     // Private.

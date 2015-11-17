@@ -1,4 +1,4 @@
-package com.money.manager.ex.home;
+package com.money.manager.ex.home.events;
 
 /**
  * Request for the display of Watchlist fragment (in Main Activity).

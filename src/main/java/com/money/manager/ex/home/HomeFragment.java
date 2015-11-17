@@ -49,6 +49,11 @@ import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
+import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
+import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
+import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.IInputAmountDialogListener;
@@ -237,12 +242,12 @@ public class HomeFragment
                         QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
                 break;
 
-            case LOADER_BILL_DEPOSITS:
-                QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                result = new MmexCursorLoader(getActivity(),
-                        billDeposits.getUri(), null,
-                        QueryBillDeposits.DAYSLEFT + "<=0", null, null);
-                break;
+//            case LOADER_BILL_DEPOSITS:
+//                QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
+//                result = new MmexCursorLoader(getActivity(),
+//                        billDeposits.getUri(), null,
+//                        QueryBillDeposits.DAYSLEFT + "<=0", null, null);
+//                break;
 
             case LOADER_INCOME_EXPENSES:
                 // todo: Get custom period. pref_income_expense_footer_period
@@ -319,24 +324,20 @@ public class HomeFragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        MainActivity mainActivity = null;
-        if (getActivity() != null && getActivity() instanceof MainActivity) {
-            mainActivity = (MainActivity) getActivity();
-        }
-
         switch (loader.getId()) {
             case LOADER_USER_NAME:
                 if (data != null) {
                     while (data.moveToNext()) {
+                        String username;
                         String infoValue = data.getString(data.getColumnIndex(TableInfoTable.INFONAME));
                         // save into preferences username and base currency id
                         if (InfoService.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
-                            String username = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+                            username = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
                             MoneyManagerApplication.getInstanceApp().setUserName(username);
                         }
                     }
                 }
-                mainActivity.setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());
+                EventBus.getDefault().post(new UsernameLoadedEvent());
                 break;
 
             case LOADER_ACCOUNT_BILLS:
@@ -348,16 +349,13 @@ public class HomeFragment
                 }
 
                 // set total for accounts in the main Drawer.
-                // todo: use a callback interface for this.
-                if (mainActivity != null) {
-                    mainActivity.setDrawerTotalAccounts(txtTotalAccounts.getText().toString());
-                }
+                EventBus.getDefault().post(new AccountsTotalLoadedEvent(txtTotalAccounts.getText().toString()));
                 break;
 
-            case LOADER_BILL_DEPOSITS:
-                // Recurring Transactions.
-                mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
-                break;
+//            case LOADER_BILL_DEPOSITS:
+//                // Recurring Transactions.
+//                mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
+//                break;
 
             case LOADER_INCOME_EXPENSES:
                 double income = 0, expenses = 0;
@@ -435,14 +433,6 @@ public class HomeFragment
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 result = true;
                 break;
-//            case R.id.menu_sync_dropbox:
-//                if (getActivity() instanceof MainActivity) {
-//                    MainActivity parent = (MainActivity) getActivity();
-//                    DropboxManager dropbox = new DropboxManager(parent, parent.mDropboxHelper, parent);
-//                    dropbox.synchronizeDropbox();
-//                    result = true;
-//                }
-//                break;
         }
 
         if (result) {
@@ -668,10 +658,7 @@ public class HomeFragment
             btnOpenDatabase.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MainActivity parent = (MainActivity) getActivity();
-                    if (parent != null) {
-                        parent.openDatabasePicker();
-                    }
+                    EventBus.getDefault().post(new RequestOpenDatabaseEvent());
                 }
             });
         }
