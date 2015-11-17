@@ -153,8 +153,6 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        EventBus.getDefault().register(this);
-
         // show tutorial
         boolean tutorialShown = showTutorial();
 
@@ -189,6 +187,8 @@ public class MainActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+        EventBus.getDefault().register(this);
 
         // check if has pass-code and authenticate
         if (mInitialized && !isAuthenticated) {
@@ -280,6 +280,13 @@ public class MainActivity
                     changeDatabase(dbPath, password);
                 }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
     }
 
     @Override
@@ -929,12 +936,12 @@ public class MainActivity
             mDrawerTextTotalAccounts.setText(totalAccounts);
     }
 
-    public void setDrawableRepeatingTransactions(int repeatingTransaction) {
-        if (mDrawerLinearRepeating != null && mDrawerTextViewRepeating != null) {
-            mDrawerLinearRepeating.setVisibility(repeatingTransaction <= 0 ? View.GONE : View.VISIBLE);
-            mDrawerTextViewRepeating.setText(getString(R.string.num_repeating_transaction_expired, repeatingTransaction));
-        }
-    }
+//    public void setDrawableRepeatingTransactions(int repeatingTransaction) {
+//        if (mDrawerLinearRepeating != null && mDrawerTextViewRepeating != null) {
+//            mDrawerLinearRepeating.setVisibility(repeatingTransaction <= 0 ? View.GONE : View.VISIBLE);
+//            mDrawerTextViewRepeating.setText(getString(R.string.num_repeating_transaction_expired, repeatingTransaction));
+//        }
+//    }
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
