@@ -26,8 +26,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +45,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -220,8 +223,10 @@ public class AccountTransactionListFragment
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
 
         // Transaction Type picker
-        inflater.inflate(R.menu.menu_transaction_types_selector, menu);
-//        initTransactionTypeDropdown(menu);
+        if (BuildConfig.DEBUG) {
+            inflater.inflate(R.menu.menu_transaction_types_selector, menu);
+            initTransactionTypeDropdown(menu);
+        }
 
         // call create option menu of fragment
         mAllDataListFragment.onCreateOptionsMenu(menu, inflater);
@@ -264,6 +269,9 @@ public class AccountTransactionListFragment
         boolean result;
 
         result = datePeriodItemSelected(item);
+        if (result) return result;
+
+        result = isTypeSelectionHandled(item);
         if (result) return result;
 
         switch (item.getItemId()) {
@@ -386,6 +394,19 @@ public class AccountTransactionListFragment
         if (spinner == null) return;
 
         loadAccountsInto(spinner);
+    }
+
+    /**
+     * To be used for the Transaction Type filter.
+     * @param menu
+     */
+    private void initTransactionTypeDropdown(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menuTransactionTypeSelector);
+
+        // todo: fill statuses: Reconciled, Not Reconciled, etc.
+        
+
+        // todo: handle selection.
     }
 
     private void reloadAccountInfo() {
@@ -578,6 +599,10 @@ public class AccountTransactionListFragment
         loadTransactions();
 
         return true;
+    }
+
+    private boolean isTypeSelectionHandled(MenuItem item) {
+        return false;
     }
 
     private Spinner getAccountsSpinner() {

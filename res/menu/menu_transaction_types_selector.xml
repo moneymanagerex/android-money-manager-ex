@@ -22,7 +22,30 @@
     <item
         android:id="@+id/menuTransactionTypeSelector"
         app:showAsAction="ifRoom"
-        app:actionViewClass="android.widget.Spinner"
-        android:title="@string/transaction_type_filter" />
+        android:icon="?attr/ic_action_calendar_day"
+        android:title="@string/transaction_type_filter">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_all"
+                    android:title="@string/all" />
+                <item
+                    android:id="@+id/menu_none"
+                    android:title="@string/status_none" />
+                <item
+                    android:id="@+id/menu_reconciled"
+                    android:title="@string/status_reconciled" />
+                <item
+                    android:id="@+id/menu_void"
+                    android:title="@string/status_void" />
+                <item
+                    android:id="@+id/menu_follow_up"
+                    android:title="@string/status_follow_up" />
+                <item
+                    android:id="@+id/menu_duplicate"
+                    android:title="@string/status_duplicate" />
+            </group>
+        </menu>
+    </item>
 
 </menu>
