@@ -147,6 +147,7 @@
     <string name="deposit">Deposit</string>
     <string name="status">Status</string>
     <string name="status_reconciled">Reconciled</string>
+    <string name="status_not_reconciled">Not Reconciled</string>
     <string name="status_void">Void</string>
     <string name="status_follow_up">Follow up</string>
     <string name="status_duplicate">Duplicate</string>

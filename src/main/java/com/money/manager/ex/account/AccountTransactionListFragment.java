@@ -26,10 +26,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,6 +67,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.HashMap;
 
@@ -271,7 +270,7 @@ public class AccountTransactionListFragment
         result = datePeriodItemSelected(item);
         if (result) return result;
 
-        result = isTypeSelectionHandled(item);
+        result = isStatusSelectionHandled(item);
         if (result) return result;
 
         switch (item.getItemId()) {
@@ -401,10 +400,13 @@ public class AccountTransactionListFragment
      * @param menu
      */
     private void initTransactionTypeDropdown(Menu menu) {
-        MenuItem item = menu.findItem(R.id.menuTransactionTypeSelector);
+        MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
+
+        // customize the icon
+        item.setIcon(FontIconDrawable.inflate(getActivity(), R.xml.ic_filter));
 
         // todo: fill statuses: Reconciled, Not Reconciled, etc.
-        
+
 
         // todo: handle selection.
     }
@@ -601,7 +603,15 @@ public class AccountTransactionListFragment
         return true;
     }
 
-    private boolean isTypeSelectionHandled(MenuItem item) {
+    private boolean isStatusSelectionHandled(MenuItem item) {
+        int id = item.getItemId();
+        switch(id) {
+            case R.id.menu_not_reconciled:
+                break;
+            default:
+                // nothing
+                break;
+        }
         return false;
     }
 

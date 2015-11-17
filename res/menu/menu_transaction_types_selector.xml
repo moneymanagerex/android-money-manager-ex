@@ -20,9 +20,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuTransactionTypeSelector"
+        android:id="@+id/menuTransactionStatusSelector"
         app:showAsAction="ifRoom"
-        android:icon="?attr/ic_action_calendar_day"
+        android:icon="?attr/ic_action_foursquare"
         android:title="@string/transaction_type_filter">
         <menu>
             <group android:checkableBehavior="single">
@@ -35,6 +35,9 @@
                 <item
                     android:id="@+id/menu_reconciled"
                     android:title="@string/status_reconciled" />
+                <item
+                    android:id="@+id/menu_not_reconciled"
+                    android:title="@string/status_not_reconciled" />
                 <item
                     android:id="@+id/menu_void"
                     android:title="@string/status_void" />
