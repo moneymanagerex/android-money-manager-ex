@@ -84,6 +84,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -194,7 +195,7 @@ public class HomeFragment
 
     // Loader event handlers
 
-    public void startLoader() {
+    public void startLoaders() {
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.restartLoader(LOADER_USER_NAME, null, this);
         loaderManager.restartLoader(LOADER_ACCOUNT_BILLS, null, this);
@@ -470,7 +471,7 @@ public class HomeFragment
         }
 
         // reload data.
-        startLoader();
+        startLoaders();
     }
 
     // Context menu
@@ -739,16 +740,16 @@ public class HomeFragment
                 if (selectedAccount == null) return false;
 
                 int accountId = selectedAccount.getAccountId();
-
-                MainActivity activity = (MainActivity) getActivity();
-                if (activity == null) return false;
-
                 String accountType = mAccountTypes.get(groupPosition);
+
+                Object event;
+
                 if (accountType.equalsIgnoreCase(AccountTypes.INVESTMENT.toString())) {
-                    activity.showWatchlistFragment(accountId);
+                    event = new RequestWatchlistFragmentEvent(accountId);
                 } else {
-                    activity.showAccountFragment(accountId);
+                    event = new RequestAccountFragmentEvent(accountId);
                 }
+                EventBus.getDefault().post(event);
                 return true;
             }
         });

@@ -92,12 +92,14 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Main activity of the application.
  */
 public class MainActivity
-        extends BaseFragmentActivity
-        implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks {
+    extends BaseFragmentActivity
+    implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -145,6 +147,8 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
 
         // show tutorial
         boolean tutorialShown = showTutorial();
@@ -608,6 +612,16 @@ public class MainActivity
 
     public int getResIdLayoutContent() {
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
+    }
+
+    // Events (EventBus)
+
+    public void onEvent(RequestAccountFragmentEvent event) {
+        showAccountFragment(event.accountId);
+    }
+
+    public void onEvent(RequestWatchlistFragmentEvent event) {
+        showWatchlistFragment(event.accountId);
     }
 
     // Private.
