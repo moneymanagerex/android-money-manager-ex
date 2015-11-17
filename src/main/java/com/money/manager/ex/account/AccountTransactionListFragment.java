@@ -28,6 +28,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -250,7 +251,7 @@ public class AccountTransactionListFragment
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
                     itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
-                            ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+                        ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 
                 //hide dash board
@@ -261,6 +262,7 @@ public class AccountTransactionListFragment
         }
 
         selectCurrentPeriod(menu);
+        // todo: select current status
     }
 
     @Override
@@ -405,10 +407,7 @@ public class AccountTransactionListFragment
         // customize the icon
         item.setIcon(FontIconDrawable.inflate(getActivity(), R.xml.ic_filter));
 
-        // todo: fill statuses: Reconciled, Not Reconciled, etc.
-
-
-        // todo: handle selection.
+        // selection handled in onOptionsItemSelected
     }
 
     private void reloadAccountInfo() {
@@ -606,7 +605,21 @@ public class AccountTransactionListFragment
     private boolean isStatusSelectionHandled(MenuItem item) {
         int id = item.getItemId();
         switch(id) {
+            case R.id.menu_all:
+                Log.d("menu", "all");
+                break;
+            case R.id.menu_none:
+                break;
+            case R.id.menu_reconciled:
+                break;
             case R.id.menu_not_reconciled:
+                Log.d("menu", "not reconciled");
+                break;
+            case R.id.menu_void:
+                break;
+            case R.id.menu_follow_up:
+                break;
+            case R.id.menu_duplicate:
                 break;
             default:
                 // nothing
