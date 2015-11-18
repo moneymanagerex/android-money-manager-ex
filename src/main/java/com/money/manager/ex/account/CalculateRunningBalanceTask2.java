@@ -97,10 +97,6 @@ public class CalculateRunningBalanceTask2
 
     @Override
     protected void onPostExecute(HashMap<Integer, Money> result) {
-        // raise event
-//        if (this.listener != null) {
-//            listener.onTaskComplete(result);
-//        }
         EventBus.getDefault().post(new RunningBalanceCalculatedEvent(result));
     }
 
@@ -118,7 +114,6 @@ public class CalculateRunningBalanceTask2
         AccountTransactionDisplay tx = new AccountTransactionDisplay();
 
         int originalPosition = c.getPosition();
-//        balances = new BigDecimal[c.getCount()];
         balances = new HashMap<>();
         String transType;
         Money amount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);

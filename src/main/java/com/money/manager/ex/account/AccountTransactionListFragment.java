@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
+import com.money.manager.ex.database.TransactionStatus;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -112,23 +113,11 @@ public class AccountTransactionListFragment
     private Money mAccountBalance = MoneyFactory.fromDouble(0),
             mAccountReconciled = MoneyFactory.fromDouble(0);
     private Account mAccount;
-//    private Activity mActivity;
     private AccountTransactionsListViewHolder viewHolder;
 
     // filter
     private DateRange mDateRange;
     private TransactionStatuses mStatusFilter;
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//
-//        // Keep the direct reference to the activity to avoid null exceptions on getActivity().
-//        // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
-//        if (context instanceof Activity) {
-//            mActivity = (Activity) context;
-//        }
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -246,8 +235,8 @@ public class AccountTransactionListFragment
 
         // Transaction Type picker
         if (BuildConfig.DEBUG) {
-            inflater.inflate(R.menu.menu_transaction_types_selector, menu);
-            initTransactionTypeDropdown(menu);
+            inflater.inflate(R.menu.menu_transaction_status_selector, menu);
+            initTransactionStatusMenu(menu);
         }
 
         // call create option menu of fragment
@@ -284,7 +273,7 @@ public class AccountTransactionListFragment
         }
 
         selectCurrentPeriod(menu);
-        // todo: select current status
+        selectCurrentStatus(menu);
     }
 
     @Override
@@ -399,6 +388,16 @@ public class AccountTransactionListFragment
         super.onDestroy();
     }
 
+    public String getFragmentName() {
+        return mFragmentName;
+    }
+
+    public void setFragmentName(String mFragmentName) {
+        this.mFragmentName = mFragmentName;
+    }
+
+    // Events
+
     public void onEvent(RunningBalanceCalculatedEvent event) {
         // Update the UI controls
         mAllDataListFragment.displayRunningBalances(event.balances);
@@ -425,7 +424,7 @@ public class AccountTransactionListFragment
      * To be used for the Transaction Type filter.
      * @param menu
      */
-    private void initTransactionTypeDropdown(Menu menu) {
+    private void initTransactionStatusMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
 
         // customize the icon
@@ -549,14 +548,6 @@ public class AccountTransactionListFragment
         startActivity(intent);
     }
 
-    public String getFragmentName() {
-        return mFragmentName;
-    }
-
-    public void setFragmentName(String mFragmentName) {
-        this.mFragmentName = mFragmentName;
-    }
-
     private void showTransactionsFragment(ViewGroup header) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
@@ -579,48 +570,12 @@ public class AccountTransactionListFragment
 
     private boolean datePeriodItemSelected(MenuItem item) {
         int stringId;
-
         int itemId = item.getItemId();
 
         DefinedDateRanges dateRanges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = dateRanges.getByMenuId(itemId);
         if (range == null) return false;
         stringId = range.nameResourceId;
-
-//        switch (itemId) {
-//            case R.id.menu_today:
-//                stringId = R.string.today;
-//                break;
-//            case R.id.menu_last7days:
-//                stringId = R.string.last7days;
-//                break;
-//            case R.id.menu_last15days:
-//                stringId = R.string.last15days;
-//                break;
-//            case R.id.menu_current_month:
-//                stringId = R.string.current_month;
-//                break;
-//            case R.id.menu_last30days:
-//                stringId = R.string.last30days;
-//                break;
-//            case R.id.menu_last3months:
-//                stringId = R.string.last3months;
-//                break;
-//            case R.id.menu_last6months:
-//                stringId = R.string.last6months;
-//                break;
-//            case R.id.menu_current_year:
-//                stringId = R.string.current_year;
-//                break;
-//            case R.id.menu_future_transactions:
-//                stringId = R.string.future_transactions;
-//                break;
-//            case R.id.menu_all_time:
-//                stringId = R.string.all_time;
-//                break;
-//            default:
-//                return false;
-//        }
 
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
         settings.setShowTransactions(range.key);
@@ -629,9 +584,7 @@ public class AccountTransactionListFragment
         DateUtils dateUtils = new DateUtils(getContext());
         mDateRange = dateUtils.getDateRangeForPeriod(stringId);
 
-        //check item
         item.setChecked(true);
-//        mPeriodIndex = item.getItemId();
 
         loadTransactions();
 
@@ -640,28 +593,39 @@ public class AccountTransactionListFragment
 
     private boolean isStatusSelectionHandled(MenuItem item) {
         int id = item.getItemId();
+        boolean result = true;
+
         switch(id) {
-            case R.id.menu_all:
-                Log.d("menu", "all");
-                break;
             case R.id.menu_none:
+                mStatusFilter = TransactionStatuses.NONE;
                 break;
             case R.id.menu_reconciled:
+                mStatusFilter = TransactionStatuses.RECONCILED;
                 break;
             case R.id.menu_not_reconciled:
+                // todo: work out the negation
                 Log.d("menu", "not reconciled");
                 break;
             case R.id.menu_void:
+                mStatusFilter = TransactionStatuses.VOID;
                 break;
             case R.id.menu_follow_up:
+                mStatusFilter = TransactionStatuses.FOLLOWUP;
                 break;
             case R.id.menu_duplicate:
+                mStatusFilter = TransactionStatuses.DUPLICATE;
                 break;
             default:
-                // nothing
+                // not handled here.
+                result = false;
                 break;
         }
-        return false;
+
+        if (result) {
+            item.setChecked(true);
+        }
+
+        return result;
     }
 
     private Spinner getAccountsSpinner() {
@@ -806,6 +770,27 @@ public class AccountTransactionListFragment
         if (itemToMark == null) return;
 
         itemToMark.setChecked(true);
+    }
+
+    private void selectCurrentStatus(Menu menu) {
+        MenuItem toolbarItem = menu.findItem(R.id.menuTransactionStatusSelector);
+        if (toolbarItem == null) return;
+
+        SubMenu subMenu = toolbarItem.getSubMenu();
+        int i = 0;
+        String currentStatus = this.mStatusFilter.name().toLowerCase();
+        while (true) {
+            MenuItem subItem = subMenu.getItem(i);
+            if (subItem == null) break;
+
+            String title = subItem.getTitle().toString().toLowerCase();
+            if (title.equals(currentStatus)) {
+                subItem.setChecked(true);
+                break;
+            }
+
+            i++;
+        }
     }
 
     private void switchAccount(int accountId) {

@@ -23,12 +23,9 @@
         android:id="@+id/menuTransactionStatusSelector"
         app:showAsAction="ifRoom"
         android:icon="?attr/ic_action_foursquare"
-        android:title="@string/transaction_type_filter">
+        android:title="@string/status_filter">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/menu_all"
-                    android:title="@string/all" />
                 <item
                     android:id="@+id/menu_none"
                     android:title="@string/status_none" />
