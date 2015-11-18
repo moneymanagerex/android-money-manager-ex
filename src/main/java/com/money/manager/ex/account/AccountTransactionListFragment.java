@@ -43,6 +43,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
+import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -68,8 +70,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import java.util.HashMap;
-
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -78,10 +79,12 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AccountTransactionListFragment
     extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor>, ICalculateRunningBalanceTaskCallbacks {
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String ARG_ACCOUNT_ID = "arg:accountId";
+
     private static final String KEY_CONTENT = "AccountTransactionListFragment:AccountId";
+    private static final String KEY_STATUS = "AccountTransactionListFragment:StatusFilter";
 
     private static final int ID_LOADER_SUMMARY = 2;
 
@@ -113,7 +116,8 @@ public class AccountTransactionListFragment
     private AccountTransactionsListViewHolder viewHolder;
 
     // filter
-    DateRange mDateRange;
+    private DateRange mDateRange;
+    private TransactionStatuses mStatusFilter;
 
 //    @Override
 //    public void onAttach(Context context) {
@@ -135,13 +139,18 @@ public class AccountTransactionListFragment
 
         // Set the default period.
         DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
-                .getShowTransactions();
+            .getShowTransactions();
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = ranges.get(rangeName);
 
         // todo: replace this with implemented period on the range object.
         DateUtils dateUtils = new DateUtils(getContext());
         mDateRange = dateUtils.getDateRangeForPeriod(range.nameResourceId);
+
+        // Default value.
+        mStatusFilter = TransactionStatuses.NONE;
+
+        restoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -188,6 +197,14 @@ public class AccountTransactionListFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // register as event bus listener
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -196,6 +213,14 @@ public class AccountTransactionListFragment
 
         // restart loader
         loadTransactions();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // unregister event bus listener.
+        EventBus.getDefault().unregister(this);
     }
 
     // Menu
@@ -361,9 +386,12 @@ public class AccountTransactionListFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         if (mAccountId != null) {
             outState.putInt(KEY_CONTENT, mAccountId);
         }
+
+        outState.putString(KEY_STATUS, mStatusFilter.name());
     }
 
     @Override
@@ -371,10 +399,9 @@ public class AccountTransactionListFragment
         super.onDestroy();
     }
 
-    @Override
-    public void onTaskComplete(HashMap<Integer, Money> balances) {
+    public void onEvent(RunningBalanceCalculatedEvent event) {
         // Update the UI controls
-        mAllDataListFragment.displayRunningBalances(balances);
+        mAllDataListFragment.displayRunningBalances(event.balances);
     }
 
     // Private
@@ -419,7 +446,8 @@ public class AccountTransactionListFragment
         Bundle arguments = prepareQuery();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-            getContext(), this.mAccountId, mDateRange.dateFrom, this, arguments);
+            getContext(), this.mAccountId, mDateRange.dateFrom, arguments);
+        // events now handled in onEvent, using an event bus.
         task.execute();
 
         // the result is received in #onTaskComplete.
@@ -452,6 +480,15 @@ public class AccountTransactionListFragment
                         QueryAllData.ID + " DESC");
 
         return args;
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+
+        mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+
+        String status = savedInstanceState.getString(KEY_STATUS);
+        mStatusFilter = TransactionStatuses.valueOf(status);
     }
 
     /**

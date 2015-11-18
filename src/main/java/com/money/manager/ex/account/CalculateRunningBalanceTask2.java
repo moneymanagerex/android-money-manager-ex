@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -34,6 +35,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -43,25 +45,22 @@ import info.javaperformance.money.MoneyFactory;
  * transactions list.
  * Here the idea is the fast calculation of the balances and caching in memory.
  * The problem is displaying the amounts once they are loaded.
- * Created by Alen Siljak on 11/09/2015.
  */
 public class CalculateRunningBalanceTask2
-        extends AsyncTask<Void, Void, HashMap<Integer, Money>> {
+    extends AsyncTask<Void, Void, HashMap<Integer, Money>> {
 
     /**
      * Create the task.
      * @param context Context
      * @param accountId Id of the account for which to load the balances.
      * @param startingDate The date, inclusive, from which to calculate the running balance.
-     * @param listener Listener for the 'finished' event.
      */
     public CalculateRunningBalanceTask2(Context context, int accountId, Date startingDate,
-                                        ICalculateRunningBalanceTaskCallbacks listener,
                                         Bundle selection) {
         this.context = context.getApplicationContext();
         this.accountId = accountId;
         this.startingDate = startingDate;
-        this.listener = listener;
+//        this.listener = listener;
         this.selectionBundle = selection;
     }
 
@@ -69,7 +68,6 @@ public class CalculateRunningBalanceTask2
     private HashMap<Integer, Money> balances;
     private int accountId;
     private Date startingDate;
-    private ICalculateRunningBalanceTaskCallbacks listener;
     private Bundle selectionBundle;
 
     /**
@@ -100,9 +98,10 @@ public class CalculateRunningBalanceTask2
     @Override
     protected void onPostExecute(HashMap<Integer, Money> result) {
         // raise event
-        if (this.listener != null) {
-            listener.onTaskComplete(result);
-        }
+//        if (this.listener != null) {
+//            listener.onTaskComplete(result);
+//        }
+        EventBus.getDefault().post(new RunningBalanceCalculatedEvent(result));
     }
 
     private HashMap<Integer, Money> runTask() {

@@ -105,7 +105,7 @@ import de.greenrobot.event.EventBus;
  */
 public class MainActivity
     extends BaseFragmentActivity
-    implements IDropboxManagerCallbacks, IDrawerItemClickListenerCallbacks {
+    implements IDropboxManagerCallbacks {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -113,6 +113,13 @@ public class MainActivity
     public static final int REQUEST_PASSWORD = 4;
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
+
+    /**
+     * @return the mRestart
+     */
+    public static boolean isRestartActivitySet() {
+        return mRestartActivity;
+    }
 
     public DropboxHelper mDropboxHelper;
 
@@ -180,7 +187,7 @@ public class MainActivity
 
         if (!tutorialShown) {
             // Skipped tutorial because it was seen in the past.
-            onTutorialComplete();
+            onTutorialComplete(savedInstanceState);
             // Otherwise continue at onActivityResult after tutorial closed.
         }
     }
@@ -270,7 +277,7 @@ public class MainActivity
                 break;
 
             case REQUEST_TUTORIAL:
-                onTutorialComplete();
+                onTutorialComplete(null);
                 break;
 
             case REQUEST_PASSWORD:
@@ -294,111 +301,6 @@ public class MainActivity
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRestartActivity(true);
-    }
-
-    /**
-     * Handle the callback from the drawer click handler.
-     * @param item selected DrawerMenuItem
-     * @return boolean indicating whether the action was handled or not.
-     */
-    @Override
-    public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
-        boolean result = true;
-        Intent intent;
-        final Core core = new Core(getApplicationContext());
-        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
-        
-        if (item.getId() == null && item.getTag() != null) {
-            String key = item.getTag().toString();
-            RecentDatabaseEntry recentDb = this.recentDbs.map.get(key);
-            if (recentDb != null) {
-                openDatabase(recentDb);
-            }
-        }
-        if (item.getId() == null) return false;
-
-        switch (item.getId()) {
-            case R.id.menu_home:
-                showFragment(HomeFragment.class);
-                break;
-            case R.id.menu_sync_dropbox:
-                DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
-                dropbox.synchronizeDropbox();
-                break;
-            case R.id.menu_open_database:
-                openDatabasePicker();
-                break;
-            case R.id.menu_account:
-                showFragment(AccountListFragment.class);
-                break;
-            case R.id.menu_category:
-                showFragment(CategoryListFragment.class);
-                break;
-            case R.id.menu_currency:
-                // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-                break;
-            case R.id.menu_payee:
-                showFragment(PayeeListFragment.class);
-                break;
-            case R.id.menu_recurring_transaction:
-                showFragment(RecurringTransactionListFragment.class);
-                break;
-            case R.id.menu_budgets:
-                intent = new Intent(this, BudgetsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_asset_allocation:
-                intent = new Intent(this, AssetAllocationActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_search_transaction:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-            case R.id.menu_report_categories:
-                startActivity(new Intent(this, CategoriesReportActivity.class));
-                break;
-            case R.id.menu_settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                break;
-            case R.id.menu_reports:
-                showReportsSelector(isDarkTheme, item.getText());
-                break;
-            case R.id.menu_report_payees:
-                startActivity(new Intent(this, PayeesReportActivity.class));
-                break;
-            case R.id.menu_report_where_money_goes:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_where_money_comes_from:
-                intent = new Intent(this, CategoriesReportActivity.class);
-                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
-                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
-                startActivity(intent);
-                break;
-            case R.id.menu_report_income_vs_expenses:
-                startActivity(new Intent(this, IncomeVsExpensesActivity.class));
-                break;
-            case R.id.menu_help:
-                startActivity(new Intent(MainActivity.this, HelpActivity.class));
-                break;
-            case R.id.menu_about:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
-            case R.id.menu_donate:
-                startActivity(new Intent(this, DonateActivity.class));
-                break;
-            default:
-                // if no match, return false
-                result = false;
-        }
-
-        return result;
     }
 
     // Menu
@@ -507,7 +409,7 @@ public class MainActivity
         if (permissions.length == 0) return;
 
         // Currently the request code does not matter. We ask for read/write permissions.
-        initialize();
+        initialize(null);
     }
 
     // Custom methods
@@ -536,13 +438,6 @@ public class MainActivity
         asyncTask.execute();
     }
 
-    /**
-     * @return the mRestart
-     */
-    public static boolean isRestartActivitySet() {
-        return mRestartActivity;
-    }
-
     public void createLayout() {
         setContentView(R.layout.main_activity);
 
@@ -557,58 +452,6 @@ public class MainActivity
         initializeDrawer();
     }
 
-    private void displayLastViewedFragment(Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
-        if (!savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) return;
-
-        String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-
-        if (TextUtils.isEmpty(className)) {
-            className = HomeFragment.class.getName();
-        }
-
-        if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
-            showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-        } else {
-            Class fragmentClass = null;
-            try {
-                fragmentClass = Class.forName(className);
-            } catch (ClassNotFoundException e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "instantiating class: " + className);
-            }
-            showFragment(fragmentClass);
-        }
-    }
-
-    private void displayDefaultFragment() {
-        // show main navigation fragment
-        final String homeFragmentTag = HomeFragment.class.getSimpleName();
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager()
-            .findFragmentByTag(homeFragmentTag);
-
-        if (fragment == null) {
-            // fragment create
-            fragment = new HomeFragment();
-        }
-
-        final HomeFragment finalFragment = fragment;
-        // ref: http://stackoverflow.com/a/14178962/202166
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
-                        .commit();
-                } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
-                    handler.handle(e, "showing initial fragments");
-                }
-            }
-        });
-    }
-
     /**
      * @return the mIsDualPanel
      */
@@ -618,6 +461,111 @@ public class MainActivity
 
     public int getResIdLayoutContent() {
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
+    }
+
+    /**
+     * Handle the callback from the drawer click handler.
+     * @param item selected DrawerMenuItem
+     * @return boolean indicating whether the action was handled or not.
+     */
+    //@Override
+    public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
+        boolean result = true;
+        Intent intent;
+        final Core core = new Core(getApplicationContext());
+        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
+
+        if (item.getId() == null && item.getTag() != null) {
+            String key = item.getTag().toString();
+            RecentDatabaseEntry recentDb = this.recentDbs.map.get(key);
+            if (recentDb != null) {
+                openDatabase(recentDb);
+            }
+        }
+        if (item.getId() == null) return false;
+
+        switch (item.getId()) {
+            case R.id.menu_home:
+                showFragment(HomeFragment.class);
+                break;
+            case R.id.menu_sync_dropbox:
+                DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
+                dropbox.synchronizeDropbox();
+                break;
+            case R.id.menu_open_database:
+                openDatabasePicker();
+                break;
+            case R.id.menu_account:
+                showFragment(AccountListFragment.class);
+                break;
+            case R.id.menu_category:
+                showFragment(CategoryListFragment.class);
+                break;
+            case R.id.menu_currency:
+                // Show Currency list.
+                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+                break;
+            case R.id.menu_payee:
+                showFragment(PayeeListFragment.class);
+                break;
+            case R.id.menu_recurring_transaction:
+                showFragment(RecurringTransactionListFragment.class);
+                break;
+            case R.id.menu_budgets:
+                intent = new Intent(this, BudgetsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_asset_allocation:
+                intent = new Intent(this, AssetAllocationActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_search_transaction:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                break;
+            case R.id.menu_report_categories:
+                startActivity(new Intent(this, CategoriesReportActivity.class));
+                break;
+            case R.id.menu_settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+            case R.id.menu_reports:
+                showReportsSelector(isDarkTheme, item.getText());
+                break;
+            case R.id.menu_report_payees:
+                startActivity(new Intent(this, PayeesReportActivity.class));
+                break;
+            case R.id.menu_report_where_money_goes:
+                intent = new Intent(this, CategoriesReportActivity.class);
+                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Withdrawal.name());
+                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_goes));
+                startActivity(intent);
+                break;
+            case R.id.menu_report_where_money_comes_from:
+                intent = new Intent(this, CategoriesReportActivity.class);
+                intent.putExtra(CategoriesReportActivity.REPORT_FILTERS, TransactionTypes.Deposit.name());
+                intent.putExtra(CategoriesReportActivity.REPORT_TITLE, getString(R.string.menu_report_where_money_comes_from));
+                startActivity(intent);
+                break;
+            case R.id.menu_report_income_vs_expenses:
+                startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+                break;
+            case R.id.menu_help:
+                startActivity(new Intent(MainActivity.this, HelpActivity.class));
+                break;
+            case R.id.menu_about:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                break;
+            case R.id.menu_donate:
+                startActivity(new Intent(this, DonateActivity.class));
+                break;
+            default:
+                // if no match, return false
+                result = false;
+        }
+
+        return result;
     }
 
     // Events (EventBus)
@@ -648,7 +596,7 @@ public class MainActivity
 
     // Private.
 
-    private void initialize() {
+    private void initialize(Bundle savedInstanceState) {
         handleIntent();
 
         // show change log dialog
@@ -662,18 +610,19 @@ public class MainActivity
         if (MyDatabaseUtils.isEncryptedDatabase(dbPath) && !MmexOpenHelper.getInstance(this).hasPassword()) {
             requestDatabasePassword(dbPath);
         } else {
-            initializeDatabaseAccess();
+            initializeDatabaseAccess(savedInstanceState);
         }
     }
 
-    private void initializeDatabaseAccess() {
+    private void initializeDatabaseAccess(Bundle savedInstanceState) {
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(getApplicationContext());
         String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
 
         // fragments
-        displayDefaultFragment();
-        //todo: displayLastViewedFragment(savedInstanceState);
+//        displayDefaultFragment();
+//        displayLastViewedFragment(savedInstanceState);
+        originalShowFragment(savedInstanceState);
 
         // start notification for recurring transaction
         if (!isRecurringTransactionStarted) {
@@ -742,13 +691,13 @@ public class MainActivity
 //        exitDialog.create().show();
 //    }
 
-    private void onTutorialComplete() {
+    private void onTutorialComplete(Bundle savedInstanceState) {
         // Request external storage permissions.
         MyFileUtils fileUtils = new MyFileUtils(this);
         boolean showingDialog = fileUtils.requestExternalStoragePermissions(this);
         // async, continue at onRequestPermissionsResult().
         if (!showingDialog) {
-            initialize();
+            initialize(savedInstanceState);
         }
     }
 
@@ -830,7 +779,6 @@ public class MainActivity
     public void setDualPanel(boolean mIsDualPanel) {
         this.mIsDualPanel = mIsDualPanel;
     }
-
 
     /**
      * Show fragment using reflection from class
@@ -971,48 +919,6 @@ public class MainActivity
 
     // Private
 
-    private void initializeDrawerVariables() {
-        mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
-
-        // repeating transaction
-        mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
-        mDrawerLinearRepeating.setVisibility(View.GONE);
-        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
-        mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
-        mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
-    }
-
-    private ArrayList<DrawerMenuItem> getRecentDatabases() {
-        ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
-
-        if (this.recentDbs.map != null) {
-            for (RecentDatabaseEntry entry : this.recentDbs.map.values()) {
-                String title = entry.getFileName();
-
-                DrawerMenuItem item = new DrawerMenuItem()
-                        .withText(title);
-
-                item.setTag(entry.filePath);
-
-                if (entry.linkedToDropbox) {
-                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
-                } else {
-                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_floppy_disk));
-                }
-                childDatabases.add(item);
-            }
-        }
-
-        // Other. Simply open the file picker, as before.
-        DrawerMenuItem item = new DrawerMenuItem()
-                .withId(R.id.menu_open_database)
-                .withText(getString(R.string.other));
-        childDatabases.add(item);
-
-
-        return childDatabases;
-    }
-
     private void createExpandableDrawer() {
         // Menu.
 
@@ -1136,6 +1042,106 @@ public class MainActivity
         });
     }
 
+    private void changeDatabase(String dbFilePath, String password) {
+        Core core = new Core(getApplicationContext());
+        core.changeDatabase(dbFilePath, password);
+
+        // Store the name into the recent files list.
+        if (!this.recentDbs.contains(dbFilePath)) {
+            this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
+        }
+
+        // restart this activity
+        setRestartActivity(true);
+        restartActivity();
+    }
+
+    private void displayDefaultFragment() {
+        // show main navigation fragment
+        final String homeFragmentTag = HomeFragment.class.getSimpleName();
+        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager()
+            .findFragmentByTag(homeFragmentTag);
+
+        if (homeFragment == null) {
+            // fragment create
+            homeFragment = new HomeFragment();
+        }
+
+        final HomeFragment finalFragment = homeFragment;
+        // ref: http://stackoverflow.com/a/14178962/202166
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
+                        .commit();
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
+                    handler.handle(e, "showing initial fragments");
+                }
+            }
+        });
+    }
+
+//    private void displayLastViewedFragment(Bundle savedInstanceState) {
+//        if (savedInstanceState == null) return;
+//        if (!savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) return;
+//
+//        String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+//
+//        if (TextUtils.isEmpty(className)) {
+//            className = HomeFragment.class.getName();
+//        }
+//
+//        if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
+//            showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+//        } else {
+//            Class fragmentClass = null;
+//            try {
+//                fragmentClass = Class.forName(className);
+//            } catch (ClassNotFoundException e) {
+//                ExceptionHandler handler = new ExceptionHandler(this, this);
+//                handler.handle(e, "instantiating class: " + className);
+//            }
+//            showFragment(fragmentClass);
+//        }
+//    }
+
+    private void originalShowFragment(Bundle savedInstanceState) {
+        Core core = new Core(this);
+
+        // show home fragment
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
+        if (fragment == null) {
+            // fragment create
+            fragment = new HomeFragment();
+            // add to stack
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+        } else if (core.isTablet()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+        }
+
+        // manage fragment
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
+            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+            // check if className is null, then setting Home Fragment
+            if (TextUtils.isEmpty(className)) {
+                className = HomeFragment.class.getName();
+            }
+            if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
+                // changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+            } else {
+                try {
+                    showFragment(Class.forName(className));
+                } catch (ClassNotFoundException e) {
+                    Log.e(LOGCAT, e.getMessage());
+                }
+            }
+        }
+    }
+
     private ArrayList<DrawerMenuItem> getDrawerMenuItems() {
         ArrayList<DrawerMenuItem> menuItems = new ArrayList<>();
 
@@ -1182,54 +1188,55 @@ public class MainActivity
             .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
         // reports
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
-                .withText(getString(R.string.menu_reports))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
-                .withDivider(true));
+            .withText(getString(R.string.menu_reports))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
+            .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
-                .withText(getString(R.string.settings))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
+            .withText(getString(R.string.settings))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
         // Donate
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
-                .withText(getString(R.string.donate))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
-                .withDivider(Boolean.TRUE));
+            .withText(getString(R.string.donate))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
+            .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
-                .withText(getString(R.string.about))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
+            .withText(getString(R.string.about))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
 
         return menuItems;
     }
 
-    /**
-     * Change the database.
-     *
-     * @param dbFilePath The path to the database file.
-     */
-    private void requestDatabaseChange(String dbFilePath) {
-        Log.v(LOGCAT, "Change database: " + dbFilePath);
+    private ArrayList<DrawerMenuItem> getRecentDatabases() {
+        ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
 
-        // handle encrypted database(s)
-        if (MyDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
-            requestDatabasePassword(dbFilePath);
-        } else {
-            changeDatabase(dbFilePath, null);
-        }
-    }
+        if (this.recentDbs.map != null) {
+            for (RecentDatabaseEntry entry : this.recentDbs.map.values()) {
+                String title = entry.getFileName();
 
-    private void changeDatabase(String dbFilePath, String password) {
-        Core core = new Core(getApplicationContext());
-        core.changeDatabase(dbFilePath, password);
+                DrawerMenuItem item = new DrawerMenuItem()
+                    .withText(title);
 
-        // Store the name into the recent files list.
-        if (!this.recentDbs.contains(dbFilePath)) {
-            this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
+                item.setTag(entry.filePath);
+
+                if (entry.linkedToDropbox) {
+                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
+                } else {
+                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_floppy_disk));
+                }
+                childDatabases.add(item);
+            }
         }
 
-        // restart this activity
-        setRestartActivity(true);
-        restartActivity();
+        // Other. Simply open the file picker, as before.
+        DrawerMenuItem item = new DrawerMenuItem()
+            .withId(R.id.menu_open_database)
+            .withText(getString(R.string.other));
+        childDatabases.add(item);
+
+
+        return childDatabases;
     }
 
     private void handleIntent() {
@@ -1254,6 +1261,17 @@ public class MainActivity
         }
     }
 
+    private void initializeDrawerVariables() {
+        mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
+
+        // repeating transaction
+        mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
+        mDrawerLinearRepeating.setVisibility(View.GONE);
+        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
+        mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
+        mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
+    }
+
     /**
      * called when quick-switching the recent databases from the navigation menu.
      * @param recentDb selected recent database entry
@@ -1270,6 +1288,59 @@ public class MainActivity
         mDropboxHelper.setLinkedRemoteFile(dropboxPath);
 
         requestDatabaseChange(recentDb.filePath);
+    }
+
+    /**
+     * Change the database.
+     *
+     * @param dbFilePath The path to the database file.
+     */
+    private void requestDatabaseChange(String dbFilePath) {
+        Log.v(LOGCAT, "Change database: " + dbFilePath);
+
+        // handle encrypted database(s)
+        if (MyDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
+            requestDatabasePassword(dbFilePath);
+        } else {
+            changeDatabase(dbFilePath, null);
+        }
+    }
+
+    private void requestDatabasePassword(String dbFilePath) {
+        // request password
+        Intent intent = new Intent(this, PasswordActivity.class);
+        //intent.setAction(Intent.A.INTENT_REQUEST_PASSWORD);
+        intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
+        startActivityForResult(intent, REQUEST_PASSWORD);
+        // continues onActivityResult.
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
+            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
+        if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
+            isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+        if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
+            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
+        }
+
+        // todo: this code is suspicious. Try opening another activity, then rotate device,
+        // and then come back to this activity and see what this does. Lots of crashes report this.
+        Core core = new Core(this);
+        if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
+            && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+
+        if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
+            this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
+        }
+    }
+
+    private void setRestartActivity(boolean mRestart) {
+        MainActivity.mRestartActivity = mRestart;
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {
@@ -1322,42 +1393,4 @@ public class MainActivity
             .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
     }
-
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
-            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
-        if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
-            isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
-        if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
-            isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
-        }
-
-        // todo: this code is suspicious. Try opening another activity, then rotate device,
-        // and then come back to this activity and see what this does. Lots of crashes report this.
-        Core core = new Core(this);
-        if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
-            && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                getSupportFragmentManager().popBackStack();
-            }
-        }
-
-        if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
-            this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
-        }
-    }
-
-    private void requestDatabasePassword(String dbFilePath) {
-        // request password
-        Intent intent = new Intent(this, PasswordActivity.class);
-        //intent.setAction(Intent.A.INTENT_REQUEST_PASSWORD);
-        intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
-        startActivityForResult(intent, REQUEST_PASSWORD);
-        // continues onActivityResult.
-    }
-
-    private void setRestartActivity(boolean mRestart) {
-        MainActivity.mRestartActivity = mRestart;
-    }
-
 }
