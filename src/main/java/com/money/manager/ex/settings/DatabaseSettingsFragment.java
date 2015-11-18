@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -40,10 +39,13 @@ import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.DonateDialogUtils;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 
 import java.io.File;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Database settings fragment.
@@ -230,7 +232,8 @@ public class DatabaseSettingsFragment
             recents.add(RecentDatabaseEntry.fromPath(filename));
 
             // set main activity to reload, to open the new db file.
-            MainActivity.setRestartActivity(true);
+//            MainActivity.setRestartActivity(true);
+            EventBus.getDefault().post(new AppRestartRequiredEvent());
 
             // update the displayed value.
             refreshDbPath();
@@ -329,7 +332,8 @@ public class DatabaseSettingsFragment
                                 .setDatabasePath(newDatabases.getAbsolutePath());
                         DonateDialogUtils.resetDonateDialog(getActivity().getApplicationContext());
                         // set to restart activity
-                        MainActivity.setRestartActivity(true);
+//                        MainActivity.setRestartActivity(true);
+                        EventBus.getDefault().post(new AppRestartRequiredEvent());
                     } else {
                         Toast.makeText(getActivity(), R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG)
                                 .show();

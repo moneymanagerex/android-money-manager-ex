@@ -86,6 +86,7 @@ import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
@@ -542,13 +543,6 @@ public class MainActivity
         return mRestartActivity;
     }
 
-    /**
-     * @param mRestart the mRestart to set
-     */
-    public static void setRestartActivity(boolean mRestart) {
-        MainActivity.mRestartActivity = mRestart;
-    }
-
     public void createLayout() {
         setContentView(R.layout.main_activity);
 
@@ -646,6 +640,10 @@ public class MainActivity
 
     public void onEvent(AccountsTotalLoadedEvent event) {
         setDrawerTotalAccounts(event.amount);
+    }
+
+    public void onEvent(AppRestartRequiredEvent event) {
+        MainActivity.mRestartActivity = true;
     }
 
     // Private.
@@ -1357,4 +1355,9 @@ public class MainActivity
         startActivityForResult(intent, REQUEST_PASSWORD);
         // continues onActivityResult.
     }
+
+    private void setRestartActivity(boolean mRestart) {
+        MainActivity.mRestartActivity = mRestart;
+    }
+
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2012-2015 The Android Money Manager Ex Project Team
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.money.manager.ex.home;
 
 import android.content.Context;
@@ -15,7 +31,6 @@ import com.shamanland.fonticon.FontIconDrawable;
 
 /**
  * Check for updates to the database on Dropbox. Ran on start of the main activity.
- * Created by Alen Siljak on 09/07/2015.
  */
 public class CheckDropboxForUpdatesTask
     extends AsyncTask<Void, Integer, Integer> {
@@ -78,28 +93,28 @@ public class CheckDropboxForUpdatesTask
 
     private void showNotificationDialog() {
         // The context has to implement the callbacks interface!
-        // todo: code smell. Try to avoid conversion to main activity here!
+        // todo: code smell. Try to avoid conversion to main activity here! <- use EventBus
         final MainActivity mainActivity = (MainActivity) mContext;
 
         new AlertDialogWrapper.Builder(mContext)
-                // setting alert dialog
-                .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
-                .setTitle(R.string.update_available)
-                .setMessage(R.string.update_on_dropbox)
-                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper, mainActivity);
-                        dropbox.synchronizeDropbox();
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+            // setting alert dialog
+            .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
+            .setTitle(R.string.update_available)
+            .setMessage(R.string.update_on_dropbox)
+            .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            })
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper, mainActivity);
+                    dropbox.synchronizeDropbox();
+                    dialog.dismiss();
+                }
+            })
+            .show();
     }
 }

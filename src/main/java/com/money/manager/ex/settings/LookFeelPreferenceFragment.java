@@ -30,11 +30,13 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.view.RobotoView;
 
 import org.apache.commons.lang3.math.NumberUtils;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Look & feel settings.
@@ -70,8 +72,9 @@ public class LookFeelPreferenceFragment
             chkAccountOpen.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    settings.setViewOpenAccounts((Boolean)newValue);
-                    MainActivity.setRestartActivity(true);
+                    settings.setViewOpenAccounts((Boolean) newValue);
+//                    MainActivity.setRestartActivity(true);
+                    EventBus.getDefault().post(new AppRestartRequiredEvent());
                     return true;
                 }
             });
@@ -89,8 +92,9 @@ public class LookFeelPreferenceFragment
             chkAccountFav.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    settings.setViewFavouriteAccounts((Boolean)newValue);
-                    MainActivity.setRestartActivity(true);
+                    settings.setViewFavouriteAccounts((Boolean) newValue);
+//                    MainActivity.setRestartActivity(true);
+                    EventBus.getDefault().post(new AppRestartRequiredEvent());
                     return true;
                 }
             });
@@ -104,7 +108,8 @@ public class LookFeelPreferenceFragment
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                MainActivity.setRestartActivity(true);
+//                MainActivity.setRestartActivity(true);
+                EventBus.getDefault().post(new AppRestartRequiredEvent());
                 return true;
             }
         };
@@ -116,8 +121,6 @@ public class LookFeelPreferenceFragment
         final ListPreference lstShow = (ListPreference) findPreference(getString(
                 R.string.pref_show_transaction));
         if (lstShow != null) {
-            String display;
-
             // set the available values for selection.
 
             final DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
@@ -185,7 +188,8 @@ public class LookFeelPreferenceFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (BuildConfig.DEBUG) Log.d(LOGCAT, newValue.toString());
 
-                    MainActivity.setRestartActivity(true);
+//                    MainActivity.setRestartActivity(true);
+                    EventBus.getDefault().post(new AppRestartRequiredEvent());
                     return true;
                 }
             });

@@ -23,12 +23,15 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * The code for migrating the databases used in v1.4 to use with 2.0.
@@ -121,7 +124,9 @@ public class DatabaseMigrator14To20 {
 
         // open the newly copied database
         // set to restart main activity to reload the db.
-        MainActivity.setRestartActivity(true);
+//        MainActivity.setRestartActivity(true);
+        EventBus.getDefault().post(new AppRestartRequiredEvent());
+
         Toast.makeText(mContext, R.string.database_migrate_14_to_20_complete, Toast.LENGTH_LONG)
                 .show();
 

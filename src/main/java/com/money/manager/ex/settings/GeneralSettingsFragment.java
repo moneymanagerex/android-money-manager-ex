@@ -31,17 +31,18 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.database.TableCurrencyFormats;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Fragment that contains the general settings.
@@ -72,7 +73,8 @@ public class GeneralSettingsFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String language = String.valueOf(newValue);
                     setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
-                    MainActivity.setRestartActivity(true);
+//                    MainActivity.setRestartActivity(true);
+                    EventBus.getDefault().post(new AppRestartRequiredEvent());
                     return true;
                 }
             });

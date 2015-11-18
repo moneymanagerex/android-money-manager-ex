@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.account;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -84,6 +82,7 @@ public class AccountTransactionListFragment
 
     private static final String ARG_ACCOUNT_ID = "arg:accountId";
     private static final String KEY_CONTENT = "AccountTransactionListFragment:AccountId";
+
     private static final int ID_LOADER_SUMMARY = 2;
 
     /**
@@ -107,28 +106,25 @@ public class AccountTransactionListFragment
     private AllDataListFragment mAllDataListFragment;
     private Integer mAccountId = null;
     private String mFragmentName;
-    private Money mAccountBalance = MoneyFactory.fromString("0"),
-            mAccountReconciled = MoneyFactory.fromString("0");
+    private Money mAccountBalance = MoneyFactory.fromDouble(0),
+            mAccountReconciled = MoneyFactory.fromDouble(0);
     private Account mAccount;
-    // Controls
-    private TextView txtAccountBalance, txtAccountReconciled, txtAccountDifference;
-    private ImageView imgAccountFav, imgGotoAccount;
-    private Activity mActivity;
-    ViewGroup mListHeader;
+//    private Activity mActivity;
+    private AccountTransactionsListViewHolder viewHolder;
 
     // filter
     DateRange mDateRange;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // Keep the direct reference to the activity to avoing null exceptions on getActivity().
-        // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
-        if (context instanceof Activity) {
-            mActivity = (Activity) context;
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//
+//        // Keep the direct reference to the activity to avoid null exceptions on getActivity().
+//        // http://stackoverflow.com/questions/6215239/getactivity-returns-null-in-fragment-function
+//        if (context instanceof Activity) {
+//            mActivity = (Activity) context;
+//        }
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -164,10 +160,11 @@ public class AccountTransactionListFragment
             reloadAccountInfo();
         }
 
+        this.viewHolder = new AccountTransactionsListViewHolder();
         initializeListHeader(inflater);
 
         // Transactions
-        showTransactionsFragment(mListHeader);
+        showTransactionsFragment(viewHolder.listHeader);
 
         // refresh user interface
         if (mAccount != null) {
@@ -462,9 +459,9 @@ public class AccountTransactionListFragment
      */
     private void setImageViewFavorite() {
         if (mAccount.getFavorite()) {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_star);
+            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star);
         } else {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
+            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
         }
     }
 
@@ -479,10 +476,12 @@ public class AccountTransactionListFragment
         if (mAccount != null) {
             CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
 
-            txtAccountBalance.setText(currencyService.getCurrencyFormatted(mAccount.getCurrencyId(), mAccountBalance));
-            txtAccountReconciled.setText(currencyService.getCurrencyFormatted(mAccount.getCurrencyId(), mAccountReconciled));
-            txtAccountDifference.setText(currencyService.getCurrencyFormatted(mAccount.getCurrencyId(),
-                    mAccountReconciled.subtract(mAccountBalance)));
+            this.viewHolder.txtAccountBalance.setText(currencyService.getCurrencyFormatted(
+                mAccount.getCurrencyId(), mAccountBalance));
+            this.viewHolder.txtAccountReconciled.setText(currencyService.getCurrencyFormatted(
+                mAccount.getCurrencyId(), mAccountReconciled));
+            this.viewHolder.txtAccountDifference.setText(currencyService.getCurrencyFormatted(
+                mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
         }
     }
 
@@ -656,16 +655,16 @@ public class AccountTransactionListFragment
     }
 
     private void initializeListHeader(LayoutInflater inflater) {
-        mListHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
+        this.viewHolder.listHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
         // take reference text view from layout
-        txtAccountBalance = (TextView) mListHeader.findViewById(R.id.textViewAccountBalance);
-        txtAccountReconciled = (TextView) mListHeader.findViewById(R.id.textViewAccountReconciled);
-        txtAccountDifference = (TextView) mListHeader.findViewById(R.id.textViewDifference);
+        this.viewHolder.txtAccountBalance = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
+        this.viewHolder.txtAccountReconciled = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
+        this.viewHolder.txtAccountDifference = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
         // favorite icon
-        imgAccountFav = (ImageView) mListHeader.findViewById(R.id.imageViewAccountFav);
+        this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
 
         // set listener click on favorite icon for change image
-        imgAccountFav.setOnClickListener(new OnClickListener() {
+        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 // set status account
                 mAccount.setFavorite(!(mAccount.getFavorite()));
@@ -682,8 +681,8 @@ public class AccountTransactionListFragment
         });
 
         // goto account
-        imgGotoAccount = (ImageView) mListHeader.findViewById(R.id.imageViewGotoAccount);
-        imgGotoAccount.setOnClickListener(new OnClickListener() {
+        this.viewHolder.imgGotoAccount = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
+        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AccountEditActivity.class);
@@ -757,7 +756,7 @@ public class AccountTransactionListFragment
         SubMenu subMenu = item.getSubMenu();
 
         // on init, mark the default item as checked
-        AppSettings settings = new AppSettings(mActivity);
+        AppSettings settings = new AppSettings(getActivity());
         DefinedDateRangeName rangeName = settings.getLookAndFeelSettings().getShowTransactions();
         if (rangeName == null) return;
 
@@ -782,12 +781,11 @@ public class AccountTransactionListFragment
 
         // hide account details bar if all accounts are selected
         if (accountId == Constants.NOT_SET) {
-            mAllDataListFragment.getListView().removeHeaderView(mListHeader);
+            mAllDataListFragment.getListView().removeHeaderView(this.viewHolder.listHeader);
         } else {
             if (mAllDataListFragment.getListView().getHeaderViewsCount() == 0) {
-                mAllDataListFragment.getListView().addHeaderView(mListHeader);
+                mAllDataListFragment.getListView().addHeaderView(this.viewHolder.listHeader);
             }
         }
     }
-
 }

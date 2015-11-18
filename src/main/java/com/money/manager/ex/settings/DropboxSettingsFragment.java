@@ -41,7 +41,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.dropbox.DropboxScheduler;
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.dropbox.DropboxManager;
@@ -50,9 +49,12 @@ import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.RawFileUtils;
 
 import java.io.File;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Dropbox settings.
@@ -324,7 +326,8 @@ public class DropboxSettingsFragment
     @Override
     public void onFileDownloaded() {
         // set main activity to reload.
-        MainActivity.setRestartActivity(true);
+//        MainActivity.setRestartActivity(true);
+        EventBus.getDefault().post(new AppRestartRequiredEvent());
 
         // open the new database.
         DropboxManager dropbox = new DropboxManager(getActivity(), mDropboxHelper, this);
