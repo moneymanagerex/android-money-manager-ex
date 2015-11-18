@@ -316,10 +316,10 @@ public class AccountTransactionListFragment
      * Start Loader to retrieve data
      */
     public void loadTransactions() {
-        if (mAllDataListFragment != null) {
-            Bundle arguments = prepareQuery();
-            mAllDataListFragment.loadData(arguments);
-        }
+        if (mAllDataListFragment == null) return;
+
+        Bundle arguments = prepareQuery();
+        mAllDataListFragment.loadData(arguments);
     }
 
     @Override
@@ -469,6 +469,11 @@ public class AccountTransactionListFragment
 
         where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));
         where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
+
+        // Status
+        if (mStatusFilter != TransactionStatuses.NONE) {
+            where.addStatement(QueryAllData.Status, "=", mStatusFilter.getCode());
+        }
 
         // create a bundle to returns
         Bundle args = new Bundle();
@@ -623,6 +628,7 @@ public class AccountTransactionListFragment
 
         if (result) {
             item.setChecked(true);
+            loadTransactions();
         }
 
         return result;
