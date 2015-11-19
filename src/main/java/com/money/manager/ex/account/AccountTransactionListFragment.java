@@ -117,7 +117,7 @@ public class AccountTransactionListFragment
 
     // filter
     private DateRange mDateRange;
-    private TransactionStatuses mStatusFilter;
+    private StatusFilter mStatusFilter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,7 +137,7 @@ public class AccountTransactionListFragment
         mDateRange = dateUtils.getDateRangeForPeriod(range.nameResourceId);
 
         // Default value.
-        mStatusFilter = TransactionStatuses.NONE;
+        mStatusFilter = new StatusFilter();
 
         restoreInstanceState(savedInstanceState);
     }
@@ -223,12 +223,6 @@ public class AccountTransactionListFragment
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        // Accounts list dropdown in toolbar.
-        // Ref: http://stackoverflow.com/questions/11377760/adding-spinner-to-actionbar-not-navigation
-        // Add options available only in account transactions list(s).
-//        inflater.inflate(R.menu.menu_account_spinner, menu);
-//        initAccountsDropdown(menu);
 
         // add the date picker.
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
@@ -380,7 +374,7 @@ public class AccountTransactionListFragment
             outState.putInt(KEY_CONTENT, mAccountId);
         }
 
-        outState.putString(KEY_STATUS, mStatusFilter.name());
+        outState.putStringArrayList(KEY_STATUS, mStatusFilter.filter);
     }
 
     @Override
@@ -427,6 +421,9 @@ public class AccountTransactionListFragment
     private void initTransactionStatusMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
 
+        int groupId = item.getGroupId();
+        menu.addSubMenu(groupId, Menu.NONE, Menu.NONE, R.string.status_not_reconciled);
+
         // customize the icon
         item.setIcon(FontIconDrawable.inflate(getActivity(), R.xml.ic_filter));
 
@@ -471,8 +468,8 @@ public class AccountTransactionListFragment
         where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
 
         // Status
-        if (mStatusFilter != TransactionStatuses.NONE) {
-            where.addStatement(QueryAllData.Status, "=", mStatusFilter.getCode());
+        if (!mStatusFilter.isEmpty()) {
+            where.addStatement(QueryAllData.Status, "IN", mStatusFilter.getSqlParameters());
         }
 
         // create a bundle to returns
@@ -491,8 +488,7 @@ public class AccountTransactionListFragment
 
         mAccountId = savedInstanceState.getInt(KEY_CONTENT);
 
-        String status = savedInstanceState.getString(KEY_STATUS);
-        mStatusFilter = TransactionStatuses.valueOf(status);
+        mStatusFilter.filter = savedInstanceState.getStringArrayList(KEY_STATUS);
     }
 
     /**
@@ -602,23 +598,23 @@ public class AccountTransactionListFragment
 
         switch(id) {
             case R.id.menu_none:
-                mStatusFilter = TransactionStatuses.NONE;
+                mStatusFilter.setFilter(TransactionStatuses.NONE);
                 break;
             case R.id.menu_reconciled:
-                mStatusFilter = TransactionStatuses.RECONCILED;
+                mStatusFilter.setFilter(TransactionStatuses.RECONCILED);
                 break;
             case R.id.menu_not_reconciled:
                 // todo: work out the negation
                 Log.d("menu", "not reconciled");
                 break;
             case R.id.menu_void:
-                mStatusFilter = TransactionStatuses.VOID;
+                mStatusFilter.setFilter(TransactionStatuses.VOID);
                 break;
             case R.id.menu_follow_up:
-                mStatusFilter = TransactionStatuses.FOLLOWUP;
+                mStatusFilter.setFilter(TransactionStatuses.FOLLOWUP);
                 break;
             case R.id.menu_duplicate:
-                mStatusFilter = TransactionStatuses.DUPLICATE;
+                mStatusFilter.setFilter(TransactionStatuses.DUPLICATE);
                 break;
             default:
                 // not handled here.
@@ -784,7 +780,7 @@ public class AccountTransactionListFragment
 
         SubMenu subMenu = toolbarItem.getSubMenu();
         int i = 0;
-        String currentStatus = this.mStatusFilter.name().toLowerCase();
+        String currentStatus = this.mStatusFilter.getCurrentFilterName().toLowerCase();
         while (true) {
             MenuItem subItem = subMenu.getItem(i);
             if (subItem == null) break;

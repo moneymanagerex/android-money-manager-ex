@@ -17,7 +17,7 @@
 package com.money.manager.ex.core;
 
 /**
- * Transaction Types
+ * Transaction Statuses
  */
 public enum TransactionStatuses {
     NONE(""),
