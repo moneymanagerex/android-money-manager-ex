@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2015.11.24-750">
+        <changelogtext>When only one split category entered, treat as the standard transaction.</changelogtext>
+        <changelogtext>Fixed: Reset Search function does not clear all search fields.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2015.11.15-749">
         <changelogtext>Corrected issues with creation of new recurring transactions.</changelogtext>
         <changelogtext>Corrected date conversion issues with the new library.</changelogtext>
