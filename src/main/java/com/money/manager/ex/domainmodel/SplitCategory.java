@@ -99,11 +99,11 @@ public class SplitCategory
         DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, contentValues, SPLITTRANSAMOUNT);
     }
 
-    public int getTransId() {
+    public Integer getTransId() {
         return getInt(TRANSID);
     }
 
-    public void setTransId(int value) {
+    public void setTransId(Integer value) {
         setInteger(TRANSID, value);
     }
 
