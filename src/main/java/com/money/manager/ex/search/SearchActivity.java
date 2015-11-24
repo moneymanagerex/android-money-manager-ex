@@ -33,8 +33,8 @@ import java.math.BigDecimal;
 import info.javaperformance.money.Money;
 
 public class SearchActivity
-        extends BaseFragmentActivity
-        implements ICommonFragmentCallbacks {
+    extends BaseFragmentActivity
+    implements ICommonFragmentCallbacks {
 
     public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
 
@@ -70,7 +70,7 @@ public class SearchActivity
 		super.onResume();
 		AllDataListFragment fragment;
 		fragment = (AllDataListFragment) getSupportFragmentManager()
-                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
+            .findFragmentByTag(AllDataListFragment.class.getSimpleName());
 		if (fragment != null && fragment.isVisible()) {
 			fragment.loadData();
 		}
@@ -90,11 +90,11 @@ public class SearchActivity
         } else {
             if (!mIsDualPanel) {
                 SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
-                        .findFragmentByTag(SearchFragment.class.getSimpleName());
+                    .findFragmentByTag(SearchFragment.class.getSimpleName());
                 if (searchFragment != null) {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
-                            .commit();
+                        .replace(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                        .commit();
                 }
             }
         }
@@ -116,7 +116,7 @@ public class SearchActivity
         if (mSearchFragment == null) {
             // try to find the search fragment
             mSearchFragment = (SearchFragment) getSupportFragmentManager()
-                    .findFragmentByTag(SearchFragment.class.getSimpleName());
+                .findFragmentByTag(SearchFragment.class.getSimpleName());
 
             if (mSearchFragment == null) {
                 mSearchFragment = createSearchFragment();

@@ -68,8 +68,9 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * The search form with search parameter input fields.
  */
-public class SearchFragment extends Fragment
-        implements IInputAmountDialogListener {
+public class SearchFragment
+    extends Fragment
+    implements IInputAmountDialogListener {
 
     // ID REQUEST code
     public static final int REQUEST_PICK_PAYEE = 1;
@@ -180,15 +181,7 @@ public class SearchFragment extends Fragment
         // to date
         txtToDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtToDate));
 
-        // Reset button.
-        Button resetButton = (Button) view.findViewById(R.id.resetButton);
-        resetButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchParameters = new SearchParameters();
-                displaySearchCriteria();
-            }
-        });
+        initializeResetButton(view);
 
         // Store search criteria values into the controls.
         displaySearchCriteria();
@@ -199,6 +192,18 @@ public class SearchFragment extends Fragment
         }
 
         return view;
+    }
+
+    private void initializeResetButton(View view) {
+        // Reset button.
+        Button resetButton = (Button) view.findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchParameters = new SearchParameters();
+                displaySearchCriteria();
+            }
+        });
     }
 
     @Override
@@ -438,7 +443,10 @@ public class SearchFragment extends Fragment
         }
 
         // Date from
-        if (mSearchParameters.dateFrom != null) {
+        if (mSearchParameters.dateFrom == null) {
+            txtFromDate.setTag(null);
+        }
+        else {
             txtFromDate.setTag(FormatUtilities.getIsoDateFrom(mSearchParameters.dateFrom));
         }
         txtFromDate.setText(DateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
