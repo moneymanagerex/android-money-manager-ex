@@ -435,7 +435,7 @@ public class AssetAllocationFragment
         values.name = getString(R.string.total);
         values.allocation = assetClass.getAllocation().toString();
         values.value = format.getValueFormattedInBaseCurrency(assetClass.getValue().truncate(decimalPlaces));
-        values.currentAllocation = assetClass.getCurrentAllocation().toString();
+        values.currentAllocation = assetClass.getCurrentAllocation().truncate(2).toString();
         values.currentValue = format.getValueFormattedInBaseCurrency(assetClass.getCurrentValue().truncate(decimalPlaces));
         values.difference = format.getValueFormattedInBaseCurrency(assetClass.getDifference().truncate(decimalPlaces));
 
