@@ -26,15 +26,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequested;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
+
+import de.greenrobot.event.EventBus;
 
 public class AssetAllocationActivity
     extends BaseFragmentActivity
@@ -77,13 +79,13 @@ public class AssetAllocationActivity
         outState.putParcelable(KEY_ASSET_ALLOCATION, this.assetAllocation);
     }
 
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        // restore allocation. This does not work.
-//        this.assetAllocation = savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION);
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // register as event bus listener
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     protected void onResume() {
@@ -91,6 +93,14 @@ public class AssetAllocationActivity
 
         // reload data
         //getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // unregister event bus listener.
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -167,6 +177,13 @@ public class AssetAllocationActivity
         // Remove any references to the data.
     }
 
+    // Events
+
+    public void onEvent(AssetAllocationReloadRequested event) {
+        // reload Asset Allocation
+        getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
+    }
+
     // Private
 
     private void setResultAndFinish() {
@@ -179,13 +196,12 @@ public class AssetAllocationActivity
         AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
         if (fragment == null) return;
 
-//        String tag = fragment.getTag();
         // find which allocation is being displayed currently.
         Integer id = fragment.getArguments().getInt(AssetAllocationFragment.PARAM_ASSET_CLASS_ID);
 
         AssetClass toShow;
         if (id != null) {
-            // todo: find it again in the reloaded data
+            // find it again in the reloaded data
             AssetAllocationService service = new AssetAllocationService(this);
             toShow = service.findChild(id, assetAllocation);
         } else {

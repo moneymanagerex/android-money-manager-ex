@@ -21,11 +21,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -302,7 +299,6 @@ public class AssetAllocationFragment
 
     private void deleteAllocation(MatrixCursorColumns item) {
         AssetAllocationService service = new AssetAllocationService(getActivity());
-        //AssetClass root = retrieveData();
 
         if (!service.deleteAllocation(item.id)) {
             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -348,11 +344,13 @@ public class AssetAllocationFragment
     }
 
     private void startEditAssetClassActivityForInsert() {
-
         Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.putExtra(AssetClassEditActivity.KEY_PARENT_ID, this.getAssetClassId());
         startActivity(intent);
+
+        // REQUEST_CREATE_ALLOCATION
+        // Content observer will refresh the Asset Allocation automatically.
     }
 
     private void startEditAssetClassActivityForEdit(int assetClassId) {
