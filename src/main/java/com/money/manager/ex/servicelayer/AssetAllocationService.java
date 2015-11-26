@@ -557,10 +557,10 @@ public class AssetAllocationService {
         Money currentValue = sumStockValues(item.getStocks());
         item.setCurrentValue(currentValue);
 
-        // Current allocation.
+        // Current allocation. Rounded to 2 decimal places as this is percentage.
         Money currentAllocation = currentValue
             .multiply(100)
-            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
+            .divide(totalPortfolioValue.toDouble(), 2);
         item.setCurrentAllocation(currentAllocation);
 
         // difference
