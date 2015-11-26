@@ -18,6 +18,7 @@
 <changelog bulletedList="true">
     <changelogversion versionName="">
         <changelogtext>Notification about rates when switching the base currency.</changelogtext>
+        <changelogtext>Calculating Asset Allocation group sums.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2015.11.24-750">
         <changelogtext>When only one split category entered, treat as the standard transaction.</changelogtext>

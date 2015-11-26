@@ -127,10 +127,10 @@ public class AssetAllocationService {
         AssetClass main = AssetClass.create("Asset Allocation");
         main.setType(ItemType.Group);
 
-        // Fill a hash map with one pass through cursor, for easier fetching of asset classes.
+        // Fill a hash map with one pass through cursor. Used for easier fetching of asset classes.
         HashMap<Integer, AssetClass> map = loadMap(c);
         c.close();
-        // Assign children to their parents.
+        // Assign children to their parents. Create a hierarchical list.
         List<AssetClass> list = assignChildren(map);
 
         // Load stock links and stocks to asset allocations.
@@ -492,7 +492,7 @@ public class AssetAllocationService {
     private Money getValueSum(List<AssetClass> group) {
         Money sum = MoneyFactory.fromDouble(0);
         for (AssetClass item : group) {
-            sum.add(item.getValue());
+            sum = sum.add(item.getValue());
         }
         return sum;
     }
@@ -500,7 +500,7 @@ public class AssetAllocationService {
     private Money getCurrentAllocationSum(List<AssetClass> group) {
         Money sum = MoneyFactory.fromDouble(0);
         for (AssetClass item : group) {
-            sum.add(item.getCurrentAllocation());
+            sum = sum.add(item.getCurrentAllocation());
         }
         return sum;
     }
@@ -508,7 +508,7 @@ public class AssetAllocationService {
     private Money getCurrentValueSum(List<AssetClass> group) {
         Money sum = MoneyFactory.fromDouble(0);
         for (AssetClass item : group) {
-            sum.add(item.getCurrentValue());
+            sum = sum.add(item.getCurrentValue());
         }
         return sum;
     }
@@ -516,7 +516,7 @@ public class AssetAllocationService {
     private Money getDifferenceSum(List<AssetClass> group) {
         Money sum = MoneyFactory.fromDouble(0);
         for (AssetClass item : group) {
-            sum.add(item.getDifference());
+            sum = sum.add(item.getDifference());
         }
         return sum;
     }
@@ -536,7 +536,7 @@ public class AssetAllocationService {
      * @param totalPortfolioValue The total value of the portfolio, in base currency.
      */
     private void calculateStatsFor(AssetClass item, Money totalPortfolioValue) {
-        Money zero = MoneyFactory.fromString("0");
+        Money zero = MoneyFactory.fromDouble(0);
         if (totalPortfolioValue.toDouble() == 0) {
             item.setValue(zero);
             item.setCurrentAllocation(zero);
@@ -569,7 +569,7 @@ public class AssetAllocationService {
     }
 
     private Money sumStockValues(List<Stock> stocks) {
-        Money sum = MoneyFactory.fromString("0");
+        Money sum = MoneyFactory.fromDouble(0);
         CurrencyService currencyService = new CurrencyService(getContext());
         AccountRepository repo = new AccountRepository(getContext());
         int baseCurrencyId = currencyService.getBaseCurrencyId();
