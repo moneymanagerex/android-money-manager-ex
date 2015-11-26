@@ -1,7 +1,7 @@
 package org.moneymanagerex.android.testhelpers;
 
 /**
- * Created by Alen Siljak on 24/09/2015.
+ * Dialog Button enum
  */
 public enum DialogButtons {
     POSITIVE,

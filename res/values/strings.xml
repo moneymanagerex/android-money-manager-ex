@@ -63,6 +63,9 @@
     <string name="preferences_dispaly">Look &#38; Feel</string>
     <string name="preferences_behaviour">Behaviour</string>
     <string name="base_currency">Base currency</string>
+    <string name="base_currency_changed">Base currency changed</string>
+    <string name="base_currency_change_notification">The base currency has been changed. Please update the currency exchange rates to get correct amounts in the new base currency.</string>
+
     <string name="view_accounts_opened">View open accounts</string>
     <string name="if_not_selected_willShowAllAccounts">If not selected will show all accounts</string>
     <string name="view_accounts_favorites">View favourite accounts</string>
@@ -425,6 +428,7 @@
     <string name="categories">Categories</string>
     <string name="currencies">Currencies</string>
     <string name="currencies_used">Currencies, used</string>
+    <string name="open_currencies">Open currencies</string>
     <string name="payees">Payees</string>
     <string name="repeating_transactions">Recurring Transactions</string>
     <string name="theme_holo_light">Holo Light</string>

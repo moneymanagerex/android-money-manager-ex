@@ -25,6 +25,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -37,6 +40,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+import com.money.manager.ex.utils.DialogUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -127,6 +131,7 @@ public class GeneralSettingsFragment
         initBaseCurrency();
 
         // default status
+
         final ListPreference lstDefaultStatus = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_STATUS));
         if (lstDefaultStatus != null) {
             setSummaryListPreference(lstDefaultStatus, lstDefaultStatus.getValue(), R.array.status_values, R.array.status_items);
@@ -235,15 +240,33 @@ public class GeneralSettingsFragment
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
                     // set preference
-//                    AppSettings settings = new AppSettings(getActivity());
-//                    settings.getGeneralSettings().setBaseCurrency(currencyId);
                     CurrencyService utils = new CurrencyService(getActivity());
                     utils.saveBaseCurrencyId(currencyId);
                     // refresh the displayed value.
                     showCurrentDefaultCurrency();
+
+                    // notify the user to update exchange rates!
+                    showCurrencyChangeNotification();
                 }
                 break;
         }
+    }
+
+    private void showCurrencyChangeNotification() {
+        new MaterialDialog.Builder(getActivity())
+            .title(R.string.base_currency_changed)
+            .content(R.string.base_currency_change_notification)
+            .positiveText(android.R.string.ok)
+            .neutralText(R.string.open_currencies)
+            .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    Intent intent = new Intent(getActivity(), CurrencyListActivity.class);
+                    intent.setAction(Intent.ACTION_EDIT);
+                    startActivity(intent);
+                }
+            })
+            .show();
     }
 
     private void showCurrentDefaultCurrency() {
