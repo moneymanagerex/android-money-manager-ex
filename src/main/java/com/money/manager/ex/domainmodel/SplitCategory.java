@@ -78,8 +78,8 @@ public class SplitCategory
     }
 
     @Override
-    public void setCategoryId(int categId) {
-        setInteger(CATEGID, categId);
+    public void setCategoryId(int categoryId) {
+        setInteger(CATEGID, categoryId);
     }
 
     @Override
@@ -88,8 +88,8 @@ public class SplitCategory
     }
 
     @Override
-    public void setSubcategoryId(int subCategId) {
-        setInteger(SUBCATEGID, subCategId);
+    public void setSubcategoryId(int subcategoryId) {
+        setInteger(SUBCATEGID, subcategoryId);
     }
 
     @Override
@@ -100,7 +100,8 @@ public class SplitCategory
     }
 
     public Integer getTransId() {
-        return getInt(TRANSID);
+        Integer result = getInt(TRANSID);
+        return result;
     }
 
     public void setTransId(Integer value) {
@@ -109,9 +110,10 @@ public class SplitCategory
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        int id = getId() == null ? Constants.NOT_SET : getId();
-        dest.writeInt(id);
-        dest.writeInt(getTransId());
+        Integer id = getId();
+        dest.writeInt(id == null ? Constants.NOT_SET : id);
+        Integer transId = getTransId();
+        dest.writeInt(transId == null ? Constants.NOT_SET : transId);
         dest.writeInt(getCategoryId());
         dest.writeInt(getSubcategoryId());
         dest.writeString(getAmount().toString());
