@@ -100,8 +100,7 @@ public class SplitCategory
     }
 
     public Integer getTransId() {
-        Integer result = getInt(TRANSID);
-        return result;
+        return getInt(TRANSID);
     }
 
     public void setTransId(Integer value) {

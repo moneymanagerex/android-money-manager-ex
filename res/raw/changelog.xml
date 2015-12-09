@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2015.12.09-752">
+        <changelogtext>Correction for the split categories on transactions created from recurring transaction reminder.</changelogtext>
+        <changelogtext>Initial version of transaction status filter in the transactions list (beta).</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2015.11.26-751">
         <changelogtext>Notification about rates when switching the base currency.</changelogtext>
         <changelogtext>Calculating Asset Allocation group sums.</changelogtext>
