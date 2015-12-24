@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2015.12-24-753">
+    <changelogversion versionName="2015.12.24.753">
         <changelogtext>Updated translations</changelogtext>
         <changelogtext>Correction for status filter in transactions list.</changelogtext>
     </changelogversion>
