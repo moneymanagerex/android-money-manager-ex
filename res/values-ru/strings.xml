@@ -337,6 +337,7 @@
   <string name="delete_others_selected_transaction">Вы уверены, что хотите удалить %d выбранных проводок ?</string>
   <string name="categories">Категории</string>
   <string name="currencies">Валюты</string>
+  <string name="currencies_used">Валюты, использовано</string>
   <string name="payees">Контрагенты</string>
   <string name="repeating_transactions">Повторяющиеся транзакции</string>
   <string name="theme_holo_light">Holo светлая</string>
@@ -539,4 +540,5 @@
   <string name="name">Название</string>
   <string name="stock">Запас</string>
   <string name="all_accounts">Все счета</string>
+  <string name="records">записей</string>
 </resources>

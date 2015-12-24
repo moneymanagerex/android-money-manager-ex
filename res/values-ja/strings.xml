@@ -337,6 +337,7 @@
   <string name="delete_others_selected_transaction">%d の選択した取引を削除してもよろしいですか?</string>
   <string name="categories">カテゴリー</string>
   <string name="currencies">通貨</string>
+  <string name="currencies_used">通貨、使用</string>
   <string name="payees">支払先</string>
   <string name="repeating_transactions">定期的な取引</string>
   <string name="theme_holo_light">Holo Light</string>
@@ -542,4 +543,5 @@
   <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">株式</string>
   <string name="all_accounts">すべてのアカウント</string>
+  <string name="records">レコード</string>
 </resources>

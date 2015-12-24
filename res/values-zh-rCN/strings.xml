@@ -535,7 +535,9 @@
   <string name="no_records_found_create">没有找到记录。轻触绿色加号按钮可新建一个记录。</string>
   <string name="current_value">当前价值</string>
   <string name="current">当前</string>
+  <string name="parent">上一级</string>
   <string name="name">名称</string>
   <string name="stock">股票</string>
   <string name="all_accounts">所有账户</string>
+  <string name="records">记录</string>
 </resources>

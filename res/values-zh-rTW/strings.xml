@@ -42,6 +42,7 @@
   <string name="version">版本</string>
   <string name="build">建立於</string>
   <string name="path">資料庫位置</string>
+  <string name="database_version">資料庫版本</string>
   <string name="title_show_tutorial">顯示教程</string>
   <string name="summary_show_tutorial">下次執行時顯示教程？</string>
   <string name="preferences_behaviour_focus_filter_title">在選擇列表中顯示搜尋框</string>
@@ -336,6 +337,7 @@
   <string name="delete_others_selected_transaction">你確定要刪除所選的 %d 筆交易紀錄？</string>
   <string name="categories">類型</string>
   <string name="currencies">貨幣</string>
+  <string name="currencies_used">使用的貨幣</string>
   <string name="payees">受帳人</string>
   <string name="repeating_transactions">定期交易</string>
   <string name="theme_holo_light">Holo Light</string>
@@ -443,6 +445,7 @@
   <string name="edit_price">編輯價格</string>
   <string name="price_updated">價格已更新</string>
   <string name="all_prices_updated">所有價格都已都更新。</string>
+  <string name="download_complete">下載完成。</string>
   <string name="confirm_price_download">你想要更新線上安全價格嗎？</string>
   <string name="starting_price_update">下載價格中，請稍候...</string>
   <string name="database_migrate_14_to_20">從 v1.4 搬移資料庫</string>
@@ -451,6 +454,7 @@
   <string name="database_migrate_14_to_20_success">資料庫搬移成功。</string>
   <string name="database_migrate_14_to_20_complete">搬移資料庫已完成，請關閉設定後開始使用這個版本的資料庫</string>
   <string name="database_migrate_14_to_20_intro">在舊位置發現資料庫。請點擊下面的按鈕搬移資料庫到 SD 卡上使用。</string>
+  <string name="clear_recent_files_list">清除最近使用的檔案</string>
   <string name="export_prices">匯出價格</string>
   <string name="purge_history">清除價格歷史記錄</string>
   <string name="purge_history_confirmation">你想要刪除所有帳戶價格歷史記錄嗎？</string>
@@ -494,6 +498,7 @@
   <string name="update_available">有可用更新</string>
   <string name="update_on_dropbox">Dropbox 上有已更新的資料庫檔案可以使用。是否需要更新？</string>
   <string name="currencies_empty">未發現任何貨幣，請點擊綠色加號按鈕新增。</string>
+  <string name="currency_not_found">無法找到該貨幣</string>
   <string name="homepage">我們的網站首頁是 http://android.moneymanagerex.org/</string>
   <string name="current_database">當前資料庫</string>
   <string name="about_logcat_header">您可點擊下方按鈕將應用程式日誌傳送給我們。</string>
@@ -517,5 +522,8 @@
   <string name="value">價值</string>
   <string name="view_transactions">查看交易紀錄</string>
   <string name="error_downloading_symbol">下載價格錯誤</string>
+  <string name="other">其他</string>
+  <string name="cleared">已清除</string>
+  <string name="delete_success">已刪除</string>
   <string name="all_accounts">所有帳戶</string>
 </resources>

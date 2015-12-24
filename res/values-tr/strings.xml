@@ -42,8 +42,11 @@
   <string name="version">Sürüm</string>
   <string name="build">Yapı</string>
   <string name="path">Veritabanı yolu</string>
+  <string name="database_version">Veritabanı versiyonu</string>
   <string name="title_show_tutorial">Eğitimi göster</string>
   <string name="summary_show_tutorial">Bir sonraki açılışta program özellikleri gösterilsin mi?</string>
+  <string name="preferences_behaviour_focus_filter_title">Filtre Seçici</string>
+  <string name="preferences_behaviour_focus_filter_summary">Seçiciler filtrede odaklanmak. Aksi takdirde göz atın.</string>
   <string name="pref_auto_sync_via_wifi">Sadece Wifi olduğunda eşitle</string>
   <string name="pref_auto_sync_via_wifi_summary">Yalnızca WiFi bağlantısı olduğunda otomatik eşitle.</string>
   <string name="account">Hesap</string>
@@ -96,9 +99,12 @@
   <string name="prefix_symbol">Ön sembol</string>
   <string name="suffix_symbol">Son sembol</string>
   <string name="decimal_char">Ondalık işareti</string>
+  <string name="scale">Aralık</string>
+  <string name="conversion_to_base_rate">Dönüşüm</string>
   <string name="currency_name_empty">Para birimi adı gereklidir</string>
   <string name="amount">Tutar</string>
   <string name="total_amount">Toplam tutar</string>
+  <string name="deposit">Mevduat</string>
   <string name="status">Durum</string>
   <string name="status_reconciled">Onaylanmış</string>
   <string name="status_void">Hükümsüz</string>
@@ -426,6 +432,7 @@
   <string name="edit_price">Fiyatı düzenle</string>
   <string name="price_updated">Fiyat güncellendi</string>
   <string name="all_prices_updated">Bütün fiyatlar güncellendi.</string>
+  <string name="download_complete">İndirme tamamlandı.</string>
   <string name="starting_price_update">Fiyatlar indiriliyor, lütfen bekleyin&#8230;</string>
   <string name="database_migrate_14_to_20">Veritabanını v1.4 sürümüne güncelle</string>
   <string name="database_migrate_14_to_20_explanation">Eski veriler bulundu. Eski veritabanını kullanmak için buraya dokunun.</string>
@@ -490,5 +497,9 @@
   <string name="value">Değer</string>
   <string name="view_transactions">İşlemleri görüntüle</string>
   <string name="error_downloading_symbol">Fiyat sembolü indirilirken hata oluştu</string>
+  <string name="move_up">Yukarı git</string>
+  <string name="move_down">Aşağıya git</string>
+  <string name="stock">Stok</string>
   <string name="all_accounts">Tüm Hesaplar</string>
+  <string name="records">kayıtlar</string>
 </resources>

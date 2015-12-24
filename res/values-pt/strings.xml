@@ -42,6 +42,7 @@
   <string name="version">Versão</string>
   <string name="build">Build</string>
   <string name="path">Caminho para a Base de Dados</string>
+  <string name="database_version">Versão da Base de Dados</string>
   <string name="title_show_tutorial">Mostrar o tutorial</string>
   <string name="summary_show_tutorial">Mostrar tutorial na próxima execução?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtrar em seletores</string>
@@ -336,6 +337,7 @@
   <string name="delete_others_selected_transaction">Tem certeza que deseja excluir as %d transações seleccionadas?</string>
   <string name="categories">Categorias</string>
   <string name="currencies">Moedas</string>
+  <string name="currencies_used">Moedas, usadas</string>
   <string name="payees">Beneficiários</string>
   <string name="repeating_transactions">Transações recorrentes</string>
   <string name="theme_holo_light">Holo claro</string>
@@ -443,6 +445,7 @@
   <string name="edit_price">Editar o preço</string>
   <string name="price_updated">Preço actualizado</string>
   <string name="all_prices_updated">Todos os preços foram actualizados.</string>
+  <string name="download_complete">Transferência concluída.</string>
   <string name="confirm_price_download">Deseja actualizar os preços de segurança on-line?</string>
   <string name="starting_price_update">A descarregar os preços, aguarde...</string>
   <string name="database_migrate_14_to_20">Migrar base de dados da versão 1.4</string>
@@ -451,6 +454,7 @@
   <string name="database_migrate_14_to_20_success">Migração da base de dados bem sucedida.</string>
   <string name="database_migrate_14_to_20_complete">Migração completa. Fecha as definições para começar a usar a base de dados.</string>
   <string name="database_migrate_14_to_20_intro">Foi detectada uma base de dados na local anterior. Toque no botão em baixo para migrar para o cartão SD e usar.</string>
+  <string name="clear_recent_files_list">Eliminar ficheiros recentes</string>
   <string name="export_prices">Exportar preços</string>
   <string name="purge_history">Purgar histórico de preços</string>
   <string name="purge_history_confirmation">Deseja apagar o histórico completo de preços para todas as contas?</string>
@@ -494,6 +498,7 @@
   <string name="update_available">Está disponível uma actualização</string>
   <string name="update_on_dropbox">Há um arquivo na base de dados atualizado disponível na Dropbox. Gostaria de atualizar?</string>
   <string name="currencies_empty">Não foram encontradas moedas. Para criar uma, toque no botão verde.</string>
+  <string name="currency_not_found">Moeda não encontrada</string>
   <string name="homepage">O nosso site é http://android.moneymanagerex.org/</string>
   <string name="current_database">Base de dados atual</string>
   <string name="about_logcat_header">Você pode enviar-nos o log da aplicação, clicando no botão abaixo.</string>
@@ -516,5 +521,9 @@
   <string name="value">Valor</string>
   <string name="view_transactions">Ver transações</string>
   <string name="error_downloading_symbol">Erro ao transferir o preço para o símbolo</string>
+  <string name="other">Outro</string>
+  <string name="cleared">Processado</string>
+  <string name="delete_success">Item eliminado</string>
+  <string name="asset_allocation">Alocação de ativos</string>
   <string name="all_accounts">Todas as Contas</string>
 </resources>
