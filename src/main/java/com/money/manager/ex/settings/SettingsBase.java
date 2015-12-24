@@ -8,7 +8,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 
 /**
  * Base class for settings sections.
- * Created by Alen Siljak on 03/07/2015.
  */
 public abstract class SettingsBase {
 

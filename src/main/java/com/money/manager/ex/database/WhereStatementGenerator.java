@@ -72,8 +72,14 @@ public class WhereStatementGenerator {
         StringBuilder sb = new StringBuilder();
 
         sb.append(field);
+        sb.append(" ");
         sb.append(operator);
-        DatabaseUtils.appendValueToSql(sb, argument);
+        sb.append(" ");
+        if (operator.equalsIgnoreCase("in")) {
+            sb.append(argument);
+        } else {
+            DatabaseUtils.appendValueToSql(sb, argument);
+        }
 
         return sb.toString();
     }

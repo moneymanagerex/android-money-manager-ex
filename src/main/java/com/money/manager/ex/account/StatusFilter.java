@@ -57,7 +57,7 @@ public class StatusFilter {
         String result = "(";
         for (String status : this.filter) {
             // append comma if not the first element
-            if (this.filter.indexOf(status) == 0) {
+            if (this.filter.indexOf(status) > 0) {
                 result += ", ";
             }
 
