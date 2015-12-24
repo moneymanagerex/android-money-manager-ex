@@ -23,8 +23,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.0.0-alpha3'
         classpath 'com.google.gms:google-services:1.3.1'
-        classpath "com.android.databinding:dataBinder:1.0-rc4"
-
+        //classpath "com.android.databinding:dataBinder:1.0-rc4"
     }
 }
 
@@ -48,7 +47,7 @@ allprojects {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.databinding'
+//apply plugin: 'com.android.databinding'
 apply plugin: 'com.google.gms.google-services'
 
 android {
@@ -116,6 +115,10 @@ android {
             }
         }
     }
+
+//    dataBinding {
+//        enabled = true
+//    }
 
     // adding this currently breaks the build because of analytics dependencies?
     productFlavors {
