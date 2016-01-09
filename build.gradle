@@ -191,8 +191,8 @@ dependencies {
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             // Retrofit turns your HTTP API into a Java interface.
             'com.google.code.gson:gson:2.4',
-            'com.squareup.retrofit:retrofit:2.0.0-beta3',
-            'com.squareup.retrofit:converter-gson:2.0.0-beta3',
+            'com.squareup.retrofit:retrofit:2.0.0-beta2',
+            'com.squareup.retrofit:converter-gson:2.0.0-beta2',
 //        'com.innahema:collections-query:0.2.9'
             // encryption
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
