@@ -21,4 +21,5 @@
 
     <string name="view_user_size">user_size</string>
     <string name="application_copyright" translatable="false">© 2012–2015 Android Money Manager Ex Project</string>
+    <string name="dashclock_extension_summary">Displays the summary of Money Manager Ex for Android</string>
 </resources>
