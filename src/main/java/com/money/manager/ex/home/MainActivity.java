@@ -662,30 +662,6 @@ public class MainActivity
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
-//    /**
-//     * Dialog to choose exit from application
-//     */
-//    public void exitApplication() {
-//        AlertDialogWrapper.Builder exitDialog = new AlertDialogWrapper.Builder(getApplicationContext())
-//            .setTitle(R.string.close_application)
-//            .setMessage(R.string.question_close_application)
-//            .setIcon(R.mipmap.ic_launcher);
-//        exitDialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                MoneyManagerApplication.killApplication();
-//            }
-//        });
-//        exitDialog.setNegativeButton(android.R.string.no, new OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        // show dialog
-//        exitDialog.create().show();
-//    }
-
     private void onTutorialComplete(Bundle savedInstanceState) {
         // Request external storage permissions.
         MyFileUtils fileUtils = new MyFileUtils(this);
@@ -757,16 +733,6 @@ public class MainActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
-//    public void showDashboardFragment() {
-//        DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager()
-//                .findFragmentByTag(DashboardFragment.class.getSimpleName());
-//        if (dashboardFragment == null || dashboardFragment.getId() != getResIdLayoutContent()) {
-//            dashboardFragment = new DashboardFragment();
-//        }
-//        // fragment dashboard
-//        showFragment(dashboardFragment, DashboardFragment.class.getSimpleName());
-//    }
 
     /**
      * @param mIsDualPanel the mIsDualPanel to set
@@ -876,13 +842,6 @@ public class MainActivity
         if (mDrawerTextTotalAccounts != null)
             mDrawerTextTotalAccounts.setText(totalAccounts);
     }
-
-//    public void setDrawableRepeatingTransactions(int repeatingTransaction) {
-//        if (mDrawerLinearRepeating != null && mDrawerTextViewRepeating != null) {
-//            mDrawerLinearRepeating.setVisibility(repeatingTransaction <= 0 ? View.GONE : View.VISIBLE);
-//            mDrawerTextViewRepeating.setText(getString(R.string.num_repeating_transaction_expired, repeatingTransaction));
-//        }
-//    }
 
     public void onClickCardViewIncomesVsExpenses(View v) {
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
@@ -1079,30 +1038,6 @@ public class MainActivity
         });
     }
 
-//    private void displayLastViewedFragment(Bundle savedInstanceState) {
-//        if (savedInstanceState == null) return;
-//        if (!savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) return;
-//
-//        String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-//
-//        if (TextUtils.isEmpty(className)) {
-//            className = HomeFragment.class.getName();
-//        }
-//
-//        if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
-//            showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-//        } else {
-//            Class fragmentClass = null;
-//            try {
-//                fragmentClass = Class.forName(className);
-//            } catch (ClassNotFoundException e) {
-//                ExceptionHandler handler = new ExceptionHandler(this, this);
-//                handler.handle(e, "instantiating class: " + className);
-//            }
-//            showFragment(fragmentClass);
-//        }
-//    }
-
     private void originalShowFragment(Bundle savedInstanceState) {
         Core core = new Core(this);
 
@@ -1112,9 +1047,13 @@ public class MainActivity
             // fragment create
             fragment = new HomeFragment();
             // add to stack
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                .commit();
         } else if (core.isTablet()) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                .commit();
         }
 
         // manage fragment
@@ -1244,12 +1183,6 @@ public class MainActivity
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
             // Open this database.
             requestDatabaseChange(pathFile);
-//            Core core = new Core(this);
-//            boolean databaseOpened = core.changeDatabase(pathFile);
-//            if (!databaseOpened) {
-//                Log.w(LOGCAT, "Path intent file to open:" + pathFile + " not correct!!!");
-//                throw new RuntimeException("Could not open database: " + pathFile);
-//            }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this, this);
             handler.handle(e, "opening database from intent");
