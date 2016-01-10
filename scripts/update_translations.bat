@@ -5,7 +5,7 @@
 ::set src_root=c:\temp
 ::set dest_root=c:\dev\android-money-manager-ex\res
 set src_root=d:\temp
-set dest_root=d:\dev\GitHub\android-money-manager-ex\res
+set dest_root=d:\dev\android-money-manager-ex\res
 
 :: Bosnian
 set lang=bs
@@ -60,7 +60,7 @@ call copy_dropbox.bat %src_root% %dest_root% %lang% %locale%
 set lang=he
 set locale=IL
 set locale_spec=iw
-call copy_translation.bat %src_root% %dest_root% %lang% %locale%
+call copy_translation.bat %src_root% %dest_root% %lang% %locale% %locale_spec%
 
 :: Hungarian
 set lang=hu

@@ -309,7 +309,6 @@
   <string name="dropbox_upload_is_starting">正在上传至 Dropbox 请稍候&#8230;</string>
   <string name="menu_report_where_money_goes">支出</string>
   <string name="menu_report_where_money_comes_from">收入</string>
-  <string name="dashclock_extension_summary_all_account">查看所有账户摘要 Money Manager Ex for Android</string>
   <string name="title_check_repeating_transaction">检查时间</string>
   <string name="summary_check_repeating_transaction">您要执行到期交易检查的时间 (默认为 08:00)</string>
   <string name="credits">鸣谢</string>

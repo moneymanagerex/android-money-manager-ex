@@ -384,8 +384,6 @@
     <!-- 20130606 -->
     <string name="menu_report_where_money_goes">Where the Money Goes</string>
     <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
-    <!-- 20130722 -->
-    <string name="dashclock_extension_summary_all_account">View the summary of each account Money Manager Ex for Android</string>
     <!-- 20130728 -->
     <string name="title_check_repeating_transaction">Check time</string>
     <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>

@@ -309,7 +309,6 @@
   <string name="dropbox_upload_is_starting">Dropbox にアップロードしています。しばらくお待ちください&#8230;</string>
   <string name="menu_report_where_money_goes">お金の行き先</string>
   <string name="menu_report_where_money_comes_from">お金の入り元</string>
-  <string name="dashclock_extension_summary_all_account">Money Manager Ex for Android の各アカウントの概要を表示します</string>
   <string name="title_check_repeating_transaction">確認時間</string>
   <string name="summary_check_repeating_transaction">期限切れの定期的な取引があるかの確認を、何時に行いますか? (デフォルト 8:00)</string>
   <string name="credits">クレジット</string>

@@ -294,7 +294,6 @@
   <string name="dropbox_upload_is_starting">Đang tải lên Dropbox. Vui lòng chờ&#8230;</string>
   <string name="menu_report_where_money_goes">Nơi tiền Đi</string>
   <string name="menu_report_where_money_comes_from">Nơi tiền Đến</string>
-  <string name="dashclock_extension_summary_all_account">Xem tóm tắt của mỗi tài khoản Money Manager Ex cho Android</string>
   <string name="title_check_repeating_transaction">Kiểm tra thời gian</string>
   <string name="summary_check_repeating_transaction">Thời gian nào bạn sẽ kiểm tra xem có các giao dịch định kỳ quá hạn? (mặc định 08:00)</string>
   <string name="credits">Tác giả</string>

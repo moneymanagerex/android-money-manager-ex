@@ -295,7 +295,6 @@
   <string name="dropbox_upload_is_starting">Feltöltés a Dropbox-ba. Kérem várjon&#8230;</string>
   <string name="menu_report_where_money_goes">Kiadások</string>
   <string name="menu_report_where_money_comes_from">Bevételek</string>
-  <string name="dashclock_extension_summary_all_account">Minden számla összegzésének megjelenítése</string>
   <string name="title_check_repeating_transaction">Ellenőrzés ideje</string>
   <string name="summary_check_repeating_transaction">Mikor szeretné ellenőrizni, hogy vannak-e esedékes ismétlődő tranzakciók? (alap 08:00)</string>
   <string name="credits">Készítők</string>

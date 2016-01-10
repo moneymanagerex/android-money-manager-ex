@@ -304,7 +304,6 @@
   <string name="dropbox_upload_is_starting">Envoi vers Dropbox en cours. Veuillez patienter&#8230;</string>
   <string name="menu_report_where_money_goes">Où va l\'argent</string>
   <string name="menu_report_where_money_comes_from">D\'où vient l\'argent</string>
-  <string name="dashclock_extension_summary_all_account">Afficher le résumé de chaque compte Money Manager Ex pour Android</string>
   <string name="title_check_repeating_transaction">Heure de vérification</string>
   <string name="summary_check_repeating_transaction">À quelle heure voulez-vous vérifier s\'il y a des opérations périodiques en retard ? (par défaut 08:00)</string>
   <string name="credits">Crédits</string>

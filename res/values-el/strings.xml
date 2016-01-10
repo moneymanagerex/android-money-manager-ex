@@ -295,7 +295,6 @@
   <string name="dropbox_upload_is_starting">Ανάρτηση στο Dropbox. Παρακαλώ περίμενε...</string>
   <string name="menu_report_where_money_goes">Που πηγαίνουν τα χρήματα</string>
   <string name="menu_report_where_money_comes_from">Από που προέρχονται τα χρήματα</string>
-  <string name="dashclock_extension_summary_all_account">Δείτε την περίληψη του κάθε λογαριασμού Money Manager Ex για Android</string>
   <string name="title_check_repeating_transaction">Ελέγξτε το χρόνο</string>
   <string name="summary_check_repeating_transaction">Τι ώρα θα μπορούσατε να ελέγξετε εάν υπάρχουν επαναλαμβανόμενες καθυστερημένες συναλλαγές; (προεπιλογή 08:00)</string>
   <string name="credits">Πιστώσεις</string>

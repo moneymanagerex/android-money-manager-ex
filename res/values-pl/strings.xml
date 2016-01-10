@@ -303,7 +303,6 @@
   <string name="dropbox_upload_is_starting">Przesyłanie danych do Dropboksa. Proszę czekać&#8230;</string>
   <string name="menu_report_where_money_goes">Cele wydatków</string>
   <string name="menu_report_where_money_comes_from">Źródła przychodów</string>
-  <string name="dashclock_extension_summary_all_account">Pokaż podsumowanie każdego konta w Money Manager Ex dla Androida</string>
   <string name="title_check_repeating_transaction">Czas sprawdzania</string>
   <string name="summary_check_repeating_transaction">O której godzinie sprawdzać, czy są zaległe cykliczne transakcje? (domyślnie 8:00)</string>
   <string name="credits">Twórcy</string>

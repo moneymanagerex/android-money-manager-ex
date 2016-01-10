@@ -307,7 +307,6 @@
   <string name="dropbox_upload_is_starting">Caricamento su Dropbox. Attendere prego&#8230;</string>
   <string name="menu_report_where_money_goes">Dove va il denaro</string>
   <string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
-  <string name="dashclock_extension_summary_all_account">Visualizza il saldo per ogni conto di Money Manager Ex for Android</string>
   <string name="title_check_repeating_transaction">Orario di Controllo</string>
   <string name="summary_check_repeating_transaction">A che ora sarebbe controllare se ci sono le transazioni ricorrenti in ritardo? (impostazione predefinita 08.00)</string>
   <string name="credits">Ringraziamenti</string>

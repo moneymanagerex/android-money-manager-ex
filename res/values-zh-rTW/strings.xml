@@ -309,7 +309,6 @@
   <string name="dropbox_upload_is_starting">上傳到 Dropbox，請稍候...</string>
   <string name="menu_report_where_money_goes">支出</string>
   <string name="menu_report_where_money_comes_from">收入</string>
-  <string name="dashclock_extension_summary_all_account">觀看所有帳戶摘要 Money Manager Ex for Android</string>
   <string name="title_check_repeating_transaction">檢查時間</string>
   <string name="summary_check_repeating_transaction">何時檢查是否有定期交易逾期？(預設 08:00)</string>
   <string name="credits">鳴謝</string>

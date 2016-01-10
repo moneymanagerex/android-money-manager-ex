@@ -309,7 +309,6 @@
   <string name="dropbox_upload_is_starting">Upload zu Dropbox. Bitte warten&#8230;</string>
   <string name="menu_report_where_money_goes">Wohin das Geld geht</string>
   <string name="menu_report_where_money_comes_from">Wo das Geld herkommt</string>
-  <string name="dashclock_extension_summary_all_account">Zeige Zusammenfassung für jedes Konto in Money Manager Ex für Android</string>
   <string name="title_check_repeating_transaction">Setze Zeit</string>
   <string name="summary_check_repeating_transaction">Welche Zeit wollen Sie wählen für eine überfällige wiederholte Transaktion? (default 08:00)</string>
   <string name="credits">Credits</string>

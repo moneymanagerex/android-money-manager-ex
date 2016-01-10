@@ -309,7 +309,6 @@
   <string name="dropbox_upload_is_starting">Enviando para o Dropbox. Aguarde...</string>
   <string name="menu_report_where_money_goes">Despesas</string>
   <string name="menu_report_where_money_comes_from">Receitas</string>
-  <string name="dashclock_extension_summary_all_account">Mostrar Resumo de cada Conta do Money Manager Ex</string>
   <string name="title_check_repeating_transaction">Verificar tempo</string>
   <string name="summary_check_repeating_transaction">A que horas vai verificar se há transacções recorrentes em atraso? (padrão 08:00)</string>
   <string name="credits">Créditos</string>
