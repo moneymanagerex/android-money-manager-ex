@@ -1049,11 +1049,13 @@ public class MainActivity
             // add to stack
             getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                .commit();
+                //.commit();
+                .commitAllowingStateLoss();
         } else if (core.isTablet()) {
             getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                .commit();
+                //.commit();
+                .commitAllowingStateLoss();
         }
 
         // manage fragment
