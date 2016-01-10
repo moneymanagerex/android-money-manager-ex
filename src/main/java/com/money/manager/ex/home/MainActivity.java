@@ -57,6 +57,7 @@ import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
@@ -68,7 +69,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.dropbox.DropboxManager;
-import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
@@ -104,8 +104,7 @@ import de.greenrobot.event.EventBus;
  * Main activity of the application.
  */
 public class MainActivity
-    extends BaseFragmentActivity
-    implements IDropboxManagerCallbacks {
+    extends BaseFragmentActivity {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -374,19 +373,6 @@ public class MainActivity
 //        MmexOpenHelper.closeDatabase();
     }
 
-    /**
-     * Dropbox just downloaded the database. Reload fragments.
-     */
-    @Override
-    public void onFileDownloaded() {
-        // open the new database.
-        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper, this);
-        dropbox.openDownloadedDatabase();
-
-        // reload fragment
-//        reloadAllFragment();
-    }
-
     @Override
     public void onBackPressed() {
         if(mDrawer.isDrawerOpen(Gravity.LEFT)){
@@ -489,7 +475,7 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync_dropbox:
-                DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper, MainActivity.this);
+                DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper);
                 dropbox.synchronizeDropbox();
                 break;
             case R.id.menu_open_database:
@@ -592,6 +578,15 @@ public class MainActivity
 
     public void onEvent(AppRestartRequiredEvent event) {
         MainActivity.mRestartActivity = true;
+    }
+
+    /**
+     * Dropbox just downloaded the database. Reload fragments.
+     */
+    public void onEvent(DbFileDownloadedEvent event) {
+        // open the new database.
+        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
+        dropbox.openDownloadedDatabase();
     }
 
     // Private.

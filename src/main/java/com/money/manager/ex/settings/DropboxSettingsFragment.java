@@ -44,10 +44,10 @@ import com.money.manager.ex.dropbox.DropboxScheduler;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.dropbox.DropboxManager;
-import com.money.manager.ex.core.IDropboxManagerCallbacks;
 import com.money.manager.ex.dropbox.DropboxBrowserActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
+import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.RawFileUtils;
@@ -60,8 +60,7 @@ import de.greenrobot.event.EventBus;
  * Dropbox settings.
  */
 public class DropboxSettingsFragment
-        extends PreferenceFragment
-        implements IDropboxManagerCallbacks {
+    extends PreferenceFragment {
 
     private static final int REQUEST_DROPBOX_FILE = 20;
 
@@ -232,6 +231,14 @@ public class DropboxSettingsFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // register as event bus listener
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         // complete process authentication
@@ -251,6 +258,30 @@ public class DropboxSettingsFragment
             findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setEnabled(mDropboxHelper.isLinked());
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    // event handling
+
+    /**
+     * Called when file is downloaded from Dropbox.
+     */
+    public void onEvent(DbFileDownloadedEvent event) {
+        // set main activity to reload.
+//        MainActivity.setRestartActivity(true);
+        EventBus.getDefault().post(new AppRestartRequiredEvent());
+
+        // open the new database.
+        DropboxManager dropbox = new DropboxManager(getActivity(), mDropboxHelper);
+        dropbox.openDownloadedDatabase();
+    }
+
+    // private
 
     private void showWebTipsDialog(final String key, final CharSequence title, final int rawResources, boolean force) {
         if (!force) {
@@ -316,22 +347,7 @@ public class DropboxSettingsFragment
     private void downloadFileFromDropbox() {
         // must send the parent activity here in order to display the progress dialog.
         DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
-        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper, this);
+        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper);
         dropbox.downloadFromDropbox();
     }
-
-    /**
-     * Handle dropbox manager events. Called when file is downloaded from Dropbox.
-     */
-    @Override
-    public void onFileDownloaded() {
-        // set main activity to reload.
-//        MainActivity.setRestartActivity(true);
-        EventBus.getDefault().post(new AppRestartRequiredEvent());
-
-        // open the new database.
-        DropboxManager dropbox = new DropboxManager(getActivity(), mDropboxHelper, this);
-        dropbox.openDownloadedDatabase();
-    }
-
 }

@@ -92,10 +92,6 @@ public class CheckDropboxForUpdatesTask
 //    }
 
     private void showNotificationDialog() {
-        // The context has to implement the callbacks interface!
-        // todo: code smell. Try to avoid conversion to main activity here! <- use EventBus
-        final MainActivity mainActivity = (MainActivity) mContext;
-
         new AlertDialogWrapper.Builder(mContext)
             // setting alert dialog
             .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
@@ -110,7 +106,7 @@ public class CheckDropboxForUpdatesTask
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper, mainActivity);
+                    DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper);
                     dropbox.synchronizeDropbox();
                     dialog.dismiss();
                 }

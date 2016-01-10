@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.core;
+
+package com.money.manager.ex.dropbox.events;
 
 /**
- * Interface for Dropbox Manager callbacks. The parent activity should implement in order
- * to get the messages from the dropbox manager.
+ * Database file has been downloaded from a cloud service (Dropbox).
  */
-public interface IDropboxManagerCallbacks {
-    void onFileDownloaded();
+public class DbFileDownloadedEvent {
+
 }

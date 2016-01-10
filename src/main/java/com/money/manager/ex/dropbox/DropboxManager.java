@@ -30,12 +30,14 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.IDropboxManagerCallbacks;
+import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.File;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Handles the background Dropbox service and provides feedback to the UI.
@@ -43,15 +45,13 @@ import java.io.File;
  */
 public class DropboxManager {
 
-    public DropboxManager(Context context, DropboxHelper dropboxHelper, IDropboxManagerCallbacks callbacks) {
+    public DropboxManager(Context context, DropboxHelper dropboxHelper) {
         mContext = context;
         mDropboxHelper = dropboxHelper;
-        mCallbacks = callbacks;
     }
 
     private Context mContext;
     private DropboxHelper mDropboxHelper;
-    private IDropboxManagerCallbacks mCallbacks;
 
     public void synchronizeDropbox() {
         if (mDropboxHelper == null || !mDropboxHelper.isLinked())  return;
@@ -176,7 +176,7 @@ public class DropboxManager {
                     // close dialog
                     closeDialog(progressDialog);
                     // Notify whoever is interested.
-                    mCallbacks.onFileDownloaded();
+                    EventBus.getDefault().post(new DbFileDownloadedEvent());
 
                 } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
                     showMessage(R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG);
