@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="upcoming">
+    <changelogversion versionName="2016.01.12.755">
         <changelogtext>Solution for duplicate records added to Database Settings.</changelogtext>
         <changelogtext>Updated the splash logo in material style.</changelogtext>
     </changelogversion>
