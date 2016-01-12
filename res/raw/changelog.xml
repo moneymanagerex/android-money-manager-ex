@@ -18,6 +18,7 @@
 <changelog bulletedList="true">
     <changelogversion versionName="upcoming">
         <changelogtext>Solution for duplicate records added to Database Settings.</changelogtext>
+        <changelogtext>Updated the splash logo in material style.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.01.10.754">
         <changelogtext>Solved app crash after prompting for permissions on Android 6</changelogtext>
