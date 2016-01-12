@@ -29,6 +29,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.domainmodel.Info;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.BufferedReader;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -149,11 +152,24 @@ public class MyDatabaseUtils {
     public boolean fixDuplicates() {
         boolean result = false;
 
-        // todo: check if there are duplicate records in Info Table
+        // check if there are duplicate records in Info Table
         InfoRepository repo = new InfoRepository(getContext());
-        //repo.
+        List<Info> results = repo.loadAll(InfoService.INFOTABLE_DATEFORMAT);
 
-        // todo: delete them?
+        if (results.size() > 1) {
+            // delete them, leaving only the first one
+            int keepId = results.get(0).getId();
+
+            for(Info toBeDeleted : results) {
+                int idToDelete = toBeDeleted.getId();
+                if (idToDelete != keepId) {
+                    repo.delete(idToDelete);
+                }
+            }
+        } else {
+            // no duplicates found
+            result = true;
+        }
 
         return result;
     }
@@ -161,7 +177,7 @@ public class MyDatabaseUtils {
     // Private
 
     private boolean createDatabase_Internal(String filename)
-            throws IOException {
+        throws IOException {
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.

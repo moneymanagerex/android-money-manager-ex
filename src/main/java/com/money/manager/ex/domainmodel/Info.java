@@ -10,4 +10,9 @@ public class Info
     public static final String INFONAME = "INFONAME";
     public static final String INFOVALUE = "INFOVALUE";
 
+    public int getId() {
+        return getInt(INFOID);
+    }
+
+    //public
 }

@@ -51,7 +51,6 @@ public abstract class RepositoryBase<T extends EntityBase>
         super(source, type, basePath);
 
         this.context = context.getApplicationContext();
-//        this.idColumn = idColumn;
     }
 
     private Context context;
@@ -120,6 +119,8 @@ public abstract class RepositoryBase<T extends EntityBase>
      * Warning!
      * This works *only* if there are no numeric/double values. Otherwise, these will be cut to
      * the first 6 digits.
+     * @param projection Array of column names to retrieve.
+     * @return Array of ContentValues with the query results.
      */
     protected ContentValues[] query(String[] projection, String selection, String[] args, String sort) {
         Cursor c = openCursor(projection, selection, args, sort);
@@ -139,6 +140,9 @@ public abstract class RepositoryBase<T extends EntityBase>
         return result.toArray(array);
     }
 
+    /**
+     *
+     */
     protected int insert(ContentValues values) {
         Uri insertUri = getContext().getContentResolver().insert(this.getUri(),
             values);
