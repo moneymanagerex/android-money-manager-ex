@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="upcoming">
+        <changelogtext>Solution for duplicate records added to Database Settings.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.01.10.754">
         <changelogtext>Solved app crash after prompting for permissions on Android 6</changelogtext>
     </changelogversion>
