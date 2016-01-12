@@ -25,7 +25,8 @@ import com.money.manager.ex.R;
  * This class is used to interact with application settings/preferences.
  * Expand with additional methods as needed.
  */
-public class AppSettings extends SettingsBase {
+public class AppSettings
+    extends SettingsBase {
 
     public AppSettings(Context context) {
         super(context);
