@@ -27,7 +27,7 @@
 
     <item android:drawable="@color/money_background_dark"/>
     <item>
-        <bitmap android:src="@drawable/ic_logo_money_manager_ex"
+        <bitmap android:src="@drawable/ic_logo_money_manager_ex_flat"
             android:gravity="center"
             android:tileMode="disabled" />
     </item>
