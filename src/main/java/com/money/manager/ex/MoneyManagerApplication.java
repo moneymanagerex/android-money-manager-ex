@@ -26,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
+import android.support.v4.text.TextUtilsCompat;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
@@ -36,9 +37,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
@@ -54,9 +54,6 @@ import java.util.Locale;
 /**
  * This class extends Application and implements all the methods common in the
  * former money manager application for Android
- *
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- * @version 1.1.0
  */
 public class MoneyManagerApplication
         extends Application {
@@ -304,14 +301,10 @@ public class MoneyManagerApplication
      */
     public boolean setUserName(String userName, boolean save) {
         if (save) {
-            TableInfoTable infoTable = new TableInfoTable();
-            // update data into database
-            ContentValues values = new ContentValues();
-            values.put(TableInfoTable.INFOVALUE, userName);
+            InfoService service = new InfoService(this.getApplicationContext());
+            boolean updateSuccessful = service.setInfoValue("USERNAME", userName);
 
-            if (getContentResolver().update(infoTable.getUri(),
-                values,
-                TableInfoTable.INFONAME + "='USERNAME'", null) != 1) {
+            if (!updateSuccessful) {
                 return false;
             }
         }
@@ -327,21 +320,12 @@ public class MoneyManagerApplication
     }
 
     public String loadUserNameFromDatabase(Context context) {
-        TableInfoTable infoTable = new TableInfoTable();
-        Cursor cursor = context.getContentResolver().query(infoTable.getUri(),
-                null,
-                TableInfoTable.INFONAME + "=?",
-                new String[]{ "USERNAME" },
-                null);
-        if (cursor == null) return Constants.EMPTY_STRING;
+        InfoService service = new InfoService(context);
+        String username = service.getInfoValue("USERNAME");
 
-        String ret = "";
-        if (cursor.moveToFirst()) {
-            ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
-        }
-        cursor.close();
+        String result = StringUtils.isEmpty(username) ? "" : username;
 
-        return ret;
+        return result;
     }
 
     /**

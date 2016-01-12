@@ -31,7 +31,9 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
@@ -351,10 +353,10 @@ public class MmexOpenHelper
             String pattern = core.getDefaultSystemDateFormat();
             if (pattern == null) return;
 
-            TableInfoTable infoTable = new TableInfoTable();
+            InfoRepository repo = new InfoRepository(mContext);
 
-            infoDate = database.rawQuery("SELECT * FROM " + infoTable.getSource() +
-                            " WHERE " + TableInfoTable.INFONAME + "=?",
+            infoDate = database.rawQuery("SELECT * FROM " + repo.getSource() +
+                            " WHERE " + Info.INFONAME + "=?",
                     new String[]{InfoService.INFOTABLE_DATEFORMAT});
 
             boolean recordExists = (infoDate != null && infoDate.moveToFirst());
@@ -391,16 +393,15 @@ public class MmexOpenHelper
             Currency systemCurrency = currencyService.getSystemDefaultCurrency();
             if (systemCurrency == null) return;
 
-            TableInfoTable infoTable = new TableInfoTable();
             InfoService infoService = new InfoService(mContext);
 
-            currencyCursor = db.rawQuery("SELECT * FROM " + infoTable.getSource() +
-                            " WHERE " + TableInfoTable.INFONAME + "=?",
+            currencyCursor = db.rawQuery("SELECT * FROM " + infoService.repository.getSource() +
+                            " WHERE " + Info.INFONAME + "=?",
                     new String[]{ InfoService.BASECURRENCYID});
             if (currencyCursor == null) return;
 
             boolean recordExists = currencyCursor.moveToFirst();
-            int recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(TableInfoTable.INFOID));
+            int recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(Info.INFOID));
             currencyCursor.close();
 
             // Use the system default currency.

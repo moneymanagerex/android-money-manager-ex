@@ -18,15 +18,16 @@ package com.money.manager.ex.core;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.dropbox.SimpleCrypto;
+import com.money.manager.ex.servicelayer.InfoService;
 
 public class Passcode {
 
@@ -111,21 +112,8 @@ public class Passcode {
     }
 
     private String retrievePasscodeInternal() {
-        String ret = null;
-        TableInfoTable infoTable = new TableInfoTable();
-
-        Cursor cursor = mContext.getContentResolver().query(infoTable.getUri(),
-                null,
-                TableInfoTable.INFONAME + "=?",
-                new String[]{ INFONAME },
-                null);
-
-        if (cursor == null) return null;
-
-        if (cursor.moveToFirst()) {
-            ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
-        }
-        cursor.close();
+        InfoService service = new InfoService(mContext);
+        String ret = service.getInfoValue(INFONAME);
 
         return ret;
     }
@@ -147,19 +135,21 @@ public class Passcode {
     private boolean updatePasscode(String passcode) {
         // content values
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TableInfoTable.INFONAME, INFONAME);
-        contentValues.put(TableInfoTable.INFOVALUE, passcode);
+        contentValues.put(Info.INFONAME, INFONAME);
+        contentValues.put(Info.INFOVALUE, passcode);
+
+        InfoRepository repo = new InfoRepository(mContext);
 
         if (hasPasscode()) {
             // update data
-            if (mContext.getContentResolver().update(new TableInfoTable().getUri(),
-                    contentValues, TableInfoTable.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
+            if (mContext.getContentResolver().update(repo.getUri(),
+                    contentValues, Info.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
                 Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
         } else {
             // insert data
-            if (mContext.getContentResolver().insert(new TableInfoTable().getUri(), contentValues) == null) {
+            if (mContext.getContentResolver().insert(repo.getUri(), contentValues) == null) {
                 Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -181,8 +171,8 @@ public class Passcode {
     }
 
     private boolean cleanPasscode_Internal() {
-        if (mContext.getContentResolver().delete(new TableInfoTable().getUri(),
-                TableInfoTable.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
+        if (mContext.getContentResolver().delete(new InfoRepository(mContext).getUri(),
+            Info.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
             Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_LONG).show();
             return false;
         } else

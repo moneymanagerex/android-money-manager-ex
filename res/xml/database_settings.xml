@@ -59,6 +59,11 @@
 
     <Preference
         android:icon="@null"
+        android:key="@string/pref_db_fix_duplicates"
+        android:title="@string/db_fix_duplicates" />
+
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_sqlite_version"
         android:title="@string/android_sqlite_vesion" />
 </PreferenceScreen>

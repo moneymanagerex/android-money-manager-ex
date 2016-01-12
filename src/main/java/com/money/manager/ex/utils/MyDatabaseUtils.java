@@ -58,6 +58,18 @@ public class MyDatabaseUtils {
 
     private Context mContext;
 
+    /**
+     * Runs SQLite pragma check on the database file.
+     * @return A boolean indicating whether the check was successfully completed.
+     */
+    public boolean checkIntegrity() {
+        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext())
+            .getReadableDatabase();
+
+        boolean result = db.isDatabaseIntegrityOk();
+        return result;
+    }
+
     public Context getContext() {
         return mContext;
     }
@@ -77,6 +89,46 @@ public class MyDatabaseUtils {
     }
 
     /**
+     * Checks if all the required tables are present.
+     * Should be expanded and improved to check for the whole schema.
+     * @return A boolean indicating whether the schema is correct.
+     */
+    public boolean checkSchema() {
+        boolean result = false;
+
+        // Get the names of all the tables from the generation script.
+        ArrayList<String> scriptTables;
+        try {
+            scriptTables = getAllTableNamesFromGenerationScript();
+        } catch (IOException | SQLiteDiskIOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "reading table names from generation script");
+
+            return false;
+        }
+
+        // get the list of all the tables from the database.
+        ArrayList<String> existingTables = getTableNamesFromDb();
+
+        // compare. retainAll, removeAll, addAll
+        scriptTables.removeAll(existingTables);
+        // If there is anything left, the script schema has more tables than the db.
+        if (!scriptTables.isEmpty()) {
+            StringBuilder message = new StringBuilder("Tables missing: ");
+            for(String table:scriptTables) {
+                message.append(table);
+                message.append(" ");
+            }
+            showToast(message.toString(), Toast.LENGTH_LONG);
+        } else {
+            // everything matches
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
      * Creates a new database file at the default location.
      * @param filename File name for the new database. Extension .mmb will be appended if not
      *                 included in the filename.
@@ -90,6 +142,17 @@ public class MyDatabaseUtils {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "creating database");
         }
+        return result;
+    }
+
+    public boolean fixDuplicates() {
+        boolean result = false;
+
+        // todo: check if there are duplicate records in Info Table
+
+
+        // todo: delete them?
+
         return result;
     }
 
@@ -140,58 +203,6 @@ public class MyDatabaseUtils {
         }
 
         return filename;
-    }
-
-    /**
-     * Runs SQLite pragma check on the database file.
-     * @return A boolean indicating whether the check was successfully completed.
-     */
-    public boolean checkIntegrity() {
-        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext())
-                .getReadableDatabase();
-
-        boolean result = db.isDatabaseIntegrityOk();
-        return result;
-    }
-
-    /**
-     * Checks if all the required tables are present.
-     * Should be expanded and improved to check for the whole schema.
-     * @return A boolean indicating whether the schema is correct.
-     */
-    public boolean checkSchema() {
-        boolean result = false;
-
-        // Get the names of all the tables from the generation script.
-        ArrayList<String> scriptTables;
-        try {
-            scriptTables = getAllTableNamesFromGenerationScript();
-        } catch (IOException | SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "reading table names from generation script");
-
-            return false;
-        }
-
-        // get the list of all the tables from the database.
-        ArrayList<String> existingTables = getTableNamesFromDb();
-
-        // compare. retainAll, removeAll, addAll
-        scriptTables.removeAll(existingTables);
-        // If there is anything left, the script schema has more tables than the db.
-        if (!scriptTables.isEmpty()) {
-            StringBuilder message = new StringBuilder("Tables missing: ");
-            for(String table:scriptTables) {
-                message.append(table);
-                message.append(" ");
-            }
-            showToast(message.toString(), Toast.LENGTH_LONG);
-        } else {
-            // everything matches
-            result = true;
-        }
-
-        return result;
     }
 
     private ArrayList<String> getAllTableNamesFromGenerationScript()

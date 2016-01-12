@@ -89,7 +89,12 @@ public class DatabaseSettingsFragment
 
         // Create database
         initCreateDatabaseOption();
+
+        // Fix duplicates
+        initFixDuplicates();
     }
+
+    // private
 
     private void initClearRecentFiles() {
         Preference preference = findPreference(getString(R.string.pref_clear_recent_files));
@@ -350,4 +355,29 @@ public class DatabaseSettingsFragment
         Toast.makeText(getActivity(), resourceId, duration).show();
     }
 
+    private void initFixDuplicates() {
+        Preference preference = findPreference(getString(R.string.pref_db_fix_duplicates));
+        if (preference == null) return;
+
+        Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                MyDatabaseUtils utils = new MyDatabaseUtils(getActivity());
+
+                if (BuildConfig.DEBUG) {
+                    Log.d(this.getClass().getSimpleName(), "fixing duplicates");
+                }
+
+                boolean result = utils.fixDuplicates();
+                if (result) {
+                    showToast(R.string.db_check_schema_success, Toast.LENGTH_SHORT);
+                } else {
+                    showToast(R.string.db_check_schema_error, Toast.LENGTH_SHORT);
+                }
+                return false;
+            }
+        };
+
+        preference.setOnPreferenceClickListener(clickListener);
+    }
 }

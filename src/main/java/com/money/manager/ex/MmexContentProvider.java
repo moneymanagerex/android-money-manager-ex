@@ -44,7 +44,6 @@ import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.BudgetTable;
 import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -52,6 +51,7 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -112,7 +112,7 @@ public class MmexContentProvider
             new CategoryRepository(context),
             new AccountTransactionRepository(context),
                 new TableCurrencyFormats(),
-                new TableInfoTable(),
+            new InfoRepository(context),
                 new TablePayee(),
             new SplitCategoriesRepository(context),
             new StockRepository(context),

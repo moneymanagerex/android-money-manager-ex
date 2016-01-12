@@ -47,7 +47,9 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -70,9 +72,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
-import com.money.manager.ex.database.TableInfoTable;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettingsActivity;
@@ -112,7 +112,6 @@ public class HomeFragment
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
 
-    private TableInfoTable mInfoTable = new TableInfoTable();
     private QueryAccountBills mAccountBillsQuery;
 
     // Controls. view show in layout
@@ -215,8 +214,9 @@ public class HomeFragment
 
         switch (id) {
             case LOADER_USER_NAME:
-                result = new MmexCursorLoader(getActivity(), mInfoTable.getUri(),
-                        new String[]{ TableInfoTable.INFONAME, TableInfoTable.INFOVALUE },
+                InfoRepository repo = new InfoRepository(getActivity());
+                result = new MmexCursorLoader(getActivity(), repo.getUri(),
+                        new String[]{ Info.INFONAME, Info.INFOVALUE },
                         null, null, null);
                 break;
 
@@ -329,10 +329,10 @@ public class HomeFragment
                 if (data != null) {
                     while (data.moveToNext()) {
                         String username;
-                        String infoValue = data.getString(data.getColumnIndex(TableInfoTable.INFONAME));
+                        String infoValue = data.getString(data.getColumnIndex(Info.INFONAME));
                         // save into preferences username and base currency id
                         if (InfoService.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
-                            username = data.getString(data.getColumnIndex(TableInfoTable.INFOVALUE));
+                            username = data.getString(data.getColumnIndex(Info.INFOVALUE));
                             MoneyManagerApplication.getInstanceApp().setUserName(username);
                         }
                     }

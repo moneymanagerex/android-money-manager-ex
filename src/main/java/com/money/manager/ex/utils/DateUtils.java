@@ -17,7 +17,6 @@
 package com.money.manager.ex.utils;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -27,7 +26,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,8 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import hirondelle.date4j.DateTime;
 
 /**
  * Date utilities
@@ -130,29 +127,21 @@ public class DateUtils {
      *
      * @return pattern user define
      */
-    public static String getUserDatePattern(Context ctx) {
-        TableInfoTable infoTable = new TableInfoTable();
-        Cursor cursor = ctx.getContentResolver().query(infoTable.getUri(),
-                null,
-                TableInfoTable.INFONAME + "=?",
-                new String[] { "DATEFORMAT" },
-                null);
-        if (cursor == null) return "";
+    public static String getUserDatePattern(Context context) {
+        InfoService service = new InfoService(context);
+        String pattern = service.getInfoValue("DATEFORMAT");
 
-        String pattern = null;
-        if (cursor.moveToFirst()) {
-            pattern = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
+        if (!StringUtils.isEmpty(pattern)) {
             //replace part of pattern
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
                 .replace("%y", "yy").replace("%Y", "yyyy")
                 .replace("'", "''");
         }
-        cursor.close();
 
         if (StringUtils.isEmpty(pattern)
-                && ctx.getResources().getStringArray(R.array.date_format_mask) != null
-                && ctx.getResources().getStringArray(R.array.date_format_mask).length > 0){
-            pattern= ctx.getResources().getStringArray(R.array.date_format_mask)[0];
+                && context.getResources().getStringArray(R.array.date_format_mask) != null
+                && context.getResources().getStringArray(R.array.date_format_mask).length > 0){
+            pattern= context.getResources().getStringArray(R.array.date_format_mask)[0];
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
                 .replace("%y", "yy").replace("%Y", "yyyy")
                 .replace("'", "''");

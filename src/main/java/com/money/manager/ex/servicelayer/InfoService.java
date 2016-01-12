@@ -26,7 +26,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.TableInfoTable;
+import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.domainmodel.Info;
 
 /**
  * Access and manipulation of the info in the Info Table
@@ -45,28 +46,29 @@ public class InfoService {
 
     public InfoService(Context context) {
         mContext = context;
-        mInfoTable = new TableInfoTable();
+        repository = new InfoRepository(context);
     }
 
+    public InfoRepository repository;
+
     private Context mContext;
-    private TableInfoTable mInfoTable;
 
     public long insertRaw(SQLiteDatabase db, String key, Integer value) {
         ContentValues values = new ContentValues();
 
-        values.put(TableInfoTable.INFONAME, key);
-        values.put(TableInfoTable.INFOVALUE, value);
+        values.put(Info.INFONAME, key);
+        values.put(Info.INFOVALUE, value);
 
-        return db.insert(mInfoTable.getSource(), null, values);
+        return db.insert(repository.getSource(), null, values);
     }
 
     public long insertRaw(SQLiteDatabase db, String key, String value) {
         ContentValues values = new ContentValues();
 
-        values.put(TableInfoTable.INFONAME, key);
-        values.put(TableInfoTable.INFOVALUE, value);
+        values.put(Info.INFONAME, key);
+        values.put(Info.INFOVALUE, value);
 
-        return db.insert(mInfoTable.getSource(), null, values);
+        return db.insert(repository.getSource(), null, values);
     }
 
     /**
@@ -79,23 +81,23 @@ public class InfoService {
      */
     public long updateRaw(SQLiteDatabase db, int recordId, String key, Integer value) {
         ContentValues values = new ContentValues();
-        values.put(TableInfoTable.INFONAME, key);
-        values.put(TableInfoTable.INFOVALUE, value);
+        values.put(Info.INFONAME, key);
+        values.put(Info.INFOVALUE, value);
 
-        return db.update(mInfoTable.getSource(),
+        return db.update(repository.getSource(),
                 values,
-                TableInfoTable.INFOID + "=?",
+            Info.INFOID + "=?",
                 new String[] { Integer.toString(recordId)}
         );
     }
 
     public long updateRaw(SQLiteDatabase db, String key, String value) {
         ContentValues values = new ContentValues();
-        values.put(TableInfoTable.INFONAME, key);
-        values.put(TableInfoTable.INFOVALUE, value);
+        values.put(Info.INFONAME, key);
+        values.put(Info.INFOVALUE, value);
 
-        return db.update(mInfoTable.getSource(), values,
-                TableInfoTable.INFONAME + "=?",
+        return db.update(repository.getSource(), values,
+            Info.INFONAME + "=?",
                 new String[] { key });
     }
 
@@ -110,17 +112,17 @@ public class InfoService {
         String ret = null;
 
         try {
-            cursor = mContext.getContentResolver().query(mInfoTable.getUri(),
-                    null,
-                    TableInfoTable.INFONAME + "=?",
-                    new String[]{ info },
-                    null);
+            cursor = mContext.getContentResolver().query(repository.getUri(),
+                null,
+                Info.INFONAME + "=?",
+                new String[]{ info },
+                null);
             if (cursor == null) return null;
 
             if (cursor.moveToFirst()) {
 //                ContentValues values = new ContentValues();
 //                DatabaseUtils.cursorRowToContentValues(cursor, values);
-                ret = cursor.getString(cursor.getColumnIndex(TableInfoTable.INFOVALUE));
+                ret = cursor.getString(cursor.getColumnIndex(Info.INFOVALUE));
             }
             cursor.close();
         } catch (Exception e) {
@@ -144,18 +146,18 @@ public class InfoService {
         boolean exists = (getInfoValue(key) != null);
 
         ContentValues values = new ContentValues();
-        values.put(TableInfoTable.INFOVALUE, value);
+        values.put(Info.INFOVALUE, value);
 
         try {
             if (exists) {
-                int updated = mContext.getContentResolver().update(mInfoTable.getUri(),
+                int updated = mContext.getContentResolver().update(repository.getUri(),
                         values,
-                        TableInfoTable.INFONAME + "=?",
+                    Info.INFONAME + "=?",
                         new String[]{key});
                 result = updated >= 0;
             } else {
-                values.put(TableInfoTable.INFONAME, key);
-                Uri insertUri = mContext.getContentResolver().insert(mInfoTable.getUri(),
+                values.put(Info.INFONAME, key);
+                Uri insertUri = mContext.getContentResolver().insert(repository.getUri(),
                         values);
                 long id = ContentUris.parseId(insertUri);
                 result = id > 0;

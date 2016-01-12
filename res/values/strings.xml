@@ -597,6 +597,7 @@
     <string name="db_check_schema_summary">Check if all the tables are present in the database.</string>
     <string name="db_check_schema_success">All the required tables are present in the database.</string>
     <string name="db_check_schema_error">Error: tables missing in the database!</string>
+    <string name="db_fix_duplicates">Fix duplicate records</string>
     <string name="split_amount_negative">The total amount can not be negative.</string>
     <string name="select_all">Select all</string>
     <string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>
