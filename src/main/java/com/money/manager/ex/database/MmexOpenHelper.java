@@ -344,8 +344,13 @@ public class MmexOpenHelper
         }
     }
 
+    /**
+     * The creation of the record is done in database_create.sql initialization script.
+     * Here we only update the record to the current system's date format.
+     * @param database Database being initialized.
+     */
     private void initDateFormat(SQLiteDatabase database) {
-        Cursor infoDate;
+//        Cursor cursor;
 
         // date format
         try {
@@ -353,31 +358,29 @@ public class MmexOpenHelper
             String pattern = core.getDefaultSystemDateFormat();
             if (pattern == null) return;
 
-            InfoRepository repo = new InfoRepository(mContext);
+//            InfoRepository repo = new InfoRepository(mContext);
 
-            infoDate = database.rawQuery("SELECT * FROM " + repo.getSource() +
-                            " WHERE " + Info.INFONAME + "=?",
-                    new String[]{InfoService.INFOTABLE_DATEFORMAT});
+//            cursor = database.rawQuery("SELECT * FROM " + repo.getSource() +
+//                            " WHERE " + Info.INFONAME + "=?",
+//                    new String[]{InfoService.INFOTABLE_DATEFORMAT});
+//
+//            if (cursor == null) return;
 
-            boolean recordExists = (infoDate != null && infoDate.moveToFirst());
-
-            String existingValue = null;
-            if (infoDate != null) {
-                if (infoDate.moveToNext()) {
-                    // read existing value for comparison
-                    existingValue = infoDate.getString(infoDate.getColumnIndex(InfoService.INFOTABLE_DATEFORMAT));
-                }
-                infoDate.close();
-            }
+//            String existingValue = null;
+//            if (cursor.moveToNext()) {
+//                // read existing value for comparison
+//                existingValue = cursor.getString(cursor.getColumnIndex(InfoService.INFOTABLE_DATEFORMAT));
+//            }
+//            cursor.close();
 
             InfoService infoService = new InfoService(mContext);
 
-            if (!recordExists && !pattern.equalsIgnoreCase(existingValue)) {
-                // check if pattern exists
-                infoService.insertRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
-            } else {
+//            if (!pattern.equalsIgnoreCase(existingValue)) {
+//                // check if pattern exists
+//                infoService.insertRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
+//            } else {
                 infoService.updateRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
-            }
+//            }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "init database, date format");
