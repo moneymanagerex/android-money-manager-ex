@@ -37,14 +37,15 @@ import java.util.List;
 /**
  * Category
  */
-public class CategoryService {
+public class CategoryService
+    extends ServiceBase {
 
     public CategoryService(Context context) {
-        mContext = context;
+        super(context);
+
         mCategory = new TableCategory();
     }
 
-    private Context mContext;
     private TableCategory mCategory;
 
     public int loadIdByName(String name) {
@@ -136,9 +137,5 @@ public class CategoryService {
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(Subcategory.SUBCATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
         return links > 0;
-    }
-
-    private Context getContext() {
-        return mContext;
     }
 }

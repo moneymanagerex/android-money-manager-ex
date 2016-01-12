@@ -57,14 +57,15 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Various business logic pieces related to Account(s).
  */
-public class AccountService {
+public class AccountService
+    extends ServiceBase {
 
     public AccountService(Context context) {
-        this.mContext = context.getApplicationContext();
+        super(context);
+
         this.accountRepository = new AccountRepository(context);
     }
 
-    private Context mContext;
     private AccountRepository accountRepository;
 
     public Account createAccount(String name, AccountTypes accountType, AccountStatuses status,
@@ -102,10 +103,6 @@ public class AccountService {
     public List<Account> getAccountList(boolean open, boolean favorite) {
         // create a return list
         return loadAccounts(open, favorite, null);
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     /**

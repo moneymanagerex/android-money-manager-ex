@@ -28,6 +28,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.BufferedReader;
@@ -149,7 +150,8 @@ public class MyDatabaseUtils {
         boolean result = false;
 
         // todo: check if there are duplicate records in Info Table
-
+        InfoRepository repo = new InfoRepository(getContext());
+        //repo.
 
         // todo: delete them?
 

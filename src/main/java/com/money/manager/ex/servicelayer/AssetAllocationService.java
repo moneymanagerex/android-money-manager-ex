@@ -44,16 +44,16 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Functions for the Asset Allocation
  */
-public class AssetAllocationService {
+public class AssetAllocationService
+    extends ServiceBase {
 
     public AssetAllocationService(Context context) {
-        this.context = context;
+        super(context);
+
         this.repository = new AssetClassRepository(context);
     }
 
     public AssetClassRepository repository;
-
-    private Context context;
 
     public boolean deleteAllocation(int assetClassId) {
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
@@ -97,10 +97,6 @@ public class AssetAllocationService {
         }
 
         return ids;
-    }
-
-    public Context getContext() {
-        return this.context;
     }
 
     /**
@@ -159,7 +155,7 @@ public class AssetAllocationService {
     public String loadName(int id) {
         if (id == Constants.NOT_SET) return "";
 
-        AssetClassRepository repo = new AssetClassRepository(this.context);
+        AssetClassRepository repo = new AssetClassRepository(getContext());
         Cursor c = repo.openCursor(
             new String[]{AssetClass.NAME},
             AssetClass.ID + "=?",
@@ -222,12 +218,12 @@ public class AssetAllocationService {
     public boolean assignStockToAssetClass(String stockSymbol, Integer assetClassId) {
         AssetClassStock link = AssetClassStock.create(assetClassId, stockSymbol);
 
-        AssetClassStockRepository repo = new AssetClassStockRepository(context);
+        AssetClassStockRepository repo = new AssetClassStockRepository(getContext());
         boolean success = repo.insert(link);
 
         if (!success) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.showMessage(context.getString(R.string.error));
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.showMessage(getContext().getString(R.string.error));
         }
         return success;
     }
@@ -367,7 +363,7 @@ public class AssetAllocationService {
             assetClass.setType(ItemType.Allocation);
 
             // load stock links
-            AssetClassStockRepository linkRepo = new AssetClassStockRepository(this.context);
+            AssetClassStockRepository linkRepo = new AssetClassStockRepository(getContext());
             List<AssetClassStock> links = linkRepo.loadForClass(assetClass.getId());
             assetClass.setStockLinks(links);
 

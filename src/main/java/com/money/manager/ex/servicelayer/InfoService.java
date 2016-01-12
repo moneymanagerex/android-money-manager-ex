@@ -32,7 +32,8 @@ import com.money.manager.ex.domainmodel.Info;
 /**
  * Access and manipulation of the info in the Info Table
  */
-public class InfoService {
+public class InfoService
+    extends ServiceBase {
 
     // Keys for the info values in the info table.
     public static final String BASECURRENCYID = "BASECURRENCYID";
@@ -45,13 +46,12 @@ public class InfoService {
     public static final String INFOTABLE_SKU_ORDER_ID = "SKU_ORDER_ID";
 
     public InfoService(Context context) {
-        mContext = context;
+        super(context);
+
         repository = new InfoRepository(context);
     }
 
     public InfoRepository repository;
-
-    private Context mContext;
 
     public long insertRaw(SQLiteDatabase db, String key, Integer value) {
         ContentValues values = new ContentValues();
@@ -112,7 +112,7 @@ public class InfoService {
         String ret = null;
 
         try {
-            cursor = mContext.getContentResolver().query(repository.getUri(),
+            cursor = getContext().getContentResolver().query(repository.getUri(),
                 null,
                 Info.INFONAME + "=?",
                 new String[]{ info },
@@ -126,7 +126,7 @@ public class InfoService {
             }
             cursor.close();
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "retrieving info value: " + info);
         }
 
@@ -150,20 +150,20 @@ public class InfoService {
 
         try {
             if (exists) {
-                int updated = mContext.getContentResolver().update(repository.getUri(),
+                int updated = getContext().getContentResolver().update(repository.getUri(),
                         values,
                     Info.INFONAME + "=?",
                         new String[]{key});
                 result = updated >= 0;
             } else {
                 values.put(Info.INFONAME, key);
-                Uri insertUri = mContext.getContentResolver().insert(repository.getUri(),
+                Uri insertUri = getContext().getContentResolver().insert(repository.getUri(),
                         values);
                 long id = ContentUris.parseId(insertUri);
                 result = id > 0;
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "writing info value");
         }
 

@@ -30,22 +30,23 @@ import com.money.manager.ex.domainmodel.Payee;
 
 /**
  */
-public class PayeeService {
+public class PayeeService
+    extends ServiceBase {
 
     public PayeeService(Context context) {
-        mContext = context;
+        super(context);
+
         mPayee = new TablePayee();
         this.payeeRepository = new PayeeRepository(context);
     }
 
-    private Context mContext;
     private TablePayee mPayee;
     private PayeeRepository payeeRepository;
 
     public TablePayee loadByName(String name) {
         String selection = Payee.PAYEENAME + "='" + name + "'";
 
-        Cursor cursor = mContext.getContentResolver().query(
+        Cursor cursor = getContext().getContentResolver().query(
                 mPayee.getUri(),
                 mPayee.getAllColumns(),
                 selection,
@@ -68,7 +69,7 @@ public class PayeeService {
 
         String selection = Payee.PAYEENAME + "=?";
 
-        Cursor cursor = mContext.getContentResolver().query(
+        Cursor cursor = getContext().getContentResolver().query(
                 mPayee.getUri(),
                 new String[]{ Payee.PAYEEID },
                 selection,
@@ -108,7 +109,7 @@ public class PayeeService {
     }
 
     public boolean isPayeeUsed(int payeeId) {
-        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+        AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(ITransactionEntity.PAYEEID + "=?", new String[]{Integer.toString(payeeId)});
         return links > 0;
     }
@@ -121,7 +122,7 @@ public class PayeeService {
         ContentValues values = new ContentValues();
         values.put(Payee.PAYEENAME, name);
 
-        int result = mContext.getContentResolver().update(mPayee.getUri(),
+        int result = getContext().getContentResolver().update(mPayee.getUri(),
                 values,
                 Payee.PAYEEID + "=" + id,
                 null);

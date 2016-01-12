@@ -369,10 +369,11 @@ public class DatabaseSettingsFragment
                 }
 
                 boolean result = utils.fixDuplicates();
+
                 if (result) {
-                    showToast(R.string.db_check_schema_success, Toast.LENGTH_SHORT);
+                    showToast(R.string.success, Toast.LENGTH_SHORT);
                 } else {
-                    showToast(R.string.db_check_schema_error, Toast.LENGTH_SHORT);
+                    showToast(R.string.error, Toast.LENGTH_SHORT);
                 }
                 return false;
             }

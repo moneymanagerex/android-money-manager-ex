@@ -37,9 +37,12 @@ import java.util.Date;
 /**
  * Represent a single Recurring Transaction object and provides related operations.
  */
-public class RecurringTransactionService {
+public class RecurringTransactionService
+    extends ServiceBase {
 
     public RecurringTransactionService(int recurringTransactionId, Context context){
+        super(context);
+
         this.RecurringTransactionId = recurringTransactionId;
         this.mContext = context;
     }

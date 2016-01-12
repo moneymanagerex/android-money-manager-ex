@@ -679,4 +679,6 @@
     <!-- db password entry -->
     <string name="enter_password">Enter password</string>
     <string name="title_activity_portfolio">PortfolioActivity</string>
+
+    <string name="success">Operation successful</string>
 </resources>
