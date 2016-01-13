@@ -582,7 +582,7 @@ public class EditCheckingTransactionActivity
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
                 return false;
             }
-            mTransId = (int) id;
+            mTransId = id;
         } else {
             // update
             boolean updated = repo.update(tx);

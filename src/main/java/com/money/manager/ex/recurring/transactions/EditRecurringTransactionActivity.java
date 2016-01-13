@@ -109,7 +109,7 @@ public class EditRecurringTransactionActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recurringtransaction_edit);
+        setContentView(R.layout.activity_edit_recurring_transaction);
 
         mRecurringTransaction = new TableBillsDeposits().initialize();
 

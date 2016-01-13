@@ -393,9 +393,9 @@
                 android:gravity="top|left"
                 android:hint="@string/notes"
                 android:inputType="textMultiLine"
-                android:maxLength="1000"
                 android:scrollHorizontally="false"
                 android:textCursorDrawable="@null" />
+            <!--android:maxLength="1000"-->
 
         </LinearLayout>
     </ScrollView>
