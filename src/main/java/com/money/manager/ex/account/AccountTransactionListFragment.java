@@ -45,7 +45,6 @@ import android.widget.Toast;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
-import com.money.manager.ex.database.TransactionStatus;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -596,16 +595,24 @@ public class AccountTransactionListFragment
         int id = item.getItemId();
         boolean result = true;
 
+        // todo: turn filters on/off
+        String status;
+
         switch(id) {
             case R.id.menu_none:
                 mStatusFilter.setFilter(TransactionStatuses.NONE);
                 break;
             case R.id.menu_reconciled:
-                mStatusFilter.setFilter(TransactionStatuses.RECONCILED);
-                break;
-            case R.id.menu_not_reconciled:
-                // todo: work out the negation
-                Log.d("menu", "not reconciled");
+                status = TransactionStatuses.RECONCILED.getCode();
+                if (item.isChecked()) {
+                    // remove filter
+                    mStatusFilter.filter.remove(status);
+                    item.setChecked(false);
+                } else {
+                    // add filter
+                    mStatusFilter.filter.add(status);
+                    item.setChecked(true);
+                }
                 break;
             case R.id.menu_void:
                 mStatusFilter.setFilter(TransactionStatuses.VOID);
