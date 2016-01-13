@@ -70,32 +70,32 @@ public class StatusFilter {
         return result;
     }
 
-    /**
-     * Used to indicate which filter is selected in the UI.
-     * @return the name of the currently active filter (if found).
-     */
-    public String getCurrentFilterName() {
-        String none = TransactionStatuses.NONE.name();
-
-        if (this.filter.size() == 0) return none;
-
-        // check single values
-        if (this.filter.size() == 1) {
-            return TransactionStatuses.get(this.filter.get(0)).name();
-        }
-
-        // Check the not-statuses.
-        for (StatusFilterEnum notStatus : StatusFilterEnum.values()) {
-            boolean found = new EqualsBuilder()
-                .append(TransactionStatuses.values(), notStatus.values)
-                .isEquals();
-            if (found) {
-                return notStatus.name();
-            }
-        }
-
-        return none;
-    }
+//    /**
+//     * Used to indicate which filter is selected in the UI.
+//     * @return the name of the currently active filter (if found).
+//     */
+//    public String getCurrentFilterName() {
+//        String none = TransactionStatuses.NONE.name();
+//
+//        if (this.filter.size() == 0) return none;
+//
+//        // check single values
+//        if (this.filter.size() == 1) {
+//            return TransactionStatuses.get(this.filter.get(0)).name();
+//        }
+//
+//        // Check the not-statuses.
+//        for (StatusFilterEnum notStatus : StatusFilterEnum.values()) {
+//            boolean found = new EqualsBuilder()
+//                .append(TransactionStatuses.values(), notStatus.values)
+//                .isEquals();
+//            if (found) {
+//                return notStatus.name();
+//            }
+//        }
+//
+//        return none;
+//    }
 
     // Private
 

@@ -420,8 +420,8 @@ public class AccountTransactionListFragment
     private void initTransactionStatusMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
 
-        int groupId = item.getGroupId();
-        menu.addSubMenu(groupId, Menu.NONE, Menu.NONE, R.string.status_not_reconciled);
+        //int groupId = item.getGroupId();
+        //menu.addSubMenu(groupId, Menu.NONE, Menu.NONE, R.string.status_not_reconciled);
 
         // customize the icon
         item.setIcon(FontIconDrawable.inflate(getActivity(), R.xml.ic_filter));
@@ -595,7 +595,7 @@ public class AccountTransactionListFragment
         int id = item.getItemId();
         boolean result = true;
 
-        // todo: turn filters on/off
+        // turn filters on/off
         TransactionStatuses status = null;
 
         switch(id) {
@@ -787,19 +787,14 @@ public class AccountTransactionListFragment
         if (toolbarItem == null) return;
 
         SubMenu subMenu = toolbarItem.getSubMenu();
-        int i = 0;
-        String currentStatus = this.mStatusFilter.getCurrentFilterName().toLowerCase();
-        while (true) {
+
+        for (int i = 0; i < subMenu.size(); i++) {
             MenuItem subItem = subMenu.getItem(i);
-            if (subItem == null) break;
+            String title = subItem.getTitle().toString(); //.toLowerCase();
 
-            String title = subItem.getTitle().toString().toLowerCase();
-            if (title.equals(currentStatus)) {
+            if (mStatusFilter.filter.isEmpty() || mStatusFilter.filter.contains(title)) {
                 subItem.setChecked(true);
-                break;
             }
-
-            i++;
         }
     }
 

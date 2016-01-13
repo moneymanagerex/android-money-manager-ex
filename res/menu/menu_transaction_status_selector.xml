@@ -26,9 +26,10 @@
         android:title="@string/status_filter">
         <menu>
             <group android:checkableBehavior="single">
-                <!--<item-->
-                    <!--android:id="@+id/menu_none"-->
-                    <!--android:title="@string/status_none" />-->
+                <item
+                    android:id="@+id/menu_none"
+                    android:title="@string/status_none"
+                    android:checkable="true" />
                 <item
                     android:id="@+id/menu_reconciled"
                     android:title="@string/status_reconciled"
