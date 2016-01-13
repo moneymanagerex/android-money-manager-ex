@@ -30,6 +30,8 @@ import java.util.List;
 public class StatusFilter {
     public StatusFilter() {
         this.filter = new ArrayList<>();
+
+        loadAllStatuses();
     }
 
     public ArrayList<String> filter;
@@ -99,6 +101,12 @@ public class StatusFilter {
 
     // Private
 
+    private void loadAllStatuses() {
+        for (TransactionStatuses status : TransactionStatuses.values()) {
+            this.filter.add(status.getCode());
+        }
+    }
+
     private void setFilter(String statusCode) {
         // clear the collection
         this.filter.clear();
@@ -106,18 +114,18 @@ public class StatusFilter {
         this.filter.add(statusCode);
     }
 
-    private String[] getAllAvailableFilterNames() {
-        List<String> names = new ArrayList<>();
-
-        for (TransactionStatuses status : TransactionStatuses.values()) {
-            names.add(status.name());
-        }
-        for (StatusFilterEnum notstatus : StatusFilterEnum.values()) {
-            names.add(notstatus.name());
-        }
-
-        String[] result = new String[names.size()];
-        names.toArray(result);
-        return result;
-    }
+//    private String[] getAllAvailableFilterNames() {
+//        List<String> names = new ArrayList<>();
+//
+//        for (TransactionStatuses status : TransactionStatuses.values()) {
+//            names.add(status.name());
+//        }
+//        for (StatusFilterEnum notstatus : StatusFilterEnum.values()) {
+//            names.add(notstatus.name());
+//        }
+//
+//        String[] result = new String[names.size()];
+//        names.toArray(result);
+//        return result;
+//    }
 }

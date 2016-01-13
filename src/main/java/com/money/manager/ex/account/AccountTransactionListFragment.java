@@ -792,7 +792,7 @@ public class AccountTransactionListFragment
             MenuItem subItem = subMenu.getItem(i);
             String title = subItem.getTitle().toString(); //.toLowerCase();
 
-            if (mStatusFilter.filter.isEmpty() || mStatusFilter.filter.contains(title)) {
+            if (mStatusFilter.filter.contains(title)) {
                 subItem.setChecked(true);
             }
         }
