@@ -596,32 +596,23 @@ public class AccountTransactionListFragment
         boolean result = true;
 
         // todo: turn filters on/off
-        String status;
+        TransactionStatuses status = null;
 
         switch(id) {
             case R.id.menu_none:
-                mStatusFilter.setFilter(TransactionStatuses.NONE);
+                status = TransactionStatuses.NONE;
                 break;
             case R.id.menu_reconciled:
-                status = TransactionStatuses.RECONCILED.getCode();
-                if (item.isChecked()) {
-                    // remove filter
-                    mStatusFilter.filter.remove(status);
-                    item.setChecked(false);
-                } else {
-                    // add filter
-                    mStatusFilter.filter.add(status);
-                    item.setChecked(true);
-                }
+                status = TransactionStatuses.RECONCILED;
                 break;
             case R.id.menu_void:
-                mStatusFilter.setFilter(TransactionStatuses.VOID);
+                status = TransactionStatuses.VOID;
                 break;
             case R.id.menu_follow_up:
-                mStatusFilter.setFilter(TransactionStatuses.FOLLOWUP);
+                status = TransactionStatuses.FOLLOWUP;
                 break;
             case R.id.menu_duplicate:
-                mStatusFilter.setFilter(TransactionStatuses.DUPLICATE);
+                status = TransactionStatuses.DUPLICATE;
                 break;
             default:
                 // not handled here.
@@ -630,7 +621,17 @@ public class AccountTransactionListFragment
         }
 
         if (result) {
-            item.setChecked(true);
+//            item.setChecked(true);
+            if (item.isChecked()) {
+                // remove filter
+                mStatusFilter.filter.remove(status.getCode());
+                item.setChecked(false);
+            } else {
+                // add filter
+                mStatusFilter.filter.add(status.getCode());
+                item.setChecked(true);
+            }
+
             loadTransactions();
         }
 
