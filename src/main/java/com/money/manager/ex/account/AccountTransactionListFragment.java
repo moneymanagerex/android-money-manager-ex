@@ -467,9 +467,9 @@ public class AccountTransactionListFragment
         where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
 
         // Status
-        if (!mStatusFilter.isEmpty()) {
-            where.addStatement(QueryAllData.Status, "IN", mStatusFilter.getSqlParameters());
-        }
+//        if (!mStatusFilter.isEmpty()) {
+        where.addStatement(QueryAllData.Status, "IN", mStatusFilter.getSqlParameters());
+//        }
 
         // create a bundle to returns
         Bundle args = new Bundle();
@@ -790,9 +790,9 @@ public class AccountTransactionListFragment
 
         for (int i = 0; i < subMenu.size(); i++) {
             MenuItem subItem = subMenu.getItem(i);
-            String title = subItem.getTitle().toString(); //.toLowerCase();
+            String title = subItem.getTitle().toString();
 
-            if (mStatusFilter.filter.contains(title)) {
+            if (mStatusFilter.contains(title)) {
                 subItem.setChecked(true);
             }
         }

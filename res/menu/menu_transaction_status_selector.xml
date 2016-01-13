@@ -34,9 +34,6 @@
                     android:id="@+id/menu_reconciled"
                     android:title="@string/status_reconciled"
                     android:checkable="true" />
-                <!--<item-->
-                    <!--android:id="@+id/menu_not_reconciled"-->
-                    <!--android:title="@string/status_not_reconciled" />-->
                 <item
                     android:id="@+id/menu_void"
                     android:title="@string/status_void"

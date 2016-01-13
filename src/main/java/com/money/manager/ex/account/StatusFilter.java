@@ -18,36 +18,43 @@ package com.money.manager.ex.account;
 
 import com.money.manager.ex.core.TransactionStatuses;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Encapsulates the Status filter functionality in the account transactions list.
  */
 public class StatusFilter {
+
     public StatusFilter() {
         this.filter = new ArrayList<>();
 
         loadAllStatuses();
     }
 
+    /**
+     * The filter collection contains the Status Codes for SQL filter.
+     */
     public ArrayList<String> filter;
 
-    /**
-     * Set the filter to the given status.
-     * @param status The status to use as a filter.
-     */
-    public void setFilter(TransactionStatuses status) {
-        setFilter(status.getCode());
+    public void add(String statusName) {
+        TransactionStatuses status = TransactionStatuses.from(statusName);
+        if (status == null) return;
+
+        this.filter.add(status.getCode());
     }
 
-    public boolean isEmpty() {
-        // If there's nothing, or we have only None status in the filter, consider empty.
-        return this.filter.isEmpty() ||
-            this.filter.size() == 1 && this.filter.contains(TransactionStatuses.NONE.getCode());
+    public void remove(String statusName) {
+        TransactionStatuses status = TransactionStatuses.from(statusName);
+        if (status == null) return;
+
+        this.filter.remove(status.getCode());
+    }
+
+    public boolean contains(String statusName) {
+        TransactionStatuses status = TransactionStatuses.from(statusName);
+        if (status == null) return false;
+
+        return this.filter.contains(status.getCode());
     }
 
     /**
@@ -72,33 +79,6 @@ public class StatusFilter {
         return result;
     }
 
-//    /**
-//     * Used to indicate which filter is selected in the UI.
-//     * @return the name of the currently active filter (if found).
-//     */
-//    public String getCurrentFilterName() {
-//        String none = TransactionStatuses.NONE.name();
-//
-//        if (this.filter.size() == 0) return none;
-//
-//        // check single values
-//        if (this.filter.size() == 1) {
-//            return TransactionStatuses.get(this.filter.get(0)).name();
-//        }
-//
-//        // Check the not-statuses.
-//        for (StatusFilterEnum notStatus : StatusFilterEnum.values()) {
-//            boolean found = new EqualsBuilder()
-//                .append(TransactionStatuses.values(), notStatus.values)
-//                .isEquals();
-//            if (found) {
-//                return notStatus.name();
-//            }
-//        }
-//
-//        return none;
-//    }
-
     // Private
 
     private void loadAllStatuses() {
@@ -106,26 +86,4 @@ public class StatusFilter {
             this.filter.add(status.getCode());
         }
     }
-
-    private void setFilter(String statusCode) {
-        // clear the collection
-        this.filter.clear();
-
-        this.filter.add(statusCode);
-    }
-
-//    private String[] getAllAvailableFilterNames() {
-//        List<String> names = new ArrayList<>();
-//
-//        for (TransactionStatuses status : TransactionStatuses.values()) {
-//            names.add(status.name());
-//        }
-//        for (StatusFilterEnum notstatus : StatusFilterEnum.values()) {
-//            names.add(notstatus.name());
-//        }
-//
-//        String[] result = new String[names.size()];
-//        names.toArray(result);
-//        return result;
-//    }
 }

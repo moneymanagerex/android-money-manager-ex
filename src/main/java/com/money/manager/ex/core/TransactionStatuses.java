@@ -26,6 +26,18 @@ public enum TransactionStatuses {
     FOLLOWUP("F"),
     DUPLICATE("D");
 
+    public static TransactionStatuses from(String statusName) {
+        for (TransactionStatuses status : TransactionStatuses.values()) {
+            // clean-up dashes. Needed for "follow-up".
+            statusName = statusName.replace("-", "");
+
+            if (status.name().equalsIgnoreCase(statusName.toLowerCase())) {
+                return status;
+            }
+        }
+        return null;
+    }
+
     public static TransactionStatuses get(String code) {
         for (TransactionStatuses value : TransactionStatuses.values()) {
             String currentCode = value.getCode();
@@ -34,7 +46,6 @@ public enum TransactionStatuses {
             }
         }
         throw new IllegalArgumentException("no transaction status found for " + code);
-//        return null;
     }
 
     TransactionStatuses(String code) {
@@ -46,10 +57,6 @@ public enum TransactionStatuses {
     public String getCode() {
         return this.code;
     }
-
-//    public TransactionTypes from(String name) {
-//
-//    }
 
     public boolean contains(String name) {
         boolean result = false;
