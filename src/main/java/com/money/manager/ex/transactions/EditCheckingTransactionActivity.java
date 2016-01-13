@@ -576,6 +576,7 @@ public class EditCheckingTransactionActivity
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
             // insert
             tx = repo.insert(tx);
+
             int id = tx.getId();
             if (id == Constants.NOT_SET) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();

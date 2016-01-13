@@ -199,7 +199,6 @@ dependencies {
             'de.greenrobot:eventbus:2.4.0',
             'com.darwinsys:hirondelle-date4j:1.5.1'
     )
-
     // Robolectric, unit testing
     testCompile(
             'junit:junit:4.12',
@@ -221,7 +220,6 @@ dependencies {
             // mock/stub
 //        "org.mockito:mockito-core:1.+"
     )
-
     //    // UI testing
     androidTestCompile(
             'com.android.support.test:runner:0.4',

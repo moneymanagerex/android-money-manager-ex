@@ -395,9 +395,7 @@ public class EditRecurringTransactionActivity
      * @return true if update data successful
      */
     private boolean saveData() {
-        if (!validateData()) {
-            return false;
-        }
+        if (!validateData()) return false;
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
         ContentValues values = getContentValues(isTransfer);

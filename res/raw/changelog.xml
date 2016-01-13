@@ -17,8 +17,9 @@
   -->
 <changelog bulletedList="true">
     <changelogversion versionName="upcoming">
-        <changelogtext>Transaction Status filters in account transactions list improved.</changelogtext>
-        <changelogtext>Removing the character limit for the Notes field.</changelogtext>
+        <changelogtext>#634: Transaction Status filters in account transactions list improved.</changelogtext>
+        <changelogtext>#635: Removing the character limit for the Notes field.</changelogtext>
+        <changelogtext>#630: Switching to Transfer calculates the destination amount automatically.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.01.12.755">
         <changelogtext>Solution for duplicate records added to Database Settings.</changelogtext>
