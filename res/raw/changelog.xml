@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="upcoming">
+        <changelogtext>Transaction Status filters in account transactions list improved.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.01.12.755">
         <changelogtext>Solution for duplicate records added to Database Settings.</changelogtext>
         <changelogtext>Updated the splash logo in material style.</changelogtext>
