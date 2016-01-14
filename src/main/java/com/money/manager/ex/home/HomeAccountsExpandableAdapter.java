@@ -153,7 +153,7 @@ public class HomeAccountsExpandableAdapter
         // set image depending on the account type
         if (!TextUtils.isEmpty(accountType)) {
             if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_dollar_bill));
+                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_bill));
             } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
 //                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_money_safe));
                 holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_temple));
