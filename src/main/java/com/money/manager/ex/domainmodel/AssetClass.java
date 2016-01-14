@@ -150,6 +150,15 @@ public class AssetClass
         this.getChildren().add(child);
     }
 
+    public AssetClass getDirectChild(String name) {
+        for (AssetClass child : this.children) {
+            if (child.getName().equalsIgnoreCase(name)) {
+                return child;
+            }
+        }
+        return null;
+    }
+
     public List<AssetClass> getChildren() {
         if (this.children == null) {
             this.children = new ArrayList<>();

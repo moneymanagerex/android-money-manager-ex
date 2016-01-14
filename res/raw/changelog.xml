@@ -21,6 +21,7 @@
         <changelogtext>#635: Removing the character limit for the Notes field.</changelogtext>
         <changelogtext>#630: Switching to Transfer calculates the destination amount automatically.</changelogtext>
         <changelogtext>#171: Adding Cash account type (mobile version only!)</changelogtext>
+        <changelogtext>#594: Automatically handle cash in asset allocation.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.01.12.755">
         <changelogtext>Solution for duplicate records added to Database Settings.</changelogtext>

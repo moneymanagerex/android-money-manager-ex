@@ -135,7 +135,7 @@ public class AssetAllocationService
         main.setChildren(list);
 
         // create automatic Cash asset class by taking cash amounts from investment accounts.
-        // todo: addCash(main);
+        addCash(main);
 
         // Calculate and store current Value amounts.
         Money totalValue = calculateCurrentValue(list);
@@ -255,19 +255,52 @@ public class AssetAllocationService
     // Private.
 
     /**
-     * Add Cash as a separate, automatic asset class that uses all the cash amounts from
+     * Add Cash as a separate asset class that uses all the cash amounts from
      * the investment accounts.
      * @param assetAllocation Main asset allocation object.
      */
     private void addCash(AssetClass assetAllocation) {
+        String cashLocalizedName = getContext().getString(R.string.cash);
+        AssetClass cash = assetAllocation.getDirectChild(cashLocalizedName);
+
+        if (cash == null) {
+            cash = createCashAssetClass();
+            assetAllocation.addChild(cash);
+        }
+        cash.setType(ItemType.Cash);
+
+        Money currentValue = calculateCashCurrentValue();
+        cash.setCurrentValue(currentValue);
+    }
+
+    private Money calculateCurrentAllocation(Money currentValue, Money portfolioValue) {
+        Money currentAllocation = currentValue
+                .multiply(100)
+                .divide(portfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
+        return currentAllocation;
+    }
+
+    private AssetClass createCashAssetClass() {
+        String cashLocalizedName = getContext().getString(R.string.cash);
+
+        // Create a new asset class for Cash.
+        AssetClass cash = AssetClass.create(cashLocalizedName);
+
+        cash.setAllocation(MoneyFactory.fromDouble(0));
+
+        AssetClassRepository repo = new AssetClassRepository(getContext());
+        repo.insert(cash);
+
+        return cash;
+    }
+
+    private Money calculateCashCurrentValue() {
         // get all investment accounts, their currencies and cash balances.
-        AccountRepository repo = new AccountRepository(getContext());
         AccountService accountService = new AccountService(getContext());
         List<String> investmentAccounts = new ArrayList<>();
         investmentAccounts.add(AccountTypes.INVESTMENT.toString());
         CurrencyService currencyService = new CurrencyService(getContext());
         int destinationCurrency = currencyService.getBaseCurrencyId();
-        Money zero = MoneyFactory.fromDouble(0);
 
         List<Account> accounts = accountService.loadAccounts(false, false, investmentAccounts);
 
@@ -277,20 +310,11 @@ public class AssetAllocationService
         for (Account account : accounts) {
             int sourceCurrency = account.getCurrencyId();
             Money amountInBase = currencyService.doCurrencyExchange(destinationCurrency,
-                account.getInitialBalance(), sourceCurrency);
+                    account.getInitialBalance(), sourceCurrency);
             sum = sum.add(amountInBase);
         }
 
-        // add the cash asset class
-        // todo: the allocation needs to be editable!
-        AssetClass cash = AssetClass.create(getContext().getString(R.string.cash));
-        cash.setType(ItemType.Cash);
-        cash.setAllocation(zero);
-        cash.setCurrentAllocation(zero);
-        cash.setDifference(zero);
-        cash.setValue(sum);
-
-        assetAllocation.addChild(cash);
+        return sum;
     }
 
     private Cursor loadData() {
@@ -409,7 +433,7 @@ public class AssetAllocationService
                     break;
 
                 case Cash:
-                    itemValue = ac.getValue();
+                    itemValue = ac.getCurrentValue();
                     break;
 
                 default:
@@ -429,10 +453,11 @@ public class AssetAllocationService
     /**
      * Calculate all dependent statistics for allocation records.
      * @param allocation Asset Class/Allocation record
-     * @param totalValue Total value of the portfolio. Used to calculate the current allocation.
+     * @param portfolioValue Total value of the portfolio. Used to calculate the current allocation.
      */
-    private void calculateStats(AssetClass allocation, Money totalValue) {
+    private void calculateStats(AssetClass allocation, Money portfolioValue) {
         List<AssetClass> children = allocation.getChildren();
+        Money setAllocation, currentAllocation, setValue, currentValue, difference;
 
         ItemType type = allocation.getType();
         switch (type) {
@@ -440,36 +465,45 @@ public class AssetAllocationService
                 // Group. Calculate stats for children *and* get the summaries here.
                 for (AssetClass child : children) {
                     // find edge node
-                    calculateStats(child, totalValue);
+                    calculateStats(child, portfolioValue);
                 }
 
                 // Allocation
-                Money setAllocation = getAllocationSum(children);
+                setAllocation = getAllocationSum(children);
                 allocation.setAllocation(setAllocation);
                 // Value
-                Money setValue = getValueSum(children);
+                setValue = getValueSum(children);
                 allocation.setValue(setValue);
                 // current allocation
-                Money currentAllocation = getCurrentAllocationSum(children);
+                currentAllocation = getCurrentAllocationSum(children);
                 allocation.setCurrentAllocation(currentAllocation);
                 // current value
-                Money currentValue = getCurrentValueSum(children);
+                currentValue = getCurrentValueSum(children);
                 allocation.setCurrentValue(currentValue);
                 // difference
-                Money difference = getDifferenceSum(children);
+                difference = getDifferenceSum(children);
                 allocation.setDifference(difference);
                 break;
 
             case Allocation:
                 // Allocation. Calculate all stats.
-                calculateStatsFor(allocation, totalValue);
+                calculateStatsFor(allocation, portfolioValue);
                 break;
 
             case Cash:
-                // todo: nothing for now. Keep the value only.
+                // Allocation. Set manually.
+                // Set Value
+                setValue = calculateSetValue(portfolioValue, allocation.getAllocation());
+                allocation.setValue(setValue);
+                // Current Allocation
+                currentAllocation = calculateCurrentAllocation(allocation.getValue(), portfolioValue);
+                allocation.setCurrentAllocation(currentAllocation);
+                // Current Value. Calculated when Cash created/loaded.
+                // Difference
+                difference = allocation.getCurrentValue().subtract(setValue);
+                allocation.setDifference(difference);
                 break;
         }
-
     }
 
     private Money getAllocationSum(List<AssetClass> group) {
@@ -529,11 +563,11 @@ public class AssetAllocationService
 
     /**
      * The magic happens here. Calculate all dependent variables.
-     * @param totalPortfolioValue The total value of the portfolio, in base currency.
+     * @param portfolioValue The total value of the portfolio, in base currency.
      */
-    private void calculateStatsFor(AssetClass item, Money totalPortfolioValue) {
+    private void calculateStatsFor(AssetClass item, Money portfolioValue) {
         Money zero = MoneyFactory.fromDouble(0);
-        if (totalPortfolioValue.toDouble() == 0) {
+        if (portfolioValue.toDouble() == 0) {
             item.setValue(zero);
             item.setCurrentAllocation(zero);
             item.setCurrentValue(zero);
@@ -543,25 +577,28 @@ public class AssetAllocationService
 
         // Set Value
         Money allocation = item.getAllocation();
-        // value = allocation * totalPortfolioValue / 100;
-        Money value = totalPortfolioValue
-            .multiply(allocation.toDouble())
-            .divide(100, Constants.DEFAULT_PRECISION);
-        item.setValue(value);
+        // setValue = allocation * portfolioValue / 100;
+        Money setValue = calculateSetValue(portfolioValue, allocation);
+        item.setValue(setValue);
 
-        // current value
+        // Current value
         Money currentValue = sumStockValues(item.getStocks());
         item.setCurrentValue(currentValue);
 
         // Current allocation.
-        Money currentAllocation = currentValue
-            .multiply(100)
-            .divide(totalPortfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
+        Money currentAllocation = calculateCurrentAllocation(currentValue, portfolioValue);
         item.setCurrentAllocation(currentAllocation);
 
         // difference
-        Money difference = currentValue.subtract(value);
+        Money difference = currentValue.subtract(setValue);
         item.setDifference(difference);
+    }
+
+    private Money calculateSetValue(Money portfolioValue, Money allocation) {
+        Money value = portfolioValue
+            .multiply(allocation.toDouble())
+            .divide(100, Constants.DEFAULT_PRECISION);
+        return value;
     }
 
     private Money sumStockValues(List<Stock> stocks) {
