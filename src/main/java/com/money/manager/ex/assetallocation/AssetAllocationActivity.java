@@ -30,6 +30,7 @@ import android.view.MenuItem;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequested;
+import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -123,19 +124,6 @@ public class AssetAllocationActivity
     // Asset Class display fragment
 
     @Override
-    public void assetClassSelected(int assetClassId) {
-        // todo: Handling:
-        // - asset group (has children), load children
-        // - asset class (no children), show stocks
-        // - stock (no children, no stocks) do nothing, or show context menu?
-
-        AssetAllocationService service = new AssetAllocationService(this);
-        AssetClass toShow = service.findChild(assetClassId, this.assetAllocation);
-
-        showAssetClass(toShow);
-    }
-
-    @Override
     public AssetClass getAssetClass(int id) {
         AssetAllocationService service = new AssetAllocationService(this);
         AssetClass result = service.findChild(id, this.assetAllocation);
@@ -182,6 +170,21 @@ public class AssetAllocationActivity
     public void onEvent(AssetAllocationReloadRequested event) {
         // reload Asset Allocation
         getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
+    }
+
+    public void onEvent(AssetClassSelectedEvent event) {
+        AssetAllocationService service = new AssetAllocationService(this);
+        AssetClass toShow = service.findChild(event.assetClassId, this.assetAllocation);
+
+        ItemType selectedType = toShow.getType();
+        switch (selectedType) {
+            case Cash:
+                // ignore
+                break;
+            default:
+                showAssetClass(toShow);
+                break;
+        }
     }
 
     // Private

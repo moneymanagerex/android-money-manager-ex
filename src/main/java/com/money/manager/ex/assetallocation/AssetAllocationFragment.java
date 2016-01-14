@@ -37,6 +37,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -46,6 +47,8 @@ import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -266,7 +269,8 @@ public class AssetAllocationFragment
 
         switch (type) {
             case Allocation:
-                raiseAssetClassSelected(selectedId);
+                //raiseAssetClassSelected(selectedId);
+                EventBus.getDefault().post(new AssetClassSelectedEvent(selectedId));
                 break;
             case Stock:
                 // ?
@@ -360,10 +364,6 @@ public class AssetAllocationFragment
         startActivity(intent);
     }
 
-//    private void loadData() {
-//        getLoaderManager().initLoader(LOADER_ASSET_CLASSES, null, this);
-//    }
-
     private MatrixCursor createMatrixCursor(AssetClass allocation) {
 
         String[] columns = new String[] {
@@ -390,10 +390,6 @@ public class AssetAllocationFragment
 
         return cursor;
     }
-
-//    private void reloadData() {
-//        getLoaderManager().restartLoader(LOADER_ASSET_CLASSES, null, this);
-//    }
 
     private void renderHeader() {
         ListView listView = getListView();
@@ -461,13 +457,13 @@ public class AssetAllocationFragment
         listView.addFooterView(mFooter, null, false);
     }
 
-    private void raiseAssetClassSelected(int id) {
-        // show a fragment for selected asset class
-        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
-        if (parent != null) {
-            parent.assetClassSelected(id);
-        }
-    }
+//    private void raiseAssetClassSelected(int id) {
+//        // show a fragment for selected asset class
+//        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
+//        if (parent != null) {
+//            parent.assetClassSelected(id);
+//        }
+//    }
 
     private void fillChildren(MatrixCursor cursor, AssetClass allocation) {
         int precision = 2;
@@ -502,6 +498,10 @@ public class AssetAllocationFragment
         }
     }
 
+    /**
+     * Returns the asset class of the class displayed in this fragment.
+     * @return Current asset class's id.
+     */
     private int getAssetClassId() {
         Bundle arguments = getArguments();
         return arguments.getInt(PARAM_ASSET_CLASS_ID);
@@ -521,6 +521,8 @@ public class AssetAllocationFragment
 
     private AssetClass retrieveData() {
         AssetClass result = null;
+
+        // todo: switch to using event bus instead of interface.
 
         DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
         if (parent != null) {

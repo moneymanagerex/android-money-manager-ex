@@ -14,14 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.assetallocation;
 
-import com.money.manager.ex.domainmodel.AssetClass;
+package com.money.manager.ex.assetallocation.events;
 
 /**
- * Callbacks from the Asset Allocation fragment to the activity.
+ * Raised when an Asset Class has been selected from the list.
  */
-public interface DetailFragmentCallbacks {
-    //void assetClassSelected(int assetClassId);
-    AssetClass getAssetClass(int id);
+public class AssetClassSelectedEvent {
+
+    public AssetClassSelectedEvent(int assetClassId) {
+        this.assetClassId = assetClassId;
+    }
+
+    public int assetClassId;
 }
