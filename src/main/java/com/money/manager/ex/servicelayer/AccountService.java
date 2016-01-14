@@ -381,6 +381,7 @@ public class AccountService
     public List<AccountTypes> getTransactionAccountTypes() {
         List<AccountTypes> list = new ArrayList<>();
 
+        list.add(AccountTypes.CASH);
         list.add(AccountTypes.CHECKING);
         list.add(AccountTypes.TERM);
         list.add(AccountTypes.CREDIT_CARD);
