@@ -145,7 +145,7 @@ public class AccountEditActivity
         }
 
         // Compose layout
-        setContentView(R.layout.account_edit_activity);
+        setContentView(R.layout.activity_edit_account);
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -153,9 +153,11 @@ public class AccountEditActivity
             setToolbarStandardAction(toolbar);
         }
 
+        AccountViewHolder viewHolder = new AccountViewHolder();
+
         // Get controls from layout
         edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
-        Spinner spinAccountType = (Spinner) findViewById(R.id.spinnerAccountType);
+        viewHolder.accountTypeSpinner = (Spinner) findViewById(R.id.spinnerAccountType);
         edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
         edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
         edtWebsite = (EditText) findViewById(R.id.editTextWebsite);
@@ -225,16 +227,16 @@ public class AccountEditActivity
         // Account Type adapters and values
 
         String[] mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
-        mAccountTypeValues = getResources().getStringArray(R.array.accounttype_values);
+        mAccountTypeValues = AccountTypes.getNames();
         ArrayAdapter<String> adapterAccountType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
         adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinAccountType.setAdapter(adapterAccountType);
+        viewHolder.accountTypeSpinner.setAdapter(adapterAccountType);
         if (!(TextUtils.isEmpty(mAccountType))) {
             if (Arrays.asList(mAccountTypeValues).indexOf(mAccountType) >= 0) {
-                spinAccountType.setSelection(Arrays.asList(mAccountTypeValues).indexOf(mAccountType), true);
+                viewHolder.accountTypeSpinner.setSelection(Arrays.asList(mAccountTypeValues).indexOf(mAccountType), true);
             }
         } else {
-            mAccountType = (String) spinAccountType.getSelectedItem();
+            mAccountType = (String) viewHolder.accountTypeSpinner.getSelectedItem();
         }
 
         // Account Status adapters and values
@@ -253,7 +255,7 @@ public class AccountEditActivity
         }
 
         // Set up control listeners
-        spinAccountType.setOnItemSelectedListener(new OnItemSelectedListener() {
+        viewHolder.accountTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mAccountTypeValues.length)) {

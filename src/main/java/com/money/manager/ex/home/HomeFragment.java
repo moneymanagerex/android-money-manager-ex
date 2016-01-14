@@ -997,8 +997,11 @@ public class HomeFragment
 
                 totalForType = new QueryAccountBills(getActivity());
                 totalForType.setAccountType(accountType);
+
                 // set group title
-                if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
+                if (AccountTypes.CASH.name().equalsIgnoreCase(accountType)) {
+                    totalForType.setAccountName(getString(R.string.cash_accounts));
+                } else if (AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)) {
                     totalForType.setAccountName(getString(R.string.bank_accounts));
                 } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
                     totalForType.setAccountName(getString(R.string.term_accounts));

@@ -498,6 +498,8 @@
     <string name="sort_by_usage">Sort by usage</string>
     <string name="choose_sorting">Choose sorting</string>
     <string name="credit_card">Credit Card</string>
+
+    <string name="cash_accounts">Cash Accounts</string>
     <string name="bank_accounts">Bank Accounts</string>
     <string name="term_accounts">Term Accounts</string>
     <string name="credit_card_accounts">Credit Card Accounts</string>

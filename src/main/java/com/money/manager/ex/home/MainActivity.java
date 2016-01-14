@@ -149,10 +149,10 @@ public class MainActivity
     private LinearLayout mDrawerLinearRepeating;
     private TextView mDrawerTextUserName;
     private TextView mDrawerTextTotalAccounts;
-    private TextView mDrawerTextViewRepeating;
+//    private TextView mDrawerTextViewRepeating;
     // state dual panel
     private boolean mIsDualPanel = false;
-    private Tracker mTracker;
+//    private Tracker mTracker;
     private RecentDatabasesProvider recentDbs;
     private boolean mInitialized = false;
 
@@ -169,8 +169,8 @@ public class MainActivity
         }
 
         // Obtain the shared Tracker instance.
-        MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
-        mTracker = application.getDefaultTracker();
+//        MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
+//        mTracker = application.getDefaultTracker();
 
         // Initialize the map for recent entries that link to drawer menu items.
         this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
@@ -220,9 +220,9 @@ public class MainActivity
     protected void onResume() {
         super.onResume();
 
-        Log.d(this.getClass().getSimpleName(), "building tracker");
-        mTracker.setScreenName("Image~MainActivity");
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+//        Log.d(this.getClass().getSimpleName(), "building tracker");
+//        mTracker.setScreenName("Image~MainActivity");
+//        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         // check if restart activity
         if (isRestartActivitySet()) {
@@ -1197,7 +1197,7 @@ public class MainActivity
         // repeating transaction
         mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
         mDrawerLinearRepeating.setVisibility(View.GONE);
-        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
+//        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
         mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }

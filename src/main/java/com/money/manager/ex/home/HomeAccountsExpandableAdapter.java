@@ -19,6 +19,7 @@ package com.money.manager.ex.home;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +44,7 @@ import info.javaperformance.money.MoneyFactory;
  * Adapter for the Home screen expandable accounts list.
  */
 public class HomeAccountsExpandableAdapter
-        extends BaseExpandableListAdapter {
+    extends BaseExpandableListAdapter {
 
     private Context mContext;
 
@@ -150,14 +152,20 @@ public class HomeAccountsExpandableAdapter
         }
         // set image depending on the account type
         if (!TextUtils.isEmpty(accountType)) {
-            if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
-                holder.imgAccountType.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_money_safe));
+            if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
+                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_dollar_bill));
+            } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
+//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_money_safe));
+                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_temple));
             } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_money_finance));
+//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_money_finance));
+                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_calendar));
             } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_credit_card));
+//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_credit_card));
+                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_credit_card));
             } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(mContext.getResources().getDrawable(R.drawable.portfolio));
+//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.portfolio));
+                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_briefcase));
             }
         }
 
@@ -225,6 +233,10 @@ public class HomeAccountsExpandableAdapter
         QueryAccountBills account = mAccountsByType.get(accountType).get(childPosition);
 
         return account;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     private class ViewHolderAccountBills {
