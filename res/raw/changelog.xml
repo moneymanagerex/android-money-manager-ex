@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="upcoming">
+        <changelogtext>Adjusted the row height for account groups on Home screen.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.01.15.756">
         <changelogtext>#634: Transaction Status filters in account transactions list improved.</changelogtext>
         <changelogtext>#635: Removing the character limit for the Notes field.</changelogtext>
