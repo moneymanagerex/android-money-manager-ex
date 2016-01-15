@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="upcoming">
+    <changelogversion versionName="2016.01.15.756">
         <changelogtext>#634: Transaction Status filters in account transactions list improved.</changelogtext>
         <changelogtext>#635: Removing the character limit for the Notes field.</changelogtext>
         <changelogtext>#630: Switching to Transfer calculates the destination amount automatically.</changelogtext>
