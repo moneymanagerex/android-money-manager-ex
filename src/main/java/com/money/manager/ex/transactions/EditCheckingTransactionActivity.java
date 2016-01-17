@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -55,6 +56,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -63,7 +65,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class EditCheckingTransactionActivity
     extends BaseFragmentActivity
-    implements IInputAmountDialogListener, YesNoDialogListener {
+    implements YesNoDialogListener {
 
     // action type intent
     public String mIntentAction;
@@ -103,40 +105,7 @@ public class EditCheckingTransactionActivity
             handleIntent(savedInstanceState);
         }
 
-        // Transaction Type
-        mCommonFunctions.initTransactionTypeSelector();
-
-        // account(s)
-        mCommonFunctions.initAccountSelectors();
-
-        // status
-        mCommonFunctions.initStatusSelector();
-
-        // Transaction date
-        mCommonFunctions.initDateSelector();
-
-
-        // Payee
-        mCommonFunctions.initPayeeControls();
-
-        // Category
-        mCommonFunctions.initCategoryControls(SplitCategory.class.getSimpleName());
-
-        // Split Categories
-        mCommonFunctions.initSplitCategories();
-
-        // mark checked if there are existing split categories.
-        boolean hasSplit = mCommonFunctions.hasSplitCategories();
-        mCommonFunctions.setSplit(hasSplit);
-
-        // Amount and total amount
-        mCommonFunctions.initAmountSelectors();
-
-        // Transaction Number
-        mCommonFunctions.initTransactionNumberControls();
-
-        // notes
-        mCommonFunctions.initNotesControls();
+        initializeInputControls();
 
         // refresh user interface
         mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
@@ -145,9 +114,58 @@ public class EditCheckingTransactionActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCommonFunctions.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save the state interface
+        outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
+        outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.accountId);
+        outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
+        outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
+                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.viewHolder.txtAmount.getTag().toString());
+        outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
+        outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
+        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
+        outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
+        outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
+        outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
+        outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
+        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
+        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
+                mCommonFunctions.mSplitTransactionsDeleted);
+        outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
+        // bill deposits
+        outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
+        outState.putString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
+
+        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
+    }
+
+    // Dialog
 
     /**
      * Handle user's confirmation to delete any Split Categories when switching to
@@ -171,43 +189,10 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.cancelChangingTransactionToTransfer();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // save the state interface
-        outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
-        outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.accountId);
-        outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
-        outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
-            new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.viewHolder.txtAmount.getTag().toString());
-        outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.payeeId);
-        outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
-        outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
-        outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
-        outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
-            mCommonFunctions.mSplitTransactionsDeleted);
-        outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
-        // bill deposits
-        outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
-        outState.putString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
-
-        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
-    }
-
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        mCommonFunctions.onFinishedInputAmountDialog(id, amount);
-    }
+//    @Override
+//    public void onFinishedInputAmountDialog(int id, Money amount) {
+//
+//    }
 
     @Override
     public boolean onActionCancelClick() {
@@ -229,6 +214,14 @@ public class EditCheckingTransactionActivity
             return false;
         }
     }
+
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
+        mCommonFunctions.onFinishedInputAmountDialog(event.callerId, event.amount);
+    }
+
+    // Private
 
     private boolean createSplitCategoriesFromRecurringTransaction() {
         // check if category and sub-category are not set.
@@ -256,7 +249,43 @@ public class EditCheckingTransactionActivity
         return true;
     }
 
-    public boolean loadCheckingAccount(int transId, boolean duplicate) {
+    private void initializeInputControls() {
+        // Transaction Type
+        mCommonFunctions.initTransactionTypeSelector();
+
+        // account(s)
+        mCommonFunctions.initAccountSelectors();
+
+        // status
+        mCommonFunctions.initStatusSelector();
+
+        // Transaction date
+        mCommonFunctions.initDateSelector();
+
+        // Payee
+        mCommonFunctions.initPayeeControls();
+
+        // Category
+        mCommonFunctions.initCategoryControls(SplitCategory.class.getSimpleName());
+
+        // Split Categories
+        mCommonFunctions.initSplitCategories();
+
+        // mark checked if there are existing split categories.
+        boolean hasSplit = mCommonFunctions.hasSplitCategories();
+        mCommonFunctions.setSplit(hasSplit);
+
+        // Amount and total amount
+        mCommonFunctions.initAmountSelectors();
+
+        // Transaction Number
+        mCommonFunctions.initTransactionNumberControls();
+
+        // notes
+        mCommonFunctions.initNotesControls();
+    }
+
+    private boolean loadCheckingAccount(int transId, boolean duplicate) {
         try {
             return loadCheckingAccountInternal(transId, duplicate);
         } catch (Exception e) {
@@ -323,7 +352,7 @@ public class EditCheckingTransactionActivity
         return true;
     }
 
-    public boolean loadRecurringTransaction(int recurringTransactionId) {
+    private boolean loadRecurringTransaction(int recurringTransactionId) {
         try {
             return loadRecurringTransactionInternal(recurringTransactionId);
         } catch (RuntimeException ex) {
@@ -368,36 +397,6 @@ public class EditCheckingTransactionActivity
         createSplitCategoriesFromRecurringTransaction();
 
         return true;
-    }
-
-    private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
-        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
-        mCommonFunctions.accountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
-        mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
-        mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
-        mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
-        String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
-        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mCommonFunctions.transactionEntity.setAmount(
-                MoneyFactory.fromString(
-                        savedInstanceState.getString(
-                                EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
-        mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
-        mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
-        mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
-        mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID));
-        mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
-        mCommonFunctions.subCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
-        mCommonFunctions.subCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
-        mCommonFunctions.mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
-        mCommonFunctions.mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
-        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
-        mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
-        mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
-        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
-        // action
-        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
     }
 
     /**
@@ -507,7 +506,7 @@ public class EditCheckingTransactionActivity
      * from Tasker or any external caller.
      * @param intent The intent received.
      */
-    public void externalIntegration(Intent intent) {
+    private void externalIntegration(Intent intent) {
         Uri data = intent.getData();
         if (data == null) return;
 
@@ -549,12 +548,42 @@ public class EditCheckingTransactionActivity
         }
     }
 
+    private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
+        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
+        mCommonFunctions.accountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID);
+        mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
+        mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
+        mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
+        String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
+        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
+        mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
+        mCommonFunctions.transactionEntity.setAmount(
+                MoneyFactory.fromString(
+                        savedInstanceState.getString(
+                                EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
+        mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
+        mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
+        mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
+        mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID));
+        mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
+        mCommonFunctions.subCategoryId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID);
+        mCommonFunctions.subCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
+        mCommonFunctions.mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
+        mCommonFunctions.mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
+        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
+        mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
+        mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
+        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
+        // action
+        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
+    }
+
     /**
      * validate data insert in activity
      *
      * @return a boolean indicating whether the data is valid.
      */
-    public boolean validateData() {
+    private boolean validateData() {
         if (!mCommonFunctions.validateData()) return false;
 
         return true;
@@ -565,7 +594,7 @@ public class EditCheckingTransactionActivity
      *
      * @return true if update data successful
      */
-    public boolean saveData() {
+    private boolean saveData() {
         if (!validateData()) return false;
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);

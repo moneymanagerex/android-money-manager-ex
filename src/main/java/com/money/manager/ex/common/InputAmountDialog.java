@@ -19,6 +19,7 @@ package com.money.manager.ex.common;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,9 +28,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
@@ -41,6 +44,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -96,7 +100,7 @@ public class InputAmountDialog
             R.id.buttonKeyLeftParenthesis, R.id.buttonKeyRightParenthesis
     };
 
-    private int mIdView;
+    private int mCallingViewId;
     private Money mAmount;
     private Integer mCurrencyId;
     private Integer mDefaultColor;
@@ -114,24 +118,24 @@ public class InputAmountDialog
     private boolean mStartedTyping = false;
     private FormatUtilities formatUtilities;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // First check the calling fragment.
-        if (getTargetFragment() instanceof IInputAmountDialogListener) {
-            mListener = (IInputAmountDialogListener) getTargetFragment();
-        }
-        // then the activity.
-        if (mListener == null && getActivity() instanceof IInputAmountDialogListener) {
-            mListener = (IInputAmountDialogListener) getActivity();
-        }
-
-        if (mListener == null) {
-            throw new IllegalStateException("Need IInputAmountDialogListener. Implement in Activity" +
-                    " or assign a TargetFragment which implements the interface.");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//
+//        // First check the calling fragment.
+//        if (getTargetFragment() instanceof IInputAmountDialogListener) {
+//            mListener = (IInputAmountDialogListener) getTargetFragment();
+//        }
+//        // then the activity.
+//        if (mListener == null && getActivity() instanceof IInputAmountDialogListener) {
+//            mListener = (IInputAmountDialogListener) getActivity();
+//        }
+//
+//        if (mListener == null) {
+//            throw new IllegalStateException("Need IInputAmountDialogListener. Implement in Activity" +
+//                    " or assign a TargetFragment which implements the interface.");
+//        }
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -248,31 +252,33 @@ public class InputAmountDialog
 
         // Dialog
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-        builder.customView(view, false);
-        builder.cancelable(false);
-        builder.callback(new MaterialDialog.ButtonCallback() {
-            @Override
-            public void onPositive(MaterialDialog dialog) {
-                if (!evalExpression()) return;
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
+            .customView(view, false)
+            .cancelable(false)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    if (!evalExpression()) return;
 
-                if (mListener != null) {
-                    Money result = getAmount();
+                    EventBus.getDefault().post(new AmountEnteredEvent(mCallingViewId, getAmount()));
 
-                    mListener.onFinishedInputAmountDialog(mIdView, result);
+                    // todo: remove this part after the interface has been removed.
+                    if (mListener != null) {
+                        mListener.onFinishedInputAmountDialog(mCallingViewId, getAmount());
+                    }
 
                     dialog.dismiss();
                 }
-            }
-
-            @Override
-            public void onNegative(MaterialDialog dialog) {
-                dialog.dismiss();
-            }
-        });
-        builder.autoDismiss(false);
-        builder.negativeText(android.R.string.cancel);
-        builder.positiveText(android.R.string.ok);
+            })
+            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                }
+            })
+            .autoDismiss(false)
+            .negativeText(android.R.string.cancel)
+            .positiveText(android.R.string.ok);
 
         return builder.show();
     }
@@ -291,7 +297,7 @@ public class InputAmountDialog
         savedInstanceState.putString(KEY_AMOUNT, mAmount.toString());
 
         if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
-        savedInstanceState.putInt(KEY_ID_VIEW, mIdView);
+        savedInstanceState.putInt(KEY_ID_VIEW, mCallingViewId);
 
         mExpression = txtMain.getText().toString();
         savedInstanceState.putString(KEY_EXPRESSION, mExpression);
@@ -397,7 +403,7 @@ public class InputAmountDialog
 
     private void restoreSavedInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_ID_VIEW)) {
-            mIdView = savedInstanceState.getInt(KEY_ID_VIEW);
+            mCallingViewId = savedInstanceState.getInt(KEY_ID_VIEW);
         }
         if (savedInstanceState.containsKey(KEY_AMOUNT)) {
             mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
@@ -494,7 +500,7 @@ public class InputAmountDialog
     private void restoreArguments() {
         Bundle args = getArguments();
 
-        this.mIdView = args.getInt(KEY_ID_VIEW);
+        this.mCallingViewId = args.getInt(KEY_ID_VIEW);
         this.mCurrencyId = args.getInt(KEY_CURRENCY_ID);
         this.roundToCurrencyDecimals = args.getBoolean(KEY_ROUNDING);
     }

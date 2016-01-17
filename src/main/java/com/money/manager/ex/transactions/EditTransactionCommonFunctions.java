@@ -307,16 +307,16 @@ public class EditTransactionCommonFunctions {
     }
 
     public int getDestinationCurrencyId() {
-        return this.AccountList.get(
-                mAccountIdList.indexOf(this.toAccountId)).getCurrencyId();
+        int accountIndex = mAccountIdList.indexOf(this.toAccountId);
+        return this.AccountList.get(accountIndex).getCurrencyId();
     }
 
     public int getSourceCurrencyId() {
 //        AccountRepository repo = new AccountRepository(getContext());
 //        Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
 
-        return this.AccountList.get(
-                mAccountIdList.indexOf(this.accountId)).getCurrencyId();
+        int accountIndex = mAccountIdList.indexOf(this.accountId);
+        return this.AccountList.get(accountIndex).getCurrencyId();
     }
 
     public boolean getDirty() {
@@ -1241,12 +1241,12 @@ public class EditTransactionCommonFunctions {
         mParent.finish();
     }
 
-    private void convertAndDisplayAmount(boolean isSourceAmount, int fromCurrencyId, int toCurrencyId,
+    private void convertAndDisplayAmount(boolean isAmountFrom, int fromCurrencyId, int toCurrencyId,
                                          Money amount) {
         CurrencyService currencyService = new CurrencyService(mContext);
         TextView destinationTextView = viewHolder.txtAmountTo;
 
-        if (!isSourceAmount) {
+        if (!isAmountFrom) {
             fromCurrencyId = getDestinationCurrencyId();
             AccountRepository repo = new AccountRepository(mContext);
             toCurrencyId = repo.loadCurrencyIdFor(this.accountId);
@@ -1254,19 +1254,19 @@ public class EditTransactionCommonFunctions {
             destinationTextView = viewHolder.txtAmount;
         }
 
-        Integer destinationAccountId = isSourceAmount
+        Integer destinationAccountId = isAmountFrom
                 ? this.toAccountId
                 : this.accountId;
 
         // get the destination value.
-//        Money destinationAmount = MoneyFactory.fromString(destinationTextView.getTag().toString());
-//        if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
+        Money destinationAmount = MoneyFactory.fromString(destinationTextView.getTag().toString());
+        if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
 
         // Update the destination value.
-//        if (destinationAmount.isZero()) {
-        Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-        displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
-//        }
+        if (destinationAmount.isZero()) {
+            Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
+        }
     }
 
     /**
