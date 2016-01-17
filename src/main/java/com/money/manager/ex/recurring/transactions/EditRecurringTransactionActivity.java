@@ -334,7 +334,7 @@ public class EditRecurringTransactionActivity
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = tx.status;
-        mCommonFunctions.amount = tx.amount;
+        mCommonFunctions.transactionEntity.setAmount(tx.amount);
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
@@ -517,7 +517,7 @@ public class EditRecurringTransactionActivity
 
 //        NumericHelper numericHelper = new NumericHelper(getApplicationContext());
 
-        mCommonFunctions.amount = MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT));
+        mCommonFunctions.transactionEntity.setAmount(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT)));
         mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO));
 
         mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);

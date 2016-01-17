@@ -112,7 +112,7 @@ public class EditTransactionCommonFunctions {
     public String payeeName;
     public int subCategoryId = Constants.NOT_SET;
     public Money amountTo = MoneyFactory.fromDouble(0);
-    public Money amount = MoneyFactory.fromDouble(0); // amount
+    //public Money amount = MoneyFactory.fromDouble(0); // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
@@ -258,7 +258,7 @@ public class EditTransactionCommonFunctions {
 
         // Amount
         //Money amount = getAmount();
-        values.put(ITransactionEntity.TRANSAMOUNT, amount.toDouble());
+        values.put(ITransactionEntity.TRANSAMOUNT, transactionEntity.getAmount().toDouble());
 
         // Amount To
         //Money amountTo = getAmountTo();
@@ -412,7 +412,7 @@ public class EditTransactionCommonFunctions {
                     //Money amount = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
                     // recalculate the destination amount if the currency has changed?
                     convertAndDisplayAmount(true, getSourceCurrencyId(), getDestinationCurrencyId(),
-                            amount);
+                            transactionEntity.getAmount());
 
 //                    displayAmountFormatted(viewHolder.txtAmountTo, amount , toAccountId);
                     refreshControlTitles();
@@ -455,7 +455,7 @@ public class EditTransactionCommonFunctions {
         };
 
         // amount
-        displayAmountFormatted(viewHolder.txtAmount, amount, accountId);
+        displayAmountFormatted(viewHolder.txtAmount, transactionEntity.getAmount(), accountId);
         viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
@@ -841,10 +841,8 @@ public class EditTransactionCommonFunctions {
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
                         splitSum = splitSum.add(mSplitTransactions.get(i).getAmount());
                     }
-                    displayAmountFormatted(viewHolder.txtAmount, splitSum,
-                            !transactionType.equals(TransactionTypes.Transfer)
-                                    ? accountId
-                                    : toAccountId);
+                    transactionEntity.setAmount(splitSum);
+                    displaySourceAmount();
                 }
                 // deleted item
                 if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -867,7 +865,7 @@ public class EditTransactionCommonFunctions {
 
         // Update amount value.
         if (isSourceAmount) {
-            this.amount = amount;
+            this.transactionEntity.setAmount(amount);
         } else {
             this.amountTo = amount;
         }
@@ -877,7 +875,7 @@ public class EditTransactionCommonFunctions {
             Integer toCurrencyId = getDestinationCurrencyId();
             if (fromCurrencyId.equals(toCurrencyId)) {
                 // Same currency. Modify both values if the transfer is in the same currency.
-                this.amount = amount;
+                this.transactionEntity.setAmount(amount);
                 this.amountTo = amount;
 
                 displaySourceAmount();
@@ -1138,16 +1136,16 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-            Money amountTo = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
-            if (amountTo.toDouble() <= 0) {
+//            Money amountTo = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
+            if (amountTo.toDouble() < 0) {
                 Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-        Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
-        if (amount.toDouble() <= 0) {
+//        Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
+        if (transactionEntity.getAmount().toDouble() < 0) {
             Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }
@@ -1280,7 +1278,7 @@ public class EditTransactionCommonFunctions {
         // Add the new split record.
         ITransactionEntity entity = SplitItemFactory.create(this.mDatasetName);
         // now use the existing amount
-        entity.setAmount(this.amount);
+        entity.setAmount(this.transactionEntity.getAmount());
 
         // Add category
 
@@ -1334,12 +1332,12 @@ public class EditTransactionCommonFunctions {
         setSplit(false);
 
         // calculate the destination amount if the source amount has been set.
-        if (!amount.isZero() && amountTo.isZero()) {
+        if (!transactionEntity.getAmount().isZero() && amountTo.isZero()) {
             // select the first destination account id, if none set.
             if (toAccountId == Constants.NOT_SET) {
                 toAccountId = mAccountIdList.get(0);
             }
-            onFinishedInputAmountDialog(R.id.textViewAmount, amount);
+            onFinishedInputAmountDialog(R.id.textViewAmount, transactionEntity.getAmount());
         }
     }
 
@@ -1348,7 +1346,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void displaySourceAmount() {
-        displayAmountFormatted(viewHolder.txtAmount, this.amount, this.accountId);
+        displayAmountFormatted(viewHolder.txtAmount, this.transactionEntity.getAmount(), this.accountId);
     }
 
     private void showSplitCategoriesForm(String datasetName) {

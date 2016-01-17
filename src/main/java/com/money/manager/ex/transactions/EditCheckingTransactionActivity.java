@@ -285,7 +285,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.toAccountId = toAccountId == null ? Constants.NOT_SET : toAccountId;
         mCommonFunctions.transactionType = tx.getTransType();
         mCommonFunctions.status = tx.getStatus();
-        mCommonFunctions.amount = tx.getAmount();
+        mCommonFunctions.transactionEntity.setAmount(tx.getAmount());
         mCommonFunctions.amountTo = tx.getAmountTo();
         mCommonFunctions.payeeId = tx.getPayeeId();
         mCommonFunctions.transactionEntity.setCategoryId(tx.getCategoryId());
@@ -349,7 +349,7 @@ public class EditCheckingTransactionActivity
         String transCode = tx.transactionCode;
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = tx.status;
-        mCommonFunctions.amount = tx.amount;
+        mCommonFunctions.transactionEntity.setAmount(tx.amount);
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
@@ -379,7 +379,10 @@ public class EditCheckingTransactionActivity
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
-        mCommonFunctions.amount = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT));
+        mCommonFunctions.transactionEntity.setAmount(
+                MoneyFactory.fromString(
+                        savedInstanceState.getString(
+                                EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
         mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
@@ -516,7 +519,7 @@ public class EditCheckingTransactionActivity
         if (parameters.accountId > 0) {
             this.mCommonFunctions.accountId = parameters.accountId;
         }
-        mCommonFunctions.amount = parameters.amount;
+        mCommonFunctions.transactionEntity.setAmount(parameters.amount);
         // payee
         if (parameters.payeeId > 0) {
             this.mCommonFunctions.payeeId = parameters.payeeId;
