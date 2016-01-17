@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="upcoming">
+    <changelogversion versionName="2016.01.17.757">
         <changelogtext>Adjusted the row height for account groups on Home screen.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.01.15.756">
