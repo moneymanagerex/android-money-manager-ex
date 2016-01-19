@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.currency.CurrencyListActivity;
@@ -59,8 +60,7 @@ import info.javaperformance.money.MoneyFactory;
  * Edit Account activity/form
  */
 public class AccountEditActivity
-    extends BaseFragmentActivity
-    implements IInputAmountDialogListener {
+    extends BaseFragmentActivity {
 
     public static final String KEY_ACCOUNT_ID = "AccountEditActivity:AccountId";
     public static final String KEY_ACCOUNT_NAME = "AccountEditActivity:AccountName";
@@ -331,22 +331,9 @@ public class AccountEditActivity
 //                    BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
                     Money initialBalance = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
                     if (initialBalance != null) {
-                        onFinishedInputAmountDialog(R.id.editTextInitialBalance, initialBalance);
+                        onEvent(new AmountEnteredEvent(R.id.editTextInitialBalance, initialBalance));
                     }
                 }
-        }
-    }
-
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        if (amount == null) {
-            Log.w(LOGCAT, "Received amount is null.");
-            return;
-        }
-
-        View view = findViewById(id);
-        if (view != null && view instanceof TextView) {
-            FormatUtilities.formatAmountTextView(this, ((TextView) view), amount, mCurrencyId);
         }
     }
 
@@ -395,6 +382,32 @@ public class AccountEditActivity
             return false;
         }
     }
+
+    public void onEvent(AmountEnteredEvent event) {
+        if (event.amount == null) {
+            Log.w(LOGCAT, "Received amount is null.");
+            return;
+        }
+
+        View view = findViewById(event.callerId);
+        if (view != null && view instanceof TextView) {
+            FormatUtilities.formatAmountTextView(this, ((TextView) view), event.amount, mCurrencyId);
+        }
+    }
+
+    /**
+     * Refresh current currency name on controls
+     */
+    public void refreshCurrencyName() {
+        // write currency into text button
+        if (!(TextUtils.isEmpty(mCurrencyName))) {
+            txtSelectCurrency.setText(mCurrencyName);
+        } else {
+            txtSelectCurrency.setText(getResources().getString(R.string.select_currency));
+        }
+    }
+
+    // Private
 
     private void displayFavouriteStatus() {
 //        int imageResource = mAccount.getFavorite() ? R.drawable.ic_star : R.drawable.ic_star_outline;
@@ -543,18 +556,6 @@ public class AccountEditActivity
         selectCurrencyName(mCurrencyId);
 
         return true;
-    }
-
-    /**
-     * Refresh current currency name on controls
-     */
-    public void refreshCurrencyName() {
-        // write currency into text button
-        if (!(TextUtils.isEmpty(mCurrencyName))) {
-            txtSelectCurrency.setText(mCurrencyName);
-        } else {
-            txtSelectCurrency.setText(getResources().getString(R.string.select_currency));
-        }
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {

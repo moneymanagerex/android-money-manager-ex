@@ -49,7 +49,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class InputAmountDialog
-        extends DialogFragment {
+    extends DialogFragment {
 
     private static final String KEY_ID_VIEW = "InputAmountDialog:Id";
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
