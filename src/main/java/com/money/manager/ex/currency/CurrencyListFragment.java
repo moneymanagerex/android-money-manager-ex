@@ -521,7 +521,6 @@ public class CurrencyListFragment
             .setTitle(R.string.download)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
             .setMessage(R.string.question_update_currency_exchange_rates)
-        // set listener on positive button
             .setPositiveButton(android.R.string.ok,
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -529,7 +528,6 @@ public class CurrencyListFragment
                             updateExchangeRates();
                         }
                     })
-        // set listener on negative button
             .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
