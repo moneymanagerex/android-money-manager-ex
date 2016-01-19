@@ -45,6 +45,9 @@ public class RecurringTransaction
 
     public Money getAmount() {
         Double amount = getDouble(ITransactionEntity.TRANSAMOUNT);
+        if (amount == null) {
+            amount = 0D;
+        }
         Money result = MoneyFactory.fromDouble(amount);
         return result;
     }
