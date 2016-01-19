@@ -105,17 +105,6 @@ public class AssetAllocationActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                setResultAndFinish();
-                return true; // consumed here
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -128,11 +117,20 @@ public class AssetAllocationActivity
         super.onCreateOptionsMenu(menu);
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater()
-            .inflate(R.menu.menu_transaction_status_selector, menu);
-//        //initTransactionStatusMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setResultAndFinish();
+                return true; // consumed here
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     // Asset Class display fragment

@@ -16,8 +16,19 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.money.manager.ex.assetallocation.AssetAllocationActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" android:showAsAction="never" />
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.money.manager.ex.assetallocation.AssetAllocationActivity">
+
+    <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
+        <!--android:orderInCategory="100" app:showAsAction="never" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/menu_update_exchange_rate"-->
+        <!--android:icon="?attr/ic_action_reload"-->
+        <!--android:title="@string/update_menu_currency_exchange_rates"-->
+        <!--app:showAsAction="ifRoom" />-->
+
+    <!-- todo: overview report -->
+
 </menu>
