@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.common;
 
-import java.math.BigDecimal;
-
 import info.javaperformance.money.Money;
 
 /**

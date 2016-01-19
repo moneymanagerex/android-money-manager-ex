@@ -49,7 +49,6 @@ import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
@@ -57,7 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
-import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -218,7 +216,7 @@ public class EditCheckingTransactionActivity
     // Events
 
     public void onEvent(AmountEnteredEvent event) {
-        mCommonFunctions.onFinishedInputAmountDialog(event.callerId, event.amount);
+        mCommonFunctions.onFinishedInputAmountDialog(event.requestId, event.amount);
     }
 
     // Private

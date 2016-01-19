@@ -26,11 +26,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.ICommonFragmentCallbacks;
-import com.money.manager.ex.common.IInputAmountDialogListener;
-
-import java.math.BigDecimal;
-
-import info.javaperformance.money.Money;
 
 public class SearchActivity
     extends BaseFragmentActivity

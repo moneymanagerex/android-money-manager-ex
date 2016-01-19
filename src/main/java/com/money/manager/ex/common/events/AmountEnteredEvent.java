@@ -24,9 +24,10 @@ import info.javaperformance.money.Money;
  * clicking OK button.
  */
 public class AmountEnteredEvent {
-    public AmountEnteredEvent(int callerId, Money amount) {
+
+    public AmountEnteredEvent(int requestId, Money amount) {
         this.amount = amount;
-        this.callerId = callerId;
+        this.requestId = requestId;
     }
 
     /**
@@ -37,5 +38,5 @@ public class AmountEnteredEvent {
     /**
      * The id of the initiating view (a text box that should receive a value).
      */
-    public int callerId;
+    public int requestId;
 }

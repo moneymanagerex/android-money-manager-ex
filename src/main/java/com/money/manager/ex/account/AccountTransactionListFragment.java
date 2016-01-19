@@ -188,7 +188,6 @@ public class AccountTransactionListFragment
     public void onStart() {
         super.onStart();
 
-        // register as event bus listener
         EventBus.getDefault().register(this);
     }
 
@@ -207,7 +206,6 @@ public class AccountTransactionListFragment
     public void onStop() {
         super.onStop();
 
-        // unregister event bus listener.
         EventBus.getDefault().unregister(this);
     }
 

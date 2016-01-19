@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -46,7 +47,6 @@ import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -58,9 +58,9 @@ import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -69,8 +69,7 @@ import info.javaperformance.money.MoneyFactory;
  * The search form with search parameter input fields.
  */
 public class SearchFragment
-    extends Fragment
-    implements IInputAmountDialogListener {
+    extends Fragment {
 
     // ID REQUEST code
     public static final int REQUEST_PICK_PAYEE = 1;
@@ -107,6 +106,20 @@ public class SearchFragment
         } else {
             mSearchParameters = new SearchParameters();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
     }
 
     @Override
@@ -256,25 +269,28 @@ public class SearchFragment
         savedInstanceState.putParcelable(KEY_SEARCH_CRITERIA, mSearchParameters);
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
         View rootView = getView();
         if (rootView == null) return;
 
-        View view = rootView.findViewById(id);
+        View view = rootView.findViewById(event.requestId);
         if (view != null && view instanceof TextView) {
             TextView textView = (TextView) view;
 
             // save the value in tag?
-            String value = amount.toString();
+            String value = event.amount.toString();
             textView.setTag(value);
 
             // display amount
             FormatUtilities format = new FormatUtilities(getActivity());
-            String displayAmount = format.formatWithLocale(amount);
+            String displayAmount = format.formatWithLocale(event.amount);
             textView.setText(displayAmount);
         }
     }
+
+    // Public
 
     /**
      * Compose arguments and execute search

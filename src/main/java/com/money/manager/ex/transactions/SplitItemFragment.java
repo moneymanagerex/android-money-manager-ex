@@ -34,19 +34,19 @@ import android.widget.TextView;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class SplitItemFragment
-    extends Fragment
-    implements IInputAmountDialogListener {
+    extends Fragment {
 
     private static final String ARG_CURRENCY_ID = "CurrencyId";
     private static final String ARG_SPLIT = "arg:split";
@@ -173,6 +173,21 @@ public class SplitItemFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // register as event bus listener
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_PICK_CATEGORY:
@@ -197,18 +212,21 @@ public class SplitItemFragment
         outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitTransaction);
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        if (txtAmount.getId() == id) {
-            mSplitTransaction.setAmount(amount);
+    // Events
 
-            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, amount, getCurrencyId());
+    public void onEvent(AmountEnteredEvent event) {
+        if (txtAmount.getId() == event.requestId) {
+            mSplitTransaction.setAmount(event.amount);
+
+            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, event.amount, getCurrencyId());
 
             // assign the tag *after* the text to overwrite the amount object with string.
-            String amountTag = amount.toString();
+            String amountTag = event.amount.toString();
             txtAmount.setTag(amountTag);
         }
     }
+
+    // Public
 
     /**
      * @return the splitItemCallback

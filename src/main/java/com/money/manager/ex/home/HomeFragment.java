@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Info;
@@ -58,7 +59,6 @@ import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
@@ -98,11 +98,11 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class HomeFragment
         extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, IInputAmountDialogListener {
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
-    private static final int LOADER_BILL_DEPOSITS = 3;
+//    private static final int LOADER_BILL_DEPOSITS = 3;
     private static final int LOADER_INCOME_EXPENSES = 4;
     private static final int LOADER_INVESTMENTS = 5;
 
@@ -197,16 +197,21 @@ public class HomeFragment
         mFloatingActionButton.attachToListView(mExpandableListView);
     }
 
-    // Loader event handlers
+    @Override
+    public void onStart() {
+        super.onStart();
 
-    public void startLoaders() {
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.restartLoader(LOADER_USER_NAME, null, this);
-        loaderManager.restartLoader(LOADER_ACCOUNT_BILLS, null, this);
-        /*getLoaderManager().restartLoader(LOADER_BILL_DEPOSITS, null, this);*/
-        loaderManager.restartLoader(LOADER_INCOME_EXPENSES, null, this);
-        loaderManager.restartLoader(LOADER_INVESTMENTS, null, this);
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    // Loader event handlers
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -548,13 +553,14 @@ public class HomeFragment
         outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
         QueryAccountBills account = this.getAccountBeingBalanced();
         Money currentBalance = MoneyFactory.fromDouble(account.getTotal());
 
         // calculate the diff.
-        Money newBalance = amount;
+        Money newBalance = event.amount;
         if (newBalance.compareTo(currentBalance) == 0) return;
 
         Money difference;
@@ -583,6 +589,17 @@ public class HomeFragment
         intent.setData(params.toUri());
 
         getContext().startActivity(intent);
+    }
+
+    // Public
+
+    public void startLoaders() {
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.restartLoader(LOADER_USER_NAME, null, this);
+        loaderManager.restartLoader(LOADER_ACCOUNT_BILLS, null, this);
+        /*getLoaderManager().restartLoader(LOADER_BILL_DEPOSITS, null, this);*/
+        loaderManager.restartLoader(LOADER_INCOME_EXPENSES, null, this);
+        loaderManager.restartLoader(LOADER_INVESTMENTS, null, this);
     }
 
     public void startBalanceAccount(QueryAccountBills account) {

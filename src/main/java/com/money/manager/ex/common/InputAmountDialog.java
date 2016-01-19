@@ -105,7 +105,6 @@ public class InputAmountDialog
     private Integer mCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
-    private IInputAmountDialogListener mListener;
     private CurrencyService mCurrencyService;
     /**
      * used to restore expression from saved instance state.
@@ -117,25 +116,6 @@ public class InputAmountDialog
      */
     private boolean mStartedTyping = false;
     private FormatUtilities formatUtilities;
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//
-//        // First check the calling fragment.
-//        if (getTargetFragment() instanceof IInputAmountDialogListener) {
-//            mListener = (IInputAmountDialogListener) getTargetFragment();
-//        }
-//        // then the activity.
-//        if (mListener == null && getActivity() instanceof IInputAmountDialogListener) {
-//            mListener = (IInputAmountDialogListener) getActivity();
-//        }
-//
-//        if (mListener == null) {
-//            throw new IllegalStateException("Need IInputAmountDialogListener. Implement in Activity" +
-//                    " or assign a TargetFragment which implements the interface.");
-//        }
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -261,11 +241,6 @@ public class InputAmountDialog
                     if (!evalExpression()) return;
 
                     EventBus.getDefault().post(new AmountEnteredEvent(mCallingViewId, getAmount()));
-
-                    // todo: remove this part after the interface has been removed.
-                    if (mListener != null) {
-                        mListener.onFinishedInputAmountDialog(mCallingViewId, getAmount());
-                    }
 
                     dialog.dismiss();
                 }

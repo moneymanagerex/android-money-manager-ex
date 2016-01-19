@@ -45,7 +45,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
@@ -402,7 +401,7 @@ public class AccountEditActivity
             return;
         }
 
-        View view = findViewById(event.callerId);
+        View view = findViewById(event.requestId);
         if (view != null && view instanceof TextView) {
             FormatUtilities.formatAmountTextView(this, ((TextView) view), event.amount, mCurrencyId);
         }

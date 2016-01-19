@@ -17,58 +17,39 @@
 package com.money.manager.ex.assetallocation;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.melnykov.fab.FloatingActionButton;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.MmexSimpleCursorLoader;
-import com.money.manager.ex.database.WhereStatementGenerator;
-import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.AssetClassStockRepository;
-import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class AssetClassEditFragment
-    extends Fragment
-    implements IInputAmountDialogListener {
+    extends Fragment {
 
     public static final int INPUT_ALLOCATION = 1;
-//    public static final int LOADER_SECURITIES = 1;
     public static final int CONTEXT_MENU_DELETE = 1;
 
     public AssetClassEditFragment() {
     }
 
     public AssetClass assetClass;
-//    private MoneySimpleCursorAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,44 +88,18 @@ public class AssetClassEditFragment
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        switch (id) {
-            case INPUT_ALLOCATION:
-                assetClass.setAllocation(amount);
-                updateAllocation();
-                break;
-        }
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
     }
 
-    // loader
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
 
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        switch (id) {
-//            case LOADER_SECURITIES:
-//                return new MmexSimpleCursorLoader(getActivity(), this.assetClass.getId());
-//        }
-//
-//        return null;
-//    }
-
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        switch (loader.getId()) {
-//            case LOADER_SECURITIES:
-//                mAdapter.swapCursor(data);
-//                break;
-//        }
-//    }
-
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        switch (loader.getId()) {
-//            case LOADER_SECURITIES:
-//                mAdapter.swapCursor(null);
-//        }
-//
-//    }
+        super.onStop();
+    }
 
     // Context menu
 
@@ -181,6 +136,19 @@ public class AssetClassEditFragment
         }
         return result;
     }
+
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
+        switch (event.requestId) {
+            case INPUT_ALLOCATION:
+                assetClass.setAllocation(event.amount);
+                updateAllocation();
+                break;
+        }
+    }
+
+    // Private
 
     private void initializeNameEdit(View view) {
         final EditText edit = (EditText) view.findViewById(R.id.nameEdit);

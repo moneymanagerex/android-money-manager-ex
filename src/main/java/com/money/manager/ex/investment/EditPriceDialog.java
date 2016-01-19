@@ -33,8 +33,8 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
@@ -54,19 +54,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Edit price dialog for manual entry/modification of the latest stock price.
- * Created by Alen on 19/07/2015.
  * Ref:
  * http://developer.android.com/guide/topics/ui/dialogs.html
  * http://www.vogella.com/tutorials/AndroidDialogs/article.html
  */
 public class EditPriceDialog
-    extends DialogFragment
-    implements IInputAmountDialogListener {
+    extends DialogFragment {
 
     public static final int REQUEST_AMOUNT = 1;
     public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
@@ -97,6 +96,20 @@ public class EditPriceDialog
 //            inputAmountDialog.show();
 //        }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -224,10 +237,11 @@ public class EditPriceDialog
         savedInstanceState.putString(KEY_DATE, mPriceDate);
     }
 
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
         // set the amount on the dialog.
-        showCurrentPrice(amount, mAccountId);
+        showCurrentPrice(event.amount, mAccountId);
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {

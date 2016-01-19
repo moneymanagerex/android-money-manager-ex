@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -103,8 +102,9 @@ public class SplitCategoriesActivityTests {
         // click to open input dialog here
 
         // receive amount back
-        ((IInputAmountDialogListener) fragment).onFinishedInputAmountDialog(
-                view.getId(), enteredAmount);
+        // todo: replace this with EventBus
+//        ((IInputAmountDialogListener) fragment).onFinishedInputAmountDialog(
+//                view.getId(), enteredAmount);
 
         // view must be text view.
         assertThat(view.getClass()).isEqualTo(RobotoTextView.class);

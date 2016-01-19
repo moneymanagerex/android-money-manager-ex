@@ -28,10 +28,9 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -41,17 +40,16 @@ import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class EditInvestmentTransactionActivity
-        extends BaseFragmentActivity
-        implements IInputAmountDialogListener {
+    extends BaseFragmentActivity {
 
     public static final String EXTRA_ACCOUNT_ID = "EditInvestmentTransactionActivity:AccountId";
     public static final String DATEPICKER_TAG = "datepicker";
@@ -78,6 +76,20 @@ public class EditInvestmentTransactionActivity
         mStock = Stock.create();
 
         initializeForm();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
     }
 
     @Override
@@ -188,36 +200,32 @@ public class EditInvestmentTransactionActivity
 
     /**
      * Raised after the amount has been entered in the number input dialog.
-     *
-     * @param id     Id to identify the caller.
-     * @param amount Amount entered
      */
-    @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        switch (id) {
+    public void onEvent(AmountEnteredEvent event) {
+        switch (event.requestId) {
             case ID_NUM_SHARES:
-                mStock.setNumberOfShares(amount.toDouble());
+                mStock.setNumberOfShares(event.amount.toDouble());
                 showNumberOfShares();
                 showValue();
                 break;
             case ID_PURCHASE_PRICE:
-                mStock.setPurchasePrice(amount);
+                mStock.setPurchasePrice(event.amount);
                 showPurchasePrice();
 //                CurrencyService currencyService = new CurrencyService(this);
 
                 if (mStock.getCurrentPrice().isZero()) {
-                    mStock.setCurrentPrice(amount);
+                    mStock.setCurrentPrice(event.amount);
                     showCurrentPrice();
                     // recalculate value
                     showValue();
                 }
                 break;
             case ID_COMMISSION:
-                mStock.setCommission(amount);
+                mStock.setCommission(event.amount);
                 showCommission();
                 break;
             case ID_CURRENT_PRICE:
-                mStock.setCurrentPrice(amount);
+                mStock.setCurrentPrice(event.amount);
                 showCurrentPrice();
                 showValue();
                 break;
