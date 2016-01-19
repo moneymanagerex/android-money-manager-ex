@@ -16,6 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.01.19.759">
+        <changelogtext>Ordering stock symbols by name in asset allocation.</changelogtext>
+        <changelogtext>Corrected initial account balance entry.</changelogtext>
+        <changelogtext>Corrected Cash current asset allocation calculation.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.01.17.758">
         <changelogtext>Adjusted the row height for account groups on Home screen.</changelogtext>
         <changelogtext>Bug fixes</changelogtext>
