@@ -33,7 +33,6 @@ import com.money.manager.ex.settings.AppSettings;
 public abstract class BaseFragmentActivity
         extends AppCompatActivity {
 
-//    private boolean mDialogMode = false;
     private boolean mDisplayHomeAsUpEnabled = false;
     private Toolbar mToolbar;
 

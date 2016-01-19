@@ -46,10 +46,12 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 
 /**
@@ -67,9 +69,8 @@ public class WatchlistItemsFragment
      *
      * @return new instance AllDataListFragment
      */
-    public static WatchlistItemsFragment newInstance(IWatchlistItemsFragmentEventHandler eventHandler) {
+    public static WatchlistItemsFragment newInstance() {
         WatchlistItemsFragment fragment = new WatchlistItemsFragment();
-        fragment.mEventHandler = eventHandler;
         return fragment;
     }
 
@@ -77,7 +78,6 @@ public class WatchlistItemsFragment
 
     public Integer accountId;
 
-    private IWatchlistItemsFragmentEventHandler mEventHandler;
     private boolean mAutoStarLoader = true;
     private View mListHeader = null;
     private Context mContext;
@@ -209,7 +209,7 @@ public class WatchlistItemsFragment
         switch (itemId) {
             case 0:
                 // Update price
-                mEventHandler.onPriceUpdateRequested(symbol);
+                EventBus.getDefault().post(new PriceUpdateRequestEvent(symbol));
                 result = true;
                 break;
             case 1:

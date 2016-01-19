@@ -44,9 +44,9 @@ import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.investment.IPriceUpdaterFeedback;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MyDatabaseUtils;
@@ -56,14 +56,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 
 /**
  *  Currency list.
  */
 public class CurrencyListFragment
-        extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, IPriceUpdaterFeedback {
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ID_LOADER_CURRENCY = 0;
 
@@ -83,6 +84,20 @@ public class CurrencyListFragment
 
         // Filter currencies only if in the standalone Currencies list. Do not filter in pickers.
         mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -386,8 +401,11 @@ public class CurrencyListFragment
         return result;
     }
 
-    @Override
-    public void onPriceDownloaded(String symbol, Money price, Date date) {
+    public void onEvent(PriceDownloadedEvent event) {
+        onPriceDownloaded(event.symbol, event.price, event.date);
+    }
+
+    private void onPriceDownloaded(String symbol, Money price, Date date) {
         // extract destination currency
         String baseCurrencyCode = getCurrencyUtils().getBaseCurrencyCode();
         String destinationCurrency = symbol.replace(baseCurrencyCode, "");
@@ -593,8 +611,9 @@ public class CurrencyListFragment
             currencySymbols.add(symbol + baseCurrencySymbol + "=X");
         }
 
-        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity());
         updater.downloadPrices(currencySymbols);
+        // result received via event
     }
 
     private boolean updateCurrencyFromYahoo(int toCurrencyId) {

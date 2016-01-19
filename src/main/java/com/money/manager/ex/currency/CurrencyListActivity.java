@@ -30,7 +30,7 @@ import com.money.manager.ex.utils.ActivityUtils;
  * List of currencies.
  */
 public class CurrencyListActivity
-        extends BaseFragmentActivity {
+    extends BaseFragmentActivity {
 
     public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";
@@ -39,6 +39,7 @@ public class CurrencyListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.base_toolbar_activity);
 
         // change home icon to 'back'.

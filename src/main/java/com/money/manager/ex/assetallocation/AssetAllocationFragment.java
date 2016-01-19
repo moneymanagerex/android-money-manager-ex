@@ -513,7 +513,7 @@ public class AssetAllocationFragment
     private AssetClass retrieveData() {
         AssetClass result = null;
 
-        // todo: switch to using event bus instead of interface.
+        // todo: switch to using event bus instead of interface?
 
         DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
         if (parent != null) {

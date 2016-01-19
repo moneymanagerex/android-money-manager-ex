@@ -49,6 +49,8 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -60,6 +62,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 
 /**
@@ -67,8 +70,7 @@ import info.javaperformance.money.Money;
  * Not sure why it was done in two fragments. Probably because the list can not have additional items?
  */
 public class WatchlistFragment
-    extends Fragment
-    implements IPriceUpdaterFeedback, IWatchlistItemsFragmentEventHandler {
+    extends Fragment {
 
     private static final String KEY_ACCOUNT_ID = "WatchlistFragment:AccountId";
     private static final String KEY_ACCOUNT = "WatchlistFragment:Account";
@@ -114,6 +116,20 @@ public class WatchlistFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if ((savedInstanceState != null)) {
             mAccount = savedInstanceState.getParcelable(KEY_ACCOUNT);
@@ -131,7 +147,7 @@ public class WatchlistFragment
         // manage fragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        mDataFragment = WatchlistItemsFragment.newInstance(this);
+        mDataFragment = WatchlistItemsFragment.newInstance();
         // set arguments and settings of fragment
         Bundle arguments = new Bundle();
         arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
@@ -243,14 +259,23 @@ public class WatchlistFragment
         outState.putParcelable(KEY_ACCOUNT, mAccount);
     }
 
+    // Events
+
+    public void onEvent(PriceDownloadedEvent event) {
+        onPriceDownloaded(event.symbol, event.price, event.date);
+    }
+
+    public void onEvent(PriceUpdateRequestEvent event) {
+        onPriceUpdateRequested(event.symbol);
+    }
+
     /**
      * Called from asynchronous task when a single price is downloaded.
      * @param symbol Stock symbol
      * @param price Stock price
      * @param date Date of the price
      */
-    @Override
-    public void onPriceDownloaded(String symbol, Money price, Date date) {
+    private void onPriceDownloaded(String symbol, Money price, Date date) {
         // prices updated.
 
         if (StringUtils.isEmpty(symbol)) return;
@@ -273,8 +298,7 @@ public class WatchlistFragment
      * Price update requested from the securities list context menu.
      * @param symbol Stock symbol for which to fetch the price.
      */
-    @Override
-    public void onPriceUpdateRequested(String symbol) {
+    private void onPriceUpdateRequested(String symbol) {
         // reset counter & max.
         mToUpdateTotal = 1;
         mUpdateCounter = 0;
@@ -284,8 +308,9 @@ public class WatchlistFragment
         List<String> symbols = new ArrayList<>();
         symbols.add(symbol);
 
-        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity(), this);
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity());
         updater.downloadPrices(symbols);
+        // result received via event.
     }
 
     /**
@@ -390,8 +415,9 @@ public class WatchlistFragment
 
                         // update security prices
                         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(getContext(), WatchlistFragment.this);
+                                .getUpdaterInstance(getContext());
                         updater.downloadPrices(Arrays.asList(symbols));
+                        // results received via event
 
                         dialog.dismiss();
                     }

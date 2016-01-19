@@ -24,14 +24,14 @@ import android.content.Context;
  * Set here when changing the updater.
  */
 public class SecurityPriceUpdaterFactory {
-    public static ISecurityPriceUpdater getUpdaterInstance(Context context, IPriceUpdaterFeedback feedback) {
+    public static ISecurityPriceUpdater getUpdaterInstance(Context context) {
         ISecurityPriceUpdater updater;
 
 //        updater = new YahooCsvSecurityPriceUpdater(context, feedback);
 
 //        updater = new YqlSecurityPriceUpdater(context, feedback);
 
-        updater = new YqlSecurityPriceUpdaterRetrofit(context, feedback);
+        updater = new YqlSecurityPriceUpdaterRetrofit(context);
 
         return updater;
     }

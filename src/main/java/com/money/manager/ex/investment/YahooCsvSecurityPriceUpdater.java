@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.opencsv.CSVParser;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -44,9 +46,8 @@ import info.javaperformance.money.MoneyFactory;
 public class YahooCsvSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YahooCsvSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
+    public YahooCsvSecurityPriceUpdater(Context context) {
         mContext = context;
-        mFeedback = feedback;
     }
 
     private Context mContext;
@@ -56,7 +57,6 @@ public class YahooCsvSecurityPriceUpdater
     private String mUrlSuffix = "&f=sl1d1c4&e=.csv";
     // "&f=l1&e=.csv";
     // c4 = currency
-    private IPriceUpdaterFeedback mFeedback;
 
     /**
      * Update prices for all the symbols in the list.
@@ -146,6 +146,6 @@ public class YahooCsvSecurityPriceUpdater
         }
 
         // Notify the caller by invoking the interface method.
-        mFeedback.onPriceDownloaded(symbol, price, date);
+        EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));
     }
 }

@@ -26,6 +26,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.money.manager.ex.R;
@@ -84,7 +86,6 @@ public class AssetAllocationActivity
     public void onStart() {
         super.onStart();
 
-        // register as event bus listener
         EventBus.getDefault().register(this);
     }
 
@@ -100,7 +101,6 @@ public class AssetAllocationActivity
     public void onStop() {
         super.onStop();
 
-        // unregister event bus listener.
         EventBus.getDefault().unregister(this);
     }
 
@@ -119,6 +119,20 @@ public class AssetAllocationActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    // Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater()
+            .inflate(R.menu.menu_transaction_status_selector, menu);
+//        //initTransactionStatusMenu(menu);
+
+        return true;
     }
 
     // Asset Class display fragment

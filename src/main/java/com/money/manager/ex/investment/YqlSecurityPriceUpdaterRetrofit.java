@@ -26,6 +26,7 @@ import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
 
 import java.text.ParseException;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import retrofit.Callback;
@@ -44,21 +46,17 @@ import retrofit.Retrofit;
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
  */
 public class YqlSecurityPriceUpdaterRetrofit
-        implements ISecurityPriceUpdater {
+    implements ISecurityPriceUpdater {
 
     /**
      *
      * @param context Executing context
-     * @param feedback The object that will receive the notification after the prices are
-     *                 loaded asynchronously.
      */
-    public YqlSecurityPriceUpdaterRetrofit(Context context, IPriceUpdaterFeedback feedback) {
+    public YqlSecurityPriceUpdaterRetrofit(Context context) {
         mContext = context;
-        mFeedback = feedback;
     }
 
     private Context mContext;
-    private IPriceUpdaterFeedback mFeedback;
     private ProgressDialog mDialog = null;
     private IYqlService yqlService;
 
@@ -119,10 +117,9 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Notify the listener via callback.
         for (SecurityPriceModel model : pricesList) {
-//            mDialog.incrementProgressBy(1);
 
             // Notify the caller by invoking the interface method.
-            mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
+            EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
         }
 
         closeProgressDialog();

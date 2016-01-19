@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +36,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -50,15 +52,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class YqlSecurityPriceUpdater
         implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
-    public YqlSecurityPriceUpdater(Context context, IPriceUpdaterFeedback feedback) {
+    public YqlSecurityPriceUpdater(Context context) {
         mContext = context;
-        mFeedback = feedback;
     }
 
     public String response;
 
     private Context mContext;
-    private IPriceUpdaterFeedback mFeedback;
     //
     private final String mBaseUri = "https://query.yahooapis.com/v1/public/yql";
     // https://query.yahooapis.com/v1/public/yql
@@ -125,8 +125,8 @@ public class YqlSecurityPriceUpdater
         }
 
         for (SecurityPriceModel model : pricesList) {
-            // Notify the caller by invoking the interface method.
-            mFeedback.onPriceDownloaded(model.symbol, model.price, model.date);
+            // Notify the interested parties via event bus.
+            EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
         }
     }
 
