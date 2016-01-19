@@ -26,6 +26,8 @@ import com.money.manager.ex.assetallocation.ItemType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -189,6 +191,15 @@ public class AssetClass
         if (this.stocks == null) {
             this.stocks = new ArrayList<>();
         }
+
+        // sort by stock symbol/name
+        Collections.sort(this.stocks, new Comparator<Stock>() {
+            @Override
+            public int compare(Stock lhs, Stock rhs) {
+                return lhs.getSymbol().compareTo(rhs.getSymbol());
+            }
+        });
+
         return this.stocks;
     }
 

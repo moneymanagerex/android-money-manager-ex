@@ -51,7 +51,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 import de.greenrobot.event.EventBus;
 
 /**
- * A placeholder fragment containing a simple view.
+ * A fragment that displays a single Asset Class for editing.
  */
 public class AssetAllocationFragment
     extends BaseListFragment {
@@ -61,8 +61,7 @@ public class AssetAllocationFragment
     public static final String PARAM_DECIMAL_PLACES = "decimalPlaces";
 
     /**
-     * Creates a new fragment that display the asset class. Shows the list of child elements
-     * and sum from the sent asset class.
+     * Creates a new fragment instance. Sets the appropriate required attributes.
      * @param assetClassId Id of the Asset Class to show.
      * @return Fragment
      */
@@ -456,14 +455,6 @@ public class AssetAllocationFragment
 //        listView.addFooterView(view);
         listView.addFooterView(mFooter, null, false);
     }
-
-//    private void raiseAssetClassSelected(int id) {
-//        // show a fragment for selected asset class
-//        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
-//        if (parent != null) {
-//            parent.assetClassSelected(id);
-//        }
-//    }
 
     private void fillChildren(MatrixCursor cursor, AssetClass allocation) {
         int precision = 2;

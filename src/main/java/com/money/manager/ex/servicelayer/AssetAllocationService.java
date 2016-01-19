@@ -35,6 +35,8 @@ import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -392,14 +394,6 @@ public class AssetAllocationService
             assetClass.setStockLinks(links);
 
             if (assetClass.getStockLinks().size() == 0) return;
-
-//            String[] symbols = Queryable.from(assetClass.getStockLinks())
-//                .map(new Converter<AssetClassStock, String>() {
-//                    @Override
-//                    public String convert(AssetClassStock element) {
-//                        return element.getStockSymbol();
-//                    }
-//                }).toArray();
 
             int size = assetClass.getStockLinks().size();
             String[] symbols = new String[size];
