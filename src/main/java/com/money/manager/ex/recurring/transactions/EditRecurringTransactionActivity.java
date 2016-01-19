@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -49,12 +50,12 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.IInputAmountDialogListener;
 import com.money.manager.ex.transactions.YesNoDialogListener;
 import com.money.manager.ex.viewmodels.RecurringTransaction;
 
 import java.text.SimpleDateFormat;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -63,7 +64,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class EditRecurringTransactionActivity
     extends BaseFragmentActivity
-    implements IInputAmountDialogListener, YesNoDialogListener {
+    implements YesNoDialogListener {
 
     private static final String LOGCAT = EditRecurringTransactionActivity.class.getSimpleName();
 
@@ -86,7 +87,7 @@ public class EditRecurringTransactionActivity
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
     public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
     public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
-//    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
+    //    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
@@ -139,7 +140,7 @@ public class EditRecurringTransactionActivity
             mIntentAction = getIntent().getAction();
             // set title
             getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
-                    ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
+                ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
         }
 
         // Controls
@@ -223,6 +224,20 @@ public class EditRecurringTransactionActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCommonFunctions.onActivityResult(requestCode, resultCode, data);
     }
@@ -288,11 +303,6 @@ public class EditRecurringTransactionActivity
     }
 
     @Override
-    public void onFinishedInputAmountDialog(int id, Money amount) {
-        mCommonFunctions.onFinishedInputAmountDialog(id, amount);
-    }
-
-    @Override
     public boolean onActionCancelClick() {
         return mCommonFunctions.onActionCancelClick();
     }
@@ -312,6 +322,29 @@ public class EditRecurringTransactionActivity
 
         return super.onActionDoneClick();
     }
+
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
+        mCommonFunctions.onFinishedInputAmountDialog(event.requestId, event.amount);
+    }
+
+    // Public
+
+    /**
+     * refresh the UI control times repeated
+     */
+    public void refreshTimesRepeated() {
+        txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
+
+        txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
+        txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
+
+        edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
+        edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
+    }
+
+    // Private
 
     /**
      * this method allows you to search the transaction data
@@ -358,19 +391,6 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.displayCategoryName();
 
         return true;
-    }
-
-    /**
-     * refresh the UI control times repeated
-     */
-    public void refreshTimesRepeated() {
-        txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
-
-        txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
-
-        edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
     }
 
     /**
