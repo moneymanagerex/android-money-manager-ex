@@ -225,10 +225,8 @@ public class AccountTransactionListFragment
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
 
         // Transaction Type picker
-        if (BuildConfig.DEBUG) {
-            inflater.inflate(R.menu.menu_transaction_status_selector, menu);
-            initTransactionStatusMenu(menu);
-        }
+        inflater.inflate(R.menu.menu_transaction_status_selector, menu);
+        initTransactionStatusMenu(menu);
 
         // call create option menu of fragment
         mAllDataListFragment.onCreateOptionsMenu(menu, inflater);
