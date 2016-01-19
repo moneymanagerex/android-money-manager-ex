@@ -53,6 +53,7 @@ import com.shamanland.fonticon.FontIconView;
 
 import java.util.Arrays;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -318,6 +319,20 @@ public class AccountEditActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_PICK_CURRENCY:
@@ -344,9 +359,7 @@ public class AccountEditActivity
         validateData(false);
 
         // Save the state interface
-//        outState.putInt(KEY_ACCOUNT_ID, mAccountId);
         outState.putInt(KEY_ACCOUNT_ID, mAccount.getId());
-//        outState.putString(KEY_ACCOUNT_NAME, mAccountName);
         outState.putString(KEY_ACCOUNT_NAME, mAccount.getName());
 
         outState.putString(KEY_ACCOUNT_TYPE, mAccountType);
