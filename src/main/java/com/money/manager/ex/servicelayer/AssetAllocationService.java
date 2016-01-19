@@ -277,9 +277,49 @@ public class AssetAllocationService
 
     private Money calculateCurrentAllocation(Money currentValue, Money portfolioValue) {
         Money currentAllocation = currentValue
-                .multiply(100)
-                .divide(portfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
+            .multiply(100)
+            .divide(portfolioValue.toDouble(), Constants.DEFAULT_PRECISION);
         return currentAllocation;
+    }
+
+    /**
+     * The magic happens here. Calculate all dependent variables.
+     * @param portfolioValue The total value of the portfolio, in base currency.
+     */
+    private void calculateStatsFor(AssetClass item, Money portfolioValue) {
+        Money zero = MoneyFactory.fromDouble(0);
+        if (portfolioValue.toDouble() == 0) {
+            item.setValue(zero);
+            item.setCurrentAllocation(zero);
+            item.setCurrentValue(zero);
+            item.setDifference(zero);
+            return;
+        }
+
+        // Set Value
+        Money allocation = item.getAllocation();
+        // setValue = allocation * portfolioValue / 100;
+        Money setValue = calculateSetValue(portfolioValue, allocation);
+        item.setValue(setValue);
+
+        // Current value
+        Money currentValue = sumStockValues(item.getStocks());
+        item.setCurrentValue(currentValue);
+
+        // Current allocation.
+        Money currentAllocation = calculateCurrentAllocation(currentValue, portfolioValue);
+        item.setCurrentAllocation(currentAllocation);
+
+        // difference
+        Money difference = currentValue.subtract(setValue);
+        item.setDifference(difference);
+    }
+
+    private Money calculateSetValue(Money portfolioValue, Money allocation) {
+        Money value = portfolioValue
+            .multiply(allocation.toDouble())
+            .divide(100, Constants.DEFAULT_PRECISION);
+        return value;
     }
 
     private AssetClass createCashAssetClass() {
@@ -287,8 +327,6 @@ public class AssetAllocationService
 
         // Create a new asset class for Cash.
         AssetClass cash = AssetClass.create(cashLocalizedName);
-
-        cash.setAllocation(MoneyFactory.fromDouble(0));
 
         AssetClassRepository repo = new AssetClassRepository(getContext());
         repo.insert(cash);
@@ -490,7 +528,7 @@ public class AssetAllocationService
                 setValue = calculateSetValue(portfolioValue, allocation.getAllocation());
                 allocation.setValue(setValue);
                 // Current Allocation
-                currentAllocation = calculateCurrentAllocation(allocation.getValue(), portfolioValue);
+                currentAllocation = calculateCurrentAllocation(allocation.getCurrentValue(), portfolioValue);
                 allocation.setCurrentAllocation(currentAllocation);
                 // Current Value. Calculated when Cash created/loaded.
                 // Difference
@@ -554,46 +592,6 @@ public class AssetAllocationService
      difference               sum        currentValue - setValue
 
      */
-
-    /**
-     * The magic happens here. Calculate all dependent variables.
-     * @param portfolioValue The total value of the portfolio, in base currency.
-     */
-    private void calculateStatsFor(AssetClass item, Money portfolioValue) {
-        Money zero = MoneyFactory.fromDouble(0);
-        if (portfolioValue.toDouble() == 0) {
-            item.setValue(zero);
-            item.setCurrentAllocation(zero);
-            item.setCurrentValue(zero);
-            item.setDifference(zero);
-            return;
-        }
-
-        // Set Value
-        Money allocation = item.getAllocation();
-        // setValue = allocation * portfolioValue / 100;
-        Money setValue = calculateSetValue(portfolioValue, allocation);
-        item.setValue(setValue);
-
-        // Current value
-        Money currentValue = sumStockValues(item.getStocks());
-        item.setCurrentValue(currentValue);
-
-        // Current allocation.
-        Money currentAllocation = calculateCurrentAllocation(currentValue, portfolioValue);
-        item.setCurrentAllocation(currentAllocation);
-
-        // difference
-        Money difference = currentValue.subtract(setValue);
-        item.setDifference(difference);
-    }
-
-    private Money calculateSetValue(Money portfolioValue, Money allocation) {
-        Money value = portfolioValue
-            .multiply(allocation.toDouble())
-            .divide(100, Constants.DEFAULT_PRECISION);
-        return value;
-    }
 
     private Money sumStockValues(List<Stock> stocks) {
         Money sum = MoneyFactory.fromDouble(0);
