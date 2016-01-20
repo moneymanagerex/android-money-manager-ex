@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Parcel;
@@ -101,7 +102,7 @@ public class AssetClass
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
 
-        // todo: now just save calculated fields
+        // now just save calculated fields
 
         dest.writeString(getValue().toString());
         dest.writeString(getCurrentAllocation().toString());
@@ -111,9 +112,15 @@ public class AssetClass
     }
 
     public void readFromParcel(Parcel source) {
-        setValue(MoneyFactory.fromString(source.readString()));
-        setCurrentAllocation(MoneyFactory.fromDouble(source.readDouble()));
-        setCurrentValue(MoneyFactory.fromDouble(source.readDouble()));
+        this.contentValues = ContentValues.CREATOR.createFromParcel(source);
+
+        String value = source.readString();
+        setValue(MoneyFactory.fromString(value));
+
+        value = source.readString();
+        setCurrentAllocation(MoneyFactory.fromString(value));
+
+        setCurrentValue(MoneyFactory.fromString(source.readString()));
         setDifference(MoneyFactory.fromString(source.readString()));
         setType(ItemType.valueOf(source.readString()));
     }

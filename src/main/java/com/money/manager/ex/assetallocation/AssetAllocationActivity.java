@@ -152,8 +152,8 @@ public class AssetAllocationActivity
                 Intent intent = new Intent(this, AssetAllocationOverviewActivity.class);
 //                intent.putExtra(AssetAllocationOverviewActivity.INTENT_ASSET_ALLOCATION,
 //                    (Parcelable) this.assetAllocation);
-                intent.putExtra(AssetAllocationOverviewActivity.INTENT_ASSET_ALLOCATION,
-                    (Serializable) this.assetAllocation);
+//                intent.putExtra(AssetAllocationOverviewActivity.INTENT_ASSET_ALLOCATION,
+//                    (Serializable) this.assetAllocation);
                 startActivity(intent);
 
                 handled = true;
