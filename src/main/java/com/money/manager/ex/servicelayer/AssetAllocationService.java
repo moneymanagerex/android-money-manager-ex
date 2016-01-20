@@ -110,7 +110,7 @@ public class AssetAllocationService
 
         // Step 1: Load all elements, ordered by ParentId.
         Cursor c = loadData();
-        return loadAssetAllocation(c);
+        return loadAssetAllocationFrom(c);
     }
 
     /**
@@ -118,7 +118,7 @@ public class AssetAllocationService
      * @param c Cursor with asset classes, from which to load the Asset Allocation.
      * @return Full Asset Allocation with all the calculated fields.
      */
-    public AssetClass loadAssetAllocation(Cursor c) {
+    private AssetClass loadAssetAllocationFrom(Cursor c) {
         if (c == null) return null;
 
         // Main asset allocation object.

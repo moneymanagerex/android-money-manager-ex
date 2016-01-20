@@ -86,24 +86,26 @@ public class AssetAllocationOverviewActivity
     }
 
     private String getList(AssetClass allocation) {
-        int defaultPrecision = 2;
+        String format = "%,.2f";
         String html = "";
 
-        html += "<ul>";
-        html += "<li>" + allocation.getName() +
-            ", " +
-            allocation.getAllocation().truncate(defaultPrecision).toString() + "/";
+        html += "<ul style='padding-left: 20px;'>";
+        // Name
+        html += "<li>" + allocation.getName() + ", ";
+        // Allocation
+        html +=
+            String.format(format, allocation.getAllocation().toDouble()) + "/";
             if (allocation.getDifference().toDouble() > 0) {
                 html += "<span style='color: green; font-weight: bold;'>";
             } else {
                 html += "<span style='color: darkred; font-weight: bold;'>";
             }
         html +=
-            allocation.getCurrentAllocation().truncate(defaultPrecision).toString() +
+            String.format(format, allocation.getCurrentAllocation().toDouble()) +
             "</span>" +
             ", " +
-            allocation.getValue().truncate(defaultPrecision).toString() + "/" +
-            allocation.getCurrentValue().truncate(defaultPrecision).toString() +
+                String.format(format, allocation.getValue().toDouble()) + "/" +
+            String.format(format, allocation.getCurrentValue().toDouble()) +
             ", ";
         // paint the difference
         if (allocation.getDifference().toDouble() > 0) {
@@ -112,7 +114,7 @@ public class AssetAllocationOverviewActivity
             html += "<span style='color: darkred;'>";
         }
         html +=
-            allocation.getDifference().truncate(defaultPrecision).toString();
+            String.format(format, allocation.getDifference().toDouble());
         html += "</span>";
         // child elements
         for(AssetClass child : allocation.getChildren()) {
