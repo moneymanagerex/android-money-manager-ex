@@ -304,13 +304,12 @@ public class WatchlistFragment
         mUpdateCounter = 0;
 
         // http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
-        //List<String> symbols = Collections.singletonList(symbol);
         List<String> symbols = new ArrayList<>();
         symbols.add(symbol);
 
         ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getActivity());
         updater.downloadPrices(symbols);
-        // result received via event.
+        // result received via onEvent.
     }
 
     /**

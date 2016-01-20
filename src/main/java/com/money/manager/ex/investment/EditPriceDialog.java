@@ -67,7 +67,6 @@ import info.javaperformance.money.MoneyFactory;
 public class EditPriceDialog
     extends DialogFragment {
 
-    public static final int REQUEST_AMOUNT = 1;
     public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
 
     private static final String KEY_ACCOUNT = "EditPriceDialog:Account";
@@ -88,13 +87,6 @@ public class EditPriceDialog
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-//        InputAmountDialog inputAmountDialog = (InputAmountDialog) getFragmentManager()
-//                .findFragmentByTag(TAG_AMOUNT_INPUT);
-//        if (inputAmountDialog != null) {
-////            Log.d("test", "input amount dialog found");
-//            inputAmountDialog.show();
-//        }
 
     }
 
@@ -186,9 +178,7 @@ public class EditPriceDialog
             public void onClick(View v) {
                 Money amount = MoneyFactory.fromString(v.getTag().toString());
 
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, currencyId);
-                dialog.setTargetFragment(EditPriceDialog.this, REQUEST_AMOUNT);
-                dialog.roundToCurrencyDecimals = false;
+                InputAmountDialog dialog = InputAmountDialog.getInstance("ignore", amount, currencyId, false);
                 dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
                 // getChildFragmentManager() ?
             }
@@ -261,15 +251,14 @@ public class EditPriceDialog
         EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null, null);
         commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
 
-        AccountRepository accountRepository = new AccountRepository(mContext);
-        Account account = accountRepository.load(accountId);
-        int currencyId = account.getCurrencyId();
+        //AccountRepository accountRepository = new AccountRepository(mContext);
+        //Account account = accountRepository.load(accountId);
+        //int currencyId = account.getCurrencyId();
+        //CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
+        //Currency currency = currencyService.getCurrency(currencyId);
+        //String currencySymbol = currency.getSfxSymbol();
 
-        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
-        Currency currency = currencyService.getCurrency(currencyId);
-        String currencySymbol = currency.getSfxSymbol();
-
-        mAmountTextView.setText(currencySymbol + " " + currentPrice.toString());
+        mAmountTextView.setText(currentPrice.toString());
         mAmountTextView.setTag(currentPrice.toString());
 
         this.mCurrentPrice = currentPrice;
