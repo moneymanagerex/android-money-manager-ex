@@ -275,7 +275,8 @@ public class SearchFragment
         View rootView = getView();
         if (rootView == null) return;
 
-        View view = rootView.findViewById(event.requestId);
+        int id = Integer.parseInt(event.requestId);
+        View view = rootView.findViewById(id);
         if (view != null && view instanceof TextView) {
             TextView textView = (TextView) view;
 

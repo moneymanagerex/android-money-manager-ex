@@ -209,7 +209,7 @@ public class AccountEditActivity
             @Override
             public void onClick(View v) {
                 Money amount = MoneyFactory.fromString(v.getTag().toString());
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount, mCurrencyId);
+                InputAmountDialog dialog = InputAmountDialog.getInstance(null, amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         });
@@ -345,7 +345,7 @@ public class AccountEditActivity
 //                    BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
                     Money initialBalance = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
                     if (initialBalance != null) {
-                        onEvent(new AmountEnteredEvent(R.id.editTextInitialBalance, initialBalance));
+                        onEvent(new AmountEnteredEvent("ignored", initialBalance));
                     }
                 }
         }
@@ -401,10 +401,8 @@ public class AccountEditActivity
             return;
         }
 
-        View view = findViewById(event.requestId);
-        if (view != null && view instanceof TextView) {
-            FormatUtilities.formatAmountTextView(this, ((TextView) view), event.amount, mCurrencyId);
-        }
+        TextView initialBalanceTextView = (TextView) findViewById(R.id.editTextInitialBalance);
+        FormatUtilities.formatAmountTextView(this, initialBalanceTextView, event.amount, mCurrencyId);
     }
 
     /**

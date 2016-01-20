@@ -140,7 +140,8 @@ public class AssetClassEditFragment
     // Events
 
     public void onEvent(AmountEnteredEvent event) {
-        switch (event.requestId) {
+        int id = Integer.parseInt(event.requestId);
+        switch (id) {
             case INPUT_ALLOCATION:
                 assetClass.setAllocation(event.amount);
                 updateAllocation();

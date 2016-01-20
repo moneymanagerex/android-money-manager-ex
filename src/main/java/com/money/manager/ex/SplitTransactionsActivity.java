@@ -244,10 +244,7 @@ public class SplitTransactionsActivity
             fragment = SplitItemFragment.newInstance(entity, this.currencyId);
             fragment.setOnSplitItemCallback(this);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            // animation
-            // transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
             transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
             transaction.commit();
         }

@@ -202,7 +202,9 @@ public class EditInvestmentTransactionActivity
      * Raised after the amount has been entered in the number input dialog.
      */
     public void onEvent(AmountEnteredEvent event) {
-        switch (event.requestId) {
+        int id = Integer.parseInt(event.requestId);
+
+        switch (id) {
             case ID_NUM_SHARES:
                 mStock.setNumberOfShares(event.amount.toDouble());
                 showNumberOfShares();

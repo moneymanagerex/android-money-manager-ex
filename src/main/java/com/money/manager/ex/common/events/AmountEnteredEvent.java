@@ -25,7 +25,7 @@ import info.javaperformance.money.Money;
  */
 public class AmountEnteredEvent {
 
-    public AmountEnteredEvent(int requestId, Money amount) {
+    public AmountEnteredEvent(String requestId, Money amount) {
         this.amount = amount;
         this.requestId = requestId;
     }
@@ -36,7 +36,7 @@ public class AmountEnteredEvent {
     public Money amount;
 
     /**
-     * The id of the initiating view (a text box that should receive a value).
+     * The id of the request, used to identify the caller in onEvent.
      */
-    public int requestId;
+    public String requestId;
 }

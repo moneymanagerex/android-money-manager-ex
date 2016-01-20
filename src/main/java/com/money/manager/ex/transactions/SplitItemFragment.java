@@ -120,9 +120,10 @@ public class SplitItemFragment
                         amount = MoneyFactory.fromString(tag.toString());
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
+                    InputAmountDialog dialog = InputAmountDialog.getInstance(
+                        SplitItemFragment.this.getTag(),
                         amount, SplitItemFragment.this.getCurrencyId());
-                    dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);
+//                    dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
@@ -215,7 +216,7 @@ public class SplitItemFragment
     // Events
 
     public void onEvent(AmountEnteredEvent event) {
-        if (txtAmount.getId() == event.requestId) {
+        if (this.getTag().toString().equals(event.requestId)) {
             mSplitTransaction.setAmount(event.amount);
 
             FormatUtilities.formatAmountTextView(getActivity(), txtAmount, event.amount, getCurrencyId());

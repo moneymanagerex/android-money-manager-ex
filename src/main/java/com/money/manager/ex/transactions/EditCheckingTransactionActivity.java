@@ -216,7 +216,8 @@ public class EditCheckingTransactionActivity
     // Events
 
     public void onEvent(AmountEnteredEvent event) {
-        mCommonFunctions.onFinishedInputAmountDialog(event.requestId, event.amount);
+        int id = Integer.parseInt(event.requestId);
+        mCommonFunctions.onFinishedInputAmountDialog(id, event.amount);
     }
 
     // Private
