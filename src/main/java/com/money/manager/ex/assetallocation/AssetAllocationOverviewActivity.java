@@ -33,7 +33,8 @@ public class AssetAllocationOverviewActivity
         setContentView(R.layout.activity_asset_allocation_overview);
 
         // get asset allocation
-        Parcelable x = getIntent().getParcelableExtra(INTENT_ASSET_ALLOCATION);
+        //Parcelable x = getIntent().getParcelableExtra(INTENT_ASSET_ALLOCATION);
+        Serializable x = getIntent().getSerializableExtra(INTENT_ASSET_ALLOCATION);
         AssetClass test = (AssetClass) x;
 
         // create a HTML display.
@@ -43,7 +44,7 @@ public class AssetAllocationOverviewActivity
 
     private String createHtml(AssetClass allocation) {
         //DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        String html = "<html><body style='background: gray'>" +
+        String html = "<html><body style='background: lightgray'>" +
             "<table>" +
                 "<thead>" +
                     "<tr>" +

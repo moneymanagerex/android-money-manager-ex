@@ -103,19 +103,19 @@ public class AssetClass
 
         // todo: now just save calculated fields
 
-        dest.writeString(getName());
-        dest.writeDouble(getAllocation().toDouble());
-        dest.writeDouble(getValue().toDouble());
-        dest.writeDouble(getCurrentAllocation().toDouble());
-        dest.writeDouble(getCurrentValue().toDouble());
+        dest.writeString(getValue().toString());
+        dest.writeString(getCurrentAllocation().toString());
+        dest.writeString(getCurrentValue().toString());
+        dest.writeString(getDifference().toString());
+        dest.writeString(getType().toString());
     }
 
     public void readFromParcel(Parcel source) {
-        setName(source.readString());
-        setAllocation(MoneyFactory.fromDouble(source.readDouble()));
-        setValue(MoneyFactory.fromDouble(source.readDouble()));
+        setValue(MoneyFactory.fromString(source.readString()));
         setCurrentAllocation(MoneyFactory.fromDouble(source.readDouble()));
         setCurrentValue(MoneyFactory.fromDouble(source.readDouble()));
+        setDifference(MoneyFactory.fromString(source.readString()));
+        setType(ItemType.valueOf(source.readString()));
     }
 
     public Integer getId() {
