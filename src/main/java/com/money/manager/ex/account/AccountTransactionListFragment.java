@@ -413,7 +413,7 @@ public class AccountTransactionListFragment
 
     /**
      * Initialize the Transaction Type filter.
-     * @param menu
+     * @param menu menu/toolbar to add the icon to.
      */
     private void initTransactionStatusMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
@@ -761,9 +761,9 @@ public class AccountTransactionListFragment
 
         for (int i = 0; i < subMenu.size(); i++) {
             MenuItem subItem = subMenu.getItem(i);
-            String title = subItem.getTitle().toString();
+            int menuId = subItem.getItemId();
 
-            if (mStatusFilter.contains(title)) {
+            if (mStatusFilter.contains(menuId)) {
                 subItem.setChecked(true);
             }
         }
