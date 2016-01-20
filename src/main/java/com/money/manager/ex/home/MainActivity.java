@@ -52,6 +52,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
+import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
@@ -534,6 +535,9 @@ public class MainActivity
                 break;
             case R.id.menu_report_income_vs_expenses:
                 startActivity(new Intent(this, IncomeVsExpensesActivity.class));
+                break;
+            case R.id.menu_asset_allocation_overview:
+                startActivity(new Intent(this, AssetAllocationOverviewActivity.class));
                 break;
             case R.id.menu_help:
                 startActivity(new Intent(MainActivity.this, HelpActivity.class));
@@ -1319,6 +1323,11 @@ public class MainActivity
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
             .withText(getString(R.string.menu_report_income_vs_expenses))
             .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
+        // Asset Allocation Overview
+        adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
+            .withText(getString(R.string.asset_allocation))
+            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+
         onDrawerItemSubDialogs(adapter, text, isDarkTheme);
     }
 }

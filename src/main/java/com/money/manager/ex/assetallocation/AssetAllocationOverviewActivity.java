@@ -44,7 +44,7 @@ public class AssetAllocationOverviewActivity
     }
 
     private String createHtml(AssetClass allocation) {
-        String html = "<html><body style='background: lightgray'>";
+        String html = "<html><body style='background: lightgray; padding: 0;'>";
 
         // get content
         html += getList(allocation);
@@ -88,6 +88,7 @@ public class AssetAllocationOverviewActivity
     private String getList(AssetClass allocation) {
         int defaultPrecision = 2;
         String html = "";
+
         html += "<ul>";
         html += "<li>" + allocation.getName() +
             ", " +
