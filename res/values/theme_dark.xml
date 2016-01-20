@@ -54,9 +54,11 @@
         <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_dark</item>
-
         <!-- Charts -->
         <item name="chartTextColor">@color/material_grey_50</item>
+        <!-- other -->
+        <item name="color_list_header">@color/material_grey_900</item>
+        <item name="toolbarItemColor">@color/material_white</item>
 
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
@@ -103,9 +105,6 @@
         <item name="ic_label_outline">@drawable/ic_action_label_outline_dark</item>
         <item name="ic_plusone">@drawable/ic_action_plusone_dark</item>
         <item name="ic_paste">@drawable/ic_action_paste_dark</item>
-
-        <!-- colors -->
-        <item name="color_list_header">@color/material_grey_900</item>
 
         <!-- Shape -->
         <item name="shape_background_shadow">@null</item>

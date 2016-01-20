@@ -18,6 +18,7 @@ package com.money.manager.ex.account;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -410,159 +412,20 @@ public class AccountTransactionListFragment
     }
 
     /**
-     * To be used for the Transaction Type filter.
+     * Initialize the Transaction Type filter.
      * @param menu
      */
     private void initTransactionStatusMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
 
-        //int groupId = item.getGroupId();
-        //menu.addSubMenu(groupId, Menu.NONE, Menu.NONE, R.string.status_not_reconciled);
-
-        // customize the icon
-        item.setIcon(FontIconDrawable.inflate(getActivity(), R.xml.ic_filter));
+        // Use a font icon.
+        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_filter);
+        // get the toolbar item color.
+        icon.setTextColor(UIHelper.getColor(getActivity(), R.attr.toolbarItemColor)); // Color.RED
+        item.setIcon(icon);
 
         // selection handled in onOptionsItemSelected
     }
-
-    private void reloadAccountInfo() {
-        AccountRepository repo = new AccountRepository(getActivity());
-        mAccount = repo.load(mAccountId);
-    }
-
-    /**
-     * Refreshes the running balance.
-     */
-    public void populateRunningBalance() {
-        Bundle arguments = prepareQuery();
-
-        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-            getContext(), this.mAccountId, mDateRange.dateFrom, arguments);
-        // events now handled in onEvent, using an event bus.
-        task.execute();
-
-        // the result is received in #onTaskComplete.
-    }
-
-    /**
-     * Prepare SQL query for record selection.
-     * @return bundle with query
-     */
-    private Bundle prepareQuery() {
-        WhereStatementGenerator where = new WhereStatementGenerator();
-
-//        where.addStatement("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
-//            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
-        where.addStatement(
-            where.concatenateOr(
-                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", mAccountId),
-                where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
-        ));
-
-        where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));
-        where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
-
-        // Status
-//        if (!mStatusFilter.isEmpty()) {
-        where.addStatement(QueryAllData.Status, "IN", mStatusFilter.getSqlParameters());
-//        }
-
-        // create a bundle to returns
-        Bundle args = new Bundle();
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where.getWhere());
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-                QueryAllData.Date + " DESC, " +
-                        QueryAllData.TransactionType + ", " +
-                        QueryAllData.ID + " DESC");
-
-        return args;
-    }
-
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
-
-        mAccountId = savedInstanceState.getInt(KEY_CONTENT);
-
-        mStatusFilter.filter = savedInstanceState.getStringArrayList(KEY_STATUS);
-    }
-
-    /**
-     * refresh UI, show favorite icon
-     */
-    private void setImageViewFavorite() {
-        if (mAccount.getFavorite()) {
-            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star);
-        } else {
-            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
-        }
-    }
-
-    /**
-     * Show the account balances (current & reconciled) in the header.
-     */
-    private void setTextViewBalance() {
-        // Reload account info as it can be changed via dropdown. Need a currency info here.
-        reloadAccountInfo();
-
-        // write account balance
-        if (mAccount != null) {
-            CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
-
-            this.viewHolder.txtAccountBalance.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountBalance));
-            this.viewHolder.txtAccountReconciled.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountReconciled));
-            this.viewHolder.txtAccountDifference.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
-        }
-    }
-
-    /**
-     * start the activity of transaction management
-     */
-    private void startCheckingAccountActivity() {
-        this.startCheckingAccountActivity(null);
-    }
-
-    /**
-     * start the activity of transaction management
-     *
-     * @param transId null set if you want to do a new transaction, or transaction id
-     */
-    private void startCheckingAccountActivity(Integer transId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
-        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
-        // check transId not null
-        if (transId != null) {
-            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivity(intent);
-    }
-
-    private void showTransactionsFragment(ViewGroup header) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        mAllDataListFragment = AllDataListFragment.newInstance(mAccountId);
-
-        // set arguments and settings of fragment
-        mAllDataListFragment.setArguments(prepareQuery());
-        if (header != null) mAllDataListFragment.setListHeader(header);
-        mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
-        mAllDataListFragment.setAutoStarLoader(false);
-        mAllDataListFragment.setSearResultFragmentLoaderCallbacks(this);
-
-        // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataListFragment, getFragmentName());
-        transaction.commit();
-    }
-
-    // Menu
 
     private boolean datePeriodItemSelected(MenuItem item) {
         int stringId;
@@ -730,6 +593,118 @@ public class AccountTransactionListFragment
     }
 
     /**
+     * Refreshes the running balance.
+     */
+    private void populateRunningBalance() {
+        Bundle arguments = prepareQuery();
+
+        CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
+            getContext(), this.mAccountId, mDateRange.dateFrom, arguments);
+        // events now handled in onEvent, using an event bus.
+        task.execute();
+
+        // the result is received in #onTaskComplete.
+    }
+
+    /**
+     * Prepare SQL query for record selection.
+     * @return bundle with query
+     */
+    private Bundle prepareQuery() {
+        WhereStatementGenerator where = new WhereStatementGenerator();
+
+//        where.addStatement("(" + QueryAllData.TOACCOUNTID + "=" + Integer.toString(mAccountId) +
+//            " OR " + QueryAllData.ACCOUNTID + "=" + Integer.toString(mAccountId) + ")");
+        where.addStatement(
+            where.concatenateOr(
+                where.getStatement(ITransactionEntity.TOACCOUNTID, "=", mAccountId),
+                where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
+            ));
+
+        where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));
+        where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
+
+        // Status
+//        if (!mStatusFilter.isEmpty()) {
+        where.addStatement(QueryAllData.Status, "IN", mStatusFilter.getSqlParameters());
+//        }
+
+        // create a bundle to returns
+        Bundle args = new Bundle();
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where.getWhere());
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
+            QueryAllData.Date + " DESC, " +
+                QueryAllData.TransactionType + ", " +
+                QueryAllData.ID + " DESC");
+
+        return args;
+    }
+
+    private void reloadAccountInfo() {
+        AccountRepository repo = new AccountRepository(getActivity());
+        mAccount = repo.load(mAccountId);
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+
+        mAccountId = savedInstanceState.getInt(KEY_CONTENT);
+
+        mStatusFilter.filter = savedInstanceState.getStringArrayList(KEY_STATUS);
+    }
+
+    /**
+     * refresh UI, show favorite icon
+     */
+    private void setImageViewFavorite() {
+        if (mAccount.getFavorite()) {
+            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star);
+        } else {
+            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
+        }
+    }
+
+    /**
+     * Show the account balances (current & reconciled) in the header.
+     */
+    private void setTextViewBalance() {
+        // Reload account info as it can be changed via dropdown. Need a currency info here.
+        reloadAccountInfo();
+
+        // write account balance
+        if (mAccount != null) {
+            CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+
+            this.viewHolder.txtAccountBalance.setText(currencyService.getCurrencyFormatted(
+                mAccount.getCurrencyId(), mAccountBalance));
+            this.viewHolder.txtAccountReconciled.setText(currencyService.getCurrencyFormatted(
+                mAccount.getCurrencyId(), mAccountReconciled));
+            this.viewHolder.txtAccountDifference.setText(currencyService.getCurrencyFormatted(
+                mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
+        }
+    }
+
+    /**
+     * start the activity of transaction management
+     *
+     * @param transId null set if you want to do a new transaction, or transaction id
+     */
+    private void startCheckingAccountActivity(Integer transId) {
+        // create intent, set Account ID
+        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
+        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
+        // check transId not null
+        if (transId != null) {
+            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
+            intent.setAction(Intent.ACTION_EDIT);
+        } else {
+            intent.setAction(Intent.ACTION_INSERT);
+        }
+        // launch activity
+        startActivity(intent);
+    }
+
+    /**
      * Select the current account in the accounts dropdown.
      */
     private void selectCurrentAccount() {
@@ -811,4 +786,30 @@ public class AccountTransactionListFragment
             }
         }
     }
+
+    private void showTransactionsFragment(ViewGroup header) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        mAllDataListFragment = AllDataListFragment.newInstance(mAccountId);
+
+        // set arguments and settings of fragment
+        mAllDataListFragment.setArguments(prepareQuery());
+        if (header != null) mAllDataListFragment.setListHeader(header);
+        mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+            .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        mAllDataListFragment.setAutoStarLoader(false);
+        mAllDataListFragment.setSearResultFragmentLoaderCallbacks(this);
+
+        // add fragment
+        transaction.replace(R.id.fragmentContent, mAllDataListFragment, getFragmentName());
+        transaction.commit();
+    }
+
+    /**
+     * start the activity of transaction management
+     */
+    private void startCheckingAccountActivity() {
+        this.startCheckingAccountActivity(null);
+    }
+
 }

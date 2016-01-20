@@ -19,6 +19,7 @@ package com.money.manager.ex.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
@@ -34,6 +35,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 
@@ -128,10 +130,9 @@ public class RepeatingTransactionAdapter
                 cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.CURRENCYID)),
                 MoneyFactory.fromDouble(amount)));
         // check amount sign
-        Core core = new Core(context);
-        txtAmount.setTextColor(context.getResources().getColor(amount > 0
-                ? core.resolveIdAttribute(R.attr.holo_green_color_theme)
-                : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+        txtAmount.setTextColor(ContextCompat.getColor(context, (amount > 0
+                ? UIHelper.getColor(context, R.attr.holo_green_color_theme)
+                : UIHelper.getColor(context, R.attr.holo_red_color_theme))));
         // compose payee description
         String payee = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.PAYEENAME));
         // write payee

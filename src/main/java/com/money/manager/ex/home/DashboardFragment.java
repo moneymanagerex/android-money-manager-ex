@@ -26,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.TextUtils;
@@ -45,6 +46,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -400,7 +402,9 @@ public class DashboardFragment
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
             TextView txt = (TextView) row.getChildAt(2);
-            txt.setTextColor(getResources().getColor(daysLeft >= 0 ? core.resolveIdAttribute(R.attr.holo_green_color_theme) : core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+            txt.setTextColor(ContextCompat.getColor(getActivity(), (daysLeft >= 0
+                ? UIHelper.getColor(getActivity(), R.attr.holo_green_color_theme)
+                : UIHelper.getColor(getActivity(), R.attr.holo_red_color_theme))));
             // Add Row
             tableLayout.addView(row);
         }

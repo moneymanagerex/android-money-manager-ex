@@ -78,9 +78,11 @@
         <item name="colorAccent">@color/md_primary_dark</item>
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_light</item>
-
         <!-- Charts -->
         <item name="chartTextColor">@color/md_primary_text</item>
+        <!-- other -->
+        <item name="color_list_header">@color/material_green_100</item>
+        <item name="toolbarItemColor">@color/material_white</item>
 
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
@@ -129,9 +131,6 @@
         <item name="ic_label_outline">@drawable/ic_action_label_outline_light</item>
         <item name="ic_plusone">@drawable/ic_action_plusone_light</item>
         <item name="ic_paste">@drawable/ic_action_paste_light</item>
-
-        <!-- colors -->
-        <item name="color_list_header">@color/material_green_100</item>
 
         <!-- Shape -->
         <item name="shape_background_shadow">@drawable/shape_background_shadow</item>

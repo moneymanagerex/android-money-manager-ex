@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,6 +44,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
@@ -419,11 +421,12 @@ public class IncomeVsExpensesListFragment
                 MoneyFactory.fromDouble(income - Math.abs(expenses))));
         txtDifference.setTypeface(null, Typeface.BOLD);
         //change colors
-        Core core = new Core(getActivity());
         if (income - Math.abs(expenses) < 0) {
-            txtDifference.setTextColor(getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+            txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
+                UIHelper.resolveIdAttribute(getActivity(), R.attr.holo_red_color_theme)));
         } else {
-            txtDifference.setTextColor(getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
+            txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
+                UIHelper.resolveIdAttribute(getActivity(), R.attr.holo_green_color_theme)));
         }
     }
 

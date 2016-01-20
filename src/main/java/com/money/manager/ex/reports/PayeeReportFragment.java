@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.ViewMobileData;
@@ -192,12 +193,11 @@ public class PayeeReportFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        Core core = new Core(getActivity());
         // pie chart
         MenuItem itemChart = menu.findItem(R.id.menu_chart);
         if (itemChart != null) {
             itemChart.setVisible(!(((PayeesReportActivity) getActivity()).mIsDualPanel));
-            itemChart.setIcon(core.resolveIdAttribute(R.attr.ic_action_pie_chart));
+            itemChart.setIcon(UIHelper.resolveIdAttribute(getActivity(), R.attr.ic_action_pie_chart));
         }
     }
 

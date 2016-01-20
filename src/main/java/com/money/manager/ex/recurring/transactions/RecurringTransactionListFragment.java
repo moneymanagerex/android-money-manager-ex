@@ -33,6 +33,7 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.Constants;
@@ -79,8 +80,7 @@ public class RecurringTransactionListFragment
         setHasOptionsMenu(true);
         registerForContextMenu(getListView());
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        getListView().setDivider(new ColorDrawable(new Core(getActivity().getApplicationContext())
-                .resolveIdAttribute(R.attr.theme_background_color)));
+        getListView().setDivider(new ColorDrawable(UIHelper.getColor(getActivity(), R.attr.theme_background_color)));
 
         setListShown(false);
 

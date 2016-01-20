@@ -116,7 +116,7 @@ public class AssetAllocationActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        //getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
+        getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
 
         return true;
     }

@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -86,11 +87,12 @@ public class IncomeVsExpensesAdapter
         txtDifference.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(),
                 MoneyFactory.fromDouble(income - Math.abs(expenses))));
 
-        Core core = new Core(context);
         if (income - Math.abs(expenses) < 0) {
-            txtDifference.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+            txtDifference.setTextColor(context.getResources().getColor(
+                UIHelper.resolveIdAttribute(context, R.attr.holo_red_color_theme)));
         } else {
-            txtDifference.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
+            txtDifference.setTextColor(context.getResources().getColor(
+                UIHelper.resolveIdAttribute(context, R.attr.holo_green_color_theme)));
         }
         //view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
         // check if subtotal

@@ -31,6 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -515,21 +516,8 @@ public class Core {
     public int resolveColorAttribute(int attr) {
 //        Resources.Theme currentTheme = mContext.getTheme();
 //        return mContext.getResources().getColor(resolveIdAttribute(attr), currentTheme);
-        return mContext.getResources().getColor(resolveIdAttribute(attr));
-    }
-
-    /**
-     * Resolve the id attribute into int value
-     *
-     * @param attr id attribute
-     * @return resource id
-     */
-    public int resolveIdAttribute(int attr) {
-        TypedValue tv = new TypedValue();
-        if (mContext.getTheme().resolveAttribute(attr, tv, true))
-            return tv.resourceId;
-        else
-            return Constants.NOT_SET;
+        //return mContext.getResources().getColor(resolveIdAttribute(attr));
+        return ContextCompat.getColor(mContext, UIHelper.getColor(mContext, attr));
     }
 
     public boolean isToDisplayChangelog() {

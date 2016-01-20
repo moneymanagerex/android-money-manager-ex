@@ -18,6 +18,7 @@ package com.money.manager.ex.reports;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ViewMobileData;
 
@@ -53,7 +55,6 @@ public class CategoriesReportAdapter
         TextView txtColumn1 = (TextView) view.findViewById(R.id.textViewColumn1);
         TextView txtColumn2 = (TextView) view.findViewById(R.id.textViewColumn2);
 
-        Core core = new Core(context);
         double total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
         String column1;
         String category = cursor.getString(cursor.getColumnIndex(ViewMobileData.Category));
@@ -72,9 +73,9 @@ public class CategoriesReportAdapter
 
         txtColumn2.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)));
         if (total < 0) {
-            txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_red_color_theme)));
+            txtColumn2.setTextColor(ContextCompat.getColor(context, UIHelper.getColor(context, R.attr.holo_red_color_theme)));
         } else {
-            txtColumn2.setTextColor(context.getResources().getColor(core.resolveIdAttribute(R.attr.holo_green_color_theme)));
+            txtColumn2.setTextColor(ContextCompat.getColor(context, UIHelper.getColor(context, R.attr.holo_green_color_theme)));
         }
 
         //view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));
