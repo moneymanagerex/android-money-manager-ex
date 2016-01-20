@@ -43,8 +43,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;

@@ -102,10 +102,20 @@ public class AssetClass
         super.writeToParcel(dest, flags);
 
         // todo: now just save calculated fields
+
+        dest.writeString(getName());
+        dest.writeDouble(getAllocation().toDouble());
+        dest.writeDouble(getValue().toDouble());
+        dest.writeDouble(getCurrentAllocation().toDouble());
+        dest.writeDouble(getCurrentValue().toDouble());
     }
 
     public void readFromParcel(Parcel source) {
-        Log.d("test", source.toString());
+        setName(source.readString());
+        setAllocation(MoneyFactory.fromDouble(source.readDouble()));
+        setValue(MoneyFactory.fromDouble(source.readDouble()));
+        setCurrentAllocation(MoneyFactory.fromDouble(source.readDouble()));
+        setCurrentValue(MoneyFactory.fromDouble(source.readDouble()));
     }
 
     public Integer getId() {

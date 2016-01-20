@@ -29,6 +29,10 @@
         <!--android:title="@string/update_menu_currency_exchange_rates"-->
         <!--app:showAsAction="ifRoom" />-->
 
-    <!-- todo: overview report -->
+    <item
+        android:id="@+id/menu_asset_allocation_overview"
+        android:icon="?attr/ic_action_report"
+        android:title="@string/overview"
+        app:showAsAction="ifRoom" />
 
 </menu>

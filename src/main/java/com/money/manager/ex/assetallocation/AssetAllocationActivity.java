@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -35,9 +36,11 @@ import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequeste
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import de.greenrobot.event.EventBus;
 
@@ -118,18 +121,39 @@ public class AssetAllocationActivity
 
         getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
 
+        // customize icons
+
+        // Overview
+        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
+        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
+        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+        overview.setIcon(icon);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        boolean handled;
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 setResultAndFinish();
-                return true; // consumed here
+                handled = true; // consumed here
+                break;
+            case R.id.menu_asset_allocation_overview:
+                // show the overview
+                Intent intent = new Intent(this, AssetAllocationOverviewActivity.class);
+                intent.putExtra(AssetAllocationOverviewActivity.INTENT_ASSET_ALLOCATION,
+                    (Parcelable) this.assetAllocation);
+                startActivity(intent);
+
+                handled = true;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return handled;
     }
 
     // Asset Class display fragment
