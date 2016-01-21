@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v7.util.SortedList;
 import android.util.Log;
 
 import com.money.manager.ex.assetallocation.ItemType;
@@ -172,7 +173,7 @@ public class AssetClass
     }
 
     public AssetClass getDirectChild(String name) {
-        for (AssetClass child : this.children) {
+        for (AssetClass child  : this.children) {
             if (child.getName().equalsIgnoreCase(name)) {
                 return child;
             }

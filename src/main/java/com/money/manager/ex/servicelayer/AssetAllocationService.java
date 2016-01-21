@@ -43,6 +43,16 @@ import java.util.List;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
+/*
+                          Group      Asset Class
+ allocation               sum        setAllocation <= the only set value!
+ value                    sum        totalValue * setAllocation / 100
+ Current allocation       sum        value * 100 / totalValue
+ current value            sum        value of all stocks (numStocks * price) in base currency!
+ difference               sum        currentValue - setValue
+
+ */
+
 /**
  * Functions for the Asset Allocation
  */
@@ -122,8 +132,8 @@ public class AssetAllocationService
         if (c == null) return null;
 
         // Main asset allocation object.
-        AssetClass main = AssetClass.create("Asset Allocation");
-        main.setType(ItemType.Group);
+        AssetClass root = AssetClass.create("Asset Allocation");
+        root.setType(ItemType.Group);
 
         // Fill a hash map with one pass through cursor. Used for easier fetching of asset classes.
         HashMap<Integer, AssetClass> map = loadMap(c);
@@ -134,19 +144,21 @@ public class AssetAllocationService
         // Load stock links and stocks to asset allocations.
         loadStocks(list);
 
-        main.setChildren(list);
+        root.setChildren(list);
 
         // create automatic Cash asset class by taking cash amounts from investment accounts.
-        addCash(main);
+        addCash(root);
+
+        sortChildren(root);
 
         // Calculate and store current Value amounts.
         Money totalValue = calculateCurrentValue(list);
-        main.setCurrentValue(totalValue);
+        root.setCurrentValue(totalValue);
 
         // Calculate all the derived values.
-        calculateStats(main, totalValue);
+        calculateStats(root, totalValue);
 
-        return main;
+        return root;
     }
 
     /**
@@ -400,15 +412,6 @@ public class AssetAllocationService
             }
         }
 
-        // Sort child records by Sort Order
-//        List<AssetClass> children = allocation.getChildren();
-        Collections.sort(children, new Comparator<AssetClass>() {
-            @Override
-            public int compare(AssetClass lhs, AssetClass rhs) {
-                return lhs.getSortOrder().compareTo(rhs.getSortOrder());
-            }
-        });
-
         return children;
     }
 
@@ -593,15 +596,20 @@ public class AssetAllocationService
         return sum;
     }
 
-    /*
-                              Group      Asset Class
-     allocation               sum        setAllocation <= the only set value!
-     value                    sum        totalValue * setAllocation / 100
-     Current allocation       sum        value * 100 / totalValue
-     current value            sum        value of all stocks (numStocks * price) in base currency!
-     difference               sum        currentValue - setValue
+    private void sortChildren(AssetClass allocation) {
+        // sort immediate children
+        Collections.sort(allocation.getChildren(), new Comparator<AssetClass>() {
+            @Override
+            public int compare(AssetClass lhs, AssetClass rhs) {
+                return lhs.getSortOrder().compareTo(rhs.getSortOrder());
+            }
+        });
 
-     */
+        // sort grandchildren recursively
+        for (AssetClass child : allocation.getChildren()) {
+            sortChildren(child);
+        }
+    }
 
     private Money sumStockValues(List<Stock> stocks) {
         Money sum = MoneyFactory.fromDouble(0);
