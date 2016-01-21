@@ -21,17 +21,14 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequested;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
@@ -42,8 +39,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
-
-import java.io.Serializable;
 
 import de.greenrobot.event.EventBus;
 
@@ -122,18 +117,15 @@ public class AssetAllocationActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        // todo: remove for Prod version
-        if (BuildConfig.DEBUG) {
-            getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
+        getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
 
-            // customize icons
+        // customize icons
 
-            // Overview
-            MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
-            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
-            icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
-            overview.setIcon(icon);
-        }
+        // Overview
+        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
+        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
+        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+        overview.setIcon(icon);
 
         return true;
     }
