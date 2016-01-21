@@ -48,10 +48,14 @@ import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 
 /**
- * A fragment that displays a single Asset Class for editing.
+ * A list fragment that displays a single Asset Class contents (stocks or child asset classes).
  */
 public class AssetAllocationFragment
     extends BaseListFragment {

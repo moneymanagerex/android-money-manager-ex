@@ -88,33 +88,21 @@
                 android:textStyle="bold"
                 android:gravity="end" />
 
-            <!-- securities -->
-            <!--<com.money.manager.ex.view.RobotoTextView-->
-                <!--style="@style/Money.TextView.Header.Caption"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/securities"/>-->
-            <!--<ListView-->
-                <!--android:id="@+id/securitiesList"-->
-                <!--android:layout_weight="1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0dp" />-->
-            <!--<fragment-->
-                <!--android:id="@+id/securitiesList"-->
-                <!--class="com.money.manager.ex.assetallocation.SecurityListFragment"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:layout_height="0dp" />-->
-            <!--<com.melnykov.fab.FloatingActionButton-->
-                <!--android:id="@+id/fab"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="bottom|right"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:src="@drawable/ic_action_add_dark"-->
-                <!--android:visibility="gone"-->
-                <!--app:fab_colorNormal="@color/md_primary"-->
-                <!--app:fab_colorPressed="@color/md_primary_dark" />-->
+            <!-- Allocation -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="@style/Money.TextView.Header.Caption"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_order"/>
+            <com.money.manager.ex.view.RobotoTextViewFontIcon
+                android:id="@+id/sortOrderEdit"
+                style="@style/Money.TextView.Widget.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:iconLeft="@xml/ic_sort_asc"
+                android:textStyle="bold"
+                android:gravity="end" />
+
         </LinearLayout>
 
 

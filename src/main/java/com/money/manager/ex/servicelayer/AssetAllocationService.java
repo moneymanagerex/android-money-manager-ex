@@ -377,7 +377,7 @@ public class AssetAllocationService
     }
 
     private List<AssetClass> assignChildren(HashMap<Integer, AssetClass> map) {
-        List<AssetClass> allocation = new ArrayList<>();
+        List<AssetClass> children = new ArrayList<>();
 
         // Iterate through all the allocations.
         for (AssetClass ac : map.values()) {
@@ -396,10 +396,20 @@ public class AssetAllocationService
                 parent.addChild(ac);
             } else {
                 // this is one of the root elements
-                allocation.add(ac);
+                children.add(ac);
             }
         }
-        return allocation;
+
+        // Sort child records by Sort Order
+//        List<AssetClass> children = allocation.getChildren();
+        Collections.sort(children, new Comparator<AssetClass>() {
+            @Override
+            public int compare(AssetClass lhs, AssetClass rhs) {
+                return lhs.getSortOrder().compareTo(rhs.getSortOrder());
+            }
+        });
+
+        return children;
     }
 
     private List<AssetClass> loadStocks(List<AssetClass> allocation) {

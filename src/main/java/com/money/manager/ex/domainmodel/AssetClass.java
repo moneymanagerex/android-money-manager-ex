@@ -158,7 +158,9 @@ public class AssetClass
     }
 
     public Integer getSortOrder() {
-        return getInt(SORTORDER);
+        Integer sortOrder = getInt(SORTORDER);
+        if (sortOrder == null) sortOrder = 0;
+        return sortOrder;
     }
 
     public void setSortOrder(int value) {

@@ -494,6 +494,7 @@
     <string name="change_status">Change status</string>
     <string name="duplicate_selected_transactions">Duplicate selected transactions</string>
     <string name="sort">Sort</string>
+    <string name="sort_order">Sort Order</string>
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_usage">Sort by usage</string>
     <string name="choose_sorting">Choose sorting</string>

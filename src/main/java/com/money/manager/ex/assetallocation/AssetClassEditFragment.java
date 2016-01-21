@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
@@ -36,14 +37,16 @@ import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Fragment for editing an asset class.
  */
 public class AssetClassEditFragment
     extends Fragment {
 
     public static final int INPUT_ALLOCATION = 1;
+    public static final int INPUT_SORT_ORDER = 2;
     public static final int CONTEXT_MENU_DELETE = 1;
 
     public AssetClassEditFragment() {
@@ -71,20 +74,7 @@ public class AssetClassEditFragment
         initializeParentEdit(view);
         initializeNameEdit(view);
         initializeAllocationPicker(view);
-        // todo: show sort order value
-
-//        initializeFloatingActionButton(view);
-
-//        mAdapter = createAdapter();
-//        ListView listView = initializeListView(mAdapter);
-
-//        registerForContextMenu(listView);
-
-        // setListShown(false);
-//        Integer id = this.assetClass.getId();
-//        if (id != null) {
-//            loadData();
-//        }
+        initializeSortOrderInput(view);
     }
 
     @Override
@@ -144,7 +134,13 @@ public class AssetClassEditFragment
         switch (id) {
             case INPUT_ALLOCATION:
                 assetClass.setAllocation(event.amount);
-                updateAllocation();
+                displayAllocation();
+                break;
+
+            case INPUT_SORT_ORDER:
+                int value = Integer.valueOf(event.amount.truncate(0).toString());
+                assetClass.setSortOrder(value);
+                displaySortOrder();
                 break;
         }
     }
@@ -188,7 +184,7 @@ public class AssetClassEditFragment
             public void onClick(View v) {
                 InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
                     assetClass.getAllocation());
-                dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
+//                dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         });
@@ -223,88 +219,47 @@ public class AssetClassEditFragment
         }
     }
 
-    private void updateAllocation() {
+    private void initializeSortOrderInput(View view) {
+        TextView textView = (TextView) view.findViewById(R.id.sortOrderEdit);
+        if (textView == null) return;
+
+        textView.setText(assetClass.getSortOrder().toString());
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Money number = MoneyFactory.fromString(Integer.toString(assetClass.getSortOrder()));
+
+                InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_SORT_ORDER,
+                    number, Constants.NOT_SET, false);
+                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        });
+    }
+
+    private void displayAllocation() {
         View view = getView();
         if (view == null) return;
 
         TextView textView = (TextView) view.findViewById(R.id.allocationEdit);
         if (textView != null) {
             Money allocation = assetClass.getAllocation();
-            //FormatUtilities.formatAmountTextView();
+//            FormatUtilities.formatAmountTextView();
             textView.setText(allocation.toString());
             textView.setTag(allocation.toString());
         }
     }
 
-//    private void initializeFloatingActionButton(View view) {
-//        // attach fab
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-//
-//        if (this.assetClass.getId() == null) {
-//            // new record
-//            return;
-//        }
-//
-//        // otherwise we're in edit mode.
-//
-//        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
-//        fab.attachToListView(listView);
-//
-//        fab.setVisibility(View.VISIBLE);
-//
-//        View.OnClickListener listener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // select a security
-//                pickStock();
-//            }
-//        };
-//        fab.setOnClickListener(listener);
-//    }
+    private void displaySortOrder() {
+        View view = getView();
+        if (view == null) return;
 
-//    private void pickStock() {
-//        Intent intent = new Intent(getActivity(), SecurityListActivity.class);
-//        intent.setAction(Intent.ACTION_PICK);
-//        // send the list of existing stock ids to filter out.
-//        getActivity().startActivityForResult(intent, AssetClassEditActivity.REQUEST_STOCK_ID);
-//    }
+        TextView textView = (TextView) view.findViewById(R.id.sortOrderEdit);
+        if (textView != null) {
+            Integer sortOrder = assetClass.getSortOrder();
 
-//    private MoneySimpleCursorAdapter createAdapter() {
-//        return new MoneySimpleCursorAdapter(getActivity(),
-//            android.R.layout.simple_list_item_1,
-//            null,
-//            new String[]{Stock.SYMBOL },
-//            new int[]{ android.R.id.text1}, 0);
-//
-////        setListAdapter(mAdapter);
-////        setListShown(false);
-//
-//    }
-
-//    private ListView getListView() {
-//        View view = getView();
-//        if (view == null) return null;
-//
-//        ListView listView = (ListView) view.findViewById(R.id.securitiesList);
-//        return listView;
-//    }
-
-//    private ListView initializeListView(ListAdapter adapter) {
-//        ListView listView = getListView();
-//        if (listView == null) return null;
-//
-//        listView.setAdapter(adapter);
-//
-//        AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // show context menu
-//                getActivity().openContextMenu(view);
-//            }
-//        };
-//        listView.setOnItemClickListener(onItemClickListener);
-//
-//        return listView;
-//    }
-
+            textView.setText(sortOrder.toString());
+            textView.setTag(sortOrder.toString());
+        }
+    }
 }
