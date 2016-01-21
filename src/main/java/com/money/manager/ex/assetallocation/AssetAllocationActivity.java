@@ -35,6 +35,7 @@ import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -121,6 +122,14 @@ public class AssetAllocationActivity
 
         // customize icons
 
+        // Currencies
+        MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
+        if (currenciesMenu != null) {
+            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
+            icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+            currenciesMenu.setIcon(icon);
+        }
+
         // Overview
         MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
         FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
@@ -132,28 +141,27 @@ public class AssetAllocationActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        boolean handled;
+        Intent intent;
 
         switch (item.getItemId()) {
             case android.R.id.home:
                 setResultAndFinish();
-                handled = true; // consumed here
+                break;
+            case R.id.menu_currencies:
+                // open the Currencies activity.
+                intent = new Intent(this, CurrencyListActivity.class);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
                 break;
             case R.id.menu_asset_allocation_overview:
                 // show the overview
-                Intent intent = new Intent(this, AssetAllocationOverviewActivity.class);
-//                intent.putExtra(AssetAllocationOverviewActivity.INTENT_ASSET_ALLOCATION,
-//                    (Parcelable) this.assetAllocation);
-//                intent.putExtra(AssetAllocationOverviewActivity.INTENT_ASSET_ALLOCATION,
-//                    (Serializable) this.assetAllocation);
+                intent = new Intent(this, AssetAllocationOverviewActivity.class);
                 startActivity(intent);
-
-                handled = true;
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
-        return handled;
+        return true;
     }
 
     // Asset Class display fragment

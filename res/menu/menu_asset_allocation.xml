@@ -23,11 +23,11 @@
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
         <!--android:orderInCategory="100" app:showAsAction="never" />-->
 
-    <!--<item-->
-        <!--android:id="@+id/menu_update_exchange_rate"-->
-        <!--android:icon="?attr/ic_action_reload"-->
-        <!--android:title="@string/update_menu_currency_exchange_rates"-->
-        <!--app:showAsAction="ifRoom" />-->
+    <item
+        android:id="@+id/menu_currencies"
+        android:icon="?attr/ic_action_reload"
+        android:title="@string/currencies"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_asset_allocation_overview"
