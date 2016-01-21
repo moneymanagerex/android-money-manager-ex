@@ -12,9 +12,11 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -28,6 +30,7 @@ public class AssetAllocationOverviewActivity
     extends BaseFragmentActivity {
 
 //    public static final String INTENT_ASSET_ALLOCATION = "INTENT_ASSET_ALLOCATION";
+    public static final String VALUE_FORMAT = "%,.2f";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class AssetAllocationOverviewActivity
     private String createHtml(AssetClass allocation) {
         String html = "<html><body style='background: lightgray; padding: 0;'>";
 
+        //html += "<ul style='padding-left: 20px;'>";
+
         // get content
         html += getList(allocation);
 
@@ -59,24 +64,57 @@ public class AssetAllocationOverviewActivity
     }
 
     private String getList(AssetClass allocation) {
-        String format = "%,.2f";
         String html = "";
 
+        // list-style:none;
+        // list-style-position: inside;
         html += "<ul style='padding-left: 20px;'>";
+
+        if (allocation.getId() == null) {
+            // root node, summary list.
+            html += getSummaryRow(allocation);
+        } else {
+            // regular list
+            html += getAssetRow(allocation);
+        }
+
+        // child elements
+        for(AssetClass child : allocation.getChildren()) {
+            html += getList(child);
+        }
+
+        html += "</li>";
+        html += "</ul>";
+        return html;
+    }
+
+    private String getSummaryRow(AssetClass allocation) {
+        String html = "";
+        CurrencyService currencyService = new CurrencyService(this);
+
+        html += "<li style='list-style-type: none; padding-left: 0; margin-left: 0;'>" +
+            allocation.getName() + ", " +
+            currencyService.getBaseCurrencyCode() + " " +
+            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble());
+        return html;
+    }
+
+    private String getAssetRow(AssetClass allocation) {
+        String html = "";
+
         // Name
         html += "<li>" + allocation.getName() + ", ";
         // Allocation
         html +=
-            String.format(format, allocation.getAllocation().toDouble()) + "/";
-            if (allocation.getDifference().toDouble() > 0) {
-                html += "<span style='color: green; font-weight: bold;'>";
-            } else {
-                html += "<span style='color: darkred; font-weight: bold;'>";
-            }
+            String.format(VALUE_FORMAT, allocation.getAllocation().toDouble()) + "/";
+        if (allocation.getDifference().toDouble() > 0) {
+            html += "<span style='color: green; font-weight: bold;'>";
+        } else {
+            html += "<span style='color: darkred; font-weight: bold;'>";
+        }
         // current allocation
-        html +=
-            String.format(format, allocation.getCurrentAllocation().toDouble()) +
-            "</span>, ";
+        html += String.format(VALUE_FORMAT, allocation.getCurrentAllocation().toDouble()) +
+                "</span>, ";
         // diff %
         if (allocation.getDiffAsPercentOfSet().toDouble() >= 0) {
             html += "<span style='color: green;'>";
@@ -87,8 +125,8 @@ public class AssetAllocationOverviewActivity
             " %</span>";
         html += "<br/>";
         // Value
-        html += String.format(format, allocation.getValue().toDouble()) + "/" +
-            String.format(format, allocation.getCurrentValue().toDouble()) +
+        html += String.format(VALUE_FORMAT, allocation.getValue().toDouble()) + "/" +
+            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble()) +
             ", ";
         // difference amount
         if (allocation.getDifference().truncate(2).toDouble() >= 0) {
@@ -97,16 +135,9 @@ public class AssetAllocationOverviewActivity
             html += "<span style='color: darkred;'>";
         }
         html +=
-            String.format(format, allocation.getDifference().toDouble());
+            String.format(VALUE_FORMAT, allocation.getDifference().toDouble());
         html += "</span>";
 
-        // child elements
-        for(AssetClass child : allocation.getChildren()) {
-            html += getList(child);
-        }
-
-        html += "</li>";
-        html += "</ul>";
         return html;
     }
 }
