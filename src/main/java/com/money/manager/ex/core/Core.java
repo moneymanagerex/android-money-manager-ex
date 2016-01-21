@@ -517,7 +517,7 @@ public class Core {
 //        Resources.Theme currentTheme = mContext.getTheme();
 //        return mContext.getResources().getColor(resolveIdAttribute(attr), currentTheme);
         //return mContext.getResources().getColor(resolveIdAttribute(attr));
-        return ContextCompat.getColor(mContext, UIHelper.getColor(mContext, attr));
+        return ContextCompat.getColor(mContext, UIHelper.resolveIdAttribute(mContext, attr));
     }
 
     public boolean isToDisplayChangelog() {
