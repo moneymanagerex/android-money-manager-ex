@@ -52,6 +52,7 @@ import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -312,11 +313,16 @@ public class EditTransactionCommonFunctions {
     }
 
     public int getSourceCurrencyId() {
-//        AccountRepository repo = new AccountRepository(getContext());
-//        Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
+        AccountRepository repo = new AccountRepository(getContext());
+        Integer currencyId = repo.loadCurrencyIdFor(this.accountId);
 
-        int accountIndex = mAccountIdList.indexOf(this.accountId);
-        return this.AccountList.get(accountIndex).getCurrencyId();
+//        int accountIndex = mAccountIdList.indexOf(this.accountId);
+//        Account account = this.AccountList.get(accountIndex);
+//        if (account == null) return Constants.NOT_SET;
+//        Integer currencyId = account.getCurrencyId();
+//        if (currencyId == null) return Constants.NOT_SET;
+
+        return currencyId;
     }
 
     public boolean getDirty() {
