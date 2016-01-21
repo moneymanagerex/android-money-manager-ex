@@ -48,10 +48,6 @@ import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import de.greenrobot.event.EventBus;
 
 /**
@@ -373,7 +369,7 @@ public class AssetAllocationFragment
             MatrixCursorColumns.ID, MatrixCursorColumns.NAME,
             MatrixCursorColumns.ALLOCATION, MatrixCursorColumns.VALUE,
             MatrixCursorColumns.CURRENT_ALLOCATION, MatrixCursorColumns.CURRENT_VALUE,
-            MatrixCursorColumns.DIFFERENCE,
+            MatrixCursorColumns.DIFFERENCE, MatrixCursorColumns.DIFFERENCE_PERCENT,
             MatrixCursorColumns.TYPE
         };
 
@@ -382,10 +378,10 @@ public class AssetAllocationFragment
 //        ItemType type = allocation.getType();
         if (allocation.getChildren().size() > 0) {
             // group
-            fillChildren(cursor, allocation);
+            addChildAssetsToCursor(cursor, allocation);
         } else if (allocation.getStocks().size() > 0) {
             // allocation, with stocks
-            fillStocks(cursor, allocation);
+            addStocksToCursor(cursor, allocation);
         } else {
             // either empty allocation or a stock.
 
@@ -460,7 +456,7 @@ public class AssetAllocationFragment
         listView.addFooterView(mFooter, null, false);
     }
 
-    private void fillChildren(MatrixCursor cursor, AssetClass allocation) {
+    private void addChildAssetsToCursor(MatrixCursor cursor, AssetClass allocation) {
         int precision = 2;
 
         for (AssetClass item : allocation.getChildren()) {
@@ -470,18 +466,17 @@ public class AssetAllocationFragment
                 item.getCurrentAllocation().truncate(precision),
                 item.getCurrentValue().truncate(precision),
                 item.getDifference().truncate(precision),
+                item.getDiffAsPercentOfSet().truncate(precision),
                 ItemType.Allocation.toString()
             };
             cursor.addRow(values);
         }
     }
 
-    private void fillStocks(MatrixCursor cursor, AssetClass allocation) {
+    private void addStocksToCursor(MatrixCursor cursor, AssetClass allocation) {
         int precision = 2;
 
         for (Stock item : allocation.getStocks()) {
-            // Money currentAllocation = item.getValue().multiply(100).divide()
-
             Object[] values = new Object[] {
                 item.getId(), item.getSymbol(),
                 null, null,

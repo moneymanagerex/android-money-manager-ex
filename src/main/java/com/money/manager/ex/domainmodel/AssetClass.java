@@ -24,6 +24,7 @@ import android.os.Parcelable;
 import android.support.v7.util.SortedList;
 import android.util.Log;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.assetallocation.ItemType;
 
 import java.io.Serializable;
@@ -261,6 +262,19 @@ public class AssetClass
 
     public void setDifference(Money value) {
         this.difference = value;
+    }
+
+    /**
+     * Difference expressed as a percentage of set allocation.
+     * i.e. 1000 EUR difference between current allocation (4%/2000) and set allocation (3%/1000)
+     * is 50% of set allocation.
+     * @return difference expressed as a percentage of set allocation
+     */
+    public Money getDiffAsPercentOfSet() {
+        Money diffPercentage = this.getDifference()
+            .multiply(100)
+            .divide(this.getValue().toDouble(), 2);
+        return diffPercentage;
     }
 
     public ItemType getType() {

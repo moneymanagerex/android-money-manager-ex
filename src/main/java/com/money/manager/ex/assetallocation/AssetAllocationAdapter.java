@@ -64,6 +64,5 @@ public class AssetAllocationAdapter
         MatrixCursorColumns values = MatrixCursorColumns.fromCursor(context, cursor);
 
         UIHelpers.populateAssetClassRow(holder, values);
-
     }
 }

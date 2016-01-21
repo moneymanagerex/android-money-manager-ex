@@ -30,6 +30,7 @@ import info.javaperformance.money.MoneyFactory;
  * Column names for the matrix cursor for Asset Allocation
  */
 public class MatrixCursorColumns {
+
     public static final String ID = "_id";
     public static final String NAME =  AssetClass.NAME;
     public static final String ALLOCATION =  AssetClass.ALLOCATION;
@@ -37,6 +38,7 @@ public class MatrixCursorColumns {
     public static final String CURRENT_ALLOCATION = "CurrentAllocation";
     public static final String CURRENT_VALUE =  "CurrentValue";
     public static final String DIFFERENCE =  "Difference";
+    public static final String DIFFERENCE_PERCENT = "DifferencePercent";
     public static final String TYPE = "Type";
 
     public static MatrixCursorColumns fromCursor(Context context, Cursor cursor) {
@@ -69,6 +71,16 @@ public class MatrixCursorColumns {
         }
         values.currentValue = display;
 
+        // difference %
+        valueString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE_PERCENT));
+        if (!TextUtils.isEmpty(valueString)) {
+            //value = MoneyFactory.fromString(valueString);
+            display = valueString;
+        } else {
+            display = "";
+        }
+        values.differencePercent = display;
+
         valueString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.DIFFERENCE));
         if (!TextUtils.isEmpty(valueString)) {
             value = MoneyFactory.fromString(valueString);
@@ -91,5 +103,6 @@ public class MatrixCursorColumns {
     public String currentAllocation;
     public String currentValue;
     public String difference;
+    public String differencePercent;
     public ItemType type;
 }

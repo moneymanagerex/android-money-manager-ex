@@ -45,6 +45,7 @@ public class AssetClassViewHolder {
         instance.currentAllocationTextView = (RobotoTextView) view.findViewById(R.id.currentAllocationTextView);
         instance.currentValueTextView = (RobotoTextView) view.findViewById(R.id.currentValueTextView);
         instance.differenceTextView = (RobotoTextView) view.findViewById(R.id.differenceTextView);
+        instance.differencePercentTextView = (RobotoTextView) view.findViewById(R.id.differencePercentTextView);
 
         return instance;
     }
@@ -56,4 +57,5 @@ public class AssetClassViewHolder {
     public RobotoTextView currentAllocationTextView;
     public RobotoTextView currentValueTextView;
     public RobotoTextView differenceTextView;
+    public RobotoTextView differencePercentTextView;
 }

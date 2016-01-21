@@ -49,6 +49,8 @@ public class UIHelpers {
             viewHolder.currentValueTextView.setText(values.currentValue);
         }
 
+        // difference %
+        viewHolder.differencePercentTextView.setText(values.differencePercent);
         // difference (value)
         viewHolder.differenceTextView.setText(values.difference);
     }

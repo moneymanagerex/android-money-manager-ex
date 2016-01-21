@@ -58,33 +58,6 @@ public class AssetAllocationOverviewActivity
         overview.loadData(html, "text/html", null);
     }
 
-    private void getTable(AssetClass allocation) {
-        String html = "";
-        html += "<table>" +
-            "<thead>" +
-            "<tr>" +
-            "<th>Asset Class</th>" +
-            "<th>Allocation</th>" +
-            "<th>Value</th>" +
-            "<th>Difference</th>" +
-            "</tr>" +
-            "</thead>" +
-            "<tbody>";
-        // summary row
-        html += "<tr>" +
-            "<td>" + allocation.getName() + "</td>" +
-            "</tr>";
-        // child rows
-        html +=     "<tr>" +
-            "<td>Cash</td>" +
-            "<td>3% <br/> 100</td>" +
-            "<td>2.5% <br/> 150</td>" +
-            "<td>13% <br/> 50</td>" +
-            "</tr>";
-        // complete.
-        html += "</tbody></table>";
-    }
-
     private String getList(AssetClass allocation) {
         String format = "%,.2f";
         String html = "";
@@ -100,15 +73,25 @@ public class AssetAllocationOverviewActivity
             } else {
                 html += "<span style='color: darkred; font-weight: bold;'>";
             }
+        // current allocation
         html +=
             String.format(format, allocation.getCurrentAllocation().toDouble()) +
-            "</span>" +
-            ", " +
-                String.format(format, allocation.getValue().toDouble()) + "/" +
+            "</span>, ";
+        // diff %
+        if (allocation.getDiffAsPercentOfSet().toDouble() >= 0) {
+            html += "<span style='color: green;'>";
+        } else {
+            html += "<span style='color: darkred;'>";
+        }
+        html += allocation.getDiffAsPercentOfSet() +
+            " %</span>";
+        html += "<br/>";
+        // Value
+        html += String.format(format, allocation.getValue().toDouble()) + "/" +
             String.format(format, allocation.getCurrentValue().toDouble()) +
             ", ";
-        // paint the difference
-        if (allocation.getDifference().toDouble() > 0) {
+        // difference amount
+        if (allocation.getDifference().truncate(2).toDouble() >= 0) {
             html += "<span style='color: green;'>";
         } else {
             html += "<span style='color: darkred;'>";
@@ -116,10 +99,12 @@ public class AssetAllocationOverviewActivity
         html +=
             String.format(format, allocation.getDifference().toDouble());
         html += "</span>";
+
         // child elements
         for(AssetClass child : allocation.getChildren()) {
             html += getList(child);
         }
+
         html += "</li>";
         html += "</ul>";
         return html;
