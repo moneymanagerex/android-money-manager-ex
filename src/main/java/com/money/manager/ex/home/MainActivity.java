@@ -1198,7 +1198,9 @@ public class MainActivity
 
         // repeating transaction
         mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
-        mDrawerLinearRepeating.setVisibility(View.GONE);
+        if (mDrawerLinearRepeating != null) {
+            mDrawerLinearRepeating.setVisibility(View.GONE);
+        }
 //        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
         mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
