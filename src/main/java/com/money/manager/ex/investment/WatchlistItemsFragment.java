@@ -432,15 +432,23 @@ public class WatchlistItemsFragment
     // Private
 
     private void displayHeaderData() {
+        TextView label = (TextView) getView().findViewById(R.id.cashBalanceLabel);
+        TextView textView = (TextView) getView().findViewById(R.id.cashBalanceTextView);
+
+        // Clear if no account id, i.e. all accounts displayed.
+        if (this.accountId == Constants.NOT_SET) {
+            label.setText("");
+            textView.setText("");
+            return;
+        }
+
         AccountRepository repo = new AccountRepository(getActivity());
         Account account = repo.load(this.accountId);
 
-        TextView label = (TextView) getView().findViewById(R.id.cashBalanceLabel);
         if (label != null) {
             label.setText(getString(R.string.cash));
         }
 
-        TextView textView = (TextView) getView().findViewById(R.id.cashBalanceTextView);
         if (textView != null) {
             FormatUtilities formatter = new FormatUtilities(getActivity());
             textView.setText(formatter.getValueFormatted(
