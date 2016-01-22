@@ -208,7 +208,7 @@ public class StockHistoryRepository
 
     public int deleteAllPriceHistory() {
         int deleted = mContext.getContentResolver().delete(getUri(),
-            null,
+            "1",
             null);
 
         return deleted;
