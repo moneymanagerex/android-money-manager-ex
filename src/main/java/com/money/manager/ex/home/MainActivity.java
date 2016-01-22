@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -148,10 +149,9 @@ public class MainActivity
     private LinearLayout mDrawerLinearRepeating;
     private TextView mDrawerTextUserName;
     private TextView mDrawerTextTotalAccounts;
-//    private TextView mDrawerTextViewRepeating;
     // state dual panel
     private boolean mIsDualPanel = false;
-//    private Tracker mTracker;
+    private Tracker mTracker;
     private RecentDatabasesProvider recentDbs;
     private boolean mInitialized = false;
 
@@ -168,8 +168,8 @@ public class MainActivity
         }
 
         // Obtain the shared Tracker instance.
-//        MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
-//        mTracker = application.getDefaultTracker();
+        MoneyManagerApplication application = (MoneyManagerApplication) getApplication();
+        mTracker = application.getDefaultTracker();
 
         // Initialize the map for recent entries that link to drawer menu items.
         this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
