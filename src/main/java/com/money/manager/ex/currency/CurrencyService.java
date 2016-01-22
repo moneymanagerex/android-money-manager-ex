@@ -136,12 +136,6 @@ public class CurrencyService {
         return result;
     }
 
-//    public Boolean reInit() {
-//        destroy();
-//
-//        return loadAllCurrencies();
-//    }
-
     public Map<Integer, Currency> getCurrenciesStore() {
         if (mCurrencies == null) mCurrencies = new HashMap<>();
         return mCurrencies;

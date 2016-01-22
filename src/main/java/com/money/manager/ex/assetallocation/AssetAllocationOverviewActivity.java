@@ -1,17 +1,21 @@
 package com.money.manager.ex.assetallocation;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Base64;
 import android.util.Xml;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -58,8 +62,20 @@ public class AssetAllocationOverviewActivity
     }
 
     private void displayOverview(String html) {
-        WebView overview = (WebView) this.findViewById(R.id.overviewWebView);
-        overview.loadData(html, "text/html", null);
+        WebView webView = (WebView) this.findViewById(R.id.overviewWebView);
+
+        // enable Unicode
+        WebSettings settings = webView.getSettings();
+        settings.setDefaultTextEncodingName("utf-8");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            String base64 = Base64.encodeToString(html.getBytes(), Base64.DEFAULT);
+            webView.loadData(base64, "text/html; charset=utf-8", "base64");
+        } else {
+            String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
+            webView.loadData(header + html, "text/html; charset=UTF-8", null);
+        }
+
+//        webView.loadData(html, "text/html", "UTF-8");
     }
 
     /**
@@ -84,11 +100,13 @@ public class AssetAllocationOverviewActivity
     private String getSummaryRow(AssetClass allocation) {
         String html = "";
         CurrencyService currencyService = new CurrencyService(this);
+        FormatUtilities formatter = new FormatUtilities(this);
 
         html += "<p>" +
             allocation.getName() + ", " +
-            currencyService.getBaseCurrencyCode() + " " +
-            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble()) +
+//            currencyService.getBaseCurrencyCode() + " " +
+//            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble()) +
+            formatter.getValueFormatted(allocation.getCurrentValue(), currencyService.getBaseCurrencyId()) +
             "</p>";
         return html;
     }
@@ -99,14 +117,17 @@ public class AssetAllocationOverviewActivity
         String html = "<li>";
 
         // Name
-        html += allocation.getName() + ", ";
+        html += allocation.getName();
+
+        html += " &#183; ";
+
         // diff %
         color = allocation.getDiffAsPercentOfSet().toDouble() >= 0 ? "green" : "darkred";
         html += "<span style='color: " + color + ";'>";
         html += allocation.getDiffAsPercentOfSet();
-        html += " %</span>";
+        html += "%</span>";
 
-        html += ", ";
+        html += " &#183; ";
 
         // difference amount
         color = allocation.getDifference().truncate(2).toDouble() >= 0 ? "green" : "darkred";
@@ -125,13 +146,11 @@ public class AssetAllocationOverviewActivity
         html += String.format(VALUE_FORMAT, allocation.getCurrentAllocation().toDouble()) +
                 "</span>";
 
-        html += ", ";
-//        html += "<br/>";
+        html += " &#183; ";
 
         // Value
         html += String.format(VALUE_FORMAT, allocation.getValue().toDouble()) + "/" +
             String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble());
-//        html += ", ";
 
         // Child asset classes
         html += getList(allocation.getChildren());
