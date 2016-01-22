@@ -308,8 +308,12 @@ public class EditTransactionCommonFunctions {
     }
 
     public int getDestinationCurrencyId() {
-        int accountIndex = mAccountIdList.indexOf(this.toAccountId);
-        return this.AccountList.get(accountIndex).getCurrencyId();
+//        int accountIndex = mAccountIdList.indexOf(this.toAccountId);
+//        return this.AccountList.get(accountIndex).getCurrencyId();
+
+        AccountRepository repo = new AccountRepository(getContext());
+        Integer currencyId = repo.loadCurrencyIdFor(this.toAccountId);
+        return currencyId;
     }
 
     public int getSourceCurrencyId() {
