@@ -206,10 +206,6 @@ public class WatchlistFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        // List of accounts
-//        inflater.inflate(R.menu.menu_account_spinner, menu);
-//        initAccountsDropdown(menu);
-
         // add options menu for watchlist
         inflater.inflate(R.menu.menu_watchlist, menu);
 
@@ -548,7 +544,8 @@ public class WatchlistFragment
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     StockHistoryRepository history = new StockHistoryRepository(getActivity());
-                    int deleted = history.deletePriceHistory();
+//                    int deleted = history.deleteAutomaticPriceHistory();
+                    int deleted = history.deleteAllPriceHistory();
 
                     if (deleted > 0) {
                         DropboxHelper.notifyDataChanged();

@@ -196,14 +196,21 @@ public class StockHistoryRepository
      * deletes all price history
      * @return number of deleted records
      */
-    public int deletePriceHistory() {
+    public int deleteAutomaticPriceHistory() {
 
-        // Delete all manually downloaded prices.
-        int actionResult = mContext.getContentResolver().delete(getUri(),
-                StockHistory.UPDTYPE + "=?",
-                new String[] { "1" });
+        // Delete all automatically downloaded prices.
+        int deleted = mContext.getContentResolver().delete(getUri(),
+            StockHistory.UPDTYPE + "=?",
+            new String[] { "1" });
 
+        return deleted;
+    }
 
-        return actionResult;
+    public int deleteAllPriceHistory() {
+        int deleted = mContext.getContentResolver().delete(getUri(),
+            null,
+            null);
+
+        return deleted;
     }
 }
