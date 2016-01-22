@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -26,12 +25,8 @@ import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Repository for Accounts

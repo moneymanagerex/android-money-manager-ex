@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -35,9 +36,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -45,6 +49,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 
@@ -344,6 +349,8 @@ public class WatchlistItemsFragment
                 } else {
                     setListShownNoAnimation(true);
                 }
+                // update the header
+                displayHeaderData();
         }
     }
 
@@ -383,15 +390,6 @@ public class WatchlistItemsFragment
         }
     }
 
-    /**
-     * Start loader into fragment
-     */
-    public void reloadData() {
-        Bundle arguments = prepareArgsForChildFragment();
-        // mLoaderArgs
-        getLoaderManager().restartLoader(ID_LOADER_WATCHLIST, arguments, this);
-    }
-
     @Override
     public String getSubTitle() {
         return null;
@@ -402,6 +400,15 @@ public class WatchlistItemsFragment
      */
     public boolean isAutoStarLoader() {
         return mAutoStarLoader;
+    }
+
+    /**
+     * Start loader into fragment
+     */
+    public void reloadData() {
+        Bundle arguments = prepareArgsForChildFragment();
+        // mLoaderArgs
+        getLoaderManager().restartLoader(ID_LOADER_WATCHLIST, arguments, this);
     }
 
     /**
@@ -420,6 +427,25 @@ public class WatchlistItemsFragment
             mStockHistoryRepository = new StockHistoryRepository(mContext);
         }
         return mStockHistoryRepository;
+    }
+
+    // Private
+
+    private void displayHeaderData() {
+        AccountRepository repo = new AccountRepository(getActivity());
+        Account account = repo.load(this.accountId);
+
+        TextView label = (TextView) getView().findViewById(R.id.cashBalanceLabel);
+        if (label != null) {
+            label.setText(getString(R.string.cash));
+        }
+
+        TextView textView = (TextView) getView().findViewById(R.id.cashBalanceTextView);
+        if (textView != null) {
+            FormatUtilities formatter = new FormatUtilities(getActivity());
+            textView.setText(formatter.getValueFormatted(
+                account.getInitialBalance(), account.getCurrencyId()));
+        }
     }
 
     private boolean hasHeaderRow() {

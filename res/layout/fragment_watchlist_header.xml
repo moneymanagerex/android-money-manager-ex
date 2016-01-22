@@ -33,8 +33,26 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+                  android:paddingLeft="16dp"
+                  android:paddingStart="16dp"
+
+                  android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cashBalanceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/cash" />
+        <TextView
+            android:id="@+id/cashBalanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="@string/cash" />
+
     </LinearLayout>
 
     <ImageView

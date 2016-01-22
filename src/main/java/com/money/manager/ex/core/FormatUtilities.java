@@ -47,30 +47,12 @@ public class FormatUtilities {
     private static final String LOGCAT = FormatUtilities.class.getSimpleName();
 
     /**
-     * Method, which formats the amount in TextView with the given currency settings.
-     *
-     * @param view       TextView to set the amount
-     * @param amount     to be formatted
-     * @param currencyId Id currency to be formatted
+     * Compatibility wrapper only.
      */
     public static void formatAmountTextView(Context context, TextView view, Money amount,
                                             Integer currencyId) {
-        if (amount == null) {
-            ExceptionHandler handler = new ExceptionHandler(context, null);
-            handler.showMessage("Amount for formatting is null.");
-            Log.w(LOGCAT, "Amount for formatting is null.");
-            return;
-        }
-
-        CurrencyService currencyService = new CurrencyService(context);
-
-        if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount));
-        } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
-        }
-
-        view.setTag(amount);
+        FormatUtilities formatter = new FormatUtilities(context);
+        formatter.formatAmountTextView(view, amount, currencyId);
     }
 
     public static String getIsoDateFrom(int year, int month, int day) {
@@ -92,6 +74,38 @@ public class FormatUtilities {
     private Context context;
     private NumericHelper numericHelper;
 
+    /**
+     * Formats the amount in TextView with the given currency settings.
+     *
+     * @param view       TextView to set the amount
+     * @param amount     to be formatted
+     * @param currencyId Id currency to be formatted
+     */
+    public void formatAmountTextView(TextView view, Money amount,
+                                     Integer currencyId) {
+        if (amount == null) {
+            ExceptionHandler handler = new ExceptionHandler(context, null);
+            handler.showMessage("Amount for formatting is null.");
+            Log.w(LOGCAT, "Amount for formatting is null.");
+            return;
+        }
+
+        CurrencyService currencyService = new CurrencyService(context);
+
+        if (currencyId == null) {
+            view.setText(currencyService.getBaseCurrencyFormatted(amount));
+        } else {
+            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
+        }
+
+        view.setTag(amount);
+    }
+
+    /**
+     * Uses the number of decimals from the base currency, separators from the app locale.
+     * @param amount Amount to be formatted.
+     * @return  String representation of the formatted number.
+     */
     public String formatWithLocale(Money amount) {
         // Use the number of decimals from the base currency.
         int scale = this.getScaleForBaseCurrency();
@@ -176,6 +190,13 @@ public class FormatUtilities {
         return getValueFormatted(value, true, currency);
     }
 
+    public String getValueFormatted(Money value, int currencyId) {
+        CurrencyService currencyService = new CurrencyService(getContext());
+        Currency currency = currencyService.getCurrency(currencyId);
+        
+        return getValueFormatted(value, true, currency);
+    }
+
     public String getNumberFormatted(Money value, int scale, String decimalSeparator, String groupSeparator) {
         int decimals = this.numericHelper.getNumberOfDecimals(scale);
 
@@ -214,10 +235,4 @@ public class FormatUtilities {
         return getValueFormatted(value, service.getBaseCurrency());
     }
 
-//    public String getNumberFormatted(Money value, double scale, String decimalPoint, String groupSeparator) {
-//        // Round the number first.
-//        int decimals = getNumberOfDecimals(scale);
-//
-//        return getNumberFormatted(value, decimals, decimalPoint, groupSeparator);
-//    }
 }

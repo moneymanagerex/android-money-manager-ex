@@ -189,12 +189,6 @@ public class WatchlistFragment
 
         // restart loader
         startLoaderData();
-
-        // set subtitle account name
-//        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-//        if (activity != null) {
-//            activity.getSupportActionBar().setSubtitle(mAccountName);
-//        }
     }
 
     // Menu
@@ -476,7 +470,6 @@ public class WatchlistFragment
 
             }
         });
-
     }
 
     private void initializeListHeader(LayoutInflater inflater) {
@@ -487,20 +480,15 @@ public class WatchlistFragment
         // set listener click on favorite icon for change image
         imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                // set status account
-//                mAccount.setFavoriteAcct(!(mAccount.isFavoriteAcct()));
                 mAccount.setFavorite(!mAccount.getFavorite());
-                // populate content values for update
-                ContentValues values = new ContentValues();
-                values.put(Account.FAVORITEACCT, mAccount.getFavorite());
-                // used only for .Uri here.
-                AccountRepository repo = new AccountRepository(getActivity());
 
-                // update
-                if (getActivity().getContentResolver().update(repo.getUri(), values,
-                    Account.ACCOUNTID + "=?",
-                    new String[]{Integer.toString(getAccountId())}) != 1) {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
+                AccountRepository repo = new AccountRepository(getActivity());
+                boolean saved = repo.update(mAccount);
+
+                if (!saved) {
+                    Toast.makeText(getActivity(),
+                        getActivity().getResources().getString(R.string.db_update_failed),
+                        Toast.LENGTH_LONG).show();
                 } else {
                     setImageViewFavorite();
                 }
@@ -544,7 +532,6 @@ public class WatchlistFragment
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     StockHistoryRepository history = new StockHistoryRepository(getActivity());
-//                    int deleted = history.deleteAutomaticPriceHistory();
                     int deleted = history.deleteAllPriceHistory();
 
                     if (deleted > 0) {
@@ -609,7 +596,6 @@ public class WatchlistFragment
 
         // hide account details bar if all accounts are selected
         if (accountId == Constants.NOT_SET) {
-//            mDataFragment.setListHeader(null);
             mDataFragment.getListView().removeHeaderView(mListHeader);
             mListHeader.setVisibility(View.GONE);
         } else {

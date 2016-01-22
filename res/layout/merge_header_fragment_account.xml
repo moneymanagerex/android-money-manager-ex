@@ -20,10 +20,8 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:orientation="horizontal"
-             android:stretchColumns="1"
-    >
+             android:stretchColumns="1">
 
-    <!-- android:layout_marginLeft="55dp" -->
     <TableRow>
 
         <com.money.manager.ex.view.RobotoTextView

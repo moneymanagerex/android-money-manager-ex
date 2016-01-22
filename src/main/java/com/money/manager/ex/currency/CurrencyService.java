@@ -268,6 +268,7 @@ public class CurrencyService {
     }
 
     /**
+     * Format the given value with the currency settings.
      * @param currencyId of the currency to be formatted
      * @param value      value to format
      * @return formatted value
@@ -276,14 +277,14 @@ public class CurrencyService {
         String result;
 
         // check if value is null
-        if (value == null) value = MoneyFactory.fromString("0");
+        if (value == null) value = MoneyFactory.fromDouble(0);
 
         // find currency id
         if (currencyId != null) {
-            Currency tableCurrency = getCurrency(currencyId);
+            Currency currency = getCurrency(currencyId);
 //            NumericHelper helper = new NumericHelper(mContext);
 
-            if (tableCurrency == null) {
+            if (currency == null) {
                 // no currency
                 return value.toString();
                 // we can not simply cut off the decimals!
@@ -291,7 +292,7 @@ public class CurrencyService {
             } else {
                 // formatted value
                 FormatUtilities formats = new FormatUtilities(getContext());
-                result = formats.getValueFormatted(value, tableCurrency);
+                result = formats.getValueFormatted(value, currency);
             }
         } else {
             result = String.valueOf(value);
