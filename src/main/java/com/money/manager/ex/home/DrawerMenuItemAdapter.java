@@ -17,6 +17,7 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 
 public class DrawerMenuItemAdapter
-		extends ArrayAdapter<DrawerMenuItem> {
+    extends ArrayAdapter<DrawerMenuItem> {
 	
 	public DrawerMenuItemAdapter(Context context) {
 		super(context, 0);
@@ -56,11 +57,16 @@ public class DrawerMenuItemAdapter
 		if (item != null && holder != null) {
             holder.textViewItem.setText(item.getText());
             holder.viewDivider.setVisibility(item.hasDivider() ? View.VISIBLE : View.GONE);
-            if (item.getIcon() != null) {
-				holder.imageViewIcon.setBackgroundResource(item.getIcon());
-			}
-            if (item.getIconDrawable() != null) {
-                holder.imageViewIcon.setBackground(item.getIconDrawable());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (item.getIcon() != null) {
+                    holder.imageViewIcon.setBackgroundResource(item.getIcon());
+                }
+                if (item.getIconDrawable() != null) {
+                    holder.imageViewIcon.setBackground(item.getIconDrawable());
+                }
+            } else {
+                holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
             }
 		}
 		
