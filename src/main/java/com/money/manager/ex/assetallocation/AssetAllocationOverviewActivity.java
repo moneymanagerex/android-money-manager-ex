@@ -51,7 +51,15 @@ public class AssetAllocationOverviewActivity
     }
 
     private String createHtml(AssetClass allocation) {
-        String html = "<html><body style='background: lightgray; padding: 0;'>";
+        String html = "<html>";
+        // Styles
+        html += "<head>" +
+                "<style>" +
+                "body { background: lightgray; padding: 0; } " +
+                "ul li { border-bottom: 1px solid black;  } " +
+                "</style>" +
+                "</head>";
+        html += "<body>";
 
         html += getSummaryRow(allocation);
 
