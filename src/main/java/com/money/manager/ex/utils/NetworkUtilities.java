@@ -22,9 +22,12 @@ import android.net.NetworkInfo;
 
 /**
  * Network utility functions
- * Created by Alen Siljak on 23/07/2015.
  */
 public class NetworkUtilities {
+
+    public static boolean isOnline(Context context) {
+        return new NetworkUtilities(context).isOnline();
+    }
 
     public NetworkUtilities(Context context) {
         mContext = context;
@@ -32,13 +35,17 @@ public class NetworkUtilities {
 
     private Context mContext;
 
+    public Context getContext() {
+        return mContext;
+    }
+
     /**
      * Check if device has connection
      *
      * @return true if is online otherwise false
      */
     public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnected();
@@ -46,7 +53,8 @@ public class NetworkUtilities {
     }
 
     public boolean isOnWiFi() {
-        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // todo: use connManager.getAllNetworks()
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return mWifi.isConnected();
     }

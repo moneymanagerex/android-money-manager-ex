@@ -26,6 +26,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.utils.NetworkUtilities;
 
 public class CurrencyChartActivity
     extends BaseFragmentActivity {
@@ -73,6 +74,8 @@ public class CurrencyChartActivity
     }
 
     private void loadCurrencyChart(String currencySymbol, String baseCurrencySymbol) {
+        // do not try to load if no network.
+        if (!NetworkUtilities.isOnline(this)) return;
         if(currencySymbol == null) return;
 
         // ref: http://stackoverflow.com/questions/4678296/yahoo-historical-currency-rates-api
