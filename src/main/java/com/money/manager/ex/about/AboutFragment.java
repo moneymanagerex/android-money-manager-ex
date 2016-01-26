@@ -42,6 +42,7 @@ import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 
 import java.io.BufferedReader;
@@ -73,8 +74,9 @@ public class AboutFragment extends Fragment {
 
         // Version application
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
-        version = ((MoneyManagerApplication) getActivity().getApplication()).getAppVersionName();
-        build = ((MoneyManagerApplication) getActivity().getApplication()).getAppVersionBuild();
+        Core core = new Core(getActivity());
+        version = core.getAppVersionName();
+        build = core.getAppVersionBuild();
         txtVersion.setText(getString(R.string.version) + " " + version + " (" + getString(R.string.build) + " " + build + ")");
 
         // Send Feedback

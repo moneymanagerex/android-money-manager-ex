@@ -244,26 +244,6 @@ public class MoneyManagerApplication
 
     // dynamic
 
-    public String getAppVersionName() {
-        try {
-            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "getting app version name");
-        }
-        return "n/a";
-    }
-
-    public String getAppVersionBuild() {
-        try {
-            return Integer.toString(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "getting app version build number");
-        }
-        return "n/a";
-    }
-
     public Locale getAppLocale() {
         Locale locale = null;
         Context context = getApplicationContext();
@@ -419,7 +399,8 @@ public class MoneyManagerApplication
             // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
             mTracker = analytics.newTracker(R.xml.global_tracker);
 
-            mTracker.setAppVersion(getAppVersionName());
+            Core core = new Core(getApplicationContext());
+            mTracker.setAppVersion(core.getAppVersionName());
         }
 
         return mTracker;

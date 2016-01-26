@@ -41,7 +41,8 @@ public class NetworkUtilities {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+        return netInfo != null && netInfo.isConnected();
+        // isConnectedOrConnecting
     }
 
     public boolean isOnWiFi() {

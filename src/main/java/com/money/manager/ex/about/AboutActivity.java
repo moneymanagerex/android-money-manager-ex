@@ -18,8 +18,6 @@ package com.money.manager.ex.about;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -31,51 +29,14 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 
 /**
  * About the app
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
  */
-public class AboutActivity extends BaseFragmentActivity implements ActionBar.TabListener {
-    @SuppressWarnings("unused")
-    private static final String LOGCAT = AboutActivity.class.getSimpleName();
+public class AboutActivity
+    extends BaseFragmentActivity
+    implements ActionBar.TabListener {
+
     private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
 
     private ViewPager mViewPager;
-
-    public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 3;
-        private String tabTitles[];
-
-        public MyPagerAdapter(FragmentManager fragmentManager, String titles[]) {
-            super(fragmentManager);
-            tabTitles = titles;
-        }
-
-        // Returns total number of pages
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        // Returns the fragment to display for that page
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
-                    return AboutFragment.newInstance(position);
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return AboutChangelogFragment.newInstance(position);
-                case 2: // Fragment # 1 - This will show SecondFragment
-                    return AboutCreditsFragment.newInstance(position);
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            // Generate title based on item position
-            return tabTitles[position];
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +45,12 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
         setDisplayHomeAsUpEnabled(true);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), new String[]{getString(R.string.about), getString(R.string.changelog), getString(R.string.credits)}));
+        mViewPager.setAdapter(new AboutTabAdapter(getSupportFragmentManager(),
+            new String[]{
+                getString(R.string.about),
+                getString(R.string.changelog),
+                getString(R.string.credits)
+            }));
 
         // Give the PagerSlidingTabStrip the ViewPager
         PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -112,7 +78,8 @@ public class AboutActivity extends BaseFragmentActivity implements ActionBar.Tab
                 fragment = new AboutFragment();
                 break;
             case 1: //changelog
-                fragment = new AboutChangelogFragment();
+//                fragment = new AboutChangelogFragment();
+                fragment = WebChangelogFragment.newInstance();
                 break;
             case 2: //credits
                 fragment = new AboutCreditsFragment();

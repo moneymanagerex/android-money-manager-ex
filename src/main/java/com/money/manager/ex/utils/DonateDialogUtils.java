@@ -44,7 +44,7 @@ public class DonateDialogUtils {
      * @return true if shown
      */
     public static boolean showDonateDialog(final Context context, boolean forceShow) {
-        int currentVersionCode = Core.getCurrentVersionCode(context);
+        int currentVersionCode = new Core(context).getAppVersionCode();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         int lastVersionCode = preferences.getInt(context.getString(PreferenceConstants.PREF_DONATE_LAST_VERSION_KEY), -1);
         if (!(lastVersionCode == currentVersionCode) || forceShow) {

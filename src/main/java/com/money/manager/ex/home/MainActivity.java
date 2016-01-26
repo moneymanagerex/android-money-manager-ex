@@ -596,9 +596,9 @@ public class MainActivity
     private void initialize(Bundle savedInstanceState) {
         handleIntent();
 
-        // show change log dialog
-        Core core = new Core(this);
-        if (core.isToDisplayChangelog()) core.showChangelog();
+        // show change log dialog <- separate changelog maintenance is a waste of time
+//        Core core = new Core(this);
+//        if (core.isToDisplayChangelog()) core.showChangelog();
 
         MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
 
