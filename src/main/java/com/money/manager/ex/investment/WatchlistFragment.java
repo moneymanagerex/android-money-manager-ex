@@ -260,7 +260,7 @@ public class WatchlistFragment
     }
 
     /**
-     * Called from asynchronous task when a single price is downloaded.
+     * Called from asynchronous task when a first price is downloaded.
      * @param symbol Stock symbol
      * @param price Stock price
      * @param date Date of the price

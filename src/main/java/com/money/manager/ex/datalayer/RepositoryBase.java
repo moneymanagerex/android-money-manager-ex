@@ -235,8 +235,9 @@ public abstract class RepositoryBase<T extends EntityBase>
         return results;
     }
 
-    protected ContentValues single(String selection, String[] selectionArgs) {
-        Cursor c = openCursor(getAllColumns(),
+    protected ContentValues first(String selection, String[] selectionArgs) {
+        // getAllColumns()
+        Cursor c = openCursor(null,
             selection,
             selectionArgs);
         if (c == null) return null;

@@ -155,7 +155,7 @@ public class MoneyFactory {
     }
 
     /**
-     * Convert a String monetary value into a Money object. We support a single format - dot-separated decimal part without
+     * Convert a String monetary value into a Money object. We support a first format - dot-separated decimal part without
      * the scientific notation support ( valid example - 355.56 ).
      * @param value Value to parse
      * @return Money
@@ -163,7 +163,7 @@ public class MoneyFactory {
      */
     public static Money fromString( final String value )
     {
-        //fast single pass parser first
+        //fast first pass parser first
         final Money fast = parseFast( value );
         if ( fast != null )
             return fast;
@@ -198,7 +198,7 @@ public class MoneyFactory {
     }
 
     /**
-     * Fast single pass parser, should correctly process most of positive/negative values fitting into <code>long</code>
+     * Fast first pass parser, should correctly process most of positive/negative values fitting into <code>long</code>
      * @param str Floating point number to parse
      * @return Money object or null (if can't parse)
      * @throws java.lang.IllegalArgumentException If a value has more than one decimal digit

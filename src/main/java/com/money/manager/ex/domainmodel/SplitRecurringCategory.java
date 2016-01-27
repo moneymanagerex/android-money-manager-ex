@@ -104,8 +104,8 @@ public class SplitRecurringCategory
     }
 
     @Override
-    public void setSubcategoryId(int subCategId) {
-        setInteger(SUBCATEGID, subCategId);
+    public void setSubcategoryId(Integer subCategoryId) {
+        setInteger(SUBCATEGID, subCategoryId);
     }
 
     @Override

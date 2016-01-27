@@ -105,8 +105,8 @@ public class SplitCategory
     }
 
     @Override
-    public void setSubcategoryId(int subcategoryId) {
-        setInteger(SUBCATEGID, subcategoryId);
+    public void setSubcategoryId(Integer subCategoryId) {
+        setInteger(SUBCATEGID, subCategoryId);
     }
 
     @Override

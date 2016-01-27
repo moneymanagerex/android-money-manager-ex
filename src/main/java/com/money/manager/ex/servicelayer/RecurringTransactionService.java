@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Represent a single Recurring Transaction object and provides related operations.
+ * Represent a first Recurring Transaction object and provides related operations.
  */
 public class RecurringTransactionService
     extends ServiceBase {

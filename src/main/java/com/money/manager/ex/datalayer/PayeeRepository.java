@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 
@@ -59,8 +60,17 @@ public class PayeeRepository
     public Payee load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(Payee.PAYEEID + "=?", MyDatabaseUtils.getArgsForId(id));
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(Payee.PAYEEID, "=", id);
+
+        ContentValues cv = first(Payee.PAYEEID + "=?", MyDatabaseUtils.getArgsForId(id));
+
         Payee payee = new Payee(cv);
         return payee;
+    }
+
+    public boolean save(Payee payee) {
+        int id = payee.getId();
+        return super.update(id, payee.contentValues, Payee.PAYEEID + "=" + id);
     }
 }

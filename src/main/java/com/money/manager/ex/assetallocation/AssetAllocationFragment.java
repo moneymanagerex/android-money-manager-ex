@@ -51,7 +51,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 import de.greenrobot.event.EventBus;
 
 /**
- * A list fragment that displays a single Asset Class contents (stocks or child asset classes).
+ * A list fragment that displays a first Asset Class contents (stocks or child asset classes).
  */
 public class AssetAllocationFragment
     extends BaseListFragment {

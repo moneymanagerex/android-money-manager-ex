@@ -59,7 +59,7 @@ public class AccountTransactionRepository
     public AccountTransaction load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(AccountTransaction.TRANSID + "=?", MyDatabaseUtils.getArgsForId(id));
+        ContentValues cv = first(AccountTransaction.TRANSID + "=?", MyDatabaseUtils.getArgsForId(id));
         AccountTransaction tx = new AccountTransaction(cv);
         return tx;
     }

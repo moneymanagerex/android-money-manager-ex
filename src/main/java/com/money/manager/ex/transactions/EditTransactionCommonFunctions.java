@@ -111,7 +111,7 @@ public class EditTransactionCommonFunctions {
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    public int subCategoryId = Constants.NOT_SET;
+//    public int subCategoryId = Constants.NOT_SET;
     public Money amountTo = MoneyFactory.fromDouble(0);
     //public Money amount = MoneyFactory.fromDouble(0); // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
@@ -218,7 +218,7 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean displayCategoryName() {
-        if(this.transactionEntity.getCategoryId() <= 0 && subCategoryId <= 0) return false;
+        if(this.transactionEntity.getCategoryId() <= 0 && this.transactionEntity.getSubcategoryId() <= 0) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
@@ -229,7 +229,7 @@ public class EditTransactionCommonFunctions {
         }
 
         SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
-        Subcategory subcategory = subRepo.load(subCategoryId);
+        Subcategory subcategory = subRepo.load(this.transactionEntity.getSubcategoryId());
         if (subcategory != null) {
             this.subCategoryName = subcategory.getName();
         } else {
@@ -241,8 +241,8 @@ public class EditTransactionCommonFunctions {
 
     /**
      * Get content values for saving data.
-     * @param isTransfer
-     * @return
+     * @param isTransfer Indicate whether the transaction is a transfer or not. Used to calculate the values.
+     * @return Content values for saving.
      */
     public ContentValues getContentValues(boolean isTransfer) {
         ContentValues values = new ContentValues();
@@ -277,12 +277,11 @@ public class EditTransactionCommonFunctions {
 
         // Category and subcategory
         if (isTransfer || isSplitSelected()) {
-//            this.categoryId = Constants.NOT_SET;
             this.transactionEntity.setCategoryId(Constants.NOT_SET);
-            this.subCategoryId = Constants.NOT_SET;
+            this.transactionEntity.setSubcategoryId(Constants.NOT_SET);
         }
         values.put(ITransactionEntity.CATEGID, this.transactionEntity.getCategoryId());
-        values.put(ITransactionEntity.SUBCATEGID, this.subCategoryId);
+        values.put(ITransactionEntity.SUBCATEGID, this.transactionEntity.getSubcategoryId());
 
         values.put(ITransactionEntity.FOLLOWUPID, Constants.NOT_SET);
         values.put(ITransactionEntity.TRANSACTIONNUMBER, this.edtTransNumber.getText().toString());
@@ -485,7 +484,7 @@ public class EditTransactionCommonFunctions {
             @Override
             public void onClick(View v) {
                 if (!isSplitSelected()) {
-                    // select single category.
+                    // select first category.
                     Intent intent = new Intent(mParent, CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
                     mParent.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
@@ -607,7 +606,7 @@ public class EditTransactionCommonFunctions {
         splitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSplit(!mSplitSelected);
+                setSplit(!isSplitSelected());
 
                 // if the split has just been set, show the splits dialog immediately?
                 if (isSplitSelected()) {
@@ -834,7 +833,7 @@ public class EditTransactionCommonFunctions {
 
                 this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                subCategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                this.transactionEntity.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET));
                 subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 // refresh UI category
                 refreshCategoryName();
@@ -1053,12 +1052,12 @@ public class EditTransactionCommonFunctions {
             // check if category is valid
             if (curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)) != Constants.NOT_SET) {
                 this.transactionEntity.setCategoryId(curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)));
-                subCategoryId = curPayee.getInt(curPayee.getColumnIndex(Payee.SUBCATEGID));
+                this.transactionEntity.setSubcategoryId(curPayee.getInt(curPayee.getColumnIndex(Payee.SUBCATEGID)));
                 // create instance of query
                 QueryCategorySubCategory category = new QueryCategorySubCategory(mParent.getApplicationContext());
                 // compose selection
                 String where = "CATEGID=" + Integer.toString(this.transactionEntity.getCategoryId()) +
-                    " AND SUBCATEGID=" + Integer.toString(subCategoryId);
+                    " AND SUBCATEGID=" + Integer.toString(this.transactionEntity.getSubcategoryId());
                 Cursor curCategory = mParent.getContentResolver().query(category.getUri(),
                         category.getAllColumns(), where, null, null);
                 // check cursor is valid
@@ -1287,6 +1286,7 @@ public class EditTransactionCommonFunctions {
     private void createSplitForCategoryAndAmount() {
         // Add the new split record.
         ITransactionEntity entity = SplitItemFactory.create(this.mDatasetName);
+
         // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
 
@@ -1306,6 +1306,9 @@ public class EditTransactionCommonFunctions {
         }
 
         entity.setCategoryId(this.transactionEntity.getCategoryId());
+
+        // SubCategory
+        entity.setSubcategoryId(this.transactionEntity.getSubcategoryId());
 
         this.getSplitTransactions().add(entity);
     }
@@ -1333,8 +1336,8 @@ public class EditTransactionCommonFunctions {
 
             dialog.show(mParent.getSupportFragmentManager(), "tag");
 
-            // Dialog result is handled in onDialogPositiveClick or onDialogNegativeClick
-            // in the respective activity classes!
+            // Dialog result is handled in onEvent handlers in the listeners.
+
             return;
         }
 

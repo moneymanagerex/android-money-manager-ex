@@ -57,8 +57,15 @@ public class Payee
         return getInt(Payee.CATEGID);
     }
 
+    public void setCategoryId(Integer value) {
+        setInteger(Payee.CATEGID, value);
+    }
+
     public Integer getSubcategoryId() {
         return getInt(Payee.SUBCATEGID);
     }
 
+    public void setSubcategoryId(Integer value) {
+        setInteger(SUBCATEGID, value);
+    }
 }

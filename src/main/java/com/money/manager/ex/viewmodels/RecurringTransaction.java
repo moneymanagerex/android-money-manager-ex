@@ -68,7 +68,7 @@ public class RecurringTransaction
         return getInt(ITransactionEntity.SUBCATEGID);
     }
 
-    public void setSubcategoryId(int value) {
+    public void setSubcategoryId(Integer value) {
         setInteger(ITransactionEntity.SUBCATEGID, value);
     }
 

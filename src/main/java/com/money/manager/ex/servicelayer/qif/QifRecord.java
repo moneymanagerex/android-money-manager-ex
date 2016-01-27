@@ -35,7 +35,7 @@ import java.util.Locale;
 import info.javaperformance.money.Money;
 
 /**
- * A .qif file record. Represents a single transaction or account header record.
+ * A .qif file record. Represents a first transaction or account header record.
  * References:
  * QIF format
  * http://en.wikipedia.org/wiki/Quicken_Interchange_Format

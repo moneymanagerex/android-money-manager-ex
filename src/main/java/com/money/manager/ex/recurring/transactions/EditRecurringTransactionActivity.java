@@ -274,7 +274,10 @@ public class EditRecurringTransactionActivity
             : Constants.NOT_SET;
         outState.putInt(KEY_CATEGORY_ID, categoryId);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
-        outState.putInt(KEY_SUBCATEGORY_ID, mCommonFunctions.subCategoryId);
+        int subCategoryId = mCommonFunctions.transactionEntity.getSubcategoryId() != null
+            ? mCommonFunctions.transactionEntity.getSubcategoryId()
+            : Constants.NOT_SET;
+        outState.putInt(KEY_SUBCATEGORY_ID, subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
@@ -378,7 +381,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.amountTo = tx.totalAmount;
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
-        mCommonFunctions.subCategoryId = tx.subCategoryId;
+        mCommonFunctions.transactionEntity.setSubcategoryId(tx.subCategoryId);
         mCommonFunctions.mTransNumber = tx.transactionNumber;
         mCommonFunctions.mNotes = tx.notes;
         mCommonFunctions.mDate = tx.nextOccurrence;
@@ -503,7 +506,7 @@ public class EditRecurringTransactionActivity
             values.clear();
             // set categoryId and subCategoryId
             values.put(Payee.CATEGID, mCommonFunctions.transactionEntity.getCategoryId());
-            values.put(Payee.SUBCATEGID, mCommonFunctions.subCategoryId);
+            values.put(Payee.SUBCATEGID, mCommonFunctions.transactionEntity.getSubcategoryId());
             // create instance TablePayee for update
             TablePayee payee = new TablePayee();
             // update data
@@ -542,8 +545,6 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(KEY_TRANS_STATUS);
 
-//        NumericHelper numericHelper = new NumericHelper(getApplicationContext());
-
         mCommonFunctions.transactionEntity.setAmount(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT)));
         mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO));
 
@@ -551,7 +552,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
         mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(KEY_CATEGORY_ID));
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-        mCommonFunctions.subCategoryId = savedInstanceState.getInt(KEY_SUBCATEGORY_ID);
+        mCommonFunctions.transactionEntity.setSubcategoryId(savedInstanceState.getInt(KEY_SUBCATEGORY_ID));
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
         mCommonFunctions.mNotes = savedInstanceState.getString(KEY_NOTES);
         mCommonFunctions.mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);

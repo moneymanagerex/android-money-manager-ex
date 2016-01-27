@@ -60,7 +60,7 @@ public interface ITransactionEntity
 
     void setCategoryId(int categId);
 
-    void setSubcategoryId(int subCategId);
+    void setSubcategoryId(Integer subCategId);
 
     /**
      * @param splitTransAmount the splitTransAmount to set

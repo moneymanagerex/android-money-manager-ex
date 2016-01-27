@@ -568,7 +568,7 @@ public class DropboxHelper {
     }
 
     /**
-     * Get a single entry from dropbox
+     * Get a first entry from dropbox
      *
      * @param entry path dropbox entry
      * @return

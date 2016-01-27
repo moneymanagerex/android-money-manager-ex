@@ -44,7 +44,7 @@ public class CategoryRepository
     public Category load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = single(Category.CATEGID + "=?", MyDatabaseUtils.getArgsForId(id));
+        ContentValues cv = first(Category.CATEGID + "=?", MyDatabaseUtils.getArgsForId(id));
         Category category = new Category(cv);
         return category;
     }
