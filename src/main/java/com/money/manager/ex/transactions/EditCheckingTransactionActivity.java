@@ -51,6 +51,8 @@ import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
+import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,8 +64,7 @@ import info.javaperformance.money.MoneyFactory;
  * activity for editing Checking Account Transaction
  */
 public class EditCheckingTransactionActivity
-    extends BaseFragmentActivity
-    implements YesNoDialogListener {
+    extends BaseFragmentActivity {
 
     // action type intent
     public String mIntentAction;
@@ -163,35 +164,6 @@ public class EditCheckingTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
 
-    // Dialog
-
-    /**
-     * Handle user's confirmation to delete any Split Categories when switching to
-     * Transfer transaction type.
-     * @param dialog The dialog that is returning the value.
-     */
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-//        YesNoDialog yesNoDialog = (YesNoDialog) dialog;
-//        String purpose = yesNoDialog.getPurpose();
-        // for now ignore the purpose as we only have one yes-no dialog.
-        mCommonFunctions.confirmDeletingCategories();
-    }
-
-    /**
-     * The user stopped switching to Transfer. Restore previous state.
-     * @param dialog The dialog that is returning the value.
-     */
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog){
-        mCommonFunctions.cancelChangingTransactionToTransfer();
-    }
-
-//    @Override
-//    public void onFinishedInputAmountDialog(int id, Money amount) {
-//
-//    }
-
     @Override
     public boolean onActionCancelClick() {
         return mCommonFunctions.onActionCancelClick();
@@ -218,6 +190,19 @@ public class EditCheckingTransactionActivity
     public void onEvent(AmountEnteredEvent event) {
         int id = Integer.parseInt(event.requestId);
         mCommonFunctions.onFinishedInputAmountDialog(id, event.amount);
+    }
+
+    /**
+     * Handle user's confirmation to delete any Split Categories when switching to
+     * Transfer transaction type.
+     * @param event
+     */
+    public void onEvent(DialogPositiveClickedEvent event) {
+        mCommonFunctions.confirmDeletingCategories();
+    }
+
+    public void onEvent(DialogNegativeClickedEvent event) {
+        mCommonFunctions.cancelChangingTransactionToTransfer();
     }
 
     // Private

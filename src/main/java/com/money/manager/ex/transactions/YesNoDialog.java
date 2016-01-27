@@ -17,17 +17,21 @@
 
 package com.money.manager.ex.transactions;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.support.v4.app.DialogFragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
+import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
+
+import de.greenrobot.event.EventBus;
+
 /**
  */
 public class YesNoDialog
-        extends DialogFragment {
+    extends DialogFragment {
 
     public static final String PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER = "delete-splits";
 
@@ -44,25 +48,9 @@ public class YesNoDialog
      * If there is only one then it does not need to be used.
      */
     private String mPurpose;
-    private YesNoDialogListener mListener;
 
     public String getPurpose() {
         return mPurpose;
-    }
-
-    // Override the Fragment.onAttach() method to instantiate the listener.
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the listener so we can send events to the host
-            mListener = (YesNoDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement YesNoDialogListener");
-        }
     }
 
     @Override
@@ -81,9 +69,7 @@ public class YesNoDialog
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-//                        getActivity().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
-//                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
-                        mListener.onDialogPositiveClick(YesNoDialog.this);
+                        EventBus.getDefault().post(new DialogPositiveClickedEvent());
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
@@ -91,8 +77,7 @@ public class YesNoDialog
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-//                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
-                        mListener.onDialogNegativeClick(YesNoDialog.this);
+                        EventBus.getDefault().post(new DialogNegativeClickedEvent());
                     }
                 })
                 .create();

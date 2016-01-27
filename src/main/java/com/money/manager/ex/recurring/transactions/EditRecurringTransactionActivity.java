@@ -21,7 +21,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -50,21 +49,20 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.transactions.YesNoDialogListener;
+import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
+import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.viewmodels.RecurringTransaction;
 
 import java.text.SimpleDateFormat;
 
 import de.greenrobot.event.EventBus;
-import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Recurring transactions are stored in BillsDeposits table.
  */
 public class EditRecurringTransactionActivity
-    extends BaseFragmentActivity
-    implements YesNoDialogListener {
+    extends BaseFragmentActivity {
 
     private static final String LOGCAT = EditRecurringTransactionActivity.class.getSimpleName();
 
@@ -101,7 +99,6 @@ public class EditRecurringTransactionActivity
     private int mFrequencies = 0;
 
     // Controls on the form.
-//    private ImageButton btnTransNumber;
     private EditText edtTimesRepeated;
     private TextView txtRepeats, txtTimesRepeated;
 
@@ -331,6 +328,14 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.onFinishedInputAmountDialog(id, event.amount);
     }
 
+    public void onEvent(DialogPositiveClickedEvent event) {
+        mCommonFunctions.confirmDeletingCategories();
+    }
+
+    public void onEvent(DialogNegativeClickedEvent event) {
+        mCommonFunctions.cancelChangingTransactionToTransfer();
+    }
+
     // Public
 
     /**
@@ -557,18 +562,6 @@ public class EditRecurringTransactionActivity
 
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
-    }
-
-    // YesNoDialogListener
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        mCommonFunctions.confirmDeletingCategories();
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        mCommonFunctions.cancelChangingTransactionToTransfer();
     }
 }
 
