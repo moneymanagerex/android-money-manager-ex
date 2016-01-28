@@ -685,4 +685,5 @@
     <string name="success">Operation successful</string>
     <string name="overview">Overview</string>
     <string name="title_activity_asset_allocation_overview">Asset Allocation Overview</string>
+    <string name="count_of_transactions">Count of transactions</string>
 </resources>

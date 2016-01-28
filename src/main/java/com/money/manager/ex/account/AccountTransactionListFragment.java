@@ -38,6 +38,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -529,6 +530,7 @@ public class AccountTransactionListFragment
         // take reference text view from layout
         this.viewHolder.txtAccountBalance = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
         this.viewHolder.txtAccountReconciled = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
+        this.viewHolder.txtCountOfTransactions = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewCountOfTransactions);
         this.viewHolder.txtAccountDifference = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
         // favorite icon
         this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
@@ -679,6 +681,18 @@ public class AccountTransactionListFragment
                 mAccount.getCurrencyId(), mAccountBalance));
             this.viewHolder.txtAccountReconciled.setText(currencyService.getCurrencyFormatted(
                 mAccount.getCurrencyId(), mAccountReconciled));
+
+            int count = 0;
+            View root = getView();
+            if (root != null) {
+                View rawListView = root.findViewById(android.R.id.list);
+                if (rawListView != null) {
+                    ListView listView = (ListView) rawListView;
+                    count = listView.getAdapter().getCount() - 1;
+                }
+            }
+
+            this.viewHolder.txtCountOfTransactions.setText(Integer.toString(count));
             this.viewHolder.txtAccountDifference.setText(currencyService.getCurrencyFormatted(
                 mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
         }
