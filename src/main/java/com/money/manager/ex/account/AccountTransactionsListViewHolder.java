@@ -26,6 +26,7 @@ import android.widget.TextView;
 public class AccountTransactionsListViewHolder {
     public TextView txtAccountBalance;
     public TextView txtAccountReconciled;
+    public TextView txtCountOfTransactions;
     public TextView  txtAccountDifference;
     public ImageView imgAccountFav;
     public ImageView imgGotoAccount;
