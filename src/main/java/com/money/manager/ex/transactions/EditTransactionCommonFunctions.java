@@ -340,6 +340,10 @@ public class EditTransactionCommonFunctions {
         return (FontIconView) mParent.findViewById(R.id.withdrawalButtonIcon);
     }
 
+    public boolean hasPayee() {
+        return this.payeeId > 0;
+    }
+
     public boolean hasSplitCategories() {
         return mSplitTransactions != null && !mSplitTransactions.isEmpty();
     }

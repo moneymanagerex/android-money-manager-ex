@@ -675,7 +675,7 @@ public class EditCheckingTransactionActivity
         }
 
         // update category and subcategory for the default payee
-        if ((!isTransfer) && (mCommonFunctions.payeeId > 0) && !hasSplitCategories) {
+        if ((!isTransfer) && mCommonFunctions.hasPayee() && !hasSplitCategories) {
             PayeeRepository payeeRepository = new PayeeRepository(this);
             Payee payee = payeeRepository.load(mCommonFunctions.payeeId);
 
