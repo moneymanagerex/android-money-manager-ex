@@ -17,16 +17,13 @@
 package com.money.manager.ex;
 
 import android.app.Application;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDex;
-import android.support.v4.text.TextUtilsCompat;
+//import android.support.multidex.MultiDex;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
@@ -239,7 +236,7 @@ public class MoneyManagerApplication
         // Trying to mitigate issues on some 4.2.2 devices
         // https://code.google.com/p/android/issues/detail?id=78377
         // ref: https://developer.android.com/tools/building/multidex.html
-        MultiDex.install(this);
+//        MultiDex.install(this);
     }
 
     // dynamic
