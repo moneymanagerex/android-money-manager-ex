@@ -18,7 +18,6 @@ package com.money.manager.ex.account;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -27,7 +26,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,7 +41,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
@@ -77,7 +74,8 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Checking account fragment. Shows the list of transactions.
+ * Checking account fragment.
+ * Shows the list of transactions.
  */
 public class AccountTransactionListFragment
     extends Fragment
@@ -89,6 +87,7 @@ public class AccountTransactionListFragment
     private static final String KEY_STATUS = "AccountTransactionListFragment:StatusFilter";
 
     private static final int ID_LOADER_SUMMARY = 2;
+    private static final String TAG_FILTER_DIALOG = "FilterDialogTag";
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -117,6 +116,7 @@ public class AccountTransactionListFragment
     private AccountTransactionsListViewHolder viewHolder;
 
     // filter
+    private TransactionFilter mFilter;
     private DateRange mDateRange;
     private StatusFilter mStatusFilter;
 
@@ -126,6 +126,9 @@ public class AccountTransactionListFragment
 
         // get account id from the arguments first.
         mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
+
+        // initialize filter(s)
+        this.mFilter = new TransactionFilter();
 
         // Set the default period.
         DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
@@ -480,7 +483,6 @@ public class AccountTransactionListFragment
         }
 
         if (result) {
-//            item.setChecked(true);
             if (item.isChecked()) {
                 // remove filter
                 mStatusFilter.filter.remove(status.getCode());
@@ -685,26 +687,6 @@ public class AccountTransactionListFragment
     }
 
     /**
-     * start the activity of transaction management
-     *
-     * @param transId null set if you want to do a new transaction, or transaction id
-     */
-    private void startCheckingAccountActivity(Integer transId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
-        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
-        // check transId not null
-        if (transId != null) {
-            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivity(intent);
-    }
-
-    /**
      * Select the current account in the accounts dropdown.
      */
     private void selectCurrentAccount() {
@@ -787,6 +769,11 @@ public class AccountTransactionListFragment
         }
     }
 
+    private void showFilterDialog() {
+        FilterDialogFragment dialog = FilterDialogFragment.newInstance(mFilter);
+        dialog.show(getActivity().getFragmentManager(), TAG_FILTER_DIALOG);
+    }
+
     private void showTransactionsFragment(ViewGroup header) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
@@ -803,6 +790,26 @@ public class AccountTransactionListFragment
         // add fragment
         transaction.replace(R.id.fragmentContent, mAllDataListFragment, getFragmentName());
         transaction.commit();
+    }
+
+    /**
+     * start the activity of transaction management
+     *
+     * @param transId null set if you want to do a new transaction, or transaction id
+     */
+    private void startCheckingAccountActivity(Integer transId) {
+        // create intent, set Account ID
+        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
+        intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
+        // check transId not null
+        if (transId != null) {
+            intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
+            intent.setAction(Intent.ACTION_EDIT);
+        } else {
+            intent.setAction(Intent.ACTION_INSERT);
+        }
+        // launch activity
+        startActivity(intent);
     }
 
     /**

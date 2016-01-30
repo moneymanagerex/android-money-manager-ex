@@ -30,5 +30,4 @@ public class AccountTransactionsListViewHolder {
     public ImageView imgAccountFav;
     public ImageView imgGotoAccount;
     public ViewGroup listHeader;
-
 }
