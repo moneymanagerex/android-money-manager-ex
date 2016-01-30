@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.account;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.domainmodel.Account;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,8 +37,10 @@ public class FilterDialogFragment
     extends DialogFragment {
 
     private static final String ARG_TX_FILTER = "transactionFilter";
+    private static final String ARG_ACCOUNT = "account";
 
-    private String mTransactionFilter;
+    private TransactionFilter mTransactionFilter;
+    private Account mAccount;
 
     public FilterDialogFragment() {
         // Required empty public constructor
@@ -48,27 +52,50 @@ public class FilterDialogFragment
      *
      * @return A new instance of fragment FilterDialogFragment.
      */
-    public static FilterDialogFragment newInstance(TransactionFilter filter) {
+    public static FilterDialogFragment newInstance(TransactionFilter filter, Account account) {
         FilterDialogFragment fragment = new FilterDialogFragment();
+
         Bundle args = new Bundle();
         args.putParcelable(ARG_TX_FILTER, filter);
+        args.putParcelable(ARG_ACCOUNT, account);
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mTransactionFilter = getArguments().getString(ARG_TX_FILTER);
+            mTransactionFilter = getArguments().getParcelable(ARG_TX_FILTER);
+            mAccount = getArguments().getParcelable(ARG_ACCOUNT);
         }
+
+        // todo: load additional details
+
+        // styling
+        setStyle(DialogFragment.STYLE_NORMAL, getTheme());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_filter_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_filter_dialog, container, false);
+
+        getDialog().setTitle(getActivity().getString(R.string.account));
+
+
+        // todo: add data
+
+        return view;
     }
 
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        return dialog;
+    }
 }

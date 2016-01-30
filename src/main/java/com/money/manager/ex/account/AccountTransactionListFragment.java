@@ -117,8 +117,6 @@ public class AccountTransactionListFragment
 
     // filter
     private TransactionFilter mFilter;
-//    private DateRange mDateRange;
-//    private StatusFilter mStatusFilter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -233,6 +231,10 @@ public class AccountTransactionListFragment
         inflater.inflate(R.menu.menu_transaction_status_selector, menu);
         initTransactionStatusMenu(menu);
 
+        // filter
+        inflater.inflate(R.menu.menu_transaction_filters, menu);
+        initializeFilterMenu(menu);
+
         // call create option menu of fragment
         mAllDataListFragment.onCreateOptionsMenu(menu, inflater);
     }
@@ -275,10 +277,13 @@ public class AccountTransactionListFragment
         boolean result;
 
         result = datePeriodItemSelected(item);
-        if (result) return result;
+        if (result) return true;
 
         result = isStatusSelectionHandled(item);
-        if (result) return result;
+        if (result) return true;
+
+        result = isFilterSelected(item);
+        if (result) return true;
 
         switch (item.getItemId()) {
             case R.id.menu_add_transaction_account:
@@ -399,6 +404,68 @@ public class AccountTransactionListFragment
 
     // Private
 
+    private boolean datePeriodItemSelected(MenuItem item) {
+        int stringId;
+        int itemId = item.getItemId();
+
+        DefinedDateRanges dateRanges = new DefinedDateRanges(getActivity());
+        DefinedDateRange range = dateRanges.getByMenuId(itemId);
+        if (range == null) return false;
+        stringId = range.nameResourceId;
+
+        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
+        settings.setShowTransactions(range.key);
+
+        // Save the selected period.
+        DateUtils dateUtils = new DateUtils(getContext());
+        mFilter.dateRange = dateUtils.getDateRangeForPeriod(stringId);
+
+        item.setChecked(true);
+
+        loadTransactions();
+
+        return true;
+    }
+
+    private Spinner getAccountsSpinner() {
+//        Spinner spinner = null;
+//
+//        MenuItem item = menu.findItem(R.id.menuAccountSelector);
+//        if (item != null) {
+//            spinner = (Spinner) MenuItemCompat.getActionView(item);
+//        }
+//
+//        return spinner;
+
+        // get from custom view, not the menu.
+
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return null;
+
+        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
+        return spinner;
+    }
+
+    private ActionBar getActionBar() {
+        if (!(getActivity() instanceof AppCompatActivity)) return null;
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+        return actionBar;
+    }
+
+    private void initializeFilterMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menuTransactionFilters);
+
+        // Use a font icon.
+        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_chevron_down);
+        // get the toolbar item color.
+        icon.setTextColor(UIHelper.getColor(getActivity(), R.attr.toolbarItemColor)); // Color.RED
+        item.setIcon(icon);
+
+        // selection handled in onOptionsItemSelected
+    }
+
     private void initializeAccountsSelector() {
         ActionBar actionBar = getActionBar();
         if (actionBar == null) return;
@@ -430,27 +497,43 @@ public class AccountTransactionListFragment
         // selection handled in onOptionsItemSelected
     }
 
-    private boolean datePeriodItemSelected(MenuItem item) {
-        int stringId;
-        int itemId = item.getItemId();
+    private void initializeListHeader(LayoutInflater inflater) {
+        this.viewHolder.listHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
+        // take reference text view from layout
+        this.viewHolder.txtAccountBalance = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
+        this.viewHolder.txtAccountReconciled = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
+        this.viewHolder.txtAccountDifference = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
+        // favorite icon
+        this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
 
-        DefinedDateRanges dateRanges = new DefinedDateRanges(getActivity());
-        DefinedDateRange range = dateRanges.getByMenuId(itemId);
-        if (range == null) return false;
-        stringId = range.nameResourceId;
+        // set listener click on favorite icon for change image
+        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                // set status account
+                mAccount.setFavorite(!(mAccount.getFavorite()));
 
-        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
-        settings.setShowTransactions(range.key);
+                AccountRepository repo = new AccountRepository(getActivity());
+                boolean updated = repo.update(mAccount);
 
-        // Save the selected period.
-        DateUtils dateUtils = new DateUtils(getContext());
-        mFilter.dateRange = dateUtils.getDateRangeForPeriod(stringId);
+                if (!updated) {
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
+                } else {
+                    setImageViewFavorite();
+                }
+            }
+        });
 
-        item.setChecked(true);
-
-        loadTransactions();
-
-        return true;
+        // goto account
+        this.viewHolder.imgGotoAccount = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
+        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean isStatusSelectionHandled(MenuItem item) {
@@ -499,70 +582,16 @@ public class AccountTransactionListFragment
         return result;
     }
 
-    private Spinner getAccountsSpinner() {
-//        Spinner spinner = null;
-//
-//        MenuItem item = menu.findItem(R.id.menuAccountSelector);
-//        if (item != null) {
-//            spinner = (Spinner) MenuItemCompat.getActionView(item);
-//        }
-//
-//        return spinner;
+    private boolean isFilterSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        // get from custom view, not the menu.
+        if (id == R.id.menuTransactionFilters) {
+            // show dialog
+            showFilterDialog();
+            return true;
+        }
 
-        ActionBar actionBar = getActionBar();
-        if (actionBar == null) return null;
-
-        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
-        return spinner;
-    }
-
-    private ActionBar getActionBar() {
-        if (!(getActivity() instanceof AppCompatActivity)) return null;
-
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        ActionBar actionBar = activity.getSupportActionBar();
-        return actionBar;
-    }
-
-    private void initializeListHeader(LayoutInflater inflater) {
-        this.viewHolder.listHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
-        // take reference text view from layout
-        this.viewHolder.txtAccountBalance = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
-        this.viewHolder.txtAccountReconciled = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
-        this.viewHolder.txtAccountDifference = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
-        // favorite icon
-        this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
-
-        // set listener click on favorite icon for change image
-        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // set status account
-                mAccount.setFavorite(!(mAccount.getFavorite()));
-
-                AccountRepository repo = new AccountRepository(getActivity());
-                boolean updated = repo.update(mAccount);
-
-                if (!updated) {
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();
-                } else {
-                    setImageViewFavorite();
-                }
-            }
-        });
-
-        // goto account
-        this.viewHolder.imgGotoAccount = (ImageView) this.viewHolder.listHeader.findViewById(R.id.imageViewGotoAccount);
-        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                intent.putExtra(AccountEditActivity.KEY_ACCOUNT_ID, mAccountId);
-                intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-            }
-        });
+        return false;
     }
 
     private void loadAccountsInto(final Spinner spinner) {
@@ -770,7 +799,7 @@ public class AccountTransactionListFragment
     }
 
     private void showFilterDialog() {
-        FilterDialogFragment dialog = FilterDialogFragment.newInstance(mFilter);
+        FilterDialogFragment dialog = FilterDialogFragment.newInstance(mFilter, mAccount);
         dialog.show(getActivity().getFragmentManager(), TAG_FILTER_DIALOG);
     }
 
