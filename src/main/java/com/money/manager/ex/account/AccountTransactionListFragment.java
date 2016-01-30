@@ -799,7 +799,8 @@ public class AccountTransactionListFragment
     }
 
     private void showFilterDialog() {
-        FilterDialogFragment dialog = FilterDialogFragment.newInstance(mFilter, mAccount);
+        int numberOfRecords = mAllDataListFragment.getListAdapter().getCount();
+        FilterDialogFragment dialog = FilterDialogFragment.newInstance(mFilter, mAccount, numberOfRecords);
         dialog.show(getActivity().getFragmentManager(), TAG_FILTER_DIALOG);
     }
 

@@ -26,24 +26,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/time_frame"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/numberOfTransactionsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/transaction_status"/>
+            android:text="@string/number_transaction_found" />
 
     </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<com.money.manager.ex.view.RobotoTextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/time_frame"/>-->
+
+        <!--<Spinner-->
+            <!--android:id="@+id/timeFrameSpinner"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+    <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<com.money.manager.ex.view.RobotoTextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/transaction_status"/>-->
+
+    <!--</LinearLayout>-->
 
 </LinearLayout>
