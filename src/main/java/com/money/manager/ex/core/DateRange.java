@@ -16,14 +16,18 @@
  */
 package com.money.manager.ex.core;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.money.manager.ex.utils.DateUtils;
+
 import java.util.Date;
 
 /**
  * Represents a date range.
- *
- * Created by Alen Siljak on 11/09/2015.
  */
-public class DateRange {
+public class DateRange
+    implements Parcelable {
 
     public DateRange(Date dateFrom, Date dateTo) {
         this.dateFrom = dateFrom;
@@ -32,4 +36,35 @@ public class DateRange {
 
     public Date dateFrom;
     public Date dateTo;
+
+    protected DateRange(Parcel in) {
+        this.dateFrom = DateUtils.getDateFromIsoString(in.readString());
+        this.dateTo = DateUtils.getDateFromIsoString(in.readString());
+    }
+
+    public static final Creator<DateRange> CREATOR = new Creator<DateRange>() {
+        @Override
+        public DateRange createFromParcel(Parcel in) {
+            return new DateRange(in);
+        }
+
+        @Override
+        public DateRange[] newArray(int size) {
+            return new DateRange[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        String from = DateUtils.getIsoStringDate(this.dateFrom);
+        dest.writeString(from);
+
+        String to = DateUtils.getIsoStringDate(this.dateTo);
+        dest.writeString(to);
+    }
 }

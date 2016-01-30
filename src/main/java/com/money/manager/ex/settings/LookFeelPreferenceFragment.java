@@ -133,14 +133,14 @@ public class LookFeelPreferenceFragment
                     .getShowTransactions();
             DefinedDateRange range = ranges.get(rangeName);
 
-            lstShow.setSummary(range.getLocalizedName());
+            lstShow.setSummary(range.getLocalizedName(getActivity()));
             lstShow.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String newRangeKey = newValue.toString();
                     DefinedDateRange range = ranges.getByName(newRangeKey);
 
-                    lstShow.setSummary(range.getLocalizedName());
+                    lstShow.setSummary(range.getLocalizedName(getActivity()));
                     return true;
                 }
             });

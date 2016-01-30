@@ -43,8 +43,6 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * Test Defined Date Ranges.
- *
- * Created by Alen Siljak on 23/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
@@ -63,6 +61,10 @@ public class DefinedDateRangesTests {
     @After
     public void teardown() {
 
+    }
+
+    public Context getContext() {
+        return this.context;
     }
 
     @Test
@@ -113,7 +115,7 @@ public class DefinedDateRangesTests {
         String expected = this.context.getString(R.string.future_transactions);
 
         DefinedDateRange range = this.testObject.get(DefinedDateRangeName.FUTURE_TRANSACTIONS);
-        String actual = range.getLocalizedName();
+        String actual = range.getLocalizedName(getContext());
 
         assertEquals(expected, actual);
     }

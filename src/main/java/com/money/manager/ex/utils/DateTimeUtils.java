@@ -71,5 +71,4 @@ public class DateTimeUtils {
     public static void setDatePicker(DateTime date, DatePicker datePicker) {
         datePicker.updateDate(date.getYear(), date.getMonth() - 1, date.getDay());
     }
-
 }

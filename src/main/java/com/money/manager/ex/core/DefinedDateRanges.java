@@ -58,7 +58,7 @@ public class DefinedDateRanges {
 
     public DefinedDateRange getByLocalizedName(String localizedName) {
         for (DefinedDateRange range : this.dateRanges.values()) {
-            if (localizedName.equalsIgnoreCase(range.getLocalizedName())) {
+            if (localizedName.equalsIgnoreCase(range.getLocalizedName(getContext()))) {
                 return range;
             }
         }
@@ -106,7 +106,7 @@ public class DefinedDateRanges {
         int i = 0;
 
         for (DefinedDateRangeName name : DefinedDateRangeName.values()) {
-            result[i] = this.dateRanges.get(name).getLocalizedName();
+            result[i] = this.dateRanges.get(name).getLocalizedName(getContext());
             i++;
         }
         return result;
@@ -162,7 +162,7 @@ public class DefinedDateRanges {
     }
 
     private DefinedDateRange create(DefinedDateRangeName key, int nameStringId, int menuResourceId) {
-        DefinedDateRange range = new DefinedDateRange(getContext());
+        DefinedDateRange range = new DefinedDateRange();
 
         range.key = key;
         range.nameResourceId = nameStringId;

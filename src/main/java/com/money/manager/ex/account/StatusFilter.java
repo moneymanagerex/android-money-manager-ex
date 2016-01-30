@@ -16,6 +16,9 @@
  */
 package com.money.manager.ex.account;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionStatuses;
 
@@ -25,7 +28,8 @@ import java.util.List;
 /**
  * Encapsulates the Status filter functionality in the account transactions list.
  */
-public class StatusFilter {
+public class StatusFilter
+    implements Parcelable {
 
     public StatusFilter() {
         this.filter = new ArrayList<>();
@@ -33,10 +37,30 @@ public class StatusFilter {
         loadAllStatuses();
     }
 
+    // fields
+
     /**
      * The filter collection contains the Status Codes for SQL filter.
      */
     public ArrayList<String> filter;
+
+    // methods
+
+    protected StatusFilter(Parcel in) {
+        filter = in.createStringArrayList();
+    }
+
+    public static final Creator<StatusFilter> CREATOR = new Creator<StatusFilter>() {
+        @Override
+        public StatusFilter createFromParcel(Parcel in) {
+            return new StatusFilter(in);
+        }
+
+        @Override
+        public StatusFilter[] newArray(int size) {
+            return new StatusFilter[size];
+        }
+    };
 
     public void add(String statusName) {
         TransactionStatuses status = TransactionStatuses.from(statusName);
@@ -116,5 +140,17 @@ public class StatusFilter {
         for (TransactionStatuses status : TransactionStatuses.values()) {
             this.filter.add(status.getCode());
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        String[] filterArray = new String[this.filter.size()];
+        this.filter.toArray(filterArray);
+        dest.writeStringArray(filterArray);
     }
 }

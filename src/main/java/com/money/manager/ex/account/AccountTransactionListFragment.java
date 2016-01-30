@@ -117,8 +117,8 @@ public class AccountTransactionListFragment
 
     // filter
     private TransactionFilter mFilter;
-    private DateRange mDateRange;
-    private StatusFilter mStatusFilter;
+//    private DateRange mDateRange;
+//    private StatusFilter mStatusFilter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,7 +130,7 @@ public class AccountTransactionListFragment
         // initialize filter(s)
         this.mFilter = new TransactionFilter();
 
-        // Set the default period.
+        // Select the default period.
         DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
             .getShowTransactions();
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
@@ -138,10 +138,10 @@ public class AccountTransactionListFragment
 
         // todo: replace this with implemented period on the range object.
         DateUtils dateUtils = new DateUtils(getContext());
-        mDateRange = dateUtils.getDateRangeForPeriod(range.nameResourceId);
+        mFilter.dateRange = dateUtils.getDateRangeForPeriod(range.nameResourceId);
 
         // Default value.
-        mStatusFilter = new StatusFilter();
+        mFilter.transactionStatus = new StatusFilter();
 
         restoreInstanceState(savedInstanceState);
     }
@@ -374,7 +374,7 @@ public class AccountTransactionListFragment
             outState.putInt(KEY_CONTENT, mAccountId);
         }
 
-        outState.putStringArrayList(KEY_STATUS, mStatusFilter.filter);
+        outState.putStringArrayList(KEY_STATUS, mFilter.transactionStatus.filter);
     }
 
     @Override
@@ -444,7 +444,7 @@ public class AccountTransactionListFragment
 
         // Save the selected period.
         DateUtils dateUtils = new DateUtils(getContext());
-        mDateRange = dateUtils.getDateRangeForPeriod(stringId);
+        mFilter.dateRange = dateUtils.getDateRangeForPeriod(stringId);
 
         item.setChecked(true);
 
@@ -485,11 +485,11 @@ public class AccountTransactionListFragment
         if (result) {
             if (item.isChecked()) {
                 // remove filter
-                mStatusFilter.filter.remove(status.getCode());
+                mFilter.transactionStatus.filter.remove(status.getCode());
                 item.setChecked(false);
             } else {
                 // add filter
-                mStatusFilter.filter.add(status.getCode());
+                mFilter.transactionStatus.filter.add(status.getCode());
                 item.setChecked(true);
             }
 
@@ -601,7 +601,7 @@ public class AccountTransactionListFragment
         Bundle arguments = prepareQuery();
 
         CalculateRunningBalanceTask2 task = new CalculateRunningBalanceTask2(
-            getContext(), this.mAccountId, mDateRange.dateFrom, arguments);
+            getContext(), this.mAccountId, mFilter.dateRange.dateFrom, arguments);
         // events now handled in onEvent, using an event bus.
         task.execute();
 
@@ -623,12 +623,12 @@ public class AccountTransactionListFragment
                 where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
             ));
 
-        where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mDateRange.dateFrom));
-        where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mDateRange.dateTo));
+        where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mFilter.dateRange.dateFrom));
+        where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mFilter.dateRange.dateTo));
 
         // Status
 //        if (!mStatusFilter.isEmpty()) {
-        where.addStatement(QueryAllData.Status, "IN", mStatusFilter.getSqlParameters());
+        where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());
 //        }
 
         // create a bundle to returns
@@ -652,7 +652,7 @@ public class AccountTransactionListFragment
 
         mAccountId = savedInstanceState.getInt(KEY_CONTENT);
 
-        mStatusFilter.filter = savedInstanceState.getStringArrayList(KEY_STATUS);
+        mFilter.transactionStatus.filter = savedInstanceState.getStringArrayList(KEY_STATUS);
     }
 
     /**
@@ -745,7 +745,7 @@ public class AccountTransactionListFragment
             MenuItem subItem = subMenu.getItem(i);
             int menuId = subItem.getItemId();
 
-            if (mStatusFilter.contains(menuId)) {
+            if (mFilter.transactionStatus.contains(menuId)) {
                 subItem.setChecked(true);
             }
         }

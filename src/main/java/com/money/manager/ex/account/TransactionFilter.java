@@ -20,6 +20,9 @@ package com.money.manager.ex.account;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.money.manager.ex.core.DateRange;
+import com.money.manager.ex.core.DefinedDateRange;
+
 /**
  * Contains the selected filters for the account transactions list.
  * Used to pass to the UI filter dialog, and to the adapter when querying the data.
@@ -32,12 +35,12 @@ public class TransactionFilter
     }
 
     public TransactionFilter(Parcel in) {
-        this.dateRange = in.readString();
-        this.transactionStatus = in.readString();
+        this.dateRange = in.readParcelable(DefinedDateRange.class.getClassLoader());
+        this.transactionStatus = in.readParcelable(StatusFilter.class.getClassLoader());
     }
 
-    public String dateRange;
-    public String transactionStatus;
+    public DateRange dateRange;
+    public StatusFilter transactionStatus;
 
 
     public static final Creator<TransactionFilter> CREATOR = new Creator<TransactionFilter>() {
@@ -59,7 +62,7 @@ public class TransactionFilter
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.dateRange);
-        dest.writeString(this.transactionStatus);
+        dest.writeParcelable(this.dateRange, 0);
+        dest.writeParcelable(this.transactionStatus, 0);
     }
 }

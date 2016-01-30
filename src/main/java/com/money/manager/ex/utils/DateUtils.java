@@ -36,6 +36,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import hirondelle.date4j.DateTime;
+
 /**
  * Date utilities
  */
@@ -83,22 +85,11 @@ public class DateUtils {
         return null;
     }
 
-    /**
-     * Convert date object to string using user's preferences for date format.
-     *
-     * @param date date value
-     * @return string The date formatted according to user preferences.
-     */
-    public static String getUserStringFromDate(Context ctx, Date date) {
-        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
-    }
-
     public static String getStringFromDate(Date date, String pattern) {
         if (date == null) return null;
 
         return new SimpleDateFormat(pattern).format(date);
     }
-
 
     /**
      * @param date    object to convert in string
@@ -148,6 +139,16 @@ public class DateUtils {
         }
 
         return pattern;
+    }
+
+    /**
+     * Convert date object to string using user's preferences for date format.
+     *
+     * @param date date value
+     * @return string The date formatted according to user preferences.
+     */
+    public static String getUserStringFromDate(Context ctx, Date date) {
+        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
     }
 
     /**
@@ -272,13 +273,13 @@ public class DateUtils {
         return result;
     }
 
+    private Context context;
+
     // Instance methods.
 
     public DateUtils(Context context) {
         this.context = context.getApplicationContext();
     }
-
-    private Context context;
 
     public void formatExtendedDate(TextView dateTextView, Date date) {
         try {

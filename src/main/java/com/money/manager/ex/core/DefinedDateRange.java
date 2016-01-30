@@ -17,17 +17,18 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Represent one selectable date range, i.e. Last 7 Days, Current Month, etc.
  */
-public class DefinedDateRange {
+public class DefinedDateRange
+    implements Parcelable {
 
-    public DefinedDateRange(Context context) {
-        this.context = context;
+    public DefinedDateRange() {
+//        this.context = context;
     }
-
-    private Context context;
 
     public DefinedDateRangeName key;
     /**
@@ -43,15 +44,45 @@ public class DefinedDateRange {
      */
     public int menuResourceId;
 
-    public String getLocalizedName() {
-        return this.context.getString(this.nameResourceId);
+//    private Context context;
+
+    protected DefinedDateRange(Parcel in) {
+        this.key = DefinedDateRangeName.valueOf(in.readString());
+        order = in.readInt();
+        nameResourceId = in.readInt();
+        menuResourceId = in.readInt();
+    }
+
+    public static final Creator<DefinedDateRange> CREATOR = new Creator<DefinedDateRange>() {
+        @Override
+        public DefinedDateRange createFromParcel(Parcel in) {
+            return new DefinedDateRange(in);
+        }
+
+        @Override
+        public DefinedDateRange[] newArray(int size) {
+            return new DefinedDateRange[size];
+        }
+    };
+
+    public String getLocalizedName(Context context) {
+        return context.getString(this.nameResourceId);
     }
 
     public String getName() {
         return this.key.toString();
     }
 
-//    public void setMenuResourceId(int menuResourceId) {
-//        this.menuResourceId = menuResourceId;
-//    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.key.name());
+        dest.writeInt(this.order);
+        dest.writeInt(this.nameResourceId);
+        dest.writeInt(this.menuResourceId);
+    }
 }
