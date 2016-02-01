@@ -55,7 +55,7 @@ public class InputAmountDialog
     private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
     private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
     private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
-    private static final String KEY_ROUNDING = "InputAmountDialog:Rounding";
+    private static final String ARG_ROUNDING = "InputAmountDialog:Rounding";
 
     public static InputAmountDialog getInstance(int requestId, Money amount) {
         String requestIdString = Integer.toString(requestId);
@@ -75,23 +75,6 @@ public class InputAmountDialog
         return getInstance(requestId, amount, currencyId, true);
     }
 
-//    public static InputAmountDialog getInstance(int id, Money amount, Integer currencyId,
-//                                                boolean roundToCurrencyDecimals) {
-//        Bundle args = new Bundle();
-//        args.putInt(KEY_REQUEST_ID, id);
-//        String amountString = amount == null ? "0" : amount.toString();
-//        args.putString(KEY_AMOUNT, amountString);
-//
-//        if (currencyId == null) currencyId = Constants.NOT_SET;
-//        args.putInt(KEY_CURRENCY_ID, currencyId);
-//        args.putBoolean(KEY_ROUNDING, roundToCurrencyDecimals);
-//
-//        InputAmountDialog dialog = new InputAmountDialog();
-//        dialog.setArguments(args);
-//
-//        return dialog;
-//    }
-
     public static InputAmountDialog getInstance(int requestId, Money amount, Integer currencyId,
                                                 boolean roundToCurrencyDecimals) {
         String requestIdString = Integer.toString(requestId);
@@ -107,7 +90,7 @@ public class InputAmountDialog
 
         if (currencyId == null) currencyId = Constants.NOT_SET;
         args.putInt(KEY_CURRENCY_ID, currencyId);
-        args.putBoolean(KEY_ROUNDING, roundToCurrencyDecimals);
+        args.putBoolean(ARG_ROUNDING, roundToCurrencyDecimals);
 
         InputAmountDialog dialog = new InputAmountDialog();
         dialog.setArguments(args);
@@ -294,7 +277,7 @@ public class InputAmountDialog
     @Override
     public void onResume() {
         super.onResume();
-        refreshFormattedAmount();
+        displayFormattedAmount();
     }
 
     @Override
@@ -317,7 +300,7 @@ public class InputAmountDialog
      * Displays the expression result in the top text box. This is a formatted number in the
      * given currency.
      */
-    public void refreshFormattedAmount() {
+    public void displayFormattedAmount() {
         String result = getFormattedAmount();
 
         txtTop.setText(result);
@@ -342,7 +325,7 @@ public class InputAmountDialog
                         .truncate(precision);
             } catch (IllegalArgumentException ex) {
                 // Just display the last valid value.
-                refreshFormattedAmount();
+                displayFormattedAmount();
                 // Use the warning colour.
                 txtTop.setTextColor(getResources().getColor(R.color.material_amber_800));
 
@@ -355,7 +338,7 @@ public class InputAmountDialog
             mAmount = MoneyFactory.fromString("0");
         }
 
-        refreshFormattedAmount();
+        displayFormattedAmount();
         txtTop.setTextColor(mDefaultColor);
         return true;
     }
@@ -365,12 +348,22 @@ public class InputAmountDialog
      * @return String Amount formatted in the given currency.
      */
     public String getFormattedAmount() {
-        String result;
+        String result = null;
+        FormatUtilities format = new FormatUtilities(getActivity());
 
+        // No currency. Use locale settings.
         if (mCurrencyId == null) {
-            FormatUtilities format = new FormatUtilities(getActivity());
             result = format.formatWithLocale(mAmount);
-        } else {
+        }
+
+        // Use currency settings but ignore the decimals.
+        if (!getRoundToCurrencyDecimals()) {
+            // ignore the currency settings but show the symbol.
+            result = format.formatNumberIgnoreDecimalCount(mAmount, mCurrencyId);
+        }
+
+        // default format, use currency settings.
+        if (result == null) {
             result = mCurrencyService.getCurrencyFormatted(mCurrencyId, mAmount);
         }
 
@@ -454,39 +447,35 @@ public class InputAmountDialog
         return result;
     }
 
-    private String getAmountForEditing(Money amount) {
+    private String getFormattedAmountForEditing(Money amount) {
         if (amount == null) return "0";
 
-        String result = getFormattedAmountForEditing(amount);
-        if (StringUtils.isEmpty(result)) {
-            return formatUtilities.formatWithLocale(amount);
-        } else {
-            return result;
-        }
-    }
-
-    private String getFormattedAmountForEditing(Money amount) {
-//        NumericHelper helper = new NumericHelper(getContext());
-        FormatUtilities formats = new FormatUtilities(getActivity());
-
         String result;
-        if(this.roundToCurrencyDecimals) {
-            // use decimals from the display currency.
-            Currency displayCurrency = mCurrencyService.getCurrency(mCurrencyId);
-            if (displayCurrency != null) {
+        Currency displayCurrency = mCurrencyService.getCurrency(mCurrencyId);
+
+        if (displayCurrency != null) {
+            if(getRoundToCurrencyDecimals()) {
+                // use decimals from the display currency.
                 // but decimal and group separators from the base currency.
-                result = formats.getNumberFormatted(amount, displayCurrency.getScale(),
+                result = formatUtilities.getValueFormatted(amount, displayCurrency.getScale(),
                     formatUtilities.getDecimalSeparatorForAppLocale(),
                     formatUtilities.getGroupingSeparatorForAppLocale());
+
             } else {
-                return "";
+                // Use default precision and no currency markup.
+                result = formatUtilities.formatNumber(amount, Constants.DEFAULT_PRECISION,
+                    displayCurrency.getDecimalSeparator(), displayCurrency.getGroupSeparator(),
+                    null, null);
             }
         } else {
-            // get number of decimals from the current value.
-            return "";
+            result = formatUtilities.formatWithLocale(amount);
         }
 
         return result;
+    }
+
+    private boolean getRoundToCurrencyDecimals() {
+        return getArguments().getBoolean(ARG_ROUNDING);
     }
 
     private void initializeNewDialog() {
@@ -510,12 +499,12 @@ public class InputAmountDialog
 
         this.mRequestId = args.getString(KEY_REQUEST_ID);
         this.mCurrencyId = args.getInt(KEY_CURRENCY_ID);
-        this.roundToCurrencyDecimals = args.getBoolean(KEY_ROUNDING);
+        this.roundToCurrencyDecimals = args.getBoolean(ARG_ROUNDING);
     }
 
     private void showAmountInEntryField() {
         // Get the calculated amount in default locale and display in the main box.
-        String amount = getAmountForEditing(mAmount);
+        String amount = getFormattedAmountForEditing(mAmount);
         txtMain.setText(amount);
     }
 

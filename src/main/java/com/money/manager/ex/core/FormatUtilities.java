@@ -24,12 +24,9 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.settings.AppSettings;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -68,11 +65,9 @@ public class FormatUtilities {
 
     public FormatUtilities(Context context) {
         this.context = context;
-        this.numericHelper = new NumericHelper(context);
     }
 
     private Context context;
-    private NumericHelper numericHelper;
 
     /**
      * Formats the amount in TextView with the given currency settings.
@@ -84,13 +79,13 @@ public class FormatUtilities {
     public void formatAmountTextView(TextView view, Money amount,
                                      Integer currencyId) {
         if (amount == null) {
-            ExceptionHandler handler = new ExceptionHandler(context, null);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), null);
             handler.showMessage("Amount for formatting is null.");
             Log.w(LOGCAT, "Amount for formatting is null.");
             return;
         }
 
-        CurrencyService currencyService = new CurrencyService(context);
+        CurrencyService currencyService = new CurrencyService(getContext());
 
         if (currencyId == null) {
             view.setText(currencyService.getBaseCurrencyFormatted(amount));
@@ -103,6 +98,7 @@ public class FormatUtilities {
 
     /**
      * Uses the number of decimals from the base currency, separators from the app locale.
+     *
      * @param amount Amount to be formatted.
      * @return  String representation of the formatted number.
      */
@@ -115,7 +111,7 @@ public class FormatUtilities {
         String decimalSeparator = getDecimalSeparatorForAppLocale();
         String groupSeparator = getGroupingSeparatorForAppLocale();
 
-        return getNumberFormatted(amount, scale, decimalSeparator, groupSeparator);
+        return getValueFormatted(amount, scale, decimalSeparator, groupSeparator);
     }
 
     public Context getContext() {
@@ -160,14 +156,15 @@ public class FormatUtilities {
     }
 
     /**
+     * Formats the amount with the currency scale, decimal & group separators, prefix and suffix.
      *
      * @param value value to format
      * @param showSymbols Whether to include the currency symbol in the output.
      * @return formatted value
      */
     public String getValueFormatted(Money value, boolean showSymbols, Currency currency) {
-        String result = this.getNumberFormatted(value, currency.getScale(),
-            currency.getDecimalPoint(), currency.getGroupSeparator());
+        String result = this.getValueFormatted(value, currency.getScale(),
+            currency.getDecimalSeparator(), currency.getGroupSeparator());
 
         // check suffix
         if ((showSymbols) && (!TextUtils.isEmpty(currency.getSfxSymbol()))) {
@@ -197,14 +194,14 @@ public class FormatUtilities {
         return getValueFormatted(value, true, currency);
     }
 
-    public String getNumberFormatted(Money value, int scale, String decimalSeparator, String groupSeparator) {
-        int decimals = this.numericHelper.getNumberOfDecimals(scale);
+    public String getValueFormatted(Money value, int scale, String decimalSeparator, String groupSeparator) {
+        int decimals = new NumericHelper(getContext()).getNumberOfDecimals(scale);
 
         value = value.truncate(decimals);
 
         // set format
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
-        // getDecimalPoint()
+        // getDecimalSeparator()
         if (!(TextUtils.isEmpty(decimalSeparator))) {
             formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
         }
@@ -220,14 +217,85 @@ public class FormatUtilities {
         String pattern = NumericPatternGenerator.getPattern(decimals);
         DecimalFormat formatter = new DecimalFormat(pattern);
 
-        formatter.setGroupingSize(3);
-        formatter.setDecimalFormatSymbols(formatSymbols);
-
         formatter.setMaximumFractionDigits(decimals);
         formatter.setMinimumFractionDigits(decimals);
 
-        String result = formatter.format(value.toBigDecimal());
+        formatter.setGroupingSize(3);
+        formatter.setDecimalFormatSymbols(formatSymbols);
+
+        String result = formatter.format(value.toDouble());
+        // value.toBigDecimal()
         return result;
+    }
+
+    /**
+     * Ultimately, all the methods should converge to this one. Provides customization options for
+     * the amount.
+     *
+     * @param amount Amount to be formatted
+     * @param decimals Number of decimals to use.
+     * @param decimalSeparator Decimal separator character.
+     * @param groupSeparator Group separator character.
+     * @param prefix the prefix to attach.
+     * @param suffix the suffix to attach.
+     * @return Number formatted.
+     */
+    public String formatNumber(Money amount, int decimals, String decimalSeparator, String groupSeparator,
+                               String prefix, String suffix) {
+        // Decimals
+
+        String pattern = NumericPatternGenerator.getPattern(decimals);
+        DecimalFormat formatter = new DecimalFormat(pattern);
+        formatter.setMaximumFractionDigits(decimals);
+        formatter.setMinimumFractionDigits(decimals);
+
+        // Separators
+
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        if (!(TextUtils.isEmpty(decimalSeparator))) {
+            formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
+        }
+        if (!(TextUtils.isEmpty(groupSeparator))) {
+            formatSymbols.setGroupingSeparator(groupSeparator.charAt(0));
+        }
+        // Group size
+        formatter.setGroupingSize(3);
+
+        formatter.setDecimalFormatSymbols(formatSymbols);
+
+        String result = formatter.format(amount.toDouble());
+
+        // Currency symbol, prefix/suffix
+
+        if (prefix != null) {
+            result = prefix + result;
+        }
+        if (suffix != null) {
+            result += suffix;
+        }
+
+        return result;
+    }
+
+    /**
+     * Formats the number by ignoring the decimal count.
+     * Group & decimal symbols and currency prefix/suffix are used.
+     *
+     * @param amount
+     * @param currencyId
+     * @return
+     */
+    public String formatNumberIgnoreDecimalCount(Money amount, int currencyId) {
+        // number of decimals - do not modify
+        int scale = Constants.DEFAULT_PRECISION;
+
+        CurrencyRepository repo = new CurrencyRepository(getContext());
+        Currency currency = repo.loadCurrency(currencyId);
+
+        // group & decimal symbols
+        // currency symbol
+        return this.formatNumber(amount, scale, currency.getDecimalSeparator(),
+            currency.getGroupSeparator(), currency.getPfxSymbol(), currency.getSfxSymbol());
     }
 
     public String getValueFormattedInBaseCurrency(Money value) {

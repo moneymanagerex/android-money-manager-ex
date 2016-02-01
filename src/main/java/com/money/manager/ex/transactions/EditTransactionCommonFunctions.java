@@ -191,11 +191,9 @@ public class EditTransactionCommonFunctions {
     public void displayAmountFormatted(TextView view, Money amount, Integer accountId) {
         if (amount == null) return;
 
-        // take currency id
         Integer currencyId = null;
 
         int index = mAccountIdList.indexOf(accountId);
-
         if (index != Constants.NOT_SET) {
             currencyId = this.AccountList.get(index).getCurrencyId();
         }

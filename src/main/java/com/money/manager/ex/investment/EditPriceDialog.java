@@ -186,7 +186,7 @@ public class EditPriceDialog
         mAmountTextView.setOnClickListener(onClickAmount);
 
         // get the current record price
-        showCurrentPrice(mCurrentPrice, mAccountId);
+        showCurrentPrice(mCurrentPrice);
 
         // actions
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -231,7 +231,7 @@ public class EditPriceDialog
 
     public void onEvent(AmountEnteredEvent event) {
         // set the amount on the dialog.
-        showCurrentPrice(event.amount, mAccountId);
+        showCurrentPrice(event.amount);
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
@@ -247,17 +247,7 @@ public class EditPriceDialog
         mCurrentPrice = currentPrice;
     }
 
-    private void showCurrentPrice(Money currentPrice, int accountId) {
-        EditTransactionCommonFunctions commonFunctions = new EditTransactionCommonFunctions(mContext, null, null);
-        commonFunctions.displayAmountFormatted(mAmountTextView, currentPrice, accountId);
-
-        //AccountRepository accountRepository = new AccountRepository(mContext);
-        //Account account = accountRepository.load(accountId);
-        //int currencyId = account.getCurrencyId();
-        //CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
-        //Currency currency = currencyService.getCurrency(currencyId);
-        //String currencySymbol = currency.getSfxSymbol();
-
+    private void showCurrentPrice(Money currentPrice) {
         mAmountTextView.setText(currentPrice.toString());
         mAmountTextView.setTag(currentPrice.toString());
 

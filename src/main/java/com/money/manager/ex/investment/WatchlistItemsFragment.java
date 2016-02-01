@@ -217,6 +217,7 @@ public class WatchlistItemsFragment
                 EventBus.getDefault().post(new PriceUpdateRequestEvent(symbol));
                 result = true;
                 break;
+
             case 1:
                 // Edit price
                 int accountId = stock.getHeldAt();
@@ -261,7 +262,6 @@ public class WatchlistItemsFragment
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
      * This is just to test:
      * http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
@@ -284,7 +284,7 @@ public class WatchlistItemsFragment
         super.onDestroy();
     }
 
-    // Loader callbacks
+    // Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -353,8 +353,6 @@ public class WatchlistItemsFragment
                 displayHeaderData();
         }
     }
-
-    // End loader handlers.
 
     // Menu
 

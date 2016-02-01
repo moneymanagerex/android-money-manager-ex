@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="?attr/ic_calculator"
         android:drawableStart="?attr/ic_calculator"
+        android:gravity="end"
         android:textStyle="bold"/>
 
 </LinearLayout>

@@ -76,7 +76,7 @@ public class Currency
         setInteger(CURRENCYID, value);
     }
 
-    public String getDecimalPoint() {
+    public String getDecimalSeparator() {
         return getString(DECIMAL_POINT);
     }
 
