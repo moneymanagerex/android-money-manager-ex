@@ -656,9 +656,7 @@ public class AccountTransactionListFragment
         where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mFilter.dateRange.dateTo));
 
         // Status
-//        if (!mStatusFilter.isEmpty()) {
         where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());
-//        }
 
         // create a bundle to returns
         Bundle args = new Bundle();
