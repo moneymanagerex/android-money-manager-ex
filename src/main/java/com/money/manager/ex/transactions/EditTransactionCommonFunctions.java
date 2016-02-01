@@ -271,7 +271,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // Category and subcategory
-        if (isTransfer || isSplitSelected()) {
+        if (isSplitSelected()) {
             this.transactionEntity.setCategoryId(Constants.NOT_SET);
             this.transactionEntity.setSubcategoryId(Constants.NOT_SET);
         }
