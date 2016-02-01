@@ -88,6 +88,15 @@ public class SplitRecurringCategory
         return getMoney(SPLITTRANSAMOUNT);
     }
 
+    /**
+     * This value does not exist on split transactions.
+     * @return null
+     */
+    @Override
+    public Money getAmountTo() {
+        return null;
+    }
+
     @Override
     public Integer getSubcategoryId() {
         return getInt(SUBCATEGID);
@@ -101,6 +110,15 @@ public class SplitRecurringCategory
     @Override
     public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
+    }
+
+    /**
+     * This does not exist on split transactions.
+     * @param value ignored
+     */
+    @Override
+    public void setAmountTo(Money value) {
+        //
     }
 
     @Override

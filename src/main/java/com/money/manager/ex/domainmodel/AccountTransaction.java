@@ -100,6 +100,10 @@ public class AccountTransaction
         return result;
     }
 
+    public void setAmountTo(Money value) {
+        setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
+    }
+
     public Integer getCategoryId() {
         return getInt(ITransactionEntity.CATEGID);
     }

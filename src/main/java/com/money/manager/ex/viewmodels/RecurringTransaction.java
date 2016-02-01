@@ -56,6 +56,19 @@ public class RecurringTransaction
         setMoney(ITransactionEntity.TRANSAMOUNT, value);
     }
 
+    public Money getAmountTo() {
+        Double amount = getDouble(ITransactionEntity.TOTRANSAMOUNT);
+        if (amount == null) {
+            amount = 0D;
+        }
+        Money result = MoneyFactory.fromDouble(amount);
+        return result;
+    }
+
+    public void setAmountTo(Money value) {
+        setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
+    }
+
     public Integer getCategoryId() {
         return getInt(ITransactionEntity.CATEGID);
     }

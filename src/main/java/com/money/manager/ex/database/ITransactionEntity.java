@@ -54,6 +54,8 @@ public interface ITransactionEntity
      */
     Money getAmount();
 
+    Money getAmountTo();
+
     // Setters
 
     void setId(int splitTransId);
@@ -63,7 +65,9 @@ public interface ITransactionEntity
     void setSubcategoryId(Integer subCategId);
 
     /**
-     * @param splitTransAmount the splitTransAmount to set
+     * @param value the splitTransAmount to set
      */
-    void setAmount(Money splitTransAmount);
+    void setAmount(Money value);
+
+    void setAmountTo(Money value);
 }

@@ -90,6 +90,12 @@ public class SplitCategory
     }
 
     @Override
+    public Money getAmountTo() {
+        // this does not exist on split transactions!
+        return null;
+    }
+
+    @Override
     public Integer getSubcategoryId() {
         return getInt(SUBCATEGID);
     }
@@ -102,6 +108,11 @@ public class SplitCategory
     @Override
     public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
+    }
+
+    @Override
+    public void setAmountTo(Money amount){
+        // nothing. This does not exist on split transactions.
     }
 
     @Override

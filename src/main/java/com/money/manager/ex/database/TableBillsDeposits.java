@@ -51,7 +51,7 @@ public class TableBillsDeposits
 //    public TransactionTypes transactionType;
     public String status;
     public Money amount;
-    public Money totalAmount;
+    public Money toAmount;
     public Integer payeeId;
     public Integer categoryId;
     public Integer subCategoryId;
@@ -89,7 +89,7 @@ public class TableBillsDeposits
 //		this.transactionType = TransactionTypes.valueOf(this.transactionCode);
 		status = c.getString(c.getColumnIndex(ITransactionEntity.STATUS));
 		amount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ITransactionEntity.TRANSAMOUNT)));
-		this.totalAmount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT)));
+		this.toAmount = MoneyFactory.fromDouble(c.getDouble(c.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT)));
 		payeeId = c.getInt(c.getColumnIndex(ITransactionEntity.PAYEEID));
 		categoryId = c.getInt(c.getColumnIndex(ITransactionEntity.CATEGID));
 		subCategoryId = c.getInt(c.getColumnIndex(ITransactionEntity.SUBCATEGID));
@@ -113,7 +113,7 @@ public class TableBillsDeposits
         dest.writeString(transactionCode);
         dest.writeString(status);
         dest.writeString(amount.toString());
-        dest.writeString(totalAmount.toString());
+        dest.writeString(toAmount.toString());
         dest.writeInt(payeeId);
         dest.writeInt(categoryId);
         dest.writeInt(subCategoryId);
@@ -131,7 +131,7 @@ public class TableBillsDeposits
         this.transactionCode = "";
         this.status = "";
         this.amount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
-        this.totalAmount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
+        this.toAmount = MoneyFactory.fromBigDecimal(BigDecimal.ZERO);
         this.payeeId = Constants.NOT_SET;
         this.categoryId = Constants.NOT_SET;
         this.subCategoryId = Constants.NOT_SET;
@@ -151,7 +151,7 @@ public class TableBillsDeposits
         transactionCode = source.readString();
         status = source.readString();
         amount = MoneyFactory.fromString(source.readString());
-        totalAmount = MoneyFactory.fromString(source.readString());
+        toAmount = MoneyFactory.fromString(source.readString());
         payeeId = source.readInt();
         categoryId = source.readInt();
         subCategoryId = source.readInt();

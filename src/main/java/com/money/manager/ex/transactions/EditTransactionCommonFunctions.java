@@ -111,9 +111,6 @@ public class EditTransactionCommonFunctions {
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-//    public int subCategoryId = Constants.NOT_SET;
-    public Money amountTo = MoneyFactory.fromDouble(0);
-    //public Money amount = MoneyFactory.fromDouble(0); // amount
     public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
@@ -261,7 +258,7 @@ public class EditTransactionCommonFunctions {
 
         // Amount To
         //Money amountTo = getAmountTo();
-        values.put(ITransactionEntity.TOTRANSAMOUNT, amountTo.toDouble());
+        values.put(ITransactionEntity.TOTRANSAMOUNT, transactionEntity.getAmountTo().toDouble());
 
         // Accounts & Payee
         values.put(ITransactionEntity.ACCOUNTID, this.accountId);
@@ -470,7 +467,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
-        displayAmountFormatted(viewHolder.txtAmountTo, amountTo, toAccountId);
+        displayAmountFormatted(viewHolder.txtAmountTo, transactionEntity.getAmountTo(), toAccountId);
         viewHolder.txtAmountTo.setOnClickListener(onClickAmount);
     }
 
@@ -878,7 +875,7 @@ public class EditTransactionCommonFunctions {
         if (isSourceAmount) {
             this.transactionEntity.setAmount(amount);
         } else {
-            this.amountTo = amount;
+            this.transactionEntity.setAmountTo(amount);
         }
 
         if (isTransfer) {
@@ -887,7 +884,7 @@ public class EditTransactionCommonFunctions {
             if (fromCurrencyId.equals(toCurrencyId)) {
                 // Same currency. Modify both values if the transfer is in the same currency.
                 this.transactionEntity.setAmount(amount);
-                this.amountTo = amount;
+                this.transactionEntity.setAmountTo(amount);
 
                 displaySourceAmount();
                 displayDestinationAmount();
@@ -1148,7 +1145,7 @@ public class EditTransactionCommonFunctions {
 
             // Amount To is required and has to be positive.
 //            Money amountTo = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
-            if (amountTo.toDouble() < 0) {
+            if (this.transactionEntity.getAmountTo().toDouble() < 0) {
                 Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
                 return false;
             }
@@ -1270,12 +1267,17 @@ public class EditTransactionCommonFunctions {
                 : this.accountId;
 
         // get the destination value.
-        Money destinationAmount = MoneyFactory.fromString(destinationTextView.getTag().toString());
-        if (destinationAmount == null) destinationAmount = MoneyFactory.fromString("0");
+//        String destinationTagValue = destinationTextView.getTag().toString();
+//        Money destinationAmount = MoneyFactory.fromString(destinationTagValue);
+        if (this.transactionEntity.getAmountTo() == null) {
+            this.transactionEntity.setAmountTo(MoneyFactory.fromString("0"));
+        }
 
         // Update the destination value.
-        if (destinationAmount.isZero()) {
+        if (this.transactionEntity.getAmountTo().isZero()) {
             Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+            this.transactionEntity.setAmountTo(amountExchange);
+
             displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
         }
     }
@@ -1347,7 +1349,7 @@ public class EditTransactionCommonFunctions {
         setSplit(false);
 
         // calculate the destination amount if the source amount has been set.
-        if (!transactionEntity.getAmount().isZero() && amountTo.isZero()) {
+        if (!transactionEntity.getAmount().isZero() && transactionEntity.getAmountTo().isZero()) {
             // select the first destination account id, if none set.
             if (toAccountId == Constants.NOT_SET) {
                 toAccountId = mAccountIdList.get(0);
@@ -1357,7 +1359,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void displayDestinationAmount() {
-        displayAmountFormatted(viewHolder.txtAmountTo, this.amountTo, this.toAccountId);
+        displayAmountFormatted(viewHolder.txtAmountTo, this.transactionEntity.getAmountTo(), this.toAccountId);
     }
 
     private void displaySourceAmount() {

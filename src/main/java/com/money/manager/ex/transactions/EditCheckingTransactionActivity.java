@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -300,7 +299,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionType = tx.getTransType();
         mCommonFunctions.status = tx.getStatus();
         mCommonFunctions.transactionEntity.setAmount(tx.getAmount());
-        mCommonFunctions.amountTo = tx.getAmountTo();
+        mCommonFunctions.transactionEntity.setAmountTo(tx.getAmountTo());
         mCommonFunctions.payeeId = tx.getPayeeId();
         mCommonFunctions.transactionEntity.setCategoryId(tx.getCategoryId());
         mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
@@ -364,7 +363,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = tx.status;
         mCommonFunctions.transactionEntity.setAmount(tx.amount);
-        mCommonFunctions.amountTo = tx.totalAmount;
+        mCommonFunctions.transactionEntity.setAmountTo(tx.toAmount);
         mCommonFunctions.payeeId = tx.payeeId;
         mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
         mCommonFunctions.transactionEntity.setSubcategoryId(tx.subCategoryId);
@@ -546,7 +545,9 @@ public class EditCheckingTransactionActivity
                 MoneyFactory.fromString(
                         savedInstanceState.getString(
                                 EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
-        mCommonFunctions.amountTo = MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT));
+        mCommonFunctions.transactionEntity.setAmountTo(
+            MoneyFactory.fromString(savedInstanceState.getString(
+                EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT)));
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID));
