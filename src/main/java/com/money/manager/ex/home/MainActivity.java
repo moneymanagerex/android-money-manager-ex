@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
@@ -178,10 +179,12 @@ public class MainActivity
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 
-        // create a connection to dropbox
+        // Create a connection to Dropbox.
         this.mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
 
         createLayout();
+
+        pingStats();
 
         if (!tutorialShown) {
             // Skipped tutorial because it was seen in the past.
@@ -218,10 +221,6 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-//        Log.d(this.getClass().getSimpleName(), "building tracker");
-//        mTracker.setScreenName("Image~MainActivity");
-//        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         // check if restart activity
         if (isRestartActivitySet()) {
@@ -1222,6 +1221,11 @@ public class MainActivity
         mDropboxHelper.setLinkedRemoteFile(dropboxPath);
 
         requestDatabaseChange(recentDb.filePath);
+    }
+
+    private void pingStats() {
+        mTracker.setScreenName("Activity~MainActivity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**
