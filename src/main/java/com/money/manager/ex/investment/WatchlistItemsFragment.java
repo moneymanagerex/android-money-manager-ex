@@ -179,8 +179,6 @@ public class WatchlistItemsFragment
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
 
-//        DatabaseUtils.dumpCursor(cursor);
-
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
@@ -232,36 +230,6 @@ public class WatchlistItemsFragment
         return result;
     }
 
-    // menu
-
-    /**
-     * Add options to the action bar of the host activity.
-     * This is not called in ActionBar Activity, i.e. Search.
-     * @param menu main menu
-     * @param inflater inflater for the menu
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-
-//        if (itemId == R.id.menu_export_to_csv) {
-//            exportDataToCSVFile();
-//            return true;
-//        }
-//        if (itemId == R.id.menu_qif_export) {
-//            // export visible transactions.
-//            exportToQif();
-//        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * This is just to test:
      * http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
@@ -269,11 +237,11 @@ public class WatchlistItemsFragment
     @Override
     public void onDetach() {
         super.onDetach();
+
         try {
             Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
             childFragmentManager.setAccessible(true);
             childFragmentManager.set(this, null);
-
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -432,6 +400,7 @@ public class WatchlistItemsFragment
     private void displayHeaderData() {
         TextView label = (TextView) getView().findViewById(R.id.cashBalanceLabel);
         TextView textView = (TextView) getView().findViewById(R.id.cashBalanceTextView);
+        if (label == null || textView == null) return;
 
         // Clear if no account id, i.e. all accounts displayed.
         if (this.accountId == Constants.NOT_SET) {
