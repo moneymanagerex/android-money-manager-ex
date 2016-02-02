@@ -286,6 +286,11 @@ public class FormatUtilities {
      * @return
      */
     public String formatNumberIgnoreDecimalCount(Money amount, int currencyId) {
+        if (currencyId == Constants.NOT_SET) {
+            // use locale values?
+            return formatWithLocale(amount);
+        }
+
         // number of decimals - do not modify
         int scale = Constants.DEFAULT_PRECISION;
 

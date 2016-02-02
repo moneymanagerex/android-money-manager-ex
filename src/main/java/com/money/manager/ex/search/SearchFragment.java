@@ -500,8 +500,9 @@ public class SearchFragment
                 if (tag != null && NumericHelper.isNumeric(tag.toString())) {
                     amount = MoneyFactory.fromString(tag.toString());
                 }
+
                 InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
-                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
+//                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
