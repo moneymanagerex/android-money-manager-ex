@@ -101,7 +101,6 @@
   <string name="status">Tình trạng</string>
   <string name="status_reconciled">Hòa giải</string>
   <string name="status_void">Trống</string>
-  <string name="status_follow_up">Theo dõi</string>
   <string name="status_duplicate">Trùng lặp</string>
   <string name="status_none">Không</string>
   <string name="transfer">Truyền</string>

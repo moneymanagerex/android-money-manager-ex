@@ -109,7 +109,6 @@
   <string name="status">狀態</string>
   <string name="status_reconciled">已核實</string>
   <string name="status_void">作廢</string>
-  <string name="status_follow_up">需要追蹤</string>
   <string name="status_duplicate">重複的</string>
   <string name="status_none">未核實</string>
   <string name="transfer">轉帳</string>

@@ -102,7 +102,6 @@
   <string name="status">Κατάσταση</string>
   <string name="status_reconciled">Τακτοποιημένο</string>
   <string name="status_void">Κενό</string>
-  <string name="status_follow_up">Παρακολούθηση</string>
   <string name="status_duplicate">Δημιουργία διπλοτύπου / αντιγράφου</string>
   <string name="status_none">Κανένας</string>
   <string name="transfer">Μεταφορά</string>

@@ -107,7 +107,6 @@
   <string name="status">Stato</string>
   <string name="status_reconciled">Riconciliata</string>
   <string name="status_void">Nulla</string>
-  <string name="status_follow_up">Da Monitorare</string>
   <string name="status_duplicate">Duplicata</string>
   <string name="status_none">Nessuno</string>
   <string name="transfer">Trasferimento</string>

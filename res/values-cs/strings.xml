@@ -107,7 +107,6 @@
   <string name="status">Stav</string>
   <string name="status_reconciled">Ověřeno</string>
   <string name="status_void">Neplatné</string>
-  <string name="status_follow_up">Sledovat</string>
   <string name="status_duplicate">Duplikovat</string>
   <string name="status_none">Žádný</string>
   <string name="transfer">Převod</string>
@@ -505,8 +504,14 @@
   <string name="value">Hodnota</string>
   <string name="view_transactions">Zobrazit transakce</string>
   <string name="other">Další</string>
+  <string name="cleared">Vyčištěno</string>
+  <string name="delete_success">Položka odstraněna</string>
   <string name="move_up">Posunout nahoru</string>
   <string name="move_down">Posunout dolů</string>
   <string name="no_records_found_create">Nenalezen žádný záznam. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření.</string>
+  <string name="name">Název</string>
   <string name="all_accounts">Všechny účty</string>
+  <string name="records">záznamy</string>
+  <string name="enter_password">Zadejte heslo</string>
+  <string name="success">Operace byla úspěšná</string>
 </resources>

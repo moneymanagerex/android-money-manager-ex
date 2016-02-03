@@ -18,7 +18,7 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="application_name">Money Manager Ex</string>
-  <string name="application_definition">Простое и легкое в использовании приложение для управления личными финансами, банковским счетам, семейным бюджетом, и т.д.</string>
+  <string name="application_definition">Простое и легкое в использовании приложение для управления личными финансами, банковскими счетами, семейным бюджетом, и т. д.</string>
   <string name="application_credits">Проект MoneyManagerEx для Android использует библиотеку ActionBarSherlock</string>
   <string name="application_license">Лицензии с открытым исходным кодом</string>
   <string name="db_insert_failed">Вставка данных не удалась</string>
@@ -36,6 +36,8 @@
   <string name="preferences_dispaly">Внешний вид</string>
   <string name="preferences_behaviour">Поведение</string>
   <string name="base_currency">Основная валюта</string>
+  <string name="base_currency_changed">Базовая валюта изменена</string>
+  <string name="base_currency_change_notification">Базовая валюта была изменена. Пожалуйста, обновите курсы обмена валюты, чтобы получить правильные суммы в новой базовой валюте.</string>
   <string name="view_accounts_opened">Просмотр открытых счетов</string>
   <string name="if_not_selected_willShowAllAccounts">Если не выбрана, будут отображаться все счета</string>
   <string name="view_accounts_favorites">Просмотр избранных счетов</string>
@@ -109,7 +111,7 @@
   <string name="status">Состояние</string>
   <string name="status_reconciled">Выверен</string>
   <string name="status_void">Не учитывать</string>
-  <string name="status_follow_up">Отслеживать</string>
+  <string name="status_follow_up">Дополнительный</string>
   <string name="status_duplicate">Повтор</string>
   <string name="status_none">Нет</string>
   <string name="transfer">Перевод</string>
@@ -336,10 +338,12 @@
   <string name="categories">Категории</string>
   <string name="currencies">Валюты</string>
   <string name="currencies_used">Валюты, использовано</string>
+  <string name="open_currencies">Открыть валюты</string>
   <string name="payees">Контрагенты</string>
   <string name="repeating_transactions">Повторяющиеся транзакции</string>
   <string name="theme_holo_light">Holo светлая</string>
   <string name="new_account">Новый счет</string>
+  <string name="create_new_account">Создать новый счёт</string>
   <string name="import_all_currencies">Импорт валют</string>
   <string name="import_currencies_in_progress">Импортируем валюты. Пожалуйста подождите&#8230;</string>
   <string name="amount_greater_or_equal">Сумма больше или равно</string>
@@ -365,6 +369,7 @@
   <string name="show_chart">Показать диаграмму</string>
   <string name="add_transaction">Добавить транзакцию</string>
   <string name="welcome_header">Добро пожаловать в MoneyManagerEx</string>
+  <string name="welcome_body">Все транзакции в MoneyManagerEx принадлежат счетам.\n\nУ Вас в настоящее время нет видимых счетов. Или измените фильтр для видимых счетов в настройках, или выберите один их вариантов ниже.</string>
   <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac синхронизируйте базу данных приложения через Dropbox</string>
   <string name="configure_dropbox">Настройка Dropbox</string>
   <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
@@ -396,6 +401,7 @@
   <string name="sort_by_usage">Сортировать по назначению</string>
   <string name="choose_sorting">Выберите способ сортировки</string>
   <string name="credit_card">Кредитная Карта</string>
+  <string name="cash_accounts">Наличные Счета</string>
   <string name="bank_accounts">Банковские Счета</string>
   <string name="term_accounts">Срочные Депозиты</string>
   <string name="credit_card_accounts">Счета Кредитной Карты</string>
@@ -472,6 +478,7 @@
   <string name="db_check_schema_summary">Проверьте, есть ли все таблицы в базе данных.</string>
   <string name="db_check_schema_success">Все необходимые таблицы есть в базе данных.</string>
   <string name="db_check_schema_error">Ошибка: таблицы отсутствуют в базе данных!</string>
+  <string name="db_fix_duplicates">Исправить дублирующиеся записи</string>
   <string name="split_amount_negative">Общая сумма не может быть отрицательной.</string>
   <string name="select_all">Выбрать всё</string>
   <string name="db_not_dropbox">Ваша текущая БД не синхронизирована. Пожалуйста, настройте Dropbox синхронизацию.</string>
@@ -500,6 +507,7 @@
   <string name="current_database">Текущая база данных</string>
   <string name="about_logcat_header">Вы можете отправить нам лог приложения, нажав на кнопку ниже.</string>
   <string name="transaction_type_filter">Фильтр по типу транзакции</string>
+  <string name="status_filter">Фильтр по статусу</string>
   <string name="title_activity_password">Введите пароль базы данных</string>
   <string name="income_expense_period">Период доходов/расходов</string>
   <string name="income_expense_period_summary">Период для отображения доходов/расходов в нижней части домашнего экрана.</string>
@@ -538,4 +546,6 @@
   <string name="stock">Запас</string>
   <string name="all_accounts">Все счета</string>
   <string name="records">записей</string>
+  <string name="enter_password">Введите пароль</string>
+  <string name="success">Операция выполнена успешно</string>
 </resources>

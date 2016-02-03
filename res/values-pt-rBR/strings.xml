@@ -109,7 +109,6 @@
   <string name="status">Estado</string>
   <string name="status_reconciled">Pago</string>
   <string name="status_void">Inativo</string>
-  <string name="status_follow_up">Acompanhar</string>
   <string name="status_duplicate">Duplicado</string>
   <string name="status_none">Não pago</string>
   <string name="transfer">Transferência</string>

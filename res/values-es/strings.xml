@@ -109,7 +109,6 @@
   <string name="status">Estado</string>
   <string name="status_reconciled">Reconciliada</string>
   <string name="status_void">Nada</string>
-  <string name="status_follow_up">Seguimiento</string>
   <string name="status_duplicate">Duplicada</string>
   <string name="status_none">Ninguno</string>
   <string name="transfer">Transferencia</string>

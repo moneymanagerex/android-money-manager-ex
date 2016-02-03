@@ -109,7 +109,6 @@
   <string name="status">Status</string>
   <string name="status_reconciled">ausgeglichen</string>
   <string name="status_void">ungültig</string>
-  <string name="status_follow_up">Nachverfolgung</string>
   <string name="status_duplicate">Duplikat</string>
   <string name="status_none">Nichts</string>
   <string name="transfer">Transaktion</string>

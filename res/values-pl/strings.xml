@@ -107,7 +107,6 @@
   <string name="status">Status</string>
   <string name="status_reconciled">Uzgodniona</string>
   <string name="status_void">Nieważna</string>
-  <string name="status_follow_up">Monitorowana</string>
   <string name="status_duplicate">Zduplikowana</string>
   <string name="status_none">Brak</string>
   <string name="transfer">Przelew</string>

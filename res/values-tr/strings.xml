@@ -108,7 +108,6 @@
   <string name="status">Durum</string>
   <string name="status_reconciled">Onaylanmış</string>
   <string name="status_void">Hükümsüz</string>
-  <string name="status_follow_up">Takip et</string>
   <string name="status_duplicate">Tekrar</string>
   <string name="status_none">Hiçbiri</string>
   <string name="transfer">Havale</string>

@@ -36,6 +36,8 @@
   <string name="preferences_dispaly">ルック &amp; フィール</string>
   <string name="preferences_behaviour">動作</string>
   <string name="base_currency">基本通貨</string>
+  <string name="base_currency_changed">基本通貨を変更しました</string>
+  <string name="base_currency_change_notification">基本通貨を変更しました。新しい基本通貨で正しい金額を取得するため、為替レートを更新してください。</string>
   <string name="view_accounts_opened">オープン中のアカウントを表示</string>
   <string name="if_not_selected_willShowAllAccounts">選択しない場合、すべてのアカウントを表示します</string>
   <string name="view_accounts_favorites">お気に入りのアカウントを表示</string>
@@ -109,7 +111,7 @@
   <string name="status">状態</string>
   <string name="status_reconciled">調整済</string>
   <string name="status_void">無効</string>
-  <string name="status_follow_up">追跡</string>
+  <string name="status_follow_up">フォローアップ</string>
   <string name="status_duplicate">重複</string>
   <string name="status_none">なし</string>
   <string name="transfer">振替</string>
@@ -336,10 +338,12 @@
   <string name="categories">カテゴリー</string>
   <string name="currencies">通貨</string>
   <string name="currencies_used">通貨、使用</string>
+  <string name="open_currencies">通貨を開く</string>
   <string name="payees">支払先</string>
   <string name="repeating_transactions">定期的な取引</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新しいアカウント</string>
+  <string name="create_new_account">新規アカウントを作成</string>
   <string name="import_all_currencies">通貨のインポート</string>
   <string name="import_currencies_in_progress">通貨をインポートしています。しばらくお待ちください&#8230;</string>
   <string name="amount_greater_or_equal">金額が以上</string>
@@ -365,6 +369,7 @@
   <string name="show_chart">グラフの表示</string>
   <string name="add_transaction">取引を追加</string>
   <string name="welcome_header">MoneyManagerEx へようこそ!</string>
+  <string name="welcome_body">MoneyManagerEx のすべての取引はアカウントに属します。\n\n現在、表示可能なアカウントがありません。設定で、表示するアカウントのフィルターを調整するか、次のオプションのいずれかを選択してください。</string>
   <string name="welcome_body_dropbox">Windows、Linux または Mac で既に MoneyManagerEx を使用している場合は、Dropbox であなたのデータベースを同期するように、このアプリケーションをリンクしてください</string>
   <string name="configure_dropbox">Dropbox を構成</string>
   <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
@@ -396,6 +401,7 @@
   <string name="sort_by_usage">使用法で並べ替え</string>
   <string name="choose_sorting">並べ替えを選択</string>
   <string name="credit_card">クレジット カード</string>
+  <string name="cash_accounts">現金アカウント</string>
   <string name="bank_accounts">銀行口座</string>
   <string name="term_accounts">定期アカウント</string>
   <string name="credit_card_accounts">クレジット カード アカウント</string>
@@ -472,6 +478,7 @@
   <string name="db_check_schema_summary">すべてのテーブルがデータベース内に存在するかチェックします。</string>
   <string name="db_check_schema_success">すべての必要なテーブルがデータベース内に存在します。</string>
   <string name="db_check_schema_error">エラー: テーブルがデータベースで不足しています!</string>
+  <string name="db_fix_duplicates">重複レコードを修正</string>
   <string name="split_amount_negative">合計金額はマイナスにできません。</string>
   <string name="select_all">すべて選択</string>
   <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
@@ -500,6 +507,7 @@
   <string name="current_database">現在のデータベース</string>
   <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
   <string name="transaction_type_filter">取引の種類でフィルター</string>
+  <string name="status_filter">ステータスでフィルター</string>
   <string name="title_activity_password">データベースのパスワードを入力してください</string>
   <string name="income_expense_period">収入/支出の期間</string>
   <string name="income_expense_period_summary">ホーム画面フッターの、収入/支出の概要の期間。</string>
@@ -541,4 +549,7 @@
   <string name="stock">株式</string>
   <string name="all_accounts">すべてのアカウント</string>
   <string name="records">レコード</string>
+  <string name="enter_password">パスワードを入力</string>
+  <string name="title_activity_portfolio">PortfolioActivity</string>
+  <string name="success">操作が正常終了しました</string>
 </resources>

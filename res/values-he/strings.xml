@@ -101,7 +101,6 @@
   <string name="status">סטטוס</string>
   <string name="status_reconciled">מותאם</string>
   <string name="status_void">מבוטל</string>
-  <string name="status_follow_up">מעקב</string>
   <string name="status_duplicate">שכפל</string>
   <string name="status_none">אף אחד</string>
   <string name="transfer">העברה</string>
