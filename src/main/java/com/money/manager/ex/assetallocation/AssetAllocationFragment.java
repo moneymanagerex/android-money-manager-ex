@@ -481,7 +481,7 @@ public class AssetAllocationFragment
                 item.getId(), item.getSymbol(),
                 null, null,
                 null, item.getValue().truncate(precision),
-                null,
+                null, null,
                 ItemType.Stock.toString()
             };
             cursor.addRow(values);
