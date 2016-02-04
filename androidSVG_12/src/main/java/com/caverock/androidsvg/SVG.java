@@ -78,7 +78,7 @@ public class SVG
 {
    private static final String  TAG = "AndroidSVG";
 
-   private static final String  VERSION = "1.2.2-beta-2";
+   private static final String  VERSION = "1.2.3-beta-1";
 
    protected static final String  SUPPORTED_SVG_VERSION = "1.2";
 
@@ -1565,7 +1565,7 @@ public class SVG
 
 
    // One of the element types that can cause graphics to be drawn onto the target canvas.
-   // Specifically: circle, ellipse, image, line, path, polygon, polyline, rect, text and use.
+   // Specifically: 'circle', 'ellipse', 'image', 'line', 'path', 'polygon', 'polyline', 'rect', 'text' and 'use'.
    protected static abstract class GraphicsElement extends SvgConditionalElement implements HasTransform
    {
       public Matrix  transform;
