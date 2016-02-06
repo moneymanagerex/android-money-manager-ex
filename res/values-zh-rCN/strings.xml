@@ -203,7 +203,7 @@
   <string name="next_occurrence">下个到期日</string>
   <string name="repeats">交易周期</string>
   <string name="occurs">交易周期</string>
-  <string name="times_repeated">重复的次数</string>
+  <string name="payments_left">重复的次数</string>
   <string name="error_next_occurrence_not_populate">请选择下一个周期</string>
   <string name="enter_next_occurrence">确认下次交易</string>
   <string name="skip_next_occurrence">跳过下次交易</string>

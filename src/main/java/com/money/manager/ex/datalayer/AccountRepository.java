@@ -149,15 +149,15 @@ public class AccountRepository
         Cursor c = openCursor(projection, selection, args);
         if (c == null) return null;
 
-        Account account = null;
+        Account entity = null;
 
         if (c.moveToNext()) {
-            account = new Account();
-            account.loadFromCursor(c);
+            entity = new Account();
+            entity.loadFromCursor(c);
         }
         c.close();
 
-        return account;
+        return entity;
     }
 
     public boolean update(Account value) {

@@ -26,12 +26,13 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -40,22 +41,100 @@ import java.util.Date;
 public class RecurringTransactionService
     extends ServiceBase {
 
+    public RecurringTransactionService(Context context){
+        super(context);
+
+    }
+
     public RecurringTransactionService(int recurringTransactionId, Context context){
         super(context);
 
         this.RecurringTransactionId = recurringTransactionId;
-        this.mContext = context;
     }
 
     public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
 
     public int RecurringTransactionId = Constants.NOT_SET;
-    public Context mContext;
 
-    private TableBillsDeposits mRecurringTransaction;
+    private RecurringTransaction mRecurringTransaction;
 
-    public Context getContext() {
-        return mContext;
+    /**
+     * @param date    to start calculate
+     * @param repeatType type of repeating transactions
+     * @param instances Number of instances (days, months) parameter. Used for In (x) Days, for
+     *                  example to indicate x.
+     * @return next Date
+     */
+    public static Date getDateNextOccurrence(Date date, int repeatType, int instances) {
+        if (repeatType >= 200) {
+            repeatType = repeatType - 200;
+        } // set auto execute without user acknowledgement
+        if (repeatType >= 100) {
+            repeatType = repeatType - 100;
+        } // set auto execute on the next occurrence
+
+        // create object calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        switch (repeatType) {
+            case 0: //none
+                break;
+            case 1: //weekly
+                calendar.add(Calendar.DATE, 7);
+                break;
+            case 2: //bi_weekly
+                calendar.add(Calendar.DATE, 14);
+                break;
+            case 3: //monthly
+                calendar.add(Calendar.MONTH, 1);
+                break;
+            case 4: //bi_monthly
+                calendar.add(Calendar.MONTH, 2);
+                break;
+            case 5: //quarterly
+                calendar.add(Calendar.MONTH, 3);
+                break;
+            case 6: //half_year
+                calendar.add(Calendar.MONTH, 6);
+                break;
+            case 7: //yearly
+                calendar.add(Calendar.YEAR, 1);
+                break;
+            case 8: //four_months
+                calendar.add(Calendar.MONTH, 4);
+                break;
+            case 9: //four_weeks
+                calendar.add(Calendar.DATE, 28);
+                break;
+            case 10: //daily
+                calendar.add(Calendar.DATE, 1);
+                break;
+            case 11: //in_x_days
+            case 13: //every_x_days
+                calendar.add(Calendar.DATE, instances);
+                break;
+            case 12: //in_x_months
+            case 14: //every_x_months
+                calendar.add(Calendar.MONTH, instances);
+                break;
+            case 15: //month (last day)
+                calendar.add(Calendar.MONTH, 1);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                calendar.add(Calendar.DATE, -1);
+                break;
+            case 16: //month (last business day)
+                // get the last day of the month first.
+                calendar.add(Calendar.MONTH, 1);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                calendar.add(Calendar.DATE, -1);
+                // now iterate backwards until we are not on weekend day.
+                while(calendar.equals(Calendar.SATURDAY) || calendar.equals(Calendar.SUNDAY)) {
+                    calendar.add(Calendar.DATE, -1);
+                }
+                break;
+        }
+        return calendar.getTime();
     }
 
     /**
@@ -66,7 +145,7 @@ public class RecurringTransactionService
     public void skipNextOccurrence() {
         this.load();
 
-        int repeats = mRecurringTransaction.repeats;
+        int repeats = mRecurringTransaction.getRepeats();
 
         if(repeats == 0) {
             // no more occurrences, this is the only one. Delete the transaction.
@@ -86,19 +165,19 @@ public class RecurringTransactionService
         boolean result = false;
 
         ContentValues values = new ContentValues();
-        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, nextOccurrenceDate);
+        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, nextOccurrenceDate);
 
-        TableBillsDeposits recurringTransaction = new TableBillsDeposits();
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
 
-        int updateResult = mContext.getContentResolver().update(recurringTransaction.getUri(),
+        int updateResult = getContext().getContentResolver().update(repo.getUri(),
                 values,
-                TableBillsDeposits.BDID + "=?",
+                RecurringTransaction.BDID + "=?",
                 new String[]{ Integer.toString(this.RecurringTransactionId) });
 
         if (updateResult > 0) {
             result = true;
         } else {
-            Toast.makeText(mContext.getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(this.RecurringTransactionId) + " return <= 0");
         }
 
@@ -118,12 +197,12 @@ public class RecurringTransactionService
     public void moveNextOccurrenceForward() {
         this.load();
 
-        int repeats = mRecurringTransaction.repeats;
-        String currentNextOccurrence = mRecurringTransaction.nextOccurrence;
-        Date newNextOccurrence = DateUtils.getDateFromString(mContext, currentNextOccurrence, Constants.PATTERN_DB_DATE);
-        int instances = mRecurringTransaction.numOccurrence;
+        int repeats = mRecurringTransaction.getRepeats();
+        String currentNextOccurrence = mRecurringTransaction.getNextOccurrenceDate();
+        Date newNextOccurrence = DateUtils.getDateFromString(getContext(), currentNextOccurrence, Constants.PATTERN_DB_DATE);
+        int instances = mRecurringTransaction.getNumOccurrences();
         // calculate the next occurrence date
-        newNextOccurrence = DateUtils.getDateNextOccurrence(newNextOccurrence, repeats, instances);
+        newNextOccurrence = getDateNextOccurrence(newNextOccurrence, repeats, instances);
 
         if (newNextOccurrence != null) {
             this.setNextOccurrenceDate(newNextOccurrence);
@@ -143,11 +222,11 @@ public class RecurringTransactionService
         if(!result) return false;
 
         // Delete recurring transactions.
-        int deleteResult = mContext.getContentResolver().delete(
-                new TableBillsDeposits().getUri(),
-                TableBillsDeposits.BDID + "=" + this.RecurringTransactionId, null);
+        int deleteResult = getContext().getContentResolver().delete(
+                new RecurringTransactionRepository(getContext()).getUri(),
+                RecurringTransaction.BDID + "=" + this.RecurringTransactionId, null);
         if (deleteResult == 0) {
-            Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting recurring transaction " +
                     this.RecurringTransactionId + " failed.");
             result = false;
@@ -176,13 +255,13 @@ public class RecurringTransactionService
 
         SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
 
-        int deleteResult = mContext.getContentResolver().delete(
+        int deleteResult = getContext().getContentResolver().delete(
             repo.getUri(),
             SplitRecurringCategory.TRANSID + "=" + this.RecurringTransactionId, null);
         if (deleteResult != 0) {
             result = true;
         } else {
-            Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting split categories for recurring transaction " +
                     this.RecurringTransactionId + " failed.");
         }
@@ -217,7 +296,7 @@ public class RecurringTransactionService
     private Cursor getCursorForSplitTransactions(){
         SplitRecurringCategoriesRepository repo = new SplitRecurringCategoriesRepository(getContext());
 
-        return mContext.getContentResolver().query(
+        return getContext().getContentResolver().query(
             repo.getUri(),
             null,
             SplitRecurringCategory.TRANSID + "=" + Integer.toString(this.RecurringTransactionId),
@@ -228,7 +307,7 @@ public class RecurringTransactionService
     private boolean load() {
         if (mRecurringTransaction != null) return true;
 
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(mContext);
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
         mRecurringTransaction = repo.load(this.RecurringTransactionId);
 
         return (mRecurringTransaction == null);

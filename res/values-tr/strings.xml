@@ -197,7 +197,7 @@
   <string name="next_occurrence">Sonraki Gerçekleşme</string>
   <string name="repeats">Tekrarlar</string>
   <string name="occurs">Gerçekleşenler</string>
-  <string name="times_repeated">Tekrar Sayısı</string>
+  <string name="payments_left">Tekrar Sayısı</string>
   <string name="error_next_occurrence_not_populate">Sonraki gerçekleşme gereklidir</string>
   <string name="enter_next_occurrence">Sonraki gerçekleşmeyi gir</string>
   <string name="skip_next_occurrence">Sonraki gerçekleşmeyi atla</string>

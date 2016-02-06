@@ -36,6 +36,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -44,14 +45,11 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
-import com.money.manager.ex.viewmodels.RecurringTransaction;
 
 import java.text.SimpleDateFormat;
 
@@ -94,8 +92,8 @@ public class EditRecurringTransactionActivity
     private String mIntentAction;
 
     // Model
-    private TableBillsDeposits mRecurringTransaction;
-    private int mBillDepositsId = Constants.NOT_SET;
+    private RecurringTransaction mRecurringTransaction;
+//    private int mBillDepositsId = Constants.NOT_SET;
     private int mFrequencies = 0;
 
     // Controls on the form.
@@ -109,10 +107,9 @@ public class EditRecurringTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recurring_transaction);
 
-        mRecurringTransaction = new TableBillsDeposits().initialize();
+        mRecurringTransaction = new RecurringTransaction();
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this, this,
-            new RecurringTransaction());
+        mCommonFunctions = new EditTransactionCommonFunctions(this, this, mRecurringTransaction);
 
         setToolbarStandardAction(getToolbar());
 
@@ -129,9 +126,9 @@ public class EditRecurringTransactionActivity
             if (savedInstanceState == null) {
                 mCommonFunctions.accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                    mBillDepositsId = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
+                    int id = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
                     // select data transaction
-                    loadRecurringTransaction(mBillDepositsId);
+                    loadRecurringTransaction(id);
                 }
             }
             mIntentAction = getIntent().getAction();
@@ -180,10 +177,10 @@ public class EditRecurringTransactionActivity
         // next occurrence
         mCommonFunctions.initDateSelector();
 
-        // times repeated
+        // Payments Left
         edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
-        if (mRecurringTransaction.numOccurrence != null && mRecurringTransaction.numOccurrence >= 0) {
-            edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.numOccurrence));
+        if (mRecurringTransaction.getNumOccurrences() != null && mRecurringTransaction.getNumOccurrences() >= 0) {
+            edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getNumOccurrences()));
         }
 
         // Frequency
@@ -243,8 +240,10 @@ public class EditRecurringTransactionActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putParcelable(KEY_MODEL, mRecurringTransaction);
+
         // save the state interface
-        outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
+//        outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
         outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.accountId);
         outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
@@ -288,16 +287,15 @@ public class EditRecurringTransactionActivity
                 .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
 
-        NumericHelper helper = new NumericHelper(getApplicationContext());
-        int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
-        if (timesRepeated != Constants.NOT_SET) {
-//            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);
-            mRecurringTransaction.numOccurrence = timesRepeated;
-        } else {
-//            outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
-            mRecurringTransaction.numOccurrence = Constants.NOT_SET;
-        }
-        outState.putParcelable(KEY_MODEL, mRecurringTransaction);
+//        NumericHelper helper = new NumericHelper(getApplicationContext());
+//        int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
+//        if (timesRepeated != Constants.NOT_SET) {
+////            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);
+//            mRecurringTransaction.numOccurrence = timesRepeated;
+//        } else {
+////            outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
+//            mRecurringTransaction.numOccurrence = Constants.NOT_SET;
+//        }
 
         outState.putString(KEY_ACTION, mIntentAction);
     }
@@ -342,16 +340,16 @@ public class EditRecurringTransactionActivity
     // Public
 
     /**
-     * refresh the UI control times repeated
+     * refresh the UI control Payments Left
      */
     public void refreshTimesRepeated() {
         txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
 
         txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
+        txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
 
         edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.times_repeated);
+        edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
     }
 
     // Private
@@ -364,28 +362,26 @@ public class EditRecurringTransactionActivity
      */
     private boolean loadRecurringTransaction(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        TableBillsDeposits tx = repo.load(recurringTransactionId);
-        if (tx == null) return false;
+        mRecurringTransaction = repo.load(recurringTransactionId);
+        if (mRecurringTransaction == null) return false;
 
         // todo: just use a model object instead of a bunch of individual properties.
-        mRecurringTransaction = tx;
 
         // Read data.
-        mBillDepositsId = tx.id;
-        mCommonFunctions.accountId = tx.accountId;
-        mCommonFunctions.toAccountId = tx.toAccountId;
-        String transCode = tx.transactionCode;
+        mCommonFunctions.accountId = mRecurringTransaction.getAccountId();
+        mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
+        String transCode = mRecurringTransaction.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = tx.status;
-        mCommonFunctions.transactionEntity.setAmount(tx.amount);
-        mCommonFunctions.transactionEntity.setAmountTo(tx.toAmount);
-        mCommonFunctions.payeeId = tx.payeeId;
-        mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
-        mCommonFunctions.transactionEntity.setSubcategoryId(tx.subCategoryId);
-        mCommonFunctions.mTransNumber = tx.transactionNumber;
-        mCommonFunctions.mNotes = tx.notes;
-        mCommonFunctions.mDate = tx.nextOccurrence;
-        mFrequencies = tx.repeats;
+        mCommonFunctions.status = mRecurringTransaction.getStatus();
+        mCommonFunctions.transactionEntity.setAmount(mRecurringTransaction.getAmount());
+        mCommonFunctions.transactionEntity.setAmountTo(mRecurringTransaction.getAmountTo());
+        mCommonFunctions.payeeId = mRecurringTransaction.getPayeeId();
+        mCommonFunctions.transactionEntity.setCategoryId(mRecurringTransaction.getCategoryId());
+        mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
+        mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
+        mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
+        mCommonFunctions.mDate = mRecurringTransaction.getNextOccurrenceDate();
+        mFrequencies = mRecurringTransaction.getRepeats();
 
         // load split transactions only if no category selected.
         if ((mCommonFunctions.transactionEntity.getCategoryId() == null || mCommonFunctions.transactionEntity.getCategoryId() == Constants.NOT_SET)
@@ -431,22 +427,23 @@ public class EditRecurringTransactionActivity
         ContentValues values = getContentValues(isTransfer);
 
         // Insert or update
-        TableBillsDeposits recurringTransaction = new TableBillsDeposits();
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+
         if (Intent.ACTION_INSERT.equals(mIntentAction)) {
             // insert
-            Uri insert = getContentResolver().insert(recurringTransaction.getUri(), values);
+            Uri insert = getContentResolver().insert(repo.getUri(), values);
             if (insert == null) {
                 Core.alertDialog(this, R.string.db_checking_insert_failed);
                 Log.w(LOGCAT, "Insert new repeating transaction failed!");
                 return false;
             }
             long id = ContentUris.parseId(insert);
-            mBillDepositsId = (int) id;
+            mRecurringTransaction.setId((int) id);
         } else {
             // update
-            if (getContentResolver().update(recurringTransaction.getUri(), values,
-                    TableBillsDeposits.BDID + "=?",
-                    new String[]{Integer.toString(mBillDepositsId)}) <= 0) {
+            if (getContentResolver().update(repo.getUri(), values,
+                    com.money.manager.ex.domainmodel.RecurringTransaction.BDID + "=?",
+                    new String[]{Integer.toString(mRecurringTransaction.getId())}) <= 0) {
                 Core.alertDialog(this, R.string.db_checking_update_failed);
                 Log.w(LOGCAT, "Update repeating  transaction failed!");
                 return false;
@@ -461,7 +458,7 @@ public class EditRecurringTransactionActivity
             for (ITransactionEntity item : mCommonFunctions.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
-                splitEntity.setTransId(mBillDepositsId);
+                splitEntity.setTransId(mRecurringTransaction.getId());
 
                 if (splitEntity.getId() == null || splitEntity.getId() == Constants.NOT_SET) {
                     // insert data
@@ -525,10 +522,10 @@ public class EditRecurringTransactionActivity
     private ContentValues getContentValues(boolean isTransfer) {
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
-        values.put(TableBillsDeposits.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+        values.put(com.money.manager.ex.domainmodel.RecurringTransaction.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
-        values.put(TableBillsDeposits.REPEATS, mFrequencies);
-        values.put(TableBillsDeposits.NUMOCCURRENCES, mFrequencies > 0
+        values.put(com.money.manager.ex.domainmodel.RecurringTransaction.REPEATS, mFrequencies);
+        values.put(com.money.manager.ex.domainmodel.RecurringTransaction.NUMOCCURRENCES, mFrequencies > 0
                 ? edtTimesRepeated.getText().toString() : null);
 
         return values;
@@ -537,7 +534,7 @@ public class EditRecurringTransactionActivity
     private void restoreInstanceState(Bundle savedInstanceState) {
         mRecurringTransaction = savedInstanceState.getParcelable(KEY_MODEL);
 
-        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
+//        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
         mCommonFunctions.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
         mCommonFunctions.toAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);

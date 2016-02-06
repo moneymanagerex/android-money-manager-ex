@@ -201,7 +201,7 @@
   <string name="next_occurrence">Próxima ocorrência</string>
   <string name="repeats">Repetição</string>
   <string name="occurs">Ocorre</string>
-  <string name="times_repeated">Nº de Vezes Repetidas</string>
+  <string name="payments_left">Nº de Vezes Repetidas</string>
   <string name="error_next_occurrence_not_populate">Próxima ocorrência é necessária</string>
   <string name="enter_next_occurrence">Introduzir Próxima Ocorrência</string>
   <string name="skip_next_occurrence">Saltar Próxima Ocorrência</string>

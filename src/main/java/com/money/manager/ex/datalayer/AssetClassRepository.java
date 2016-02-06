@@ -96,16 +96,16 @@ public class AssetClassRepository
 
         if (c == null) return null;
 
-        AssetClass account = null;
+        AssetClass entity = null;
 
         if (c.moveToNext()) {
-            account = new AssetClass();
-            account.loadFromCursor(c);
+            entity = new AssetClass();
+            entity.loadFromCursor(c);
         }
 
         c.close();
 
-        return account;
+        return entity;
     }
 
 //    public AssetClass[] query(String[] projection, String selection, String[] args, String sort) {

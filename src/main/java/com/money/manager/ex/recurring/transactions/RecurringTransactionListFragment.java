@@ -34,16 +34,16 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -55,17 +55,17 @@ import java.util.Date;
  * Includes floating action button.
  */
 public class RecurringTransactionListFragment
-        extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    // ID request to add repeating transaction
     private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
     private static final int REQUEST_ADD_TRANSACTION = 1002;
     private static final int REQUEST_EDIT_REPEATING_TRANSACTION = 1003;
-    // ID loader
+
     private static final int ID_LOADER_REPEATING = 0;
-    // query
+
     private static QueryBillDeposits mBillDeposits;
+
     // filter
     private String mCurFilter;
 
@@ -94,75 +94,18 @@ public class RecurringTransactionListFragment
     @Override
     public void onFloatingActionButtonClickListener() {
         // create new recurring transaction.
-        startRecurringTransactionActivity(null, REQUEST_ADD_REPEATING_TRANSACTION);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        String nextOccurrence;
-        int repeats, bdId;
-        Date date;
-
-        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
-        if (menuInfo == null) {
-            String errorMessage = "no context menu info";
-            Log.w(this.getClass().getSimpleName(), errorMessage);
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.showMessage("no context menu info");
-            return false;
-        }
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        /*
-          The cursor position of the current transaction in the list of all transactions.
-          The active transaction is the one on which we are performing an operation (edit, enter...).
-         */
-        int activeTransactionPosition = info.position;
-
-        // move cursor to selected item's position.
-        Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
-        if (cursor == null) {
-            return false;
-        }
-
-        cursor.moveToPosition(activeTransactionPosition);
-
-        int selectedItemId = item.getItemId();
-        int transactionId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-
-        switch (selectedItemId) {
-            case R.id.menu_enter_next_occurrence:
-                nextOccurrence = cursor.getString(cursor.getColumnIndex(TableBillsDeposits.NEXTOCCURRENCEDATE));
-                repeats = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.REPEATS));
-                int instances = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.NUMOCCURRENCES));
-                bdId = cursor.getInt(cursor.getColumnIndex(TableBillsDeposits.BDID));
-                date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
-                date = DateUtils.getDateNextOccurrence(date, repeats, instances);
-                if (date != null) {
-                    Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
-                    intent.setAction(Intent.ACTION_INSERT);
-                    intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
-                    intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
-                            DateUtils.getIsoStringDate(date));
-                    // start for insert new transaction
-                    startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
-                }
-                break;
-            case R.id.menu_skip_next_occurrence:
-                showDialogSkip(transactionId);
-                break;
-            case R.id.menu_edit:
-                startRecurringTransactionActivity(transactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
-                break;
-            case R.id.menu_delete:
-                showDialogDelete(transactionId);
-                break;
-        }
-
-        return false;
+        startRecurringTransactionEditActivity(null, REQUEST_ADD_REPEATING_TRANSACTION);
     }
 
     // Menu
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        // show context menu here.
+        getActivity().openContextMenu(v);
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -178,11 +121,45 @@ public class RecurringTransactionListFragment
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+    public boolean onContextItemSelected(android.view.MenuItem item) {
 
-        // show context menu here.
-        getActivity().openContextMenu(v);
+        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        if (menuInfo == null) {
+            String errorMessage = "no context menu info";
+            Log.w(this.getClass().getSimpleName(), errorMessage);
+            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
+            handler.showMessage("no context menu info");
+            return false;
+        }
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        int menuItemId = item.getItemId();
+        int transactionId = (int) info.id;
+        /*
+          The cursor position of the current transaction in the list of all transactions.
+          The active transaction is the one on which we are performing an operation (edit, enter...).
+         */
+        int activeTransactionPosition = info.position;
+
+        switch (menuItemId) {
+            case R.id.menu_enter_next_occurrence:
+                showCreateTransactionActivity(transactionId);
+                break;
+
+            case R.id.menu_skip_next_occurrence:
+                confirmSkip(transactionId);
+                break;
+
+            case R.id.menu_edit:
+                startRecurringTransactionEditActivity(transactionId, REQUEST_EDIT_REPEATING_TRANSACTION);
+                break;
+
+            case R.id.menu_delete:
+                confirmDelete(transactionId);
+                break;
+        }
+
+        return false;
     }
 
     // Loader callbacks.
@@ -247,27 +224,6 @@ public class RecurringTransactionListFragment
         return true;
     }
 
-    /**
-     * start RepeatingTransaction for insert or edit transaction
-     *
-     * @param billDepositsId Id of the recurring transaction.
-     * @param purposeCode       Code that indicates why we are opening the editor.
-     *                          example: REQUEST_ADD_REPEATING_TRANSACTION
-     */
-    private void startRecurringTransactionActivity(Integer billDepositsId, int purposeCode) {
-        // create intent, set Bill Deposits ID
-        Intent intent = new Intent(getActivity(), EditRecurringTransactionActivity.class);
-        // check transId not null
-        if (billDepositsId != null) {
-            intent.putExtra(EditRecurringTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivityForResult(intent, purposeCode);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -291,7 +247,9 @@ public class RecurringTransactionListFragment
         return getString(R.string.repeating_transactions);
     }
 
-    private void showDialogDelete(final int id) {
+    // private
+
+    private void confirmDelete(final int id) {
         // create alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_repeating_transaction)
@@ -319,7 +277,7 @@ public class RecurringTransactionListFragment
         alertDialog.create().show();
     }
 
-    private void showDialogSkip(final int id) {
+    private void confirmSkip(final int id) {
         // create alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.skip_next_occurrence)
@@ -345,4 +303,49 @@ public class RecurringTransactionListFragment
         alertDialog.create().show();
     }
 
+    private void showCreateTransactionActivity(int transactionId) {
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(getActivity());
+        RecurringTransaction tx = repo.load(transactionId);
+        if (tx == null) return;
+
+        String nextOccurrence = tx.getNextOccurrenceDate();
+        int repeats = tx.getRepeats();
+        int instances = tx.getNumOccurrences();
+        int bdId = tx.getId();
+        Date date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
+
+        RecurringTransactionService service = new RecurringTransactionService(getActivity());
+        date = service.getDateNextOccurrence(date, repeats, instances);
+
+        if (date != null) {
+            Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
+            intent.setAction(Intent.ACTION_INSERT);
+            intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
+            intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
+                    DateUtils.getIsoStringDate(date));
+            // start for insert new transaction
+            startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
+        }
+    }
+
+    /**
+     * start RepeatingTransaction for insert or edit transaction
+     *
+     * @param billDepositsId Id of the recurring transaction.
+     * @param purposeCode       Code that indicates why we are opening the editor.
+     *                          example: REQUEST_ADD_REPEATING_TRANSACTION
+     */
+    private void startRecurringTransactionEditActivity(Integer billDepositsId, int purposeCode) {
+        // create intent, set Bill Deposits ID
+        Intent intent = new Intent(getActivity(), EditRecurringTransactionActivity.class);
+        // check transId not null
+        if (billDepositsId != null) {
+            intent.putExtra(EditRecurringTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
+            intent.setAction(Intent.ACTION_EDIT);
+        } else {
+            intent.setAction(Intent.ACTION_INSERT);
+        }
+        // launch activity
+        startActivityForResult(intent, purposeCode);
+    }
 }

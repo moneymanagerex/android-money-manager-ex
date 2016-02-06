@@ -249,7 +249,7 @@
     <string name="next_occurrence">Next Occurrence</string>
     <string name="repeats">Repeats</string>
     <string name="occurs">Occurs</string>
-    <string name="times_repeated">Times Repeated</string>
+    <string name="payments_left">Payments Left</string>
     <string name="error_next_occurrence_not_populate">Next occurrence is required</string>
     <string name="enter_next_occurrence">Enter Next Occurrence</string>
     <string name="skip_next_occurrence">Skip Next Occurrence</string>

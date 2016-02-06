@@ -189,7 +189,7 @@
   <string name="new_edit_repeating_transaction">Δημιουργία/επεξεργασία επαναλαμβανόμενης συναλλαγής</string>
   <string name="next_occurrence">Επόμενη εμφάνιση</string>
   <string name="repeats">Επαναλήψεις</string>
-  <string name="times_repeated">Επανειλημμένες φορές</string>
+  <string name="payments_left">Επανειλημμένες φορές</string>
   <string name="error_next_occurrence_not_populate">Απαιτείται η επόμενη εμφάνιση</string>
   <string name="enter_next_occurrence">Εισάγετε την επόμενη εµφάνιση</string>
   <string name="skip_next_occurrence">Παραλείψτε την επόμενη εμφάνιση</string>

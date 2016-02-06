@@ -40,7 +40,6 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.BudgetTable;
 import com.money.manager.ex.database.BudgetYear;
 import com.money.manager.ex.database.TableCurrencyFormats;
@@ -52,6 +51,7 @@ import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -105,16 +105,16 @@ public class MmexContentProvider
             new AssetClassRepository(context),
             new AssetClassStockRepository(context),
 //                new TableAssets(),
-                new TableBillsDeposits(),
                 new BudgetTable(),
-            new SplitRecurringCategoriesRepository(context),
                 new BudgetYear(),
             new CategoryRepository(context),
             new AccountTransactionRepository(context),
                 new TableCurrencyFormats(),
             new InfoRepository(context),
                 new TablePayee(),
+            new RecurringTransactionRepository(context),
             new SplitCategoriesRepository(context),
+            new SplitRecurringCategoriesRepository(context),
             new StockRepository(context),
             new StockHistoryRepository(context),
             new SubcategoryRepository(context),

@@ -14,29 +14,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.viewmodels;
+
+package com.money.manager.ex.domainmodel;
+
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.domainmodel.EntityBase;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Record from All Data adapter. Used for recurring transactions lists.
- * Source is QueryBillDeposits.
+ * Recurring Transaction
  */
 public class RecurringTransaction
     extends EntityBase
     implements ITransactionEntity {
 
+    public static final String BDID = "BDID";
+    public static final String REPEATS = "REPEATS";
+    public static final String NEXTOCCURRENCEDATE = "NEXTOCCURRENCEDATE";
+    public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, ITransactionEntity.TRANSAMOUNT);
+        DatabaseUtils.cursorDoubleToContentValuesIfPresent(c, this.contentValues, ITransactionEntity.TOTRANSAMOUNT);
+    }
+
     public Integer getId() {
-        return getInt(QueryBillDeposits.BDID);
+        return getInt(BDID);
     }
 
     public void setId(int id) {
-        setInteger(QueryBillDeposits.BDID, id);
+        setInteger(BDID, id);
     }
 
     public Integer getAccountId() {
@@ -77,6 +92,30 @@ public class RecurringTransaction
         setInteger(ITransactionEntity.CATEGID, value);
     }
 
+    public String getNextOccurrenceDate() {
+        return getString(NEXTOCCURRENCEDATE);
+    }
+
+    public String getNotes() {
+        return getString(ITransactionEntity.NOTES);
+    }
+
+    public Integer getNumOccurrences() {
+        return getInt(NUMOCCURRENCES);
+    }
+
+    public Integer getPayeeId() {
+        return getInt(ITransactionEntity.PAYEEID);
+    }
+
+    public Integer getRepeats() {
+        return getInt(REPEATS);
+    }
+
+    public String getStatus() {
+        return getString(ITransactionEntity.STATUS);
+    }
+
     public Integer getSubcategoryId() {
         return getInt(ITransactionEntity.SUBCATEGID);
     }
@@ -85,4 +124,15 @@ public class RecurringTransaction
         setInteger(ITransactionEntity.SUBCATEGID, value);
     }
 
+    public Integer getToAccountId() {
+        return getInt(ITransactionEntity.TOACCOUNTID);
+    }
+
+    public String getTransactionCode() {
+        return getString(ITransactionEntity.TRANSCODE);
+    }
+
+    public String getTransactionNumber() {
+        return getString(ITransactionEntity.TRANSACTIONNUMBER);
+    }
 }

@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="@string/times_repeated"
+                    android:text="@string/payments_left"
                     android:visibility="gone"/>
             </LinearLayout>
             <!-- repeats, frequencies picker -->
@@ -203,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/times_repeated"
+                    android:hint="@string/payments_left"
                     android:inputType="number"
                     android:visibility="gone"/>
             </LinearLayout>

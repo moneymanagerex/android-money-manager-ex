@@ -203,7 +203,7 @@
   <string name="next_occurrence">Sljedeće pojavljivanje</string>
   <string name="repeats">Ponavlja se</string>
   <string name="occurs">Pojavljuje se</string>
-  <string name="times_repeated">Puta ponovljeno</string>
+  <string name="payments_left">Puta ponovljeno</string>
   <string name="error_next_occurrence_not_populate">Sljedeće pojavljivanje je neophodno</string>
   <string name="enter_next_occurrence">Unesite sljedeće pojavljivanje</string>
   <string name="skip_next_occurrence">Preskoči sljedeće pojavljivanje</string>

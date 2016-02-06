@@ -188,7 +188,7 @@
   <string name="new_edit_repeating_transaction">חדש/עריכת תנועה מחזורית</string>
   <string name="next_occurrence">המופע הבא</string>
   <string name="repeats">מופעים</string>
-  <string name="times_repeated">מספר מופעים</string>
+  <string name="payments_left">מספר מופעים</string>
   <string name="error_next_occurrence_not_populate">נדרש המופע הבא</string>
   <string name="enter_next_occurrence">הזן את המופע הבא</string>
   <string name="skip_next_occurrence">דלג על מופע הבא</string>

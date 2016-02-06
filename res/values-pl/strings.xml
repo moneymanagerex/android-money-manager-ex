@@ -197,7 +197,7 @@
   <string name="next_occurrence">Najbliższe wystąpienie</string>
   <string name="repeats">Powtarzaj</string>
   <string name="occurs">Występuje</string>
-  <string name="times_repeated">Liczba potwórzeń</string>
+  <string name="payments_left">Liczba potwórzeń</string>
   <string name="error_next_occurrence_not_populate">Następne wystąpienie jest wymagane</string>
   <string name="enter_next_occurrence">Wprowadź najbliższe wystąpienie</string>
   <string name="skip_next_occurrence">Pomiń najbliższe wystąpienie</string>

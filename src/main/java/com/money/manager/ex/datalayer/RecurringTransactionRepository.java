@@ -17,39 +17,73 @@
 
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.database.TableBillsDeposits;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 
 /**
  * Recurring transaction repository.
- * Created by Alen Siljak on 13/08/2015.
  */
-public class RecurringTransactionRepository {
+public class RecurringTransactionRepository
+    extends RepositoryBase<RecurringTransaction>{
 
     public RecurringTransactionRepository(Context context) {
-        this.context = context;
+        super(context, "billsdeposits_v1", DatasetType.TABLE, "billsdeposits");
     }
 
-    public Context context;
+    @Override
+    public String[] getAllColumns() {
+        return new String [] { RecurringTransaction.BDID + " AS _id", RecurringTransaction.BDID,
+                ITransactionEntity.ACCOUNTID,
+                ITransactionEntity.TOACCOUNTID,
+                ITransactionEntity.PAYEEID,
+                ITransactionEntity.TRANSCODE,
+                ITransactionEntity.TRANSAMOUNT,
+                ITransactionEntity.STATUS,
+                ITransactionEntity.TRANSACTIONNUMBER,
+                ITransactionEntity.NOTES,
+                ITransactionEntity.CATEGID,
+                ITransactionEntity.SUBCATEGID,
+                ITransactionEntity.TRANSDATE,
+                ITransactionEntity.FOLLOWUPID,
+                ITransactionEntity.TOTRANSAMOUNT,
+                RecurringTransaction.REPEATS,
+                RecurringTransaction.NEXTOCCURRENCEDATE,
+                RecurringTransaction.NUMOCCURRENCES};
+    }
 
-    public TableBillsDeposits load(int id) {
-        TableBillsDeposits tx = new TableBillsDeposits();
+    public RecurringTransaction load(int id) {
+        if (id == Constants.NOT_SET) return null;
 
-        Cursor cursor = this.context.getContentResolver().query(
-                tx.getUri(),
-                tx.getAllColumns(),
-                TableBillsDeposits.BDID + "=?",
-                new String[] { Integer.toString(id) },
-                null);
-        if (cursor == null) return null;
-        if (!cursor.moveToFirst()) return null;
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(RecurringTransaction.BDID, "=", id);
 
-        tx.setValueFromCursor(cursor);
-
-        cursor.close();
+        RecurringTransaction tx = first(null, where.getWhere(), null);
 
         return tx;
     }
+
+    public RecurringTransaction first(String[] projection, String selection, String[] args) {
+        Cursor c = openCursor(projection, selection, args);
+
+        if (c == null) return null;
+
+        RecurringTransaction entity = null;
+
+        if (c.moveToNext()) {
+            entity = new RecurringTransaction();
+            entity.loadFromCursor(c);
+        }
+
+        c.close();
+
+        return entity;
+    }
+
 }

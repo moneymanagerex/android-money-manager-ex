@@ -30,6 +30,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -43,7 +44,6 @@ import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
-import com.money.manager.ex.database.TableBillsDeposits;
 import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
@@ -61,7 +61,7 @@ import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * activity for editing Checking Account Transaction
+ * Activity for editing Checking Account Transaction
  */
 public class EditCheckingTransactionActivity
     extends BaseFragmentActivity {
@@ -353,23 +353,23 @@ public class EditCheckingTransactionActivity
      */
     private boolean loadRecurringTransactionInternal(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        TableBillsDeposits tx = repo.load(recurringTransactionId);
+        RecurringTransaction tx = repo.load(recurringTransactionId);
         if (tx == null) return false;
 
         // take a data
-        mCommonFunctions.accountId = tx.accountId;
-        mCommonFunctions.toAccountId = tx.toAccountId;
-        String transCode = tx.transactionCode;
+        mCommonFunctions.accountId = tx.getAccountId();
+        mCommonFunctions.toAccountId = tx.getToAccountId();
+        String transCode = tx.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = tx.status;
-        mCommonFunctions.transactionEntity.setAmount(tx.amount);
-        mCommonFunctions.transactionEntity.setAmountTo(tx.toAmount);
-        mCommonFunctions.payeeId = tx.payeeId;
-        mCommonFunctions.transactionEntity.setCategoryId(tx.categoryId);
-        mCommonFunctions.transactionEntity.setSubcategoryId(tx.subCategoryId);
-        mCommonFunctions.mTransNumber = tx.transactionNumber;
-        mCommonFunctions.mNotes = tx.notes;
-        mCommonFunctions.mDate = tx.nextOccurrence;
+        mCommonFunctions.status = tx.getStatus();
+        mCommonFunctions.transactionEntity.setAmount(tx.getAmount());
+        mCommonFunctions.transactionEntity.setAmountTo(tx.getAmountTo());
+        mCommonFunctions.payeeId = tx.getPayeeId();
+        mCommonFunctions.transactionEntity.setCategoryId(tx.getCategoryId());
+        mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
+        mCommonFunctions.mTransNumber = tx.getTransactionNumber();
+        mCommonFunctions.mNotes = tx.getNotes();
+        mCommonFunctions.mDate = tx.getNextOccurrenceDate();
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
