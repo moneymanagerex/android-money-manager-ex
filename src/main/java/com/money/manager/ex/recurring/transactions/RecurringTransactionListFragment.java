@@ -310,7 +310,7 @@ public class RecurringTransactionListFragment
 
         String nextOccurrence = tx.getNextOccurrenceDate();
         int repeats = tx.getRepeats();
-        int instances = tx.getNumOccurrences();
+        Integer instances = tx.getNumOccurrences();
         int bdId = tx.getId();
         Date date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
 

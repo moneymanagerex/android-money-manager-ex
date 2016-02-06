@@ -80,6 +80,16 @@ public class SplitCategory
     }
 
     @Override
+    public Integer getAccountId() {
+        return getInt(ACCOUNTID);
+    }
+
+    @Override
+    public void setAccountId(int value) {
+        setInteger(ACCOUNTID, value);
+    }
+
+    @Override
     public Integer getCategoryId() {
         return getInt(CATEGID);
     }

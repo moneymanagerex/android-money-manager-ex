@@ -70,7 +70,7 @@ public class AccountTransaction
         setInteger(TRANSID, id);
     }
 
-    public int getAccountId() {
+    public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }
 

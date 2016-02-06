@@ -45,6 +45,8 @@ public interface ITransactionEntity
 
     Integer getId();
 
+    Integer getAccountId();
+
     Integer getCategoryId();
 
     Integer getSubcategoryId();
@@ -59,6 +61,8 @@ public interface ITransactionEntity
     // Setters
 
     void setId(int splitTransId);
+
+    void setAccountId(int value);
 
     void setCategoryId(int categId);
 

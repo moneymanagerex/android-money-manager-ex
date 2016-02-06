@@ -65,7 +65,11 @@ public class RecurringTransactionService
      *                  example to indicate x.
      * @return next Date
      */
-    public static Date getDateNextOccurrence(Date date, int repeatType, int instances) {
+    public static Date getDateNextOccurrence(Date date, int repeatType, Integer instances) {
+        if (instances == null) {
+            instances = 0;
+        }
+
         if (repeatType >= 200) {
             repeatType = repeatType - 200;
         } // set auto execute without user acknowledgement

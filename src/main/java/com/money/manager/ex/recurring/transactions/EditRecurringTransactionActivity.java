@@ -124,7 +124,9 @@ public class EditRecurringTransactionActivity
         // manage intent
         if (getIntent() != null) {
             if (savedInstanceState == null) {
-                mCommonFunctions.accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
+                mRecurringTransaction.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
+//                mCommonFunctions.accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
+
                 if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     int id = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
                     // select data transaction
@@ -244,7 +246,7 @@ public class EditRecurringTransactionActivity
 
         // save the state interface
 //        outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
-        outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.accountId);
+//        outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.accountId);
         outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
@@ -368,7 +370,7 @@ public class EditRecurringTransactionActivity
         // todo: just use a model object instead of a bunch of individual properties.
 
         // Read data.
-        mCommonFunctions.accountId = mRecurringTransaction.getAccountId();
+//        mCommonFunctions.accountId = mRecurringTransaction.getAccountId();
         mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
         String transCode = mRecurringTransaction.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
@@ -535,7 +537,7 @@ public class EditRecurringTransactionActivity
         mRecurringTransaction = savedInstanceState.getParcelable(KEY_MODEL);
 
 //        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
-        mCommonFunctions.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
+//        mCommonFunctions.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
         mCommonFunctions.toAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);

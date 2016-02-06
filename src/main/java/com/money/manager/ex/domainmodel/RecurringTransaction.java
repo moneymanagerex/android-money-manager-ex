@@ -58,6 +58,10 @@ public class RecurringTransaction
         return getInt(ITransactionEntity.ACCOUNTID);
     }
 
+    public void setAccountId(int value) {
+        setInteger(ITransactionEntity.ACCOUNTID, value);
+    }
+
     public Money getAmount() {
         Double amount = getDouble(ITransactionEntity.TRANSAMOUNT);
         if (amount == null) {

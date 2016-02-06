@@ -111,7 +111,8 @@ public class EditTransactionCommonFunctions {
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    public int accountId = Constants.NOT_SET, toAccountId = Constants.NOT_SET;  // accounts
+    //public int accountId = Constants.NOT_SET;
+    public int toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
     public String mTransNumber = "";
@@ -261,7 +262,7 @@ public class EditTransactionCommonFunctions {
         values.put(ITransactionEntity.TOTRANSAMOUNT, transactionEntity.getAmountTo().toDouble());
 
         // Accounts & Payee
-        values.put(ITransactionEntity.ACCOUNTID, this.accountId);
+        values.put(ITransactionEntity.ACCOUNTID, this.transactionEntity.getAccountId());
         if (isTransfer) {
             values.put(ITransactionEntity.TOACCOUNTID, this.toAccountId);
             values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
@@ -302,9 +303,6 @@ public class EditTransactionCommonFunctions {
     }
 
     public int getDestinationCurrencyId() {
-//        int accountIndex = mAccountIdList.indexOf(this.toAccountId);
-//        return this.AccountList.get(accountIndex).getCurrencyId();
-
         AccountRepository repo = new AccountRepository(getContext());
         Integer currencyId = repo.loadCurrencyIdFor(this.toAccountId);
         return currencyId;
@@ -312,13 +310,7 @@ public class EditTransactionCommonFunctions {
 
     public int getSourceCurrencyId() {
         AccountRepository repo = new AccountRepository(getContext());
-        Integer currencyId = repo.loadCurrencyIdFor(this.accountId);
-
-//        int accountIndex = mAccountIdList.indexOf(this.accountId);
-//        Account account = this.AccountList.get(accountIndex);
-//        if (account == null) return Constants.NOT_SET;
-//        Integer currencyId = account.getCurrencyId();
-//        if (currencyId == null) return Constants.NOT_SET;
+        Integer currencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());
 
         return currencyId;
     }
@@ -363,16 +355,16 @@ public class EditTransactionCommonFunctions {
         }
 
         AccountRepository accountRepository = new AccountRepository(mContext);
-        addMissingAccountToSelectors(accountRepository, accountId);
+        addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountId());
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
-        if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
+        if ((transactionEntity.getAccountId() == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
             int defaultAccount = Integer.parseInt(defaultAccountString);
             addMissingAccountToSelectors(accountRepository, defaultAccount);
             // Set the default account as the active account.
-            accountId = defaultAccount;
+            transactionEntity.setAccountId(defaultAccount);
         }
 
         // create adapter for spinAccount
@@ -382,8 +374,9 @@ public class EditTransactionCommonFunctions {
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinAccount.setAdapter(accountAdapter);
         // select current value
-        if (mAccountIdList.indexOf(accountId) >= 0) {
-            viewHolder.spinAccount.setSelection(mAccountIdList.indexOf(accountId), true);
+        int accountIndex = mAccountIdList.indexOf(transactionEntity.getAccountId());
+        if (accountIndex >= 0) {
+            viewHolder.spinAccount.setSelection(accountIndex, true);
         }
         viewHolder.spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -391,9 +384,9 @@ public class EditTransactionCommonFunctions {
                 setDirty(true);
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    accountId = mAccountIdList.get(position);
+                    transactionEntity.setAccountId(mAccountIdList.get(position));
                     Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
-                    displayAmountFormatted(viewHolder.txtAmount, amount, accountId);
+                    displayAmountFormatted(viewHolder.txtAmount, amount, transactionEntity.getAccountId());
                     refreshControlTitles();
                 }
             }
@@ -463,7 +456,8 @@ public class EditTransactionCommonFunctions {
         };
 
         // amount
-        displayAmountFormatted(viewHolder.txtAmount, transactionEntity.getAmount(), accountId);
+        displayAmountFormatted(viewHolder.txtAmount, transactionEntity.getAmount(),
+                transactionEntity.getAccountId());
         viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
@@ -694,7 +688,7 @@ public class EditTransactionCommonFunctions {
                     ITransactionEntity.ACCOUNTID + "=?";
 
                 Cursor cursor = helper.getReadableDatabase().rawQuery(query,
-                    new String[]{Integer.toString(accountId)});
+                    new String[]{Integer.toString(transactionEntity.getAccountId())});
                 if (cursor == null) return;
 
                 if (cursor.moveToFirst()) {
@@ -902,7 +896,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // Display the formatted amount in selected field.
-        accountId = isSourceAmount ? this.accountId : this.toAccountId;
+        accountId = isSourceAmount ? transactionEntity.getAccountId() : this.toAccountId;
         displayAmountFormatted(((TextView) view), amount, accountId);
     }
 
@@ -982,7 +976,7 @@ public class EditTransactionCommonFunctions {
             amountHeaderTextView.setText(R.string.amount);
         } else {
             // Transfer. Adjust the headers on amount text boxes.
-            int index = mAccountIdList.indexOf(accountId);
+            int index = mAccountIdList.indexOf(transactionEntity.getAccountId());
             if (index >= 0) {
                 amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getName()));
@@ -1138,7 +1132,7 @@ public class EditTransactionCommonFunctions {
                 Core.alertDialog(mParent, R.string.error_toaccount_not_selected);
                 return false;
             }
-            if (toAccountId == accountId) {
+            if (toAccountId == transactionEntity.getAccountId()) {
                 Core.alertDialog(mParent, R.string.error_transfer_to_same_account);
                 return false;
             }
@@ -1257,14 +1251,14 @@ public class EditTransactionCommonFunctions {
         if (!isAmountFrom) {
             fromCurrencyId = getDestinationCurrencyId();
             AccountRepository repo = new AccountRepository(mContext);
-            toCurrencyId = repo.loadCurrencyIdFor(this.accountId);
+            toCurrencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());
 
             destinationTextView = viewHolder.txtAmount;
         }
 
         Integer destinationAccountId = isAmountFrom
                 ? this.toAccountId
-                : this.accountId;
+                : transactionEntity.getAccountId();
 
         // get the destination value.
 //        String destinationTagValue = destinationTextView.getTag().toString();
@@ -1363,7 +1357,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void displaySourceAmount() {
-        displayAmountFormatted(viewHolder.txtAmount, this.transactionEntity.getAmount(), this.accountId);
+        displayAmountFormatted(viewHolder.txtAmount, this.transactionEntity.getAmount(), transactionEntity.getAccountId());
     }
 
     private void showSplitCategoriesForm(String datasetName) {
@@ -1374,7 +1368,7 @@ public class EditTransactionCommonFunctions {
         intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
 
         AccountRepository repo = new AccountRepository(mContext);
-        Integer fromCurrencyId = repo.loadCurrencyIdFor(this.accountId);
+        Integer fromCurrencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());
         intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
