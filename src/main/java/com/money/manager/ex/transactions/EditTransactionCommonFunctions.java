@@ -503,7 +503,8 @@ public class EditTransactionCommonFunctions {
         } else {
             viewHolder.txtSelectDate.setTag(Calendar.getInstance().getTime());
         }
-        final DateUtils dateUtils = new DateUtils(mContext);
+
+        final DateUtils dateUtils = new DateUtils(getContext());
         dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
 
         viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
@@ -519,7 +520,7 @@ public class EditTransactionCommonFunctions {
                         viewHolder.txtSelectDate.setTag(date);
                         dateUtils.formatExtendedDate(viewHolder.txtSelectDate, date);
                     } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(mParent, this);
+                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                         handler.handle(e, "setting the date");
                     }
                 }
@@ -542,7 +543,6 @@ public class EditTransactionCommonFunctions {
                 dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
-
     }
 
     public void initNotesControls() {

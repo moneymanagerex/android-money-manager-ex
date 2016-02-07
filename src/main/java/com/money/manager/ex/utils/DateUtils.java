@@ -175,6 +175,12 @@ public class DateUtils {
         datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    public static Date getToday() {
+        Date today = new CalendarUtils().setNow()
+                .setTimeToBeginningOfDay().getTime();
+        return today;
+    }
+
     public static String getYesterdayFrom(String isoDate) {
         String result = null;
 

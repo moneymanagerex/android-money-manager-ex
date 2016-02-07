@@ -19,8 +19,12 @@ package com.money.manager.ex.domainmodel;
 
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.text.TextUtils;
 
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.utils.DateUtils;
+
+import java.util.Date;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -94,6 +98,23 @@ public class RecurringTransaction
 
     public void setCategoryId(int value) {
         setInteger(ITransactionEntity.CATEGID, value);
+    }
+
+    public String getDueDateString() {
+        return getString(TRANSDATE);
+    }
+
+    public Date getDueDate() {
+        String dateString = getDueDateString();
+        if (TextUtils.isEmpty(dateString)) {
+            return null;
+        }
+
+        return DateUtils.getDateFromIsoString(dateString);
+    }
+
+    public void setDueDate(Date value) {
+        setDate(TRANSDATE, value);
     }
 
     public String getNextOccurrenceDate() {

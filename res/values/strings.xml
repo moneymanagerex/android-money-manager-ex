@@ -223,6 +223,7 @@
     <string name="widget_summary">Summary</string>
     <string name="widget_all_accounts">All Accounts</string>
     <string name="widget_add_transaction">Add Transaction</string>
+
     <!-- Recurring Transactions -->
     <string name="none">None</string>
     <string name="once">Once</string>
@@ -246,10 +247,13 @@
     <string name="days_overdue">days overdue!</string>
     <string name="days_remaining">days remaining</string>
     <string name="new_edit_repeating_transaction">New/Edit Recurring Transaction</string>
+    <string name="due_date">Due Date</string>
     <string name="next_occurrence">Next Occurrence</string>
+    <string name="payment_date">Payment Date</string>
     <string name="repeats">Repeats</string>
     <string name="occurs">Occurs</string>
     <string name="payments_left">Payments Left</string>
+    <string name="due_date_required">Due date is required</string>
     <string name="error_next_occurrence_not_populate">Next occurrence is required</string>
     <string name="enter_next_occurrence">Enter Next Occurrence</string>
     <string name="skip_next_occurrence">Skip Next Occurrence</string>

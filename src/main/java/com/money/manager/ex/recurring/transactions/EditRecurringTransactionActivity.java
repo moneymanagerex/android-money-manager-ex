@@ -31,9 +31,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -50,8 +53,15 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
+import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.DateTimeUtils;
+import com.money.manager.ex.utils.DateUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
@@ -87,6 +97,7 @@ public class EditRecurringTransactionActivity
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
+    public static final String TAG_DATEPICKER = "DatePicker";
 
     // action type intent
     private String mIntentAction;
@@ -96,10 +107,8 @@ public class EditRecurringTransactionActivity
 //    private int mBillDepositsId = Constants.NOT_SET;
     private int mFrequencies = 0;
 
-    // Controls on the form.
-    private EditText edtTimesRepeated;
-    private TextView txtRepeats, txtTimesRepeated;
-
+    // Form controls
+    private RecurringTransactionViewHolder mViewHolder;
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
@@ -107,7 +116,7 @@ public class EditRecurringTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recurring_transaction);
 
-        mRecurringTransaction = new RecurringTransaction();
+        initializeModel();
 
         mCommonFunctions = new EditTransactionCommonFunctions(this, this, mRecurringTransaction);
 
@@ -117,9 +126,6 @@ public class EditRecurringTransactionActivity
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
-
-        // Controls need to be at the beginning as they are referenced throughout the code.
-        mCommonFunctions.findControls();
 
         // manage intent
         if (getIntent() != null) {
@@ -141,8 +147,7 @@ public class EditRecurringTransactionActivity
 
         // Controls
 
-        txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
-        txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
+        initializeViewHolder();
 
         // Account(s)
         mCommonFunctions.initAccountSelectors();
@@ -176,15 +181,6 @@ public class EditRecurringTransactionActivity
         // notes
         mCommonFunctions.initNotesControls();
 
-        // next occurrence
-        mCommonFunctions.initDateSelector();
-
-        // Payments Left
-        edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
-        if (mRecurringTransaction.getNumOccurrences() != null && mRecurringTransaction.getNumOccurrences() >= 0) {
-            edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getNumOccurrences()));
-        }
-
         // Frequency
 
         Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
@@ -202,13 +198,13 @@ public class EditRecurringTransactionActivity
                 mCommonFunctions.setDirty(true);
 
                 mFrequencies = position;
-                refreshTimesRepeated();
+                showTimesRepeated();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 mFrequencies = 0;
-                refreshTimesRepeated();
+                showTimesRepeated();
             }
         });
 
@@ -216,7 +212,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
-        refreshTimesRepeated();
+        showTimesRepeated();
     }
 
     @Override
@@ -344,17 +340,95 @@ public class EditRecurringTransactionActivity
     /**
      * refresh the UI control Payments Left
      */
-    public void refreshTimesRepeated() {
-        txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
+    public void showTimesRepeated() {
+        mViewHolder.txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
 
-        txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
+        mViewHolder.txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
+        mViewHolder.txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
 
-        edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
+        mViewHolder.edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
+        mViewHolder.edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
     }
 
     // Private
+
+    private void initializeDueDateSelector() {
+        if (mViewHolder.dueDateTextView == null) return;
+
+        final DateUtils dateUtils = new DateUtils(this);
+        dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, mRecurringTransaction.getDueDate());
+
+        mViewHolder.dueDateTextView.setOnClickListener(new View.OnClickListener() {
+            public DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                    mCommonFunctions.setDirty(true);
+
+                    try {
+                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                                MoneyManagerApplication.getInstanceApp().getAppLocale())
+                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+
+                        mRecurringTransaction.setDueDate(date);
+                        dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, date);
+                    } catch (Exception e) {
+                        ExceptionHandler handler = new ExceptionHandler(EditRecurringTransactionActivity.this, this);
+                        handler.handle(e, "setting the due date");
+                    }
+                }
+            };
+
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mRecurringTransaction.getDueDate());
+                //CalendarUtils calendarUtils = new CalendarUtils(calendar);
+                DatePickerDialog dialog = DatePickerDialog.newInstance(dateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
+                        false);
+                dialog.setCloseOnSingleTapDay(true);
+
+                // Set first day of the week.
+                int firstDayOfWeek = Calendar.getInstance(MoneyManagerApplication.getInstanceApp().getAppLocale())
+                        .getFirstDayOfWeek();
+//                dialog.setFirstDayOfWeek(Calendar.MONDAY);
+                dialog.setFirstDayOfWeek(firstDayOfWeek);
+
+                dialog.show(getSupportFragmentManager(), TAG_DATEPICKER);
+            }
+        });
+
+    }
+
+    private void initializeModel() {
+        mRecurringTransaction = new RecurringTransaction();
+
+        mRecurringTransaction.setDueDate(DateUtils.getToday());
+    }
+
+    private void initializeViewHolder() {
+        // Controls need to be at the beginning as they are referenced throughout the code.
+        mCommonFunctions.findControls();
+
+        mViewHolder = new RecurringTransactionViewHolder();
+
+        // Due Date
+        mViewHolder.dueDateTextView = (TextView) findViewById(R.id.dueDateTextView);
+        initializeDueDateSelector();
+
+        // Payment Date, next occurrence
+        mCommonFunctions.initDateSelector();
+
+        mViewHolder.txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
+        mViewHolder.txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
+
+        // Payments Left
+        mViewHolder.edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
+        if (mRecurringTransaction.getNumOccurrences() != null && mRecurringTransaction.getNumOccurrences() >= 0) {
+            mViewHolder.edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getNumOccurrences()));
+        }
+
+    }
 
     /**
      * this method allows you to search the transaction data
@@ -370,7 +444,6 @@ public class EditRecurringTransactionActivity
         // todo: just use a model object instead of a bunch of individual properties.
 
         // Read data.
-//        mCommonFunctions.accountId = mRecurringTransaction.getAccountId();
         mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
         String transCode = mRecurringTransaction.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
@@ -408,6 +481,12 @@ public class EditRecurringTransactionActivity
      */
     private boolean validateData() {
         if (!mCommonFunctions.validateData()) return false;
+
+        // Due Date is required
+        if (StringUtils.isEmpty(mRecurringTransaction.getDueDateString())) {
+            Core.alertDialog(this, R.string.due_date_required);
+            return false;
+        }
 
         if (TextUtils.isEmpty(mCommonFunctions.viewHolder.txtSelectDate.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
@@ -524,11 +603,12 @@ public class EditRecurringTransactionActivity
     private ContentValues getContentValues(boolean isTransfer) {
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
-        values.put(com.money.manager.ex.domainmodel.RecurringTransaction.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+        values.put(RecurringTransaction.TRANSDATE, mRecurringTransaction.getDueDateString());
+        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
                 .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
-        values.put(com.money.manager.ex.domainmodel.RecurringTransaction.REPEATS, mFrequencies);
-        values.put(com.money.manager.ex.domainmodel.RecurringTransaction.NUMOCCURRENCES, mFrequencies > 0
-                ? edtTimesRepeated.getText().toString() : null);
+        values.put(RecurringTransaction.REPEATS, mFrequencies);
+        values.put(RecurringTransaction.NUMOCCURRENCES, mFrequencies > 0
+                ? mViewHolder.edtTimesRepeated.getText().toString() : null);
 
         return values;
     }
