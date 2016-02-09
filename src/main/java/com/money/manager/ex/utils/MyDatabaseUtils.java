@@ -27,10 +27,10 @@ import android.widget.Toast;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.BufferedReader;
@@ -154,7 +154,7 @@ public class MyDatabaseUtils {
 
         // check if there are duplicate records in Info Table
         InfoRepository repo = new InfoRepository(getContext());
-        List<Info> results = repo.loadAll(InfoService.INFOTABLE_DATEFORMAT);
+        List<Info> results = repo.loadAll(InfoKeys.DATEFORMAT);
 
         if (results.size() > 1) {
             // delete them, leaving only the first one

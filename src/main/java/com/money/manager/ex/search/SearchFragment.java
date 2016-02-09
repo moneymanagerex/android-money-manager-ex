@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -47,7 +48,6 @@ import com.money.manager.ex.common.ICommonFragmentCallbacks;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
@@ -501,7 +501,7 @@ public class SearchFragment
                     amount = MoneyFactory.fromString(tag.toString());
                 }
 
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(), amount);
+                AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(), amount);
 //                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }

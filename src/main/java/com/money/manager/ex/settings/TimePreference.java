@@ -84,7 +84,7 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
 	/**
 	 * Set the selected time to the specified string.
 	 * 
-	 * @param dateString
+	 * @param timeString
 	 *            The date, represented as a string, in the format specified by {@link #formatter()}.
 	 */
 	public void setTime(String timeString) {
@@ -244,7 +244,9 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
 		}
 	}
 
-	private static class SavedState extends BaseSavedState {
+	private static class SavedState
+		extends BaseSavedState {
+
 		String dateValue;
 
 		public SavedState(Parcel p) {

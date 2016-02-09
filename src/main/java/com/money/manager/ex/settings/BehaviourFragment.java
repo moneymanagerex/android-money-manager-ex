@@ -16,17 +16,29 @@
  */
 package com.money.manager.ex.settings;
 
+import android.databinding.tool.util.StringUtils;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.domainmodel.Info;
+import com.money.manager.ex.servicelayer.InfoService;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Look & feel settings.
  */
 public class BehaviourFragment
-        extends PreferenceFragment {
+    extends PreferenceFragment {
+
+    private static final String KEY_THRESHOLD = "AssetAllocationThreshold";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,5 +62,44 @@ public class BehaviourFragment
         // Set the main activity to restart on change of any of the following settings.
 //        chkFilter.setOnPreferenceChangeListener(listener);
 
+//        initializeAssetAllocationThreshold();
     }
+
+    // Events
+
+    public void onEvent(AmountEnteredEvent event) {
+        if (event.requestId.equals(KEY_THRESHOLD)) {
+//            BehaviourSettings settings = new BehaviourSettings(getActivity());
+//            settings.setAssetAllocationDifferenceThreshold(event.amount);
+            InfoService service = new InfoService(getActivity());
+            service.setInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD, event.amount.toString());
+        }
+    }
+
+    // Private
+
+//    private void initializeAssetAllocationThreshold() {
+//        Preference threshold = findPreference(getString(R.string.pref_behaviour_asset_allocation_threshold));
+//        if (threshold == null) return;
+//
+////        final BehaviourSettings settings = new BehaviourSettings(getActivity());
+//
+//        Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                InfoService service = new InfoService(getActivity());
+//                String setting = service.getInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD);
+//                // settings.getAssetAllocationDifferenceThreshold()
+//                if(org.apache.commons.lang3.StringUtils.isEmpty(setting)) {
+//                    setting = "0";
+//                }
+//                Money value = MoneyFactory.fromString(setting);
+//
+//                // show number entry form
+//                AmountInputDialog.getInstance(KEY_THRESHOLD, value);
+//                return true;
+//            }
+//        };
+//        threshold.setOnPreferenceClickListener(listener);
+//    }
 }

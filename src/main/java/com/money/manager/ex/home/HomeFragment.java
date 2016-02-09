@@ -47,7 +47,9 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Info;
@@ -58,8 +60,6 @@ import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.settings.LookAndFeelSettings;
@@ -336,7 +336,7 @@ public class HomeFragment
                         String username;
                         String infoValue = data.getString(data.getColumnIndex(Info.INFONAME));
                         // save into preferences username and base currency id
-                        if (InfoService.INFOTABLE_USERNAME.equalsIgnoreCase(infoValue)) {
+                        if (InfoKeys.USERNAME.equalsIgnoreCase(infoValue)) {
                             username = data.getString(data.getColumnIndex(Info.INFOVALUE));
                             MoneyManagerApplication.getInstanceApp().setUserName(username);
                         }
@@ -608,7 +608,7 @@ public class HomeFragment
         // get the amount via input dialog.
         int currencyId = account.getCurrencyId();
 
-        InputAmountDialog dialog = InputAmountDialog.getInstance(REQUEST_BALANCE_ACCOUNT,
+        AmountInputDialog dialog = AmountInputDialog.getInstance(REQUEST_BALANCE_ACCOUNT,
                 MoneyFactory.fromString("0"), currencyId, true);
         dialog.setTargetFragment(this, REQUEST_BALANCE_ACCOUNT);
         dialog.show(getActivity().getSupportFragmentManager(), TAG_BALANCE_ACCOUNT);

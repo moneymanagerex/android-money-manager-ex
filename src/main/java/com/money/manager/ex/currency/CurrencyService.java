@@ -27,6 +27,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -357,7 +358,7 @@ public class CurrencyService {
     public Boolean saveBaseCurrencyId(Integer currencyId) {
 
         InfoService infoService = new InfoService(getContext());
-        boolean success = infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
+        boolean success = infoService.setInfoValue(InfoKeys.BASECURRENCYID, Integer.toString(currencyId));
 
         // cache the new base currency
         if (success) {
@@ -377,7 +378,7 @@ public class CurrencyService {
      */
     protected Integer loadBaseCurrencyId() {
         InfoService infoService = new InfoService(mContext);
-        String currencyString = infoService.getInfoValue(InfoService.BASECURRENCYID);
+        String currencyString = infoService.getInfoValue(InfoKeys.BASECURRENCYID);
         Integer currencyId = null;
 
         if(!StringUtils.isEmpty(currencyString)) {

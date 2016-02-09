@@ -25,9 +25,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -40,7 +40,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
-import com.money.manager.ex.utils.DialogUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -62,7 +61,7 @@ public class GeneralSettingsFragment
 
         AppSettings settings = new AppSettings(getActivity());
 
-        addPreferencesFromResource(R.xml.general_settings);
+        addPreferencesFromResource(R.xml.settings_general);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Application Locale
@@ -108,7 +107,7 @@ public class GeneralSettingsFragment
             lstDateFormat.setEntries(getResources().getStringArray(R.array.date_format));
             lstDateFormat.setEntryValues(getResources().getStringArray(R.array.date_format_mask));
             //set summary
-            String value = infoService.getInfoValue(InfoService.INFOTABLE_DATEFORMAT);
+            String value = infoService.getInfoValue(InfoKeys.DATEFORMAT);
             lstDateFormat.setSummary(getDateFormatFromMask(value));
             lstDateFormat.setValue(value);
             //on change
@@ -116,7 +115,7 @@ public class GeneralSettingsFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (infoService.setInfoValue(InfoService.INFOTABLE_DATEFORMAT, (String) newValue)) {
+                    if (infoService.setInfoValue(InfoKeys.DATEFORMAT, (String) newValue)) {
                         lstDateFormat.setSummary(getDateFormatFromMask((String) newValue));
                         return true;
                     } else {
@@ -160,7 +159,7 @@ public class GeneralSettingsFragment
         // financial day and month
         final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTDATE));
         if (pFinancialDay != null) {
-            pFinancialDay.setSummary(infoService.getInfoValue(InfoService.INFOTABLE_FINANCIAL_YEAR_START_DAY));
+            pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_DAY));
             if (pFinancialDay.getSummary() != null) {
                 pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
             }
@@ -173,7 +172,7 @@ public class GeneralSettingsFragment
                         if (!(day >= 1 && day <= 31)) {
                             return false;
                         }
-                        if (infoService.setInfoValue(InfoService.INFOTABLE_FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
+                        if (infoService.setInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
                             pFinancialDay.setSummary(Integer.toString(day));
                         }
                         return true;
@@ -195,7 +194,7 @@ public class GeneralSettingsFragment
             lstFinancialMonth.setDefaultValue("0");
             // get current month
             try {
-                String currentMonth = infoService.getInfoValue(InfoService.INFOTABLE_FINANCIAL_YEAR_START_MONTH);
+                String currentMonth = infoService.getInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_MONTH);
                 if ((!TextUtils.isEmpty(currentMonth)) && NumberUtils.isNumber(currentMonth)) {
                     int month = Integer.parseInt(currentMonth) - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
@@ -214,7 +213,7 @@ public class GeneralSettingsFragment
                     try {
                         int value = Integer.parseInt(newValue.toString());
                         if (value > -1 && value < lstFinancialMonth.getEntries().length) {
-                            if (infoService.setInfoValue(InfoService.INFOTABLE_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
+                            if (infoService.setInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
                                 lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
                                 return true;
                             }

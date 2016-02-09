@@ -48,40 +48,40 @@ import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
-public class InputAmountDialog
+public class AmountInputDialog
     extends DialogFragment {
 
-    private static final String KEY_REQUEST_ID = "InputAmountDialog:Id";
-    private static final String KEY_AMOUNT = "InputAmountDialog:Amount";
-    private static final String KEY_CURRENCY_ID = "InputAmountDialog:CurrencyId";
-    private static final String KEY_EXPRESSION = "InputAmountDialog:Expression";
-    private static final String ARG_ROUNDING = "InputAmountDialog:Rounding";
+    private static final String KEY_REQUEST_ID = "AmountInputDialog:Id";
+    private static final String KEY_AMOUNT = "AmountInputDialog:Amount";
+    private static final String KEY_CURRENCY_ID = "AmountInputDialog:CurrencyId";
+    private static final String KEY_EXPRESSION = "AmountInputDialog:Expression";
+    private static final String ARG_ROUNDING = "AmountInputDialog:Rounding";
 
-    public static InputAmountDialog getInstance(int requestId, Money amount) {
+    public static AmountInputDialog getInstance(int requestId, Money amount) {
         String requestIdString = Integer.toString(requestId);
         return getInstance(requestIdString, amount, null, false);
     }
 
-    public static InputAmountDialog getInstance(String requestId, Money amount) {
+    public static AmountInputDialog getInstance(String requestId, Money amount) {
         return getInstance(requestId, amount, null, false);
     }
 
-    public static InputAmountDialog getInstance(int requestId, Money amount, int currencyId) {
+    public static AmountInputDialog getInstance(int requestId, Money amount, int currencyId) {
         String requestIdString = Integer.toString(requestId);
         return getInstance(requestIdString, amount, currencyId, true);
     }
 
-    public static InputAmountDialog getInstance(String requestId, Money amount, int currencyId) {
+    public static AmountInputDialog getInstance(String requestId, Money amount, int currencyId) {
         return getInstance(requestId, amount, currencyId, true);
     }
 
-    public static InputAmountDialog getInstance(int requestId, Money amount, Integer currencyId,
+    public static AmountInputDialog getInstance(int requestId, Money amount, Integer currencyId,
                                                 boolean roundToCurrencyDecimals) {
         String requestIdString = Integer.toString(requestId);
         return getInstance(requestIdString, amount, currencyId, roundToCurrencyDecimals);
     }
 
-    public static InputAmountDialog getInstance(String requestId, Money amount, Integer currencyId,
+    public static AmountInputDialog getInstance(String requestId, Money amount, Integer currencyId,
                                                 boolean roundToCurrencyDecimals) {
         Bundle args = new Bundle();
         args.putString(KEY_REQUEST_ID, requestId);
@@ -92,7 +92,7 @@ public class InputAmountDialog
         args.putInt(KEY_CURRENCY_ID, currencyId);
         args.putBoolean(ARG_ROUNDING, roundToCurrencyDecimals);
 
-        InputAmountDialog dialog = new InputAmountDialog();
+        AmountInputDialog dialog = new AmountInputDialog();
         dialog.setArguments(args);
 
         return dialog;

@@ -27,8 +27,8 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -45,7 +45,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import de.greenrobot.event.EventBus;
-import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class EditInvestmentTransactionActivity
@@ -238,7 +237,7 @@ public class EditInvestmentTransactionActivity
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputAmountDialog dialog = InputAmountDialog.getInstance(ID_COMMISSION,
+                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_COMMISSION,
                         mStock.getCommission(),
                         mAccount.getCurrencyId());
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -254,7 +253,7 @@ public class EditInvestmentTransactionActivity
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputAmountDialog dialog = InputAmountDialog.getInstance(ID_CURRENT_PRICE,
+                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_CURRENT_PRICE,
                         mStock.getCurrentPrice(),
                         mAccount.getCurrencyId());
                 dialog.roundToCurrencyDecimals = false;
@@ -272,7 +271,7 @@ public class EditInvestmentTransactionActivity
             @Override
             public void onClick(View v) {
                 // todo: use currency
-                InputAmountDialog dialog = InputAmountDialog.getInstance(ID_NUM_SHARES,
+                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_NUM_SHARES,
                         MoneyFactory.fromDouble(mStock.getNumberOfShares()));
                 dialog.roundToCurrencyDecimals = false;
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -288,7 +287,7 @@ public class EditInvestmentTransactionActivity
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputAmountDialog dialog = InputAmountDialog.getInstance(ID_PURCHASE_PRICE,
+                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_PURCHASE_PRICE,
                         mStock.getPurchasePrice(), mAccount.getCurrencyId());
                 dialog.roundToCurrencyDecimals = false;
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());

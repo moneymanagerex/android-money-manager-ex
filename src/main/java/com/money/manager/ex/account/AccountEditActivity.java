@@ -45,7 +45,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.shamanland.fonticon.FontIconView;
@@ -209,7 +209,7 @@ public class AccountEditActivity
             @Override
             public void onClick(View v) {
                 Money amount = MoneyFactory.fromString(v.getTag().toString());
-                InputAmountDialog dialog = InputAmountDialog.getInstance(null, amount, mCurrencyId);
+                AmountInputDialog dialog = AmountInputDialog.getInstance(null, amount, mCurrencyId);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         });

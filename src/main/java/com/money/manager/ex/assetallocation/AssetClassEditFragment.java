@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.InputAmountDialog;
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -182,7 +182,7 @@ public class AssetClassEditFragment
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_ALLOCATION,
+                AmountInputDialog dialog = AmountInputDialog.getInstance(INPUT_ALLOCATION,
                     assetClass.getAllocation());
 //                dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -230,7 +230,7 @@ public class AssetClassEditFragment
             public void onClick(View v) {
                 Money number = MoneyFactory.fromString(Integer.toString(assetClass.getSortOrder()));
 
-                InputAmountDialog dialog = InputAmountDialog.getInstance(INPUT_SORT_ORDER,
+                AmountInputDialog dialog = AmountInputDialog.getInstance(INPUT_SORT_ORDER,
                     number, Constants.NOT_SET, false);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }

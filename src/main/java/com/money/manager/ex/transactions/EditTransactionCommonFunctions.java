@@ -46,18 +46,17 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
@@ -447,7 +446,7 @@ public class EditTransactionCommonFunctions {
                     }
                 }
                 Money amount = MoneyFactory.fromString(v.getTag().toString());
-                InputAmountDialog dialog = InputAmountDialog.getInstance(v.getId(),
+                AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(),
                         amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 

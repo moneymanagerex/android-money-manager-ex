@@ -21,6 +21,9 @@ import android.content.SharedPreferences;
 
 import com.money.manager.ex.R;
 
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Settings in the General category.
  */
@@ -31,6 +34,18 @@ public class BehaviourSettings
         super(context);
 
     }
+
+//    public Money getAssetAllocationDifferenceThreshold() {
+//        SharedPreferences preferences = getSharedPreferences();
+//        String key = mContext.getString(R.string.pref_behaviour_asset_allocation_threshold);
+//        String value = preferences.getString(key, "0");
+//
+//        return MoneyFactory.fromString(value);
+//    }
+
+//    public void setAssetAllocationDifferenceThreshold(Money value) {
+//        set(R.string.pref_behaviour_asset_allocation_threshold, value.toString());
+//    }
 
     public boolean getNotificationRecurringTransaction() {
         SharedPreferences preferences = getSharedPreferences();

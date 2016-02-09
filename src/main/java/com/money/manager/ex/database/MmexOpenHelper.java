@@ -31,7 +31,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.domainmodel.Subcategory;
@@ -362,14 +362,14 @@ public class MmexOpenHelper
 
 //            cursor = database.rawQuery("SELECT * FROM " + repo.getSource() +
 //                            " WHERE " + Info.INFONAME + "=?",
-//                    new String[]{InfoService.INFOTABLE_DATEFORMAT});
+//                    new String[]{InfoService.DATEFORMAT});
 //
 //            if (cursor == null) return;
 
 //            String existingValue = null;
 //            if (cursor.moveToNext()) {
 //                // read existing value for comparison
-//                existingValue = cursor.getString(cursor.getColumnIndex(InfoService.INFOTABLE_DATEFORMAT));
+//                existingValue = cursor.getString(cursor.getColumnIndex(InfoService.DATEFORMAT));
 //            }
 //            cursor.close();
 
@@ -377,9 +377,9 @@ public class MmexOpenHelper
 
 //            if (!pattern.equalsIgnoreCase(existingValue)) {
 //                // check if pattern exists
-//                infoService.insertRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
+//                infoService.insertRaw(database, InfoService.DATEFORMAT, pattern);
 //            } else {
-                infoService.updateRaw(database, InfoService.INFOTABLE_DATEFORMAT, pattern);
+                infoService.updateRaw(database, InfoKeys.DATEFORMAT, pattern);
 //            }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
@@ -400,7 +400,7 @@ public class MmexOpenHelper
 
             currencyCursor = db.rawQuery("SELECT * FROM " + infoService.repository.getSource() +
                             " WHERE " + Info.INFONAME + "=?",
-                    new String[]{ InfoService.BASECURRENCYID});
+                    new String[]{ InfoKeys.BASECURRENCYID});
             if (currencyCursor == null) return;
 
             boolean recordExists = currencyCursor.moveToFirst();
@@ -411,14 +411,14 @@ public class MmexOpenHelper
             int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
 
             if (!recordExists && (currencyId != Constants.NOT_SET)) {
-                long newId = infoService.insertRaw(db, InfoService.BASECURRENCYID, currencyId);
+                long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
                 if (newId <= 0) {
                     ExceptionHandler handler = new ExceptionHandler(mContext, this);
                     handler.showMessage("error inserting base currency on init");
                 }
             } else {
                 // Update the (empty) record to the default currency.
-                long updatedRecords = infoService.updateRaw(db, recordId, InfoService.BASECURRENCYID, currencyId);
+                long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
                 if (updatedRecords <= 0) {
                     ExceptionHandler handler = new ExceptionHandler(mContext, this);
                     handler.showMessage("error updating base currency on init");

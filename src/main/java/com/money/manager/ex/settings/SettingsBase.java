@@ -73,6 +73,11 @@ public abstract class SettingsBase {
 
     }
 
+    private boolean save() {
+        boolean result = getEditor().commit();
+        return result;
+    }
+
     // String
 
     protected String get(Integer settingKey, String defaultValue) {
@@ -98,8 +103,12 @@ public abstract class SettingsBase {
      */
     protected boolean set(String key, String value) {
         getEditor().putString(key, value);
-        boolean result = getEditor().commit();
-        return result;
+        return save();
+    }
+
+    protected boolean set(Integer settingsKey, String value) {
+        getEditor().putString(getSettingsKey(settingsKey), value);
+        return save();
     }
 
     // Boolean
@@ -124,9 +133,12 @@ public abstract class SettingsBase {
 
     public boolean set(String key, boolean value) {
         getEditor().putBoolean(key, value);
-        boolean result = getEditor().commit();
+        return save();
+    }
 
-        return result;
+    public boolean set(Integer key, boolean value) {
+        String stringKey = getSettingsKey(key);
+        return this.set(stringKey, value);
     }
 
     // Integer
@@ -159,11 +171,6 @@ public abstract class SettingsBase {
     }
 
     public boolean set(Integer key, int value) {
-        String stringKey = getSettingsKey(key);
-        return this.set(stringKey, value);
-    }
-
-    public boolean set(Integer key, boolean value) {
         String stringKey = getSettingsKey(key);
         return this.set(stringKey, value);
     }

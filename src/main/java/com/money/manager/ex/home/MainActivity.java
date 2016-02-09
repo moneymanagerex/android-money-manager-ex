@@ -56,6 +56,7 @@ import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
@@ -613,7 +614,7 @@ public class MainActivity
     private void initializeDatabaseAccess(Bundle savedInstanceState) {
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(getApplicationContext());
-        String username = infoService.getInfoValue(InfoService.INFOTABLE_USERNAME);
+        String username = infoService.getInfoValue(InfoKeys.USERNAME);
 
         // fragments
 //        displayDefaultFragment();

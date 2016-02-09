@@ -31,10 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
-import com.money.manager.ex.common.InputAmountDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
@@ -120,7 +120,7 @@ public class SplitItemFragment
                         amount = MoneyFactory.fromString(tag.toString());
                     }
 
-                    InputAmountDialog dialog = InputAmountDialog.getInstance(
+                    AmountInputDialog dialog = AmountInputDialog.getInstance(
                         SplitItemFragment.this.getTag(),
                         amount, SplitItemFragment.this.getCurrencyId());
 //                    dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);

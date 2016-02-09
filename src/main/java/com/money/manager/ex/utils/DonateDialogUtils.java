@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -52,7 +53,7 @@ public class DonateDialogUtils {
 
             InfoService infoService = new InfoService(context);
 
-            if (TextUtils.isEmpty(infoService.getInfoValue(InfoService.INFOTABLE_SKU_ORDER_ID))) {
+            if (TextUtils.isEmpty(infoService.getInfoValue(InfoKeys.INFOTABLE_SKU_ORDER_ID))) {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create dialog

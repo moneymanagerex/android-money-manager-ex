@@ -33,7 +33,6 @@ public class Passcode {
 
     private static final String KEY = "6c2a6f30726b3447747559525162665768412370297c5573342324705b";
     private static final String LOGCAT = Passcode.class.getSimpleName();
-    private static final String INFONAME = "PASSCODEMOBILE";
 
     private Context mContext;
 
@@ -113,7 +112,7 @@ public class Passcode {
 
     private String retrievePasscodeInternal() {
         InfoService service = new InfoService(mContext);
-        String ret = service.getInfoValue(INFONAME);
+        String ret = service.getInfoValue(InfoKeys.PASSCODE);
 
         return ret;
     }
@@ -135,7 +134,7 @@ public class Passcode {
     private boolean updatePasscode(String passcode) {
         // content values
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Info.INFONAME, INFONAME);
+        contentValues.put(Info.INFONAME, InfoKeys.PASSCODE);
         contentValues.put(Info.INFOVALUE, passcode);
 
         InfoRepository repo = new InfoRepository(mContext);
@@ -143,7 +142,7 @@ public class Passcode {
         if (hasPasscode()) {
             // update data
             if (mContext.getContentResolver().update(repo.getUri(),
-                    contentValues, Info.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
+                    contentValues, Info.INFONAME + "=?", new String[]{InfoKeys.PASSCODE}) <= 0) {
                 Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -172,7 +171,7 @@ public class Passcode {
 
     private boolean cleanPasscode_Internal() {
         if (mContext.getContentResolver().delete(new InfoRepository(mContext).getUri(),
-            Info.INFONAME + "=?", new String[]{INFONAME}) <= 0) {
+            Info.INFONAME + "=?", new String[]{ InfoKeys.PASSCODE }) <= 0) {
             Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_LONG).show();
             return false;
         } else

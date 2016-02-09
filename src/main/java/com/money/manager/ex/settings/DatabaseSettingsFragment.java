@@ -56,7 +56,7 @@ public class DatabaseSettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.database_settings);
+        addPreferencesFromResource(R.xml.settings_database);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
