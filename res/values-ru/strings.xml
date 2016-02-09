@@ -204,7 +204,7 @@
   <string name="next_occurrence">Следующее начисление</string>
   <string name="repeats">Повторы</string>
   <string name="occurs">Происходит</string>
-  <string name="payments_left">Количество повторов</string>
+  <string name="times_repeated">Количество повторов</string>
   <string name="error_next_occurrence_not_populate">Требуется указать следующее вхождение</string>
   <string name="enter_next_occurrence">Ввести следующее начисление</string>
   <string name="skip_next_occurrence">Пропустить следующее начисление</string>

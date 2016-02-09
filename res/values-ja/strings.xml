@@ -204,7 +204,7 @@
   <string name="next_occurrence">次回発生</string>
   <string name="repeats">繰り返し</string>
   <string name="occurs">発生</string>
-  <string name="payments_left">回繰り返し</string>
+  <string name="times_repeated">回繰り返し</string>
   <string name="error_next_occurrence_not_populate">次回発生が必要です</string>
   <string name="enter_next_occurrence">次回発生を入力してください</string>
   <string name="skip_next_occurrence">次回発生をスキップ</string>
@@ -397,6 +397,7 @@
   <string name="change_status">ステータスの変更</string>
   <string name="duplicate_selected_transactions">選択したトランザクションを複製</string>
   <string name="sort">並べ替え</string>
+  <string name="sort_order">並び順</string>
   <string name="sort_by_name">名前で並べ替え</string>
   <string name="sort_by_usage">使用法で並べ替え</string>
   <string name="choose_sorting">並べ替えを選択</string>
@@ -552,4 +553,6 @@
   <string name="enter_password">パスワードを入力</string>
   <string name="title_activity_portfolio">PortfolioActivity</string>
   <string name="success">操作が正常終了しました</string>
+  <string name="overview">概要</string>
+  <string name="title_activity_asset_allocation_overview">資産配分の概要</string>
 </resources>

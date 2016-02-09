@@ -204,7 +204,7 @@
   <string name="next_occurrence">Következő előfordulás</string>
   <string name="repeats">Ismétlődik</string>
   <string name="occurs">Előfordulás</string>
-  <string name="payments_left">Gyakoriság</string>
+  <string name="times_repeated">Gyakoriság</string>
   <string name="error_next_occurrence_not_populate">Következő előfordulás megadása kötelező</string>
   <string name="enter_next_occurrence">Következő előfordulás felvitele</string>
   <string name="skip_next_occurrence">Következő előfordulás kihagyása</string>
@@ -397,6 +397,7 @@
   <string name="change_status">Státusz megváltoztatása</string>
   <string name="duplicate_selected_transactions">Kiválasztott tranzakciók megismétlése</string>
   <string name="sort">Rendezés</string>
+  <string name="sort_order">Sorrend</string>
   <string name="sort_by_name">Rendezés név szerint</string>
   <string name="sort_by_usage">Rendezés használat szerint</string>
   <string name="choose_sorting">Rendezés módja</string>
@@ -552,4 +553,6 @@
   <string name="enter_password">Jelszó megadása</string>
   <string name="title_activity_portfolio">PortfolioActivity</string>
   <string name="success">Sikeres művelet</string>
+  <string name="overview">Áttekintés</string>
+  <string name="title_activity_asset_allocation_overview">Vagyon elosztás áttekintése</string>
 </resources>

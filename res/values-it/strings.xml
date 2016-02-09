@@ -199,7 +199,7 @@
   <string name="next_occurrence">Prossima Scadenza</string>
   <string name="repeats">Cadenza</string>
   <string name="occurs">Si verifica</string>
-  <string name="payments_left">Numero di Operazione</string>
+  <string name="times_repeated">Numero di Operazione</string>
   <string name="error_next_occurrence_not_populate">Prossima ricorrenza è richiesta</string>
   <string name="enter_next_occurrence">Inserire Scadenza Successiva</string>
   <string name="skip_next_occurrence">Ignora Successiva Scadenza</string>

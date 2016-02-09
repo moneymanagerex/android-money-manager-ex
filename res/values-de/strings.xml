@@ -201,7 +201,7 @@
   <string name="next_occurrence">Nächstes Vorkommen</string>
   <string name="repeats">Wiederholungen</string>
   <string name="occurs">Ereignisse</string>
-  <string name="payments_left">Mal wiederholt</string>
+  <string name="times_repeated">Mal wiederholt</string>
   <string name="error_next_occurrence_not_populate">Nächstes Vorkommen ist erforderlich</string>
   <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
   <string name="skip_next_occurrence">Überspringe den nächsten Vorgang</string>

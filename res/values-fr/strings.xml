@@ -204,7 +204,7 @@
   <string name="next_occurrence">Occurrence suivante</string>
   <string name="repeats">Répétitions</string>
   <string name="occurs">Occurence</string>
-  <string name="payments_left">Occurrence</string>
+  <string name="times_repeated">Occurrence</string>
   <string name="error_next_occurrence_not_populate">Évènement suivant requis</string>
   <string name="enter_next_occurrence">Entrer l\'occurrence suivante</string>
   <string name="skip_next_occurrence">Ignorer l\'occurrence suivante</string>

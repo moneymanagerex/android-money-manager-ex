@@ -201,7 +201,7 @@
   <string name="next_occurrence">下次到期日</string>
   <string name="repeats">重複類型</string>
   <string name="occurs">週期</string>
-  <string name="payments_left">重複次數</string>
+  <string name="times_repeated">重複次數</string>
   <string name="error_next_occurrence_not_populate">需要下次到期的交易</string>
   <string name="enter_next_occurrence">確認下次交易</string>
   <string name="skip_next_occurrence">跳過下次交易</string>

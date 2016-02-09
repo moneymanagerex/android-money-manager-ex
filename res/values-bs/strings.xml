@@ -203,7 +203,7 @@
   <string name="next_occurrence">Sljedeće pojavljivanje</string>
   <string name="repeats">Ponavlja se</string>
   <string name="occurs">Pojavljuje se</string>
-  <string name="payments_left">Puta ponovljeno</string>
+  <string name="times_repeated">Puta ponovljeno</string>
   <string name="error_next_occurrence_not_populate">Sljedeće pojavljivanje je neophodno</string>
   <string name="enter_next_occurrence">Unesite sljedeće pojavljivanje</string>
   <string name="skip_next_occurrence">Preskoči sljedeće pojavljivanje</string>
@@ -396,6 +396,7 @@
   <string name="change_status">Promijeni status</string>
   <string name="duplicate_selected_transactions">Dupliciraj odabrane transakcije</string>
   <string name="sort">Poredak</string>
+  <string name="sort_order">Redoslijed sortiranja</string>
   <string name="sort_by_name">Poredaj po imenu</string>
   <string name="sort_by_usage">Poredaj prema korištenju</string>
   <string name="choose_sorting">Odaberite poredak</string>
@@ -456,6 +457,7 @@
   <string name="database_migrate_14_to_20_success">Migracija baze podataka je uspjela.</string>
   <string name="database_migrate_14_to_20_complete">Migracija završena. Zatvorite postavke da biste počeli koristiti ovu bazu podataka.</string>
   <string name="database_migrate_14_to_20_intro">Baza podataka otkrivena je na prethodnoj lokaciji. Dodirnite dugme ispod da biste ju migrirali na SD karticu i koristili.</string>
+  <string name="clear_recent_files_list">Očisti listu nedavno korištenih datoteka</string>
   <string name="export_prices">Izvoz cijena</string>
   <string name="purge_history">Pročisti prethodne cijene</string>
   <string name="purge_history_confirmation">Želite li izbrisati stare cijene za sve račune?</string>
@@ -513,6 +515,7 @@
   <string name="configure">Konfiguracija</string>
   <string name="add_widget">Dodavanje widgeta</string>
   <string name="single_account">Jedan račun</string>
+  <string name="watchlist">Pregled</string>
   <string name="purchase_date">Datum kupovine</string>
   <string name="stock_name">Naziv dionica</string>
   <string name="symbol">Simbol</string>
@@ -525,7 +528,11 @@
   <string name="view_transactions">Prikaz transakcija</string>
   <string name="error_downloading_symbol">Greška pri preuzimanja cijena za simbol</string>
   <string name="other">Drugo</string>
+  <string name="cleared">Proknjiženo</string>
   <string name="delete_success">Stavka izbrisana</string>
+  <string name="asset_allocation">Alokacija imovine</string>
+  <string name="asset_classes_empty">Nisu definisane imovinske klase. Da biste kreirali jednu, dodirnite zeleno Plus dugme.</string>
+  <string name="asset_class_name">Naziv klase imovine</string>
   <string name="allocation">Alokacija</string>
   <string name="current_allocation">Trenutna alokacija</string>
   <string name="move_up">Pomjeri gore</string>
@@ -534,10 +541,13 @@
   <string name="no_records_found_create">Nema podataka. Da biste napravili jedan, dodirnite zeleno plus dugme.</string>
   <string name="current_value">Trenutna vrijednost</string>
   <string name="current">Trenutno</string>
+  <string name="parent">Roditelj</string>
   <string name="name">Ime</string>
   <string name="stock">Dionica</string>
   <string name="all_accounts">Svi računi</string>
   <string name="records">zapisi</string>
   <string name="enter_password">Unesite lozinku</string>
   <string name="success">Operacija uspješna</string>
+  <string name="overview">Pregled</string>
+  <string name="title_activity_asset_allocation_overview">Pregled alokacije imovine</string>
 </resources>
