@@ -110,8 +110,6 @@ public class InfoService
             if (cursor == null) return null;
 
             if (cursor.moveToFirst()) {
-//                ContentValues values = new ContentValues();
-//                DatabaseUtils.cursorRowToContentValues(cursor, values);
                 ret = cursor.getString(cursor.getColumnIndex(Info.INFOVALUE));
             }
             cursor.close();
