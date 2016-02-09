@@ -159,7 +159,7 @@ public class GeneralSettingsFragment
         // financial day and month
         final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTDATE));
         if (pFinancialDay != null) {
-            pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_DAY));
+            pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
             if (pFinancialDay.getSummary() != null) {
                 pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
             }
@@ -172,7 +172,7 @@ public class GeneralSettingsFragment
                         if (!(day >= 1 && day <= 31)) {
                             return false;
                         }
-                        if (infoService.setInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
+                        if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
                             pFinancialDay.setSummary(Integer.toString(day));
                         }
                         return true;
@@ -194,7 +194,7 @@ public class GeneralSettingsFragment
             lstFinancialMonth.setDefaultValue("0");
             // get current month
             try {
-                String currentMonth = infoService.getInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_MONTH);
+                String currentMonth = infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH);
                 if ((!TextUtils.isEmpty(currentMonth)) && NumberUtils.isNumber(currentMonth)) {
                     int month = Integer.parseInt(currentMonth) - 1;
                     if (month > -1 && month < lstFinancialMonth.getEntries().length) {
@@ -213,7 +213,7 @@ public class GeneralSettingsFragment
                     try {
                         int value = Integer.parseInt(newValue.toString());
                         if (value > -1 && value < lstFinancialMonth.getEntries().length) {
-                            if (infoService.setInfoValue(InfoKeys.INFOTABLE_FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
+                            if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
                                 lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
                                 return true;
                             }
