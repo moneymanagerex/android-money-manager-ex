@@ -117,8 +117,16 @@ public class RecurringTransaction
         setDate(TRANSDATE, value);
     }
 
-    public String getNextOccurrenceDate() {
+    public String getNextPaymentDate() {
         return getString(NEXTOCCURRENCEDATE);
+    }
+
+    public void setNextPaymentDate(String value) {
+        setString(NEXTOCCURRENCEDATE, value);
+    }
+
+    public void setNextPaymentDate(Date value){
+        setDate(NEXTOCCURRENCEDATE, value);
     }
 
     public String getNotes() {

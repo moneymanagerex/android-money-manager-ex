@@ -308,14 +308,14 @@ public class RecurringTransactionListFragment
         RecurringTransaction tx = repo.load(transactionId);
         if (tx == null) return;
 
-        String nextOccurrence = tx.getNextOccurrenceDate();
+        String nextOccurrence = tx.getNextPaymentDate();
         int repeats = tx.getRepeats();
         Integer instances = tx.getNumOccurrences();
         int bdId = tx.getId();
         Date date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
 
         RecurringTransactionService service = new RecurringTransactionService(getActivity());
-        date = service.getDateNextOccurrence(date, repeats, instances);
+        date = service.getNextScheduledDate(date, repeats, instances);
 
         if (date != null) {
             Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);

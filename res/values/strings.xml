@@ -690,4 +690,6 @@
     <string name="title_activity_asset_allocation_overview">Asset Allocation Overview</string>
     <string name="asset_allocation_diff_threshold">Asset Allocation Difference Threshold</string>
     <string name="asset_allocation_diff_threshold_summary">The threshold that will trigger the coloring of difference values.</string>
+
+    <string name="error_saving_record">Error saving record</string>
 </resources>

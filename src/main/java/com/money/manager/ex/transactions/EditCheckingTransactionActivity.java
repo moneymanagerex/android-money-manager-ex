@@ -373,7 +373,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
         mCommonFunctions.mTransNumber = tx.getTransactionNumber();
         mCommonFunctions.mNotes = tx.getNotes();
-        mCommonFunctions.mDate = tx.getNextOccurrenceDate();
+        mCommonFunctions.mDate = tx.getNextPaymentDate();
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
@@ -700,13 +700,13 @@ public class EditCheckingTransactionActivity
             ContentValues values = new ContentValues();
             // handle transactions that do not repeat any more.
             String transactionDate = values.getAsString(ITransactionEntity.TRANSDATE);
-            RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
+            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(mRecurringTransactionId, this);
             if(mNextOccurrence.equals(transactionDate)) {
                 // The next occurrence date is the same as the current. Expired.
-                recurringTransaction.delete();
+                recurringTransactionService.delete();
             } else {
                 // store next occurrence date.
-                recurringTransaction.setNextOccurrenceDate(mNextOccurrence);
+                recurringTransactionService.setNextPaymentDate(mNextOccurrence);
             }
         }
         return true;

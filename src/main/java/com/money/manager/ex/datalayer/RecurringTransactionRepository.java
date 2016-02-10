@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -84,6 +83,15 @@ public class RecurringTransactionRepository
         c.close();
 
         return entity;
+    }
+
+    public boolean update(RecurringTransaction value) {
+        int id = value.getId();
+
+        WhereStatementGenerator generator = new WhereStatementGenerator();
+        String where = generator.getStatement(RecurringTransaction.BDID, "=", id);
+
+        return update(id, value.contentValues, where);
     }
 
 }

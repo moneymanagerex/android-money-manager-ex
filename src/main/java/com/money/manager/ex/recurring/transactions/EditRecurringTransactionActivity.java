@@ -53,8 +53,6 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
-import com.money.manager.ex.utils.CalendarUtils;
-import com.money.manager.ex.utils.DateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -455,7 +453,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
         mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
         mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
-        mCommonFunctions.mDate = mRecurringTransaction.getNextOccurrenceDate();
+        mCommonFunctions.mDate = mRecurringTransaction.getNextPaymentDate();
         mFrequencies = mRecurringTransaction.getRepeats();
 
         // load split transactions only if no category selected.

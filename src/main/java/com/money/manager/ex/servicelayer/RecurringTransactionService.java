@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.servicelayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
@@ -41,6 +41,8 @@ import java.util.Date;
 public class RecurringTransactionService
     extends ServiceBase {
 
+    public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
+
     public RecurringTransactionService(Context context){
         super(context);
 
@@ -49,25 +51,24 @@ public class RecurringTransactionService
     public RecurringTransactionService(int recurringTransactionId, Context context){
         super(context);
 
-        this.RecurringTransactionId = recurringTransactionId;
+        this.recurringTransactionId = recurringTransactionId;
     }
 
-    public static final String LOGCAT = RecurringTransactionService.class.getSimpleName();
+    public int recurringTransactionId = Constants.NOT_SET;
 
-    public int RecurringTransactionId = Constants.NOT_SET;
-
+    private RecurringTransactionRepository mRepository;
     private RecurringTransaction mRecurringTransaction;
 
     /**
      * @param date    to start calculate
      * @param repeatType type of repeating transactions
-     * @param instances Number of instances (days, months) parameter. Used for In (x) Days, for
+     * @param paymentsLeft Number of instances (days, months) parameter. Used for In (x) Days, for
      *                  example to indicate x.
      * @return next Date
      */
-    public static Date getDateNextOccurrence(Date date, int repeatType, Integer instances) {
-        if (instances == null) {
-            instances = 0;
+    public Date getNextScheduledDate(Date date, int repeatType, Integer paymentsLeft) {
+        if (paymentsLeft == null || paymentsLeft == Constants.NOT_SET) {
+            paymentsLeft = 0;
         }
 
         if (repeatType >= 200) {
@@ -116,11 +117,11 @@ public class RecurringTransactionService
                 break;
             case 11: //in_x_days
             case 13: //every_x_days
-                calendar.add(Calendar.DATE, instances);
+                calendar.add(Calendar.DATE, paymentsLeft);
                 break;
             case 12: //in_x_months
             case 14: //every_x_months
-                calendar.add(Calendar.MONTH, instances);
+                calendar.add(Calendar.MONTH, paymentsLeft);
                 break;
             case 15: //month (last day)
                 calendar.add(Calendar.MONTH, 1);
@@ -141,22 +142,30 @@ public class RecurringTransactionService
         return calendar.getTime();
     }
 
+    public RecurringTransactionRepository getRepository(){
+        if (mRepository == null) {
+            mRepository = new RecurringTransactionRepository(getContext());
+        }
+
+        return mRepository;
+    }
+
     /**
      * Skip next occurrence.
      * If this is the last occurrence, delete the recurring transaction.
      * Otherwise, move the due date to the next occurrence date.
      */
     public void skipNextOccurrence() {
-        this.load();
+        load();
 
         int repeats = mRecurringTransaction.getRepeats();
 
         if(repeats == 0) {
             // no more occurrences, this is the only one. Delete the transaction.
-            this.delete();
+            delete();
         } else {
             // Just move the date.
-            this.moveNextOccurrenceForward();
+            moveDatesForward();
         }
     }
 
@@ -165,51 +174,53 @@ public class RecurringTransactionService
      * @param nextOccurrenceDate ISO-formatted string representation of the date. i.e. 2015-05-25
      * @return success
      */
-    public boolean setNextOccurrenceDate(String nextOccurrenceDate) {
-        boolean result = false;
-
-        ContentValues values = new ContentValues();
-        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, nextOccurrenceDate);
+    public boolean setNextPaymentDate(String nextOccurrenceDate) {
+        load();
 
         RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
 
-        int updateResult = getContext().getContentResolver().update(repo.getUri(),
-                values,
-                RecurringTransaction.BDID + "=?",
-                new String[]{ Integer.toString(this.RecurringTransactionId) });
+        mRecurringTransaction.setNextPaymentDate(nextOccurrenceDate);
 
-        if (updateResult > 0) {
-            result = true;
-        } else {
+        boolean saved = repo.update(mRecurringTransaction);
+
+        if (!saved) {
             Toast.makeText(getContext().getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-            Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(this.RecurringTransactionId) + " return <= 0");
+            Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(this.recurringTransactionId) + " return <= 0");
         }
 
-        return result;
-    }
-
-    public boolean setNextOccurrenceDate(Date nextOccurrenceDate) {
-        // format the date into ISO
-        String stringDate = DateUtils.getIsoStringDate(nextOccurrenceDate);
-
-        return this.setNextOccurrenceDate(stringDate);
+        return saved;
     }
 
     /**
      * Set the recurring action's due date to the next occurrence.
      */
-    public void moveNextOccurrenceForward() {
-        this.load();
+    public void moveDatesForward() {
+        load();
+
+        // Due date.
+
+        moveDueDateForward();
+
+        // Payment date.
 
         int repeats = mRecurringTransaction.getRepeats();
-        String currentNextOccurrence = mRecurringTransaction.getNextOccurrenceDate();
-        Date newNextOccurrence = DateUtils.getDateFromString(getContext(), currentNextOccurrence, Constants.PATTERN_DB_DATE);
-        int instances = mRecurringTransaction.getNumOccurrences();
-        // calculate the next occurrence date
-        newNextOccurrence = getDateNextOccurrence(newNextOccurrence, repeats, instances);
+        String currentNextOccurrence = mRecurringTransaction.getNextPaymentDate();
+        Date newPaymentDate = DateUtils.getDateFromString(getContext(), currentNextOccurrence, Constants.PATTERN_DB_DATE);
+        Integer paymentsLeft = mRecurringTransaction.getNumOccurrences();
 
-        if (newNextOccurrence != null) {
-            this.setNextOccurrenceDate(newNextOccurrence);
+        // calculate the next payment date
+        newPaymentDate = getNextScheduledDate(newPaymentDate, repeats, paymentsLeft);
+
+        if (newPaymentDate != null) {
+            mRecurringTransaction.setNextPaymentDate(newPaymentDate);
+        }
+
+        // Save changes
+
+        RecurringTransactionRepository repo = getRepository();
+        boolean updated = repo.update(mRecurringTransaction);
+        if (!updated) {
+            Core.alertDialog(getContext(), R.string.error_saving_record);
         }
     }
 
@@ -228,11 +239,11 @@ public class RecurringTransactionService
         // Delete recurring transactions.
         int deleteResult = getContext().getContentResolver().delete(
                 new RecurringTransactionRepository(getContext()).getUri(),
-                RecurringTransaction.BDID + "=" + this.RecurringTransactionId, null);
+                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
         if (deleteResult == 0) {
             Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting recurring transaction " +
-                    this.RecurringTransactionId + " failed.");
+                    this.recurringTransactionId + " failed.");
             result = false;
         }
 
@@ -261,13 +272,13 @@ public class RecurringTransactionService
 
         int deleteResult = getContext().getContentResolver().delete(
             repo.getUri(),
-            SplitRecurringCategory.TRANSID + "=" + this.RecurringTransactionId, null);
+            SplitRecurringCategory.TRANSID + "=" + this.recurringTransactionId, null);
         if (deleteResult != 0) {
             result = true;
         } else {
             Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting split categories for recurring transaction " +
-                    this.RecurringTransactionId + " failed.");
+                    this.recurringTransactionId + " failed.");
         }
 
         return result;
@@ -293,6 +304,8 @@ public class RecurringTransactionService
         return result;
     }
 
+    // Private.
+
     /**
      * Creates a query for getting all related split transactions.
      * @return cursor for all the related split transactions
@@ -303,7 +316,7 @@ public class RecurringTransactionService
         return getContext().getContentResolver().query(
             repo.getUri(),
             null,
-            SplitRecurringCategory.TRANSID + "=" + Integer.toString(this.RecurringTransactionId),
+            SplitRecurringCategory.TRANSID + "=" + Integer.toString(this.recurringTransactionId),
             null,
             SplitRecurringCategory.SPLITTRANSID);
     }
@@ -311,9 +324,22 @@ public class RecurringTransactionService
     private boolean load() {
         if (mRecurringTransaction != null) return true;
 
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
-        mRecurringTransaction = repo.load(this.RecurringTransactionId);
+        RecurringTransactionRepository repo = getRepository();
+
+        mRecurringTransaction = repo.load(this.recurringTransactionId);
 
         return (mRecurringTransaction == null);
+    }
+
+    private void moveDueDateForward() {
+        int repeats = mRecurringTransaction.getRepeats();
+        Date dueDate = mRecurringTransaction.getDueDate();
+        Integer paymentsLeft = mRecurringTransaction.getNumOccurrences();
+
+        Date newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
+
+        if (newDueDate != null) {
+            mRecurringTransaction.setDueDate(newDueDate);
+        }
     }
 }
