@@ -525,6 +525,7 @@
     <string name="locale_pl" translatable="false">Polski</string>
     <string name="locale_pt" translatable="false">Português</string>
     <string name="locale_pt_BR" translatable="false">Português Brasileiro</string>
+    <string name="locale_ro" translatable="false">Română</string>
     <string name="locale_ru" translatable="false">Русский</string>
     <string name="locale_tr" translatable="false">Türkçe</string>
     <string name="locale_vi" translatable="false">Tiếng Việt</string>

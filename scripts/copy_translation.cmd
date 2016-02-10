@@ -1,4 +1,5 @@
-:: copy translations for a single localeuage
+:: Copy translations for a single locale.
+:: Called from update_translations.bat.
 
 set src=%~1
 set dest_root=%~2
