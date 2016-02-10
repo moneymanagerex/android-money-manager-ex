@@ -606,13 +606,13 @@ public class WatchlistFragment
             /*
             Just hide the contents and the row will automatically shrink (but not disappear).
              */
-            mListHeader.findViewById(R.id.watchlistHeaderRow).setVisibility(View.GONE);
+            mListHeader.findViewById(R.id.headerRow).setVisibility(View.GONE);
         } else {
             if (mDataFragment.getListView().getHeaderViewsCount() == 0) {
                 mDataFragment.getListView().addHeaderView(mListHeader);
             }
 //            mListHeader.setVisibility(View.VISIBLE);
-            mListHeader.findViewById(R.id.watchlistHeaderRow).setVisibility(View.VISIBLE);
+            mListHeader.findViewById(R.id.headerRow).setVisibility(View.VISIBLE);
         }
     }
 }

@@ -23,7 +23,7 @@
     <!-- The main view  -->
 
     <LinearLayout
-        android:id="@+id/watchlistHeaderRow"
+        android:id="@+id/headerRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"

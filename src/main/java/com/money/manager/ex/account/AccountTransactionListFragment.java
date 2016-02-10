@@ -499,6 +499,7 @@ public class AccountTransactionListFragment
 
     private void initializeListHeader(LayoutInflater inflater) {
         this.viewHolder.listHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
+
         // take reference text view from layout
         this.viewHolder.txtAccountBalance = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
         this.viewHolder.txtAccountReconciled = (TextView) this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
@@ -788,11 +789,16 @@ public class AccountTransactionListFragment
 
         // hide account details bar if all accounts are selected
         if (accountId == Constants.NOT_SET) {
-            mAllDataListFragment.getListView().removeHeaderView(this.viewHolder.listHeader);
+            /*
+            See Watchlist Fragment for reference.
+             */
+//            mAllDataListFragment.getListView().removeHeaderView(this.viewHolder.listHeader);
+            this.viewHolder.listHeader.findViewById(R.id.headerRow).setVisibility(View.GONE);
         } else {
             if (mAllDataListFragment.getListView().getHeaderViewsCount() == 0) {
                 mAllDataListFragment.getListView().addHeaderView(this.viewHolder.listHeader);
             }
+            this.viewHolder.listHeader.findViewById(R.id.headerRow).setVisibility(View.VISIBLE);
         }
     }
 
