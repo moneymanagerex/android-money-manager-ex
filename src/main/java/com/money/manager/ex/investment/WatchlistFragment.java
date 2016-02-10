@@ -34,6 +34,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -596,13 +597,22 @@ public class WatchlistFragment
 
         // hide account details bar if all accounts are selected
         if (accountId == Constants.NOT_SET) {
-            mDataFragment.getListView().removeHeaderView(mListHeader);
-            mListHeader.setVisibility(View.GONE);
+            /*
+            Can't remove header view once it has been added.
+            Ref: http://stackoverflow.com/questions/13603888/remove-header-from-listview
+             */
+//            mDataFragment.getListView().removeHeaderView(mListHeader);
+//            mListHeader.setVisibility(View.GONE);
+            /*
+            Just hide the contents and the row will automatically shrink (but not disappear).
+             */
+            mListHeader.findViewById(R.id.watchlistHeaderRow).setVisibility(View.GONE);
         } else {
             if (mDataFragment.getListView().getHeaderViewsCount() == 0) {
                 mDataFragment.getListView().addHeaderView(mListHeader);
             }
-            mListHeader.setVisibility(View.VISIBLE);
+//            mListHeader.setVisibility(View.VISIBLE);
+            mListHeader.findViewById(R.id.watchlistHeaderRow).setVisibility(View.VISIBLE);
         }
     }
 }

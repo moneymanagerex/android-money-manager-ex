@@ -18,9 +18,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:animateLayoutChanges="true"
-              android:background="?attr/colorPrimary"
-              android:orientation="horizontal">
+              android:orientation="vertical">
+
+    <!-- The main view  -->
+
+    <LinearLayout
+        android:id="@+id/watchlistHeaderRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
 
     <!--<include-->
         <!--layout="@layout/merge_header_fragment_account"-->
@@ -71,4 +79,5 @@
         android:layout_marginRight="16dp"
         android:background="@android:drawable/star_off"/>
 
+    </LinearLayout>
 </LinearLayout>

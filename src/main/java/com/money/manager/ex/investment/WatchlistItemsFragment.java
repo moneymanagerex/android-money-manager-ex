@@ -322,8 +322,6 @@ public class WatchlistItemsFragment
         }
     }
 
-    // Menu
-
     @Override
     public void onFloatingActionButtonClickListener() {
         openEditInvestmentActivity();
