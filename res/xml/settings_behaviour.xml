@@ -47,11 +47,11 @@
         <!--android:title="@string/income_expense_period"-->
         <!--android:summary="@string/income_expense_period_summary" />-->
 
-    <!--<Preference-->
-        <!--android:icon="@null"-->
-        <!--android:key="@string/pref_behaviour_asset_allocation_threshold"-->
-        <!--android:title="@string/asset_allocation_diff_threshold"-->
-        <!--android:summary="@string/asset_allocation_diff_threshold_summary" />-->
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_asset_allocation_threshold"
+        android:title="@string/asset_allocation_diff_threshold"
+        android:summary="@string/asset_allocation_diff_threshold_summary" />
 
     <CheckBoxPreference
         android:icon="@null"

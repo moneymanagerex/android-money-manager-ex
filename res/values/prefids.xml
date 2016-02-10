@@ -85,4 +85,5 @@
     <string name="pref_show_introduction">prefshowintroduction</string>
     <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
+    <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
 </resources>
