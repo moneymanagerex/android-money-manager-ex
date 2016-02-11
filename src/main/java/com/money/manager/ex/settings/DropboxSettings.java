@@ -22,8 +22,6 @@ import com.money.manager.ex.R;
 
 /**
  * Encapsulates Dropbox settings.
- *
- * Created by Alen Siljak on 23/07/2015.
  */
 public class DropboxSettings
     extends SettingsBase {
@@ -35,13 +33,13 @@ public class DropboxSettings
 
     public boolean getShouldSyncOnWifi() {
         boolean result = getSharedPreferences().getBoolean(
-                mContext.getString(R.string.pref_sync_via_wifi), false);
+                getContext().getString(R.string.pref_sync_via_wifi), false);
         return result;
     }
 
     public boolean getImmediatelyUploadChanges() {
         boolean result = getSharedPreferences().getBoolean(
-                mContext.getString(R.string.pref_dropbox_upload_immediate), true);
+                getContext().getString(R.string.pref_dropbox_upload_immediate), true);
         return result;
     }
 

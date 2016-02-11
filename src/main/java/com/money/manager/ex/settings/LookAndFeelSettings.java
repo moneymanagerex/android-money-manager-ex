@@ -60,7 +60,7 @@ public class LookAndFeelSettings
         try {
             result = DefinedDateRangeName.valueOf(value);
         } catch (IllegalArgumentException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "parsing default date range");
         }
         if (result != null) {
@@ -68,7 +68,7 @@ public class LookAndFeelSettings
         }
 
         // then try by the previous setting, localized range name
-        DefinedDateRanges ranges = new DefinedDateRanges(mContext);
+        DefinedDateRanges ranges = new DefinedDateRanges(getContext());
         DefinedDateRange range = ranges.getByLocalizedName(value);
         if (range != null) {
             setShowTransactions(range.key);
@@ -87,25 +87,25 @@ public class LookAndFeelSettings
 
     public boolean getViewOpenAccounts() {
 //        return get(R.string.pref_account_open_visible, true);
-        InfoService infoService = new InfoService(mContext);
+        InfoService infoService = new InfoService(getContext());
         String value = infoService.getInfoValue(InfoKeys.SHOW_OPEN_ACCOUNTS);
         return Boolean.valueOf(value);
     }
 
     public void setViewOpenAccounts(Boolean value) {
-        InfoService infoService = new InfoService(mContext);
+        InfoService infoService = new InfoService(getContext());
         infoService.setInfoValue(InfoKeys.SHOW_OPEN_ACCOUNTS, value.toString());
     }
 
     public boolean getViewFavouriteAccounts() {
 //        return get(R.string.pref_account_fav_visible, true);
-        InfoService infoService = new InfoService(mContext);
+        InfoService infoService = new InfoService(getContext());
         String value = infoService.getInfoValue(InfoKeys.SHOW_FAVOURITE_ACCOUNTS);
         return Boolean.valueOf(value);
     }
 
     public void setViewFavouriteAccounts(Boolean value) {
-        InfoService infoService = new InfoService(mContext);
+        InfoService infoService = new InfoService(getContext());
         infoService.setInfoValue(InfoKeys.SHOW_FAVOURITE_ACCOUNTS, value.toString());
     }
 

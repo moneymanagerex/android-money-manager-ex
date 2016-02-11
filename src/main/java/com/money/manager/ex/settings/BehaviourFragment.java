@@ -24,11 +24,9 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.servicelayer.InfoService;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
 
 /**
  * Look & feel settings.
@@ -68,14 +66,26 @@ public class BehaviourFragment
         addPreferencesFromResource(R.xml.settings_behaviour);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
     // Events
 
     public void onEvent(AmountEnteredEvent event) {
         if (event.requestId.equals(KEY_THRESHOLD)) {
-//            BehaviourSettings settings = new BehaviourSettings(getActivity());
-//            settings.setAssetAllocationDifferenceThreshold(event.amount);
-            InfoService service = new InfoService(getActivity());
-            service.setInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD, event.amount.toString());
+            BehaviourSettings settings = new BehaviourSettings(getActivity());
+            settings.setAssetAllocationDifferenceThreshold(event.amount);
         }
     }
 
@@ -85,18 +95,12 @@ public class BehaviourFragment
         Preference threshold = findPreference(getString(R.string.pref_asset_allocation_threshold));
         if (threshold == null) return;
 
-//        final BehaviourSettings settings = new BehaviourSettings(getActivity());
+        final BehaviourSettings settings = new BehaviourSettings(getActivity());
 
         Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                InfoService service = new InfoService(getActivity());
-                String setting = service.getInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD);
-                // settings.getAssetAllocationDifferenceThreshold()
-                if(org.apache.commons.lang3.StringUtils.isEmpty(setting)) {
-                    setting = "0";
-                }
-                Money value = MoneyFactory.fromString(setting);
+                Money value = settings.getAssetAllocationDifferenceThreshold();
 
                 // show number entry form
                 AmountInputDialog
