@@ -129,7 +129,15 @@ public class AssetAllocationOverviewActivity
     }
 
     private String getAssetRow(AssetClass allocation) {
-        String color;
+        String color = "black";
+        double diffPercent = allocation.getDiffAsPercentOfSet().toDouble();
+        if (diffPercent >= this.differenceThreshold.toDouble()) {
+            color = "green";
+        }
+        if (diffPercent <= this.differenceThreshold.multiply(-1).toDouble()) {
+            color = "darkred";
+        }
+
         // style='list-style-position: inside;'
         String html = "<li>";
 
@@ -139,8 +147,6 @@ public class AssetAllocationOverviewActivity
         html += " &#183; ";
 
         // diff %
-        color = allocation.getDiffAsPercentOfSet().toDouble() >= this.differenceThreshold.toDouble()
-                ? "green" : "darkred";
         html += "<span style='color: " + color + ";'>";
         html += allocation.getDiffAsPercentOfSet();
         html += "%</span>";
@@ -148,8 +154,8 @@ public class AssetAllocationOverviewActivity
         html += " &#183; ";
 
         // difference amount
-        color = allocation.getDifference().truncate(2).toDouble() >= this.differenceThreshold.toDouble()
-                ? "green" : "darkred";
+//        color = allocation.getDifference().truncate(2).toDouble() >= this.differenceThreshold.toDouble()
+//                ? "green" : "darkred";
         html += "<span style='color: " + color + ";'>";
         html += String.format(VALUE_FORMAT, allocation.getDifference().toDouble());
         html += "</span>";
@@ -158,8 +164,8 @@ public class AssetAllocationOverviewActivity
 
         // Allocation
         html += String.format(VALUE_FORMAT, allocation.getAllocation().toDouble()) + "/";
-        color = allocation.getDifference().toDouble() > this.differenceThreshold.toDouble()
-                ? "green" : "darkred";
+//        color = allocation.getDifference().toDouble() > this.differenceThreshold.toDouble()
+//                ? "green" : "darkred";
 
         // current allocation
         html += "<span style='color: " + color + "; font-weight: bold;'>";
