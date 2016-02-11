@@ -20,6 +20,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.servicelayer.InfoService;
+
+import org.apache.commons.lang3.StringUtils;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -35,28 +39,38 @@ public class BehaviourSettings
 
     }
 
-//    public Money getAssetAllocationDifferenceThreshold() {
-//        SharedPreferences preferences = getSharedPreferences();
-//        String key = mContext.getString(R.string.pref_behaviour_asset_allocation_threshold);
-//        String value = preferences.getString(key, "0");
-//
-//        return MoneyFactory.fromString(value);
-//    }
+    /**
+     * Threshold percentage at which the difference in actual asset allocation vs set asset
+     * allocation will be painted. Green, if the current allocation is higher than the set allocation,
+     * and red if it is smaller for the set percentage of the original value.
+     * I.e. 20 represents 20% difference compared to the set asset allocation value.
+     * @return A number that represents the percentage value.
+     */
+    public Money getAssetAllocationDifferenceThreshold() {
+        InfoService service = new InfoService(getContext());
+        String value = service.getInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD);
 
-//    public void setAssetAllocationDifferenceThreshold(Money value) {
-//        set(R.string.pref_behaviour_asset_allocation_threshold, value.toString());
-//    }
+        if (StringUtils.isEmpty(value)) {
+            value = "-1";
+        }
+        return MoneyFactory.fromString(value);
+    }
+
+    public void setAssetAllocationDifferenceThreshold(Money value) {
+        InfoService service = new InfoService(getContext());
+        service.setInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD, value.toString());
+    }
 
     public boolean getNotificationRecurringTransaction() {
         SharedPreferences preferences = getSharedPreferences();
-        String key = mContext.getString(R.string.pref_repeating_transaction_notifications);
+        String key = getContext().getString(R.string.pref_repeating_transaction_notifications);
         boolean notify = preferences.getBoolean(key, true);
         return notify;
     }
 
     public boolean getFilterInSelectors() {
         boolean result = getSharedPreferences().getBoolean(
-                mContext.getString(R.string.pref_behaviour_focus_filter), true);
+                getContext().getString(R.string.pref_behaviour_focus_filter), true);
         return result;
     }
 
@@ -66,8 +80,8 @@ public class BehaviourSettings
      */
     public String getIncomeExpensePeriod() {
         String result = getSharedPreferences().getString(
-                mContext.getString(R.string.pref_income_expense_footer_period),
-                mContext.getString(R.string.last_month)
+                getContext().getString(R.string.pref_income_expense_footer_period),
+                getContext().getString(R.string.last_month)
         );
         return result;
     }

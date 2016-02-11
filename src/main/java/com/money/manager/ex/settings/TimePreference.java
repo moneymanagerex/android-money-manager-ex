@@ -23,7 +23,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.preference.DialogPreference;
+import android.support.v7.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +36,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class TimePreference extends DialogPreference implements TimePicker.OnTimeChangedListener {
+public class TimePreference
+	extends DialogPreference
+	implements TimePicker.OnTimeChangedListener {
+
 	private String timeString;
 	private String changedValueCanBeNull;
 
@@ -53,16 +56,16 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
 	 * 
 	 * @return a DatePicker with the date set
 	 */
-	@Override
-	protected View onCreateDialogView() {
-		TimePicker timePicker = new TimePicker(getContext());
-		timePicker.setIs24HourView(android.text.format.DateFormat.is24HourFormat(getContext()));
-		Calendar calendar = getTime();
-		timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
-		timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
-		timePicker.setOnTimeChangedListener(this);
-		return timePicker;
-	}
+//	@Override
+//	protected View onCreateDialogView() {
+//		TimePicker timePicker = new TimePicker(getContext());
+//		timePicker.setIs24HourView(android.text.format.DateFormat.is24HourFormat(getContext()));
+//		Calendar calendar = getTime();
+//		timePicker.setHour(calendar.get(Calendar.HOUR_OF_DAY));
+//		timePicker.setMinute(calendar.get(Calendar.MINUTE));
+//		timePicker.setOnTimeChangedListener(this);
+//		return timePicker;
+//	}
 
 	/**
 	 * Produces the time used for the time picker. If the user has not selected a time, produces the default from the XML's android:defaultValue. If the default
@@ -171,20 +174,25 @@ public class TimePreference extends DialogPreference implements TimePicker.OnTim
 	/**
 	 * Called when the dialog is closed. If the close was by pressing DialogInterface.BUTTON_POSITIVE it saves the value.
 	 */
-	@Override
-	protected void onDialogClosed(boolean shouldSave) {
-		if (shouldSave && this.changedValueCanBeNull != null) {
-			setTheTime(this.changedValueCanBeNull);
-			this.changedValueCanBeNull = null;
-		}
-	}
+//	@Override
+//	protected void onDialogClosed(boolean shouldSave) {
+//		if (shouldSave && this.changedValueCanBeNull != null) {
+//			setTheTime(this.changedValueCanBeNull);
+//			this.changedValueCanBeNull = null;
+//		}
+//	}
 
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		super.onClick(dialog, which);
-		if (getDialog().getCurrentFocus() != null)
-			getDialog().getCurrentFocus().clearFocus();
-	}
+//	@Override
+//	public void onClick(DialogInterface dialog, int which) {
+//		super.onClick(dialog, which);
+//		if (getDialog().getCurrentFocus() != null)
+//			getDialog().getCurrentFocus().clearFocus();
+//	}
+    @Override
+    public void onClick() {
+        super.onClick();
+
+    }
 
 	private void setTheTime(String s) {
 		setTime(s);

@@ -19,8 +19,7 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.util.Log;
-import android.view.MenuItem;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -54,6 +53,12 @@ public class BaseSettingsFragmentActivity
 
     protected void setSettingFragment(PreferenceFragment fragment) {
         getFragmentManager().beginTransaction()
+            .replace(R.id.content, fragment)
+            .commit();
+    }
+
+    protected void setSettingFragment(PreferenceFragmentCompat fragment) {
+        getSupportFragmentManager().beginTransaction()
             .replace(R.id.content, fragment)
             .commit();
     }

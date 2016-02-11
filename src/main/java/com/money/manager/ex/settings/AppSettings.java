@@ -50,33 +50,29 @@ public class AppSettings
 
     public GeneralSettings getGeneralSettings() {
         if (mGeneral == null) {
-            mGeneral = new GeneralSettings(mContext);
+            mGeneral = new GeneralSettings(getContext());
         }
         return mGeneral;
     }
 
     public LookAndFeelSettings getLookAndFeelSettings() {
-        if (mLookAndFeel == null) mLookAndFeel = new LookAndFeelSettings(mContext);
+        if (mLookAndFeel == null) mLookAndFeel = new LookAndFeelSettings(getContext());
 
         return mLookAndFeel;
     }
 
     public BehaviourSettings getBehaviourSettings() {
         if (mBehaviour == null) {
-            mBehaviour = new BehaviourSettings(mContext);
+            mBehaviour = new BehaviourSettings(getContext());
         }
         return mBehaviour;
     }
 
     public DropboxSettings getDropboxSettings() {
         if (mDropbox == null) {
-            mDropbox = new DropboxSettings(mContext);
+            mDropbox = new DropboxSettings(getContext());
         }
         return mDropbox;
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     // Individual settings.

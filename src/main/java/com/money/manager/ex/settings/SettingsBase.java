@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.settings;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -30,16 +29,22 @@ import com.money.manager.ex.core.ExceptionHandler;
 public abstract class SettingsBase {
 
     public SettingsBase(Context context) {
-        this.mContext = context.getApplicationContext() != null
-            ? context.getApplicationContext()
-            : context;
+        if (context.getApplicationContext() != null) {
+            this.mContext = context.getApplicationContext();
+        } else {
+            this.mContext = context;
+        }
     }
 
     // Context for settings is the Application Context.
-    protected final Context mContext;
+    private Context mContext;
     private SharedPreferences.Editor mEditor;
 
     // common
+
+    protected Context getContext() {
+        return mContext;
+    }
 
     protected SharedPreferences getSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -49,8 +54,6 @@ public abstract class SettingsBase {
         try {
             return mContext.getString(settingKeyConstant, "");
         } catch (Exception e) {
-//            throw new RuntimeException("error getting string for resource " +
-//                    Integer.toString(settingKeyConstant), e);
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "error getting string for resource " +
                 Integer.toString(settingKeyConstant));
@@ -67,11 +70,10 @@ public abstract class SettingsBase {
 
     /**
      * Clear the preference value (remove preference).
-     * @param key
      */
-    public void clear(String key) {
-
-    }
+//    public void clear(String key) {
+//
+//    }
 
     private boolean save() {
         boolean result = getEditor().commit();
