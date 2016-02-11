@@ -19,6 +19,7 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
+import com.money.manager.ex.settings.BehaviourSettings;
 
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
@@ -31,15 +32,23 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import info.javaperformance.money.Money;
+
 public class AssetAllocationOverviewActivity
     extends BaseFragmentActivity {
 
     public static final String VALUE_FORMAT = "%,.2f";
 
+    private Money differenceThreshold;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_allocation_overview);
+
+        // load difference threshold
+        BehaviourSettings settings = new BehaviourSettings(this);
+        this.differenceThreshold = settings.getAssetAllocationDifferenceThreshold();
 
         // get asset allocation
         AssetAllocationService service = new AssetAllocationService(this);
@@ -130,7 +139,8 @@ public class AssetAllocationOverviewActivity
         html += " &#183; ";
 
         // diff %
-        color = allocation.getDiffAsPercentOfSet().toDouble() >= 0 ? "green" : "darkred";
+        color = allocation.getDiffAsPercentOfSet().toDouble() >= this.differenceThreshold.toDouble()
+                ? "green" : "darkred";
         html += "<span style='color: " + color + ";'>";
         html += allocation.getDiffAsPercentOfSet();
         html += "%</span>";
@@ -138,7 +148,8 @@ public class AssetAllocationOverviewActivity
         html += " &#183; ";
 
         // difference amount
-        color = allocation.getDifference().truncate(2).toDouble() >= 0 ? "green" : "darkred";
+        color = allocation.getDifference().truncate(2).toDouble() >= this.differenceThreshold.toDouble()
+                ? "green" : "darkred";
         html += "<span style='color: " + color + ";'>";
         html += String.format(VALUE_FORMAT, allocation.getDifference().toDouble());
         html += "</span>";
@@ -147,7 +158,8 @@ public class AssetAllocationOverviewActivity
 
         // Allocation
         html += String.format(VALUE_FORMAT, allocation.getAllocation().toDouble()) + "/";
-        color = allocation.getDifference().toDouble() > 0 ? "green" : "darkred";
+        color = allocation.getDifference().toDouble() > this.differenceThreshold.toDouble()
+                ? "green" : "darkred";
 
         // current allocation
         html += "<span style='color: " + color + "; font-weight: bold;'>";
