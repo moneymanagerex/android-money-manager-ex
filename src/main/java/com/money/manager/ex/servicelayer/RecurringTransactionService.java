@@ -186,13 +186,12 @@ public class RecurringTransactionService
 
         // Payment date.
 
-        int repeats = mRecurringTransaction.getRepeats();
-        String currentNextOccurrence = mRecurringTransaction.getPaymentDate();
-        Date newPaymentDate = DateUtils.getDateFromString(getContext(), currentNextOccurrence, Constants.PATTERN_DB_DATE);
+        int repeatType = mRecurringTransaction.getRepeats();
+        Date newPaymentDate = mRecurringTransaction.getPaymentDate();
         Integer paymentsLeft = mRecurringTransaction.getNumOccurrences();
 
         // calculate the next payment date
-        newPaymentDate = getNextScheduledDate(newPaymentDate, repeats, paymentsLeft);
+        newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
 
         if (newPaymentDate != null) {
             mRecurringTransaction.setPaymentDate(newPaymentDate);

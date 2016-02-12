@@ -453,7 +453,7 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
         mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
         mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
-        mCommonFunctions.mDate = mRecurringTransaction.getPaymentDate();
+        mCommonFunctions.mDate = mRecurringTransaction.getPaymentDateString();
         mFrequencies = mRecurringTransaction.getRepeats();
 
         // load split transactions only if no category selected.

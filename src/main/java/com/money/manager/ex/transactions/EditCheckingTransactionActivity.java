@@ -372,7 +372,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
         mCommonFunctions.mTransNumber = tx.getTransactionNumber();
         mCommonFunctions.mNotes = tx.getNotes();
-        mCommonFunctions.mDate = tx.getPaymentDate();
+        mCommonFunctions.mDate = tx.getPaymentDateString();
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);

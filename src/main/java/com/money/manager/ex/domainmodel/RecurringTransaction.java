@@ -117,7 +117,16 @@ public class RecurringTransaction
         setDate(TRANSDATE, value);
     }
 
-    public String getPaymentDate() {
+    public Date getPaymentDate() {
+        String dateString = getString(NEXTOCCURRENCEDATE);
+        if (TextUtils.isEmpty(dateString)) {
+            return null;
+        }
+
+        return DateUtils.getDateFromIsoString(dateString);
+    }
+
+    public String getPaymentDateString() {
         return getString(NEXTOCCURRENCEDATE);
     }
 

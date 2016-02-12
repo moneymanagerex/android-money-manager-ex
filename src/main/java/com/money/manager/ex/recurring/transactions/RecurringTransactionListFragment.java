@@ -38,14 +38,12 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.utils.DateUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.Date;
@@ -139,7 +137,7 @@ public class RecurringTransactionListFragment
           The cursor position of the current transaction in the list of all transactions.
           The active transaction is the one on which we are performing an operation (edit, enter...).
          */
-        int activeTransactionPosition = info.position;
+//        int activeTransactionPosition = info.position;
 
         switch (menuItemId) {
             case R.id.menu_enter_next_occurrence:
@@ -255,7 +253,6 @@ public class RecurringTransactionListFragment
             .setTitle(R.string.delete_repeating_transaction)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
             .setMessage(R.string.confirmDelete);
-        // set listener
         alertDialog.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -278,12 +275,10 @@ public class RecurringTransactionListFragment
     }
 
     private void confirmSkip(final int id) {
-        // create alert dialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.skip_next_occurrence)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
             .setMessage(R.string.skip_next_occurrence_confirmation)
-        // set listener
             .setPositiveButton(android.R.string.ok,
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -308,21 +303,17 @@ public class RecurringTransactionListFragment
         RecurringTransaction tx = repo.load(transactionId);
         if (tx == null) return;
 
-        String nextOccurrence = tx.getPaymentDate();
         int repeats = tx.getRepeats();
         Integer instances = tx.getNumOccurrences();
         int bdId = tx.getId();
-        Date date = DateUtils.getDateFromString(getActivity(), nextOccurrence, Constants.PATTERN_DB_DATE);
 
         RecurringTransactionService service = new RecurringTransactionService(getActivity());
-        date = service.getNextScheduledDate(date, repeats, instances);
+        Date date = service.getNextScheduledDate(tx.getPaymentDate(), repeats, instances);
 
         if (date != null) {
             Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
             intent.setAction(Intent.ACTION_INSERT);
             intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
-//            intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
-//                    DateUtils.getIsoStringDate(date));
             // start for insert new transaction
             startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
         }
