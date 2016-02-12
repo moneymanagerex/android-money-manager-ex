@@ -150,6 +150,10 @@ public class RecurringTransactionService
         return mRepository;
     }
 
+    public RecurringTransaction load(int id) {
+        return getRepository().load(id);
+    }
+
     /**
      * Skip next occurrence.
      * If this is the last occurrence, delete the recurring transaction.
@@ -170,29 +174,8 @@ public class RecurringTransactionService
     }
 
     /**
-     * Set the date for the current record.
-     * @param nextOccurrenceDate ISO-formatted string representation of the date. i.e. 2015-05-25
-     * @return success
-     */
-    public boolean setNextPaymentDate(String nextOccurrenceDate) {
-        load();
-
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
-
-        mRecurringTransaction.setNextPaymentDate(nextOccurrenceDate);
-
-        boolean saved = repo.update(mRecurringTransaction);
-
-        if (!saved) {
-            Toast.makeText(getContext().getApplicationContext(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
-            Log.w(LOGCAT, "Update Bill Deposits with Id=" + Integer.toString(this.recurringTransactionId) + " return <= 0");
-        }
-
-        return saved;
-    }
-
-    /**
-     * Set the recurring action's due date to the next occurrence.
+     * Set the recurring transaction's Due date and the Payment date to the next occurrence.
+     * Saves changes to the database.
      */
     public void moveDatesForward() {
         load();
@@ -204,7 +187,7 @@ public class RecurringTransactionService
         // Payment date.
 
         int repeats = mRecurringTransaction.getRepeats();
-        String currentNextOccurrence = mRecurringTransaction.getNextPaymentDate();
+        String currentNextOccurrence = mRecurringTransaction.getPaymentDate();
         Date newPaymentDate = DateUtils.getDateFromString(getContext(), currentNextOccurrence, Constants.PATTERN_DB_DATE);
         Integer paymentsLeft = mRecurringTransaction.getNumOccurrences();
 
@@ -212,7 +195,7 @@ public class RecurringTransactionService
         newPaymentDate = getNextScheduledDate(newPaymentDate, repeats, paymentsLeft);
 
         if (newPaymentDate != null) {
-            mRecurringTransaction.setNextPaymentDate(newPaymentDate);
+            mRecurringTransaction.setPaymentDate(newPaymentDate);
         }
 
         // Save changes

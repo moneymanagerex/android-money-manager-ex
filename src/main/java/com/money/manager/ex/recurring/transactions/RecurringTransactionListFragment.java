@@ -308,7 +308,7 @@ public class RecurringTransactionListFragment
         RecurringTransaction tx = repo.load(transactionId);
         if (tx == null) return;
 
-        String nextOccurrence = tx.getNextPaymentDate();
+        String nextOccurrence = tx.getPaymentDate();
         int repeats = tx.getRepeats();
         Integer instances = tx.getNumOccurrences();
         int bdId = tx.getId();
@@ -321,8 +321,8 @@ public class RecurringTransactionListFragment
             Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
             intent.setAction(Intent.ACTION_INSERT);
             intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
-            intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
-                    DateUtils.getIsoStringDate(date));
+//            intent.putExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE,
+//                    DateUtils.getIsoStringDate(date));
             // start for insert new transaction
             startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
         }

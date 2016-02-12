@@ -72,7 +72,6 @@ public class EditCheckingTransactionActivity
 
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
-    public String mNextOccurrence = null;
 
     private EditTransactionCommonFunctions mCommonFunctions;
 
@@ -159,7 +158,7 @@ public class EditCheckingTransactionActivity
         outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
         // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
-        outState.putString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
+//        outState.putString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
 
         outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
@@ -373,7 +372,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
         mCommonFunctions.mTransNumber = tx.getTransactionNumber();
         mCommonFunctions.mNotes = tx.getNotes();
-        mCommonFunctions.mDate = tx.getNextPaymentDate();
+        mCommonFunctions.mDate = tx.getPaymentDate();
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
@@ -413,7 +412,7 @@ public class EditCheckingTransactionActivity
             } else {
                 if (intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1) > -1) {
                     mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1);
-                    mNextOccurrence = intent.getStringExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
+//                    mNextOccurrence = intent.getStringExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
                     loadRecurringTransaction(mRecurringTransactionId);
                 }
             }
@@ -564,20 +563,9 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
         mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
         mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
-        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
+//        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
         // action
         mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
-    }
-
-    /**
-     * validate data insert in activity
-     *
-     * @return a boolean indicating whether the data is valid.
-     */
-    private boolean validateData() {
-        if (!mCommonFunctions.validateData()) return false;
-
-        return true;
     }
 
     /**
@@ -586,7 +574,7 @@ public class EditCheckingTransactionActivity
      * @return true if update data successful
      */
     private boolean saveData() {
-        if (!validateData()) return false;
+        if (!mCommonFunctions.validateData()) return false;
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
@@ -624,6 +612,32 @@ public class EditCheckingTransactionActivity
             mCommonFunctions.removeAllSplitCategories();
         }
 
+        if (saveSplitCategories() == false) {
+            return false;
+        }
+
+        // update category and subcategory for the default payee
+        if ((!isTransfer) && mCommonFunctions.hasPayee() && !mCommonFunctions.hasSplitCategories()) {
+            PayeeRepository payeeRepository = new PayeeRepository(this);
+            Payee payee = payeeRepository.load(mCommonFunctions.payeeId);
+
+            payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
+            payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
+
+            boolean saved = payeeRepository.save(payee);
+            if (!saved) {
+                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
+                Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");
+            }
+        }
+
+        //update recurring transaction
+        saveRecurringTransaction();
+
+        return true;
+    }
+
+    private boolean saveSplitCategories() {
         // has split categories
         boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
         // update split transaction
@@ -666,12 +680,12 @@ public class EditCheckingTransactionActivity
                 values.clear();
 
                 values.put(SplitCategory.SPLITTRANSAMOUNT,
-                    mCommonFunctions.mSplitTransactionsDeleted.get(i).getAmount().toString());
+                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getAmount().toString());
 
                 SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
                 // todo: use repo to delete the record.
                 if (getContentResolver().delete(splitRepo.getUri(),
-                    SplitCategory.SPLITTRANSID + "=?",
+                        SplitCategory.SPLITTRANSID + "=?",
                         new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getId())}) <= 0) {
                     Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                     Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
@@ -680,35 +694,25 @@ public class EditCheckingTransactionActivity
             }
         }
 
-        // update category and subcategory for the default payee
-        if ((!isTransfer) && mCommonFunctions.hasPayee() && !hasSplitCategories) {
-            PayeeRepository payeeRepository = new PayeeRepository(this);
-            Payee payee = payeeRepository.load(mCommonFunctions.payeeId);
-
-            payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
-            payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
-
-            boolean saved = payeeRepository.save(payee);
-            if (!saved) {
-                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");
-            }
-        }
-
-        //update recurring transaction
-        if (mRecurringTransactionId > Constants.NOT_SET && !(TextUtils.isEmpty(mNextOccurrence))) {
-            ContentValues values = new ContentValues();
-            // handle transactions that do not repeat any more.
-            String transactionDate = values.getAsString(ITransactionEntity.TRANSDATE);
-            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(mRecurringTransactionId, this);
-            if(mNextOccurrence.equals(transactionDate)) {
-                // The next occurrence date is the same as the current. Expired.
-                recurringTransactionService.delete();
-            } else {
-                // store next occurrence date.
-                recurringTransactionService.setNextPaymentDate(mNextOccurrence);
-            }
-        }
         return true;
+    }
+
+    private void saveRecurringTransaction() {
+        if (mRecurringTransactionId == Constants.NOT_SET) {
+            return;
+        }
+
+        RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
+        service.moveDatesForward();
+
+        // todo: handle transactions that do not repeat any more.
+//        if(mNextOccurrence.equals(transactionDate)) {
+//            // The next occurrence date is the same as the current. Expired.
+//            service.delete();
+//        } else {
+//            // store next occurrence date.
+//            service.setNextPaymentDate(mNextOccurrence);
+//        }
+
     }
 }
