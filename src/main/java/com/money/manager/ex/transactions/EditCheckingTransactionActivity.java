@@ -612,7 +612,7 @@ public class EditCheckingTransactionActivity
             mCommonFunctions.removeAllSplitCategories();
         }
 
-        if (saveSplitCategories() == false) {
+        if (!saveSplitCategories()) {
             return false;
         }
 
@@ -631,8 +631,11 @@ public class EditCheckingTransactionActivity
             }
         }
 
-        //update recurring transaction
-        saveRecurringTransaction();
+        // Process recurring transaction.
+        if (mRecurringTransactionId != Constants.NOT_SET) {
+            RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
+            service.moveNextOccurrence();
+        }
 
         return true;
     }
@@ -695,24 +698,5 @@ public class EditCheckingTransactionActivity
         }
 
         return true;
-    }
-
-    private void saveRecurringTransaction() {
-        if (mRecurringTransactionId == Constants.NOT_SET) {
-            return;
-        }
-
-        RecurringTransactionService service = new RecurringTransactionService(mRecurringTransactionId, this);
-        service.moveDatesForward();
-
-        // todo: handle transactions that do not repeat any more.
-//        if(mNextOccurrence.equals(transactionDate)) {
-//            // The next occurrence date is the same as the current. Expired.
-//            service.delete();
-//        } else {
-//            // store next occurrence date.
-//            service.setNextPaymentDate(mNextOccurrence);
-//        }
-
     }
 }

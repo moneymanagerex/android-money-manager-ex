@@ -209,7 +209,7 @@ public class RecurringTransactionService
      * Set the recurring transaction's Due date and the Payment date to the next occurrence.
      * Saves changes to the database.
      */
-    public void moveDatesForward() {
+    private void moveDatesForward() {
         load();
 
         // Due date.
