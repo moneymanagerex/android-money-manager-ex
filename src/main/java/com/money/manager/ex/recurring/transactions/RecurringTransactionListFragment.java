@@ -133,11 +133,6 @@ public class RecurringTransactionListFragment
 
         int menuItemId = item.getItemId();
         int transactionId = (int) info.id;
-        /*
-          The cursor position of the current transaction in the list of all transactions.
-          The active transaction is the one on which we are performing an operation (edit, enter...).
-         */
-//        int activeTransactionPosition = info.position;
 
         switch (menuItemId) {
             case R.id.menu_enter_next_occurrence:
@@ -210,7 +205,7 @@ public class RecurringTransactionListFragment
         }
     }
 
-    // End loader callbacks.
+    // Other
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -298,25 +293,16 @@ public class RecurringTransactionListFragment
         alertDialog.create().show();
     }
 
-    private void showCreateTransactionActivity(int transactionId) {
+    private void showCreateTransactionActivity(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(getActivity());
-        RecurringTransaction tx = repo.load(transactionId);
+        RecurringTransaction tx = repo.load(recurringTransactionId);
         if (tx == null) return;
 
-        Recurrence repeats = Recurrence.valueOf(tx.getRepeats());
-        Integer instances = tx.getOccurrences();
-        int bdId = tx.getId();
-
-        RecurringTransactionService service = new RecurringTransactionService(getActivity());
-        Date date = service.getNextScheduledDate(tx.getPaymentDate(), repeats, instances);
-
-        if (date != null) {
-            Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
-            intent.setAction(Intent.ACTION_INSERT);
-            intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, bdId);
-            // start for insert new transaction
-            startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
-        }
+        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, recurringTransactionId);
+        // start for insert new transaction
+        startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
     }
 
     /**
