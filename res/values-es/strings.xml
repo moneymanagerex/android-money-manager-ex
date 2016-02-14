@@ -201,7 +201,6 @@
   <string name="next_occurrence">Siguiente Ocurrencia</string>
   <string name="repeats">Frecuencia</string>
   <string name="occurs">Se produce</string>
-  <string name="times_repeated">Ocurrencias Repetidas</string>
   <string name="error_next_occurrence_not_populate">La siguiente repetición es requerida</string>
   <string name="enter_next_occurrence">Efectuar Siguiente Ocurrencia</string>
   <string name="skip_next_occurrence">Omitir Siguiente Ocurrencia</string>

@@ -198,7 +198,6 @@
   <string name="new_edit_repeating_transaction">Nová/úprava opakované transakce</string>
   <string name="next_occurrence">Další výskyt</string>
   <string name="repeats">Periodicita</string>
-  <string name="times_repeated">Počet opakování</string>
   <string name="error_next_occurrence_not_populate">Je vyžadován další výskyt</string>
   <string name="enter_next_occurrence">Zadejte další výskyt</string>
   <string name="skip_next_occurrence">Přeskočit další výskyt</string>

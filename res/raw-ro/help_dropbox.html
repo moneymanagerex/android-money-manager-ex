@@ -13,11 +13,11 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
+  -->
 <!DOCTYPE html>
 <html>
 <head>
-<title>MoneyManagerEx for Android: Database synchronization with the MoneyManagerEx for Windows/Linux/Mac using the Dropbox service</title>
+<title>MoneyManagerEx pentrur Android: Sincronizarea bazei de date cu MoneyManagerEx pentru Windows/Linux/Mac folosind serviciul Dropbox</title>
 <style type="text/css">
 body {
 	background:#f5f5f5;
@@ -39,37 +39,33 @@ h3 { font-size:105%; }
 </style>
 </head>
 	<body>
-    <h2><b>Managerul Finanțelor Ex pentru Android</b></h2>
-    <h3>Sincronizarea bazei de date cu Managerul Finanțelor Ex pentru Windows/Linux/Mac folosind serviciul Dropbox.</h3>
-    <p><b>Prerequisite:</b> have a dropbox account. If you still do not have it go to www.dropbox.com and create a new account.</p>
+    <h2><b>MoneyManagerEx pentru Android</b></h2>
+    <h3>Sincronizarea bazei de date cu MoneyManagerEx pentru Windows/Linux/Mac folosind serviciul Dropbox.</h3>
+    <p><b>Cerințe:</b> să ai un cont Dropbox. Dacă încă nu ai unul, mergi la www.dropbox.com și creează-ți un con nou.</p>
     <ul>
-        <li>Connect MoneyManagerEx for Android with Dropbox. Select "Link to Dropbox." If your device has installed the Dropbox app, it automatically opens and asks you to authorize MoneyManagerEx for Android to access your Dropbox. If you have not installed the Dropbox app on your device, Android open the browser on the login page of Dropbox. After logging in, you will be asked to authorize MoneyManagerEx for Android to access your Dropbox.</li>
-        <li>If you authorize MoneyManagerEx for Android, the first time will be created automatically by Dropbox, the folder <i><i>/Apps/MoneyManagerEx Mobile</i></i> within your Dropbox space. The folder should never be created manually!</li>
+        <li>Conectează MoneyManagerEx pentru Android cu Dropbox. Selectează "Link to Dropbox." Dacă dispozitivul tău are instalat aplicația Dropbox, se deschide automat și îți cere să permiți MoneyManagerEx pentru Android să acceseze contul tău Dropbox. Dacă nu ai instalată aplicația Dropbox pe dispozitivul tău Android, deschide browser-ul la pagina de înscriere pe Dropbox. După ce te autentifici, vei fi rugat să permiți MoneyManagerEx pentru Android să acceseze contul tău Dropbox.</li>
+        <li>Dacă autorizezi MoneyManagerEx pentru Android, la prima utilizare se va crea automat în Dropbox dosarul <i><i>/Apps/MoneyManagerEx Mobile</i></i> în cadrul spațiului tău de pe Dropbox. Dosarul nu trebuie creat manual niciodată!</li>
     </ul>
 
     <ul>
-        <a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>I already use a database for the desktop version</b></h3></a>
-        <li>If you already have a database (mmb) of MoneyManagerEx Desktop Version, you must copy or move the file (s) inside the folder <i>/Apps/MoneyManagerEx Mobile</i> (recommended use the computer for this operation).</li>
-        <li>From the Dropbox settings of MoneyManagerEx for Android, click "Dropbox linked file". Application will open a new window with all the files in the folder <i>/Apps/MoneyManagerEx Mobile</i>. Select the file you want to connect and come back.</li>
-        <li>Once you are back in the Dropbox settings of MoneyManagerEx for Android, after about 10 seconds it will start downloading the selected file, you can see the notification that will open in your device. When the download is finished, your device notifies you that the file is ready to use and you must click on "Open Database" to complete the link between MoneyManagerEx for Android and Dropbox.</li>
+        <a name="mmb_exists" style="margin:0px 0px 0px 15px;"><h3><b>Folosesc deja o bază de date pentru versiunea desktop</b></h3></a>
+        <li>Dacă deja ai o bază de date (mmb) pentru MoneyManagerEx Versiunea pentru Desktop, trebuie să copii sau să muți fișierul (fișierele) în dosarul <i>/Apps/MoneyManagerEx Mobile</i> (este recomandat să folosești calculatorul pentru această operație).</li>
+        <li>Din setările pentru Dropbox ale MoneyManagerEx pentru Android, apasă "Dropbox linked file". Aplicația va deschide acum o fereastră nouă cu toate fișierele în dosarul <i>/Apps/MoneyManagerEx Mobile</i>. Selectează fișierul pe care vrei să îl conectezi și întoarce-te.</li>
+        <li>Odată ce te-ai întors la setările Dropbox pentru MoneyManagerEx pentru Android, după cca 10 secunde va începe descărcarea fișierului selectat, poți vedea notificarea care se va deschide pe dispozitivul tău. După ce se termină descărcarea, dispozitivul tău te va înștiința că fișierul este gata de utilizare și trebuie să apeși ”Open Database” pentru a finaliza legătura dintre MoneyManagerEx pentru Android și Dropbox.</li>
 
-        <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;"><h3><b>I've never used the desktop version and I want to synchronize the database on the device</b></h3></a>
-        <li>If you do not already have a file of mmb MoneyManagerEx Desktop Version, you must click on "Upload to Dropbox database." After approximately 10 seconds will start upload to Dropbox database currently in use. At the end of the device will notify the completion of the upload, and in the <i>/Apps/MoneyManagerEx Mobile</i> you will find a file named data.mmb.</li>
+        <a name="mmb_not_exists" style="margin:0px 0px 0px 15px;"><h3><b>Nu am folosit niciodată versiunea desktop și vreau să sincronizez baza de date pe dispozitiv</b></h3></a>
+        <li>If you do not already have a file of mmb MoneyManagerEx Desktop Version, you must click on "Upload to Dropbox database." After approximately 10 seconds the upload to Dropbox of the current database will start. At the end of the process there will be a notification for the completion of the upload, and in the <i>/Apps/MoneyManagerEx Mobile</i> you will find a file named data.mmb.</li>
 
-        <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>Other settings</b></h3></a>
-        <li>Once you have made the link account and file, MoneyManagerEx for Android automatically syncs with Dropbox every x minutes set in the setting "Syncronization Interval". If you do not want to synchronize automatically set "Syncronization Interval" to zero.</li>
-        <li>It is important to set "Upload the database immediately after change". This setup enables MoneyManagerEx for Android to upload the database on Dropbox immediately after you make a change.</li>
-        <li>Use "Download database from Dropbox" or "Upload database to Dropbox" to force the operation to Download or Upload the database, in case of malfunctions.</li>
-        <li>When you linked your Dropbox account and the file in the main window activates the synchronization functionality on the top toolbar.</li>
-        <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>FAQ</b></h3></a>
-        <li><b>Q. </b>I can not connect with Dropbox, or MoneyManagerEx does not sync?<br>
-            <b>A. </b>The first thing you need to do is send us an email at <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a> describing the problem. In the meantime, if you want to synchronize your database with MoneyManagerEx for Android, you will need to use other applications for this purpose, like <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>, <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a> or search an application <a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>.
-        <li><b>Q. </b>I want to synchronize MoneyManagerEx for Android with other cloud services (Drive, Box.net, Wuala, etc. ..). How can I do?<br>
-            <b>A. </b>In MoneyManagerEx for Android the only cloud storage service available is Dropbox. If you want to use the database with other cloud storage services, you'll want to locate on Google Play the application that allows you to synchronize with your service. The database will be saved in the external memory of the device, and then open with MoneyManagerEx for Android
-        <li><b>Q. </b>After a sync I no longer see my data. I lost all the data in my database?<br>
-            <b>A. </b>Do not worry, you have not lost anything! In rare cases it is possible that, when you synchronize the database, the file is not downloaded properly and it is no longer readable by MoneyManagerEx for Android. In these cases, you will need to force a download of the database from dropbox. If the database still does not open, we recommend that you delete the files in /com.money.manager.ex/dropbox/ and retry the forced download of the files from Dropbox.
-        <li><b>Q. </b>Can I restore a previous version of the database?<br>
-            <b>A. </b>Of course I do. Dropbox keeps all versions of all your files. <a href="https://www.dropbox.com/help/11/">Here you can find the Dropbox guide on how restore file</a>
+        <a name="other_settings" style="margin:0px 0px 0px 15px;"><h3><b>Alte setări</b></h3></a>
+        <li>Odată ce ai conectat contul și fișierul, MoneyManagerEx pentru Android se va sincroniza automat cu Dropbox la fiecare x minute după cum este configurat în setarea „Intervalul de sincronizare”. Dacă nu vrei ca sincronizarea să se facă automat, setează „Intervalul de sincronizare” la zero.</li>
+        <li>Este important să setezi „Actualizează baza de date imediat după efectuarea schimbărilor”. Această configurare permite MoneyManagerEx pentru Android să actualizeze baza de date în Dropbox imediat după ce faci o modificare.</li>
+        <li>Folosește "Download database from Dropbox" or "Upload database to Dropbox" pentru a forța operația de descărcare sau de actualizare a bazei de date în cazul în care apar defecțiuni.</li>
+        <li>Când conectezi contul Dropbox și fișierul, în fereastra principală se activează funcția de sincronizare în bara de instrumente superioară.</li>
+        <a name="faq" style="margin:0px 0px 0px 15px;"><h3><b>Întrebări Frecvente</b></h3></a>
+        <li><b>Î. </b>Nu mă pot conecta cu Dropbox, sau MoneyManagerEx nu se sincronizează?<br><b>R. </b>Primul lucru pe care trebuie să îl faci e să ne trimiți un email la <a href="android.money.manager.ex@gmail.com">android.money.manager.ex@gmail.com</a> în care descrii problema. Între timp dacă vrei să sincronizezi baza ta de date cu MoneyManagerEx pentru Android, trebuie să folosești alte aplicații pentru asta, precum <a href="http://play.google.com/store/apps/details?id=dk.tacit.android.foldersync.lite">FolderSync</a>, <a href="http://play.google.com/store/apps/details?id=com.ttxapps.dropsync">Dropsync</a> sau caută o aplicație <a href="https://play.google.com/store/search?q=dropbox+synchronization&c=apps&price=0">Google Play</a>.
+        <li><b>Î. </b>vreau să sincronizez MoneyManagerEx pentru Android cu alte servicii cloud (Drive, Box.net, Wuala, etc. ..). Cum se poate face?<br><b>R. </b>În MoneyManagerEx pentru Android singurul serviciu de stocare cloud disponibil este Dropbox. Dacă vrei să folosești baza de date cu alte servicii de stocare cloud, trebuie să identifici pe Google Play aplicația care îți permite să sincronizezi cu serviciul tău. Baza de date va fi salvată în memoria externă a dispozitivului tău, iar apoi va fi deschisă cu MoneyManagerEx pentru Android
+        <li><b>Î. </b>După ce sincronizez nu mai văd datele mele. Mi-am pierdut toate datele din baza de date?<br><b>R. </b>Nu te îngrijora, nu ai pierdut nimic! În cazuri rare este posibil ca atunci când sincronizezi baza de date fișierul să nu fie descărcat într-un mod corespunzător și nu mai poate fi citit de MoneyManagerEx pentru Android. În astfel de cazuri trebuie să descarci forțat baza de date din Dropbox. Dacă baza de date tot nu se deschide, recomandăm să ștergi fișierele din /com.money.manager.ex/dropbox/ și să reîncerci să descarci forțat fișierele din Dropbox.
+        <li><b>Î. </b>Pot să restaurez o versiune anterioară a bazei de date?<br><b>R. </b>Sigur că poți. Dropbox păstrează toate versiunile la toate fișierele tale. <a href="https://www.dropbox.com/help/11/">Aici poți găsi ghidul Dropbox despre cum să restaurezi un fișier</a>
         </li>
     </ul>
     </body>

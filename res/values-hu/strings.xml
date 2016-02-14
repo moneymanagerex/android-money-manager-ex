@@ -204,7 +204,6 @@
   <string name="next_occurrence">Következő előfordulás</string>
   <string name="repeats">Ismétlődik</string>
   <string name="occurs">Előfordulás</string>
-  <string name="times_repeated">Gyakoriság</string>
   <string name="error_next_occurrence_not_populate">Következő előfordulás megadása kötelező</string>
   <string name="enter_next_occurrence">Következő előfordulás felvitele</string>
   <string name="skip_next_occurrence">Következő előfordulás kihagyása</string>

@@ -36,6 +36,7 @@
   <string name="preferences_dispaly">Görünüm</string>
   <string name="preferences_behaviour">Davranış</string>
   <string name="base_currency">Baz para birimi</string>
+  <string name="base_currency_changed">Baz para birimi değiştirildi</string>
   <string name="view_accounts_opened">Açık hesapları görüntüle</string>
   <string name="if_not_selected_willShowAllAccounts">Seçili değilse tüm hesapları gösterir</string>
   <string name="view_accounts_favorites">Favori hesapları görüntüle</string>
@@ -192,12 +193,12 @@
   <string name="every_x_months">Her (x) Ay</string>
   <string name="repeating_empty_transaction">Hiçbir tekrar eden işlem bulunamadı. Yeni ekleme için yeşil artı butonuna dokunun.</string>
   <string name="inactive">Etkin değil</string>
+  <string name="activates">Etkinleştirir</string>
   <string name="days_remaining">gün kaldı</string>
   <string name="new_edit_repeating_transaction">Tekrar Eden İşlem Ekle/Düzenle</string>
   <string name="next_occurrence">Sonraki Gerçekleşme</string>
   <string name="repeats">Tekrarlar</string>
   <string name="occurs">Gerçekleşenler</string>
-  <string name="times_repeated">Tekrar Sayısı</string>
   <string name="error_next_occurrence_not_populate">Sonraki gerçekleşme gereklidir</string>
   <string name="enter_next_occurrence">Sonraki gerçekleşmeyi gir</string>
   <string name="skip_next_occurrence">Sonraki gerçekleşmeyi atla</string>

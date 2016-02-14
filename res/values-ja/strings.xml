@@ -201,10 +201,13 @@
   <string name="days_overdue">日期限超過!</string>
   <string name="days_remaining">残り日数</string>
   <string name="new_edit_repeating_transaction">定期的な取引を新しく作成/編集</string>
+  <string name="due_date">期日</string>
   <string name="next_occurrence">次回発生</string>
+  <string name="payment_date">支払日</string>
   <string name="repeats">繰り返し</string>
   <string name="occurs">発生</string>
-  <string name="times_repeated">回繰り返し</string>
+  <string name="payments_left">支払残</string>
+  <string name="due_date_required">期日は必須です</string>
   <string name="error_next_occurrence_not_populate">次回発生が必要です</string>
   <string name="enter_next_occurrence">次回発生を入力してください</string>
   <string name="skip_next_occurrence">次回発生をスキップ</string>
@@ -555,4 +558,7 @@
   <string name="success">操作が正常終了しました</string>
   <string name="overview">概要</string>
   <string name="title_activity_asset_allocation_overview">資産配分の概要</string>
+  <string name="asset_allocation_diff_threshold">資産配分差異しきい値</string>
+  <string name="asset_allocation_diff_threshold_summary">差異の値に色を付けるしきい値。</string>
+  <string name="error_saving_record">レコードの保存中にエラー</string>
 </resources>

@@ -188,7 +188,6 @@
   <string name="new_edit_repeating_transaction">Giao Dịch Định Kỳ Mới/Sửa</string>
   <string name="next_occurrence">Lần xuất hiện tiếp theo</string>
   <string name="repeats">Lặp lại</string>
-  <string name="times_repeated">Lần lặp lại</string>
   <string name="error_next_occurrence_not_populate">Lần xuất hiện tiếp theo là cần thiết</string>
   <string name="enter_next_occurrence">Nhập việc xảy ra tiếp theo</string>
   <string name="skip_next_occurrence">Bỏ qua lần xảy ra tiếp theo</string>
