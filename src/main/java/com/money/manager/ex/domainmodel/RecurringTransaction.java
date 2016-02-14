@@ -38,7 +38,13 @@ public class RecurringTransaction
 
     public static final String BDID = "BDID";
     public static final String REPEATS = "REPEATS";
+    /**
+     * Payment Date
+     */
     public static final String NEXTOCCURRENCEDATE = "NEXTOCCURRENCEDATE";
+    /**
+     * Repetitions / Payments Left
+     */
     public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
 
     @Override
@@ -142,8 +148,12 @@ public class RecurringTransaction
         return getString(ITransactionEntity.NOTES);
     }
 
-    public Integer getNumOccurrences() {
+    public Integer getOccurrences() {
         return getInt(NUMOCCURRENCES);
+    }
+
+    public void setOccurrences(Integer value) {
+        setInteger(NUMOCCURRENCES, value);
     }
 
     public Integer getPayeeId() {

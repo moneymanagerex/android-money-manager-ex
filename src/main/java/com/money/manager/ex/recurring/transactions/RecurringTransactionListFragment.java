@@ -284,7 +284,7 @@ public class RecurringTransactionListFragment
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
-                            recurringTransaction.skipNextOccurrence();
+                            recurringTransaction.moveNextOccurrence();
                             getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
                                     RecurringTransactionListFragment.this);
                         }
@@ -304,7 +304,7 @@ public class RecurringTransactionListFragment
         if (tx == null) return;
 
         int repeats = tx.getRepeats();
-        Integer instances = tx.getNumOccurrences();
+        Integer instances = tx.getOccurrences();
         int bdId = tx.getId();
 
         RecurringTransactionService service = new RecurringTransactionService(getActivity());

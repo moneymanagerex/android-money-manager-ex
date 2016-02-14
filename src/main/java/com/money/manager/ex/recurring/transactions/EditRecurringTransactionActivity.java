@@ -422,8 +422,8 @@ public class EditRecurringTransactionActivity
 
         // Payments Left
         mViewHolder.edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
-        if (mRecurringTransaction.getNumOccurrences() != null && mRecurringTransaction.getNumOccurrences() >= 0) {
-            mViewHolder.edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getNumOccurrences()));
+        if (mRecurringTransaction.getOccurrences() != null && mRecurringTransaction.getOccurrences() >= 0) {
+            mViewHolder.edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getOccurrences()));
         }
 
     }

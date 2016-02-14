@@ -29,6 +29,7 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
+import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -62,13 +63,13 @@ public class RecurringTransactionService
     /**
      * @param date    to start calculate
      * @param repeatType type of repeating transactions
-     * @param paymentsLeft Number of instances (days, months) parameter. Used for In (x) Days, for
+     * @param numberOfPeriods Number of instances (days, months) parameter. Used for In (x) Days, for
      *                  example to indicate x.
      * @return next Date
      */
-    public Date getNextScheduledDate(Date date, int repeatType, Integer paymentsLeft) {
-        if (paymentsLeft == null || paymentsLeft == Constants.NOT_SET) {
-            paymentsLeft = 0;
+    public Date getNextScheduledDate(Date date, int repeatType, Integer numberOfPeriods) {
+        if (numberOfPeriods == null || numberOfPeriods == Constants.NOT_SET) {
+            numberOfPeriods = 0;
         }
 
         if (repeatType >= 200) {
@@ -117,11 +118,11 @@ public class RecurringTransactionService
                 break;
             case 11: //in_x_days
             case 13: //every_x_days
-                calendar.add(Calendar.DATE, paymentsLeft);
+                calendar.add(Calendar.DATE, numberOfPeriods);
                 break;
             case 12: //in_x_months
             case 14: //every_x_months
-                calendar.add(Calendar.MONTH, paymentsLeft);
+                calendar.add(Calendar.MONTH, numberOfPeriods);
                 break;
             case 15: //month (last day)
                 calendar.add(Calendar.MONTH, 1);
@@ -155,21 +156,52 @@ public class RecurringTransactionService
     }
 
     /**
-     * Skip next occurrence.
-     * If this is the last occurrence, delete the recurring transaction.
-     * Otherwise, move the due date to the next occurrence date.
+     * This will process the Recurring Transaction so that the dates are moved to the next
+     * occurrence, if it is to occur again.
+     * If not, the recurring transaction is deleted.
      */
-    public void skipNextOccurrence() {
+    public void moveNextOccurrence() {
         load();
 
-        int repeats = mRecurringTransaction.getRepeats();
+        /**
+         * The action will depend on the transaction settings.
+         */
+        Recurrence recurrence = Recurrence.valueOf(mRecurringTransaction.getRepeats());
 
-        if(repeats == 0) {
-            // no more occurrences, this is the only one. Delete the transaction.
-            delete();
-        } else {
-            // Just move the date.
-            moveDatesForward();
+        switch (recurrence) {
+            // periodical (monthly, weekly)
+            case ONCE:
+                delete();
+                break;
+            case WEEKLY:
+            case BIWEEKLY:
+            case MONTHLY:
+            case BIMONTHLY:
+            case QUARTERLY:
+            case SEMIANNUALLY:
+            case ANNUALLY:
+            case FOUR_MONTHS:
+            case FOUR_WEEKS:
+            case DAILY:
+            case MONTHLY_LAST_DAY:
+            case MONTHLY_LAST_BUSINESS_DAY:
+                moveDatesForward();
+                decreasePaymentsLeft();
+                deleteIfNoPaymentsLeft();
+                break;
+            // every n periods
+            case EVERY_X_DAYS:
+            case EVERY_X_MONTHS:
+                moveDatesForward();
+                break;
+            // in n periods
+            case IN_X_DAYS:
+            case IN_X_MONTHS:
+                // reset number of periods
+                mRecurringTransaction.setOccurrences(Constants.NOT_SET);
+                break;
+            default:
+                break;
         }
     }
 
@@ -188,7 +220,7 @@ public class RecurringTransactionService
 
         int repeatType = mRecurringTransaction.getRepeats();
         Date newPaymentDate = mRecurringTransaction.getPaymentDate();
-        Integer paymentsLeft = mRecurringTransaction.getNumOccurrences();
+        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
 
         // calculate the next payment date
         newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
@@ -288,6 +320,19 @@ public class RecurringTransactionService
 
     // Private.
 
+    private void decreasePaymentsLeft() {
+        int paymentsLeft = mRecurringTransaction.getOccurrences();
+        paymentsLeft = paymentsLeft - 1;
+
+        mRecurringTransaction.setOccurrences(paymentsLeft);
+    }
+
+    private void deleteIfNoPaymentsLeft() {
+        if (mRecurringTransaction.getOccurrences() == 0) {
+            delete();
+        }
+    }
+
     /**
      * Creates a query for getting all related split transactions.
      * @return cursor for all the related split transactions
@@ -316,7 +361,7 @@ public class RecurringTransactionService
     private void moveDueDateForward() {
         int repeats = mRecurringTransaction.getRepeats();
         Date dueDate = mRecurringTransaction.getDueDate();
-        Integer paymentsLeft = mRecurringTransaction.getNumOccurrences();
+        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
 
         Date newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
 
