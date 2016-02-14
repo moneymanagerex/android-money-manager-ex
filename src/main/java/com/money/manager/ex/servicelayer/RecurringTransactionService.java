@@ -30,7 +30,6 @@ import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.recurring.transactions.Recurrence;
-import com.money.manager.ex.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -186,8 +185,9 @@ public class RecurringTransactionService
             case MONTHLY_LAST_DAY:
             case MONTHLY_LAST_BUSINESS_DAY:
                 moveDatesForward();
+                // Delete if occurence is down to 1. 0 means repeat forever.
+                deleteIfLastPayment();
                 decreasePaymentsLeft();
-                deleteIfNoPaymentsLeft();
                 break;
             // every n periods
             case EVERY_X_DAYS:
@@ -327,8 +327,8 @@ public class RecurringTransactionService
         mRecurringTransaction.setOccurrences(paymentsLeft);
     }
 
-    private void deleteIfNoPaymentsLeft() {
-        if (mRecurringTransaction.getOccurrences() == 0) {
+    private void deleteIfLastPayment() {
+        if (mRecurringTransaction.getOccurrences() == 1) {
             delete();
         }
     }
