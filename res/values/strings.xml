@@ -692,4 +692,5 @@
     <string name="asset_allocation_diff_threshold_summary">The threshold that will trigger the coloring of difference values.</string>
 
     <string name="error_saving_record">Error saving record</string>
+    <string name="times_repeated" translatable="false">to delete</string>
 </resources>
