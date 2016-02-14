@@ -303,7 +303,7 @@ public class RecurringTransactionListFragment
         RecurringTransaction tx = repo.load(transactionId);
         if (tx == null) return;
 
-        int repeats = tx.getRepeats();
+        Recurrence repeats = Recurrence.valueOf(tx.getRepeats());
         Integer instances = tx.getOccurrences();
         int bdId = tx.getId();
 

@@ -66,16 +66,16 @@ public class RecurringTransactionService
      *                  example to indicate x.
      * @return next Date
      */
-    public Date getNextScheduledDate(Date date, int repeatType, Integer numberOfPeriods) {
+    public Date getNextScheduledDate(Date date, Recurrence repeatType, Integer numberOfPeriods) {
         if (numberOfPeriods == null || numberOfPeriods == Constants.NOT_SET) {
             numberOfPeriods = 0;
         }
 
-        if (repeatType >= 200) {
-            repeatType = repeatType - 200;
+        if (repeatType.getValue() >= 200) {
+            repeatType = Recurrence.valueOf(repeatType.getValue() - 200);
         } // set auto execute without user acknowledgement
-        if (repeatType >= 100) {
-            repeatType = repeatType - 100;
+        if (repeatType.getValue() >= 100) {
+            repeatType = Recurrence.valueOf(repeatType.getValue() - 100);
         } // set auto execute on the next occurrence
 
         // create object calendar
@@ -83,52 +83,52 @@ public class RecurringTransactionService
         calendar.setTime(date);
 
         switch (repeatType) {
-            case 0: //none
+            case ONCE: //none
                 break;
-            case 1: //weekly
+            case WEEKLY: //weekly
                 calendar.add(Calendar.DATE, 7);
                 break;
-            case 2: //bi_weekly
+            case BIWEEKLY: //bi_weekly
                 calendar.add(Calendar.DATE, 14);
                 break;
-            case 3: //monthly
+            case MONTHLY: //monthly
                 calendar.add(Calendar.MONTH, 1);
                 break;
-            case 4: //bi_monthly
+            case BIMONTHLY: //bi_monthly
                 calendar.add(Calendar.MONTH, 2);
                 break;
-            case 5: //quarterly
+            case QUARTERLY: //quarterly
                 calendar.add(Calendar.MONTH, 3);
                 break;
-            case 6: //half_year
+            case SEMIANNUALLY: //half_year
                 calendar.add(Calendar.MONTH, 6);
                 break;
-            case 7: //yearly
+            case ANNUALLY: //yearly
                 calendar.add(Calendar.YEAR, 1);
                 break;
-            case 8: //four_months
+            case FOUR_MONTHS: //four_months
                 calendar.add(Calendar.MONTH, 4);
                 break;
-            case 9: //four_weeks
+            case FOUR_WEEKS: //four_weeks
                 calendar.add(Calendar.DATE, 28);
                 break;
-            case 10: //daily
+            case DAILY: //daily
                 calendar.add(Calendar.DATE, 1);
                 break;
-            case 11: //in_x_days
-            case 13: //every_x_days
+            case IN_X_DAYS: //in_x_days
+            case EVERY_X_DAYS: //every_x_days
                 calendar.add(Calendar.DATE, numberOfPeriods);
                 break;
-            case 12: //in_x_months
-            case 14: //every_x_months
+            case IN_X_MONTHS: //in_x_months
+            case EVERY_X_MONTHS: //every_x_months
                 calendar.add(Calendar.MONTH, numberOfPeriods);
                 break;
-            case 15: //month (last day)
+            case MONTHLY_LAST_DAY: //month (last day)
                 calendar.add(Calendar.MONTH, 1);
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
                 calendar.add(Calendar.DATE, -1);
                 break;
-            case 16: //month (last business day)
+            case MONTHLY_LAST_BUSINESS_DAY: //month (last business day)
                 // get the last day of the month first.
                 calendar.add(Calendar.MONTH, 1);
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -218,7 +218,7 @@ public class RecurringTransactionService
 
         // Payment date.
 
-        int repeatType = mRecurringTransaction.getRepeats();
+        Recurrence repeatType = Recurrence.valueOf(mRecurringTransaction.getRepeats());
         Date newPaymentDate = mRecurringTransaction.getPaymentDate();
         Integer paymentsLeft = mRecurringTransaction.getOccurrences();
 
@@ -359,7 +359,7 @@ public class RecurringTransactionService
     }
 
     private void moveDueDateForward() {
-        int repeats = mRecurringTransaction.getRepeats();
+        Recurrence repeats = Recurrence.valueOf(mRecurringTransaction.getRepeats());
         Date dueDate = mRecurringTransaction.getDueDate();
         Integer paymentsLeft = mRecurringTransaction.getOccurrences();
 
