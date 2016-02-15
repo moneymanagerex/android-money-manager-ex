@@ -82,7 +82,7 @@ public class Account
     }
 
     protected Account(Parcel in) {
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+        contentValues = ContentValues.CREATOR.createFromParcel(in);
     }
 
     @Override
@@ -164,12 +164,6 @@ public class Account
     public Money getInitialBalance() {
         return getMoney(Account.INITIALBAL);
     }
-
-//    public MonetaryAmount getInitialBalance() {
-//        // todo: get account currency?
-//        // this.getCurrencyId()
-//        return getMoneta(Account.INITIALBAL, "EUR");
-//    }
 
     public Boolean getFavorite() {
         return getBoolean(Account.FAVORITEACCT);
