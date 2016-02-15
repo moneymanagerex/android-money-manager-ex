@@ -369,7 +369,7 @@ public class AccountTransactionListFragment
         }
     }
 
-    // end loader events
+    // Other
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
