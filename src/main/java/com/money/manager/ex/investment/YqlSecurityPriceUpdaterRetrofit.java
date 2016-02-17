@@ -181,20 +181,22 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         JsonElement priceElement = quote.get("LastTradePriceOnly");
         if (priceElement == JsonNull.INSTANCE) {
-            handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
+            handler.showMessage(mContext.getString(R.string.error_no_price_found_for_symbol) + " " +
                 priceModel.symbol);
             return null;
         }
         String priceString = priceElement.getAsString();
         if (!NumericHelper.isNumeric(priceString)) {
-            handler.showMessage(mContext.getString(R.string.error_downloading_symbol) + " " +
+            handler.showMessage(mContext.getString(R.string.error_no_price_found_for_symbol) + " " +
                     priceModel.symbol);
             return null;
         }
 
         Money price = MoneyFactory.fromString(priceString);
-        // LSE stocks are expressed in GBp (pence), not Pounds.
-        // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
+        /**
+        LSE stocks are expressed in GBp (pence), not Pounds.
+        From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
+         */
         String currency = quote.get("Currency").getAsString();
         if (currency.equals("GBp")) {
             price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
