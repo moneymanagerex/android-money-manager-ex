@@ -108,7 +108,7 @@
   <string name="amount">Sumă</string>
   <string name="total_amount">Suma totală</string>
   <string name="deposit">Depozit</string>
-  <string name="status">Situație</string>
+  <string name="status">Statut</string>
   <string name="status_reconciled">Reglat</string>
   <string name="status_void">Gol</string>
   <string name="status_follow_up">Urmărește</string>
@@ -116,7 +116,7 @@
   <string name="status_none">Niciunul</string>
   <string name="transfer">Transfer</string>
   <string name="transaction_type">Tipul de tranzacţie</string>
-  <string name="transaction_status">Statut</string>
+  <string name="transaction_status">Situație</string>
   <string name="withdrawal">Retragere</string>
   <string name="db_checking_insert_failed">Introducerea tranzacției a eșuat</string>
   <string name="db_checking_update_failed">Actualizarea tranzacției a eșuat</string>
@@ -232,7 +232,7 @@
   <string name="expenses">Cheltuieli</string>
   <string name="difference">Diferența</string>
   <string name="no_data">Nu au fost găsite înregistrări. Încercă să modifici perioada afișată sau apasă butonul verde plus pentru a crea una. </string>
-  <string name="no_stock_data">Nu există date de stoc disponibile pentru acest cont.</string>
+  <string name="no_stock_data">Nu există date disponibile despre acțiuni pentru acest cont.</string>
   <string name="month">Luna</string>
   <string name="year">Anul</string>
   <string name="menu_reports">Rapoarte</string>
@@ -521,7 +521,7 @@
   <string name="single_account">Un singur cont</string>
   <string name="watchlist">Pagini urmărite</string>
   <string name="purchase_date">Data achiziției</string>
-  <string name="stock_name">Numele stocului</string>
+  <string name="stock_name">Numele acțiunii</string>
   <string name="symbol">Simbol</string>
   <string name="number_of_shares">Număr de acțiuni</string>
   <string name="purchase_price">Preț de cumpărare</string>
@@ -550,7 +550,7 @@
   <string name="parent">Sursă</string>
   <string name="name">Nume</string>
   <string name="title_activity_asset_allocation_picker">Activitate Selector Alocare Active</string>
-  <string name="stock">Stoc</string>
+  <string name="stock">Acțiuni</string>
   <string name="all_accounts">Toate conturile</string>
   <string name="records">înregistrări</string>
   <string name="enter_password">Introdu parola</string>
