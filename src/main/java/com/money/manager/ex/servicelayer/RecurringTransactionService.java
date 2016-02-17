@@ -328,7 +328,7 @@ public class RecurringTransactionService
     }
 
     private void deleteIfLastPayment() {
-        if (mRecurringTransaction.getOccurrences() == 1) {
+        if (mRecurringTransaction.getOccurrences() != null && mRecurringTransaction.getOccurrences() == 1) {
             delete();
         }
     }
