@@ -40,6 +40,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
 import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
@@ -66,7 +67,6 @@ public class SplitItemFragment
     }
 
     private ITransactionEntity mSplitTransaction;
-    private ISplitItemFragmentCallbacks mOnSplitItemCallback;
     private TextView txtAmount;
     private Spinner spinTransCode;
 
@@ -161,9 +161,8 @@ public class SplitItemFragment
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.remove(SplitItemFragment.this);
                     transaction.commit();
-                    if (getOnSplitItemCallback() != null) {
-                        getOnSplitItemCallback().onRemoveItem(mSplitTransaction);
-                    }
+
+                    EventBus.getDefault().post(new SplitItemRemovedEvent(mSplitTransaction));
                 }
             });
             // tag class
@@ -228,20 +227,6 @@ public class SplitItemFragment
     }
 
     // Public
-
-    /**
-     * @return the splitItemCallback
-     */
-    public ISplitItemFragmentCallbacks getOnSplitItemCallback() {
-        return mOnSplitItemCallback;
-    }
-
-    /**
-     * @param splitItemCallback the splitItemCallback to set
-     */
-    public void setOnSplitItemCallback(ISplitItemFragmentCallbacks splitItemCallback) {
-        this.mOnSplitItemCallback = splitItemCallback;
-    }
 
     /**
      * Returns the Split Transaction created. Called from the activity that holds multiple

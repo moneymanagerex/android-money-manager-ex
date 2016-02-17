@@ -28,19 +28,19 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.transactions.ISplitItemFragmentCallbacks;
 import com.money.manager.ex.transactions.SplitItemFactory;
 import com.money.manager.ex.transactions.SplitItemFragment;
+import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class SplitTransactionsActivity
-    extends BaseFragmentActivity
-    implements ISplitItemFragmentCallbacks {
+    extends BaseFragmentActivity {
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
@@ -145,22 +145,30 @@ public class SplitTransactionsActivity
     }
 
     @Override
-    public void onRemoveItem(ITransactionEntity object) {
-        if (mSplitDeleted == null) {
-            mSplitDeleted = new ArrayList<>();
-        }
-        // add item to delete
-        if (object.getId() != -1) {
-            // not new split transaction
-            mSplitDeleted.add(object);
-        }
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mSplitDeleted != null)
             outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    // Events
+
+    public void onEvent(SplitItemRemovedEvent event) {
+        onRemoveItem(event.entity);
     }
 
     /**
@@ -197,35 +205,6 @@ public class SplitTransactionsActivity
 
     // Private
 
-    private void handleIntent() {
-        Intent intent = getIntent();
-        if (intent == null) return;
-
-        this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
-
-        int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-        mParentTransactionType = TransactionTypes.values()[transactionType];
-
-        this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
-
-        mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
-        mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
-    }
-
-    private void setUpFloatingButton() {
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onFloatingActionButtonClickListener();
-                }
-            });
-        }
-
-        setFloatingActionButtonVisible(true);
-    }
-
     private void addSplitTransaction() {
         // find which split transactions data set to instantiate.
         ITransactionEntity entity = SplitItemFactory.create(this.entityTypeName);
@@ -242,11 +221,52 @@ public class SplitTransactionsActivity
 
         if (fragment == null) {
             fragment = SplitItemFragment.newInstance(entity, this.currencyId);
-            fragment.setOnSplitItemCallback(this);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
             transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
             transaction.commit();
         }
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
+
+        int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
+        mParentTransactionType = TransactionTypes.values()[transactionType];
+
+        this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+
+        mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
+        mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
+    }
+
+    private void onRemoveItem(ITransactionEntity object) {
+        if (object == null) return;
+
+        if (mSplitDeleted == null) {
+            mSplitDeleted = new ArrayList<>();
+        }
+        // add item to delete
+        if (object.getId() != -1) {
+            // not new split transaction
+            mSplitDeleted.add(object);
+        }
+    }
+
+    private void setUpFloatingButton() {
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFloatingActionButtonClickListener();
+                }
+            });
+        }
+
+        setFloatingActionButtonVisible(true);
     }
 }
