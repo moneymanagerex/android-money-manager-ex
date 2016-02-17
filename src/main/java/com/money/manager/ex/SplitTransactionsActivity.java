@@ -249,8 +249,9 @@ public class SplitTransactionsActivity
         if (mSplitDeleted == null) {
             mSplitDeleted = new ArrayList<>();
         }
-        // add item to delete
-        if (object.getId() != -1) {
+
+        // Add item to delete. Only if not a new, non-saved split item.
+        if (object.getId() != null && object.getId() != -1) {
             // not new split transaction
             mSplitDeleted.add(object);
         }
