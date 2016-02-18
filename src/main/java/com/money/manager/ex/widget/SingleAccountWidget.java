@@ -46,7 +46,7 @@ import info.javaperformance.money.Money;
  * App Widget Configuration implemented in {@link SingleAccountWidgetConfigureActivity SingleAccountWidgetConfigureActivity}
  */
 public class SingleAccountWidget
-        extends AppWidgetProvider {
+    extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -99,8 +99,12 @@ public class SingleAccountWidget
 
     private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (mRemoteViews == null) {
-            int minWidth = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeWidth;
-            int minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeHeight;
+            //int minResizeWidth = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeWidth;
+            int minWidth = appWidgetManager.getAppWidgetInfo(appWidgetId).minWidth;
+
+            //int minResizeHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeHeight;
+            int minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
+
             mRemoteViews = getRemoteViews(context, minWidth, minHeight);
         }
         return mRemoteViews;
