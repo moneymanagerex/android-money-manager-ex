@@ -21,6 +21,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -357,9 +358,9 @@ public class EditRecurringTransactionActivity
         dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, mRecurringTransaction.getDueDate());
 
         mViewHolder.dueDateTextView.setOnClickListener(new View.OnClickListener() {
-            public DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     mCommonFunctions.setDirty(true);
 
                     try {
@@ -380,19 +381,16 @@ public class EditRecurringTransactionActivity
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mRecurringTransaction.getDueDate());
-                //CalendarUtils calendarUtils = new CalendarUtils(calendar);
-                DatePickerDialog dialog = DatePickerDialog.newInstance(dateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                        false);
-                dialog.setCloseOnSingleTapDay(true);
-
                 // Set first day of the week.
                 int firstDayOfWeek = Calendar.getInstance(MoneyManagerApplication.getInstanceApp().getAppLocale())
                         .getFirstDayOfWeek();
-//                dialog.setFirstDayOfWeek(Calendar.MONDAY);
-                dialog.setFirstDayOfWeek(firstDayOfWeek);
 
-                dialog.show(getSupportFragmentManager(), TAG_DATEPICKER);
+                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                        .setOnDateSetListener(listener)
+                        .setFirstDayOfWeek(firstDayOfWeek)
+                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                        .setThemeDark();
+                datePicker.show(getSupportFragmentManager(), TAG_DATEPICKER);
             }
         });
 

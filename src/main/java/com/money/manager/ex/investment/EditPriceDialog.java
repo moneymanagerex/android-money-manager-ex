@@ -29,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -127,20 +127,22 @@ public class EditPriceDialog
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime((Date) mDateTextView.getTag());
-                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-                dialog.setCloseOnSingleTapDay(true);
-                dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), dialog.getClass().getSimpleName());
+
+                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                    .setOnDateSetListener(listener)
+                    .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                    .setThemeDark();
+                datePicker.show(((FragmentActivity)mContext).getSupportFragmentManager(), datePicker.getClass().getSimpleName());
             }
 
-            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     try {
                         String enteredDate = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
                         Date date = DateUtils.getDateFromString(getContext(), enteredDate, Constants.PATTERN_DB_DATE);
                         mDateTextView.setTag(date);
-                        mDateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy",
+                        mDateTextView.setText(new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN,
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .format((Date) mDateTextView.getTag()));
 
@@ -253,7 +255,7 @@ public class EditPriceDialog
 
     public void formatExtendedDate(TextView dateTextView) {
         try {
-            dateTextView.setText(new SimpleDateFormat("EEEE dd MMMM yyyy",
+            dateTextView.setText(new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN,
                 MoneyManagerApplication.getInstanceApp().getAppLocale())
                     .format((Date) dateTextView.getTag()));
         } catch (Exception e) {

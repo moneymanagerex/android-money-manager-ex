@@ -39,7 +39,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
@@ -507,9 +507,9 @@ public class EditTransactionCommonFunctions {
         dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
 
         viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
-            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
                     try {
@@ -529,17 +529,12 @@ public class EditTransactionCommonFunctions {
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime((Date) viewHolder.txtSelectDate.getTag());
-                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-                dialog.setCloseOnSingleTapDay(true);
 
-                // Set first day of the week.
-                int firstDayOfWeek = Calendar.getInstance(MoneyManagerApplication.getInstanceApp().getAppLocale())
-                    .getFirstDayOfWeek();
-//                dialog.setFirstDayOfWeek(Calendar.MONDAY);
-                dialog.setFirstDayOfWeek(firstDayOfWeek);
-
-                dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
+                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                    .setOnDateSetListener(listener)
+                    .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                    .setThemeDark();
+                datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
     }

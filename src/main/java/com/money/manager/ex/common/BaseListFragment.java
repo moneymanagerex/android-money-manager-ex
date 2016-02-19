@@ -63,7 +63,7 @@ public abstract class BaseListFragment
         // set theme
         Core core = new Core(getActivity().getApplicationContext());
         try {
-            getActivity().setTheme(core.getThemeApplication());
+            getActivity().setTheme(core.getThemeId());
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
             handler.handle(e, "setting app theme");

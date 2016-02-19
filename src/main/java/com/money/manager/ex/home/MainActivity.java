@@ -458,7 +458,7 @@ public class MainActivity
         boolean result = true;
         Intent intent;
         final Core core = new Core(getApplicationContext());
-        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
+        final Boolean isDarkTheme = core.getThemeId() == R.style.Theme_Money_Manager_Dark;
 
         if (item.getId() == null && item.getTag() != null) {
             String key = item.getTag().toString();

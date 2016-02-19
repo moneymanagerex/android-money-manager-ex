@@ -21,15 +21,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.CalendarUtils;
-import com.money.manager.ex.utils.DateTimeUtils;
-import com.money.manager.ex.utils.DateUtils;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -126,46 +124,51 @@ public class BehaviourFragment
     }
 
     private void initializeNotificationTime() {
-        Preference preference = findPreference(getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS));
+        Preference preference = findPreference(getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_CHECK));
         if (preference == null) return;
-
-        final BehaviourSettings settings = new BehaviourSettings(getActivity());
-        final SimpleDateFormat formatter = new SimpleDateFormat(Constants.TIME_FORMAT);
 
         Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-                        String value = String.format("%02d:%02d", hourOfDay, minute);
-                        settings.setNotificationTime(value);
-                    }
-                };
-
-                // get time to display (current setting)
-                String timeString = settings.getNotificationTime();
-                CalendarUtils utils = new CalendarUtils();
-
-                Date currentValue;
-                try {
-                    currentValue = formatter.parse(timeString);
-                    utils.setTime(currentValue);
-                } catch (ParseException ex) {
-                    // use current time
-                    currentValue = null;
-                }
-
-                int hour = currentValue != null ? utils.getHour() : 8;
-                int minute = currentValue != null ? utils.getMinute() : 0;
-                boolean is24HourMode = true;
-
-                // show time picker dialog
-                TimePickerDialog dialog = TimePickerDialog.newInstance(timeSetListener, hour, minute, is24HourMode);
-                dialog.show(getChildFragmentManager(), KEY_NOTIFICATION_TIME);
+                showTimePicker();
                 return true;
             }
         };
         preference.setOnPreferenceClickListener(listener);
+    }
+
+    private void showTimePicker() {
+        final BehaviourSettings settings = new BehaviourSettings(getActivity());
+        final SimpleDateFormat formatter = new SimpleDateFormat(Constants.TIME_FORMAT);
+
+        RadialTimePickerDialogFragment.OnTimeSetListener timeSetListener = new RadialTimePickerDialogFragment.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
+                String value = String.format("%02d:%02d", hourOfDay, minute);
+                settings.setNotificationTime(value);
+            }
+        };
+
+        // get time to display (current setting)
+        String timeString = settings.getNotificationTime();
+        CalendarUtils utils = new CalendarUtils();
+
+        Date currentValue;
+        try {
+            currentValue = formatter.parse(timeString);
+            utils.setTime(currentValue);
+        } catch (ParseException ex) {
+            // use current time
+            currentValue = null;
+        }
+
+        int hour = currentValue != null ? utils.getHour() : 8;
+        int minute = currentValue != null ? utils.getMinute() : 0;
+
+        RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment()
+            .setOnTimeSetListener(timeSetListener)
+            .setStartTime(hour, minute)
+            .setThemeDark();
+        timePicker.show(getChildFragmentManager(), KEY_NOTIFICATION_TIME);
     }
 }

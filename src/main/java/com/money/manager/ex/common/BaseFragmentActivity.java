@@ -19,8 +19,6 @@ package com.money.manager.ex.common;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,20 +61,6 @@ public abstract class BaseFragmentActivity
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (isDialogMode()) {
-//            Core core = new Core(getApplicationContext());
-//
-//            if (core.isTablet() || Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                getMenuInflater().inflate(R.menu.menu_button_cancel_done, menu);
-//            } else {
-//                createActionBar();
-//            }
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // This is used to handle the <- Home arrow button in the toolbar (i.e. settings screens).
@@ -110,34 +94,6 @@ public abstract class BaseFragmentActivity
             getSupportActionBar().setElevation(0);
     }
 
-//    @Deprecated
-//    public void createActionBar() {
-//        getSupportActionBar().setDisplayOptions(
-//                ActionBar.DISPLAY_SHOW_CUSTOM,
-//                ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-//                        | ActionBar.DISPLAY_SHOW_CUSTOM);
-//
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//
-//        View actionBarButtons = inflater.inflate(R.layout.actionbar_button_cancel_done, new LinearLayout(this), false);
-//        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-//        cancelActionView.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                onActionCancelClick();
-//            }
-//        });
-//        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-//        doneActionView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onActionDoneClick();
-//            }
-//        });
-//        getSupportActionBar().setCustomView(actionBarButtons);
-//    }
-
     public void setToolbarStandardAction(Toolbar toolbar) {
         setToolbarStandardAction(toolbar, R.id.action_cancel, R.id.action_done);
     }
@@ -164,14 +120,6 @@ public abstract class BaseFragmentActivity
         }
     }
 
-//    public void forceRotateScreenActivity() {
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        }
-//    }
-
     public boolean onActionCancelClick() {
         return true;
     }
@@ -179,19 +127,6 @@ public abstract class BaseFragmentActivity
     public boolean onActionDoneClick() {
         return true;
     }
-
-//    public boolean isDialogMode() {
-//        return mDialogMode;
-//    }
-
-//    @Deprecated
-//    public void setDialogMode(boolean mDialogMode) {
-//        this.mDialogMode = mDialogMode;
-//    }
-
-//    public boolean isDisplayHomeAsUpEnabled() {
-//        return mDisplayHomeAsUpEnabled;
-//    }
 
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
@@ -205,7 +140,7 @@ public abstract class BaseFragmentActivity
     protected void setTheme() {
         try {
             Core core = new Core(this);
-            this.setTheme(core.getThemeApplication());
+            this.setTheme(core.getThemeId());
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this, this);
             handler.handle(e, "setting theme");

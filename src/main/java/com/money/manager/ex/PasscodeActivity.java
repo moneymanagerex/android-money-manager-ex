@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -29,7 +28,6 @@ import android.widget.TextView;
 
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 
 public class PasscodeActivity
@@ -47,7 +45,7 @@ public class PasscodeActivity
 		// set theme
 		Core core = new Core(getApplicationContext());
 		try {
-			setTheme(core.getThemeApplication());
+			setTheme(core.getThemeId());
 		} catch (Exception e) {
 			//Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
             ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);

@@ -107,21 +107,13 @@ public class Core {
      * Shown alert dialog
      *
      * @param text to display
-     * @return alert dialog
      */
     public static void alertDialog(Context context, String text) {
-//        Core core = new Core(context);
-//        int icon = core.usingDarkTheme()
-//            ? R.drawable.ic_action_warning_dark
-//            : R.drawable.ic_action_warning_light;
-
         new AlertDialogWrapper.Builder(context)
             // setting alert dialog
             .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
-//            .setIcon(icon)
             .setTitle(R.string.attention)
             .setMessage(text)
-//            .setNeutralButton()
             .setPositiveButton(android.R.string.ok, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -281,13 +273,14 @@ public class Core {
      *
      * @return application theme id
      */
-    public int getThemeApplication() {
+    public int getThemeId() {
         try {
             String darkTheme = Constants.THEME_DARK;
             String lightTheme = Constants.THEME_LIGHT;
 
+            String key = mContext.getString(PreferenceConstants.PREF_THEME);
             String currentTheme = PreferenceManager.getDefaultSharedPreferences(mContext)
-                    .getString(mContext.getString(PreferenceConstants.PREF_THEME), lightTheme);
+                    .getString(key, lightTheme);
 
             if (currentTheme.endsWith(darkTheme)) {
                 // Dark theme
@@ -297,7 +290,9 @@ public class Core {
                 return R.style.Theme_Money_Manager_Light;
             }
         } catch (Exception e) {
-            Log.e("", e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "getting theme setting");
+
             return R.style.Theme_Money_Manager_Light;
         }
     }
@@ -390,8 +385,6 @@ public class Core {
     /**
      * Returns category and sub-category formatted
      *
-     * @param categoryId
-     * @param subCategoryId
      * @return category : sub-category
      */
     public String getCategSubName(int categoryId, int subCategoryId) {
@@ -440,7 +433,7 @@ public class Core {
     }
 
     /**
-     * Return arrays of month formatted and localizated
+     * Return arrays of month formatted and localized
      *
      * @return arrays of months
      */
@@ -619,7 +612,7 @@ public class Core {
     }
 
     public boolean usingDarkTheme(){
-        int currentTheme = this.getThemeApplication();
+        int currentTheme = this.getThemeId();
         return currentTheme == R.style.Theme_Money_Manager_Dark;
     }
 

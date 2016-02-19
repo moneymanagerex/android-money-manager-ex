@@ -29,6 +29,7 @@ public class Constants {
     public static final String ISO_DATE_FORMAT = "YYYY-MM-DD";
     public static final String MOBILE_DATA_PATTERN = "%%mobiledata%%";
     public static final String LONG_DATE_PATTERN = "EEEE, dd MMMM yyyy";
+    public static final String LONG_DATE_MEDIUM_DAY_PATTERN = "EEE, dd MMMM yyyy";
 
     // Intent: Request
     public static final String INTENT_REQUEST_PREFERENCES_SCREEN = "SettingsActivity:PreferenceScreen";

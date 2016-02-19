@@ -23,7 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -156,9 +156,9 @@ public class EditInvestmentTransactionActivity
         final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
         dateUtils.formatExtendedDate(dateView, mStock.getPurchaseDate());
         dateView.setOnClickListener(new View.OnClickListener() {
-            public DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
                     try {
@@ -178,11 +178,12 @@ public class EditInvestmentTransactionActivity
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mStock.getPurchaseDate());
-                DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                        false);
-                dialog.setCloseOnSingleTapDay(true);
-                dialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
+
+                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                    .setOnDateSetListener(listener)
+                    .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                    .setThemeDark();
+                datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
 

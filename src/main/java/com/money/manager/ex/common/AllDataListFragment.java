@@ -861,7 +861,7 @@ public class AllDataListFragment
     private void changeTransactionStatus(final ArrayList<Integer> transIds){
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
         final Core core = new Core(getActivity().getApplicationContext());
-        final Boolean isDarkTheme = core.getThemeApplication() == R.style.Theme_Money_Manager_Dark;
+        final Boolean isDarkTheme = core.getThemeId() == R.style.Theme_Money_Manager_Dark;
         // add status
         adapter.add(new DrawerMenuItem().withId(R.id.menu_none)
                 .withText(getString(R.string.status_none))

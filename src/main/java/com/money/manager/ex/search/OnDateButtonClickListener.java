@@ -22,25 +22,21 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.money.manager.ex.Constants;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.DateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import hirondelle.date4j.DateTime;
 
 /**
  * Click listener
- * Created by Alen on 12/07/2015.
  */
 public class OnDateButtonClickListener
-        implements View.OnClickListener {
+    implements View.OnClickListener {
 
     public OnDateButtonClickListener(FragmentActivity parent, TextView txtFromDate) {
         super();
@@ -56,38 +52,34 @@ public class OnDateButtonClickListener
 
     @Override
     public void onClick(View v) {
-        Calendar date = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         if (!TextUtils.isEmpty(mTextView.getText())) {
-            date.setTime(DateUtils.getDateFromUserString(mParent.getApplicationContext(), mTextView.getText().toString()));
+            calendar.setTime(DateUtils.getDateFromUserString(mParent.getApplicationContext(), mTextView.getText().toString()));
         }
-        DatePickerDialog dialog = DatePickerDialog.newInstance(mDateSetListener,
-                date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-        dialog.setCloseOnSingleTapDay(true);
-        dialog.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
+
+        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                .setOnDateSetListener(mDateSetListener)
+                .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                .setThemeDark();
+        datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
     }
 
-    private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-
+    private CalendarDatePickerDialogFragment.OnDateSetListener mDateSetListener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
         @Override
-        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
             try {
                 String dateString = FormatUtilities.getIsoDateFrom(year, monthOfYear + 1, dayOfMonth);
 
                 // Save the actual value as tag.
                 mTextView.setTag(dateString);
 
-//                Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
-//                    .parse(dateString);
-                // display the selected value in user-formatted pattern
-//                mTextView.setText(DateUtils.getUserStringFromDate(mParent.getApplicationContext(), date));
-
                 DateTime date = new DateTime(dateString);
-                mTextView.setText(DateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date));
+                String displayText = DateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
+                mTextView.setText(displayText);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, this);
                 handler.handle(e, "date selected in search");
             }
-
         }
     };
 }

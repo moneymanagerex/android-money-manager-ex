@@ -176,10 +176,7 @@ dependencies {
             // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             'me.relex:circleindicator:1.1.7@aar',
             'com.shamanland:fonticon:0.1.8',
-            // Ref: https://developer.android.com/tools/building/multidex.html
-            //'com.android.support:multidex:1.0.1',
-            // solution for #391
-            'com.github.flavienlaurent.datetimepicker:library:0.0.2',
+            'com.code-troopers.betterpickers:library:2.5.1',
             'com.github.PhilJay:MPAndroidChart:v2.1.5',
             // google play services
             'com.google.android.gms:play-services-analytics:8.1.0',
@@ -191,7 +188,6 @@ dependencies {
             'com.google.code.gson:gson:2.5',
             'com.squareup.retrofit:retrofit:2.0.0-beta3',
             'com.squareup.retrofit:converter-gson:2.0.0-beta2',
-//        'com.innahema:collections-query:0.2.9'
             // encryption
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
             'de.greenrobot:eventbus:2.4.0',
