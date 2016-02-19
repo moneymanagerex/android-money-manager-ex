@@ -40,6 +40,8 @@ import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,6 +49,9 @@ import java.util.Date;
 import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
 
+/**
+ * Edit investment transaction (stock purchase).
+ */
 public class EditInvestmentTransactionActivity
     extends BaseFragmentActivity {
 
@@ -326,9 +331,9 @@ public class EditInvestmentTransactionActivity
     }
 
     private boolean save() {
-        boolean result;
+        if (!validate()) return false;
 
-        // validate ?
+        boolean result;
 
         // add missing fields (text) and sanitize text values.
 
@@ -346,16 +351,28 @@ public class EditInvestmentTransactionActivity
         mStock.setNotes(notesText.getText().toString());
 
         // save
-//        ContentValues values = mStock.contentValues;
         StockRepository repository = new StockRepository(getApplicationContext());
         if (mStock.getId() != null) {
             repository.update(mStock.getId(), mStock);
         } else {
-            boolean success = repository.insert(mStock);
-//            Log.d("insert", Integer.toString(id));
+            repository.insert(mStock);
         }
         result = true;
 
         return result;
+    }
+
+    private boolean validate() {
+        ExceptionHandler handler = new ExceptionHandler(this);
+
+        // symbol must not be empty.
+        if (StringUtils.isEmpty(mStock.getSymbol())) {
+            handler.showMessage(getString(R.string.symbol_required));
+            return false;
+        }
+
+        // number of shares, price?
+
+        return true;
     }
 }
