@@ -80,9 +80,11 @@ public class PreferenceConstants {
     public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
     public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
     public static final String PREF_DROPBOX_OAUTH2_TOKEN = "PREF_DROPBOX_OAUTH2_TOKEN";
+
     // check repeating transacion
-    public static final Integer PREF_REPEATING_TRANSACTION_CHECK = R.string.pref_repeating_transaction_check_time;
     public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;
+    public static final Integer PREF_REPEATING_TRANSACTION_CHECK = R.string.pref_repeating_transaction_check_time;
+
     // Wiki dropbox
     public static final Integer PREF_DROPBOX_WIKI = R.string.pref_dropbox_wiki;
 

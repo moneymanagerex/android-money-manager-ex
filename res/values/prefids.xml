@@ -65,7 +65,6 @@
     <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
     <string name="pref_application_font">prefapplicationfont</string>
     <string name="pref_application_font_size">prefapplicationfontsize</string>
-    <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
     <string name="pref_dropbox_wiki">prefdropboxwiki</string>
     <string name="pref_default_status">prefdefaultstatus</string>
     <string name="pref_default_payee">prefdefaultpayee</string>
@@ -83,8 +82,8 @@
     <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
     <string name="pref_show_introduction">prefshowintroduction</string>
     <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
-    <string name="pref_recurring_notification_time">pref_recurring_notification_time</string>
     <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
     <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
+    <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
 </resources>

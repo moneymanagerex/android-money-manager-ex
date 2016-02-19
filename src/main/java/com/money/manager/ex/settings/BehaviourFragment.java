@@ -126,7 +126,7 @@ public class BehaviourFragment
     }
 
     private void initializeNotificationTime() {
-        Preference preference = findPreference(getString(R.string.pref_repeating_transaction_check_time));
+        Preference preference = findPreference(getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS));
         if (preference == null) return;
 
         final BehaviourSettings settings = new BehaviourSettings(getActivity());

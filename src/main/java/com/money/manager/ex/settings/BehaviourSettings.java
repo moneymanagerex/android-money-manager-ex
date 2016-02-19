@@ -63,17 +63,17 @@ public class BehaviourSettings
 
     public boolean getNotificationRecurringTransaction() {
         SharedPreferences preferences = getSharedPreferences();
-        String key = getContext().getString(R.string.pref_repeating_transaction_notifications);
+        String key = getContext().getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS);
         boolean notify = preferences.getBoolean(key, true);
         return notify;
     }
 
     public String getNotificationTime() {
-        return get(R.string.pref_recurring_notification_time, "08:00");
+        return get(PreferenceConstants.PREF_REPEATING_TRANSACTION_CHECK, "08:00");
     }
 
     public void setNotificationTime(String timeString) {
-        set(R.string.pref_recurring_notification_time, timeString);
+        set(PreferenceConstants.PREF_REPEATING_TRANSACTION_CHECK, timeString);
     }
 
     public boolean getFilterInSelectors() {
