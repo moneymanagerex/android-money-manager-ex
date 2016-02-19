@@ -119,21 +119,18 @@ public class SingleAccountWidget
 
     private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (mRemoteViews == null) {
-            AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
-
             int width, height;
 
-            /**
-             * The division on version here is arbitrary. The difference can be in another
-             * version, or it may even differ based on the launcher.
-              */
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                width = info.minResizeWidth;
-                height = info.minResizeHeight;
-            } else {
-                width = info.minWidth;
-                height = info.minHeight;
-            }
+            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+
+            width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+
+            //AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
+//                width = info.minResizeWidth;
+//                height = info.minResizeHeight;
+//                width = info.minWidth;
+//                height = info.minHeight;
 
             mRemoteViews = getRemoteViews(context, width, height);
         }
