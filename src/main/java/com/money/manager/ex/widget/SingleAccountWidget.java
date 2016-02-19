@@ -20,8 +20,10 @@ package com.money.manager.ex.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -47,6 +49,24 @@ import info.javaperformance.money.Money;
  */
 public class SingleAccountWidget
     extends AppWidgetProvider {
+
+    // Static
+
+    /**
+     * Returns number of cells needed for given size of the widget.
+     *
+     * @param size Widget size in dp.
+     * @return Size in number of cells.
+     */
+    private static int getCellsForSize(int size) {
+        int n = 2;
+        while (70 * n - 30 < size) {
+            ++n;
+        }
+        return n - 1;
+    }
+
+    // Dynamic
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -82,9 +102,9 @@ public class SingleAccountWidget
                                       int appWidgetId, Bundle newOptions) {
         // Here you can update your widget view
         int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+//        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
         int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+//        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
         Log.d(this.getClass().getSimpleName(), "resized");
 
         // Obtain appropriate widget and update it.
@@ -99,13 +119,23 @@ public class SingleAccountWidget
 
     private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (mRemoteViews == null) {
-            //int minResizeWidth = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeWidth;
-            int minWidth = appWidgetManager.getAppWidgetInfo(appWidgetId).minWidth;
+            AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
 
-            //int minResizeHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minResizeHeight;
-            int minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
+            int width, height;
 
-            mRemoteViews = getRemoteViews(context, minWidth, minHeight);
+            /**
+             * The division on version here is arbitrary. The difference can be in another
+             * version, or it may even differ based on the launcher.
+              */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                width = info.minResizeWidth;
+                height = info.minResizeHeight;
+            } else {
+                width = info.minWidth;
+                height = info.minHeight;
+            }
+
+            mRemoteViews = getRemoteViews(context, width, height);
         }
         return mRemoteViews;
 
@@ -114,14 +144,14 @@ public class SingleAccountWidget
     /**
      * Determine appropriate view based on width provided.
      *
-     * @param minWidth current width
-     * @param minHeight current height
+     * @param width current width
+     * @param height current height
      * @return Remote views for the current widget.
      */
-    private RemoteViews getRemoteViews(Context context, int minWidth, int minHeight) {
+    private RemoteViews getRemoteViews(Context context, int width, int height) {
         // First find out rows and columns based on width provided.
-        int rows = getCellsForSize(minHeight);
-        int columns = getCellsForSize(minWidth);
+        //int rows = getCellsForSize(minHeight);
+        int columns = getCellsForSize(width);
 
         if (columns <= 2) {
             // Get 1 column widget remote view and return
@@ -131,20 +161,6 @@ public class SingleAccountWidget
             mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
         }
         return mRemoteViews;
-    }
-
-    /**
-     * Returns number of cells needed for given size of the widget.
-     *
-     * @param size Widget size in dp.
-     * @return Size in number of cells.
-     */
-    private static int getCellsForSize(int size) {
-        int n = 2;
-        while (70 * n - 30 < size) {
-            ++n;
-        }
-        return n - 1;
     }
 
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
@@ -244,6 +260,5 @@ public class SingleAccountWidget
 
         views.setOnClickPendingIntent(R.id.refreshDataPanel, pendingIntent);
     }
-
 }
 
