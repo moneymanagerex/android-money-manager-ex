@@ -70,7 +70,6 @@
     <string name="pref_default_status">prefdefaultstatus</string>
     <string name="pref_default_payee">prefdefaultpayee</string>
     <string name="pref_locale">preflocale</string>
-    <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
     <string name="pref_general">prefgeneral</string>
     <string name="pref_look_feel">preflookfeel</string>
     <string name="pref_security">prefsecurity</string>
@@ -83,6 +82,8 @@
     <string name="pref_behaviour">prefbehaviour</string>
     <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
     <string name="pref_show_introduction">prefshowintroduction</string>
+    <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
+    <string name="pref_recurring_notification_time">pref_recurring_notification_time</string>
     <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
     <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>

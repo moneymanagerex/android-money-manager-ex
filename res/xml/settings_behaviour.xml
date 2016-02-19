@@ -24,7 +24,7 @@
         android:summary="@string/summary_notifications_repeating_transaction"
         android:title="@string/title_notifications_repeating_transaction" />
 
-    <com.money.manager.ex.settings.TimePreference
+    <Preference
         android:icon="@null"
         android:defaultValue="08:00"
         android:dependency="@string/pref_repeating_transaction_notifications"

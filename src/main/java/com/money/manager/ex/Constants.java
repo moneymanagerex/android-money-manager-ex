@@ -20,8 +20,10 @@ public class Constants {
     // Java
     public static final String EMPTY_STRING = "";
     public static final int NOT_SET = -1;
+
     // The number of decimals used for parsing numbers in Money type.
     public static final int DEFAULT_PRECISION = 4;
+
     // Database
     public static final String PATTERN_DB_DATE = "yyyy-MM-dd";
     public static final String ISO_DATE_FORMAT = "YYYY-MM-DD";
@@ -36,4 +38,5 @@ public class Constants {
     public static final String THEME_DARK = "Material Dark";
 
     public static final String EMAIL = "android.money.manager.ex@gmail.com";
+    public static final String TIME_FORMAT = "HH:mm";
 }

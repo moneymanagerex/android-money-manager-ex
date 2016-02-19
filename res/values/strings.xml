@@ -386,7 +386,7 @@
     <string name="menu_report_where_money_goes">Where the Money Goes</string>
     <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
     <!-- 20130728 -->
-    <string name="title_check_repeating_transaction">Check time</string>
+    <string name="title_check_repeating_transaction">Notification time</string>
     <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>
     <!-- 20130730 -->
     <string name="credits">Credits</string>

@@ -68,6 +68,14 @@ public class BehaviourSettings
         return notify;
     }
 
+    public String getNotificationTime() {
+        return get(R.string.pref_recurring_notification_time, "08:00");
+    }
+
+    public void setNotificationTime(String timeString) {
+        set(R.string.pref_recurring_notification_time, timeString);
+    }
+
     public boolean getFilterInSelectors() {
         boolean result = getSharedPreferences().getBoolean(
                 getContext().getString(R.string.pref_behaviour_focus_filter), true);

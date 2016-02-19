@@ -58,6 +58,14 @@ public class CalendarUtils {
         return mCalendar.getTime();
     }
 
+    public int getHour() {
+        return mCalendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getMinute() {
+        return mCalendar.get(Calendar.MINUTE);
+    }
+
     public CalendarUtils setCalendar(Calendar calendar) {
         mCalendar = calendar;
         return this;
@@ -123,4 +131,8 @@ public class CalendarUtils {
         return this;
     }
 
+    public CalendarUtils setTime(Date date) {
+        mCalendar.setTime(date);
+        return this;
+    }
 }
