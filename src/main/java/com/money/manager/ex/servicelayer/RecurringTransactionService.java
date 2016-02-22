@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
@@ -162,10 +163,16 @@ public class RecurringTransactionService
     public void moveNextOccurrence() {
         load();
 
+        Integer recurrenceType = mRecurringTransaction.getRepeats();
+        if (recurrenceType == null) {
+            String message = getContext().getString(R.string.recurrence_type_not_set);
+            throw new IllegalArgumentException(message);
+        }
+
         /**
          * The action will depend on the transaction settings.
          */
-        Recurrence recurrence = Recurrence.valueOf(mRecurringTransaction.getRepeats());
+        Recurrence recurrence = Recurrence.valueOf(recurrenceType);
 
         switch (recurrence) {
             // periodical (monthly, weekly)
@@ -185,7 +192,7 @@ public class RecurringTransactionService
             case MONTHLY_LAST_DAY:
             case MONTHLY_LAST_BUSINESS_DAY:
                 moveDatesForward();
-                // Delete if occurence is down to 1. 0 means repeat forever.
+                // Delete if occurrence is down to 1. 0 means repeat forever.
                 deleteIfLastPayment();
                 decreasePaymentsLeft();
                 break;
