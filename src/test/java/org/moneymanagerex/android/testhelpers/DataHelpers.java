@@ -53,8 +53,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Database manipulation. Used for test preparation.
- *
- * Created by Alen Siljak on 29/09/2015.
  */
 public class DataHelpers {
     public static void insertData() {

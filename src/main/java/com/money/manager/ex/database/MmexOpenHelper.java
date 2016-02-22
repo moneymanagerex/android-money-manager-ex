@@ -41,6 +41,16 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.utils.RawFileUtils;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Currency;
 
 /**
@@ -140,8 +150,21 @@ public class MmexOpenHelper
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upgrading from " + Integer.toString(oldVersion) +
-                " to " + Integer.toString(newVersion));
+        if (BuildConfig.DEBUG) {
+            Log.d(LOGCAT, "Upgrading from " + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
+        }
+
+        try {
+            String currentDbFile = db.getPath();
+            createDatabaseBackupOnUpgrade(currentDbFile, oldVersion);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(ex, "creating database backup, can't continue");
+
+            // don't upgrade
+            return;
+        }
+
         // update databases
         updateDatabase(db, oldVersion, newVersion);
     }
@@ -450,5 +473,22 @@ public class MmexOpenHelper
         }
 
         super.finalize();
+    }
+
+    public void createDatabaseBackupOnUpgrade(String currentDbFile, int oldVersion) throws IOException {
+        File in = new File(currentDbFile);
+        String backupFileNameWithExtension = in.getName();
+        String backupName = FilenameUtils.getBaseName(backupFileNameWithExtension);
+        String backupExtension = FilenameUtils.getExtension(backupFileNameWithExtension);
+
+        // append last db version
+        backupName += "_v" + Integer.toString(oldVersion);
+
+        backupFileNameWithExtension = backupName + "." + backupExtension;
+
+        String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
+        File out = new File(outPath);
+
+        FileUtils.copyFile(in, out);
     }
 }

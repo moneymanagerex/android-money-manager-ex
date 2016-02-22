@@ -38,8 +38,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Test the methods in MoneyManagerApplication.
- *
- * Created by Alen Siljak on 22/09/2015.
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
