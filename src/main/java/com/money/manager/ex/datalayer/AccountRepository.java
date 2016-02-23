@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
@@ -121,6 +122,11 @@ public class AccountRepository
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
             new String[] { Integer.toString(id)});
+
+        if (account == null) {
+            String message = this.getContext().getString(R.string.account_not_found) + " " + id;
+            throw new IllegalArgumentException(message);
+        }
         return account.getCurrencyId();
     }
 
