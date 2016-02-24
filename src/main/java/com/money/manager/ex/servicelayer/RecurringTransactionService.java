@@ -328,14 +328,27 @@ public class RecurringTransactionService
     // Private.
 
     private void decreasePaymentsLeft() {
-        int paymentsLeft = mRecurringTransaction.getOccurrences();
-        paymentsLeft = paymentsLeft - 1;
+        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+        if (paymentsLeft == null) {
+            mRecurringTransaction.setOccurrences(0);
+            return;
+        }
+
+        if (paymentsLeft > 1) {
+            paymentsLeft = paymentsLeft - 1;
+        }
 
         mRecurringTransaction.setOccurrences(paymentsLeft);
     }
 
     private void deleteIfLastPayment() {
-        if (mRecurringTransaction.getOccurrences() != null && mRecurringTransaction.getOccurrences() == 1) {
+        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+        if (paymentsLeft == null) {
+            mRecurringTransaction.setOccurrences(0);
+            return;
+        }
+
+        if (paymentsLeft == 1) {
             delete();
         }
     }
