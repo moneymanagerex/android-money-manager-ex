@@ -43,14 +43,10 @@ import com.money.manager.ex.utils.RawFileUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Currency;
 
 /**
@@ -476,7 +472,7 @@ public class MmexOpenHelper
     }
 
     public void createDatabaseBackupOnUpgrade(String currentDbFile, int oldVersion) throws IOException {
-        File in = new File(currentDbFile);
+//        File in = new File(currentDbFile);
         String backupFileNameWithExtension = in.getName();
         String backupName = FilenameUtils.getBaseName(backupFileNameWithExtension);
         String backupExtension = FilenameUtils.getExtension(backupFileNameWithExtension);
@@ -487,8 +483,9 @@ public class MmexOpenHelper
         backupFileNameWithExtension = backupName + "." + backupExtension;
 
         String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
-        File out = new File(outPath);
+//        File out = new File(outPath);
 
-        FileUtils.copyFile(in, out);
+        RawFileUtils.copyFile(currentDbFile, outPath);
+//        FileUtils.copyFile(in, out);
     }
 }
