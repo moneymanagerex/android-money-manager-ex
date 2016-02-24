@@ -473,7 +473,9 @@ public class MmexOpenHelper
 
     public void createDatabaseBackupOnUpgrade(String currentDbFile, int oldVersion) throws IOException {
 //        File in = new File(currentDbFile);
-        String backupFileNameWithExtension = in.getName();
+
+//        String backupFileNameWithExtension = in.getName();
+        String backupFileNameWithExtension = currentDbFile;
         String backupName = FilenameUtils.getBaseName(backupFileNameWithExtension);
         String backupExtension = FilenameUtils.getExtension(backupFileNameWithExtension);
 
