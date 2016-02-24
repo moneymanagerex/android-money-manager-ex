@@ -63,10 +63,10 @@ public class AssetAllocationOverviewActivity
         String html = "<html>";
         // Styles
         html += "<head>" +
-                "<style>" +
-                "body { background: lightgray; padding: 0; } " +
-                "ul li { border-bottom: 1px solid black;  } " +
-                "</style>" +
+                "   <style>" +
+                "       body { background: lightgray; padding: 0; } " +
+                "       ul li { border-bottom: 1px solid black;  } " +
+                "   </style>" +
                 "</head>";
         html += "<body>";
 
@@ -93,6 +93,64 @@ public class AssetAllocationOverviewActivity
         }
 
 //        webView.loadData(html, "text/html", "UTF-8");
+    }
+
+    private String getAssetRow(AssetClass allocation) {
+        String color = "black";
+        double diffPercent = allocation.getDiffAsPercentOfSet().toDouble();
+        if (diffPercent >= this.differenceThreshold.toDouble()) {
+            color = "green";
+        }
+        if (diffPercent <= this.differenceThreshold.multiply(-1).toDouble()) {
+            color = "darkred";
+        }
+
+        // style='list-style-position: inside;'
+        String html = "<li>";
+
+        // Name
+        html += allocation.getName();
+
+        html += " &#183; ";
+
+        // diff %
+        html += String.format("<span style='color: %s;'>", color);
+        html += allocation.getDiffAsPercentOfSet();
+        html += "%</span>";
+
+        html += " &#183; ";
+
+        // difference amount
+//        color = allocation.getDifference().truncate(2).toDouble() >= this.differenceThreshold.toDouble()
+//                ? "green" : "darkred";
+        html += String.format("<span style='color: %s;'>", color);
+        html += String.format(VALUE_FORMAT, allocation.getDifference().toDouble());
+        html += "</span>";
+
+        html += "<br/>";
+
+        // Allocation
+        html += String.format(VALUE_FORMAT, allocation.getAllocation().toDouble()) + "/";
+//        color = allocation.getDifference().toDouble() > this.differenceThreshold.toDouble()
+//                ? "green" : "darkred";
+
+        // current allocation
+        html += String.format("<span style='color: %s; font-weight: bold;'>", color);
+        html += String.format(VALUE_FORMAT, allocation.getCurrentAllocation().toDouble()) +
+            "</span>";
+
+        html += " &#183; ";
+
+        // Value
+        html += String.format(VALUE_FORMAT + "/" + VALUE_FORMAT,
+            allocation.getValue().toDouble(), allocation.getCurrentValue().toDouble());
+
+        // Child asset classes
+        html += getList(allocation.getChildren());
+
+        html += "</li>";
+
+        return html;
     }
 
     /**
@@ -125,64 +183,6 @@ public class AssetAllocationOverviewActivity
 //            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble()) +
             formatter.getValueFormatted(allocation.getCurrentValue(), currencyService.getBaseCurrencyId()) +
             "</p>";
-        return html;
-    }
-
-    private String getAssetRow(AssetClass allocation) {
-        String color = "black";
-        double diffPercent = allocation.getDiffAsPercentOfSet().toDouble();
-        if (diffPercent >= this.differenceThreshold.toDouble()) {
-            color = "green";
-        }
-        if (diffPercent <= this.differenceThreshold.multiply(-1).toDouble()) {
-            color = "darkred";
-        }
-
-        // style='list-style-position: inside;'
-        String html = "<li>";
-
-        // Name
-        html += allocation.getName();
-
-        html += " &#183; ";
-
-        // diff %
-        html += "<span style='color: " + color + ";'>";
-        html += allocation.getDiffAsPercentOfSet();
-        html += "%</span>";
-
-        html += " &#183; ";
-
-        // difference amount
-//        color = allocation.getDifference().truncate(2).toDouble() >= this.differenceThreshold.toDouble()
-//                ? "green" : "darkred";
-        html += "<span style='color: " + color + ";'>";
-        html += String.format(VALUE_FORMAT, allocation.getDifference().toDouble());
-        html += "</span>";
-
-        html += "<br/>";
-
-        // Allocation
-        html += String.format(VALUE_FORMAT, allocation.getAllocation().toDouble()) + "/";
-//        color = allocation.getDifference().toDouble() > this.differenceThreshold.toDouble()
-//                ? "green" : "darkred";
-
-        // current allocation
-        html += "<span style='color: " + color + "; font-weight: bold;'>";
-        html += String.format(VALUE_FORMAT, allocation.getCurrentAllocation().toDouble()) +
-                "</span>";
-
-        html += " &#183; ";
-
-        // Value
-        html += String.format(VALUE_FORMAT, allocation.getValue().toDouble()) + "/" +
-            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble());
-
-        // Child asset classes
-        html += getList(allocation.getChildren());
-
-        html += "</li>";
-
         return html;
     }
 }
