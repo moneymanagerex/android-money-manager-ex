@@ -47,23 +47,34 @@ public enum Recurrence {
     }
 
     private int mValue;
-    private static Map<Integer, Recurrence> mMap = new HashMap<Integer, Recurrence>();
 
-    static {
-        for (Recurrence item : Recurrence.values()) {
-            mMap.put(item.getValue(), item);
-        }
-    }
+//    private static Map<Integer, Recurrence> mMap = new HashMap<>();
+
+//    static {
+//        for (Recurrence item : Recurrence.values()) {
+//            mMap.put(item.getValue(), item);
+//        }
+//    }
+
+//    public static Recurrence valueOf(int value) {
+//        return mMap.get(value);
+//    }
 
     public static Recurrence valueOf(int value) {
-        return mMap.get(value);
+        for (Recurrence item : Recurrence.values()) {
+            if (item.getValue() == value) {
+                return item;
+            }
+        }
+        return null; 
     }
 
     public int getValue() {
         return mValue;
     }
 
-    public Recurrence get(int value) {
-        return mMap.get(value);
-    }
+//    public Recurrence get(int value) {
+//        return mMap.get(value);
+//    }
+
 }

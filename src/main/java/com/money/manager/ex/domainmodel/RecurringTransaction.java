@@ -160,6 +160,10 @@ public class RecurringTransaction
         return getInt(ITransactionEntity.PAYEEID);
     }
 
+    /**
+     * The recurrence type
+     * @return the recurrence type
+     */
     public Integer getRepeats() {
         return getInt(REPEATS);
     }

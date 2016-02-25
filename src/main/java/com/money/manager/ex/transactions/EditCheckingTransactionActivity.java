@@ -412,7 +412,6 @@ public class EditCheckingTransactionActivity
             } else {
                 if (intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1) > -1) {
                     mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1);
-//                    mNextOccurrence = intent.getStringExtra(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
                     loadRecurringTransaction(mRecurringTransactionId);
                 }
             }
