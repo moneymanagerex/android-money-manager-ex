@@ -103,7 +103,6 @@ public class EditRecurringTransactionActivity
 
     // Model
     private RecurringTransaction mRecurringTransaction;
-//    private int mBillDepositsId = Constants.NOT_SET;
     private int mFrequencies = 0;
 
     // Form controls
@@ -129,13 +128,13 @@ public class EditRecurringTransactionActivity
         // manage intent
         if (getIntent() != null) {
             if (savedInstanceState == null) {
-                mRecurringTransaction.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
-//                mCommonFunctions.accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
-
-                if (getIntent().getAction() != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                String action = getIntent().getAction();
+                if (action != null && action.equals(Intent.ACTION_EDIT)) {
                     int id = getIntent().getIntExtra(KEY_BILL_DEPOSITS_ID, Constants.NOT_SET);
                     // select data transaction
                     loadRecurringTransaction(id);
+                } else {
+                    mRecurringTransaction.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
                 }
             }
             mIntentAction = getIntent().getAction();

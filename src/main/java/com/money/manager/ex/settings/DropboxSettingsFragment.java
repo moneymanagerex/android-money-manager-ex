@@ -50,7 +50,7 @@ import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 import java.io.File;
 
@@ -299,7 +299,7 @@ public class DropboxSettingsFragment
         textTips.setVisibility(View.GONE);
         // set webView
         final WebView webTips = (WebView) view.findViewById(R.id.webViewTips);
-        webTips.loadData(RawFileUtils.getRawAsString(getActivity().getApplicationContext(), rawResources), "text/html", "UTF-8");
+        webTips.loadData(MmexFileUtils.getRawAsString(getActivity().getApplicationContext(), rawResources), "text/html", "UTF-8");
         webTips.setVisibility(View.VISIBLE);
 
         final CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);

@@ -24,7 +24,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 public class HelpActivity
         extends BaseFragmentActivity {
@@ -53,7 +53,7 @@ public class HelpActivity
 
                 WebSettings settings = mWebView.getSettings();
                 settings.setDefaultTextEncodingName("utf-8");
-                mWebView.loadData(RawFileUtils.getRawAsString(getApplicationContext(), rawId),
+                mWebView.loadData(MmexFileUtils.getRawAsString(getApplicationContext(), rawId),
                         "text/html; charset=utf-8", null);
             } else {
                 mWebView.loadUrl(getIntent().getData().toString());

@@ -339,9 +339,8 @@ public class EditTransactionCommonFunctions {
      */
     public void initAccountSelectors() {
         AppSettings settings = new AppSettings(mContext);
-//        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
 
-        // account list to populate the dropdowns.
+        // account list to populate the drop-downs.
         AccountService accountService = new AccountService(mContext);
         this.AccountList = accountService.getTransactionAccounts(
                 settings.getLookAndFeelSettings().getViewOpenAccounts(),
@@ -353,13 +352,14 @@ public class EditTransactionCommonFunctions {
             mAccountIdList.add(account.getId());
         }
 
-        AccountRepository accountRepository = new AccountRepository(mContext);
-        addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountId());
+        AccountRepository accountRepository = new AccountRepository(getContext());
+        Integer accountId = transactionEntity.getAccountId();
+        addMissingAccountToSelectors(accountRepository, accountId);
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
-        if ((transactionEntity.getAccountId() == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
+        if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
             int defaultAccount = Integer.parseInt(defaultAccountString);
             addMissingAccountToSelectors(accountRepository, defaultAccount);
             // Set the default account as the active account.
@@ -373,7 +373,7 @@ public class EditTransactionCommonFunctions {
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinAccount.setAdapter(accountAdapter);
         // select current value
-        int accountIndex = mAccountIdList.indexOf(transactionEntity.getAccountId());
+        int accountIndex = mAccountIdList.indexOf(accountId);
         if (accountIndex >= 0) {
             viewHolder.spinAccount.setSelection(accountIndex, true);
         }

@@ -21,7 +21,7 @@ import android.content.Context;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 /**
  * Entity for displaying budget details list.
@@ -31,7 +31,7 @@ public class BudgetQuery
         extends Dataset {
 
     public BudgetQuery(Context context) {
-        super(RawFileUtils.getRawAsString(context, R.raw.query_budgets), DatasetType.QUERY,
+        super(MmexFileUtils.getRawAsString(context, R.raw.query_budgets), DatasetType.QUERY,
                 BudgetQuery.class.getSimpleName());
 
         this.mContext = context;

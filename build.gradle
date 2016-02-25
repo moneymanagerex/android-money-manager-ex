@@ -167,6 +167,7 @@ dependencies {
             'com.opencsv:opencsv:3.5',
             'net.objecthunter:exp4j:0.4.5',
 //            'com.github.gabrielemariotti.changeloglib:changelog:2.0.0',
+            'commons-io:commons-io:2.4',
             'org.apache.commons:commons-lang3:3.4',
             'com.afollestad.material-dialogs:core:0.8.5.3@aar',
             'com.melnykov:floatingactionbutton:1.3.0',

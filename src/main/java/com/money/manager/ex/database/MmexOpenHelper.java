@@ -39,11 +39,10 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -240,7 +239,7 @@ public class MmexOpenHelper
      * @param rawId id raw resource
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
-        String sqlRaw = RawFileUtils.getRawAsString(mContext, rawId);
+        String sqlRaw = MmexFileUtils.getRawAsString(mContext, rawId);
         String sqlStatement[] = sqlRaw.split(";");
         // process all statements
         for (String aSqlStatment : sqlStatement) {
@@ -472,10 +471,9 @@ public class MmexOpenHelper
     }
 
     public void createDatabaseBackupOnUpgrade(String currentDbFile, int oldVersion) throws IOException {
-//        File in = new File(currentDbFile);
+        File in = new File(currentDbFile);
+        String backupFileNameWithExtension = in.getName();
 
-//        String backupFileNameWithExtension = in.getName();
-        String backupFileNameWithExtension = currentDbFile;
         String backupName = FilenameUtils.getBaseName(backupFileNameWithExtension);
         String backupExtension = FilenameUtils.getExtension(backupFileNameWithExtension);
 
@@ -485,9 +483,8 @@ public class MmexOpenHelper
         backupFileNameWithExtension = backupName + "." + backupExtension;
 
         String outPath = FilenameUtils.getFullPath(currentDbFile) + backupFileNameWithExtension;
-//        File out = new File(outPath);
+        File out = new File(outPath);
 
-        RawFileUtils.copyFile(currentDbFile, outPath);
-//        FileUtils.copyFile(in, out);
+        FileUtils.copyFile(in, out);
     }
 }

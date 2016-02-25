@@ -21,8 +21,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.money.manager.ex.core.ExceptionHandler;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,9 +34,9 @@ import java.util.HashMap;
 /**
  * File utilities
  */
-public class RawFileUtils {
+public class MmexFileUtils {
 
-    private static final String LOGCAT = RawFileUtils.class.getSimpleName();
+    private static final String LOGCAT = MmexFileUtils.class.getSimpleName();
     private static final int BUFFER_DIMENSION = 128;
     // hash map to optimize application
     private static HashMap<Integer, String> rawHashMap = new HashMap<Integer, String>();
@@ -95,46 +93,46 @@ public class RawFileUtils {
     }
 
     /**
-     * Copies inputFile into outputFile.
+     * Copies inputFile into outputFile. Use FileUtils.
      * @param inputFile Full path to the input file.
      * @param outputFile Full path to the output file.
      */
-    public static void copyFile(String inputFile, String outputFile) {
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-
-            //create output directory if it doesn't exist
-//            File dir = new File(outputFile);
-//            if (!dir.exists())
-//            {
-//                dir.mkdirs();
+//    public static void copyFile(String inputFile, String outputFile) {
+//        InputStream in = null;
+//        OutputStream out = null;
+//        try {
+//
+//            //create output directory if it doesn't exist
+////            File dir = new File(outputFile);
+////            if (!dir.exists())
+////            {
+////                dir.mkdirs();
+////            }
+//
+//
+//            in = new FileInputStream(inputFile);
+//            out = new FileOutputStream(outputFile);
+//
+//            byte[] buffer = new byte[1024];
+//            int read;
+//            while ((read = in.read(buffer)) != -1) {
+//                out.write(buffer, 0, read);
 //            }
-
-
-            in = new FileInputStream(inputFile);
-            out = new FileOutputStream(outputFile);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            in.close();
-            in = null;
-
-            // write the output file (You have now copied the file)
-            out.flush();
-            out.close();
-            out = null;
-
-        }  catch (FileNotFoundException fnfe1) {
-            Log.e("tag", fnfe1.getMessage());
-            //ExceptionHandler handler = new ExceptionHandler()
-        }
-        catch (Exception e) {
-            Log.e("tag", e.getMessage());
-        }
-
-    }
+//            in.close();
+//            in = null;
+//
+//            // write the output file (You have now copied the file)
+//            out.flush();
+//            out.close();
+//            out = null;
+//
+//        }  catch (FileNotFoundException fnfe1) {
+//            Log.e("tag", fnfe1.getMessage());
+//            //ExceptionHandler handler = new ExceptionHandler()
+//        }
+//        catch (Exception e) {
+//            Log.e("tag", e.getMessage());
+//        }
+//
+//    }
 }

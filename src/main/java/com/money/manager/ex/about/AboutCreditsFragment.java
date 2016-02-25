@@ -26,7 +26,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 public class AboutCreditsFragment extends Fragment {
     private static Fragment mInstance;
@@ -49,13 +49,13 @@ public class AboutCreditsFragment extends Fragment {
 
         WebView webView = (WebView) getActivity().findViewById(R.id.about_thirdsparty_credits);
 
-//        webView.loadData(RawFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
+//        webView.loadData(MmexFileUtils.getRawAsString(getActivity(), R.raw.credits_thirdparty), "text/html", "UTF-8");
 
         // Display Unicode characters.
         WebSettings settings = webView.getSettings();
         settings.setDefaultTextEncodingName("utf-8");
 
-        webView.loadData(RawFileUtils.getRawAsString(getActivity().getApplicationContext(), R.raw.credits_thirdparty),
+        webView.loadData(MmexFileUtils.getRawAsString(getActivity().getApplicationContext(), R.raw.credits_thirdparty),
                 "text/html; charset=utf-8", null);
     }
 }

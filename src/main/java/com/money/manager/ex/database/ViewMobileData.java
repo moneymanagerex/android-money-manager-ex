@@ -19,7 +19,7 @@ package com.money.manager.ex.database;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -84,7 +84,7 @@ public class ViewMobileData
     }
 
     private void initialize(Context context, String where) {
-        String source = RawFileUtils.getRawAsString(context, R.raw.query_mobiledata);
+        String source = MmexFileUtils.getRawAsString(context, R.raw.query_mobiledata);
 
         // insert WHERE statement, filter.
         if(!StringUtils.isEmpty(where)) {

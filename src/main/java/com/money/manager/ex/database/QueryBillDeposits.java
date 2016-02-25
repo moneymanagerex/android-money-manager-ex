@@ -19,7 +19,7 @@ package com.money.manager.ex.database;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 /**
  * A dataset for the query that fetches recurring transactions.
@@ -29,7 +29,7 @@ public class QueryBillDeposits
 
     // constructor
     public QueryBillDeposits(Context context) {
-        super(RawFileUtils.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY,
+        super(MmexFileUtils.getRawAsString(context, R.raw.query_billdeposits), DatasetType.QUERY,
                 QueryBillDeposits.class.getSimpleName());
     }
 

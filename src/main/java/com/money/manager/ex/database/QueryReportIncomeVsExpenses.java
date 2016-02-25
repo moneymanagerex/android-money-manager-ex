@@ -20,7 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +53,7 @@ public class QueryReportIncomeVsExpenses
         String mobileDataQuery = mobileData.getSource();
 
         // assemble the source statement by combining queries.
-        String source = RawFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
+        String source = MmexFileUtils.getRawAsString(context, R.raw.report_income_vs_expenses);
         source = source.replace(Constants.MOBILE_DATA_PATTERN, mobileDataQuery);
 
         this.setSource(source);

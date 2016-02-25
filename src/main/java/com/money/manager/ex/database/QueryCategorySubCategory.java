@@ -20,7 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.RawFileUtils;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 public class QueryCategorySubCategory extends Dataset {
     //definizione dei nomi dei campi
@@ -39,7 +39,7 @@ public class QueryCategorySubCategory extends Dataset {
 
     // definizione del costruttore
     public QueryCategorySubCategory(Context context) {
-        super(RawFileUtils.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
+        super(MmexFileUtils.getRawAsString(context, R.raw.query_categorysubcategory), DatasetType.QUERY, "categorysubcategory");
     }
 
     @Override
