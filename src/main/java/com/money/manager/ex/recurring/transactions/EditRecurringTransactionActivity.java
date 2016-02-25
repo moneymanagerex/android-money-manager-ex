@@ -436,6 +436,8 @@ public class EditRecurringTransactionActivity
         mRecurringTransaction = repo.load(recurringTransactionId);
         if (mRecurringTransaction == null) return false;
 
+        mCommonFunctions.transactionEntity = mRecurringTransaction;
+
         // todo: just use a model object instead of a bunch of individual properties.
 
         // Read data.
