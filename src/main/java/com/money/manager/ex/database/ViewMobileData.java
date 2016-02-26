@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
  * This has been migrated to QueryAllData.
  */
 public class ViewMobileData
-        extends Dataset {
+	extends Dataset {
 
 	// FIELDS
 	public static final String ID = "ID";

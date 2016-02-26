@@ -249,7 +249,6 @@ public class CategoriesReportFragment
         }
 
         String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
-//        String limit = null;
 
         //compose builder
         builder.setTables(mobileData.getSource());
