@@ -31,13 +31,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.servicelayer.RecurringTransactionService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,14 +45,14 @@ import java.util.HashMap;
 
 import info.javaperformance.money.MoneyFactory;
 
-public class RepeatingTransactionAdapter
+public class RecurringTransactionAdapter
         extends CursorAdapter {
 
     private LayoutInflater inflater;
     private HashMap<String, Integer> mHeadersIndexAccountDate;
 
     @SuppressWarnings("deprecation")
-    public RepeatingTransactionAdapter(Context context, Cursor c) {
+    public RecurringTransactionAdapter(Context context, Cursor c) {
         super(context, c);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -109,7 +108,12 @@ public class RepeatingTransactionAdapter
         } else {
             imgFollowUp.setVisibility(View.GONE);
         }
-        txtRepeat.setText(MoneyManagerApplication.getInstanceApp().getRepeatAsString(cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.REPEATS))));
+
+        int recurrence = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.REPEATS));
+//        String recurrenceString = MoneyManagerApplication.getInstanceApp().getRecurrenceLocalizedName(recurrence);
+        String recurrenceString = new RecurringTransactionService(context).getRecurrenceLocalizedName(recurrence);
+        txtRepeat.setText(recurrenceString);
+
         // take transaction amount
         double amount = cursor.getDouble(cursor.getColumnIndex(QueryBillDeposits.AMOUNT));
         // manage transfer and change amount sign

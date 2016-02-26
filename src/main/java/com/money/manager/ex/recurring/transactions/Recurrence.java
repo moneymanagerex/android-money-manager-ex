@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.recurring.transactions;
 
+import java.security.InvalidParameterException;
+
 /**
  * Types of recurrence
  */
@@ -46,12 +48,22 @@ public enum Recurrence {
     private int mValue;
 
     public static Recurrence valueOf(int value) {
+        // set auto execute without user acknowledgement
+        if (value >= 200) {
+            value = value - 200;
+        }
+        // set auto execute on the next occurrence
+        if (value >= 100) {
+            value = value - 100;
+        }
+
         for (Recurrence item : Recurrence.values()) {
             if (item.getValue() == value) {
                 return item;
             }
         }
-        return null;
+//        return null;
+        throw new InvalidParameterException();
     }
 
     public int getValue() {

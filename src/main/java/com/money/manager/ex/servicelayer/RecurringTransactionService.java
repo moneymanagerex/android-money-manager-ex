@@ -218,39 +218,6 @@ public class RecurringTransactionService
     }
 
     /**
-     * Set the recurring transaction's Due date and the Payment date to the next occurrence.
-     * Saves changes to the database.
-     */
-    private void moveDatesForward() {
-        load();
-
-        // Due date.
-
-        moveDueDateForward();
-
-        // Payment date.
-
-        Recurrence repeatType = Recurrence.valueOf(mRecurringTransaction.getRepeats());
-        Date newPaymentDate = mRecurringTransaction.getPaymentDate();
-        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
-
-        // calculate the next payment date
-        newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
-
-        if (newPaymentDate != null) {
-            mRecurringTransaction.setPaymentDate(newPaymentDate);
-        }
-
-        // Save changes
-
-        RecurringTransactionRepository repo = getRepository();
-        boolean updated = repo.update(mRecurringTransaction);
-        if (!updated) {
-            Core.alertDialog(getContext(), R.string.error_saving_record);
-        }
-    }
-
-    /**
      * Delete current recurring transaction record.
      * @return success
      */
@@ -330,6 +297,27 @@ public class RecurringTransactionService
         return result;
     }
 
+    /**
+     * @param repeat frequency repeats
+     * @return frequency
+     */
+    public String getRecurrenceLocalizedName(int repeat) {
+        // set auto execute without user acknowledgement
+        if (repeat >= 200) {
+            repeat = repeat - 200;
+        }
+        // set auto execute on the next occurrence
+        if (repeat >= 100) {
+            repeat = repeat - 100;
+        }
+
+        String[] arrays = getContext().getResources().getStringArray(R.array.frequencies_items);
+        if (arrays != null && repeat >= 0 && repeat <= arrays.length) {
+            return arrays[repeat];
+        }
+        return "";
+    }
+
     // Private.
 
     private void decreasePaymentsLeft() {
@@ -381,6 +369,39 @@ public class RecurringTransactionService
         mRecurringTransaction = repo.load(this.recurringTransactionId);
 
         return (mRecurringTransaction == null);
+    }
+
+    /**
+     * Set the recurring transaction's Due date and the Payment date to the next occurrence.
+     * Saves changes to the database.
+     */
+    private void moveDatesForward() {
+        load();
+
+        // Due date.
+
+        moveDueDateForward();
+
+        // Payment date.
+
+        Recurrence repeatType = Recurrence.valueOf(mRecurringTransaction.getRepeats());
+        Date newPaymentDate = mRecurringTransaction.getPaymentDate();
+        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+
+        // calculate the next payment date
+        newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
+
+        if (newPaymentDate != null) {
+            mRecurringTransaction.setPaymentDate(newPaymentDate);
+        }
+
+        // Save changes
+
+        RecurringTransactionRepository repo = getRepository();
+        boolean updated = repo.update(mRecurringTransaction);
+        if (!updated) {
+            Core.alertDialog(getContext(), R.string.error_saving_record);
+        }
     }
 
     private void moveDueDateForward() {

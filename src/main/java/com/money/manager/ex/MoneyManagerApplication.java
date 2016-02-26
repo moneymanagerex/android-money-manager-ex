@@ -306,24 +306,6 @@ public class MoneyManagerApplication
     }
 
     /**
-     * @param repeat frequency repeats
-     * @return frequency
-     */
-    public String getRepeatAsString(int repeat) {
-        if (repeat >= 200) {
-            repeat = repeat - 200;
-        } // set auto execute without user acknowledgement
-        if (repeat >= 100) {
-            repeat = repeat - 100;
-        } // set auto execute on the next occurrence
-        String[] arrays = getResources().getStringArray(R.array.frequencies_items);
-        if (arrays != null && repeat >= 0 && repeat <= arrays.length) {
-            return arrays[repeat];
-        }
-        return "";
-    }
-
-    /**
      * Compute account balance and returns balance
      *
      * @param context Executing context
