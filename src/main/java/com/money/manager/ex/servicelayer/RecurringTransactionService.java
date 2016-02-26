@@ -173,6 +173,11 @@ public class RecurringTransactionService
          * The action will depend on the transaction settings.
          */
         Recurrence recurrence = Recurrence.valueOf(recurrenceType);
+        if (recurrence == null) {
+            String recurrenceTypeString = Integer.toString(recurrenceType);
+            throw new IllegalArgumentException(getContext().getString(R.string.invalid_recurrence_type)
+                    + " " + recurrenceTypeString);
+        }
 
         switch (recurrence) {
             // periodical (monthly, weekly)

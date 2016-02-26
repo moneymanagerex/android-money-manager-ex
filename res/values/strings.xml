@@ -697,5 +697,6 @@
     <string name="times_repeated" translatable="false">to delete</string>
     <string name="symbol_required">Symbol is required</string>
     <string name="recurrence_type_not_set">Recurrence type not set</string>
+    <string name="invalid_recurrence_type">Invalid recurrence type</string>
     <string name="account_not_found">Account not found</string>
 </resources>
