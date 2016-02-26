@@ -360,10 +360,10 @@ public class EditTransactionCommonFunctions {
         String defaultAccountString = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
         if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
-            int defaultAccount = Integer.parseInt(defaultAccountString);
-            addMissingAccountToSelectors(accountRepository, defaultAccount);
+            accountId = Integer.parseInt(defaultAccountString);
+            addMissingAccountToSelectors(accountRepository, accountId);
             // Set the default account as the active account.
-            transactionEntity.setAccountId(defaultAccount);
+            transactionEntity.setAccountId(accountId);
         }
 
         // create adapter for spinAccount
