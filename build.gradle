@@ -176,7 +176,7 @@ dependencies {
             'de.hdodenhof:circleimageview:2.0.0',
             // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             'me.relex:circleindicator:1.1.7@aar',
-            'com.shamanland:fonticon:0.1.8',
+            'com.shamanland:fonticon:0.1.9',
             'com.code-troopers.betterpickers:library:2.5.1',
             'com.github.PhilJay:MPAndroidChart:v2.1.5',
             // google play services

@@ -514,7 +514,7 @@ public class AccountTransactionListFragment
                 mAccount.setFavorite(!(mAccount.getFavorite()));
 
                 AccountRepository repo = new AccountRepository(getActivity());
-                boolean updated = repo.update(mAccount);
+                boolean updated = repo.save(mAccount);
 
                 if (!updated) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.db_update_failed), Toast.LENGTH_LONG).show();

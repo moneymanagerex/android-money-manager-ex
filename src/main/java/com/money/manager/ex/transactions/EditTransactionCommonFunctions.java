@@ -357,10 +357,10 @@ public class EditTransactionCommonFunctions {
         addMissingAccountToSelectors(accountRepository, accountId);
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
-        String defaultAccountString = settings.getGeneralSettings().getDefaultAccountId();
+        Integer defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
-        if ((accountId == Constants.NOT_SET) && !TextUtils.isEmpty(defaultAccountString)) {
-            accountId = Integer.parseInt(defaultAccountString);
+        if ((accountId == Constants.NOT_SET) && defaultAccount != null && defaultAccount != Constants.NOT_SET) {
+            accountId = defaultAccount;
             addMissingAccountToSelectors(accountRepository, accountId);
             // Set the default account as the active account.
             transactionEntity.setAccountId(accountId);

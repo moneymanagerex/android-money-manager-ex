@@ -19,6 +19,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
+    <!-- general -->
+    <string name="pref_general">prefgeneral</string>
+    <string name="pref_default_account">pref_default_account</string>
+    <!-- -->
     <string name="pref_last_version_key">preflastversioncodekey</string>
     <string name="pref_donate_last_version_key">prefdonatelastversioncodekey</string>
     <string name="pref_last_db_path_shown">preflastdbpathshown</string>
@@ -69,14 +73,12 @@
     <string name="pref_default_status">prefdefaultstatus</string>
     <string name="pref_default_payee">prefdefaultpayee</string>
     <string name="pref_locale">preflocale</string>
-    <string name="pref_general">prefgeneral</string>
     <string name="pref_look_feel">preflookfeel</string>
     <string name="pref_security">prefsecurity</string>
     <string name="pref_database">prefdatabase</string>
     <string name="pref_sort_payee">prefsortpayee</string>
     <string name="pref_show_tutorial">prefshowtutorial</string>
     <string name="pref_dashboard_group_visibility">pref-dashboard-group-visible</string>
-    <string name="pref_default_account">pref_default_account</string>
     <!-- behaviour -->
     <string name="pref_behaviour">prefbehaviour</string>
     <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>

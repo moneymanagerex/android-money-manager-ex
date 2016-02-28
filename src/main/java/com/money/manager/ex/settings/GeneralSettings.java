@@ -20,7 +20,11 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.NumericHelper;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Settings in the General category.
@@ -38,10 +42,27 @@ public class GeneralSettings
         return result;
     }
 
-    public String getDefaultAccountId() {
-        String key = getContext().getString(R.string.pref_default_account);
-        String result = getSharedPreferences().getString(key, "");
-        return result;
+    public Integer getDefaultAccountId() {
+//        String key = getContext().getString(R.string.pref_default_account);
+        String value = get(R.string.pref_default_account, "");
+//        String result = get(PreferenceConstants.PREF_DEFAULT_ACCOUNT, "");
+//        Integer result = get(R.string.pref_default_account, Constants.NOT_SET);
+        if (!StringUtils.isEmpty(value) && NumericHelper.isNumeric(value)) {
+            return Integer.parseInt(value);
+        } else {
+            return null;
+        }
+//        return result;
     }
 
+    public void setDefaultAccountId(Integer accountId) {
+//        String value = accountId == null ? "" : Integer.toString(accountId);
+//        set(R.string.pref_default_account, value);
+//        set(PreferenceConstants.PREF_DEFAULT_ACCOUNT, accountId);
+        String value = "";
+        if (accountId != null) {
+            value = accountId.toString();
+        }
+        set(R.string.pref_default_account, value);
+    }
 }

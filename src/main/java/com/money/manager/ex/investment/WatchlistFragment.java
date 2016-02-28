@@ -484,7 +484,7 @@ public class WatchlistFragment
                 mAccount.setFavorite(!mAccount.getFavorite());
 
                 AccountRepository repo = new AccountRepository(getActivity());
-                boolean saved = repo.update(mAccount);
+                boolean saved = repo.save(mAccount);
 
                 if (!saved) {
                     Toast.makeText(getActivity(),

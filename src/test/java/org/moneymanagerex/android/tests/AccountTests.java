@@ -92,7 +92,7 @@ public class AccountTests {
 
         Account loaded = repo.load(id);
         loaded.setAccountNumber(accountNumber);
-        repo.update(loaded);
+        repo.save(loaded);
 
         loaded = repo.load(id);
         String actual = loaded.getAccountNumber();

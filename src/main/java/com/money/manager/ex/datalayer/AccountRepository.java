@@ -166,7 +166,7 @@ public class AccountRepository
         return entity;
     }
 
-    public boolean update(Account value) {
+    public boolean save(Account value) {
         int id = value.getId();
 
         WhereStatementGenerator generator = new WhereStatementGenerator();

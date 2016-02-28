@@ -472,9 +472,10 @@ public class EditCheckingTransactionActivity
 
             // Select the default account.
             AppSettings settings = new AppSettings(this);
-            String defaultAccountSetting = settings.getGeneralSettings().getDefaultAccountId();
-            if (!TextUtils.isEmpty(defaultAccountSetting)) {
-                int defaultAccountId = Integer.parseInt(defaultAccountSetting);
+            Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+//            if (!TextUtils.isEmpty(defaultAccountSetting)) {
+            if (defaultAccountId != null) {
+//                int defaultAccountId = Integer.parseInt(defaultAccountSetting);
                 if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
                     int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
                     mCommonFunctions.viewHolder.spinAccount.setSelection(index);

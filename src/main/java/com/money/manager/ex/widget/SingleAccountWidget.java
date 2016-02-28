@@ -169,9 +169,11 @@ public class SingleAccountWidget
 
         // todo: load the configured account id
         AppSettings settings = new AppSettings(context);
-        String defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-        if (StringUtils.isNotEmpty(defaultAccountId)) {
-            displayAccountInfo(context, defaultAccountId, views);
+        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+//        if (StringUtils.isNotEmpty(defaultAccountId)) {
+        if (defaultAccountId != null) {
+            String defaultAccountString = Integer.toString(defaultAccountId);
+            displayAccountInfo(context, defaultAccountString, views);
         }
 
         // handle + click -> open the new transaction screen for this account.

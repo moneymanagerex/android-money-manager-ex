@@ -699,4 +699,5 @@
     <string name="recurrence_type_not_set">Recurrence type not set</string>
     <string name="invalid_recurrence_type">Invalid recurrence type</string>
     <string name="account_not_found">Account not found</string>
+    <string name="favourite">Favourite</string>
 </resources>
