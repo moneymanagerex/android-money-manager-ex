@@ -30,6 +30,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,6 +50,8 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
 import java.util.Arrays;
@@ -77,6 +81,7 @@ public class AccountEditActivity
     public static final String KEY_CURRENCY_ID = "AccountEditActivity:CurrencyId";
     public static final String KEY_CURRENCY_NAME = "AccountEditActivity:CurrencyName";
     public static final String KEY_SYMBOL = "AccountEditActivity:Symbol";
+    public static final String KEY_DEFAULT_ACCOUNT = "AccountEditActivity:DefaultAccount";
     // LOGCAT
     private static final String LOGCAT = AccountEditActivity.class.getSimpleName();
     // ID REQUEST Data
@@ -103,7 +108,9 @@ public class AccountEditActivity
     private Spinner spinSymbolInitialBalance;
     private TextView txtSelectCurrency, txtInitialBalance;
 //    private ImageView imgFavouriteAccount;
-    FontIconView imgFavouriteAccount;
+//    FontIconView imgFavouriteAccount;
+    private AccountViewHolder mViewHolder;
+    private boolean mIsDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +133,7 @@ public class AccountEditActivity
                 if (mIntentAction != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     int accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, -1);
                     // Load account row
-                    selectAccount(accountId);
+                    loadAccount(accountId);
 
                     mAccount.setId(accountId);
                 }
@@ -144,8 +151,14 @@ public class AccountEditActivity
             }
         }
 
+        // Default account
+        AppSettings settings = new AppSettings(this);
+        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+        mIsDefault = mAccount.getId().equals(defaultAccountId);
+
         // Compose layout
         setContentView(R.layout.activity_edit_account);
+
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -153,168 +166,7 @@ public class AccountEditActivity
             setToolbarStandardAction(toolbar);
         }
 
-        AccountViewHolder viewHolder = new AccountViewHolder();
-
-        // Get controls from layout
-        edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
-        viewHolder.accountTypeSpinner = (Spinner) findViewById(R.id.spinnerAccountType);
-        edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
-        edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
-        edtWebsite = (EditText) findViewById(R.id.editTextWebsite);
-        edtContact = (EditText) findViewById(R.id.editTextContact);
-        edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
-        Spinner spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
-        spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
-        txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
-        edtNotes = (EditText) findViewById(R.id.editTextNotes);
-//        imgFavouriteAccount = (ImageView) findViewById(R.id.imageViewAccountFav);
-        imgFavouriteAccount = (FontIconView) findViewById(R.id.imageViewAccountFav);
-        txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
-
-        // Initialize control values
-        if (!(TextUtils.isEmpty(mAccount.getName()))) {
-            edtAccountName.setText(mAccount.getName());
-        }
-        if (!(TextUtils.isEmpty(mAccountNum))) {
-            edtAccountNumber.setText(mAccountNum);
-        }
-        if (!(TextUtils.isEmpty(mHeldAt))) {
-            edtAccountHeldAt.setText(mHeldAt);
-        }
-        if (!(TextUtils.isEmpty(mWebsite))) {
-            edtWebsite.setText(mWebsite);
-        }
-        if (!(TextUtils.isEmpty(mContactInfo))) {
-            edtContact.setText(mContactInfo);
-        }
-        if (!(TextUtils.isEmpty(mAccessInfo))) {
-            edtAccessInfo.setText(mAccessInfo);
-        }
-
-        // Show initial balance.
-
-        ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
-        spinSymbolInitialBalance.setAdapter(adapterSymbol);
-        spinSymbolInitialBalance.setSelection(mInitialBal.toDouble() >= 0
-                ? PLUS : LESS);
-
-        // always use positive value. The sign is in the spinner.
-        if (mInitialBal.toDouble() < 0) {
-            mInitialBal = mInitialBal.negate();
-        }
-
-        FormatUtilities.formatAmountTextView(this, txtInitialBalance, mInitialBal, mCurrencyId);
-        txtInitialBalance.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Money amount = MoneyFactory.fromString(v.getTag().toString());
-                AmountInputDialog dialog = AmountInputDialog.getInstance(null, amount, mCurrencyId);
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        });
-
-        // Notes
-
-        if (!(TextUtils.isEmpty(mNotes))) {
-            edtNotes.setText(mNotes);
-        }
-
-        // Favourite
-
-        displayFavouriteStatus();
-
-        // Account Type adapters and values
-
-        String[] mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
-        mAccountTypeValues = AccountTypes.getNames();
-        ArrayAdapter<String> adapterAccountType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
-        adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        viewHolder.accountTypeSpinner.setAdapter(adapterAccountType);
-        if (!(TextUtils.isEmpty(mAccountType))) {
-            if (Arrays.asList(mAccountTypeValues).indexOf(mAccountType) >= 0) {
-                viewHolder.accountTypeSpinner.setSelection(Arrays.asList(mAccountTypeValues).indexOf(mAccountType), true);
-            }
-        } else {
-            mAccountType = (String) viewHolder.accountTypeSpinner.getSelectedItem();
-        }
-
-        // Account Status adapters and values
-
-        String[] mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
-        mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
-        ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
-        spinAccountStatus.setAdapter(adapterAccountStatus);
-        adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if (!(TextUtils.isEmpty(mStatus))) {
-            if (Arrays.asList(mAccountStatusValues).indexOf(mStatus) >= 0) {
-                spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mStatus), true);
-            }
-        } else {
-            mStatus = (String) spinAccountStatus.getSelectedItem();
-        }
-
-        // Set up control listeners
-        viewHolder.accountTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mAccountTypeValues.length)) {
-                    mAccountType = mAccountTypeValues[position];
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        spinAccountStatus.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if ((position >= 0) && (position <= mAccountStatusValues.length)) {
-                    mStatus = mAccountStatusValues[position];
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        imgFavouriteAccount.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                String status = (String) v.getTag();
-                // check empty string
-//                if (TextUtils.isEmpty(status)) {
-//                    status = String.valueOf(Boolean.FALSE);
-//                }
-//                if (String.valueOf(Boolean.TRUE).equalsIgnoreCase(status)) {
-//                    v.setTag(String.valueOf(Boolean.FALSE));
-//                } else {
-//                    v.setTag(String.valueOf(Boolean.TRUE));
-//                }
-//                int imageResource = String.valueOf(Boolean.TRUE).equalsIgnoreCase(String.valueOf(v.getTag()))
-//                    ? R.drawable.ic_star : R.drawable.ic_star_outline;
-//                imgFavouriteAccount.setBackgroundResource(imageResource);
-
-                mAccount.setFavorite(!mAccount.getFavorite());
-                displayFavouriteStatus();
-            }
-        });
-
-        txtSelectCurrency.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CURRENCY);
-            }
-        });
-
-        // Refresh data on the other controls
-        refreshCurrencyName();
+        initializeControls();
     }
 
     @Override
@@ -374,6 +226,7 @@ public class AccountEditActivity
         outState.putBoolean(KEY_FAVORITE_ACCT, mAccount.getFavorite());
         outState.putInt(KEY_CURRENCY_ID, mCurrencyId != null ? mCurrencyId : -1);
         outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
+        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
         outState.putString(KEY_ACTION, mIntentAction);
     }
 
@@ -386,7 +239,7 @@ public class AccountEditActivity
 
     @Override
     public boolean onActionDoneClick() {
-        if (updateAccountList()) {
+        if (saveAccount()) {
             // If everything is okay, finish the activity
             finish();
             return true;
@@ -419,25 +272,208 @@ public class AccountEditActivity
 
     // Private
 
-    private void displayFavouriteStatus() {
-//        int imageResource = mAccount.getFavorite() ? R.drawable.ic_star : R.drawable.ic_star_outline;
-//        int imageResource = mAccount.getFavorite()
-//            ? R.xml.ic_star
-//            : R.xml.ic_star_outline;
-//        imgFavouriteAccount.setImageResource(imageResource);
-//        imgFavouriteAccount.setBackgroundResource(imageResource);
+    private void displayDefaultAccount() {
+        mViewHolder.defaultAccountCheckbox.setChecked(mIsDefault);
+    }
 
-        imgFavouriteAccount.setTag(mAccount.getFavorite().toString());
+    private void displayFavouriteStatus() {
+        mViewHolder.imageViewAccountFav.setTag(mAccount.getFavorite().toString());
 
         int imageResource = mAccount.getFavorite()
             ? R.string.ic_star
             : R.string.ic_star_outline;
-        imgFavouriteAccount.setText(imageResource);
+        mViewHolder.imageViewAccountFav.setText(imageResource);
+    }
+
+    private void initializeControls() {
+        //AccountViewHolder viewHolder = new AccountViewHolder();
+        mViewHolder = new AccountViewHolder();
+
+        // Get controls from layout
+        edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
+        mViewHolder.defaultAccountCheckbox = (CheckBox) findViewById(R.id.defaultAccountCheckbox);
+        mViewHolder.defaultAccountText = (RobotoTextView) findViewById(R.id.defaultAccountText);
+        mViewHolder.imageViewAccountFav = (FontIconView) findViewById(R.id.imageViewAccountFav);
+        mViewHolder.favouriteAccountTextView = (RobotoTextView) findViewById(R.id.favouriteAccountTextView);
+        mViewHolder.accountTypeSpinner = (Spinner) findViewById(R.id.spinnerAccountType);
+        edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
+        edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
+        edtWebsite = (EditText) findViewById(R.id.editTextWebsite);
+        edtContact = (EditText) findViewById(R.id.editTextContact);
+        edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
+        Spinner spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
+        spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
+        txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
+        edtNotes = (EditText) findViewById(R.id.editTextNotes);
+        txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
+
+        // Initialize control values
+        if (!(TextUtils.isEmpty(mAccount.getName()))) {
+            edtAccountName.setText(mAccount.getName());
+        }
+
+        // Default account.
+        displayDefaultAccount();
+
+        // Favourite account.
+        displayFavouriteStatus();
+
+        if (!(TextUtils.isEmpty(mAccountNum))) {
+            edtAccountNumber.setText(mAccountNum);
+        }
+        if (!(TextUtils.isEmpty(mHeldAt))) {
+            edtAccountHeldAt.setText(mHeldAt);
+        }
+        if (!(TextUtils.isEmpty(mWebsite))) {
+            edtWebsite.setText(mWebsite);
+        }
+        if (!(TextUtils.isEmpty(mContactInfo))) {
+            edtContact.setText(mContactInfo);
+        }
+        if (!(TextUtils.isEmpty(mAccessInfo))) {
+            edtAccessInfo.setText(mAccessInfo);
+        }
+
+        // Show initial balance.
+
+        ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
+        spinSymbolInitialBalance.setAdapter(adapterSymbol);
+        spinSymbolInitialBalance.setSelection(mInitialBal.toDouble() >= 0
+                ? PLUS : LESS);
+
+        // always use positive value. The sign is in the spinner.
+        if (mInitialBal.toDouble() < 0) {
+            mInitialBal = mInitialBal.negate();
+        }
+
+        FormatUtilities.formatAmountTextView(this, txtInitialBalance, mInitialBal, mCurrencyId);
+        txtInitialBalance.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Money amount = MoneyFactory.fromString(v.getTag().toString());
+                AmountInputDialog dialog = AmountInputDialog.getInstance(null, amount, mCurrencyId);
+                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        });
+
+        // Notes
+
+        if (!(TextUtils.isEmpty(mNotes))) {
+            edtNotes.setText(mNotes);
+        }
+
+        // Account Type adapters and values
+
+        String[] mAccountTypeItems = getResources().getStringArray(R.array.accounttype_items);
+        mAccountTypeValues = AccountTypes.getNames();
+        ArrayAdapter<String> adapterAccountType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountTypeItems);
+        adapterAccountType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mViewHolder.accountTypeSpinner.setAdapter(adapterAccountType);
+        if (!(TextUtils.isEmpty(mAccountType))) {
+            if (Arrays.asList(mAccountTypeValues).indexOf(mAccountType) >= 0) {
+                mViewHolder.accountTypeSpinner.setSelection(Arrays.asList(mAccountTypeValues).indexOf(mAccountType), true);
+            }
+        } else {
+            mAccountType = (String) mViewHolder.accountTypeSpinner.getSelectedItem();
+        }
+
+        // Account Status adapters and values
+
+        String[] mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
+        mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
+        ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
+        spinAccountStatus.setAdapter(adapterAccountStatus);
+        adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (!(TextUtils.isEmpty(mStatus))) {
+            if (Arrays.asList(mAccountStatusValues).indexOf(mStatus) >= 0) {
+                spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mStatus), true);
+            }
+        } else {
+            mStatus = (String) spinAccountStatus.getSelectedItem();
+        }
+
+        // Set up control listeners
+
+        initializeDefaultAccountControls();
+
+        mViewHolder.accountTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mAccountTypeValues.length)) {
+                    mAccountType = mAccountTypeValues[position];
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinAccountStatus.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position >= 0) && (position <= mAccountStatusValues.length)) {
+                    mStatus = mAccountStatusValues[position];
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // Favourite
+        initializeFavouriteAccountControls();
+
+        txtSelectCurrency.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, REQUEST_PICK_CURRENCY);
+            }
+        });
+
+        // Refresh data on the other controls
+        refreshCurrencyName();
+    }
+
+    private void initializeDefaultAccountControls() {
+        mViewHolder.defaultAccountCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mIsDefault = isChecked;
+
+                displayDefaultAccount();
+            }
+        });
+
+        mViewHolder.defaultAccountText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIsDefault = !mIsDefault;
+
+                displayDefaultAccount();
+            }
+        });
+    }
+
+    private void initializeFavouriteAccountControls() {
+        OnClickListener listener = new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mAccount.setFavorite(!mAccount.getFavorite());
+                displayFavouriteStatus();
+            }
+        };
+        mViewHolder.imageViewAccountFav.setOnClickListener(listener);
+        mViewHolder.favouriteAccountTextView.setOnClickListener(listener);
     }
 
     /**
-     * validate data entered
-     *
+     * Validate data entered.
      * @return A boolean indicating whether the data is valid for saving.
      */
     private boolean validateData(boolean bCheck) {
@@ -484,7 +520,7 @@ public class AccountEditActivity
      *
      * @return true if update data successful
      */
-    private boolean updateAccountList() {
+    private boolean saveAccount() {
         // data validation
         if (!(validateData(true))) {
             return false;
@@ -533,6 +569,10 @@ public class AccountEditActivity
         }
         // eventually update more tables as side effect
         // TODO (verify if that is the case)
+
+        // Default account.
+        saveDefaultAccount();
+
         return true;
     }
 
@@ -542,7 +582,7 @@ public class AccountEditActivity
      * @param accountId account id
      * @return true if data is correctly selected, false if error occurs
      */
-    private boolean selectAccount(int accountId) {
+    private boolean loadAccount(int accountId) {
         AccountRepository repository = new AccountRepository(getApplicationContext());
         mAccount = repository.load(accountId);
         if (mAccount == null) return false;
@@ -597,6 +637,7 @@ public class AccountEditActivity
         mAccount.setCurrencyId(mCurrencyId);
 
         mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
+        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
 
@@ -619,5 +660,11 @@ public class AccountEditActivity
         }
 
         return result;
+    }
+
+    private void saveDefaultAccount() {
+        Integer defaultAccountId = mIsDefault ? mAccount.getId() : null;
+        AppSettings settings = new AppSettings(AccountEditActivity.this);
+        settings.getGeneralSettings().setDefaultAccountId(defaultAccountId);
     }
 }

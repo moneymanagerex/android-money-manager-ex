@@ -47,12 +47,13 @@ public class GeneralSettings
         String value = get(R.string.pref_default_account, "");
 //        String result = get(PreferenceConstants.PREF_DEFAULT_ACCOUNT, "");
 //        Integer result = get(R.string.pref_default_account, Constants.NOT_SET);
+        Integer result;
         if (!StringUtils.isEmpty(value) && NumericHelper.isNumeric(value)) {
-            return Integer.parseInt(value);
+            result = Integer.parseInt(value);
         } else {
-            return null;
+            result = null;
         }
-//        return result;
+        return result;
     }
 
     public void setDefaultAccountId(Integer accountId) {

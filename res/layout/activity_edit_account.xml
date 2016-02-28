@@ -40,46 +40,68 @@
             android:paddingLeft="@dimen/activity_padding_side"
             android:paddingRight="@dimen/activity_padding_side">
 
+            <!-- account name -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_name"
-                android:visibility="gone" />
+                android:text="@string/account_name" />
+            <!--android:visibility="gone"-->
+            <com.money.manager.ex.view.RobotoEditText
+                android:id="@+id/editTextAccountName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/account_name"
+                android:inputType="text"
+                android:maxLength="100"
+                android:singleLine="true" />
 
+            <!-- favourite, default -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextAccountName"
+                <!-- default -->
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:hint="@string/account_name"
-                    android:inputType="text"
-                    android:maxLength="100"
-                    android:singleLine="true" />
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/imageViewAccountFav"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:src="@xml/ic_star"-->
-                    <!--android:contentDescription="@string/favourite_account" />-->
-                <!--android:background="@android:drawable/star_off"-->
-                <com.shamanland.fonticon.FontIconView
-                    android:id="@+id/imageViewAccountFav"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1" >
+                    <CheckBox
+                        android:id="@+id/defaultAccountCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/defaultAccountText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/money_margin"
+                        android:text="@string/default_account" />
+                </LinearLayout>
+                <!-- favourite -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/ic_star_outline"
-                    android:textSize="@dimen/fonticon_drawer"
-                    android:textColor="@color/material_white"
-                    android:background="@color/md_primary" />
+                    android:orientation="horizontal"
+                    android:layout_weight="1" >
+                    <com.shamanland.fonticon.FontIconView
+                        android:id="@+id/imageViewAccountFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ic_star_outline"
+                        android:textSize="@dimen/fonticon_drawer"
+                        android:textColor="@color/material_white"
+                        android:background="@color/md_primary" />
+                    <!--android:layout_gravity="center"-->
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/favouriteAccountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/money_margin"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/favourite_account" />
+                </LinearLayout>
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
