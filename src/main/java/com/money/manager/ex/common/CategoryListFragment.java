@@ -41,7 +41,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
-import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -535,9 +534,8 @@ public class CategoryListFragment
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setView(viewDialog)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
-            .setTitle(titleId);
-        // listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok,
+            .setTitle(titleId)
+            .setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @SuppressWarnings("incomplete-switch")
                     @Override
@@ -712,31 +710,31 @@ public class CategoryListFragment
      */
     private void showTypeSelectorDialog() {
         new MaterialDialog.Builder(getActivity())
-                .title(R.string.choose_type)
-                .items(R.array.category_type)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        /**
-                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-                         * returning false here won't allow the newly selected radio button to actually be selected.
-                         **/
+            .title(R.string.choose_type)
+            .items(R.array.category_type)
+            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                @Override
+                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                    /**
+                     * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                     * returning false here won't allow the newly selected radio button to actually be selected.
+                     **/
 //                        showNameEntryDialog();
 
-                        // todo: depending on the choice, show the edit dialog. 0-based
-                        if (which == 0) {
-                            showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
-                        } else {
-                            showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
-                        }
-
-                        return true;
+                    // todo: depending on the choice, show the edit dialog. 0-based
+                    if (which == 0) {
+                        showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
+                    } else {
+                        showDialogEditSubCategoryName(SQLTypeTransaction.INSERT, -1, -1, null);
                     }
-                })
-                .positiveText(android.R.string.ok)
+
+                    return true;
+                }
+            })
+            .positiveText(android.R.string.ok)
 //                .negativeText(android.R.string.cancel)
-                .neutralText(android.R.string.cancel)
-                .show();
+            .neutralText(android.R.string.cancel)
+            .show();
     }
 
     private void showSearchActivityFor(SearchParameters parameters) {

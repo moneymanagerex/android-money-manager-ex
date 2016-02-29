@@ -18,17 +18,25 @@ package com.money.manager.ex.budget;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.BudgetYear;
+
+import java.util.Calendar;
 
 import de.greenrobot.event.EventBus;
 
@@ -40,8 +48,8 @@ import de.greenrobot.event.EventBus;
  * create an instance of this fragment.
  */
 public class BudgetsListFragment
-        extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * Use this factory method to create a new instance of
@@ -49,7 +57,6 @@ public class BudgetsListFragment
      *
      * @return A new instance of fragment BudgetsListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static BudgetsListFragment newInstance() {
         BudgetsListFragment fragment = new BudgetsListFragment();
         Bundle args = new Bundle();
@@ -75,9 +82,8 @@ public class BudgetsListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // restore state. This should be called only if a device is rotated or in a similar
-        // situation.
-//        Log.d("test", "blah");
+        //todo setFloatingActionButtonVisible(true);
+        //todo setFloatingActionButtonAttachListView(true);
     }
 
     @Override
@@ -164,6 +170,14 @@ public class BudgetsListFragment
         EventBus.getDefault().post(new BudgetSelectedEvent(id, budgetName));
     }
 
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        // add new budget
+        promptForBudgetName();
+    }
+
+    // Private
+
     private void displayBudgets() {
         mAdapter = new MoneySimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_1,
@@ -175,5 +189,31 @@ public class BudgetsListFragment
         setListShown(false);
 
         getLoaderManager().initLoader(LOADER_BUDGETS, null, this);
+    }
+
+    private void promptForBudgetName() {
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_budget_period, null);
+
+        // selector for year/month
+        NumberPicker yearPicker = (NumberPicker) dialogView.findViewById(R.id.yearNumberPicker);
+        yearPicker.setMinValue(2000);
+
+        NumberPicker monthPicker = (NumberPicker) dialogView.findViewById(R.id.monthNumberPicker);
+        monthPicker.setMinValue(1);
+        monthPicker.setMaxValue(12);
+
+        new MaterialDialog.Builder(getActivity())
+            .title(R.string.add_budget)
+            .customView(dialogView, false)
+            .positiveText(android.R.string.ok)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    Core.alertDialog(getActivity(), "blah");
+                }
+            })
+            .negativeText(android.R.string.cancel)
+//            .neutralText(android.R.string.cancel)
+            .show();
     }
 }
