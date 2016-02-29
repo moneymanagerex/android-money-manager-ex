@@ -25,9 +25,12 @@ import android.widget.ListView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.BudgetYear;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Activities that contain this fragment must implement the
@@ -39,10 +42,6 @@ import com.money.manager.ex.database.BudgetYear;
 public class BudgetsListFragment
         extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
-
-//    private final String KEY_LISTENER = "listener";
-
-    private IBudgetListCallbacks mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -99,12 +98,6 @@ public class BudgetsListFragment
         super.onViewCreated(view, savedInstanceState);
 
         displayBudgets();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -167,13 +160,8 @@ public class BudgetsListFragment
         // Notify the parent to show the budget details.
         Cursor cursor = (Cursor) l.getItemAtPosition(position);
         String budgetName = cursor.getString(cursor.getColumnIndex(BudgetYear.BUDGETYEARNAME));
-        if (mListener != null) {
-            mListener.onBudgetClicked(id, budgetName);
-        }
-    }
 
-    public void setListener(IBudgetListCallbacks listener) {
-        mListener = listener;
+        EventBus.getDefault().post(new BudgetSelectedEvent(id, budgetName));
     }
 
     private void displayBudgets() {

@@ -25,12 +25,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 
+import de.greenrobot.event.EventBus;
+
 public class BudgetsActivity
-    extends BaseFragmentActivity
-    implements IBudgetListCallbacks{
+    extends BaseFragmentActivity {
 
     private boolean mIsDualPanel = false;
 
@@ -47,6 +49,20 @@ public class BudgetsActivity
         setDisplayHomeAsUpEnabled(true);
 
         createFragments();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
     }
 
     // Menu / toolbar
@@ -74,13 +90,17 @@ public class BudgetsActivity
         return super.onOptionsItemSelected(item);
     }
 
-    // End menu
+    // Events
 
-    @Override
-    public void onBudgetClicked(long budgetYearId, String budgetName) {
-        // budget clicked in the list; show the details fragment.
-        showBudgetDetails(budgetYearId, budgetName);
+    public void onEvent(BudgetSelectedEvent event) {
+        showBudgetDetails(event.yearId, event.name);
     }
+
+//    @Override
+//    public void onBudgetClicked(long budgetYearId, String budgetName) {
+//        // budget clicked in the list; show the details fragment.
+//        showBudgetDetails(budgetYearId, budgetName);
+//    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -125,7 +145,6 @@ public class BudgetsActivity
                         .commit();
             }
         }
-        fragment.setListener(this);
     }
 
     private void showBudgetDetails(long id, String budgetName) {

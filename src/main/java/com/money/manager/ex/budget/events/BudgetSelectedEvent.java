@@ -15,12 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.budget;
+package com.money.manager.ex.budget.events;
 
 /**
- * Callbacks from Budget List Fragment.
- * Created by Alen Siljak on 03/07/2015.
+ * A budget was selected in the list
  */
-public interface IBudgetListCallbacks {
-    void onBudgetClicked(long budgetYearId, String budgetName);
+public class BudgetSelectedEvent {
+    public BudgetSelectedEvent(long budgetYearId, String budgetName) {
+        this.yearId = budgetYearId;
+        this.name = budgetName;
+    }
+
+    public long yearId;
+    public String name;
 }
