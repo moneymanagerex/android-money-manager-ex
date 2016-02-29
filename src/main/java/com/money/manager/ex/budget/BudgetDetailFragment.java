@@ -37,15 +37,12 @@ import com.money.manager.ex.common.MmexCursorLoader;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link IBudgetDetailCallbacks} interface
- * to handle interaction events.
  * Use the {@link BudgetDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class BudgetDetailFragment
-        extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor>{
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String ARG_BUDGET_YEAR_ID = "budgetYearId";
     private static final String ARG_BUDGET_NAME_ID = "budgetName";
@@ -53,8 +50,6 @@ public class BudgetDetailFragment
     private final int LOADER_BUDGET = 1;
     private long mBudgetYearId = Constants.NOT_SET;
     private String mBudgetName;
-
-    private IBudgetDetailCallbacks mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -119,12 +114,6 @@ public class BudgetDetailFragment
 //            throw new ClassCastException(activity.toString()
 //                    + " must implement OnFragmentInteractionListener");
 //        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
