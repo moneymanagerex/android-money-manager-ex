@@ -80,7 +80,7 @@ public class SettingsFragment
             investmentPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    // todo startActivity(new Intent(getActivity(), BehaviourSettingsActivity.class));
+                    startActivity(new Intent(getActivity(), InvestmentSettingsActivity.class));
                     return true;
                 }
             });

@@ -24,17 +24,11 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.AmountInputDialog;
-import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.CalendarUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import de.greenrobot.event.EventBus;
-import info.javaperformance.money.Money;
 
 /**
  * Look & feel settings.
