@@ -44,7 +44,7 @@ import info.javaperformance.money.MoneyFactory;
  * http://www.jarloo.com/yahoo_finance/
  */
 public class YahooCsvSecurityPriceUpdater
-        implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
+    implements ISecurityPriceUpdater, IDownloadAsyncTaskFeedback {
 
     public YahooCsvSecurityPriceUpdater(Context context) {
         mContext = context;
