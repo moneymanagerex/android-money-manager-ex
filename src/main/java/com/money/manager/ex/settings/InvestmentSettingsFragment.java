@@ -49,7 +49,8 @@ public class InvestmentSettingsFragment
     public void onCreatePreferences(Bundle bundle, String s) {
         // use either setPreferenceScreen(PreferenceScreen) or addPreferencesFromResource(int).
 
-        addPreferencesFromResource(R.xml.settings_behaviour);
+        addPreferencesFromResource(R.xml.settings_investment);
+        //todo add preferences for the quotes provider.
     }
 
     @Override
