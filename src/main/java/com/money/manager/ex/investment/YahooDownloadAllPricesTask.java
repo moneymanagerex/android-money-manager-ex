@@ -135,7 +135,7 @@ public class YahooDownloadAllPricesTask
     private void showProgressDialog() {
         mDialog = new ProgressDialog(getContext());
 
-        mDialog.setMessage(context.getString(R.string.starting_price_update));
+        mDialog.setMessage(getContext().getString(R.string.starting_price_update));
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setCancelable(false);
         mDialog.setCanceledOnTouchOutside(false);
