@@ -35,19 +35,17 @@ public class SecurityPriceUpdaterFactory {
 
         switch (provider) {
             case YahooYql:
+                //updater = new YqlSecurityPriceUpdater(context, feedback);
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
                 break;
             case YahooCsv:
-                //updater = new YahooCsvSecurityPriceUpdater(context, feedback);
-                updater = null;
+                updater = new YahooCsvSecurityPriceUpdater(context);
                 break;
             default:
                 // yql
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
                 break;
         }
-
-//        updater = new YqlSecurityPriceUpdater(context, feedback);
 
         return updater;
     }

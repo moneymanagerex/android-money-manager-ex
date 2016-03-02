@@ -66,20 +66,10 @@ public class YahooCsvSecurityPriceUpdater
 
         String[] symbolsArray = symbols.toArray(new String[symbols.size()]);
 
-        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(mContext, this);
+        YahooDownloadAllPricesTask downloader = new YahooDownloadAllPricesTask(getContext(), this);
         downloader.execute(symbolsArray);
 
         // Async call. The prices are updated in onContentDownloaded.
-    }
-
-    private String getPriceUrl(String symbol) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(mUrlPrefix);
-        builder.append(symbol);
-        builder.append(mUrlSuffix);
-
-        return builder.toString();
     }
 
     @Override
@@ -148,4 +138,19 @@ public class YahooCsvSecurityPriceUpdater
         // Notify the caller by invoking the interface method.
         EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));
     }
+
+    private Context getContext() {
+        return mContext;
+    }
+
+    private String getPriceUrl(String symbol) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(mUrlPrefix);
+        builder.append(symbol);
+        builder.append(mUrlSuffix);
+
+        return builder.toString();
+    }
+
 }
