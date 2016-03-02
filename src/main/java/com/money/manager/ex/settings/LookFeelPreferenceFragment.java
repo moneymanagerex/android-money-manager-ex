@@ -42,7 +42,7 @@ import de.greenrobot.event.EventBus;
  * Look & feel settings.
  */
 public class LookFeelPreferenceFragment
-        extends PreferenceFragment {
+    extends PreferenceFragment {
 
     private final String LOGCAT = this.getClass().getSimpleName();
 

@@ -75,6 +75,17 @@ public class SettingsFragment
             });
         }
 
+        final Preference investmentPreference = findPreference(getString(R.string.pref_investment));
+        if (investmentPreference != null) {
+            investmentPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    // todo startActivity(new Intent(getActivity(), BehaviourSettingsActivity.class));
+                    return true;
+                }
+            });
+        }
+
         final Preference passcodePreference = findPreference(getString(PreferenceConstants.PREF_SECURITY));
         if (passcodePreference != null) {
             passcodePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

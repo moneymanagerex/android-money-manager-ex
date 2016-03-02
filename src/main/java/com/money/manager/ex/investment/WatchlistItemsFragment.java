@@ -71,7 +71,6 @@ public class WatchlistItemsFragment
 
     /**
      * Create a new instance of the fragment with accountId params
-     *
      * @return new instance AllDataListFragment
      */
     public static WatchlistItemsFragment newInstance() {

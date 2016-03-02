@@ -392,34 +392,34 @@ public class WatchlistFragment
 
     private void confirmPriceUpdate() {
         new AlertDialogWrapper.Builder(getContext())
-                .setTitle(R.string.download)
-                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-                .setMessage(R.string.confirm_price_download)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // get the list of symbols
-                        String[] symbols = getAllShownSymbols();
-                        mToUpdateTotal = symbols.length;
-                        mUpdateCounter = 0;
+            .setTitle(R.string.download)
+            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .setMessage(R.string.confirm_price_download)
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // get the list of symbols
+                    String[] symbols = getAllShownSymbols();
+                    mToUpdateTotal = symbols.length;
+                    mUpdateCounter = 0;
 
-                        // update security prices
-                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                                .getUpdaterInstance(getContext());
-                        updater.downloadPrices(Arrays.asList(symbols));
-                        // results received via event
+                    // update security prices
+                    ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                            .getUpdaterInstance(getContext());
+                    updater.downloadPrices(Arrays.asList(symbols));
+                    // results received via event
 
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
-                .show();
+                    dialog.dismiss();
+                }
+            })
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            })
+            .create()
+            .show();
     }
 
     private int getAccountId() {

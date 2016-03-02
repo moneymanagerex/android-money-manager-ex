@@ -19,12 +19,12 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
-public class BehaviourSettingsActivity
+public class InvestmentSettingsActivity
     extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setSettingFragment(new BehaviourSettingsFragment());
+        setSettingFragment(new InvestmentSettingsFragment());
     }
 }

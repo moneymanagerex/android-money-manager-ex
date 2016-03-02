@@ -27,6 +27,8 @@ public class SecurityPriceUpdaterFactory {
     public static ISecurityPriceUpdater getUpdaterInstance(Context context) {
         ISecurityPriceUpdater updater;
 
+        // todo: check preferences to see which downloader to use.
+
 //        updater = new YahooCsvSecurityPriceUpdater(context, feedback);
 
 //        updater = new YqlSecurityPriceUpdater(context, feedback);

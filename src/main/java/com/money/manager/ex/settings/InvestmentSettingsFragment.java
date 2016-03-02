@@ -26,7 +26,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.utils.CalendarUtils;
 
 import java.text.ParseException;
@@ -39,11 +38,10 @@ import info.javaperformance.money.Money;
 /**
  * Look & feel settings.
  */
-public class BehaviourFragment
+public class InvestmentSettingsFragment
     extends PreferenceFragmentCompat {
 
     private static final String KEY_THRESHOLD = "AssetAllocationThreshold";
-    private static final String KEY_NOTIFICATION_TIME = "NotificationTime";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,23 +49,7 @@ public class BehaviourFragment
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // checkbox on open and favorite account
-//        final CheckBoxPreference chkFilter = (CheckBoxPreference) findPreference(getString(
-//                R.string.pref_behaviour_focus_filter));
-
-//        Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-//            @Override
-//            public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                MainActivity.setRestartActivity(true);
-//                return true;
-//            }
-//        };
-        // Set the main activity to restart on change of any of the following settings.
-//        chkFilter.setOnPreferenceChangeListener(listener);
-
-
         initializeAssetAllocationThreshold();
-        initializeNotificationTime();
     }
 
     @Override
@@ -121,54 +103,5 @@ public class BehaviourFragment
             }
         };
         threshold.setOnPreferenceClickListener(listener);
-    }
-
-    private void initializeNotificationTime() {
-        Preference preference = findPreference(getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_CHECK));
-        if (preference == null) return;
-
-        Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showTimePicker();
-                return true;
-            }
-        };
-        preference.setOnPreferenceClickListener(listener);
-    }
-
-    private void showTimePicker() {
-        final BehaviourSettings settings = new BehaviourSettings(getActivity());
-        final SimpleDateFormat formatter = new SimpleDateFormat(Constants.TIME_FORMAT);
-
-        RadialTimePickerDialogFragment.OnTimeSetListener timeSetListener = new RadialTimePickerDialogFragment.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
-                String value = String.format("%02d:%02d", hourOfDay, minute);
-                settings.setNotificationTime(value);
-            }
-        };
-
-        // get time to display (current setting)
-        String timeString = settings.getNotificationTime();
-        CalendarUtils utils = new CalendarUtils();
-
-        Date currentValue;
-        try {
-            currentValue = formatter.parse(timeString);
-            utils.setTime(currentValue);
-        } catch (ParseException ex) {
-            // use current time
-            currentValue = null;
-        }
-
-        int hour = currentValue != null ? utils.getHour() : 8;
-        int minute = currentValue != null ? utils.getMinute() : 0;
-
-        RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment()
-            .setOnTimeSetListener(timeSetListener)
-            .setStartTime(hour, minute)
-            .setThemeDark();
-        timePicker.show(getChildFragmentManager(), KEY_NOTIFICATION_TIME);
     }
 }
