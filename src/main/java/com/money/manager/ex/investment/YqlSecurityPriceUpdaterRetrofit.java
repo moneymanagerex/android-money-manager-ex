@@ -112,6 +112,14 @@ public class YqlSecurityPriceUpdaterRetrofit
      * Here we have all the prices.
      */
     public void onContentDownloaded(JsonElement response) {
+        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+
+        if (response == null) {
+            handler.showMessage(getContext().getString(R.string.error_updating_rates));
+            closeProgressDialog();
+            return;
+        }
+
         // parse Json results
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
 
@@ -125,7 +133,6 @@ public class YqlSecurityPriceUpdaterRetrofit
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        ExceptionHandler handler = new ExceptionHandler(mContext, this);
         handler.showMessage(mContext.getString(R.string.download_complete));
     }
 
@@ -175,7 +182,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         SecurityPriceModel priceModel = new SecurityPriceModel();
         priceModel.symbol = quote.get("symbol").getAsString();
 
-        ExceptionHandler handler = new ExceptionHandler(mContext, this);
+        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
 
         // Price
 
@@ -246,5 +253,9 @@ public class YqlSecurityPriceUpdaterRetrofit
 
     public void setService(IYqlService service) {
         this.yqlService = service;
+    }
+
+    private Context getContext() {
+        return mContext;
     }
 }
