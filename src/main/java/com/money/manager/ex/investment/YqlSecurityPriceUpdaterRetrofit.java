@@ -126,7 +126,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         // Notify the listener via callback.
         for (SecurityPriceModel model : pricesList) {
 
-            // Notify the caller by invoking the interface method.
+            // Notify the caller.
             EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
         }
 

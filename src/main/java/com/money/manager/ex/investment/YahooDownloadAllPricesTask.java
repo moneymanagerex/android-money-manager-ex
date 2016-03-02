@@ -41,8 +41,6 @@ public class YahooDownloadAllPricesTask
         mContext = context;
     }
 
-    private final String LOGCAT = this.getClass().getSimpleName();
-
     private Context mContext;
     private ProgressDialog mDialog = null;
     private IDownloadAsyncTaskFeedback mFeedback;
@@ -118,8 +116,10 @@ public class YahooDownloadAllPricesTask
             try {
                 csv = downloader.downloadAsText(url);
             } catch (IOException iox) {
-                Log.e(LOGCAT, iox.getMessage());
-                iox.printStackTrace();
+                ExceptionHandler handler = new ExceptionHandler(getContext());
+//                Log.e(LOGCAT, iox.getMessage());
+//                iox.printStackTrace();
+                handler.handle(iox, "downloading quote");
                 return false;
             }
             // notify parent about the price update
@@ -133,9 +133,7 @@ public class YahooDownloadAllPricesTask
     }
 
     private void showProgressDialog() {
-        Context context = mContext;
-
-        mDialog = new ProgressDialog(context);
+        mDialog = new ProgressDialog(getContext());
 
         mDialog.setMessage(context.getString(R.string.starting_price_update));
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -144,4 +142,7 @@ public class YahooDownloadAllPricesTask
         mDialog.show();
     }
 
+    private Context getContext() {
+        return mContext;
+    }
 }
