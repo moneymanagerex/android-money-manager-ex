@@ -38,6 +38,7 @@ public class AppSettings
     private GeneralSettings mGeneral;
     private LookAndFeelSettings mLookAndFeel;
     private BehaviourSettings mBehaviour;
+    private InvestmentSettings mInvestment;
     private DatabaseSettings mDatabase;
     private DropboxSettings mDropbox;
 
@@ -66,6 +67,13 @@ public class AppSettings
             mBehaviour = new BehaviourSettings(getContext());
         }
         return mBehaviour;
+    }
+
+    public InvestmentSettings getInvestmentSettings() {
+        if (mInvestment == null) {
+            mInvestment = new InvestmentSettings(getContext());
+        }
+        return mInvestment;
     }
 
     public DropboxSettings getDropboxSettings() {

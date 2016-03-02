@@ -14,5 +14,6 @@ public class InfoKeys {
     public static final String FINANCIAL_YEAR_START_MONTH = "FINANCIAL_YEAR_START_MONTH";
     public static final String SKU_ORDER_ID = "SKU_ORDER_ID";
     public static final String ASSET_ALLOCATION_DIFF_THRESHOLD = "ASSET_ALLOCATION_DIFF_THRESHOLD";
+    public static final String QUOTE_PROVIDER = "QUOTE_PROVIDER";
     public static final String PASSCODE = "PASSCODEMOBILE";
 }

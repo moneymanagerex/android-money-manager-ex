@@ -18,18 +18,20 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<ListPreference-->
-        <!--android:defaultValue="@string/last_month"-->
-        <!--android:entries="@array/show_transaction_values"-->
-        <!--android:entryValues="@array/show_transaction_values"-->
-        <!--android:key="@string/pref_income_expense_footer_period"-->
-        <!--android:title="@string/income_expense_period"-->
-        <!--android:summary="@string/income_expense_period_summary" />-->
-
     <Preference
         android:icon="@null"
         android:key="@string/pref_asset_allocation_threshold"
         android:title="@string/asset_allocation_diff_threshold"
         android:summary="@string/asset_allocation_diff_threshold_summary" />
+
+    <!-- Quote providers -->
+    <ListPreference
+        android:key="@string/pref_quote_provider"
+        android:title="@string/quote_provider"
+        android:summary="@null"
+        />
+    <!--android:defaultValue="@string/last_month"-->
+    <!--android:entries="@array/show_transaction_values"-->
+    <!--android:entryValues="@array/show_transaction_values"-->
 
 </PreferenceScreen>

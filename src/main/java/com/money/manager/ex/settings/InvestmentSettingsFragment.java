@@ -16,14 +16,17 @@
  */
 package com.money.manager.ex.settings;
 
+import android.app.ActivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.investment.QuoteProviders;
 
 import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
@@ -43,6 +46,7 @@ public class InvestmentSettingsFragment
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         initializeAssetAllocationThreshold();
+        initializeQuotesProvider();
     }
 
     @Override
@@ -50,7 +54,6 @@ public class InvestmentSettingsFragment
         // use either setPreferenceScreen(PreferenceScreen) or addPreferencesFromResource(int).
 
         addPreferencesFromResource(R.xml.settings_investment);
-        //todo add preferences for the quotes provider.
     }
 
     @Override
@@ -71,18 +74,25 @@ public class InvestmentSettingsFragment
 
     public void onEvent(AmountEnteredEvent event) {
         if (event.requestId.equals(KEY_THRESHOLD)) {
-            BehaviourSettings settings = new BehaviourSettings(getActivity());
+            InvestmentSettings settings = new InvestmentSettings(getActivity());
             settings.setAssetAllocationDifferenceThreshold(event.amount);
         }
     }
 
     // Private
 
+    private void displayQuotesProvider(String providerName) {
+        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_quote_provider));
+        if (preference == null) return;
+
+        preference.setSummary(providerName); // show current value
+    }
+
     private void initializeAssetAllocationThreshold() {
         Preference threshold = findPreference(getString(R.string.pref_asset_allocation_threshold));
         if (threshold == null) return;
 
-        final BehaviourSettings settings = new BehaviourSettings(getActivity());
+        final InvestmentSettings settings = new InvestmentSettings(getActivity());
 
         Preference.OnPreferenceClickListener listener = new Preference.OnPreferenceClickListener() {
             @Override
@@ -98,4 +108,35 @@ public class InvestmentSettingsFragment
         };
         threshold.setOnPreferenceClickListener(listener);
     }
+
+    private void initializeQuotesProvider() {
+        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_quote_provider));
+        if (preference == null) return;
+
+        // initialize
+        preference.setEntries(QuoteProviders.names());
+        preference.setEntryValues(QuoteProviders.names());
+        preference.setDefaultValue(QuoteProviders.YahooYql.name());
+
+        final InvestmentSettings settings = new InvestmentSettings(getContext());
+        QuoteProviders currentProvider = settings.getQuoteProvider();
+        preference.setSummary(currentProvider.name()); // show current value
+//        preference.setValue(currentProvider.name());
+        displayQuotesProvider(currentProvider.name());
+
+        Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                // save
+                String name = (String) o;
+                QuoteProviders provider = QuoteProviders.valueOf(name);
+                settings.setQuoteProvider(provider);
+
+                displayQuotesProvider(name);
+                return true;
+            }
+        };
+        preference.setOnPreferenceChangeListener(listener);
+    }
+
 }

@@ -20,6 +20,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.money.manager.ex.settings.BehaviourSettings;
+import com.money.manager.ex.settings.InvestmentSettings;
 
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
@@ -47,7 +48,7 @@ public class AssetAllocationOverviewActivity
         setContentView(R.layout.activity_asset_allocation_overview);
 
         // load difference threshold
-        BehaviourSettings settings = new BehaviourSettings(this);
+        InvestmentSettings settings = new InvestmentSettings(this);
         this.differenceThreshold = settings.getAssetAllocationDifferenceThreshold();
 
         // get asset allocation

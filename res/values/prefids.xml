@@ -90,4 +90,5 @@
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
     <!-- investment -->
     <string name="pref_investment">pref_investment</string>
+    <string name="pref_quote_provider">pref_quote_provider</string>
 </resources>

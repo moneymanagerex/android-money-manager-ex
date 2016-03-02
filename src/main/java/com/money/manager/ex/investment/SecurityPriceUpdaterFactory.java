@@ -19,6 +19,8 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 
+import com.money.manager.ex.settings.InvestmentSettings;
+
 /**
  * Factory for security price updater.
  * Set here when changing the updater.
@@ -27,13 +29,25 @@ public class SecurityPriceUpdaterFactory {
     public static ISecurityPriceUpdater getUpdaterInstance(Context context) {
         ISecurityPriceUpdater updater;
 
-        // todo: check preferences to see which downloader to use.
+        // check preferences to see which downloader to use.
+        InvestmentSettings settings = new InvestmentSettings(context);
+        QuoteProviders provider = settings.getQuoteProvider();
 
-//        updater = new YahooCsvSecurityPriceUpdater(context, feedback);
+        switch (provider) {
+            case YahooYql:
+                updater = new YqlSecurityPriceUpdaterRetrofit(context);
+                break;
+            case YahooCsv:
+                //updater = new YahooCsvSecurityPriceUpdater(context, feedback);
+                updater = null;
+                break;
+            default:
+                // yql
+                updater = new YqlSecurityPriceUpdaterRetrofit(context);
+                break;
+        }
 
 //        updater = new YqlSecurityPriceUpdater(context, feedback);
-
-        updater = new YqlSecurityPriceUpdaterRetrofit(context);
 
         return updater;
     }

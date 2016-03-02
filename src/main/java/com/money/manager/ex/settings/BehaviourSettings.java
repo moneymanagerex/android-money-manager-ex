@@ -39,28 +39,6 @@ public class BehaviourSettings
 
     }
 
-    /**
-     * Threshold percentage at which the difference in actual asset allocation vs set asset
-     * allocation will be painted. Green, if the current allocation is higher than the set allocation,
-     * and red if it is smaller for the set percentage of the original value.
-     * I.e. 20 represents 20% difference compared to the set asset allocation value.
-     * @return A number that represents the percentage value.
-     */
-    public Money getAssetAllocationDifferenceThreshold() {
-        InfoService service = new InfoService(getContext());
-        String value = service.getInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD);
-
-        if (StringUtils.isEmpty(value)) {
-            value = "-1";
-        }
-        return MoneyFactory.fromString(value);
-    }
-
-    public void setAssetAllocationDifferenceThreshold(Money value) {
-        InfoService service = new InfoService(getContext());
-        service.setInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD, value.toString());
-    }
-
     public boolean getNotificationRecurringTransaction() {
         SharedPreferences preferences = getSharedPreferences();
         String key = getContext().getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS);
