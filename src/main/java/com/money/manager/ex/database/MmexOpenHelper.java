@@ -463,9 +463,10 @@ public class MmexOpenHelper
      */
     @Override
     public void finalize() throws Throwable {
-        if (mInstance != null) {
-            mInstance.close();
-        }
+        closeDatabase();
+//        if (mInstance != null) {
+//            mInstance.close();
+//        }
 
         super.finalize();
     }
