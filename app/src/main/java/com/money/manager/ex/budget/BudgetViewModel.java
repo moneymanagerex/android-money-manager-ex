@@ -37,5 +37,6 @@ public class BudgetViewModel
     public void setName(String value) {
         this.name = value;
 //        notifyPropertyChanged(BR.name);
+        notifyChange();
     }
 }

@@ -19,7 +19,9 @@ package com.money.manager.ex.datalayer;
 
 import android.content.Context;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Budget;
 
 /**
@@ -36,6 +38,21 @@ public class BudgetRepository
     @Override
     public String[] getAllColumns() {
         return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
+    }
+
+    public Budget load(int id) {
+        if (id == Constants.NOT_SET) return null;
+
+        WhereStatementGenerator where = new WhereStatementGenerator();
+        where.addStatement(Budget.BUDGETYEARID, "=", id);
+
+        return query(where.getWhere());
+    }
+
+    public Budget query(String selection) {
+        //todo finish
+//        return query(null, selection, null);
+        return null;
     }
 
 }

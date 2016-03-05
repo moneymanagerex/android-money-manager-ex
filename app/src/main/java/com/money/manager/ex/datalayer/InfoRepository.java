@@ -1,13 +1,10 @@
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.servicelayer.InfoService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,19 +23,13 @@ public class InfoRepository
     }
 
     public List<Info> loadAll(String infoName) {
-        ContentValues[] results = this.query(getAllColumns(),
+        List<Info> results = this.query(Info.class,
+            getAllColumns(),
             Info.INFONAME + "=?",
             new String[] { infoName },
             null);
 
-        List<Info> result = new ArrayList<>();
-        for (ContentValues record : results) {
-            Info entity = new Info();
-            entity.contentValues.putAll(record);
-            result.add(entity);
-        }
-
-        return result;
+        return results;
     }
 
     public int delete(long id) {

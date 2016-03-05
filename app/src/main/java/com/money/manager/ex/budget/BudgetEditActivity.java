@@ -18,12 +18,15 @@
 package com.money.manager.ex.budget;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.databinding.ActivityBudgetEditBinding;
+import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 
 public class BudgetEditActivity
@@ -31,21 +34,21 @@ public class BudgetEditActivity
 
     public static final String KEY_BUDGET_ID = "budgetId";
 
+    private Budget mEntity;
+    private ActivityBudgetEditBinding mBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_budget_edit);
 
+        // todo data binding, existing or new budget.
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
+
         // this handles OK/Cancel button clicks in the toolbar.
         setToolbarStandardAction(getToolbar());
 
-        // todo data binding, existing or new budget.
-        ActivityBudgetEditBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
-        Budget budget = new Budget();
-        budget.setName("test");
-//        BudgetViewModel model = new BudgetViewModel();
-
-        binding.setBudget(budget);
+        // handle intent
 
     }
 
@@ -68,4 +71,25 @@ public class BudgetEditActivity
 //        }
     }
 
+    // Private
+
+    private void bindData() {
+        mEntity.setName("test");
+//        BudgetViewModel model = new BudgetViewModel();
+
+        mBinding.setBudget(mEntity);
+    }
+
+    private void handleIntent() {
+        if (getIntent().getAction().equals(Intent.ACTION_INSERT)) {
+            // new record
+            mEntity = new Budget();
+        }
+        if (getIntent().getAction().equals(Intent.ACTION_EDIT)) {
+            // existing record
+            int budgetId = getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
+            BudgetRepository repo = new BudgetRepository(this);
+            mEntity = repo.load(budgetId);
+        }
+    }
 }

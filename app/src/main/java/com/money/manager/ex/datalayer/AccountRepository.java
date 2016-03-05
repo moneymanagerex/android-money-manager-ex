@@ -58,7 +58,7 @@ public class AccountRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Account.ACCOUNTID, "=", id);
 
-        return query(where.getWhere());
+        return first(where.getWhere());
     }
 
     public boolean delete(int id) {
@@ -118,10 +118,11 @@ public class AccountRepository
     }
 
     public int loadCurrencyIdFor(int id) {
-        Account account = query(
+        Account account = (Account) first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
-            new String[] { Integer.toString(id)});
+            new String[] { Integer.toString(id)},
+            null);
 
         if (account == null) {
             String message = this.getContext().getString(R.string.account_not_found) + " " + id;
@@ -147,23 +148,8 @@ public class AccountRepository
         return name;
     }
 
-    public Account query(String selection) {
-        return query(null, selection, null);
-    }
-
-    public Account query(String[] projection, String selection, String[] args) {
-        Cursor c = openCursor(projection, selection, args);
-        if (c == null) return null;
-
-        Account entity = null;
-
-        if (c.moveToNext()) {
-            entity = new Account();
-            entity.loadFromCursor(c);
-        }
-        c.close();
-
-        return entity;
+    public Account first(String selection) {
+        return (Account) first(Account.class, null, selection, null, null);
     }
 
     public boolean save(Account value) {
@@ -172,7 +158,7 @@ public class AccountRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Account.ACCOUNTID, "=", id);
 
-        return update(id, value.contentValues, where);
+        return update(id, value, where);
     }
 
     public Cursor getInvestmentAccountsCursor(boolean openOnly) {
@@ -190,18 +176,6 @@ public class AccountRepository
 
         return c;
     }
-
-//    public List<Account> loadInvestmentAccounts(boolean openOnly) {
-//        Cursor c = getInvestmentAccountsCursor(openOnly);
-//
-//        List<Account> result = new ArrayList<>();
-//        while (c.moveToNext()) {
-//            result.add(Account.from(c));
-//        }
-//        c.close();
-//
-//        return result;
-//    }
 
     public boolean anyAccountsUsingCurrency(int currencyId) {
         int links = count(Account.CURRENCYID + "=?", new String[]{Integer.toString(currencyId)});

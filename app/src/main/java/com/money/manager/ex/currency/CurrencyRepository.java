@@ -68,7 +68,7 @@ public class CurrencyRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Currency.CURRENCYID, "=", id);
 
-        return update(id, value.contentValues, where);
+        return update(id, value, where);
     }
 
     public boolean delete(int id) {

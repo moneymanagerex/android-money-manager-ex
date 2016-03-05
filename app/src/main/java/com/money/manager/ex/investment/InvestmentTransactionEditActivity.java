@@ -218,7 +218,6 @@ public class InvestmentTransactionEditActivity
             case ID_PURCHASE_PRICE:
                 mStock.setPurchasePrice(event.amount);
                 showPurchasePrice();
-//                CurrencyService currencyService = new CurrencyService(this);
 
                 if (mStock.getCurrentPrice().isZero()) {
                     mStock.setCurrentPrice(event.amount);
@@ -353,7 +352,7 @@ public class InvestmentTransactionEditActivity
         // save
         StockRepository repository = new StockRepository(getApplicationContext());
         if (mStock.getId() != null) {
-            repository.update(mStock.getId(), mStock);
+            repository.save(mStock);
         } else {
             repository.insert(mStock);
         }

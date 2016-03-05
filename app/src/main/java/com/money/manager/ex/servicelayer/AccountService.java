@@ -63,10 +63,7 @@ public class AccountService
     public AccountService(Context context) {
         super(context);
 
-        this.accountRepository = new AccountRepository(context);
     }
-
-    private AccountRepository accountRepository;
 
     public Account createAccount(String name, AccountTypes accountType, AccountStatuses status,
                                  boolean favourite, int currencyId) {
@@ -164,20 +161,14 @@ public class AccountService
 
             switch (TransactionTypes.valueOf(transType)) {
                 case Withdrawal:
-//                    total -= cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
                     DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                             tx.contentValues, QueryAllData.Amount);
-//                    total = total.subtract(BigDecimal.valueOf(
-//                        cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT))));
                     amount = tx.getAmount();
                     total = total.subtract(amount);
                     break;
                 case Deposit:
                     DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                             tx.contentValues, QueryAllData.Amount);
-//                    total += cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
-//                    total = total.add(BigDecimal.valueOf(
-//                        cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT))));
                     amount = tx.getAmount();
                     total = total.add(amount);
                     break;
@@ -188,17 +179,11 @@ public class AccountService
                     if (tx.getAccountId().equals(accountId)) {
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                                 tx.contentValues, QueryAllData.Amount);
-//                        total -= cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT));
-//                        total = total.subtract(BigDecimal.valueOf(
-//                            cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TRANSAMOUNT))));
                         amount = tx.getAmount();
                         total = total.subtract(amount);
                     } else {
-//                        total += cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT));
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TOTRANSAMOUNT,
                                 tx.contentValues, QueryAllData.Amount);
-//                        total = total.add(BigDecimal.valueOf(
-//                            cursor.getDouble(cursor.getColumnIndex(ITransactionEntity.TOTRANSAMOUNT))));
                         amount = tx.getAmount();
                         total = total.add(amount);
                     }
@@ -212,9 +197,11 @@ public class AccountService
 
     public String getAccountCurrencyCode(int accountId) {
         AccountRepository repo = new AccountRepository(getContext());
-        Account account = repo.query(new String[] {Account.CURRENCYID},
+        Account account = (Account) repo.first(Account.class,
+            new String[] {Account.CURRENCYID},
             Account.ACCOUNTID + "=?",
-            new String[] { Integer.toString(accountId)});
+            new String[] { Integer.toString(accountId)},
+            null);
         int currencyId = account.getCurrencyId();
 
         CurrencyService currencyService = new CurrencyService(getContext());
@@ -272,11 +259,6 @@ public class AccountService
 
     public void loadInvestmentAccountsToSpinner(Spinner spinner) {
         if (spinner == null) return;
-
-//        if (context == null) {
-//            Log.e(this.getClass().getSimpleName(), "Context not sent when loading accounts");
-//            return;
-//        }
 
         AccountRepository repo = new AccountRepository(getContext());
         Cursor cursor = repo.getInvestmentAccountsCursor(true);

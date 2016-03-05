@@ -224,7 +224,6 @@ public class FormatUtilities {
         formatter.setDecimalFormatSymbols(formatSymbols);
 
         String result = formatter.format(value.toDouble());
-        // value.toBigDecimal()
         return result;
     }
 
