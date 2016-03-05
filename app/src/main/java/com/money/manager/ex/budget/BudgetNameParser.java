@@ -68,7 +68,7 @@ public class BudgetNameParser {
 
     private int getMonthFromYearMonth(String yearMonthString) {
         int position = yearMonthString.indexOf(SEPARATOR);
-        String valueString = yearMonthString.substring(position);
+        String valueString = yearMonthString.substring(position + 1);
         return Integer.parseInt(valueString);
     }
 }

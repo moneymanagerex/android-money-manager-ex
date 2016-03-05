@@ -202,7 +202,7 @@ public class BudgetListFragment
 
         menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
         menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
-        menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
+        //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
     }
 
     @Override
@@ -277,6 +277,8 @@ public class BudgetListFragment
 
     private void confirmDelete(final int budgetId) {
         new MaterialDialog.Builder(getActivity())
+                .title(R.string.delete)
+                .content(R.string.confirmDelete)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -286,7 +288,6 @@ public class BudgetListFragment
                     }
                 })
                 .neutralText(android.R.string.cancel)
-                .build()
                 .show();
     }
 }
