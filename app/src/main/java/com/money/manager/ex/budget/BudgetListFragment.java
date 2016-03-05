@@ -216,12 +216,11 @@ public class BudgetListFragment
                 editBudget(budgetId);
                 break;
             case ContextMenuIds.DELETE:
-                // todo implement
-                BudgetService service = new BudgetService();
-                service.delete(budgetId);
+                confirmDelete(budgetId);
                 break;
             case ContextMenuIds.COPY:
-                // todo implement
+                BudgetService service = new BudgetService(getActivity());
+                service.copy(budgetId);
                 break;
             default:
                 return false;
@@ -262,32 +261,6 @@ public class BudgetListFragment
         getLoaderManager().initLoader(LOADER_BUDGETS, null, this);
     }
 
-    private void promptForBudgetName() {
-        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_budget_period, null);
-
-        // selector for year/month
-        NumberPicker yearPicker = (NumberPicker) dialogView.findViewById(R.id.yearNumberPicker);
-        yearPicker.setMinValue(2000);
-
-        NumberPicker monthPicker = (NumberPicker) dialogView.findViewById(R.id.monthNumberPicker);
-        monthPicker.setMinValue(1);
-        monthPicker.setMaxValue(12);
-
-        new MaterialDialog.Builder(getActivity())
-            .title(R.string.add_budget)
-            .customView(dialogView, false)
-            .positiveText(android.R.string.ok)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    Core.alertDialog(getActivity(), "blah");
-                }
-            })
-            .negativeText(android.R.string.cancel)
-//            .neutralText(android.R.string.cancel)
-            .show();
-    }
-
     private void editBudget(int budgetId) {
         Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
         intent.putExtra(BudgetEditActivity.KEY_BUDGET_ID, budgetId);
@@ -300,5 +273,20 @@ public class BudgetListFragment
         Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         startActivityForResult(intent, REQUEST_EDIT_BUDGET);
+    }
+
+    private void confirmDelete(final int budgetId) {
+        new MaterialDialog.Builder(getActivity())
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        BudgetService service = new BudgetService(getActivity());
+                        service.delete(budgetId);
+                    }
+                })
+                .neutralText(android.R.string.cancel)
+                .build()
+                .show();
     }
 }

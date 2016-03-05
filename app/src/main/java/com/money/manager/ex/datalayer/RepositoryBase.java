@@ -166,12 +166,15 @@ public abstract class RepositoryBase<T extends EntityBase>
 
     /**
      * Generic update method.
-     * @param id        Id of the entity
      * @param entity    Entity values to store.
      * @param where     Condition for entity selection.
      * @return  Boolean indicating whether the operation was successful.
      */
-    protected boolean update(int id, EntityBase entity, String where) {
+    protected boolean update(EntityBase entity, String where) {
+        return update(entity, where, null);
+    }
+
+    protected boolean update(EntityBase entity, String where, String[] selectionArgs) {
         boolean result = false;
 
         ContentValues values = entity.contentValues;
@@ -179,15 +182,16 @@ public abstract class RepositoryBase<T extends EntityBase>
         values.remove("_id");
 
         int updateResult = getContext().getContentResolver().update(this.getUri(),
-            values,
-            where,
-            null
+                values,
+                where,
+                selectionArgs
         );
 
         if (updateResult != 0) {
             result = true;
         } else {
-            Log.w(this.getClass().getSimpleName(), "update failed, " + this.getUri() + ", id:" + id);
+            Log.w(this.getClass().getSimpleName(), "update failed, " + this.getUri() +
+                    ", id:" + entity.contentValues);
         }
 
         return  result;

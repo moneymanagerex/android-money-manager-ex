@@ -17,13 +17,33 @@
 
 package com.money.manager.ex.budget;
 
+import android.content.Context;
+
+import com.money.manager.ex.datalayer.BudgetRepository;
+import com.money.manager.ex.servicelayer.ServiceBase;
+
 /**
  * Budgets business logic
  */
-public class BudgetService {
-    public boolean delete(int budgetId) {
-        // todo implement
+public class BudgetService
+        extends ServiceBase {
 
-        return false;
+    public BudgetService(Context context) {
+        super(context);
+    }
+
+    public boolean delete(int budgetId) {
+        BudgetRepository repo = new BudgetRepository(getContext());
+        return repo.delete(budgetId);
+    }
+
+    /**
+     * Copy budget. It will load the budget with entries and create a copy.
+     * Need to get the budget destination period. The period can be only a year/month like the
+     * original budget.
+     * @param budgetId The budget to copy.
+     */
+    public void copy(int budgetId) {
+        //todo complete
     }
 }

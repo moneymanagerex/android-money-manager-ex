@@ -169,7 +169,7 @@
     <!-- application string -->
     <string name="about">About</string>
     <string name="add">Add</string>
-    <string name="confirmDelete">Are you sure you want to delete?</string>
+    <string name="confirmDelete">Are you sure you want to delete the record?</string>
     <string name="date">Date</string>
     <string name="delete">Delete</string>
     <string name="download">Download</string>
@@ -701,8 +701,12 @@
     <string name="invalid_recurrence_type">Invalid recurrence type</string>
     <string name="account_not_found">Account not found</string>
     <string name="favourite">Favourite</string>
-    <string name="budget_name">Budget Name</string>
+
+    <!-- budgets -->
     <string name="add_budget">Add Budget</string>
+    <string name="budget_name">Budget Name</string>
+    <string name="budget_year">Budget Year</string>
+    <string name="budget_month">Budget Month</string>
 
     <string name="quote_provider">Quote provider</string>
     <string name="copy">Copy</string>

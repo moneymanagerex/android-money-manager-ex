@@ -68,6 +68,6 @@ public class PayeeRepository
 
     public boolean save(Payee payee) {
         int id = payee.getId();
-        return super.update(id, payee, Payee.PAYEEID + "=" + id);
+        return super.update(payee, Payee.PAYEEID + "=" + id);
     }
 }

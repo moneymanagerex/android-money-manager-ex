@@ -85,6 +85,6 @@ public class SplitCategoriesRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(SplitCategory.SPLITTRANSID, "=", entity.getId());
 
-        return update(entity.getId(), entity, where.getWhere());
+        return update(entity, where.getWhere());
     }
 }

@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -38,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
@@ -757,25 +759,18 @@ public class EditTransactionCommonFunctions {
     public boolean onActionCancelClick() {
         if (getDirty()) {
             final MaterialDialog dialog = new MaterialDialog.Builder(mParent)
-                    .title(android.R.string.cancel)
-                    .content(R.string.transaction_cancel_confirm)
-                    .positiveText(R.string.discard)
-                    .negativeText(R.string.keep_editing)
-                    .cancelable(false)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            cancelActivity();
-
-                            super.onPositive(dialog);
-                        }
-
-                        @Override
-                        public void onNegative(MaterialDialog dialog) {
-                            super.onNegative(dialog);
-                        }
-                    })
-                    .build();
+                .title(android.R.string.cancel)
+                .content(R.string.transaction_cancel_confirm)
+                .positiveText(R.string.discard)
+                .negativeText(R.string.keep_editing)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        cancelActivity();
+                    }
+                })
+                .build();
             dialog.show();
         } else {
             // Just close activity

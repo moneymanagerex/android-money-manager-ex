@@ -66,6 +66,12 @@ public class CalendarUtils {
         return mCalendar.get(Calendar.MINUTE);
     }
 
+    public int getYear() { return mCalendar.get(Calendar.YEAR); }
+
+    public int getMonth() {
+        return mCalendar.get(Calendar.MONTH);
+    }
+
     public CalendarUtils setCalendar(Calendar calendar) {
         mCalendar = calendar;
         return this;

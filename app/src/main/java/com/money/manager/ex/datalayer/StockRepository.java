@@ -158,7 +158,7 @@ public class StockRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Stock.STOCKID, "=", id);
 
-        return update(id, stock, where);
+        return update(stock, where);
     }
 
     /**

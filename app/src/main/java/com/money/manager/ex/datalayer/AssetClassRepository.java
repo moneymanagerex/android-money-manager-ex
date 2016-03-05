@@ -81,24 +81,7 @@ public class AssetClassRepository
     }
 
     public AssetClass first(String selection) {
-        return first(null, selection, null);
-    }
-
-    public AssetClass first(String[] projection, String selection, String[] args) {
-        Cursor c = openCursor(projection, selection, args);
-
-        if (c == null) return null;
-
-        AssetClass entity = null;
-
-        if (c.moveToNext()) {
-            entity = new AssetClass();
-            entity.loadFromCursor(c);
-        }
-
-        c.close();
-
-        return entity;
+        return (AssetClass) first(AssetClass.class, null, selection, null, null);
     }
 
     public boolean insert(AssetClass value) {
@@ -137,7 +120,7 @@ public class AssetClassRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(AssetClass.ID, "=", id);
 
-        return update(id, value, where);
+        return update(value, where);
     }
 
     public boolean bulkUpdate(List<AssetClass> entities) {

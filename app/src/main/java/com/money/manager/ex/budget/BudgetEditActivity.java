@@ -21,20 +21,31 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.codetroopers.betterpickers.expirationpicker.ExpirationPickerBuilder;
+import com.codetroopers.betterpickers.expirationpicker.ExpirationPickerDialogFragment;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.databinding.ActivityBudgetEditBinding;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.utils.CalendarUtils;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class BudgetEditActivity
     extends BaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
 
-    private Budget mEntity;
+    private BudgetViewModel mModel;
     private ActivityBudgetEditBinding mBinding;
 
     @Override
@@ -42,14 +53,18 @@ public class BudgetEditActivity
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_budget_edit);
 
-        // todo data binding, existing or new budget.
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
         setToolbarStandardAction(getToolbar());
 
-        // handle intent
+        handleIntent();
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // todo
+        //outState.
     }
 
     @Override
@@ -61,35 +76,106 @@ public class BudgetEditActivity
 
     @Override
     public boolean onActionDoneClick() {
-//        if (saveAccount()) {
-//            // If everything is okay, finish the activity
-//        setResult(RESULT_OK);
-//            finish();
-//            return true;
-//        } else {
+        if (save()) {
+            // If everything is okay, finish the activity
+        setResult(RESULT_OK);
+            finish();
+            return true;
+        } else {
             return false;
-//        }
+        }
+    }
+
+    public void onSelectYear(View v) {
+        CalendarUtils calendar = new CalendarUtils();
+        int currentYear = calendar.getYear();
+        int year;
+        if (mModel.year != 0) {
+            year = mModel.year;
+        } else {
+            year = currentYear;
+        }
+
+        NumberPickerBuilder npb = new NumberPickerBuilder()
+            .setFragmentManager(getSupportFragmentManager())
+            .setStyleResId(R.style.BetterPickersDialogFragment)
+            .setLabelText(getString(R.string.year))
+            .setPlusMinusVisibility(View.INVISIBLE)
+            .setDecimalVisibility(View.INVISIBLE)
+            .setMinNumber(BigDecimal.valueOf(currentYear - 10))
+            .setMaxNumber(BigDecimal.valueOf(currentYear + 10))
+            .setCurrentNumber(year)
+            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
+                @Override
+                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+                    mModel.setYear(number.intValue());
+                }
+            });
+        npb.show();
+    }
+
+    public void onSelectMonth(View v) {
+        int month;
+        if (mModel.month != 0) {
+            month = mModel.month;
+        } else {
+            CalendarUtils calendar = new CalendarUtils();
+            month = calendar.getMonth();
+        }
+
+        NumberPickerBuilder npb = new NumberPickerBuilder()
+            .setFragmentManager(getSupportFragmentManager())
+            .setStyleResId(R.style.BetterPickersDialogFragment)
+            .setLabelText(getString(R.string.month))
+            .setPlusMinusVisibility(View.INVISIBLE)
+            .setDecimalVisibility(View.INVISIBLE)
+            .setMinNumber(BigDecimal.ONE)
+            .setMaxNumber(BigDecimal.valueOf(12))
+            .setCurrentNumber(month)
+            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
+                @Override
+                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+                    mModel.setMonth(number.intValue());
+                }
+            });
+        npb.show();
     }
 
     // Private
 
-    private void bindData() {
-        mEntity.setName("test");
-//        BudgetViewModel model = new BudgetViewModel();
-
-        mBinding.setBudget(mEntity);
+    private int getBudgetId() {
+        return getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
     }
 
     private void handleIntent() {
+        Budget budget = null;
         if (getIntent().getAction().equals(Intent.ACTION_INSERT)) {
             // new record
-            mEntity = new Budget();
+            budget = new Budget();
         }
         if (getIntent().getAction().equals(Intent.ACTION_EDIT)) {
             // existing record
-            int budgetId = getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
+            int budgetId = getBudgetId();
             BudgetRepository repo = new BudgetRepository(this);
-            mEntity = repo.load(budgetId);
+            budget = repo.load(budgetId);
         }
+
+        mModel = BudgetViewModel.from(budget);
+
+        mBinding.setBudget(mModel);
+    }
+
+    private boolean save() {
+        boolean result = false;
+
+        int budgetId = getBudgetId();
+        Budget budget = new Budget();
+        budget.setId(budgetId);
+        mModel.saveTo(budget);
+
+        BudgetRepository repo = new BudgetRepository(this);
+        repo.save(budget);
+
+        return result;
     }
 }
