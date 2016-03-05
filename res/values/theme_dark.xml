@@ -36,7 +36,8 @@
 
     <!-- Application Theme, Material Dark -->
     <style name="Theme.Money.Manager.Dark" parent="@style/_App">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
 

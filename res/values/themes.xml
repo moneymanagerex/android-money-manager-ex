@@ -62,7 +62,8 @@
 
     <!-- Application Theme, Material Light -->
     <style name="Theme.Money.Manager.Light" parent="@style/App_Light_DarkActionBar">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
