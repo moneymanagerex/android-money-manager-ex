@@ -33,10 +33,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -92,32 +94,31 @@ public class AccountListFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        // take cursor
-        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-        cursor.moveToPosition(info.position);
+        super.onCreateContextMenu(menu, v, menuInfo);
 
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // get selected item name
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+        Cursor cursor = (Cursor) adapter.getItem(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
 
-        String[] menuItems = getResources().getStringArray(R.array.context_menu);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
+        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//        Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-//        cursor.moveToPosition(info.position);
         int accountId = (int) info.id;
+        int itemId = item.getItemId();
 
-        switch (item.getItemId()) {
-            case 0: //EDIT
+        switch (itemId) {
+            case ContextMenuIds.EDIT:
                 startAccountListEditActivity(accountId);
                 break;
 
-            case 1: //DELETE
+            case ContextMenuIds.DELETE:
                 AccountService service = new AccountService(getActivity());
                 if (service.isAccountUsed(accountId)) {
                     new AlertDialogWrapper.Builder(getContext())
