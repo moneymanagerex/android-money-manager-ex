@@ -128,20 +128,20 @@ public class BudgetsActivity
         Core core = new Core(getApplicationContext());
 
         // show navigation fragment
-        BudgetsListFragment fragment = (BudgetsListFragment) getSupportFragmentManager()
-                .findFragmentByTag(BudgetsListFragment.class.getSimpleName());
+        BudgetListFragment fragment = (BudgetListFragment) getSupportFragmentManager()
+                .findFragmentByTag(BudgetListFragment.class.getSimpleName());
         if (fragment == null) {
             // fragment create
-            fragment = BudgetsListFragment.newInstance();
+            fragment = BudgetListFragment.newInstance();
 
             // add to stack
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, BudgetsListFragment.class.getSimpleName())
+                    .replace(R.id.fragmentContent, fragment, BudgetListFragment.class.getSimpleName())
                     .commit();
         } else {
             if (core.isTablet()) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, fragment, BudgetsListFragment.class.getSimpleName())
+                        .replace(R.id.fragmentContent, fragment, BudgetListFragment.class.getSimpleName())
                         .commit();
             }
         }
@@ -166,7 +166,7 @@ public class BudgetsActivity
      */
     public void showFragment(Fragment fragment, String tagFragment) {
         // In tablet layout, do not try to display the Home Fragment again. Show empty fragment.
-        if (isDualPanel() && tagFragment.equalsIgnoreCase(BudgetsListFragment.class.getName())) {
+        if (isDualPanel() && tagFragment.equalsIgnoreCase(BudgetListFragment.class.getName())) {
             fragment = new Fragment();
             tagFragment = "Empty";
         }
@@ -183,7 +183,7 @@ public class BudgetsActivity
             transaction.replace(R.id.fragmentContent, fragment, tagFragment);
 
             // todo: enable going back only if showing the list.
-//            boolean showingList = tagFragment.equals(BudgetsListFragment.class.getName());
+//            boolean showingList = tagFragment.equals(BudgetListFragment.class.getName());
 //            setDisplayHomeAsUpEnabled(showingList);
         }
         transaction.addToBackStack(null);

@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.budget;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +30,8 @@ import android.widget.NumberPicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
@@ -36,29 +40,29 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.BudgetYear;
 
-import java.util.Calendar;
-
 import de.greenrobot.event.EventBus;
 
 /**
  * Activities that contain this fragment must implement the
- * {@link BudgetsListFragment} interface
+ * {@link BudgetListFragment} interface
  * to handle interaction events.
- * Use the {@link BudgetsListFragment#newInstance} factory method to
+ * Use the {@link BudgetListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BudgetsListFragment
+public class BudgetListFragment
     extends BaseListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final int REQUEST_EDIT_BUDGET = 1;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment BudgetsListFragment.
+     * @return A new instance of fragment BudgetListFragment.
      */
-    public static BudgetsListFragment newInstance() {
-        BudgetsListFragment fragment = new BudgetsListFragment();
+    public static BudgetListFragment newInstance() {
+        BudgetListFragment fragment = new BudgetListFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
@@ -69,7 +73,7 @@ public class BudgetsListFragment
 
     private MoneySimpleCursorAdapter mAdapter;
 
-    public BudgetsListFragment() {
+    public BudgetListFragment() {
         // Required empty public constructor
     }
 
@@ -82,8 +86,10 @@ public class BudgetsListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //todo setFloatingActionButtonVisible(true);
-        //todo setFloatingActionButtonAttachListView(true);
+        if (BuildConfig.DEBUG) {
+            setFloatingActionButtonVisible(true);
+            setFloatingActionButtonAttachListView(true);
+        }
     }
 
     @Override
@@ -98,6 +104,21 @@ public class BudgetsListFragment
 //        // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_budgets_list, container, false);
 //    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_CANCELED) return;
+
+        switch (requestCode) {
+            case REQUEST_EDIT_BUDGET:
+                // refresh budget list
+                getLoaderManager().restartLoader(LOADER_BUDGETS, null, this);
+                break;
+        }
+
+    }
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
@@ -172,8 +193,7 @@ public class BudgetsListFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        // add new budget
-        promptForBudgetName();
+        createBudget();
     }
 
     // Private
@@ -215,5 +235,19 @@ public class BudgetsListFragment
             .negativeText(android.R.string.cancel)
 //            .neutralText(android.R.string.cancel)
             .show();
+    }
+
+    private void editBudget(int budgetId) {
+        Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
+        intent.putExtra(BudgetEditActivity.KEY_BUDGET_ID, budgetId);
+        intent.setAction(Intent.ACTION_EDIT);
+        //startActivity(intent);
+        startActivityForResult(intent, REQUEST_EDIT_BUDGET);
+    }
+
+    private void createBudget() {
+        Intent intent = new Intent(getActivity(), BudgetEditActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivityForResult(intent, REQUEST_EDIT_BUDGET);
     }
 }
