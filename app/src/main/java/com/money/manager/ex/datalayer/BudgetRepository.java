@@ -23,6 +23,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 
 /**
  * Budget repository.
@@ -40,19 +41,36 @@ public class BudgetRepository
         return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
     }
 
+    public boolean delete(int id) {
+        int deleted = super.delete(Budget.BUDGETYEARID + "=?", MyDatabaseUtils.getArgsForId(id));
+        return deleted > 0;
+    }
+
     public Budget load(int id) {
         if (id == Constants.NOT_SET) return null;
 
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(Budget.BUDGETYEARID, "=", id);
 
-        return query(where.getWhere());
+        Budget result = super.first(Budget.class,
+                null,
+                where.getWhere(),
+                null,
+                null);
+        return result;
     }
 
-    public Budget query(String selection) {
-        //todo finish
-//        return query(null, selection, null);
-        return null;
-    }
+    public boolean save(Budget entity) {
+        boolean result = false;
 
+        if (entity.getId() == null || entity.getId() == Constants.NOT_SET) {
+            // new record
+            int id = super.insert(entity.contentValues);
+            result = id != 0;
+        } else {
+            result = super.update(entity, Budget.BUDGETYEARID + "=?",
+                    MyDatabaseUtils.getArgsForId(entity.getId()));
+        }
+        return result;
+    }
 }

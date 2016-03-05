@@ -85,6 +85,6 @@ public class SplitRecurringCategoriesRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(SplitRecurringCategory.SPLITTRANSID, "=", entity.getId());
 
-        return update(entity.getId(), entity, where.getWhere());
+        return update(entity, where.getWhere());
     }
 }

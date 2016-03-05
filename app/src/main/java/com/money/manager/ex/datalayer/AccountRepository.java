@@ -28,6 +28,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.utils.MyDatabaseUtils;
 
 /**
  * Repository for Accounts
@@ -121,7 +122,7 @@ public class AccountRepository
         Account account = (Account) first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
-            new String[] { Integer.toString(id)},
+            MyDatabaseUtils.getArgsForId(id),
             null);
 
         if (account == null) {
@@ -158,7 +159,7 @@ public class AccountRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Account.ACCOUNTID, "=", id);
 
-        return update(id, value, where);
+        return update(value, where);
     }
 
     public Cursor getInvestmentAccountsCursor(boolean openOnly) {
@@ -178,7 +179,8 @@ public class AccountRepository
     }
 
     public boolean anyAccountsUsingCurrency(int currencyId) {
-        int links = count(Account.CURRENCYID + "=?", new String[]{Integer.toString(currencyId)});
+        int links = count(Account.CURRENCYID + "=?",
+                MyDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
     }
 }

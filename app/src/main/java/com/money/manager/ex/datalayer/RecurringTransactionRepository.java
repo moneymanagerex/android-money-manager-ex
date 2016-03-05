@@ -91,7 +91,7 @@ public class RecurringTransactionRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(RecurringTransaction.BDID, "=", id);
 
-        return update(id, value, where);
+        return update(value, where);
     }
 
 }

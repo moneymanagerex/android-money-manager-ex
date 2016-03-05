@@ -81,7 +81,7 @@ public class AccountTransactionRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AccountTransaction.TRANSID, "=", item.getId());
 
-        boolean saved = super.update(item.getId(), item, where.getWhere());
+        boolean saved = super.update(item, where.getWhere());
         return saved;
     }
 }

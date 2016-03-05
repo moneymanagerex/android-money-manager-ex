@@ -16,9 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="budget" type="com.money.manager.ex.domainmodel.Budget"/>
+        <variable name="budget" type="com.money.manager.ex.budget.BudgetViewModel"/>
     </data>
 
     <LinearLayout
@@ -61,10 +62,43 @@
                 android:layout_gravity="center_vertical"
                 android:hint="@string/budget_name"
                 android:textStyle="bold"
-                android:text="@{budget.Name}"
-                />
+                android:text="@{budget.Name}" />
             <!-- app:iconLeft="@xml/ic_hash_small"
             android:gravity="end" -->
+
+            <!-- year -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/budget_year" />
+            <com.money.manager.ex.view.RobotoTextViewFontIcon
+                style="@style/Money.TextView.Widget.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                app:iconLeft="@xml/ic_pencil_small"
+                android:hint="@string/budget_year"
+                android:text="@{budget.Year}"
+                android:onClick="onSelectYear" />
+
+            <!-- month -->
+            <com.money.manager.ex.view.RobotoTextView
+                style="?attr/headerTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/budget_month" />
+            <com.money.manager.ex.view.RobotoTextViewFontIcon
+                style="@style/Money.TextView.Widget.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                app:iconLeft="@xml/ic_pencil_small"
+                android:hint="@string/budget_month"
+                android:text="@{budget.Month}"
+                android:onClick="onSelectMonth" />
 
         </LinearLayout>
     </ScrollView>

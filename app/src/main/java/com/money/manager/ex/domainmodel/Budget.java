@@ -17,14 +17,46 @@
 
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
+import android.os.Parcel;
+
 /**
  * Represents a Budget.
  * Table: budgetyear_v1
  */
 public class Budget
     extends EntityBase {
+
     public static final String BUDGETYEARID = "BUDGETYEARID";
     public static final String BUDGETYEARNAME = "BUDGETYEARNAME";
+
+    public static final Creator<Budget> CREATOR = new Creator<Budget>() {
+        @Override
+        public Budget createFromParcel(Parcel in) {
+            return new Budget(in);
+        }
+
+        @Override
+        public Budget[] newArray(int size) {
+            return new Budget[size];
+        }
+    };
+
+    public Budget() {
+
+    }
+
+    protected Budget(Parcel in) {
+        contentValues = ContentValues.CREATOR.createFromParcel(in);
+    }
+
+    public Integer getId() {
+        return getInt(BUDGETYEARID);
+    }
+
+    public void setId(Integer value) {
+        setInteger(BUDGETYEARID, value);
+    }
 
     public String getName() {
         return getString(BUDGETYEARNAME);
