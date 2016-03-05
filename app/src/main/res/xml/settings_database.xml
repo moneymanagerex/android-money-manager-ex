@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_path"
+        android:title="@string/path" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_version"
+        android:title="@string/database_version" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_migrate_14_to_20"
+        android:title="@string/database_migrate_14_to_20" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_clear_recent_files"
+        android:title="@string/clear_recent_files_list" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_backup"
+        android:title="@string/menu_move_database_to_external_storage" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_check_integrity"
+        android:title="@string/db_check_integrity" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_db_check_schema"
+        android:title="@string/db_check_schema" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database_create"
+        android:title="@string/create_db" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_db_fix_duplicates"
+        android:title="@string/db_fix_duplicates" />
+
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_sqlite_version"
+        android:title="@string/android_sqlite_vesion" />
+</PreferenceScreen>

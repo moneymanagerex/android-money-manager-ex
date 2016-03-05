@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <string name="ic_law">a</string>
+    <string name="ic_home">b</string>
+    <string name="ic_settings">c</string>
+    <string name="ic_gift">d</string>
+    <string name="ic_building">e</string>
+    <string name="ic_euro">f</string>
+    <string name="ic_briefcase">g</string>
+    <string name="ic_open_folder">h</string>
+    <string name="ic_dropbox">i</string>
+    <string name="ic_magnifier">j</string>
+    <string name="ic_recurring">k</string>
+    <string name="ic_question">l</string>
+    <string name="ic_reports">m</string>
+    <string name="ic_right_arrow">n</string>
+    <string name="ic_chevron_right">o</string>
+    <string name="ic_temple">p</string>
+    <string name="ic_bookmark">q</string>
+    <string name="ic_tag">r</string>
+    <string name="ic_tag_empty">s</string>
+    <string name="ic_wallet">t</string>
+    <string name="ic_star_outline">u</string>
+    <string name="ic_people">v</string>
+    <string name="ic_chevron_down">w</string>
+    <string name="ic_chevron_left">x</string>
+    <string name="ic_chevron_up">y</string>
+    <string name="ic_calculator">z</string>
+    <string name="ic_dollar">A</string>
+    <string name="ic_erase">B</string>
+    <string name="ic_diff_added">C</string>
+    <string name="ic_diff_removed">D</string>
+    <string name="ic_diff_renamed">E</string>
+    <string name="ic_split">F</string>
+    <string name="ic_alert">G</string>
+    <string name="ic_user">H</string>
+    <string name="ic_clipboard">I</string>
+    <string name="ic_calendar">J</string>
+    <string name="ic_globe_outline">K</string>
+    <string name="ic_dollar_bill">L</string>
+    <string name="ic_hash">M</string>
+    <string name="ic_floppy_disk">N</string>
+    <string name="ic_bill">O</string>
+    <string name="ic_pie_chart">P</string>
+    <string name="ic_star">Q</string>
+    <string name="ic_filter">R</string>
+    <string name="ic_credit_card">S</string>
+    <string name="ic_report_page">T</string>
+    <string name="ic_sort_asc">U</string>
+    <string name="ic_sort_desc">V</string>
+    <string name="ic_pencil">W</string>
+    <string name="ic_cut">X</string>
+</resources>

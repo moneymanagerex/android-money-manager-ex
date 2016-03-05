@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/theme_light"
+        android:entries="@array/themes_names"
+        android:entryValues="@array/themes_values"
+        android:icon="@null"
+        android:key="@string/pref_theme"
+        android:title="@string/theme_application"/>
+    <CheckBoxPreference
+        android:icon="@null"
+        android:key="@string/pref_account_open_visible"
+        android:summary="@string/if_not_selected_willShowAllAccounts"
+        android:title="@string/view_accounts_opened"/>
+    <CheckBoxPreference
+        android:icon="@null"
+        android:key="@string/pref_account_fav_visible"
+        android:summary="@string/if_not_selected_willShowAllAccounts"
+        android:title="@string/view_accounts_favorites"/>
+
+    <ListPreference
+        android:defaultValue="@string/last7days"
+        android:icon="@null"
+        android:key="@string/pref_show_transaction"
+        android:title="@string/show_transaction"/>
+    <!--android:entries="@array/show_transaction_values"-->
+    <!--android:entryValues="@array/show_transaction_values"-->
+
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@null"
+        android:key="@string/pref_transaction_shown_balance"
+        android:summary="@string/summary_transaction_shown_balance"
+        android:title="@string/title_transaction_shown_balance"/>
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@null"
+        android:key="@string/pref_transaction_hide_reconciled_amounts"
+        android:summary="@string/pref_transaction_hide_reconciled_amounts_summary"
+        android:title="@string/pref_transaction_hide_reconciled_amounts_title"/>
+
+    <ListPreference
+        android:defaultValue="-1"
+        android:entries="@array/application_font_entries"
+        android:entryValues="@array/application_font_values"
+        android:icon="@null"
+        android:key="@string/pref_application_font"
+        android:summary="@string/summary_application_font"
+        android:title="@string/title_application_font"/>
+    <ListPreference
+        android:defaultValue="default"
+        android:entries="@array/application_font_size_entries"
+        android:entryValues="@array/application_font_size_values"
+        android:icon="@null"
+        android:key="@string/pref_application_font_size"
+        android:summary="@string/summary_application_font_size"
+        android:title="@string/title_application_font_size"/>
+</PreferenceScreen>

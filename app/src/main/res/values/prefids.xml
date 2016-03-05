@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <!-- general -->
+    <string name="pref_general">prefgeneral</string>
+    <string name="pref_default_account">pref_default_account</string>
+    <!-- -->
+    <string name="pref_last_version_key">preflastversioncodekey</string>
+    <string name="pref_donate_last_version_key">prefdonatelastversioncodekey</string>
+    <string name="pref_last_db_path_shown">preflastdbpathshown</string>
+    <string name="pref_text_search_type">preftextsearchtype</string>
+    <!-- database -->
+    <string name="pref_database_path">databasepath</string>
+    <string name="pref_database_check_integrity">pref_database_check_integrity</string>
+    <string name="pref_db_check_schema">pref_db_check_schema</string>
+    <string name="pref_database_create">createdatabase</string>
+    <string name="pref_database_backup">prefdatabasebackup</string>
+    <string name="pref_database_migrate_14_to_20">pref_database_migrate_14_to_20</string>
+    <string name="pref_database_version">pref_database_version</string>
+    <string name="pref_clear_recent_files">pref_clear_recent_files</string>
+    <string name="pref_db_fix_duplicates">pref_db_fix_duplicates</string>
+    <!-- -->
+    <string name="pref_user_name">username</string>
+    <string name="pref_date_format">dateformat</string>
+    <string name="pref_financial_year_startdate">financial_year_startday</string>
+    <string name="pref_financial_year_startmonth">financial_year_startmonth</string>
+    <string name="pref_base_currency">basecurrency</string>
+    <string name="pref_account_open_visible">accountsopenvisible</string>
+    <string name="pref_account_fav_visible">accountsfavoritevisible</string>
+    <string name="pref_dropbox_mode">dropbox2modesync</string>
+    <string name="pref_theme">applicationtheme</string>
+    <string name="pref_show_transaction">showtransaction</string>
+    <string name="pref_type_home">typehome</string>
+    <string name="pref_edit_passcode">editpasscode</string>
+    <string name="pref_disable_passcode">disablepasscode</string>
+    <string name="pref_active_passcode">activepasscode</string>
+    <string name="pref_dropbox_link">dropbox2link</string>
+    <string name="pref_dropbox_unlink">dropbox2unlink</string>
+    <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
+    <string name="pref_donate">donate</string>
+    <string name="pref_version_name">versionname</string>
+    <string name="pref_version_code">versioncode</string>
+    <string name="pref_version_date">versiondate</string>
+    <string name="pref_sqlite_version">sqliteversion</string>
+    <string name="pref_dropbox_download">dropbox2download</string>
+    <string name="pref_dropbox_upload">dropbox2upload</string>
+    <string name="pref_dropbox_how_it_works">dropbox2howitworks</string>
+    <string name="pref_dropbox_times_repeat_service">dropbox2servicetimesrepeat</string>
+    <string name="pref_dropbox_upload_immediate">dropbox2uploadimmediate</string>
+    <string name="pref_transaction_shown_balance">transactionshownbalance</string>
+    <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
+    <string name="pref_application_font">prefapplicationfont</string>
+    <string name="pref_application_font_size">prefapplicationfontsize</string>
+    <string name="pref_dropbox_wiki">prefdropboxwiki</string>
+    <string name="pref_default_status">prefdefaultstatus</string>
+    <string name="pref_default_payee">prefdefaultpayee</string>
+    <string name="pref_locale">preflocale</string>
+    <string name="pref_look_feel">preflookfeel</string>
+    <string name="pref_security">prefsecurity</string>
+    <string name="pref_database">prefdatabase</string>
+    <string name="pref_sort_payee">prefsortpayee</string>
+    <string name="pref_show_tutorial">prefshowtutorial</string>
+    <string name="pref_dashboard_group_visibility">pref-dashboard-group-visible</string>
+    <!-- behaviour -->
+    <string name="pref_behaviour">prefbehaviour</string>
+    <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
+    <string name="pref_show_introduction">prefshowintroduction</string>
+    <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
+    <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
+    <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
+    <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
+    <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
+    <!-- investment -->
+    <string name="pref_investment">pref_investment</string>
+    <string name="pref_quote_provider">pref_quote_provider</string>
+</resources>
