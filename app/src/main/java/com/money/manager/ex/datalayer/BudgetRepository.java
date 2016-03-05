@@ -61,9 +61,12 @@ public class BudgetRepository
     }
 
     public boolean save(Budget entity) {
-        boolean result = false;
+        boolean result;
 
         if (entity.getId() == null || entity.getId() == Constants.NOT_SET) {
+            // remove any existing id value
+            entity.contentValues.remove(Budget.BUDGETYEARID);
+
             // new record
             int id = super.insert(entity.contentValues);
             result = id != 0;

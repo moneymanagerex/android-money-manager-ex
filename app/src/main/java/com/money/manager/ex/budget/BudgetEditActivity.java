@@ -166,15 +166,13 @@ public class BudgetEditActivity
     }
 
     private boolean save() {
-        boolean result = false;
-
         int budgetId = getBudgetId();
         Budget budget = new Budget();
         budget.setId(budgetId);
         mModel.saveTo(budget);
 
         BudgetRepository repo = new BudgetRepository(this);
-        repo.save(budget);
+        boolean result = repo.save(budget);
 
         return result;
     }

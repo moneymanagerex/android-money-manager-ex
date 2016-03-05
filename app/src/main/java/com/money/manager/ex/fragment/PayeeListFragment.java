@@ -334,9 +334,8 @@ public class PayeeListFragment
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_payee)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-            .setMessage(R.string.confirmDelete);
-
-        alertDialog.setPositiveButton(android.R.string.ok,
+            .setMessage(R.string.confirmDelete)
+            .setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -348,13 +347,12 @@ public class PayeeListFragment
 
                         restartLoader();
                     }
-                });
-
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                })
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-            }
+                }
         });
         // show dialog
         alertDialog.create()
