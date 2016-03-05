@@ -32,4 +32,24 @@ public class BudgetEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_edit);
     }
+
+    @Override
+    public boolean onActionCancelClick() {
+        finish();
+//        return super.onActionCancelClick();
+        return true;
+    }
+
+    @Override
+    public boolean onActionDoneClick() {
+//        if (saveAccount()) {
+//            // If everything is okay, finish the activity
+//            finish();
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return false;
+    }
+
 }

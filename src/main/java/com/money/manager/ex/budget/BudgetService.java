@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.core;
+package com.money.manager.ex.budget;
 
 /**
- * Ids for context menus.
- * For easier handling.
+ * Budgets business logic
  */
-public class ContextMenuIds {
-    public static final int EDIT = 1;
-    public static final int DELETE = 2;
-    public static final int COPY = 3;
-    public static final int VIEW_TRANSACTIONS = 4;
+public class BudgetService {
+    public boolean delete(int budgetId) {
+        // todo implement
+
+        return false;
+    }
 }

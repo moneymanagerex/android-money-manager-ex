@@ -23,8 +23,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 
@@ -37,6 +41,7 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.BudgetYear;
 
@@ -86,9 +91,12 @@ public class BudgetListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // todo remove this check when going to production
         if (BuildConfig.DEBUG) {
             setFloatingActionButtonVisible(true);
             setFloatingActionButtonAttachListView(true);
+
+            registerForContextMenu(getListView());
         }
     }
 
@@ -178,7 +186,50 @@ public class BudgetListFragment
         }
     }
 
-    // End loader events.
+    // Context Menu
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // get selected item name
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) getListAdapter();
+        Cursor cursor = (Cursor) adapter.getItem(info.position);
+
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(BudgetYear.BUDGETYEARNAME)));
+
+        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
+        menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int budgetId = (int) info.id;
+        int id = item.getItemId();
+
+        switch (id) {
+            case ContextMenuIds.EDIT:
+                editBudget(budgetId);
+                break;
+            case ContextMenuIds.DELETE:
+                // todo implement
+                BudgetService service = new BudgetService();
+                service.delete(budgetId);
+                break;
+            case ContextMenuIds.COPY:
+                // todo implement
+                break;
+            default:
+                return false;
+        }
+        return false;
+    }
+
+    // Other
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

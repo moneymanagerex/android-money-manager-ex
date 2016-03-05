@@ -43,6 +43,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
+import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
@@ -181,15 +182,9 @@ public class PayeeListFragment
         cursor.moveToPosition(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
 
-        String[] menuItems = getResources().getStringArray(R.array.context_menu);
-        int id;
-        for (id = 0; id < menuItems.length; id++) {
-            // 0, 1
-            menu.add(Menu.NONE, id, id, menuItems[id]);
-        }
-        // view transactions menu item.
-        id = 2;
-        menu.add(Menu.NONE, id, id, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS, Menu.NONE, getString(R.string.view_transactions));
     }
 
     @Override
@@ -204,11 +199,11 @@ public class PayeeListFragment
         payee.loadFromCursor(cursor);
 
         switch (item.getItemId()) {
-            case 0: //EDIT
+            case ContextMenuIds.EDIT:
                 showDialogEditPayeeName(SQLTypeTransaction.UPDATE, payee.getId(), payee.getName());
                 break;
 
-            case 1: //DELETE
+            case ContextMenuIds.DELETE:
                 PayeeService service = new PayeeService(getActivity());
                 if (!service.isPayeeUsed(payee.getId())) {
 //                ContentValues contentValues = new ContentValues();
@@ -232,7 +227,7 @@ public class PayeeListFragment
                 }
                 break;
 
-            case 2: // view transactions
+            case ContextMenuIds.VIEW_TRANSACTIONS:
                 SearchParameters parameters = new SearchParameters();
                 parameters.payeeId = payee.getId();
                 parameters.payeeName = payee.getName();

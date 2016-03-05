@@ -705,4 +705,5 @@
     <string name="add_budget">Add Budget</string>
 
     <string name="quote_provider">Quote provider</string>
+    <string name="copy">Copy</string>
 </resources>

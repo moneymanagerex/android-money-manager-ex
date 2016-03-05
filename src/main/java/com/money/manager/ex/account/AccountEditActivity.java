@@ -107,8 +107,6 @@ public class AccountEditActivity
     private EditText edtAccountName, edtAccountNumber, edtAccountHeldAt, edtWebsite, edtContact, edtAccessInfo, edtNotes;
     private Spinner spinSymbolInitialBalance;
     private TextView txtSelectCurrency, txtInitialBalance;
-//    private ImageView imgFavouriteAccount;
-//    FontIconView imgFavouriteAccount;
     private AccountViewHolder mViewHolder;
     private boolean mIsDefault;
 

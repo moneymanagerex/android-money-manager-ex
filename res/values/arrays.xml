@@ -91,12 +91,6 @@
         <item>@string/closed</item>
     </string-array>
 
-    <!-- String array per il context menu di gestione standard -->
-    <string-array name="context_menu">
-        <item>@string/edit</item>
-        <item>@string/delete</item>
-    </string-array>
-
     <!-- context menu for watchlist entries -->
     <string-array name="context_menu_watchlist">
         <item>@string/download_price</item>

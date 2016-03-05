@@ -41,6 +41,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
+import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -159,15 +160,11 @@ public class CategoryListFragment
             QueryCategorySubCategory subCategory = mSubCategories.get(mCategories.get(group)).get(child);
             menu.setHeaderTitle(subCategory.getCategName().toString() + ": " + subCategory.getSubcategoryName().toString());
         }
+
         // context menu from resource
-        String[] menuItems = getResources().getStringArray(R.array.context_menu);
-        int id;
-        for (id = 0; id < menuItems.length; id++) {
-            menu.add(Menu.NONE, id, id, menuItems[id]);
-        }
-        // view transactions menu item.
-        id = 2;
-        menu.add(Menu.NONE, id, id, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS, Menu.NONE, getString(R.string.view_transactions));
     }
 
     @Override
@@ -195,7 +192,7 @@ public class CategoryListFragment
         }
         // manage select menu
         switch (item.getItemId()) {
-            case 0: //EDIT
+            case ContextMenuIds.EDIT:
                 if (categoryIds.subCategId == ExpandableListView.INVALID_POSITION) {
                     showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categoryIds.categId,
                             categoryIds.categName);
@@ -205,11 +202,11 @@ public class CategoryListFragment
                 }
                 break;
 
-            case 1: //DELETE
+            case ContextMenuIds.DELETE:
                 showDialogDeleteCategorySub(categoryIds);
                 break;
 
-            case 2: // view transactions
+            case ContextMenuIds.VIEW_TRANSACTIONS: // view transactions
                 SearchParameters parameters = new SearchParameters();
                 parameters.category = categoryIds;
 

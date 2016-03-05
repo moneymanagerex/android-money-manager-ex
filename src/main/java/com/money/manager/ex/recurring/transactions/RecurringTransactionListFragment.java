@@ -107,6 +107,8 @@ public class RecurringTransactionListFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         // take a cursor and move to position
         Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
