@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.Constants;
@@ -46,8 +45,11 @@ public class SubcategoryRepository
     public Subcategory load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = first(Subcategory.SUBCATEGID + "=?", MyDatabaseUtils.getArgsForId(id));
-        Subcategory subcategory = new Subcategory(cv);
+        Subcategory subcategory = (Subcategory) first(Subcategory.class,
+                getAllColumns(),
+                Subcategory.SUBCATEGID + "=?", MyDatabaseUtils.getArgsForId(id),
+                null);
+
         return subcategory;
     }
 }

@@ -83,7 +83,6 @@ import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -129,8 +128,8 @@ public class HomeFragment
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
 
-    private BigDecimal mGrandTotal = BigDecimal.ZERO;
-    private BigDecimal mGrandReconciled = BigDecimal.ZERO;
+    private Money mGrandTotal = MoneyFactory.fromDouble(0);
+    private Money mGrandReconciled = MoneyFactory.fromDouble(0);
 
     private Cursor mInvestmentsCursor;
     private boolean mAccountTransactionsLoaded = false;
@@ -893,8 +892,8 @@ public class HomeFragment
         mAccountsByType.clear();
         mTotalsByType.clear();
         mAccountTypes.clear();
-        mGrandTotal = BigDecimal.ZERO;
-        mGrandReconciled = BigDecimal.ZERO;
+        mGrandTotal = MoneyFactory.fromDouble(0);
+        mGrandReconciled = MoneyFactory.fromDouble(0);
 
         // display individual accounts with balances
         if (cursor != null) {
@@ -904,7 +903,7 @@ public class HomeFragment
         }
 
         // write accounts total
-        addFooterToExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+        addFooterToExpandableListView(mGrandTotal.toDouble(), mGrandReconciled.toDouble());
 
         // create adapter
         HomeAccountsExpandableAdapter expandableAdapter = new HomeAccountsExpandableAdapter(getActivity(),
@@ -990,10 +989,10 @@ public class HomeFragment
         }
 
         // also add to grand total of all accounts
-        mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total.toDouble()));
-        mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(total.toDouble()));
+        mGrandTotal = mGrandTotal.add(total);
+        mGrandReconciled = mGrandReconciled.add(total);
         // refresh the footer
-        addFooterToExpandableListView(mGrandTotal.doubleValue(), mGrandReconciled.doubleValue());
+        addFooterToExpandableListView(mGrandTotal.toDouble(), mGrandReconciled.toDouble());
     }
 
     private void showAccountTotals(Cursor cursor) {
@@ -1002,9 +1001,9 @@ public class HomeFragment
             accountTransaction.setValueFromCursor(cursor);
 
             double total = accountTransaction.getTotalBaseConvRate();
-            mGrandTotal = mGrandTotal.add(BigDecimal.valueOf(total));
+            mGrandTotal = mGrandTotal.add(MoneyFactory.fromDouble(total));
             double totalReconciled = accountTransaction.getReconciledBaseConvRate();
-            mGrandReconciled = mGrandReconciled.add(BigDecimal.valueOf(totalReconciled));
+            mGrandReconciled = mGrandReconciled.add(MoneyFactory.fromDouble(totalReconciled));
 
             String accountType = accountTransaction.getAccountType().toLowerCase();
             QueryAccountBills totalForType;

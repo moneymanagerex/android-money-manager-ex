@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.Constants;
@@ -59,8 +58,12 @@ public class AccountTransactionRepository
     public AccountTransaction load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = first(AccountTransaction.TRANSID + "=?", MyDatabaseUtils.getArgsForId(id));
-        AccountTransaction tx = new AccountTransaction(cv);
+        AccountTransaction tx = (AccountTransaction) first(AccountTransaction.class,
+                getAllColumns(),
+                AccountTransaction.TRANSID + "=?",
+                MyDatabaseUtils.getArgsForId(id),
+                null);
+
         return tx;
     }
 
@@ -78,7 +81,7 @@ public class AccountTransactionRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(AccountTransaction.TRANSID, "=", item.getId());
 
-        boolean saved = update(item.getId(), item.contentValues, where.getWhere());
+        boolean saved = super.update(item.getId(), item, where.getWhere());
         return saved;
     }
 }

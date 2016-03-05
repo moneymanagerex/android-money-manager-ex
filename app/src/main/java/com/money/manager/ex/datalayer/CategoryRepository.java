@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.datalayer;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import com.money.manager.ex.Constants;
@@ -44,8 +43,12 @@ public class CategoryRepository
     public Category load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        ContentValues cv = first(Category.CATEGID + "=?", MyDatabaseUtils.getArgsForId(id));
-        Category category = new Category(cv);
+        Category category = (Category) first(Category.class,
+                getAllColumns(),
+                Category.CATEGID + "=?",
+                MyDatabaseUtils.getArgsForId(id),
+                null);
+
         return category;
     }
 }

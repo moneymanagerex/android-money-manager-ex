@@ -70,18 +70,11 @@ public class AssetClassRepository
 
         String[] fields = new String[] { AssetClass.ID };
 
-        ContentValues[] results = query(fields, where.getWhere(), null, null);
-
-//        List<Integer> result = Queryable.from(results).map(new Converter<ContentValues, Integer>() {
-//            @Override
-//            public Integer convert(ContentValues element) {
-//                return element.getAsInteger(AssetClass.ID);
-//            }
-//        }).toList();
+        List<AssetClass> children = query(AssetClass.class, fields, where.getWhere(), null, null);
 
         List<Integer> result = new ArrayList<>();
-        for (ContentValues item : results) {
-            result.add(item.getAsInteger(AssetClass.ID));
+        for (AssetClass item : children) {
+            result.add(item.getId());
         }
 
         return result;
@@ -107,22 +100,6 @@ public class AssetClassRepository
 
         return entity;
     }
-
-//    public AssetClass[] query(String[] projection, String selection, String[] args, String sort) {
-//        Cursor c = openCursor(projection, selection, args, sort);
-//        if (c == null) return null;
-//
-//        AssetClass[] result = new AssetClass[c.getCount()];
-//        int i = 0;
-//
-//        while (c.moveToNext()) {
-//            result[i] = AssetClass.from(c);
-//            i++;
-//        }
-//        c.close();
-//
-//        return result;
-//    }
 
     public boolean insert(AssetClass value) {
         int id = this.insert(value.contentValues);
@@ -160,7 +137,7 @@ public class AssetClassRepository
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(AssetClass.ID, "=", id);
 
-        return update(id, value.contentValues, where);
+        return update(id, value, where);
     }
 
     public boolean bulkUpdate(List<AssetClass> entities) {

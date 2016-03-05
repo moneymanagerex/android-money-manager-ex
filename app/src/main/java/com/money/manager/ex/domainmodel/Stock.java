@@ -17,8 +17,10 @@
 
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.os.Parcel;
 
 import com.money.manager.ex.utils.DateUtils;
 
@@ -79,8 +81,24 @@ public class Stock
         return stock;
     }
 
+    public static final Creator<Stock> CREATOR = new Creator<Stock>() {
+        @Override
+        public Stock createFromParcel(Parcel in) {
+            return new Stock(in);
+        }
+
+        @Override
+        public Stock[] newArray(int size) {
+            return new Stock[size];
+        }
+    };
+
     public Stock() {
         // default constructor.
+    }
+
+    protected Stock(Parcel in) {
+        contentValues = ContentValues.CREATOR.createFromParcel(in);
     }
 
     @Override
@@ -102,10 +120,6 @@ public class Stock
         }
         return contentValues.getAsInteger(STOCKID);
     }
-
-//    public ContentValues getContentValues() {
-//        return this.contentValues;
-//    }
 
     public Money getCommission() {
         return getMoney(COMMISSION);
@@ -146,8 +160,6 @@ public class Stock
 
     public Double getNumberOfShares() {
         return getDouble(NUMSHARES);
-//        String numShares = contentValues.getAsString(NUMSHARES);
-//        return MoneyFactory.fromString(numShares);
     }
 
     public void setNumberOfShares(Double value) {
@@ -157,10 +169,6 @@ public class Stock
     public Date getPurchaseDate() {
         if (contentValues.getAsString(PURCHASEDATE) == null && mCursor != null) {
             DatabaseUtils.cursorStringToContentValues(mCursor, PURCHASEDATE, contentValues);
-//            if (contentValues.get(Stock.PURCHASEDATE) == null) {
-//                Date date = Calendar.getInstance().getTime();
-//                contentValues.put(Stock.PURCHASEDATE, DateUtils.getIsoStringDate(date));
-//            }
         }
         String dateString = contentValues.getAsString(PURCHASEDATE);
         return DateUtils.getDateFromIsoString(dateString);

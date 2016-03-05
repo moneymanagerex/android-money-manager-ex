@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Created by Alessandro Lazzari on 08/09/2014.
+ *
  */
 public class MathUtils {
 

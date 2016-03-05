@@ -82,30 +82,37 @@ public abstract class RepositoryBase<T extends EntityBase>
         return cursor;
     }
 
-    // This won't work because of the bug in reading Double values.
-//    public ContentValues[] query(String[] projection, String selection, String[] args, String sort) {
-//        Cursor c = openCursor(projection, selection, args, sort);
-//        if (c == null) return null;
-//
-//        ContentValues[] result = new ContentValues[c.getCount()];
-//
-//        while (c.moveToNext()) {
-//            DatabaseUtils.
-//        }
-//        c.close();
-//
-//        return result;
-//    }
-
     public int add(EntityBase entity) {
         return insert(entity.contentValues);
     }
 
+    public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
+        Cursor c = openCursor(projection, selection, args, sort);
+        if (c == null) return null;
+
+        T entity = null;
+
+        if (c.moveToNext()) {
+            try {
+                entity = resultType.newInstance();
+                //resultType.cast(entity);
+                entity.loadFromCursor(c);
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(getContext());
+                handler.handle(e, "creating " + resultType.getName());
+            }
+        }
+        c.close();
+
+        return entity;
+    }
+
+
     // Protected
 
-//    protected List<ContentValues> query(String selection) {
-//        return query(null, selection, null, null);
-//    }
+    protected List<T> query(Class<T> resultType, String selection) {
+        return query(resultType, null, selection, null, null);
+    }
 //
 //    protected List<ContentValues> query(String[] projection, String selection, String[] args) {
 //        return query(projection, selection, args, null);
@@ -115,33 +122,33 @@ public abstract class RepositoryBase<T extends EntityBase>
 //        return query(null, selection, args, sort);
 //    }
 
-    /**
-     * Warning!
-     * This works *only* if there are no numeric/double values. Otherwise, these will be cut to
-     * the first 6 digits.
-     * @param projection Array of column names to retrieve.
-     * @return Array of ContentValues with the query results.
-     */
-    protected ContentValues[] query(String[] projection, String selection, String[] args, String sort) {
+    public List<T> query(Class<T> resultType, String[] projection, String selection, String[] args,
+                         String sort) {
         Cursor c = openCursor(projection, selection, args, sort);
         if (c == null) return null;
 
-        List<ContentValues> result = new ArrayList<>();
+        List<T> results = new ArrayList<>();
+        //T entity = null;
 
         while (c.moveToNext()) {
-            ContentValues values = new ContentValues();
-            DatabaseUtils.cursorRowToContentValues(c, values);
+            try {
+                T entity = resultType.newInstance();
+                entity.loadFromCursor(c);
 
-            result.add(values);
+                results.add(entity);
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(getContext());
+                handler.handle(e, "creating " + resultType.getName());
+            }
         }
         c.close();
 
-        ContentValues[] array = new ContentValues[result.size()];
-        return result.toArray(array);
+        return results;
     }
 
+
     /**
-     *
+     * Generic insert method.
      */
     protected int insert(ContentValues values) {
         Uri insertUri = getContext().getContentResolver().insert(this.getUri(),
@@ -157,8 +164,19 @@ public abstract class RepositoryBase<T extends EntityBase>
         return getContext().getContentResolver().bulkInsert(this.getUri(), items);
     }
 
-    protected boolean update(int id, ContentValues values, String where) {
+    /**
+     * Generic update method.
+     * @param id        Id of the entity
+     * @param entity    Entity values to store.
+     * @param where     Condition for entity selection.
+     * @return  Boolean indicating whether the operation was successful.
+     */
+    protected boolean update(int id, EntityBase entity, String where) {
         boolean result = false;
+
+        ContentValues values = entity.contentValues;
+        // remove "_id" from the values.
+        values.remove("_id");
 
         int updateResult = getContext().getContentResolver().update(this.getUri(),
             values,
@@ -235,20 +253,4 @@ public abstract class RepositoryBase<T extends EntityBase>
         return results;
     }
 
-    protected ContentValues first(String selection, String[] selectionArgs) {
-        // getAllColumns()
-        Cursor c = openCursor(null,
-            selection,
-            selectionArgs);
-        if (c == null) return null;
-
-        if (!c.moveToNext()) return null;
-
-        ContentValues contentValues = new ContentValues();
-        DatabaseUtils.cursorRowToContentValues(c, contentValues);
-
-        c.close();
-
-        return contentValues;
-    }
 }
