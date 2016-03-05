@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
  *
@@ -16,4 +15,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':androidSVG_12'
+include ':app', ':androidSVG_12'
