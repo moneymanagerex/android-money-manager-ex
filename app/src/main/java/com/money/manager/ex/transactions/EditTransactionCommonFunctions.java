@@ -249,7 +249,7 @@ public class EditTransactionCommonFunctions {
         ContentValues values = new ContentValues();
 
         // Date
-        String transactionDate = MyDateTimeUtils.getIsoStringFrom((Date) viewHolder.txtSelectDate.getTag());
+        String transactionDate = viewHolder.txtSelectDate.getTag().toString();
         values.put(ITransactionEntity.TRANSDATE, transactionDate);
 
         // Transaction Type
