@@ -35,6 +35,7 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -493,7 +494,25 @@ public class RecurringTransactionEditActivity
 
             return false;
         }
+
+        // Payments Left must have a value
+        if (mRecurringTransaction.getPaymentsLeft() == null) {
+            Core.alertDialog(this, R.string.payments_left_required);
+            return false;
+        }
         return true;
+    }
+
+    private void collectDataFromUI() {
+        // Payments Left
+        String value = mViewHolder.paymentsLeftEditText.getText().toString();
+        if (NumericHelper.isNumeric(value)) {
+            int paymentsLeft = NumericHelper.toInt(value);
+            mRecurringTransaction.setPaymentsLeft(paymentsLeft);
+        } else {
+            mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
+        }
+
     }
 
     /**
@@ -502,6 +521,9 @@ public class RecurringTransactionEditActivity
      * @return true if update data successful
      */
     private boolean saveData() {
+        // get data from input controls
+        collectDataFromUI();
+
         if (!validateData()) return false;
 
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);

@@ -253,6 +253,7 @@
     <string name="repeats">Repeats</string>
     <string name="occurs">Occurs</string>
     <string name="payments_left">Payments Left</string>
+    <string name="payments_left_required">Payments Left value is required</string>
     <string name="due_date_required">Due date is required</string>
     <string name="error_next_occurrence_not_populate">Next occurrence is required</string>
     <string name="enter_next_occurrence">Enter Next Occurrence</string>

@@ -47,6 +47,18 @@ public class NumericHelper {
         return true;
     }
 
+    public static String toString(Integer value) {
+        if (value != null) {
+            return Integer.toString(value);
+        } else {
+            return null;
+        }
+    }
+
+    public static int toInt(String value) {
+        return Integer.parseInt(value);
+    }
+
     public NumericHelper(Context context) {
         mContext = context;
     }
