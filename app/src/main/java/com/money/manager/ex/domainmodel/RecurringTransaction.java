@@ -23,6 +23,9 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -110,26 +113,26 @@ public class RecurringTransaction
         return getString(TRANSDATE);
     }
 
-    public Date getDueDate() {
+    public DateTime getDueDate() {
         String dateString = getDueDateString();
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
 
-        return DateUtils.getDateFromIsoString(dateString);
+        return MyDateTimeUtils.from(dateString);
     }
 
-    public void setDueDate(Date value) {
-        setDate(TRANSDATE, value);
+    public void setDueDate(DateTime value) {
+        setDateTime(TRANSDATE, value);
     }
 
-    public Date getPaymentDate() {
+    public DateTime getPaymentDate() {
         String dateString = getString(NEXTOCCURRENCEDATE);
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
 
-        return DateUtils.getDateFromIsoString(dateString);
+        return MyDateTimeUtils.from(dateString);
     }
 
     public String getPaymentDateString() {
@@ -140,8 +143,8 @@ public class RecurringTransaction
         setString(NEXTOCCURRENCEDATE, value);
     }
 
-    public void setPaymentDate(Date value){
-        setDate(NEXTOCCURRENCEDATE, value);
+    public void setPaymentDate(DateTime value){
+        setDateTime(NEXTOCCURRENCEDATE, value);
     }
 
     public String getNotes() {

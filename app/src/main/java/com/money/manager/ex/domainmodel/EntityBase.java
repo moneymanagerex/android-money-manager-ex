@@ -28,6 +28,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
+import org.joda.time.DateTime;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -105,22 +107,12 @@ public class EntityBase
         contentValues.put(fieldName, value.toString());
     }
 
-    protected Date getDate(String fieldName) {
+    protected DateTime getDateTime(String fieldName) {
         String dateString = getString(fieldName);
-        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
-        Date date = null;
-        try {
-            date = format.parse(dateString);
-        } catch (ParseException pex) {
-            ExceptionHandler handler = new ExceptionHandler(null, this);
-            handler.handle(pex, "parsing the date from " + fieldName);
-        }
-        return date;
-
-        //todo MyDateTimeUtils.from(dateString);
+        return MyDateTimeUtils.from(dateString);
     }
 
-    protected void setDate(String fieldName, Date value) {
+    protected void setDateTime(String fieldName, DateTime value) {
         String dateString = MyDateTimeUtils.getIsoStringFrom(value);
         contentValues.put(fieldName, dateString);
     }

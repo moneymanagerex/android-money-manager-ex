@@ -55,8 +55,10 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -362,32 +364,20 @@ public class EditRecurringTransactionActivity
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     mCommonFunctions.setDirty(true);
 
-                    try {
-                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
-                                MoneyManagerApplication.getInstanceApp().getAppLocale())
-                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-
-                        mRecurringTransaction.setDueDate(date);
-                        dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, date);
-                    } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(EditRecurringTransactionActivity.this, this);
-                        handler.handle(e, "setting the due date");
-                    }
+                    DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, dateTime);
                 }
             };
 
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(mRecurringTransaction.getDueDate());
-                // Set first day of the week.
-                int firstDayOfWeek = Calendar.getInstance(MoneyManagerApplication.getInstanceApp().getAppLocale())
-                        .getFirstDayOfWeek();
+                // Show calendar with the current date selected.
+
+                DateTime dateTime = mRecurringTransaction.getDueDate();
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(listener)
-                        .setFirstDayOfWeek(firstDayOfWeek)
-                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
                         .setThemeDark();
                 datePicker.show(getSupportFragmentManager(), TAG_DATEPICKER);
             }
@@ -398,7 +388,7 @@ public class EditRecurringTransactionActivity
     private void initializeModel() {
         mRecurringTransaction = new RecurringTransaction();
 
-        mRecurringTransaction.setDueDate(DateUtils.getToday());
+        mRecurringTransaction.setDueDate(MyDateTimeUtils.today());
     }
 
     private void initializeViewHolder() {
@@ -422,7 +412,6 @@ public class EditRecurringTransactionActivity
         if (mRecurringTransaction.getOccurrences() != null && mRecurringTransaction.getOccurrences() >= 0) {
             mViewHolder.edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getOccurrences()));
         }
-
     }
 
     /**

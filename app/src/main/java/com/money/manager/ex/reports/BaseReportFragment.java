@@ -75,7 +75,7 @@ public abstract class BaseReportFragment
             if (savedInstanceState.containsKey(KEY_FROM_DATE)) {
 //                mDateFrom = (Date) savedInstanceState.getSerializable(KEY_FROM_DATE);
                 String dateFromString = savedInstanceState.getString(KEY_FROM_DATE);
-                mDateFrom = new DateTime(dateFromString);
+                mDateFrom = DateTime.parse(dateFromString);
             }
             if (savedInstanceState.containsKey(KEY_TO_DATE))
                 mDateTo = (Date) savedInstanceState.getSerializable(KEY_TO_DATE);

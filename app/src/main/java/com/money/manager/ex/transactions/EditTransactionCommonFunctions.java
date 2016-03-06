@@ -74,6 +74,9 @@ import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -494,20 +497,14 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initDateSelector() {
-        if (!(TextUtils.isEmpty(mDate))) {
-            try {
-                viewHolder.txtSelectDate.setTag(new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
-                        .parse(mDate));
-            } catch (ParseException e) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.handle(e, "parsing the date");
-            }
-        } else {
-            viewHolder.txtSelectDate.setTag(Calendar.getInstance().getTime());
+        if (StringUtils.isEmpty(mDate)) {
+            mDate = DateTime.now().toString(Constants.ISO_DATE_FORMAT);
         }
+        viewHolder.txtSelectDate.setTag(mDate);
 
         final DateUtils dateUtils = new DateUtils(getContext());
-        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, (Date) viewHolder.txtSelectDate.getTag());
+        final DateTime date = DateTime.parse(mDate);
+        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, date);
 
         viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -515,27 +512,19 @@ public class EditTransactionCommonFunctions {
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
-                    try {
-                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
-                            MoneyManagerApplication.getInstanceApp().getAppLocale())
-                            .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                        viewHolder.txtSelectDate.setTag(date);
-                        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, date);
-                    } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(e, "setting the date");
-                    }
+                    DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    viewHolder.txtSelectDate.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
+                    dateUtils.formatExtendedDate(viewHolder.txtSelectDate, dateTime);
                 }
             };
 
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) viewHolder.txtSelectDate.getTag());
+                DateTime dateTime = DateTime.parse(viewHolder.txtSelectDate.getTag().toString());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
-                    .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
                     .setThemeDark();
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }

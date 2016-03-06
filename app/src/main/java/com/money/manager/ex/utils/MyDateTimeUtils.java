@@ -45,6 +45,12 @@ public class MyDateTimeUtils {
         return dateTime;
     }
 
+    public static DateTime from(String dateString, String pattern) {
+        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+        DateTime dateTime = format.parseDateTime(dateString);
+        return dateTime;
+    }
+
     /**
      * Conversion factory.
      * @param calendar The date to use as the base.
@@ -62,12 +68,22 @@ public class MyDateTimeUtils {
         return result;
     }
 
+    public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
+        return new DateTime(year, monthOfYear, dayOfMonth, 0, 0);
+    }
+
     public static DateTime fromDatePicker(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth() + 1;
         int year = datePicker.getYear();
 
         return new DateTime(year, month, day, 0, 0, 0, 0);
+    }
+
+    public static String getDateStringFrom(DateTime dateTime, String pattern) {
+        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+        String result = format.print(dateTime);
+        return result;
     }
 
     public static String getIsoStringFrom(Date date) {
