@@ -140,7 +140,7 @@ public class EditCheckingTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE,
-                new SimpleDateFormat(Constants.PATTERN_DB_DATE).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
+                new SimpleDateFormat(Constants.ISO_DATE_FORMAT).format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());

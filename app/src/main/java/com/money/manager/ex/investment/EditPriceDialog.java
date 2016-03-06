@@ -140,7 +140,7 @@ public class EditPriceDialog
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     try {
                         String enteredDate = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
-                        Date date = DateUtils.getDateFromString(getContext(), enteredDate, Constants.PATTERN_DB_DATE);
+                        Date date = DateUtils.getDateFromString(enteredDate, Constants.ISO_DATE_FORMAT);
                         mDateTextView.setTag(date);
                         mDateTextView.setText(new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN,
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
@@ -158,9 +158,9 @@ public class EditPriceDialog
 
         Date latestDate;
         if (StringUtils.isEmpty(mPriceDate)) {
-            mPriceDate = DateUtils.getStringFromDate(getContext(), new Date(), Constants.PATTERN_DB_DATE);
+            mPriceDate = DateUtils.getStringFromDate(getContext(), new Date(), Constants.ISO_DATE_FORMAT);
         }
-        latestDate = DateUtils.getDateFromString(getContext(), mPriceDate, Constants.PATTERN_DB_DATE);
+        latestDate = DateUtils.getDateFromString(mPriceDate, Constants.ISO_DATE_FORMAT);
         mDateTextView.setTag(latestDate);
         formatExtendedDate(mDateTextView);
 

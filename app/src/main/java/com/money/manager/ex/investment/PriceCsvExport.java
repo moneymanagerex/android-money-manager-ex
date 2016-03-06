@@ -35,7 +35,7 @@ import java.util.Locale;
  * Export of security prices to CSV file.
  */
 public class PriceCsvExport
-        extends TextFileExport {
+    extends TextFileExport {
 
     public PriceCsvExport(Context context) {
         super(context);
@@ -70,6 +70,8 @@ public class PriceCsvExport
     }
 
     private String getContent(ListAdapter adapter) {
+        final String lineSeparator = System.getProperty("line.separator");
+
         StringBuilder builder = new StringBuilder();
         char separator = ',';
         StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
@@ -101,7 +103,7 @@ public class PriceCsvExport
             builder.append(separator);
             // date
             builder.append(csvDate);
-            builder.append(System.lineSeparator());
+            builder.append(lineSeparator);
         }
 
         return builder.toString();

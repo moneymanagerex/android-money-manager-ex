@@ -71,6 +71,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 
 import java.text.ParseException;
@@ -245,7 +246,7 @@ public class EditTransactionCommonFunctions {
         ContentValues values = new ContentValues();
 
         // Date
-        String transactionDate = DateUtils.getIsoStringDate((Date) viewHolder.txtSelectDate.getTag());
+        String transactionDate = MyDateTimeUtils.getIsoStringFrom((Date) viewHolder.txtSelectDate.getTag());
         values.put(ITransactionEntity.TRANSDATE, transactionDate);
 
         // Transaction Type
@@ -495,7 +496,7 @@ public class EditTransactionCommonFunctions {
     public void initDateSelector() {
         if (!(TextUtils.isEmpty(mDate))) {
             try {
-                viewHolder.txtSelectDate.setTag(new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+                viewHolder.txtSelectDate.setTag(new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
                         .parse(mDate));
             } catch (ParseException e) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
@@ -515,7 +516,7 @@ public class EditTransactionCommonFunctions {
                     setDirty(true);
 
                     try {
-                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
                             .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         viewHolder.txtSelectDate.setTag(date);

@@ -43,6 +43,8 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -223,6 +225,9 @@ public class MoneyManagerApplication
 
         // Initialize analytics.
         AnalyticsTrackers.initialize(this);
+
+        // Initialize Joda Time
+        JodaTimeAndroid.init(this);
     }
 
     @Override

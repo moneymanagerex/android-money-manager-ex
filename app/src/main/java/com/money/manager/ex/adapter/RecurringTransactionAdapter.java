@@ -83,7 +83,7 @@ public class RecurringTransactionAdapter
         txtAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
         // write data
         try {
-            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE).parse(
+            Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT).parse(
                     cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
 //            Locale locale = context.getResources().getConfiguration().locale;
             txtDate.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format(date));

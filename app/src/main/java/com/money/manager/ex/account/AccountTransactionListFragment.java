@@ -67,6 +67,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import de.greenrobot.event.EventBus;
@@ -653,8 +654,8 @@ public class AccountTransactionListFragment
                 where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
             ));
 
-        where.addStatement(QueryAllData.Date, ">=", DateUtils.getIsoStringDate(mFilter.dateRange.dateFrom));
-        where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mFilter.dateRange.dateTo));
+        where.addStatement(QueryAllData.Date, ">=", MyDateTimeUtils.getIsoStringFrom(mFilter.dateRange.dateFrom));
+        where.addStatement(QueryAllData.Date, "<=", MyDateTimeUtils.getIsoStringFrom(mFilter.dateRange.dateTo));
 
         // Status
         where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());

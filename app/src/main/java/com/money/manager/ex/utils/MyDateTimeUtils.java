@@ -21,20 +21,28 @@ import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
-
-import hirondelle.date4j.DateTime;
 
 /**
- * Utilities for DateTime (date4j).
+ * Utilities for DateTime (date4j). Deprecated. Use Joda Time.
  */
-public class DateTimeUtils {
+public class MyDateTimeUtils {
 
     public static DateTime today() {
-        return DateTime.today(TimeZone.getDefault());
+        //return DateTime.today(TimeZone.getDefault());
+        return DateTime.now();
+    }
+
+    public static DateTime from(String isoString) {
+        DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
+        DateTime dateTime = format.parseDateTime(isoString);
+        return dateTime;
     }
 
     /**
@@ -45,9 +53,13 @@ public class DateTimeUtils {
     public static DateTime from(Calendar calendar) {
         if (calendar == null) return null;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
-        String date = sdf.format(calendar.getTime());
-        return new DateTime(date);
+//        SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
+//        String date = sdf.format(calendar.getTime());
+//        return new DateTime(date);
+
+        DateTime result = new DateTime(calendar.getTime());
+//        DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
+        return result;
     }
 
     public static DateTime fromDatePicker(DatePicker datePicker) {
@@ -58,18 +70,32 @@ public class DateTimeUtils {
         return new DateTime(year, month, day, 0, 0, 0, 0);
     }
 
+    public static String getIsoStringFrom(Date date) {
+        DateTime dateTime = new DateTime(date);
+        return getIsoStringFrom(dateTime);
+    }
+
+    public static String getIsoStringFrom(DateTime dateTime) {
+        DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
+        return format.print(dateTime);
+    }
+
     public static String getUserStringFromDateTime(Context ctx, DateTime date) {
         if (date == null) return "";
 
         String userDatePattern = DateUtils.getUserDatePattern(ctx);
 
         // Must convert to uppercase.
-        String dateFormat = userDatePattern.toUpperCase();
+//        String dateFormat = userDatePattern.toUpperCase();
 
-        return date.format(dateFormat);
+        DateTimeFormatter format = DateTimeFormat.forPattern(userDatePattern);
+
+        //return date.format(dateFormat);
+        return format.print(date);
     }
 
     public static void setDatePicker(DateTime date, DatePicker datePicker) {
-        datePicker.updateDate(date.getYear(), date.getMonth() - 1, date.getDay());
+//        datePicker.updateDate(date.getYear(), date.getMonth() - 1, date.getDay());
+        datePicker.updateDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
     }
 }

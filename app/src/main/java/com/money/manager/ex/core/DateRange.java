@@ -20,6 +20,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import java.util.Date;
 
@@ -61,10 +62,10 @@ public class DateRange
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        String from = DateUtils.getIsoStringDate(this.dateFrom);
+        String from = MyDateTimeUtils.getIsoStringFrom(this.dateFrom);
         dest.writeString(from);
 
-        String to = DateUtils.getIsoStringDate(this.dateTo);
+        String to = MyDateTimeUtils.getIsoStringFrom(this.dateTo);
         dest.writeString(to);
     }
 }

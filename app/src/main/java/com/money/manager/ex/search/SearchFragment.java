@@ -53,15 +53,16 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.utils.DateTimeUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -365,11 +366,11 @@ public class SearchFragment
 
         // from date
         if (mSearchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, ">=", FormatUtilities.getIsoDateFrom(mSearchParameters.dateFrom));
+            where.addStatement(QueryAllData.Date, ">=", MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateFrom));
         }
         // to date
         if (mSearchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, "<=", DateUtils.getIsoStringDate(mSearchParameters.dateTo));
+            where.addStatement(QueryAllData.Date, "<=", MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
         }
         // payee
         if (mSearchParameters.payeeId != null) {
@@ -464,11 +465,11 @@ public class SearchFragment
             txtFromDate.setTag(null);
         }
         else {
-            txtFromDate.setTag(FormatUtilities.getIsoDateFrom(mSearchParameters.dateFrom));
+            txtFromDate.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateFrom));
         }
-        txtFromDate.setText(DateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
+        txtFromDate.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
         // Date to
-        txtToDate.setTag(DateUtils.getIsoStringDate(mSearchParameters.dateTo));
+        txtToDate.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
         txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
         // Payee
         txtSelectPayee.setTag(mSearchParameters.payeeId);
@@ -502,7 +503,6 @@ public class SearchFragment
                 }
 
                 AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(), amount);
-//                dialog.setTargetFragment(SearchFragment.this, REQUEST_AMOUNT);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };

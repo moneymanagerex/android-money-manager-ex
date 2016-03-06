@@ -19,16 +19,13 @@ package com.money.manager.ex.viewmodels;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import org.joda.time.DateTime;
 
 import info.javaperformance.money.Money;
 
@@ -74,14 +71,12 @@ public class AccountTransactionDisplay
         return getString(QueryAllData.Date);
     }
 
-    public Date getDate() throws ParseException {
+    public DateTime getDate() {
         String dateString = getDateString();
 
-        // Get date from ISO-formatted string.
-        SimpleDateFormat savedFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE, Locale.US);
-        Date date = savedFormat.parse(dateString);
+        DateTime dateTime = MyDateTimeUtils.from(dateString);
 
-        return date;
+        return dateTime;
     }
 
     public String getNotes() {

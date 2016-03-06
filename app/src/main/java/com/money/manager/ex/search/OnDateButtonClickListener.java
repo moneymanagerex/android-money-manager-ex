@@ -25,12 +25,12 @@ import android.widget.TextView;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.utils.DateTimeUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.utils.DateUtils;
 
-import java.util.Calendar;
+import org.joda.time.DateTime;
 
-import hirondelle.date4j.DateTime;
+import java.util.Calendar;
 
 /**
  * Click listener
@@ -68,13 +68,13 @@ public class OnDateButtonClickListener
         @Override
         public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
             try {
-                String dateString = FormatUtilities.getIsoDateFrom(year, monthOfYear + 1, dayOfMonth);
+                String dateString = FormatUtilities.getIsoDateStringFrom(year, monthOfYear + 1, dayOfMonth);
 
                 // Save the actual value as tag.
                 mTextView.setTag(dateString);
 
                 DateTime date = new DateTime(dateString);
-                String displayText = DateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
+                String displayText = MyDateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
                 mTextView.setText(displayText);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, this);

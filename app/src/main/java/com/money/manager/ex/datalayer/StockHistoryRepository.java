@@ -32,6 +32,7 @@ import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -105,7 +106,7 @@ public class StockHistoryRepository
     public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = DateUtils.getIsoStringDate(date);
+        String isoDate = MyDateTimeUtils.getIsoStringFrom(date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = mContext.getContentResolver().query(getUri(),
@@ -148,7 +149,7 @@ public class StockHistoryRepository
     }
 
     public ContentValues getContentValues(String symbol, Money price, Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
         String isoDate = dateFormat.format(date);
 
         ContentValues values = new ContentValues();
