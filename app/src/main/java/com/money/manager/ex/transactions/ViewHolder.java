@@ -24,7 +24,8 @@ import android.widget.TextView;
  * Contains all the common view controls
  */
 public class ViewHolder {
-    public TextView txtSelectDate, categoryTextView;
+    public TextView dateTextView;
+    public TextView categoryTextView;
     public TextView txtSelectPayee;
     public Spinner spinAccount, spinAccountTo, spinStatus;
     public TextView txtAmountTo, txtAmount;

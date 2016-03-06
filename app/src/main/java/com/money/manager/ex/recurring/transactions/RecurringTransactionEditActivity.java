@@ -100,7 +100,6 @@ public class RecurringTransactionEditActivity
 
     // Model
     private RecurringTransaction mRecurringTransaction;
-    private int mFrequencies = 0;
 
     // Form controls
     private RecurringTransactionViewHolder mViewHolder;
@@ -144,70 +143,14 @@ public class RecurringTransactionEditActivity
 
         initializeViewHolder();
 
-        // Account(s)
-        mCommonFunctions.initAccountSelectors();
-
-        // Transaction type
-        mCommonFunctions.initTransactionTypeSelector();
-
-        // status
-        mCommonFunctions.initStatusSelector();
-
-        // Payee
-        mCommonFunctions.initPayeeControls();
-
-        // Category
-        mCommonFunctions.initCategoryControls(SplitRecurringCategory.class.getSimpleName());
-
-        // Split Categories
-        mCommonFunctions.initSplitCategories();
-
-        // mark checked if there are existing split categories.
-        boolean hasSplit = mCommonFunctions.hasSplitCategories();
-        mCommonFunctions.setSplit(hasSplit);
-
-        // Amount and total amount
-
-        mCommonFunctions.initAmountSelectors();
-
-        // transaction number
-        mCommonFunctions.initTransactionNumberControls();
-
-        // notes
-        mCommonFunctions.initNotesControls();
-
-        // Frequency
-
-        Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
-
-        if (mFrequencies >= 200) {
-            mFrequencies = mFrequencies - 200;
-        } // set auto execute without user acknowledgement
-        if (mFrequencies >= 100) {
-            mFrequencies = mFrequencies - 100;
-        } // set auto execute on the next occurrence
-        spinFrequencies.setSelection(mFrequencies, true);
-        spinFrequencies.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCommonFunctions.setDirty(true);
-
-                mFrequencies = position;
-                showTimesRepeated();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                mFrequencies = 0;
-                showTimesRepeated();
-            }
-        });
+        initializeControls();
 
         // refresh user interface
         mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.refreshCategoryName();
-        showTimesRepeated();
+
+        showPaymentsLeft();
     }
 
     @Override
@@ -275,8 +218,8 @@ public class RecurringTransactionEditActivity
         outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
         outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
-        outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.txtSelectDate.getTag().toString());
-        outState.putInt(KEY_REPEATS, mFrequencies);
+        outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.dateTextView.getTag().toString());
+//        outState.putInt(KEY_REPEATS, mFrequencies);
 
         outState.putString(KEY_ACTION, mIntentAction);
     }
@@ -326,17 +269,102 @@ public class RecurringTransactionEditActivity
     /**
      * refresh the UI control Payments Left
      */
-    public void showTimesRepeated() {
-        mViewHolder.txtRepeats.setText((mFrequencies == 11) || (mFrequencies == 12) ? R.string.activates : R.string.occurs);
+    public void showPaymentsLeft() {
+        Recurrence recurrence = mRecurringTransaction.getRecurrence();
 
-        mViewHolder.txtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        mViewHolder.txtTimesRepeated.setText(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
+        // Recurrence label
 
-        mViewHolder.edtTimesRepeated.setVisibility(mFrequencies > 0 ? View.VISIBLE : View.GONE);
-        mViewHolder.edtTimesRepeated.setHint(mFrequencies >= 11 ? R.string.activates : R.string.payments_left);
+        mViewHolder.recurrenceLabel.setText((recurrence == Recurrence.IN_X_DAYS) || (recurrence == Recurrence.IN_X_MONTHS)
+                ? R.string.activates : R.string.occurs);
+
+        // Payments Left header
+
+        mViewHolder.paymentsLeftTextView.setVisibility(recurrence.getValue() > 0 ? View.VISIBLE : View.GONE);
+        mViewHolder.paymentsLeftTextView.setText(recurrence.getValue() >= 11 ? R.string.activates : R.string.payments_left);
+
+        // Payments Left input
+
+        mViewHolder.paymentsLeftEditText.setVisibility(recurrence.getValue() > 0 ? View.VISIBLE : View.GONE);
+        mViewHolder.paymentsLeftEditText.setHint(recurrence.getValue() >= 11 ? R.string.activates : R.string.payments_left);
+
+        Integer occurrences = mRecurringTransaction.getPaymentsLeft();
+        if (occurrences == null) {
+            occurrences = Constants.NOT_SET;
+            mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
+        }
+        String value = occurrences == Constants.NOT_SET
+                ? "∞"
+                : Integer.toString(occurrences);
+        mViewHolder.paymentsLeftEditText.setText(value);
+
+//        if (mRecurringTransaction.getPaymentsLeft() != null && mRecurringTransaction.getPaymentsLeft() >= 0) {
+//            mViewHolder.paymentsLeftEditText.setText(Integer.toString(mRecurringTransaction.getPaymentsLeft()));
+//        }
     }
 
     // Private
+
+    private void initializeControls() {
+        // Account(s)
+        mCommonFunctions.initAccountSelectors();
+
+        // Transaction type
+        mCommonFunctions.initTransactionTypeSelector();
+
+        // status
+        mCommonFunctions.initStatusSelector();
+
+        // Payee
+        mCommonFunctions.initPayeeControls();
+
+        // Category
+        mCommonFunctions.initCategoryControls(SplitRecurringCategory.class.getSimpleName());
+
+        // Split Categories
+        mCommonFunctions.initSplitCategories();
+
+        // mark checked if there are existing split categories.
+        boolean hasSplit = mCommonFunctions.hasSplitCategories();
+        mCommonFunctions.setSplit(hasSplit);
+
+        // Amount and total amount
+
+        mCommonFunctions.initAmountSelectors();
+
+        // transaction number
+        mCommonFunctions.initTransactionNumberControls();
+
+        // notes
+        mCommonFunctions.initNotesControls();
+
+        // Frequency
+
+        Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
+
+        Integer recurrence = mRecurringTransaction.getRecurrenceInt();
+        if (recurrence >= 200) {
+            recurrence = recurrence - 200;
+        } // set auto execute without user acknowledgement
+        if (recurrence >= 100) {
+            recurrence = recurrence - 100;
+        } // set auto execute on the next occurrence
+        spinFrequencies.setSelection(recurrence, true);
+        spinFrequencies.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCommonFunctions.setDirty(true);
+
+                mRecurringTransaction.setRecurrence(position);
+                showPaymentsLeft();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mRecurringTransaction.setRecurrence(Constants.NOT_SET);
+                showPaymentsLeft();
+            }
+        });
+    }
 
     private void initializeDueDateSelector() {
         if (mViewHolder.dueDateTextView == null) return;
@@ -390,14 +418,14 @@ public class RecurringTransactionEditActivity
         // Payment Date, next occurrence
         mCommonFunctions.initDateSelector();
 
-        mViewHolder.txtRepeats = (TextView) findViewById(R.id.textViewRepeat);
-        mViewHolder.txtTimesRepeated = (TextView) findViewById(R.id.textViewTimesRepeated);
+        // Recurrence label
+        mViewHolder.recurrenceLabel = (TextView) findViewById(R.id.recurrenceLabel);
 
-        // Payments Left
-        mViewHolder.edtTimesRepeated = (EditText) findViewById(R.id.editTextTimesRepeated);
-        if (mRecurringTransaction.getOccurrences() != null && mRecurringTransaction.getOccurrences() >= 0) {
-            mViewHolder.edtTimesRepeated.setText(Integer.toString(mRecurringTransaction.getOccurrences()));
-        }
+        // Payments Left label
+        mViewHolder.paymentsLeftTextView = (TextView) findViewById(R.id.textViewTimesRepeated);
+
+        // Payments Left text input
+        mViewHolder.paymentsLeftEditText = (EditText) findViewById(R.id.editTextTimesRepeated);
     }
 
     /**
@@ -428,7 +456,7 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
         mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
         mCommonFunctions.mDate = mRecurringTransaction.getPaymentDateString();
-        mFrequencies = mRecurringTransaction.getRepeats();
+//        mFrequencies = mRecurringTransaction.getRecurrenceInt();
 
         // load split transactions only if no category selected.
         if ((mCommonFunctions.transactionEntity.getCategoryId() == null || mCommonFunctions.transactionEntity.getCategoryId() == Constants.NOT_SET)
@@ -460,7 +488,7 @@ public class RecurringTransactionEditActivity
             return false;
         }
 
-        if (TextUtils.isEmpty(mCommonFunctions.viewHolder.txtSelectDate.getText().toString())) {
+        if (TextUtils.isEmpty(mCommonFunctions.viewHolder.dateTextView.getText().toString())) {
             Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
 
             return false;
@@ -576,10 +604,9 @@ public class RecurringTransactionEditActivity
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
         values.put(RecurringTransaction.TRANSDATE, mRecurringTransaction.getDueDateString());
-        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, mCommonFunctions.viewHolder.txtSelectDate.getTag().toString());
-        values.put(RecurringTransaction.REPEATS, mFrequencies);
-        values.put(RecurringTransaction.NUMOCCURRENCES, mFrequencies > 0
-                ? mViewHolder.edtTimesRepeated.getText().toString() : null);
+        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, mRecurringTransaction.getPaymentDateString());
+        values.put(RecurringTransaction.REPEATS, mRecurringTransaction.getRecurrenceInt());
+        values.put(RecurringTransaction.NUMOCCURRENCES, mRecurringTransaction.getPaymentsLeft());
 
         return values;
     }
@@ -609,7 +636,7 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
         mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
         mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
-        mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
+//        mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
 
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);

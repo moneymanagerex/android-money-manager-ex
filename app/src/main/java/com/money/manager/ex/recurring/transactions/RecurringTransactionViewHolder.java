@@ -25,8 +25,7 @@ import android.widget.TextView;
  */
 public class RecurringTransactionViewHolder {
     public TextView dueDateTextView;
-    public EditText edtTimesRepeated;
-    public TextView txtRepeats;
-    public TextView txtTimesRepeated;
-
+    public TextView recurrenceLabel;
+    public TextView paymentsLeftTextView;
+    public EditText paymentsLeftEditText;
 }
