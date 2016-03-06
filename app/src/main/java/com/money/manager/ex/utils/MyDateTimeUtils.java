@@ -35,8 +35,11 @@ import java.util.Date;
 public class MyDateTimeUtils {
 
     public static DateTime today() {
-        //return DateTime.today(TimeZone.getDefault());
-        return DateTime.now();
+        return DateTime.now()
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0)
+                .withMillisOfSecond(0);
     }
 
     public static DateTime from(String isoString) {
@@ -59,12 +62,7 @@ public class MyDateTimeUtils {
     public static DateTime from(Calendar calendar) {
         if (calendar == null) return null;
 
-//        SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
-//        String date = sdf.format(calendar.getTime());
-//        return new DateTime(date);
-
         DateTime result = new DateTime(calendar.getTime());
-//        DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
         return result;
     }
 
@@ -72,7 +70,7 @@ public class MyDateTimeUtils {
         return new DateTime(year, monthOfYear, dayOfMonth, 0, 0);
     }
 
-    public static DateTime fromDatePicker(DatePicker datePicker) {
+    public static DateTime from(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth() + 1;
         int year = datePicker.getYear();

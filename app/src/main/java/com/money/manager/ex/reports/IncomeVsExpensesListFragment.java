@@ -54,6 +54,7 @@ import com.money.manager.ex.utils.IntentUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -354,15 +355,13 @@ public class IncomeVsExpensesListFragment
                     calendar.setMonth(Calendar.JANUARY);
                 }
                 calendar.setFirstDayOfMonth();
-//                params.dateFrom = calendar.getTime();
                 params.dateFrom = MyDateTimeUtils.from(calendar.getCalendar());
-//                params.dateFrom = new DateTime(entity.getYear(), entity.getMonth(), )
 
                 if (month == IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                     calendar.setMonth(Calendar.DECEMBER);
                 }
                 calendar.setLastDayOfMonth();
-                params.dateTo = calendar.getTime();
+                params.dateTo = new DateTime(calendar.getTime());
 
                 IntentUtils intentUtils = new IntentUtils(getActivity());
                 Intent intent = intentUtils.getIntentForSearch(params);

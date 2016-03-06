@@ -36,6 +36,7 @@ import com.money.manager.ex.databinding.ActivityBudgetEditBinding;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -87,8 +88,7 @@ public class BudgetEditActivity
     }
 
     public void onSelectYear(View v) {
-        CalendarUtils calendar = new CalendarUtils();
-        int currentYear = calendar.getYear();
+        int currentYear = MyDateTimeUtils.today().getYear();
         int year;
         if (mModel.year != 0) {
             year = mModel.year;
@@ -119,8 +119,7 @@ public class BudgetEditActivity
         if (mModel.month != 0) {
             month = mModel.month;
         } else {
-            CalendarUtils calendar = new CalendarUtils();
-            month = calendar.getMonth();
+            month = MyDateTimeUtils.today().getMonthOfYear();
         }
 
         NumberPickerBuilder npb = new NumberPickerBuilder()

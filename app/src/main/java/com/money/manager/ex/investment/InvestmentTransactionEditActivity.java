@@ -170,16 +170,6 @@ public class InvestmentTransactionEditActivity
 
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
                     dateUtils.formatExtendedDate(dateView, dateTime);
-//                    try {
-//                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
-//                            MoneyManagerApplication.getInstanceApp().getAppLocale())
-//                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-//                        mStock.setPurchaseDate(date);
-//                        dateUtils.formatExtendedDate(dateView, date);
-//                    } catch (Exception e) {
-//                        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), InvestmentTransactionEditActivity.this);
-//                        handler.handle(e, "setting the date");
-//                    }
                 }
             };
 
