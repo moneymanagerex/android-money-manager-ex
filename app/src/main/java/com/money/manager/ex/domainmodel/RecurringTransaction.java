@@ -172,7 +172,13 @@ public class RecurringTransaction
      * @return the recurrence type
      */
     public Integer getRecurrenceInt() {
-        return getInt(REPEATS);
+        Integer result = getInt(REPEATS);
+        if (result == null) {
+            setRecurrence(Recurrence.ONCE);
+            return Recurrence.ONCE.getValue();
+        } else {
+            return result;
+        }
     }
 
     public void setRecurrence(Integer value) {
