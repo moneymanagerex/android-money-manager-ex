@@ -29,14 +29,14 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import hirondelle.date4j.DateTime;
 
 /**
  * Date utilities
@@ -45,15 +45,12 @@ public class DateUtils {
     private static final String LOGCAT = DateUtils.class.getSimpleName();
 
     public static Date getDateFromIsoString(String date) {
-        return getDateFromString(date, Constants.PATTERN_DB_DATE);
+        return getDateFromString(date, Constants.ISO_DATE_FORMAT);
     }
 
     public static Date getDateFromString(String date, String pattern) {
-        try {
-            return new SimpleDateFormat(pattern).parse(date);
-        } catch (ParseException e) {
-            return null;
-        }
+        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+        return format.parseDateTime(date).toDate();
     }
 
     /**
@@ -64,31 +61,7 @@ public class DateUtils {
      * @return date converted
      */
     public static Date getDateFromUserString(Context ctx, String date) {
-        return getDateFromString(ctx, date, getUserDatePattern(ctx));
-    }
-
-    /**
-     * Convert string date into date object using pattern params
-     *
-     * @param date    string to convert
-     * @param pattern to use for convert
-     * @return date object converted
-     */
-    public static Date getDateFromString(Context context, String date, String pattern) {
-        try {
-            Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
-            return new SimpleDateFormat(pattern, locale).parse(date);
-        } catch (ParseException e) {
-            ExceptionHandler handler = new ExceptionHandler(context, null);
-            handler.handle(e, "parsing date");
-        }
-        return null;
-    }
-
-    public static String getStringFromDate(Date date, String pattern) {
-        if (date == null) return null;
-
-        return new SimpleDateFormat(pattern).format(date);
+        return getDateFromString(date, getUserDatePattern(ctx));
     }
 
     /**
@@ -104,18 +77,7 @@ public class DateUtils {
     }
 
     /**
-     * Convert date object in string SQLite date format
-     *
-     * @param date to convert
-     * @return string formatted date SQLite
-     */
-    public static String getIsoStringDate(Date date) {
-        return getStringFromDate(date, Constants.PATTERN_DB_DATE);
-    }
-
-    /**
-     * Get pattern define from user
-     *
+     * Get pattern defined by the user.
      * @return pattern user define
      */
     public static String getUserDatePattern(Context context) {
@@ -185,7 +147,7 @@ public class DateUtils {
         String result = null;
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
             Date givenDate = sdf.parse(isoDate);
 
             Calendar calendar = Calendar.getInstance();

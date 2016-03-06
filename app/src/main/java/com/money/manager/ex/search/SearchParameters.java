@@ -20,14 +20,14 @@ package com.money.manager.ex.search;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
-import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -140,7 +140,7 @@ public class SearchParameters implements Parcelable {
 
         String dateString = dateFrom != null ? dateFrom.toString() : "";
         parcel.writeString(dateString);
-        parcel.writeString(DateUtils.getIsoStringDate(dateTo));
+        parcel.writeString(MyDateTimeUtils.getIsoStringFrom(dateTo));
 
         parcel.writeValue(payeeId);
         parcel.writeString(payeeName);

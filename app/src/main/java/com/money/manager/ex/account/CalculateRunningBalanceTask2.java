@@ -29,6 +29,7 @@ import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import java.math.BigDecimal;
@@ -130,7 +131,7 @@ public class CalculateRunningBalanceTask2
                 // Get starting balance on the given day.
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
-                String date = DateUtils.getIsoStringDate(this.startingDate);
+                String date = MyDateTimeUtils.getIsoStringFrom(this.startingDate);
                 date = DateUtils.getYesterdayFrom(date);
                 Money balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);

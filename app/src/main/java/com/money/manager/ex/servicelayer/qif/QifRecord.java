@@ -26,6 +26,10 @@ import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,13 +58,15 @@ public class QifRecord {
      * @return A string representing one QIF record
      */
     public String parse(AccountTransactionDisplay transaction) throws ParseException {
+        final String lineSeparator = System.getProperty("line.separator");
+
         StringBuilder builder = new StringBuilder();
 
         // Date
         String date = parseDate(transaction);
         builder.append("D");
         builder.append(date);
-        builder.append(System.lineSeparator());
+        builder.append(lineSeparator);
 
         // Amount
         String amount = parseAmount(transaction);
@@ -69,7 +75,7 @@ public class QifRecord {
 //        builder.append(System.lineSeparator());
         builder.append("T");
         builder.append(amount);
-        builder.append(System.lineSeparator());
+        builder.append(lineSeparator);
 
         // Cleared status
 //        String status = parseCleared(transaction);
@@ -90,7 +96,7 @@ public class QifRecord {
         if (!TextUtils.isEmpty(payee)) {
             builder.append("P");
             builder.append(payee);
-            builder.append(System.lineSeparator());
+            builder.append(lineSeparator);
         }
 
         // Categories / Transfers
@@ -109,7 +115,7 @@ public class QifRecord {
         if (category != null) {
             builder.append("L");
             builder.append(category);
-            builder.append(System.lineSeparator());
+            builder.append(lineSeparator);
         }
 
         // Split Categories
@@ -124,11 +130,11 @@ public class QifRecord {
         if (!TextUtils.isEmpty(memo)) {
             builder.append("M");
             builder.append(memo);
-            builder.append(System.lineSeparator());
+            builder.append(lineSeparator);
         }
 
         builder.append("^");
-        builder.append(System.lineSeparator());
+        builder.append(lineSeparator);
 
         return builder.toString();
     }
@@ -153,6 +159,8 @@ public class QifRecord {
     }
 
     private String getSplitCategory(ITransactionEntity split, String transactionType) {
+        final String lineSeparator = System.getProperty("line.separator");
+
         StringBuilder builder = new StringBuilder();
         Core core = new Core(mContext);
 
@@ -164,7 +172,7 @@ public class QifRecord {
         String category = core.getCategSubName(split.getCategoryId(), split.getSubcategoryId());
         builder.append("S");
         builder.append(category);
-        builder.append(System.lineSeparator());
+        builder.append(lineSeparator);
 
         // amount
         Money amount = split.getAmount();
@@ -177,7 +185,7 @@ public class QifRecord {
         }
         builder.append("$");
         builder.append(amount);
-        builder.append(System.lineSeparator());
+        builder.append(lineSeparator);
 
         // memo - currently we don't have a field for it.
 //        String memo = split.get
@@ -186,12 +194,12 @@ public class QifRecord {
     }
 
     private String parseDate(AccountTransactionDisplay transaction) throws ParseException {
-        Date date = transaction.getDate();
+        DateTime date = transaction.getDate();
 
         // todo: get Quicken date format from settings.
-        SimpleDateFormat qifFormat = new SimpleDateFormat("MM/dd''yy", Locale.US);
+        DateTimeFormatter qifFormat = DateTimeFormat.forPattern("MM/dd''yy");
 
-        return qifFormat.format(date);
+        return qifFormat.print(date);
     }
 
     private String parseAmount(AccountTransactionDisplay transaction) {
@@ -205,9 +213,7 @@ public class QifRecord {
     }
 
     private String parseCategory(AccountTransactionDisplay transaction) {
-//        String category = cursor.getString(cursor.getColumnIndex(QueryAllData.Category));
         String category = transaction.getCategory();
-//        String subCategory = cursor.getString(cursor.getColumnIndex(QueryAllData.Subcategory));
         String subCategory = transaction.getSubcategory();
 
         if (!TextUtils.isEmpty(subCategory)) {

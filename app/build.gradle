@@ -172,7 +172,8 @@ dependencies {
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
             'de.greenrobot:eventbus:2.4.0',
 //            'de.greenrobot:eventbus:3.0.0-beta1',
-            'com.darwinsys:hirondelle-date4j:1.5.1'
+//            'com.darwinsys:hirondelle-date4j:1.5.1',
+            'net.danlew:android.joda:2.9.2'
     )
 //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 

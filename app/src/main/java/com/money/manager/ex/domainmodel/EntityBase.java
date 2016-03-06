@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -106,7 +107,7 @@ public class EntityBase
 
     protected Date getDate(String fieldName) {
         String dateString = getString(fieldName);
-        SimpleDateFormat format = new SimpleDateFormat(Constants.PATTERN_DB_DATE);
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
         Date date = null;
         try {
             date = format.parse(dateString);
@@ -115,10 +116,12 @@ public class EntityBase
             handler.handle(pex, "parsing the date from " + fieldName);
         }
         return date;
+
+        //todo MyDateTimeUtils.from(dateString);
     }
 
     protected void setDate(String fieldName, Date value) {
-        String dateString = DateUtils.getIsoStringDate(value);
+        String dateString = MyDateTimeUtils.getIsoStringFrom(value);
         contentValues.put(fieldName, dateString);
     }
 

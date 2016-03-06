@@ -28,12 +28,17 @@ import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
 
+import net.danlew.android.joda.DateUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import hirondelle.date4j.DateTime;
 import info.javaperformance.money.Money;
 
 /**
@@ -52,15 +57,8 @@ public class FormatUtilities {
         formatter.formatAmountTextView(view, amount, currencyId);
     }
 
-    public static String getIsoDateFrom(int year, int month, int day) {
-        String dateString = Integer.toString(year) + "-" +
-            String.format("%02d", month) + "-" +
-            String.format("%02d", day);
-        return dateString;
-    }
-
-    public static String getIsoDateFrom(DateTime dateTime) {
-        return dateTime.format(Constants.ISO_DATE_FORMAT);
+    public static String getIsoDateStringFrom(int year, int month, int day) {
+        return String.format("%04d-%02d-%02d", year, month, day);
     }
 
     public FormatUtilities(Context context) {

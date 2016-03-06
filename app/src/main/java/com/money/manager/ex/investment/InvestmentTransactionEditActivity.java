@@ -167,7 +167,7 @@ public class InvestmentTransactionEditActivity
                     setDirty(true);
 
                     try {
-                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
                         mStock.setPurchaseDate(date);

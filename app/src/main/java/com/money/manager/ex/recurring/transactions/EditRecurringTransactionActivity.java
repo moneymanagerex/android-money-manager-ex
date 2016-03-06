@@ -279,7 +279,7 @@ public class EditRecurringTransactionActivity
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
 //        Locale locale = getResources().getConfiguration().locale;
-        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
                 .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         outState.putInt(KEY_REPEATS, mFrequencies);
 
@@ -363,7 +363,7 @@ public class EditRecurringTransactionActivity
                     mCommonFunctions.setDirty(true);
 
                     try {
-                        Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE,
+                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
                                 MoneyManagerApplication.getInstanceApp().getAppLocale())
                                 .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
 
@@ -601,7 +601,7 @@ public class EditRecurringTransactionActivity
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
         values.put(RecurringTransaction.TRANSDATE, mRecurringTransaction.getDueDateString());
-        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
                 .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
         values.put(RecurringTransaction.REPEATS, mFrequencies);
         values.put(RecurringTransaction.NUMOCCURRENCES, mFrequencies > 0

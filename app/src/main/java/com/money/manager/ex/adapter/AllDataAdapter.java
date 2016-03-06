@@ -147,7 +147,7 @@ public class AllDataAdapter
         try {
             Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
-            Date date = new SimpleDateFormat(Constants.PATTERN_DB_DATE)
+            Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
                 .parse(cursor.getString(cursor.getColumnIndex(DATE)));
             holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
             holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));
