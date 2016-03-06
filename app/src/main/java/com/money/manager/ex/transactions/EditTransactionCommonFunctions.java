@@ -522,6 +522,8 @@ public class EditTransactionCommonFunctions {
             public void onClick(View v) {
                 DateTime dateTime = DateTime.parse(viewHolder.txtSelectDate.getTag().toString());
 
+
+
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
                     .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
