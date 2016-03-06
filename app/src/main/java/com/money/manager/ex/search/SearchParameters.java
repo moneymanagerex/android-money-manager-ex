@@ -62,7 +62,7 @@ public class SearchParameters implements Parcelable {
 
     // Date
     public DateTime dateFrom;
-    public Date dateTo;
+    public DateTime dateTo;
 
     public Integer payeeId = null;
     public String payeeName;
@@ -97,7 +97,7 @@ public class SearchParameters implements Parcelable {
 
         dateString = in.readString();
         if (!StringUtils.isEmpty(dateString)) {
-            dateTo = DateUtils.getDateFromIsoString(dateString);
+            dateTo = MyDateTimeUtils.from(dateString);
         }
 
         payeeId = (Integer) in.readValue(null);

@@ -470,7 +470,7 @@ public class SearchFragment
         txtFromDate.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
         // Date to
         txtToDate.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
-        txtToDate.setText(DateUtils.getUserStringFromDate(getContext(), mSearchParameters.dateTo));
+        txtToDate.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateTo));
         // Payee
         txtSelectPayee.setTag(mSearchParameters.payeeId);
         txtSelectPayee.setText(mSearchParameters.payeeName);
@@ -554,7 +554,7 @@ public class SearchFragment
         // Date to
         if (txtToDate.getTag() != null) {
             String dateString = txtToDate.getTag().toString();
-            mSearchParameters.dateTo = DateUtils.getDateFromIsoString(dateString);
+            mSearchParameters.dateTo = MyDateTimeUtils.from(dateString);
         }
         // Payee
         if (txtSelectPayee.getTag() != null) {

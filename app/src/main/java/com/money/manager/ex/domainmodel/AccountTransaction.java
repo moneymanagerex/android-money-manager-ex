@@ -22,6 +22,9 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -116,9 +119,9 @@ public class AccountTransaction
         return getString(ITransactionEntity.TRANSDATE);
     }
 
-    public Date getDate() {
+    public DateTime getDate() {
         String dateString = getDateAsString();
-        return DateUtils.getDateFromIsoString(dateString);
+        return MyDateTimeUtils.from(dateString);
     }
 
     public String getNotes() {

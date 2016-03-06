@@ -104,39 +104,39 @@ public class DateUtils {
         return pattern;
     }
 
-    /**
-     * Convert date object to string using user's preferences for date format.
-     *
-     * @param date date value
-     * @return string The date formatted according to user preferences.
-     */
-    public static String getUserStringFromDate(Context ctx, Date date) {
-        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
-    }
+//    /**
+//     * Convert date object to string using user's preferences for date format.
+//     *
+//     * @param date date value
+//     * @return string The date formatted according to user preferences.
+//     */
+//    public static String getUserStringFromDate(Context ctx, Date date) {
+//        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
+//    }
 
-    /**
-     * This function from the date picker returns a date in java
-     *
-     * @param datePicker date picker control
-     * @return java date
-     */
-    public static Date getDateFromDatePicker(DatePicker datePicker) {
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year = datePicker.getYear();
+//    /**
+//     * This function from the date picker returns a date in java
+//     *
+//     * @param datePicker date picker control
+//     * @return java date
+//     */
+//    public static Date getDateFromDatePicker(DatePicker datePicker) {
+//        int day = datePicker.getDayOfMonth();
+//        int month = datePicker.getMonth();
+//        int year = datePicker.getYear();
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(year, month, day);
+//
+//        return calendar.getTime();
+//    }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-
-        return calendar.getTime();
-    }
-
-    public static void setDateToDatePicker(Date date, DatePicker datePicker) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-    }
+//    public static void setDateToDatePicker(Date date, DatePicker datePicker) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//
+//        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+//    }
 
     public static Date getToday() {
         Date today = new CalendarUtils().setNow()
@@ -203,41 +203,31 @@ public class DateUtils {
             dateFrom = cal.setNow().addYear(-1000).getTime();
             dateTo = cal.setNow().addYear(1000).getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.today))) {
-//            result.add("(julianday(date('now')) = julianday(" + QueryAllData.Date + "))");
             dateFrom = cal.setNow().getTime();
             dateTo = dateFrom;
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last7days))) {
-//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 7)");
             dateFrom = cal.setNow().addDays(-7).getTime();
             dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last15days))) {
-//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 14)");
             dateFrom = cal.setNow().addDays(-14).getTime();
             dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_month))) {
-//            result.add(QueryAllData.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1));
-//            result.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
             dateFrom = cal.setNow().setFirstDayOfMonth().getTime();
             dateTo = cal.setLastDayOfMonth().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last30days))) {
-//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 30)");
             dateFrom = cal.setNow().addDays(-30).getTime();
             dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last3months))) {
-//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 90)");
             dateFrom = cal.setNow().addMonth(-3).setFirstDayOfMonth().getTime();
             dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.last6months))) {
-//            result.add("(julianday(date('now')) - julianday(" + QueryAllData.Date + ") <= 180)");
             dateFrom = cal.setNow().addMonth(-6).setFirstDayOfMonth().getTime();
             dateTo = cal.setNow().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_year))) {
-//            result.add(QueryAllData.Year + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
             dateFrom = cal.setNow().setMonth(Calendar.JANUARY).setFirstDayOfMonth().getTime();
             dateTo = cal.setMonth(Calendar.DECEMBER).setLastDayOfMonth().getTime();
         } else if (period.equalsIgnoreCase(this.context.getString(R.string.future_transactions))) {
             // Future transactions
-//            result.add("date(" + QueryAllData.Date + ") > date('now')");
             dateFrom = cal.setNow().addDays(1).getTime();
             dateTo = cal.addYear(1000).getTime();
         } else {

@@ -83,86 +83,61 @@ public class RecurringTransactionService
         } // set auto execute on the next occurrence
 
         DateTime result = new DateTime(date);
-        // create calendar
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(date);
 
         switch (repeatType) {
             case ONCE: //none
                 break;
             case WEEKLY: //weekly
-//                calendar.add(Calendar.DATE, 7);
-                result = result.plusDays(7);
+                result = result.plusWeeks(1);
                 break;
             case BIWEEKLY: //bi_weekly
-//                calendar.add(Calendar.DATE, 14);
-                result = result.plusDays(14);
+                result = result.plusWeeks(2);
                 break;
             case MONTHLY: //monthly
-//                calendar.add(Calendar.MONTH, 1);
                 result = result.plusMonths(1);
                 break;
             case BIMONTHLY: //bi_monthly
-//                calendar.add(Calendar.MONTH, 2);
                 result = result.plusMonths(2);
                 break;
             case QUARTERLY: //quarterly
-//                calendar.add(Calendar.MONTH, 3);
                 result = result.plusMonths(3);
                 break;
             case SEMIANNUALLY: //half_year
-//                calendar.add(Calendar.MONTH, 6);
                 result = result.plusMonths(6);
                 break;
             case ANNUALLY: //yearly
-//                calendar.add(Calendar.YEAR, 1);
                 result = result.plusYears(1);
                 break;
             case FOUR_MONTHS: //four_months
-//                calendar.add(Calendar.MONTH, 4);
                 result = result.plusMonths(4);
                 break;
             case FOUR_WEEKS: //four_weeks
-//                calendar.add(Calendar.DATE, 28);
                 result = result.plusWeeks(4);
                 break;
             case DAILY: //daily
-//                calendar.add(Calendar.DATE, 1);
                 result = result.plusDays(1);
                 break;
             case IN_X_DAYS: //in_x_days
             case EVERY_X_DAYS: //every_x_days
-//                calendar.add(Calendar.DATE, numberOfPeriods);
                 result = result.plusDays(numberOfPeriods);
                 break;
             case IN_X_MONTHS: //in_x_months
             case EVERY_X_MONTHS: //every_x_months
-//                calendar.add(Calendar.MONTH, numberOfPeriods);
                 result = result.plusMonths(numberOfPeriods);
                 break;
             case MONTHLY_LAST_DAY: //month (last day)
-//                calendar.add(Calendar.MONTH, 1);
-//                calendar.set(Calendar.DAY_OF_MONTH, 1);
-//                calendar.add(Calendar.DATE, -1);
                 result = result.dayOfMonth().withMaximumValue();
                 break;
             case MONTHLY_LAST_BUSINESS_DAY: //month (last business day)
-                // get the last day of the month first.
-//                calendar.add(Calendar.MONTH, 1);
-//                calendar.set(Calendar.DAY_OF_MONTH, 1);
-//                calendar.add(Calendar.DATE, -1);
+                // get the last day of the month,
                 result = result.dayOfMonth().withMaximumValue();
-                // now iterate backwards until we are not on weekend day.
-//                while(calendar.equals(Calendar.SATURDAY) || calendar.equals(Calendar.SUNDAY)) {
-//                    calendar.add(Calendar.DATE, -1);
-//                }
+                // then iterate backwards until we are not on weekend day.
                 while(result.getDayOfWeek() == DateTimeConstants.SATURDAY ||
                         result.getDayOfWeek() == DateTimeConstants.SUNDAY) {
                     result = result.minusDays(1);
                 }
                 break;
         }
-//        return calendar.getTime();
         return result;
     }
 
