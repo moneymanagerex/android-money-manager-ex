@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.settings;
 
-import android.app.ActivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.preference.ListPreference;
@@ -28,7 +27,9 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.investment.QuoteProviders;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import info.javaperformance.money.Money;
 
 /**
@@ -72,6 +73,7 @@ public class InvestmentSettingsFragment
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         if (event.requestId.equals(KEY_THRESHOLD)) {
             InvestmentSettings settings = new InvestmentSettings(getActivity());

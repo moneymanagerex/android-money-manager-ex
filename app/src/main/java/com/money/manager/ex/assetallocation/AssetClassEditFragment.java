@@ -35,7 +35,9 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -129,6 +131,7 @@ public class AssetClassEditFragment
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         int id = Integer.parseInt(event.requestId);
         switch (id) {

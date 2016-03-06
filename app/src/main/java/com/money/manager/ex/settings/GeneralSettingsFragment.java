@@ -42,10 +42,9 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Fragment that contains the general settings.

@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.common.eventbus.Subscribe;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
@@ -54,9 +55,10 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Arrays;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -246,6 +248,7 @@ public class AccountEditActivity
         }
     }
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         if (event.amount == null) {
             Log.w(LOGCAT, "Received amount is null.");

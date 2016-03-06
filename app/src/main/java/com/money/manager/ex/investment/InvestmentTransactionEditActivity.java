@@ -25,7 +25,6 @@ import android.view.View;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -42,13 +41,12 @@ import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -200,6 +198,7 @@ public class InvestmentTransactionEditActivity
     /**
      * Raised after the amount has been entered in the number input dialog.
      */
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         int id = Integer.parseInt(event.requestId);
 

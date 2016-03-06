@@ -171,8 +171,8 @@ dependencies {
             'com.squareup.retrofit:converter-gson:2.0.0-beta2',
             // encryption
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
-            'de.greenrobot:eventbus:2.4.0',
-//            'de.greenrobot:eventbus:3.0.0-beta1',
+//            'de.greenrobot:eventbus:2.4.0',
+            'org.greenrobot:eventbus:3.0.0',
 //            'com.darwinsys:hirondelle-date4j:1.5.1',
             'net.danlew:android.joda:2.9.2',
             'org.parceler:parceler-api:1.0.4'

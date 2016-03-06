@@ -83,12 +83,14 @@ import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -554,6 +556,7 @@ public class HomeFragment
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         QueryAccountBills account = this.getAccountBeingBalanced();
         Money currentBalance = MoneyFactory.fromDouble(account.getTotal());

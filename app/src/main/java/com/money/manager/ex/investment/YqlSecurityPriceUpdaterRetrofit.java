@@ -34,13 +34,9 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import retrofit.Callback;

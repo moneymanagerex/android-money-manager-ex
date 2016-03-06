@@ -32,10 +32,13 @@ import com.money.manager.ex.transactions.SplitItemFactory;
 import com.money.manager.ex.transactions.SplitItemFragment;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -75,7 +78,7 @@ public class SplitTransactionsActivity
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
             // todo: is this the correct variable?
-            mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+            mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
         }
 
         // If this is a new split (no existing split categories), then create the first one.
@@ -136,8 +139,8 @@ public class SplitTransactionsActivity
         }
 
         Intent result = new Intent();
-        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION, allSplitTransactions);
-        result.putParcelableArrayListExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
+        result.putExtra(INTENT_RESULT_SPLIT_TRANSACTION, Parcels.wrap(allSplitTransactions));
+        result.putExtra(INTENT_RESULT_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitDeleted));
         setResult(RESULT_OK, result);
         finish();
 
@@ -148,7 +151,7 @@ public class SplitTransactionsActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mSplitDeleted != null)
-            outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mSplitDeleted);
+            outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitDeleted));
     }
 
     @Override
@@ -167,6 +170,7 @@ public class SplitTransactionsActivity
 
     // Events
 
+    @Subscribe
     public void onEvent(SplitItemRemovedEvent event) {
         onRemoveItem(event.entity);
     }
@@ -239,8 +243,8 @@ public class SplitTransactionsActivity
 
         this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
 
-        mSplitTransactions = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION);
-        mSplitDeleted = intent.getParcelableArrayListExtra(KEY_SPLIT_TRANSACTION_DELETED);
+        mSplitTransactions = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
+        mSplitDeleted = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION_DELETED));
     }
 
     private void onRemoveItem(ITransactionEntity object) {

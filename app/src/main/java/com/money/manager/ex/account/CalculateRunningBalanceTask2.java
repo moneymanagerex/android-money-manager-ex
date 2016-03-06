@@ -32,11 +32,12 @@ import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 

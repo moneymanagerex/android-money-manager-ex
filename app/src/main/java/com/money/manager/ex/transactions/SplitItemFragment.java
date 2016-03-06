@@ -42,7 +42,10 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -60,7 +63,7 @@ public class SplitItemFragment
 
         Bundle args = new Bundle();
         args.putInt(ARG_CURRENCY_ID, currencyId);
-        args.putParcelable(ARG_SPLIT, split);
+        args.putParcelable(ARG_SPLIT, Parcels.wrap(split));
         fragment.setArguments(args);
 
         return fragment;
@@ -209,11 +212,12 @@ public class SplitItemFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_SPLIT_TRANSACTION, mSplitTransaction);
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransaction));
     }
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         if (this.getTag().toString().equals(event.requestId)) {
             mSplitTransaction.setAmount(event.amount);

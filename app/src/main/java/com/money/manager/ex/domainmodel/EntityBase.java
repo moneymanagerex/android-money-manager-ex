@@ -19,20 +19,13 @@ package com.money.manager.ex.domainmodel;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -40,20 +33,8 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
-public class EntityBase
-    implements Parcelable {
-
-    public static final Creator<EntityBase> CREATOR = new Creator<EntityBase>() {
-        @Override
-        public EntityBase createFromParcel(Parcel in) {
-            return new EntityBase(in);
-        }
-
-        @Override
-        public EntityBase[] newArray(int size) {
-            return new EntityBase[size];
-        }
-    };
+@Parcel
+public class EntityBase {
 
     /**
      * Default constructor.
@@ -66,16 +47,16 @@ public class EntityBase
         this.contentValues = contentValues;
     }
 
-    protected EntityBase(Parcel in) {
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
-    }
-
     public ContentValues contentValues;
 
     /**
      * Contains the pointer to the actual data when loading from content provider.
      */
-    protected Cursor mCursor;
+    private Cursor mCursor;
+
+    protected Cursor getCursor() {
+        return mCursor;
+    }
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();
@@ -139,15 +120,5 @@ public class EntityBase
 
     protected void setDouble(String column, Double value) {
         contentValues.put(column, value);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        this.contentValues.writeToParcel(dest, flags);
     }
 }

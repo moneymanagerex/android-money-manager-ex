@@ -46,13 +46,14 @@ import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -229,6 +230,7 @@ public class EditPriceDialog
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         // set the amount on the dialog.
         showCurrentPrice(event.amount);

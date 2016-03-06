@@ -31,19 +31,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Updates security prices from Yahoo Finance using YQL.

@@ -93,3 +93,9 @@
 #-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
 #    <init>(java.lang.Throwable);
 #}
+
+# Parcel library
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+-keep class org.parceler.Parceler$$Parcels

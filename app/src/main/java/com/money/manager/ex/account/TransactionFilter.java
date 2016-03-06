@@ -17,52 +17,19 @@
 
 package com.money.manager.ex.account;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.money.manager.ex.core.DateRange;
-import com.money.manager.ex.core.DefinedDateRange;
+
+import org.parceler.Parcel;
 
 /**
  * Contains the selected filters for the account transactions list.
  * Used to pass to the UI filter dialog, and to the adapter when querying the data.
  */
-public class TransactionFilter
-    implements Parcelable {
+@Parcel
+public class TransactionFilter {
 
-    public TransactionFilter() {
-
-    }
-
-    public TransactionFilter(Parcel in) {
-        this.dateRange = in.readParcelable(DefinedDateRange.class.getClassLoader());
-        this.transactionStatus = in.readParcelable(StatusFilter.class.getClassLoader());
-    }
+    public TransactionFilter() { }
 
     public DateRange dateRange;
     public StatusFilter transactionStatus;
-
-
-    public static final Creator<TransactionFilter> CREATOR = new Creator<TransactionFilter>() {
-        @Override
-        public TransactionFilter createFromParcel(Parcel in) {
-            return new TransactionFilter(in);
-        }
-
-        @Override
-        public TransactionFilter[] newArray(int size) {
-            return new TransactionFilter[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.dateRange, 0);
-        dest.writeParcelable(this.transactionStatus, 0);
-    }
 }

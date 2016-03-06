@@ -95,12 +95,12 @@ import com.money.manager.ex.utils.MyFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Main activity of the application.
@@ -552,26 +552,32 @@ public class MainActivity
 
     // Events (EventBus)
 
+    @Subscribe
     public void onEvent(RequestAccountFragmentEvent event) {
         showAccountFragment(event.accountId);
     }
 
+    @Subscribe
     public void onEvent(RequestWatchlistFragmentEvent event) {
         showWatchlistFragment(event.accountId);
     }
 
+    @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
         openDatabasePicker();
     }
 
+    @Subscribe
     public void onEvent(UsernameLoadedEvent event) {
         setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());
     }
 
+    @Subscribe
     public void onEvent(AccountsTotalLoadedEvent event) {
         setDrawerTotalAccounts(event.amount);
     }
 
+    @Subscribe
     public void onEvent(AppRestartRequiredEvent event) {
         MainActivity.mRestartActivity = true;
     }

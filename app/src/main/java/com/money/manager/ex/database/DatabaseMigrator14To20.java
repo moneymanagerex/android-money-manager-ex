@@ -25,13 +25,13 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * The code for migrating the databases used in v1.4 to use with 2.0.

@@ -19,16 +19,18 @@ package com.money.manager.ex.domainmodel;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.os.Parcel;
 
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
+
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 
 /**
  * Account entity
  */
+@Parcel
 public class Account
     extends EntityBase {
 
@@ -65,24 +67,8 @@ public class Account
         return account;
     }
 
-    public static final Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel in) {
-            return new Account(in);
-        }
-
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
-
     public Account() {
         super();
-    }
-
-    protected Account(Parcel in) {
-        contentValues = ContentValues.CREATOR.createFromParcel(in);
     }
 
     @Override

@@ -41,7 +41,9 @@ import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
 
 public class AssetAllocationActivity
     extends BaseFragmentActivity
@@ -81,7 +83,7 @@ public class AssetAllocationActivity
         super.onSaveInstanceState(outState);
 
         // Save allocation?
-        outState.putParcelable(KEY_ASSET_ALLOCATION, this.assetAllocation);
+        outState.putParcelable(KEY_ASSET_ALLOCATION, Parcels.wrap(this.assetAllocation));
     }
 
     @Override
@@ -210,11 +212,13 @@ public class AssetAllocationActivity
 
     // Events
 
+    @Subscribe
     public void onEvent(AssetAllocationReloadRequested event) {
         // reload Asset Allocation
         getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
     }
 
+    @Subscribe
     public void onEvent(AssetClassSelectedEvent event) {
         AssetAllocationService service = new AssetAllocationService(this);
         AssetClass toShow = service.findChild(event.assetClassId, this.assetAllocation);

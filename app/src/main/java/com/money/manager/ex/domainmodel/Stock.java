@@ -17,18 +17,13 @@
 
 package com.money.manager.ex.domainmodel;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.os.Parcel;
 
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
-
-import java.util.Calendar;
-import java.util.Date;
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -36,6 +31,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Stock entity.
  */
+@Parcel
 public class Stock
     extends EntityBase {
 
@@ -84,24 +80,8 @@ public class Stock
         return stock;
     }
 
-    public static final Creator<Stock> CREATOR = new Creator<Stock>() {
-        @Override
-        public Stock createFromParcel(Parcel in) {
-            return new Stock(in);
-        }
-
-        @Override
-        public Stock[] newArray(int size) {
-            return new Stock[size];
-        }
-    };
-
     public Stock() {
         // default constructor.
-    }
-
-    protected Stock(Parcel in) {
-        contentValues = ContentValues.CREATOR.createFromParcel(in);
     }
 
     @Override
@@ -118,8 +98,8 @@ public class Stock
     // properties
 
     public Integer getId() {
-        if (contentValues.get(STOCKID) == null && mCursor != null) {
-            DatabaseUtils.cursorIntToContentValues(mCursor, STOCKID, contentValues);
+        if (contentValues.get(STOCKID) == null && getCursor() != null) {
+            DatabaseUtils.cursorIntToContentValues(getCursor(), STOCKID, contentValues);
         }
         return contentValues.getAsInteger(STOCKID);
     }
@@ -170,8 +150,8 @@ public class Stock
     }
 
     public DateTime getPurchaseDate() {
-        if (contentValues.getAsString(PURCHASEDATE) == null && mCursor != null) {
-            DatabaseUtils.cursorStringToContentValues(mCursor, PURCHASEDATE, contentValues);
+        if (contentValues.getAsString(PURCHASEDATE) == null && getCursor() != null) {
+            DatabaseUtils.cursorStringToContentValues(getCursor(), PURCHASEDATE, contentValues);
         }
         String dateString = contentValues.getAsString(PURCHASEDATE);
         return MyDateTimeUtils.from(dateString);
@@ -218,5 +198,4 @@ public class Stock
 
         return value;
     }
-
 }
