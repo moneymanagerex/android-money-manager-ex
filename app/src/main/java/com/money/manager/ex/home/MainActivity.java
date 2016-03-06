@@ -723,7 +723,8 @@ public class MainActivity
 //                this.recreate();
 //            }
 
-            notifyRestart();
+            notifyShutdown();
+
             //startMainActivity();
         }
         // set state a false
@@ -736,7 +737,7 @@ public class MainActivity
         System.exit(1);
     }
 
-    private void notifyRestart() {
+    private void notifyShutdown() {
         new MaterialDialog.Builder(this)
             .content(R.string.app_restart)
                 .positiveText(android.R.string.ok)
