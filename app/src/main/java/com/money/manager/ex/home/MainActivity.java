@@ -587,6 +587,7 @@ public class MainActivity
     /**
      * Dropbox just downloaded the database. Reload fragments.
      */
+    @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
         // open the new database.
         DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
@@ -711,8 +712,8 @@ public class MainActivity
 //                Intent intent = getIntent();
 //                overridePendingTransition(0, 0);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                // finish this activity
-//                finish();
+                // finish this activity
+                finish();
 //                overridePendingTransition(0, 0);
 //                // restart
 //                startActivity(intent);
@@ -723,9 +724,7 @@ public class MainActivity
 //                this.recreate();
 //            }
 
-            notifyShutdown();
-
-            //startMainActivity();
+            startMainActivity();
         }
         // set state a false
         setRestartActivity(false);
@@ -737,7 +736,7 @@ public class MainActivity
         System.exit(1);
     }
 
-    private void notifyShutdown() {
+    private void shutdownWithPrompt() {
         new MaterialDialog.Builder(this)
             .content(R.string.app_restart)
                 .positiveText(android.R.string.ok)
@@ -1021,6 +1020,8 @@ public class MainActivity
     }
 
     private void changeDatabase(String dbFilePath, String password) {
+        String currentDatabase = MoneyManagerApplication.getDatabasePath(this);
+
         Core core = new Core(getApplicationContext());
         core.changeDatabase(dbFilePath, password);
 
@@ -1029,9 +1030,15 @@ public class MainActivity
             this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
 
-        // restart this activity
-        setRestartActivity(true);
-        restartActivity();
+        if (currentDatabase.contentEquals(dbFilePath)) {
+            // just restart the main Activity?
+            // restart this activity
+            setRestartActivity(true);
+            restartActivity();
+        } else {
+            // db changed, restart the app.
+            shutdownWithPrompt();
+        }
     }
 
     private void displayDefaultFragment() {

@@ -43,7 +43,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
@@ -78,12 +77,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -155,7 +150,7 @@ public class EditTransactionCommonFunctions {
         this.viewHolder = new ViewHolder();
 
         // Date
-        viewHolder.txtSelectDate = (TextView) mParent.findViewById(R.id.textViewDate);
+        viewHolder.dateTextView = (TextView) mParent.findViewById(R.id.textViewDate);
 
         // Status
         viewHolder.spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
@@ -250,7 +245,7 @@ public class EditTransactionCommonFunctions {
         ContentValues values = new ContentValues();
 
         // Date
-        String transactionDate = viewHolder.txtSelectDate.getTag().toString();
+        String transactionDate = viewHolder.dateTextView.getTag().toString();
         values.put(ITransactionEntity.TRANSDATE, transactionDate);
 
         // Transaction Type
@@ -501,27 +496,27 @@ public class EditTransactionCommonFunctions {
         if (StringUtils.isEmpty(mDate)) {
             mDate = DateTime.now().toString(Constants.ISO_DATE_FORMAT);
         }
-        viewHolder.txtSelectDate.setTag(mDate);
+        viewHolder.dateTextView.setTag(mDate);
 
         final DateUtils dateUtils = new DateUtils(getContext());
         final DateTime date = DateTime.parse(mDate);
-        dateUtils.formatExtendedDate(viewHolder.txtSelectDate, date);
+        dateUtils.formatExtendedDate(viewHolder.dateTextView, date);
 
-        viewHolder.txtSelectDate.setOnClickListener(new View.OnClickListener() {
+        viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    viewHolder.txtSelectDate.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
-                    dateUtils.formatExtendedDate(viewHolder.txtSelectDate, dateTime);
+                    viewHolder.dateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
+                    dateUtils.formatExtendedDate(viewHolder.dateTextView, dateTime);
                 }
             };
 
             @Override
             public void onClick(View v) {
-                DateTime dateTime = DateTime.parse(viewHolder.txtSelectDate.getTag().toString());
+                DateTime dateTime = DateTime.parse(viewHolder.dateTextView.getTag().toString());
 
 
 

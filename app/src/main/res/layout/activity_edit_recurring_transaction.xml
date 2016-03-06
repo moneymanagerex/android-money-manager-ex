@@ -184,7 +184,7 @@
                 android:orientation="horizontal">
 
                 <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/textViewRepeat"
+                    android:id="@+id/recurrenceLabel"
                     style="@style/Money.TextView.Header.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

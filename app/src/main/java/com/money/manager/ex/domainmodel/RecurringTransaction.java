@@ -22,6 +22,7 @@ import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -154,11 +155,11 @@ public class RecurringTransaction
         return getString(ITransactionEntity.NOTES);
     }
 
-    public Integer getOccurrences() {
+    public Integer getPaymentsLeft() {
         return getInt(NUMOCCURRENCES);
     }
 
-    public void setOccurrences(Integer value) {
+    public void setPaymentsLeft(Integer value) {
         setInteger(NUMOCCURRENCES, value);
     }
 
@@ -170,8 +171,22 @@ public class RecurringTransaction
      * The recurrence type
      * @return the recurrence type
      */
-    public Integer getRepeats() {
+    public Integer getRecurrenceInt() {
         return getInt(REPEATS);
+    }
+
+    public void setRecurrence(Integer value) {
+        setInteger(REPEATS, value);
+    }
+
+    public Recurrence getRecurrence() {
+        int recurrence = getRecurrenceInt();
+        return Recurrence.valueOf(recurrence);
+    }
+
+    public void setRecurrence(Recurrence value) {
+        int recurrence = value.getValue();
+        setRecurrence(recurrence);
     }
 
     public String getStatus() {

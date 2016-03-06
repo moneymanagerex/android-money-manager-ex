@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
@@ -36,8 +35,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Represent a first Recurring Transaction object and provides related operations.
@@ -161,7 +158,7 @@ public class RecurringTransactionService
     public void moveNextOccurrence() {
         load();
 
-        Integer recurrenceType = mRecurringTransaction.getRepeats();
+        Integer recurrenceType = mRecurringTransaction.getRecurrenceInt();
         if (recurrenceType == null) {
             String message = getContext().getString(R.string.recurrence_type_not_set);
             throw new IllegalArgumentException(message);
@@ -208,7 +205,7 @@ public class RecurringTransactionService
             case IN_X_DAYS:
             case IN_X_MONTHS:
                 // reset number of periods
-                mRecurringTransaction.setOccurrences(Constants.NOT_SET);
+                mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
                 break;
             default:
                 break;
@@ -319,9 +316,9 @@ public class RecurringTransactionService
     // Private.
 
     private void decreasePaymentsLeft() {
-        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
         if (paymentsLeft == null) {
-            mRecurringTransaction.setOccurrences(0);
+            mRecurringTransaction.setPaymentsLeft(0);
             return;
         }
 
@@ -329,13 +326,13 @@ public class RecurringTransactionService
             paymentsLeft = paymentsLeft - 1;
         }
 
-        mRecurringTransaction.setOccurrences(paymentsLeft);
+        mRecurringTransaction.setPaymentsLeft(paymentsLeft);
     }
 
     private void deleteIfLastPayment() {
-        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
         if (paymentsLeft == null) {
-            mRecurringTransaction.setOccurrences(0);
+            mRecurringTransaction.setPaymentsLeft(0);
             return;
         }
 
@@ -382,9 +379,9 @@ public class RecurringTransactionService
 
         // Payment date.
 
-        Recurrence repeatType = Recurrence.valueOf(mRecurringTransaction.getRepeats());
+        Recurrence repeatType = Recurrence.valueOf(mRecurringTransaction.getRecurrenceInt());
         DateTime newPaymentDate = mRecurringTransaction.getPaymentDate();
-        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
 
         // calculate the next payment date
         newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
@@ -403,9 +400,9 @@ public class RecurringTransactionService
     }
 
     private void moveDueDateForward() {
-        Recurrence repeats = Recurrence.valueOf(mRecurringTransaction.getRepeats());
+        Recurrence repeats = Recurrence.valueOf(mRecurringTransaction.getRecurrenceInt());
         DateTime dueDate = mRecurringTransaction.getDueDate();
-        Integer paymentsLeft = mRecurringTransaction.getOccurrences();
+        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
 
         DateTime newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
 
