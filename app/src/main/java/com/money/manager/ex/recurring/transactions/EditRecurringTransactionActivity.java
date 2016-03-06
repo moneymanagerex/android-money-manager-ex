@@ -21,7 +21,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +36,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -62,7 +60,6 @@ import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
@@ -280,20 +277,8 @@ public class EditRecurringTransactionActivity
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
         outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
-//        Locale locale = getResources().getConfiguration().locale;
-        outState.putString(KEY_NEXT_OCCURRENCE, new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
-                .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
+        outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.txtSelectDate.getTag().toString());
         outState.putInt(KEY_REPEATS, mFrequencies);
-
-//        NumericHelper helper = new NumericHelper(getApplicationContext());
-//        int timesRepeated = helper.tryParse(edtTimesRepeated.getText().toString());
-//        if (timesRepeated != Constants.NOT_SET) {
-////            outState.putInt(KEY_NUM_OCCURRENCE, timesRepeated);
-//            mRecurringTransaction.numOccurrence = timesRepeated;
-//        } else {
-////            outState.putInt(KEY_NUM_OCCURRENCE, Constants.NOT_SET);
-//            mRecurringTransaction.numOccurrence = Constants.NOT_SET;
-//        }
 
         outState.putString(KEY_ACTION, mIntentAction);
     }
