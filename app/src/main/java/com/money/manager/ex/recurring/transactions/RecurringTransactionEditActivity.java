@@ -60,19 +60,17 @@ import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
-import java.text.SimpleDateFormat;
-
 import info.javaperformance.money.MoneyFactory;
 
 /**
  * Recurring transactions are stored in BillsDeposits table.
  */
-public class EditRecurringTransactionActivity
+public class RecurringTransactionEditActivity
     extends BaseFragmentActivity {
 
-    private static final String LOGCAT = EditRecurringTransactionActivity.class.getSimpleName();
+    private static final String LOGCAT = RecurringTransactionEditActivity.class.getSimpleName();
 
-    public static final String KEY_MODEL = "EditRecurringTransactionActivity:Model";
+    public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
     public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
@@ -578,8 +576,7 @@ public class EditRecurringTransactionActivity
         ContentValues values = mCommonFunctions.getContentValues(isTransfer);
 
         values.put(RecurringTransaction.TRANSDATE, mRecurringTransaction.getDueDateString());
-        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
-                .format(mCommonFunctions.viewHolder.txtSelectDate.getTag()));
+        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, mCommonFunctions.viewHolder.txtSelectDate.getTag().toString());
         values.put(RecurringTransaction.REPEATS, mFrequencies);
         values.put(RecurringTransaction.NUMOCCURRENCES, mFrequencies > 0
                 ? mViewHolder.edtTimesRepeated.getText().toString() : null);

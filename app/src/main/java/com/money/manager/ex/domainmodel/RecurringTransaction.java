@@ -22,12 +22,10 @@ import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
-
-import java.util.Date;
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -35,6 +33,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Recurring Transaction
  */
+@Parcel
 public class RecurringTransaction
     extends EntityBase
     implements ITransactionEntity {
