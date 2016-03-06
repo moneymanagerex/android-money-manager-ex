@@ -17,8 +17,6 @@
 
 package com.money.manager.ex.database;
 
-import org.parceler.Parcel;
-
 import info.javaperformance.money.Money;
 
 /**
@@ -26,7 +24,6 @@ import info.javaperformance.money.Money;
  * This is a common transaction (the common fields in Account & Recurring transactions).
  * A subset is used by split categories on account transactions and on recurring transactions.
  */
-@Parcel
 public interface ITransactionEntity {
 
     String ACCOUNTID = "ACCOUNTID";

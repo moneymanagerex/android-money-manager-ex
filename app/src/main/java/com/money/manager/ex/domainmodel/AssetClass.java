@@ -36,8 +36,9 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Asset Class
  */
-@Parcel
-@ParcelClass(Money.class)
+//@Parcel(analyze = { Money.class })
+//@ParcelClass(MoneyLong.class)
+//@ParcelClass(MoneyBigDecimal.class)
 public class AssetClass
     extends EntityBase
     implements Serializable {

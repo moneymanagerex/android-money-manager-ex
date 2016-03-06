@@ -98,10 +98,7 @@ public class Stock
     // properties
 
     public Integer getId() {
-        if (contentValues.get(STOCKID) == null && getCursor() != null) {
-            DatabaseUtils.cursorIntToContentValues(getCursor(), STOCKID, contentValues);
-        }
-        return contentValues.getAsInteger(STOCKID);
+        return getInt(STOCKID);
     }
 
     public Money getCommission() {
@@ -150,10 +147,7 @@ public class Stock
     }
 
     public DateTime getPurchaseDate() {
-        if (contentValues.getAsString(PURCHASEDATE) == null && getCursor() != null) {
-            DatabaseUtils.cursorStringToContentValues(getCursor(), PURCHASEDATE, contentValues);
-        }
-        String dateString = contentValues.getAsString(PURCHASEDATE);
+        String dateString = getString(PURCHASEDATE);
         return MyDateTimeUtils.from(dateString);
     }
 

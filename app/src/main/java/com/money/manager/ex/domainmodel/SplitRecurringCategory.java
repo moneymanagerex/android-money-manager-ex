@@ -19,13 +19,12 @@ package com.money.manager.ex.domainmodel;
 
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ITransactionEntity;
 
 import org.apache.commons.lang3.StringUtils;
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -33,6 +32,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Split Category item for recurring transaction item.
  */
+@Parcel
 public class SplitRecurringCategory
     extends EntityBase
     implements ITransactionEntity {
@@ -45,18 +45,18 @@ public class SplitRecurringCategory
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-    public final static Parcelable.Creator<SplitRecurringCategory> CREATOR = new Parcelable.Creator<SplitRecurringCategory>() {
-        public SplitRecurringCategory createFromParcel(Parcel source) {
-            SplitRecurringCategory split = new SplitRecurringCategory();
-            split.readFromParcel(source);
-            return split;
-        }
-
-        @Override
-        public SplitRecurringCategory[] newArray(int size) {
-            return new SplitRecurringCategory[size];
-        }
-    };
+//    public final static Parcelable.Creator<SplitRecurringCategory> CREATOR = new Parcelable.Creator<SplitRecurringCategory>() {
+//        public SplitRecurringCategory createFromParcel(Parcel source) {
+//            SplitRecurringCategory split = new SplitRecurringCategory();
+//            split.readFromParcel(source);
+//            return split;
+//        }
+//
+//        @Override
+//        public SplitRecurringCategory[] newArray(int size) {
+//            return new SplitRecurringCategory[size];
+//        }
+//    };
 
     public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
                                        double amount) {
@@ -151,29 +151,29 @@ public class SplitRecurringCategory
         setInteger(TRANSID, value);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        int id = getId() == null ? Constants.NOT_SET : getId();
-        dest.writeInt(id);
-
-        int transId = getTransId() == null ? Constants.NOT_SET : getTransId();
-        dest.writeInt(transId);
-
-        int categoryId = getCategoryId() == null ? Constants.NOT_SET : getCategoryId();
-        dest.writeInt(categoryId);
-
-        dest.writeInt(getSubcategoryId());
-        dest.writeString(getAmount().toString());
-    }
-
-    public void readFromParcel(Parcel source) {
-        setId(source.readInt());
-        setTransId(source.readInt());
-        setCategoryId(source.readInt());
-        setSubcategoryId(source.readInt());
-        String amount = source.readString();
-        if (StringUtils.isNotEmpty(amount)) {
-            setAmount(MoneyFactory.fromString(amount));
-        }
-    }
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        int id = getId() == null ? Constants.NOT_SET : getId();
+//        dest.writeInt(id);
+//
+//        int transId = getTransId() == null ? Constants.NOT_SET : getTransId();
+//        dest.writeInt(transId);
+//
+//        int categoryId = getCategoryId() == null ? Constants.NOT_SET : getCategoryId();
+//        dest.writeInt(categoryId);
+//
+//        dest.writeInt(getSubcategoryId());
+//        dest.writeString(getAmount().toString());
+//    }
+//
+//    public void readFromParcel(Parcel source) {
+//        setId(source.readInt());
+//        setTransId(source.readInt());
+//        setCategoryId(source.readInt());
+//        setSubcategoryId(source.readInt());
+//        String amount = source.readString();
+//        if (StringUtils.isNotEmpty(amount)) {
+//            setAmount(MoneyFactory.fromString(amount));
+//        }
+//    }
 }

@@ -50,6 +50,10 @@ public class RecurringTransaction
      */
     public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
 
+    public RecurringTransaction() {
+        super();
+    }
+
     @Override
     public void loadFromCursor(Cursor c) {
         super.loadFromCursor(c);

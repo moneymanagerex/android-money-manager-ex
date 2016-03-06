@@ -78,7 +78,7 @@ public class FilterDialogFragment
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_TX_FILTER, Parcels.wrap(filter));
-        args.putParcelable(ARG_ACCOUNT, account);
+        args.putParcelable(ARG_ACCOUNT, Parcels.wrap(account));
         args.putInt(ARG_RECORDS, numberOfRecords);
         fragment.setArguments(args);
 
