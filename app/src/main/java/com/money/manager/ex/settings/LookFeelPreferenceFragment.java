@@ -35,8 +35,7 @@ import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.view.RobotoView;
 
 import org.apache.commons.lang3.math.NumberUtils;
-
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Look & feel settings.

@@ -70,7 +70,9 @@ import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -398,6 +400,7 @@ public class AccountTransactionListFragment
 
     // Events
 
+    @Subscribe
     public void onEvent(RunningBalanceCalculatedEvent event) {
         // Update the UI controls
         mAllDataListFragment.displayRunningBalances(event.balances);

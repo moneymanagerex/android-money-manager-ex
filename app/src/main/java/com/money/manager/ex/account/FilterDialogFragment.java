@@ -44,6 +44,8 @@ import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconButton;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.parceler.Parcels;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FilterDialogFragment#newInstance} factory method to
@@ -75,7 +77,7 @@ public class FilterDialogFragment
         FilterDialogFragment fragment = new FilterDialogFragment();
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_TX_FILTER, filter);
+        args.putParcelable(ARG_TX_FILTER, Parcels.wrap(filter));
         args.putParcelable(ARG_ACCOUNT, account);
         args.putInt(ARG_RECORDS, numberOfRecords);
         fragment.setArguments(args);

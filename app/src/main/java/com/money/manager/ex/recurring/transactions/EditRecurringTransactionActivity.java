@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -56,12 +55,11 @@ import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -306,16 +304,19 @@ public class EditRecurringTransactionActivity
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         int id = Integer.parseInt(event.requestId);
 
         mCommonFunctions.onFinishedInputAmountDialog(id, event.amount);
     }
 
+    @Subscribe
     public void onEvent(DialogPositiveClickedEvent event) {
         mCommonFunctions.confirmDeletingCategories();
     }
 
+    @Subscribe
     public void onEvent(DialogNegativeClickedEvent event) {
         mCommonFunctions.cancelChangingTransactionToTransfer();
     }

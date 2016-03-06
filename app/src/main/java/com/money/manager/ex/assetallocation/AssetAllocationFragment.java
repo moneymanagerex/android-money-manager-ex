@@ -48,7 +48,7 @@ import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * A list fragment that displays a first Asset Class contents (stocks or child asset classes).

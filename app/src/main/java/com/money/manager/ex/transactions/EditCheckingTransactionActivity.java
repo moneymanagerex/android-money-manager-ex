@@ -54,10 +54,12 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 
-import java.text.SimpleDateFormat;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -151,9 +153,13 @@ public class EditCheckingTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.transactionEntity.getSubcategoryId());
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
-        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
-                mCommonFunctions.mSplitTransactionsDeleted);
+//        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
+        outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION,
+                Parcels.wrap(mCommonFunctions.mSplitTransactions));
+//        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
+//                mCommonFunctions.mSplitTransactionsDeleted);
+        outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
+                Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
         // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
@@ -185,6 +191,7 @@ public class EditCheckingTransactionActivity
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         int id = Integer.parseInt(event.requestId);
         mCommonFunctions.onFinishedInputAmountDialog(id, event.amount);
@@ -195,10 +202,12 @@ public class EditCheckingTransactionActivity
      * Transfer transaction type.
      * @param event
      */
+    @Subscribe
     public void onEvent(DialogPositiveClickedEvent event) {
         mCommonFunctions.confirmDeletingCategories();
     }
 
+    @Subscribe
     public void onEvent(DialogNegativeClickedEvent event) {
         mCommonFunctions.cancelChangingTransactionToTransfer();
     }
@@ -559,8 +568,13 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.subCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
         mCommonFunctions.mNotes = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NOTES);
         mCommonFunctions.mTransNumber = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER);
-        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
-        mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED);
+
+//        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION);
+        mCommonFunctions.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION));
+
+        mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(
+                EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED));
+
         mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
 //        mNextOccurrence = savedInstanceState.getString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE);
         // action

@@ -29,7 +29,8 @@ import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class BudgetsActivity
     extends BaseFragmentActivity {
@@ -92,6 +93,7 @@ public class BudgetsActivity
 
     // Events
 
+    @Subscribe
     public void onEvent(BudgetSelectedEvent event) {
         showBudgetDetails(event.yearId, event.name);
     }

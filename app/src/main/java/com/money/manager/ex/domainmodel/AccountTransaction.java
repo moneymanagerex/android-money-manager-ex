@@ -21,12 +21,10 @@ import android.content.ContentValues;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
-
-import java.util.Date;
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -34,6 +32,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Account Transaction entity. Table checkingaccount_v1.
  */
+@Parcel
 public class AccountTransaction
     extends EntityBase
     implements ITransactionEntity {

@@ -52,13 +52,13 @@ import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 
 /**
@@ -403,6 +403,7 @@ public class CurrencyListFragment
         return result;
     }
 
+    @Subscribe
     public void onEvent(PriceDownloadedEvent event) {
         onPriceDownloaded(event.symbol, event.price, event.date);
     }

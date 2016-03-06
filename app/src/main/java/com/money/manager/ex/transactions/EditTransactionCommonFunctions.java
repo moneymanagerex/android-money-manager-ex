@@ -76,6 +76,7 @@ import com.shamanland.fonticon.FontIconView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -818,7 +819,7 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                mSplitTransactions = data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION);
+                mSplitTransactions = Parcels.unwrap(data.getParcelableExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION));
                 if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
                     Money splitSum = MoneyFactory.fromString("0");
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
@@ -829,8 +830,8 @@ public class EditTransactionCommonFunctions {
                 }
                 // deleted item
                 if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                    mSplitTransactionsDeleted = data.getParcelableArrayListExtra(
-                            SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                    mSplitTransactionsDeleted = Parcels.unwrap(data.getParcelableExtra(
+                            SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED));
                 }
                 break;
         }
@@ -1345,8 +1346,8 @@ public class EditTransactionCommonFunctions {
         Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
         intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
         intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
-        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
-        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
+        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
         AccountRepository repo = new AccountRepository(mContext);
         Integer fromCurrencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());

@@ -52,9 +52,10 @@ import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.MmexFileUtils;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
-import de.greenrobot.event.EventBus;
+import java.io.File;
 
 /**
  * Dropbox settings.
@@ -271,6 +272,7 @@ public class DropboxSettingsFragment
     /**
      * Called when file is downloaded from Dropbox.
      */
+    @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
         // set main activity to reload.
 //        MainActivity.setRestartActivity(true);

@@ -54,15 +54,15 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MyDateTimeUtils;
-import com.money.manager.ex.utils.DateUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -272,6 +272,7 @@ public class SearchFragment
 
     // Events
 
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         View rootView = getView();
         if (rootView == null) return;

@@ -16,16 +16,13 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v7.util.SortedList;
-import android.util.Log;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.assetallocation.ItemType;
+
+import org.parceler.Parcel;
+import org.parceler.ParcelClass;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +36,8 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Asset Class
  */
+@Parcel
+@ParcelClass(Money.class)
 public class AssetClass
     extends EntityBase
     implements Serializable {
@@ -61,19 +60,6 @@ public class AssetClass
         entity.setAllocation(MoneyFactory.fromString("0"));
         return entity;
     }
-
-    public final static Parcelable.Creator<AssetClass> CREATOR = new Parcelable.Creator<AssetClass>() {
-        public AssetClass createFromParcel(Parcel source) {
-            AssetClass record = new AssetClass();
-            record.readFromParcel(source);
-            return record;
-        }
-
-        @Override
-        public AssetClass[] newArray(int size) {
-            return new AssetClass[size];
-        }
-    };
 
     public AssetClass() {
         super();
@@ -100,32 +86,32 @@ public class AssetClass
         DatabaseUtils.cursorDoubleToCursorValues(c, ALLOCATION, this.contentValues);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        super.writeToParcel(dest, flags);
+//
+//        // now just save calculated fields
+//
+//        dest.writeString(getValue().toString());
+//        dest.writeString(getCurrentAllocation().toString());
+//        dest.writeString(getCurrentValue().toString());
+//        dest.writeString(getDifference().toString());
+//        dest.writeString(getType().toString());
+//    }
 
-        // now just save calculated fields
-
-        dest.writeString(getValue().toString());
-        dest.writeString(getCurrentAllocation().toString());
-        dest.writeString(getCurrentValue().toString());
-        dest.writeString(getDifference().toString());
-        dest.writeString(getType().toString());
-    }
-
-    public void readFromParcel(Parcel source) {
-        this.contentValues = ContentValues.CREATOR.createFromParcel(source);
-
-        String value = source.readString();
-        setValue(MoneyFactory.fromString(value));
-
-        value = source.readString();
-        setCurrentAllocation(MoneyFactory.fromString(value));
-
-        setCurrentValue(MoneyFactory.fromString(source.readString()));
-        setDifference(MoneyFactory.fromString(source.readString()));
-        setType(ItemType.valueOf(source.readString()));
-    }
+//    public void readFromParcel(Parcel source) {
+//        this.contentValues = ContentValues.CREATOR.createFromParcel(source);
+//
+//        String value = source.readString();
+//        setValue(MoneyFactory.fromString(value));
+//
+//        value = source.readString();
+//        setCurrentAllocation(MoneyFactory.fromString(value));
+//
+//        setCurrentValue(MoneyFactory.fromString(source.readString()));
+//        setDifference(MoneyFactory.fromString(source.readString()));
+//        setType(ItemType.valueOf(source.readString()));
+//    }
 
     public Integer getId() {
         return getInt(ID);

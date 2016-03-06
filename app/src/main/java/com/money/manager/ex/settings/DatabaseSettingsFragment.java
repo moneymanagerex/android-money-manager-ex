@@ -45,8 +45,6 @@ import com.money.manager.ex.utils.MyDatabaseUtils;
 
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * Database settings fragment.
  */

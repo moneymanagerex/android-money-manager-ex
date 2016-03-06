@@ -17,28 +17,18 @@
 package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
-import android.os.Parcel;
+
+import org.parceler.Parcel;
 
 /**
  * Category
  */
+@Parcel
 public class Category
     extends EntityBase {
 
     public static final String CATEGID = "CATEGID";
     public static final String CATEGNAME = "CATEGNAME";
-
-    public static final Creator<Category> CREATOR = new Creator<Category>() {
-        @Override
-        public Category createFromParcel(Parcel in) {
-            return new Category(in);
-        }
-
-        @Override
-        public Category[] newArray(int size) {
-            return new Category[size];
-        }
-    };
 
     public Category() {
         super();
@@ -46,10 +36,6 @@ public class Category
 
     public Category(ContentValues contentValues) {
         super(contentValues);
-    }
-
-    protected Category(Parcel in) {
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
     }
 
     public String getName() {

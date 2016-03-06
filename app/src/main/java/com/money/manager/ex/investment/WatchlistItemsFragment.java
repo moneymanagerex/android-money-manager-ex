@@ -53,7 +53,6 @@ import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 
 /**

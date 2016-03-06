@@ -35,9 +35,9 @@ import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DialogUtils;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
 
-import de.greenrobot.event.EventBus;
+import java.io.File;
 
 /**
  * Handles the background Dropbox service and provides feedback to the UI.

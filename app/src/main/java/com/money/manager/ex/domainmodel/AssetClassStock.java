@@ -16,9 +16,12 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import org.parceler.Parcel;
+
 /**
  * Mapping between Asset Classes and Stocks.
  */
+@Parcel
 public class AssetClassStock
     extends EntityBase {
 

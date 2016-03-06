@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.investment;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,7 +33,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -57,15 +55,14 @@ import com.money.manager.ex.servicelayer.AccountService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 import info.javaperformance.money.Money;
 
 /**
@@ -263,10 +260,12 @@ public class WatchlistFragment
 
     // Events
 
+    @Subscribe
     public void onEvent(PriceDownloadedEvent event) {
         onPriceDownloaded(event.symbol, event.price, event.date);
     }
 
+    @Subscribe
     public void onEvent(PriceUpdateRequestEvent event) {
         onPriceUpdateRequested(event.symbol);
     }
