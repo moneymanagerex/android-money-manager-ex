@@ -91,13 +91,10 @@ public class BudgetListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // todo remove this check when going to production
-        if (BuildConfig.DEBUG) {
-            setFloatingActionButtonVisible(true);
-            setFloatingActionButtonAttachListView(true);
+        setFloatingActionButtonVisible(true);
+        setFloatingActionButtonAttachListView(true);
 
-            registerForContextMenu(getListView());
-        }
+        registerForContextMenu(getListView());
     }
 
     @Override
