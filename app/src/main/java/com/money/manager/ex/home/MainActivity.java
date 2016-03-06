@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +43,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.analytics.HitBuilders;
 import com.money.manager.ex.AnalyticsTrackers;
@@ -721,12 +723,31 @@ public class MainActivity
 //                this.recreate();
 //            }
 
-            finish();
-
-            startMainActivity();
+            notifyRestart();
+            //startMainActivity();
         }
         // set state a false
         setRestartActivity(false);
+    }
+
+    private void shutdownApp() {
+        finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
+    }
+
+    private void notifyRestart() {
+        new MaterialDialog.Builder(this)
+            .content(R.string.app_restart)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        shutdownApp();
+                    }
+                })
+                .neutralText(android.R.string.cancel)
+            .show();
     }
 
     public void startMainActivity() {

@@ -710,4 +710,5 @@
 
     <string name="quote_provider">Quote provider</string>
     <string name="copy">Copy</string>
+    <string name="app_restart">The app will now close to apply the changes. Please restart.</string>
 </resources>

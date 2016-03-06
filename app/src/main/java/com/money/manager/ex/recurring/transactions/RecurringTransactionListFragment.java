@@ -46,8 +46,6 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import java.util.Date;
-
 /**
  * The recurring transactions list fragment.
  * Includes floating action button.
@@ -316,10 +314,10 @@ public class RecurringTransactionListFragment
      */
     private void startRecurringTransactionEditActivity(Integer billDepositsId, int purposeCode) {
         // create intent, set Bill Deposits ID
-        Intent intent = new Intent(getActivity(), EditRecurringTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), RecurringTransactionEditActivity.class);
         // check transId not null
         if (billDepositsId != null) {
-            intent.putExtra(EditRecurringTransactionActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
+            intent.putExtra(RecurringTransactionEditActivity.KEY_BILL_DEPOSITS_ID, billDepositsId);
             intent.setAction(Intent.ACTION_EDIT);
         } else {
             intent.setAction(Intent.ACTION_INSERT);

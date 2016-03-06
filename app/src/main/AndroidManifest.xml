@@ -266,7 +266,7 @@
         </activity>
         <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
         <activity
-            android:name=".recurring.transactions.EditRecurringTransactionActivity"
+            android:name=".recurring.transactions.RecurringTransactionEditActivity"
             android:label="@string/new_edit_repeating_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
