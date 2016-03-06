@@ -57,6 +57,7 @@ import com.money.manager.ex.servicelayer.AccountService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -276,7 +277,7 @@ public class WatchlistFragment
      * @param price Stock price
      * @param date Date of the price
      */
-    private void onPriceDownloaded(String symbol, Money price, Date date) {
+    private void onPriceDownloaded(String symbol, Money price, DateTime date) {
         // prices updated.
 
         if (StringUtils.isEmpty(symbol)) return;

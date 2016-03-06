@@ -34,6 +34,8 @@ import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -77,7 +79,7 @@ public class StockHistoryRepository
         };
     }
 
-    public boolean addStockHistoryRecord(String symbol, Money price, Date date) {
+    public boolean addStockHistoryRecord(String symbol, Money price, DateTime date) {
         boolean success = false;
 
         boolean recordExists = recordExists(symbol, date);
@@ -103,7 +105,7 @@ public class StockHistoryRepository
         return success;
     }
 
-    public boolean recordExists(String symbol, Date date) {
+    public boolean recordExists(String symbol, DateTime date) {
         boolean result;
 
         String isoDate = MyDateTimeUtils.getIsoStringFrom(date);
@@ -131,7 +133,7 @@ public class StockHistoryRepository
      * @param date
      * @return
      */
-    public boolean updateHistory(String symbol, Money price, Date date) {
+    public boolean updateHistory(String symbol, Money price, DateTime date) {
         boolean result;
 
         ContentValues values = getContentValues(symbol, price, date);
@@ -148,9 +150,8 @@ public class StockHistoryRepository
         return result;
     }
 
-    public ContentValues getContentValues(String symbol, Money price, Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
-        String isoDate = dateFormat.format(date);
+    public ContentValues getContentValues(String symbol, Money price, DateTime date) {
+        String isoDate = date.toString(Constants.ISO_DATE_FORMAT);
 
         ContentValues values = new ContentValues();
         values.put(StockHistory.SYMBOL, symbol);

@@ -1,5 +1,7 @@
 package com.money.manager.ex.investment.events;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -9,7 +11,7 @@ import info.javaperformance.money.Money;
  */
 public class PriceDownloadedEvent {
 
-    public PriceDownloadedEvent(String symbol, Money price, Date date) {
+    public PriceDownloadedEvent(String symbol, Money price, DateTime date) {
         this.symbol = symbol;
         this.price = price;
         this.date = date;
@@ -17,5 +19,5 @@ public class PriceDownloadedEvent {
 
     public String symbol;
     public Money price;
-    public Date date;
+    public DateTime date;
 }

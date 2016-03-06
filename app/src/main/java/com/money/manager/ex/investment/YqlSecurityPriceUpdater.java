@@ -25,6 +25,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,14 +209,8 @@ public class YqlSecurityPriceUpdater
         priceModel.price = price;
 
         // date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = null;
-        try {
-            date = dateFormat.parse(quote.getString("LastTradeDate"));
-        } catch (ParseException e) {
-            handler.handle(e, "parsing date from CSV");
-        }
-        priceModel.date = date;
+        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
+        priceModel.date = format.parseDateTime(quote.getString("LastTradeDate"));
 
         return priceModel;
     }
