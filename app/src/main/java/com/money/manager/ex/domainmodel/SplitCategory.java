@@ -19,13 +19,11 @@ package com.money.manager.ex.domainmodel;
 
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ITransactionEntity;
 
-import org.apache.commons.lang3.StringUtils;
+import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -33,6 +31,7 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * Split Category for checking account transaction.
  */
+@Parcel
 public class SplitCategory
     extends EntityBase
     implements ITransactionEntity {
@@ -45,18 +44,18 @@ public class SplitCategory
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-    public final static Parcelable.Creator<SplitCategory> CREATOR = new Parcelable.Creator<SplitCategory>() {
-        public SplitCategory createFromParcel(Parcel source) {
-            SplitCategory split = new SplitCategory();
-            split.readFromParcel(source);
-            return split;
-        }
-
-        @Override
-        public SplitCategory[] newArray(int size) {
-            return new SplitCategory[size];
-        }
-    };
+//    public final static Parcelable.Creator<SplitCategory> CREATOR = new Parcelable.Creator<SplitCategory>() {
+//        public SplitCategory createFromParcel(Parcel source) {
+//            SplitCategory split = new SplitCategory();
+//            split.readFromParcel(source);
+//            return split;
+//        }
+//
+//        @Override
+//        public SplitCategory[] newArray(int size) {
+//            return new SplitCategory[size];
+//        }
+//    };
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
                                              double amount) {
@@ -145,26 +144,26 @@ public class SplitCategory
         setInteger(TRANSID, value);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        Integer id = getId();
-        dest.writeInt(id == null ? Constants.NOT_SET : id);
-        Integer transId = getTransId();
-        dest.writeInt(transId == null ? Constants.NOT_SET : transId);
-        dest.writeInt(getCategoryId());
-        dest.writeInt(getSubcategoryId());
-        dest.writeString(getAmount().toString());
-    }
-
-    public void readFromParcel(Parcel source) {
-        setId(source.readInt());
-        setTransId(source.readInt());
-        setCategoryId(source.readInt());
-        setSubcategoryId(source.readInt());
-        String amount = source.readString();
-        if (StringUtils.isNotEmpty(amount)) {
-            setAmount(MoneyFactory.fromString(amount));
-        }
-    }
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        Integer id = getId();
+//        dest.writeInt(id == null ? Constants.NOT_SET : id);
+//        Integer transId = getTransId();
+//        dest.writeInt(transId == null ? Constants.NOT_SET : transId);
+//        dest.writeInt(getCategoryId());
+//        dest.writeInt(getSubcategoryId());
+//        dest.writeString(getAmount().toString());
+//    }
+//
+//    public void readFromParcel(Parcel source) {
+//        setId(source.readInt());
+//        setTransId(source.readInt());
+//        setCategoryId(source.readInt());
+//        setSubcategoryId(source.readInt());
+//        String amount = source.readString();
+//        if (StringUtils.isNotEmpty(amount)) {
+//            setAmount(MoneyFactory.fromString(amount));
+//        }
+//    }
 
 }

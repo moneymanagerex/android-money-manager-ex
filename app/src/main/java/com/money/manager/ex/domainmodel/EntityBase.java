@@ -52,11 +52,11 @@ public class EntityBase {
     /**
      * Contains the pointer to the actual data when loading from content provider.
      */
-    private Cursor mCursor;
+//    private Cursor mCursor;
 
-    protected Cursor getCursor() {
-        return mCursor;
-    }
+//    protected Cursor getCursor() {
+//        return mCursor;
+//    }
 
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();
@@ -64,9 +64,9 @@ public class EntityBase {
         DatabaseUtils.cursorRowToContentValues(c, contentValues);
     }
 
-    public void setCursor(Cursor c) {
-        this.mCursor = c;
-    }
+//    public void setCursor(Cursor c) {
+//        this.mCursor = c;
+//    }
 
     protected Boolean getBoolean(String column) {
         return contentValues.getAsBoolean(column);

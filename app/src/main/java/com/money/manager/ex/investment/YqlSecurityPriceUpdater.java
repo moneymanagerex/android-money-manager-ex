@@ -25,6 +25,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;

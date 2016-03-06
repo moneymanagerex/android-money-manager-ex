@@ -43,6 +43,8 @@ import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.DonateDialogUtils;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 
 /**

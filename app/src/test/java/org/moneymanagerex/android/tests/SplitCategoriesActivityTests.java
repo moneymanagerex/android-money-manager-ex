@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
+import org.parceler.Parcels;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
@@ -131,8 +132,8 @@ public class SplitCategoriesActivityTests {
         Intent intent = new Intent(context, SplitTransactionsActivity.class);
         intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
         intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
-        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, mSplitTransactions);
-        intent.putParcelableArrayListExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, mSplitTransactionsDeleted);
+        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
+        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
         intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, currencyId);
 
 //        mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);

@@ -24,6 +24,7 @@ import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.opencsv.CSVParser;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;

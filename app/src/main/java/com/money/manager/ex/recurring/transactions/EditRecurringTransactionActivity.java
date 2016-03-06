@@ -55,8 +55,10 @@ import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 
@@ -233,7 +235,7 @@ public class EditRecurringTransactionActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_MODEL, mRecurringTransaction);
+        outState.putParcelable(KEY_MODEL, Parcels.wrap(mRecurringTransaction));
 
         // save the state interface
 //        outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
@@ -272,8 +274,8 @@ public class EditRecurringTransactionActivity
         outState.putInt(KEY_SUBCATEGORY_ID, subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
-        outState.putParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED, mCommonFunctions.mSplitTransactionsDeleted);
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
+        outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
         outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.txtSelectDate.getTag().toString());
         outState.putInt(KEY_REPEATS, mFrequencies);
@@ -607,8 +609,8 @@ public class EditRecurringTransactionActivity
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
         mCommonFunctions.mNotes = savedInstanceState.getString(KEY_NOTES);
         mCommonFunctions.mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
-        mCommonFunctions.mSplitTransactions = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION);
-        mCommonFunctions.mSplitTransactionsDeleted = savedInstanceState.getParcelableArrayList(KEY_SPLIT_TRANSACTION_DELETED);
+        mCommonFunctions.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
+        mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
         mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
         mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
 
