@@ -46,6 +46,7 @@ import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -193,7 +194,7 @@ public class EditPriceDialog
             public void onClick(DialogInterface dialog, int which) {
                 //save price
                 Money amount = MoneyFactory.fromString(mAmountTextView.getTag().toString());
-                Date date = (Date) mDateTextView.getTag();
+                DateTime date = new DateTime((Date) mDateTextView.getTag());
 
                 StockRepository repo = new StockRepository(mContext);
                 repo.updateCurrentPrice(mSymbol, amount);

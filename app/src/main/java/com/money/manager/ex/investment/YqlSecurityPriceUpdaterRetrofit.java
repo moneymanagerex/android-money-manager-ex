@@ -28,6 +28,11 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -212,16 +217,12 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Date
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        DateTime date = MyDateTimeUtils.today();
         JsonElement dateElement = quote.get("LastTradeDate");
-        Date date = new Date();
         if (dateElement != JsonNull.INSTANCE) {
             // Sometimes the date is not available. For now we will use today's date.
-            try {
-                date = dateFormat.parse(dateElement.getAsString());
-            } catch (ParseException e) {
-                handler.handle(e, "parsing date from CSV");
-            }
+            DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
+            date = format.parseDateTime(dateElement.getAsString());
         }
         priceModel.date = date;
 

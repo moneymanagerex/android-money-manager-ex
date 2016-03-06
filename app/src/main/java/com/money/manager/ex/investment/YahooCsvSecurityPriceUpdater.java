@@ -26,6 +26,9 @@ import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.opencsv.CSVParser;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -126,14 +129,8 @@ public class YahooCsvSecurityPriceUpdater
         }
 
         // date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = null;
-        try {
-            date = dateFormat.parse(values[2]);
-        } catch (ParseException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing date from CSV");
-        }
+        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
+        DateTime date = format.parseDateTime(values[2]);
 
         // Notify the caller by invoking the interface method.
         EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));

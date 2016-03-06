@@ -52,6 +52,8 @@ import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -405,7 +407,7 @@ public class CurrencyListFragment
         onPriceDownloaded(event.symbol, event.price, event.date);
     }
 
-    private void onPriceDownloaded(String symbol, Money price, Date date) {
+    private void onPriceDownloaded(String symbol, Money price, DateTime date) {
         // extract destination currency
         String baseCurrencyCode = getCurrencyUtils().getBaseCurrencyCode();
         String destinationCurrency = symbol.replace(baseCurrencyCode, "");
@@ -457,10 +459,6 @@ public class CurrencyListFragment
                         if (success) {
                             Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                         }
-//                        if (getActivity().getContentResolver().delete(mCurrency.getUri(),
-//                            Currency.CURRENCYID + "=" + currencyId, null) == 0) {
-//                            Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
-//                        }
                         // restart loader
                         getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, CurrencyListFragment.this);
                     }

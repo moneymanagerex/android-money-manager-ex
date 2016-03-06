@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.investment;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 import info.javaperformance.money.Money;
@@ -27,5 +29,5 @@ import info.javaperformance.money.Money;
 public class SecurityPriceModel {
     public String symbol;
     public Money price;
-    public Date date;
+    public DateTime date;
 }
