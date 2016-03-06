@@ -56,7 +56,7 @@ public class SplitItemFragment
     private static final String ARG_SPLIT = "arg:split";
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitCategory";
     private static final int REQUEST_PICK_CATEGORY = 1;
-    private static final int REQUEST_AMOUNT = 2;
+//    private static final int REQUEST_AMOUNT = 2;
 
     public static SplitItemFragment newInstance(ITransactionEntity split, Integer currencyId) {
         SplitItemFragment fragment = new SplitItemFragment();
@@ -83,7 +83,7 @@ public class SplitItemFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mSplitTransaction = getArguments().getParcelable(ARG_SPLIT);
+        this.mSplitTransaction = Parcels.unwrap(getArguments().getParcelable(ARG_SPLIT));
     }
 
     @Override
@@ -93,7 +93,7 @@ public class SplitItemFragment
         if (container == null) return null;
 
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION)) {
-            mSplitTransaction = savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION);
+            mSplitTransaction = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
         }
 
         Core core = new Core(getActivity().getApplicationContext());
