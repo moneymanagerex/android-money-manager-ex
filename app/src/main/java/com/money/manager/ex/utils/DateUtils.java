@@ -29,6 +29,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -172,19 +173,9 @@ public class DateUtils {
         this.context = context.getApplicationContext();
     }
 
-    public void formatExtendedDate(TextView dateTextView, Date date) {
-        try {
-            Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
-            SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.LONG_DATE_PATTERN, locale);
-            // use a shorted, defined, format, i.e. Tue, 28 Aug 2015 for fixed width, if
-            // the status selector is to switch to an icon.
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", locale);
-
-            dateTextView.setText(dateFormat.format(date));
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "formatting extended date");
-        }
+    public void formatExtendedDate(TextView dateTextView, DateTime date) {
+        String displayValue = MyDateTimeUtils.getDateStringFrom(date, Constants.LONG_DATE_PATTERN);
+        dateTextView.setText(displayValue);
     }
 
     /**

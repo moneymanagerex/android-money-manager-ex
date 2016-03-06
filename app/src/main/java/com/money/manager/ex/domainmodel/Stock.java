@@ -23,6 +23,9 @@ import android.database.DatabaseUtils;
 import android.os.Parcel;
 
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -57,7 +60,7 @@ public class Stock
     public static Stock create() {
         Stock stock = new Stock();
         // Set to today.
-        stock.setPurchaseDate(Calendar.getInstance().getTime());
+        stock.setPurchaseDate(DateTime.now());
 
         stock.setName("");
         stock.setHeldAt(0);
@@ -166,16 +169,16 @@ public class Stock
         setDouble(NUMSHARES, value);
     }
 
-    public Date getPurchaseDate() {
+    public DateTime getPurchaseDate() {
         if (contentValues.getAsString(PURCHASEDATE) == null && mCursor != null) {
             DatabaseUtils.cursorStringToContentValues(mCursor, PURCHASEDATE, contentValues);
         }
         String dateString = contentValues.getAsString(PURCHASEDATE);
-        return DateUtils.getDateFromIsoString(dateString);
+        return MyDateTimeUtils.from(dateString);
     }
 
-    public void setPurchaseDate(Date value) {
-        setDate(PURCHASEDATE, value);
+    public void setPurchaseDate(DateTime value) {
+        setDateTime(PURCHASEDATE, value);
     }
 
     public Money getPurchasePrice() {

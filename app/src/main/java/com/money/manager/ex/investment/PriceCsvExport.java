@@ -25,6 +25,9 @@ import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -87,9 +90,9 @@ public class PriceCsvExport
             StockHistory latestPrice = historyRepository.getLatestPriceFor(stock.getSymbol());
             if (latestPrice == null) continue;
 
-            Date date = latestPrice.getDate();
+            DateTime date = latestPrice.getDate();
             if (date == null) {
-                date = new Date();
+                date = new DateTime();
             }
             // format date
             String csvDate = getDateInCsvFormat(date);
@@ -109,16 +112,18 @@ public class PriceCsvExport
         return builder.toString();
     }
 
-    public String getDateInCsvFormat(Date date) {
+    public String getDateInCsvFormat(DateTime date) {
         // todo: make this configurable.
         String csvFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
-        String result = sdf.format(date);
+//        SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
+//        String result = sdf.format(date);
+
+        String result = MyDateTimeUtils.getDateStringFrom(date, csvFormat);
 
         // append quotes
         result = "\"" + result + "\"";
 
-        return  result;
+        return result;
     }
 
     private String generateFileName(String filePrefix) {

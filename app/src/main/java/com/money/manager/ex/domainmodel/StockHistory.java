@@ -21,6 +21,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Parcel;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 /**
@@ -55,7 +57,7 @@ public class StockHistory
         return getInt(HISTID);
     }
 
-    public Date getDate() {
-        return getDate(DATE);
+    public DateTime getDate() {
+        return getDateTime(DATE);
     }
 }

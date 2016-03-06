@@ -36,11 +36,13 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -166,23 +168,25 @@ public class InvestmentTransactionEditActivity
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
-                    try {
-                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
-                            MoneyManagerApplication.getInstanceApp().getAppLocale())
-                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
-                        mStock.setPurchaseDate(date);
-                        dateUtils.formatExtendedDate(dateView, date);
-                    } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), InvestmentTransactionEditActivity.this);
-                        handler.handle(e, "setting the date");
-                    }
+                    DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    dateUtils.formatExtendedDate(dateView, dateTime);
+//                    try {
+//                        Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT,
+//                            MoneyManagerApplication.getInstanceApp().getAppLocale())
+//                                .parse(Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth));
+//                        mStock.setPurchaseDate(date);
+//                        dateUtils.formatExtendedDate(dateView, date);
+//                    } catch (Exception e) {
+//                        ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), InvestmentTransactionEditActivity.this);
+//                        handler.handle(e, "setting the date");
+//                    }
                 }
             };
 
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(mStock.getPurchaseDate());
+                calendar.setTime(mStock.getPurchaseDate().toDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
