@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -33,6 +34,7 @@ import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import org.greenrobot.eventbus.EventBus;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -57,7 +59,7 @@ public class CalculateRunningBalanceTask2
      * @param accountId Id of the account for which to load the balances.
      * @param startingDate The date, inclusive, from which to calculate the running balance.
      */
-    public CalculateRunningBalanceTask2(Context context, int accountId, Date startingDate,
+    public CalculateRunningBalanceTask2(Context context, int accountId, DateTime startingDate,
                                         Bundle selection) {
         this.context = context.getApplicationContext();
         this.accountId = accountId;
@@ -69,7 +71,7 @@ public class CalculateRunningBalanceTask2
     private Context context;
     private HashMap<Integer, Money> balances;
     private int accountId;
-    private Date startingDate;
+    private DateTime startingDate;
     private Bundle selectionBundle;
 
     /**
@@ -132,8 +134,8 @@ public class CalculateRunningBalanceTask2
                 // Get starting balance on the given day.
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
-                String date = MyDateTimeUtils.getIsoStringFrom(this.startingDate);
-                date = DateUtils.getYesterdayFrom(date);
+                String date = this.startingDate.minusDays(1)
+                    .toString(Constants.ISO_DATE_FORMAT);
                 Money balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);
 

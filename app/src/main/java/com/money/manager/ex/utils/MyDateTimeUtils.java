@@ -20,7 +20,10 @@ import android.content.Context;
 import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.DateRange;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -84,32 +87,92 @@ public class MyDateTimeUtils {
         return result;
     }
 
-    public static String getIsoStringFrom(Date date) {
-        DateTime dateTime = new DateTime(date);
-        return getIsoStringFrom(dateTime);
-    }
-
     public static String getIsoStringFrom(DateTime dateTime) {
-        DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
-        return format.print(dateTime);
+        if (dateTime == null) return null;
+
+        return dateTime.toString(Constants.ISO_DATE_FORMAT);
     }
 
-    public static String getUserStringFromDateTime(Context ctx, DateTime date) {
-        if (date == null) return "";
+    public static String getUserStringFromDateTime(Context ctx, DateTime dateTime) {
+        if (dateTime == null) return "";
 
         String userDatePattern = DateUtils.getUserDatePattern(ctx);
 
-        // Must convert to uppercase.
-//        String dateFormat = userDatePattern.toUpperCase();
-
-        DateTimeFormatter format = DateTimeFormat.forPattern(userDatePattern);
-
-        //return date.format(dateFormat);
-        return format.print(date);
+        return dateTime.toString(userDatePattern);
     }
 
     public static void setDatePicker(DateTime date, DatePicker datePicker) {
-//        datePicker.updateDate(date.getYear(), date.getMonth() - 1, date.getDay());
-        datePicker.updateDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+        datePicker.updateDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
     }
+
+    /**
+     *
+     * @param resourceId String Id for name of the period.
+     * @return Date range that matches the period selected.
+     */
+    public static DateRange getDateRangeForPeriod(Context context, int resourceId) {
+        String value = context.getString(resourceId);
+        return getDateRangeForPeriod(context, value);
+    }
+
+    /**
+     * Creates a date range from the period name. Used when selecting a date range from the
+     * localized menus.
+     * @param period Period name in local language.
+     * @return Date Range object.
+     */
+    public static DateRange getDateRangeForPeriod(Context context, String period) {
+        if (StringUtils.isEmpty(period)) return null;
+
+        DateTime dateFrom;
+        DateTime dateTo;
+
+        // we ignore the minutes at the moment, since the field in the db only stores the date value.
+
+        if (period.equalsIgnoreCase(context.getString(R.string.all_transaction)) ||
+            period.equalsIgnoreCase(context.getString(R.string.all_time))) {
+            // All transactions.
+            dateFrom = MyDateTimeUtils.today().minusYears(1000);
+            dateTo = MyDateTimeUtils.today().plusYears(1000);
+        } else if (period.equalsIgnoreCase(context.getString(R.string.today))) {
+            dateFrom = MyDateTimeUtils.today();
+            dateTo = MyDateTimeUtils.today();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.last7days))) {
+            dateFrom = MyDateTimeUtils.today().minusDays(7);
+            dateTo = MyDateTimeUtils.today();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.last15days))) {
+            dateFrom = MyDateTimeUtils.today().minusDays(14);
+            dateTo = MyDateTimeUtils.today();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.current_month))) {
+            dateFrom = MyDateTimeUtils.today().dayOfMonth().withMinimumValue();
+            dateTo = MyDateTimeUtils.today().dayOfMonth().withMaximumValue();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.last30days))) {
+            dateFrom = MyDateTimeUtils.today().minusDays(30);
+            dateTo = MyDateTimeUtils.today();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.last3months))) {
+            dateFrom = MyDateTimeUtils.today().minusMonths(3)
+                .dayOfMonth().withMinimumValue();
+            dateTo = MyDateTimeUtils.today();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.last6months))) {
+            dateFrom = MyDateTimeUtils.today().minusMonths(6)
+                .dayOfMonth().withMinimumValue();
+            dateTo = MyDateTimeUtils.today();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.current_year))) {
+            dateFrom = MyDateTimeUtils.today().monthOfYear().withMinimumValue()
+                .dayOfMonth().withMinimumValue();
+            dateTo = MyDateTimeUtils.today().monthOfYear().withMaximumValue()
+                .dayOfMonth().withMaximumValue();
+        } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
+            // Future transactions
+            dateFrom = MyDateTimeUtils.today().plusDays(1);
+            dateTo = MyDateTimeUtils.today().plusYears(1000);
+        } else {
+            dateFrom = null;
+            dateTo = null;
+        }
+
+        DateRange result = new DateRange(dateFrom, dateTo);
+        return result;
+    }
+
 }

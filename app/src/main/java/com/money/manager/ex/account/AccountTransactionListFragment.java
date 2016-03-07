@@ -137,9 +137,7 @@ public class AccountTransactionListFragment
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = ranges.get(rangeName);
 
-        // todo: replace this with implemented period on the range object.
-        DateUtils dateUtils = new DateUtils(getContext());
-        mFilter.dateRange = dateUtils.getDateRangeForPeriod(range.nameResourceId);
+        mFilter.dateRange = MyDateTimeUtils.getDateRangeForPeriod(getActivity(), range.nameResourceId);
 
         // Default value.
         mFilter.transactionStatus = new StatusFilter();
@@ -421,8 +419,7 @@ public class AccountTransactionListFragment
         settings.setShowTransactions(range.key);
 
         // Save the selected period.
-        DateUtils dateUtils = new DateUtils(getContext());
-        mFilter.dateRange = dateUtils.getDateRangeForPeriod(stringId);
+        mFilter.dateRange = MyDateTimeUtils.getDateRangeForPeriod(getActivity(), stringId);
 
         item.setChecked(true);
 
