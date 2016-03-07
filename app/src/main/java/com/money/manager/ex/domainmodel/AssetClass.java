@@ -40,8 +40,7 @@ import info.javaperformance.money.MoneyFactory;
  */
 @Parcel(analyze = {ContentValues.class})
 public class AssetClass
-    extends EntityBase
-    implements Serializable {
+    extends EntityBase {
 
     public static final String ID = "ID";
     public static final String PARENTID = "PARENTID";
