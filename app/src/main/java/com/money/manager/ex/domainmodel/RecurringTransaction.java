@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.MyDateTimeUtils;
@@ -105,10 +106,12 @@ public class RecurringTransaction
         setMoney(ITransactionEntity.TOTRANSAMOUNT, value);
     }
 
+    @Override
     public Integer getCategoryId() {
         return getInt(ITransactionEntity.CATEGID);
     }
 
+    @Override
     public void setCategoryId(int value) {
         setInteger(ITransactionEntity.CATEGID, value);
     }
@@ -128,6 +131,18 @@ public class RecurringTransaction
 
     public void setDueDate(DateTime value) {
         setDateTime(TRANSDATE, value);
+    }
+
+    public String getDateString() {
+        return getDueDateString();
+    }
+
+    /**
+     * Due Date
+     * @param value Date to set
+     */
+    public void setDate(DateTime value) {
+        setDueDate(value);
     }
 
     public DateTime getPaymentDate() {

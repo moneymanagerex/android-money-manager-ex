@@ -17,6 +17,7 @@
 package com.money.manager.ex.transactions;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
@@ -26,8 +27,8 @@ import com.money.manager.ex.domainmodel.SplitRecurringCategory;
  */
 public class SplitItemFactory {
 
-    public static ITransactionEntity create(String entityClassName) {
-        ITransactionEntity entity;
+    public static ISplitTransaction create(String entityClassName) {
+        ISplitTransaction entity;
         String recurringSplitName = SplitRecurringCategory.class.getSimpleName();
 
         if (entityClassName != null && entityClassName.contains(recurringSplitName)) {

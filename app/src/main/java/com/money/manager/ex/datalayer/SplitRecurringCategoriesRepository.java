@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
@@ -51,20 +52,20 @@ public class SplitRecurringCategoriesRepository
      * @param transId Id of the main transaction for which to load the splits.
      * @return list of split categories for the given transaction.
      */
-    public ArrayList<ITransactionEntity> loadSplitCategoriesFor(int transId) {
+    public ArrayList<ISplitTransaction> loadSplitCategoriesFor(int transId) {
         Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
             SplitRecurringCategory.TRANSID + "=" + Integer.toString(transId),
             null,
             SplitRecurringCategory.SPLITTRANSID);
         if (curSplit == null) return null;
 
-        ArrayList<ITransactionEntity> listSplitTrans = new ArrayList<>();
+        ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
 
         while (curSplit.moveToNext()) {
-            SplitRecurringCategory obj = new SplitRecurringCategory();
-            obj.loadFromCursor(curSplit);
+            SplitRecurringCategory splitRecurringCategory = new SplitRecurringCategory();
+            splitRecurringCategory.loadFromCursor(curSplit);
 
-            listSplitTrans.add(obj);
+            listSplitTrans.add(splitRecurringCategory);
         }
         curSplit.close();
 

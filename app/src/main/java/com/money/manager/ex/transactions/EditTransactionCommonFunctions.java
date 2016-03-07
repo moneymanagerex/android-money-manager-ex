@@ -48,6 +48,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
@@ -107,7 +108,7 @@ public class EditTransactionCommonFunctions {
 
     // Model
     public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
-    public String mDate = "";   // datepicker value
+//    public String mDate = "";   // datepicker value
     public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
@@ -125,8 +126,8 @@ public class EditTransactionCommonFunctions {
     public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 
-    public ArrayList<ITransactionEntity> mSplitTransactions;
-    public ArrayList<ITransactionEntity> mSplitTransactionsDeleted;
+    public ArrayList<ISplitTransaction> mSplitTransactions;
+    public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
     // Controls
     public ViewHolder viewHolder;
@@ -492,15 +493,17 @@ public class EditTransactionCommonFunctions {
         });
     }
 
+    /**
+     * Due Date picker
+     */
     public void initDateSelector() {
-        if (StringUtils.isEmpty(mDate)) {
-            mDate = DateTime.now().toString(Constants.ISO_DATE_FORMAT);
+        String dateString = this.transactionEntity.getDateString();
+        if (StringUtils.isEmpty(dateString)) {
+            DateTime dateTime = DateTime.now();
+            dateString = dateTime.toString(Constants.ISO_DATE_FORMAT);
+            transactionEntity.setDate(dateTime);
         }
-        viewHolder.dateTextView.setTag(mDate);
-
-        final DateUtils dateUtils = new DateUtils(getContext());
-        final DateTime date = DateTime.parse(mDate);
-        dateUtils.formatExtendedDate(viewHolder.dateTextView, date);
+        showDate(dateString);
 
         viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -509,8 +512,10 @@ public class EditTransactionCommonFunctions {
                     setDirty(true);
 
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    viewHolder.dateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
-                    dateUtils.formatExtendedDate(viewHolder.dateTextView, dateTime);
+                    transactionEntity.setDate(dateTime);
+
+                    String dateString = dateTime.toString(Constants.ISO_DATE_FORMAT);
+                    showDate(dateString);
                 }
             };
 
@@ -527,6 +532,15 @@ public class EditTransactionCommonFunctions {
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
+    }
+
+    private void showDate(String dateString) {
+        viewHolder.dateTextView.setTag(dateString);
+
+        DateTime dateTime = DateTime.parse(dateString);
+
+        DateUtils dateUtils = new DateUtils(getContext());
+        dateUtils.formatExtendedDate(viewHolder.dateTextView, dateTime);
     }
 
     public void initNotesControls() {
@@ -1171,9 +1185,9 @@ public class EditTransactionCommonFunctions {
         if(mSplitTransactions == null) return;
 
         for(int i = 0; i < mSplitTransactions.size(); i++) {
-            ITransactionEntity split = mSplitTransactions.get(i);
+            ISplitTransaction split = mSplitTransactions.get(i);
             int id = split.getId();
-            ArrayList<ITransactionEntity> deletedSplits = getDeletedSplitCategories();
+            ArrayList<ISplitTransaction> deletedSplits = getDeletedSplitCategories();
 
             if(id == -1) {
                 // Remove any newly created splits.
@@ -1189,7 +1203,7 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public ArrayList<ITransactionEntity> getDeletedSplitCategories() {
+    public ArrayList<ISplitTransaction> getDeletedSplitCategories() {
         if(mSplitTransactionsDeleted == null){
             mSplitTransactionsDeleted = new ArrayList<>();
         }
@@ -1260,7 +1274,7 @@ public class EditTransactionCommonFunctions {
      */
     private void createSplitForCategoryAndAmount() {
         // Add the new split record.
-        ITransactionEntity entity = SplitItemFactory.create(this.mDatasetName);
+        ISplitTransaction entity = SplitItemFactory.create(this.mDatasetName);
 
         // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
@@ -1273,7 +1287,7 @@ public class EditTransactionCommonFunctions {
 
         // This category should not be inside the any existing splits, then.
         if (!this.getSplitTransactions().isEmpty()) {
-            for (ITransactionEntity split : this.mSplitTransactions) {
+            for (ISplitTransaction split : this.mSplitTransactions) {
                 if (split.getCategoryId().equals(this.transactionEntity.getCategoryId())) {
                     return;
                 }
@@ -1288,7 +1302,7 @@ public class EditTransactionCommonFunctions {
         this.getSplitTransactions().add(entity);
     }
 
-    private ArrayList<ITransactionEntity> getSplitTransactions() {
+    private ArrayList<ISplitTransaction> getSplitTransactions() {
         if (mSplitTransactions == null) {
             mSplitTransactions = new ArrayList<>();
         }

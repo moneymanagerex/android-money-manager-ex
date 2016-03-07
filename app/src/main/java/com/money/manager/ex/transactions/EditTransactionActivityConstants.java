@@ -30,7 +30,7 @@ public class EditTransactionActivityConstants {
     public static final String KEY_TO_ACCOUNT_NAME = "AllDataActivity:ToAccountName";
     public static final String KEY_TRANS_CODE = "AllDataActivity:TransCode";
     public static final String KEY_TRANS_STATUS = "AllDataActivity:TransStatus";
-    public static final String KEY_TRANS_DATE = "AllDataActivity:TransDate";
+//    public static final String KEY_TRANS_DATE = "AllDataActivity:TransDate";
     public static final String KEY_TRANS_AMOUNT = "AllDataActivity:TransAmount";
     public static final String KEY_TRANS_TOTAMOUNT = "AllDataActivity:TransTotAmount";
     public static final String KEY_PAYEE_ID = "AllDataActivity:PayeeId";

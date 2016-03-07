@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
@@ -276,8 +277,8 @@ public class RecurringTransactionService
      * Load split transactions.
      * @return array list of all related split transactions
      */
-    public ArrayList<ITransactionEntity> loadSplitTransactions() {
-        ArrayList<ITransactionEntity> result = new ArrayList<>();
+    public ArrayList<ISplitTransaction> loadSplitTransactions() {
+        ArrayList<ISplitTransaction> result = new ArrayList<>();
 
         Cursor cursor = this.getCursorForSplitTransactions();
         if (cursor == null) return result;

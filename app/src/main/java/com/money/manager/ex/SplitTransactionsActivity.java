@@ -27,6 +27,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.transactions.SplitItemFactory;
 import com.money.manager.ex.transactions.SplitItemFragment;
@@ -63,8 +64,8 @@ public class SplitTransactionsActivity
      * Needed to distinguish between SplitCategory and SplitRecurringCategory.
      */
     private String entityTypeName = null;
-    private ArrayList<ITransactionEntity> mSplitTransactions = null;
-    private ArrayList<ITransactionEntity> mSplitDeleted = null;
+    private ArrayList<ISplitTransaction> mSplitTransactions = null;
+    private ArrayList<ISplitTransaction> mSplitDeleted = null;
     private FloatingActionButton mFloatingActionButton;
     private Integer currencyId = Constants.NOT_SET;
 
@@ -118,12 +119,12 @@ public class SplitTransactionsActivity
 
     @Override
     public boolean onActionDoneClick() {
-        ArrayList<ITransactionEntity> allSplitTransactions = getAllSplitCategories();
+        ArrayList<ISplitTransaction> allSplitTransactions = getAllSplitCategories();
         Money total = MoneyFactory.fromString("0");
 
         // check data
         for (int i = 0; i < allSplitTransactions.size(); i++) {
-            ITransactionEntity splitTransactions = allSplitTransactions.get(i);
+            ISplitTransaction splitTransactions = allSplitTransactions.get(i);
             if (splitTransactions.getCategoryId() == -1 && splitTransactions.getSubcategoryId() == -1) {
                 Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected);
                 return false;
@@ -179,8 +180,8 @@ public class SplitTransactionsActivity
      * Returns all split categories created on the form.
      * @return List of Split Transactions that are displayed.
      */
-    public ArrayList<ITransactionEntity> getAllSplitCategories() {
-        ArrayList<ITransactionEntity> splitCategories = new ArrayList<>();
+    public ArrayList<ISplitTransaction> getAllSplitCategories() {
+        ArrayList<ISplitTransaction> splitCategories = new ArrayList<>();
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
 
         for(Fragment fragment:fragments) {
@@ -211,11 +212,11 @@ public class SplitTransactionsActivity
 
     private void addSplitTransaction() {
         // find which split transactions data set to instantiate.
-        ITransactionEntity entity = SplitItemFactory.create(this.entityTypeName);
+        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName);
         addFragmentChild(entity);
     }
 
-    private void addFragmentChild(ITransactionEntity entity) {
+    private void addFragmentChild(ISplitTransaction entity) {
         int tagNumber = entity.getId() == null || entity.getId() == Constants.NOT_SET
             ? mIdTag++
             : entity.getId();
@@ -247,17 +248,17 @@ public class SplitTransactionsActivity
         mSplitDeleted = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION_DELETED));
     }
 
-    private void onRemoveItem(ITransactionEntity object) {
-        if (object == null) return;
+    private void onRemoveItem(ISplitTransaction splitTransaction) {
+        if (splitTransaction == null) return;
 
         if (mSplitDeleted == null) {
             mSplitDeleted = new ArrayList<>();
         }
 
         // Add item to delete. Only if not a new, non-saved split item.
-        if (object.getId() != null && object.getId() != -1) {
+        if (splitTransaction.getId() != null && splitTransaction.getId() != -1) {
             // not new split transaction
-            mSplitDeleted.add(object);
+            mSplitDeleted.add(splitTransaction);
         }
     }
 

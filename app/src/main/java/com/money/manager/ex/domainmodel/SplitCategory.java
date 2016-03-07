@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 
 import org.parceler.Parcel;
@@ -34,7 +35,7 @@ import info.javaperformance.money.MoneyFactory;
 @Parcel
 public class SplitCategory
     extends EntityBase
-    implements ITransactionEntity {
+    implements ISplitTransaction {
 
     public static String TABLE_NAME = "SPLITTRANSACTIONS_V1";
 
@@ -43,19 +44,6 @@ public class SplitCategory
     public static final String CATEGID = "CATEGID";
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
-
-//    public final static Parcelable.Creator<SplitCategory> CREATOR = new Parcelable.Creator<SplitCategory>() {
-//        public SplitCategory createFromParcel(Parcel source) {
-//            SplitCategory split = new SplitCategory();
-//            split.readFromParcel(source);
-//            return split;
-//        }
-//
-//        @Override
-//        public SplitCategory[] newArray(int size) {
-//            return new SplitCategory[size];
-//        }
-//    };
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
                                              double amount) {
@@ -80,12 +68,12 @@ public class SplitCategory
 
     @Override
     public Integer getAccountId() {
-        return getInt(ACCOUNTID);
+        return getInt(ITransactionEntity.ACCOUNTID);
     }
 
     @Override
     public void setAccountId(int value) {
-        setInteger(ACCOUNTID, value);
+        setInteger(ITransactionEntity.ACCOUNTID, value);
     }
 
     @Override
@@ -96,12 +84,6 @@ public class SplitCategory
     @Override
     public Money getAmount() {
         return getMoney(SPLITTRANSAMOUNT);
-    }
-
-    @Override
-    public Money getAmountTo() {
-        // this does not exist on split transactions!
-        return null;
     }
 
     @Override
@@ -117,11 +99,6 @@ public class SplitCategory
     @Override
     public void setAmount(Money splitTransAmount) {
         setMoney(SPLITTRANSAMOUNT, splitTransAmount);
-    }
-
-    @Override
-    public void setAmountTo(Money amount){
-        // nothing. This does not exist on split transactions.
     }
 
     @Override
@@ -143,27 +120,4 @@ public class SplitCategory
     public void setTransId(Integer value) {
         setInteger(TRANSID, value);
     }
-
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags) {
-//        Integer id = getId();
-//        dest.writeInt(id == null ? Constants.NOT_SET : id);
-//        Integer transId = getTransId();
-//        dest.writeInt(transId == null ? Constants.NOT_SET : transId);
-//        dest.writeInt(getCategoryId());
-//        dest.writeInt(getSubcategoryId());
-//        dest.writeString(getAmount().toString());
-//    }
-//
-//    public void readFromParcel(Parcel source) {
-//        setId(source.readInt());
-//        setTransId(source.readInt());
-//        setCategoryId(source.readInt());
-//        setSubcategoryId(source.readInt());
-//        String amount = source.readString();
-//        if (StringUtils.isNotEmpty(amount)) {
-//            setAmount(MoneyFactory.fromString(amount));
-//        }
-//    }
-
 }
