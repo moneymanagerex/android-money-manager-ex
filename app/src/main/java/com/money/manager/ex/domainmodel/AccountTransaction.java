@@ -114,13 +114,18 @@ public class AccountTransaction
         setInteger(ITransactionEntity.CATEGID, value);
     }
 
-    public String getDateAsString() {
+    public String getDateString() {
         return getString(ITransactionEntity.TRANSDATE);
     }
 
     public DateTime getDate() {
-        String dateString = getDateAsString();
+        String dateString = getDateString();
         return MyDateTimeUtils.from(dateString);
+    }
+
+    public void setDate(DateTime value) {
+        String dateString = value.toString(Constants.ISO_DATE_FORMAT);
+        setString(ITransactionEntity.TRANSDATE, dateString);
     }
 
     public String getNotes() {

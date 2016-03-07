@@ -39,6 +39,7 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
@@ -58,7 +59,7 @@ public class SplitItemFragment
     private static final int REQUEST_PICK_CATEGORY = 1;
 //    private static final int REQUEST_AMOUNT = 2;
 
-    public static SplitItemFragment newInstance(ITransactionEntity split, Integer currencyId) {
+    public static SplitItemFragment newInstance(ISplitTransaction split, Integer currencyId) {
         SplitItemFragment fragment = new SplitItemFragment();
 
         Bundle args = new Bundle();
@@ -69,7 +70,7 @@ public class SplitItemFragment
         return fragment;
     }
 
-    private ITransactionEntity mSplitTransaction;
+    private ISplitTransaction mSplitTransaction;
     private TextView txtAmount;
     private Spinner spinTransCode;
 
@@ -240,7 +241,7 @@ public class SplitItemFragment
      *                              Withdrawal is -.
      * @return Split Transaction
      */
-    public ITransactionEntity getSplitTransaction(TransactionTypes parentTransactionType) {
+    public ISplitTransaction getSplitTransaction(TransactionTypes parentTransactionType) {
         Object tag = txtAmount.getTag();
 
         if (tag == null) {
@@ -259,7 +260,6 @@ public class SplitItemFragment
 
         if(!parentTransactionType.equals(transactionType)){
             // parent transaction type is different. Invert the amount. What if the amount is already negative?
-//            mSplitTransaction.setAmount(amount.doubleValue() * -1);
             mSplitTransaction.setAmount(amount.negate());
         } else {
             mSplitTransaction.setAmount(amount);

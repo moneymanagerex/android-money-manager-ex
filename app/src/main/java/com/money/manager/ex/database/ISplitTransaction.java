@@ -15,18 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.recurring.transactions;
+package com.money.manager.ex.database;
 
-import android.widget.EditText;
-import android.widget.TextView;
+import info.javaperformance.money.Money;
 
 /**
- * View Holder pattern for Recurring Transaction editing
+ * Common interface for split transactions and recurring splits.
  */
-public class RecurringTransactionViewHolder {
-//    public TextView dueDateTextView;
-    public TextView paymentDateTextView;
-    public TextView recurrenceLabel;
-    public TextView paymentsLeftTextView;
-    public EditText paymentsLeftEditText;
+public interface ISplitTransaction {
+    Integer getId();
+    void setId(int splitTransId);
+
+    Integer getAccountId();
+    void setAccountId(int value);
+
+    Money getAmount();
+    void setAmount(Money splitTransAmount);
+
+    Integer getCategoryId();
+    void setCategoryId(int categoryId);
+
+    Integer getSubcategoryId();
+    void setSubcategoryId(Integer subCategoryId);
 }

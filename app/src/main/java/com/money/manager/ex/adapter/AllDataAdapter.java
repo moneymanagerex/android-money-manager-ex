@@ -39,6 +39,11 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
 
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,18 +148,24 @@ public class AllDataAdapter
         holder.linDate.setBackgroundColor(colorBackground);
         holder.txtStatus.setTextColor(Color.GRAY);
 
-        // date group
-        try {
+        // Date
+
+        String dateString = cursor.getString(cursor.getColumnIndex(DATE));
+        if (StringUtils.isNotEmpty(dateString)) {
+//            Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT).parse();
+            DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
+            DateTime dateTime = format.parseDateTime(dateString);
+
             Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
-            Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT)
-                .parse(cursor.getString(cursor.getColumnIndex(DATE)));
-            holder.txtMonth.setText(new SimpleDateFormat("MMM", locale).format(date));
-            holder.txtYear.setText(new SimpleDateFormat("yyyy", locale).format(date));
-            holder.txtDay.setText(new SimpleDateFormat("dd", locale).format(date));
-        } catch (ParseException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing transaction date");
+            String month = DateTimeFormat.forPattern("MMM").withLocale(locale).print(dateTime);
+            holder.txtMonth.setText(month);
+
+            String year = DateTimeFormat.forPattern("yyyy").withLocale(locale).print(dateTime);
+            holder.txtYear.setText(year);
+
+            String day = DateTimeFormat.forPattern("dd").withLocale(locale).print(dateTime);
+            holder.txtDay.setText(day);
         }
 
         // Amount

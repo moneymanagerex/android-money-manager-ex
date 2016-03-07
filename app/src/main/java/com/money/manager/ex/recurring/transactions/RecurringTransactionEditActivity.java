@@ -36,6 +36,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -88,7 +89,7 @@ public class RecurringTransactionEditActivity
     public static final String KEY_SUBCATEGORY_NAME = "RepeatingTransaction:SubCategoryName";
     public static final String KEY_NOTES = "RepeatingTransaction:Notes";
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
-    public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
+//    public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
     public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
     //    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
@@ -219,7 +220,7 @@ public class RecurringTransactionEditActivity
         outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
         outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
-        outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.dateTextView.getTag().toString());
+//        outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.dateTextView.getTag().toString());
 //        outState.putInt(KEY_REPEATS, mFrequencies);
 
         outState.putString(KEY_ACTION, mIntentAction);
@@ -306,6 +307,9 @@ public class RecurringTransactionEditActivity
     // Private
 
     private void initializeControls() {
+        // Payment Date
+        initializePaymentDateSelector();
+
         // Account(s)
         mCommonFunctions.initAccountSelectors();
 
@@ -367,20 +371,23 @@ public class RecurringTransactionEditActivity
         });
     }
 
-    private void initializeDueDateSelector() {
-        if (mViewHolder.dueDateTextView == null) return;
+    private void initializePaymentDateSelector() {
+        if (mViewHolder.paymentDateTextView == null) return;
 
         final DateUtils dateUtils = new DateUtils(this);
-        dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, mRecurringTransaction.getDueDate());
+        dateUtils.formatExtendedDate(mViewHolder.paymentDateTextView, mRecurringTransaction.getPaymentDate());
 
-        mViewHolder.dueDateTextView.setOnClickListener(new View.OnClickListener() {
+        mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     mCommonFunctions.setDirty(true);
 
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    dateUtils.formatExtendedDate(mViewHolder.dueDateTextView, dateTime);
+
+                    mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
+                    mRecurringTransaction.setPaymentDate(dateTime);
+                    dateUtils.formatExtendedDate(mViewHolder.paymentDateTextView, dateTime);
                 }
             };
 
@@ -388,7 +395,11 @@ public class RecurringTransactionEditActivity
             public void onClick(View v) {
                 // Show calendar with the current date selected.
 
-                DateTime dateTime = mRecurringTransaction.getDueDate();
+                DateTime dateTime = mRecurringTransaction.getPaymentDate();
+                if (dateTime == null) {
+                    dateTime = DateTime.now();
+                    mRecurringTransaction.setPaymentDate(dateTime);
+                }
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(listener)
@@ -412,12 +423,11 @@ public class RecurringTransactionEditActivity
 
         mViewHolder = new RecurringTransactionViewHolder();
 
-        // Due Date
-        mViewHolder.dueDateTextView = (TextView) findViewById(R.id.dueDateTextView);
-        initializeDueDateSelector();
+        // Due Date = date
+        mCommonFunctions.initDateSelector();
 
         // Payment Date, next occurrence
-        mCommonFunctions.initDateSelector();
+        mViewHolder.paymentDateTextView = (TextView) findViewById(R.id.paymentDateTextView);
 
         // Recurrence label
         mViewHolder.recurrenceLabel = (TextView) findViewById(R.id.recurrenceLabel);
@@ -456,7 +466,7 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
         mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
         mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
-        mCommonFunctions.mDate = mRecurringTransaction.getPaymentDateString();
+//        mCommonFunctions.mDate = mRecurringTransaction.getPaymentDateString();
 //        mFrequencies = mRecurringTransaction.getRecurrenceInt();
 
         // load split transactions only if no category selected.
@@ -504,8 +514,16 @@ public class RecurringTransactionEditActivity
     }
 
     private void collectDataFromUI() {
+        String value;
+
+        // Payment Date
+
+        value = mViewHolder.paymentDateTextView.getTag().toString();
+        mRecurringTransaction.setPaymentDate(MyDateTimeUtils.from(value));
+
         // Payments Left
-        String value = mViewHolder.paymentsLeftEditText.getText().toString();
+
+        value = mViewHolder.paymentsLeftEditText.getText().toString();
         if (NumericHelper.isNumeric(value)) {
             int paymentsLeft = NumericHelper.toInt(value);
             mRecurringTransaction.setPaymentsLeft(paymentsLeft);
@@ -558,7 +576,7 @@ public class RecurringTransactionEditActivity
         if (hasSplitTransaction) {
             SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
 
-            for (ITransactionEntity item : mCommonFunctions.mSplitTransactions) {
+            for (ISplitTransaction item : mCommonFunctions.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
                 splitEntity.setTransId(mRecurringTransaction.getId());
@@ -657,7 +675,7 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
         mCommonFunctions.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
         mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
-        mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
+//        mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
 //        mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
 
         // action

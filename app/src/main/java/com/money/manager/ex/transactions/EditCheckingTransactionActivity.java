@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -141,7 +142,7 @@ public class EditCheckingTransactionActivity
         outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.transactionEntity.getAccountId());
         outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommonFunctions.mDate);
+//        outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommonFunctions.mDate);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
@@ -222,7 +223,7 @@ public class EditCheckingTransactionActivity
 
         // create split transactions
         RecurringTransactionService recurringTransaction = new RecurringTransactionService(mRecurringTransactionId, this);
-        ArrayList<ITransactionEntity> splitTemplates = recurringTransaction.loadSplitTransactions();
+        ArrayList<ISplitTransaction> splitTemplates = recurringTransaction.loadSplitTransactions();
         if(mCommonFunctions.mSplitTransactions == null) mCommonFunctions.mSplitTransactions = new ArrayList<>();
 
         // For each of the templates, create a new record.
@@ -314,9 +315,9 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
         mCommonFunctions.mTransNumber = tx.getTransactionNumber();
         mCommonFunctions.mNotes = tx.getNotes();
-        if (!duplicate) {
-            mCommonFunctions.mDate = tx.getDateAsString();
-        }
+//        if (!duplicate) {
+//            mCommonFunctions.mDate = tx.getDateString();
+//        }
 
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
@@ -325,7 +326,7 @@ public class EditCheckingTransactionActivity
 
             if (duplicate && (mCommonFunctions.mSplitTransactions != null)) {
                 // Reset ids so that the transactions get inserted on save.
-                for (ITransactionEntity split : mCommonFunctions.mSplitTransactions) {
+                for (ISplitTransaction split : mCommonFunctions.mSplitTransactions) {
                     split.setId(Constants.NOT_SET);
                 }
             }
@@ -362,25 +363,25 @@ public class EditCheckingTransactionActivity
      */
     private boolean loadRecurringTransactionInternal(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        RecurringTransaction tx = repo.load(recurringTransactionId);
-        if (tx == null) return false;
+        RecurringTransaction recurringTx = repo.load(recurringTransactionId);
+        if (recurringTx == null) return false;
 
-        mCommonFunctions.transactionEntity = tx;
+        // Copy properties from recurring transaction
 
-        // take a data
-//        mCommonFunctions.accountId = tx.getAccountId();
-        mCommonFunctions.toAccountId = tx.getToAccountId();
-        String transCode = tx.getTransactionCode();
+        mCommonFunctions.transactionEntity.setDate(recurringTx.getPaymentDate());
+        mCommonFunctions.transactionEntity.setAccountId(recurringTx.getAccountId());
+
+        mCommonFunctions.toAccountId = recurringTx.getToAccountId();
+        String transCode = recurringTx.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = tx.getStatus();
-        mCommonFunctions.transactionEntity.setAmount(tx.getAmount());
-        mCommonFunctions.transactionEntity.setAmountTo(tx.getAmountTo());
-        mCommonFunctions.payeeId = tx.getPayeeId();
-        mCommonFunctions.transactionEntity.setCategoryId(tx.getCategoryId());
-        mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
-        mCommonFunctions.mTransNumber = tx.getTransactionNumber();
-        mCommonFunctions.mNotes = tx.getNotes();
-        mCommonFunctions.mDate = tx.getPaymentDateString();
+        mCommonFunctions.status = recurringTx.getStatus();
+        mCommonFunctions.transactionEntity.setAmount(recurringTx.getAmount());
+        mCommonFunctions.transactionEntity.setAmountTo(recurringTx.getAmountTo());
+        mCommonFunctions.payeeId = recurringTx.getPayeeId();
+        mCommonFunctions.transactionEntity.setCategoryId(recurringTx.getCategoryId());
+        mCommonFunctions.transactionEntity.setSubcategoryId(recurringTx.getSubcategoryId());
+        mCommonFunctions.mTransNumber = recurringTx.getTransactionNumber();
+        mCommonFunctions.mNotes = recurringTx.getNotes();
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
@@ -404,22 +405,23 @@ public class EditCheckingTransactionActivity
         mIntentAction = intent.getAction();
 
         if (savedInstanceState == null) {
-            int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID,
-                Constants.NOT_SET);
-            mCommonFunctions.transactionEntity.setAccountId(accountId);
+            int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
+            if (accountId != Constants.NOT_SET) {
+                mCommonFunctions.transactionEntity.setAccountId(accountId);
+            }
 
             // Edit transaction.
 
             if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
-                mTransId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, -1);
+                mTransId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
                 // select data transaction
                 loadCheckingAccount(mTransId, false);
             } else if (mIntentAction != null && Intent.ACTION_PASTE.equals(mIntentAction)) {
                 // select data transaction
-                loadCheckingAccount(intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, -1), true);
+                loadCheckingAccount(intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET), true);
             } else {
-                if (intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1) > -1) {
-                    mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, -1);
+                mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
+                if (mRecurringTransactionId > Constants.NOT_SET) {
                     loadRecurringTransaction(mRecurringTransactionId);
                 }
             }
@@ -549,17 +551,15 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionEntity.setAccountId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID));
         mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
-        mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
+//        mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
         mCommonFunctions.transactionEntity.setAmount(
                 MoneyFactory.fromString(
-                        savedInstanceState.getString(
-                                EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
+                        savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT)));
         mCommonFunctions.transactionEntity.setAmountTo(
-            MoneyFactory.fromString(savedInstanceState.getString(
-                EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT)));
+            MoneyFactory.fromString(savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT)));
         mCommonFunctions.payeeId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_CATEGORY_ID));
@@ -660,11 +660,11 @@ public class EditCheckingTransactionActivity
         if (hasSplitCategories) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
 
-            for (ITransactionEntity split : mCommonFunctions.mSplitTransactions) {
+            for (ISplitTransaction split : mCommonFunctions.mSplitTransactions) {
                 SplitCategory entity = (SplitCategory) split;
 
                 // do nothing if the split is marked for deletion.
-                ArrayList<ITransactionEntity> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
+                ArrayList<ISplitTransaction> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
                 if(deletedSplits.contains(split)) {
                     continue;
                 }

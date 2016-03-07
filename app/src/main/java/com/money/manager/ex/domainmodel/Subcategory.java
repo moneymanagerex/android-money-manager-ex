@@ -16,11 +16,12 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import android.content.ContentValues;
+import org.parceler.Parcel;
 
 /**
  * Category
  */
+@Parcel
 public class Subcategory
     extends EntityBase {
 
@@ -28,9 +29,7 @@ public class Subcategory
     public static final String SUBCATEGNAME = "SUBCATEGNAME";
     public static final String CATEGID = "CATEGID";
 
-    public Subcategory(ContentValues contentValues) {
-        super(contentValues);
-    }
+    public Subcategory() {}
 
     public String getName() {
         return getString(SUBCATEGNAME);

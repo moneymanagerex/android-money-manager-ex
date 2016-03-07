@@ -17,10 +17,12 @@
 
 package com.money.manager.ex.database;
 
+import org.joda.time.DateTime;
+
 import info.javaperformance.money.Money;
 
 /**
- * Interface for Split Category entity.
+ * Interface for Split Category entity and Recurring/Checking transactions.
  * This is a common transaction (the common fields in Account & Recurring transactions).
  * A subset is used by split categories on account transactions and on recurring transactions.
  */
@@ -41,34 +43,29 @@ public interface ITransactionEntity {
     String FOLLOWUPID = "FOLLOWUPID";
 
     Integer getId();
+    void setId(int splitTransId);
 
     Integer getAccountId();
+    void setAccountId(int value);
 
     Integer getCategoryId();
+    void setCategoryId(int categId);
 
     Integer getSubcategoryId();
+    void setSubcategoryId(Integer subCategId);
 
     /**
      * @return the splitTransAmount
      */
     Money getAmount();
-
-    Money getAmountTo();
-
-    // Setters
-
-    void setId(int splitTransId);
-
-    void setAccountId(int value);
-
-    void setCategoryId(int categId);
-
-    void setSubcategoryId(Integer subCategId);
-
     /**
      * @param value the splitTransAmount to set
      */
     void setAmount(Money value);
 
+    Money getAmountTo();
     void setAmountTo(Money value);
+
+    String getDateString();
+    void setDate(DateTime value);
 }

@@ -1,15 +1,15 @@
 package com.money.manager.ex.transactions.events;
 
-import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.ISplitTransaction;
 
 /**
  * Split item removed by the user.
  * Called from the individual split item fragment.
  */
 public class SplitItemRemovedEvent {
-    public SplitItemRemovedEvent(ITransactionEntity entity) {
+    public SplitItemRemovedEvent(ISplitTransaction entity) {
         this.entity = entity;
     }
 
-    public ITransactionEntity entity;
+    public ISplitTransaction entity;
 }
