@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.domainmodel;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
@@ -35,10 +36,9 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Asset Class
+ * The class is serialized (parcel) when opening the report from Asset Allocation form.
  */
-//@Parcel(analyze = { Money.class })
-//@ParcelClass(MoneyLong.class)
-//@ParcelClass(MoneyBigDecimal.class)
+@Parcel(analyze = {ContentValues.class})
 public class AssetClass
     extends EntityBase
     implements Serializable {
