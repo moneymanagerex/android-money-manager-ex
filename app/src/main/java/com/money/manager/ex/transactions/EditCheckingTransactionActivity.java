@@ -480,16 +480,16 @@ public class EditCheckingTransactionActivity
 
             externalIntegration(intent);
 
-            // Select the default account.
+            // Select the default account if none set.
             AppSettings settings = new AppSettings(this);
             Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-//            if (!TextUtils.isEmpty(defaultAccountSetting)) {
             if (defaultAccountId != null) {
-//                int defaultAccountId = Integer.parseInt(defaultAccountSetting);
-                if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
-                    int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
-                    mCommonFunctions.viewHolder.spinAccount.setSelection(index);
-                }
+                mCommonFunctions.transactionEntity.setAccountId(defaultAccountId);
+                // selecting the account here won't work because the data has not been loaded.
+//                if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
+//                    int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
+//                    mCommonFunctions.viewHolder.spinAccount.setSelection(index);
+//                }
             }
         }
 
