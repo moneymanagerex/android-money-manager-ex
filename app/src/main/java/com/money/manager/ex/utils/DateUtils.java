@@ -43,12 +43,6 @@ import java.util.Locale;
  * Date utilities
  */
 public class DateUtils {
-    private static final String LOGCAT = DateUtils.class.getSimpleName();
-
-    public static Date getDateFromIsoString(String date) {
-        return getDateFromString(date, Constants.ISO_DATE_FORMAT);
-    }
-
     public static Date getDateFromString(String date, String pattern) {
         DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
         return format.parseDateTime(date).toDate();
@@ -104,65 +98,10 @@ public class DateUtils {
         return pattern;
     }
 
-//    /**
-//     * Convert date object to string using user's preferences for date format.
-//     *
-//     * @param date date value
-//     * @return string The date formatted according to user preferences.
-//     */
-//    public static String getUserStringFromDate(Context ctx, Date date) {
-//        return getStringFromDate(ctx, date, getUserDatePattern(ctx));
-//    }
-
-//    /**
-//     * This function from the date picker returns a date in java
-//     *
-//     * @param datePicker date picker control
-//     * @return java date
-//     */
-//    public static Date getDateFromDatePicker(DatePicker datePicker) {
-//        int day = datePicker.getDayOfMonth();
-//        int month = datePicker.getMonth();
-//        int year = datePicker.getYear();
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(year, month, day);
-//
-//        return calendar.getTime();
-//    }
-
-//    public static void setDateToDatePicker(Date date, DatePicker datePicker) {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(date);
-//
-//        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-//    }
-
     public static Date getToday() {
         Date today = new CalendarUtils().setNow()
                 .setTimeToBeginningOfDay().getTime();
         return today;
-    }
-
-    public static String getYesterdayFrom(String isoDate) {
-        String result = null;
-
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
-            Date givenDate = sdf.parse(isoDate);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(givenDate);
-            calendar.add(Calendar.DATE, -1);
-            Date yesterday = calendar.getTime();
-
-            result = sdf.format(yesterday);
-            return result;
-        } catch (Exception e) {
-            // ExceptionHandler handler = new ExceptionHandler()
-            Log.e(LOGCAT, "Error parsing date");
-        }
-        return result;
     }
 
     private Context context;
@@ -177,66 +116,4 @@ public class DateUtils {
         String displayValue = MyDateTimeUtils.getDateStringFrom(date, Constants.LONG_DATE_PATTERN);
         dateTextView.setText(displayValue);
     }
-
-    /**
-     *
-     * @param resourceId String Id for name of the period.
-     * @return Date range that matches the period selected.
-     */
-    public DateRange getDateRangeForPeriod(int resourceId) {
-        String value = this.context.getString(resourceId);
-        return getDateRangeForPeriod(value);
-    }
-
-    public DateRange getDateRangeForPeriod(String period) {
-        if (StringUtils.isEmpty(period)) return null;
-
-        Date dateFrom;
-        Date dateTo;
-        CalendarUtils cal = new CalendarUtils();
-
-        // we ignore the minutes at the moment, since the field in the db only stores the date value.
-
-        if (period.equalsIgnoreCase(this.context.getString(R.string.all_transaction)) ||
-                period.equalsIgnoreCase(this.context.getString(R.string.all_time))) {
-            // All transactions.
-            dateFrom = cal.setNow().addYear(-1000).getTime();
-            dateTo = cal.setNow().addYear(1000).getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.today))) {
-            dateFrom = cal.setNow().getTime();
-            dateTo = dateFrom;
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last7days))) {
-            dateFrom = cal.setNow().addDays(-7).getTime();
-            dateTo = cal.setNow().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last15days))) {
-            dateFrom = cal.setNow().addDays(-14).getTime();
-            dateTo = cal.setNow().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_month))) {
-            dateFrom = cal.setNow().setFirstDayOfMonth().getTime();
-            dateTo = cal.setLastDayOfMonth().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last30days))) {
-            dateFrom = cal.setNow().addDays(-30).getTime();
-            dateTo = cal.setNow().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last3months))) {
-            dateFrom = cal.setNow().addMonth(-3).setFirstDayOfMonth().getTime();
-            dateTo = cal.setNow().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.last6months))) {
-            dateFrom = cal.setNow().addMonth(-6).setFirstDayOfMonth().getTime();
-            dateTo = cal.setNow().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.current_year))) {
-            dateFrom = cal.setNow().setMonth(Calendar.JANUARY).setFirstDayOfMonth().getTime();
-            dateTo = cal.setMonth(Calendar.DECEMBER).setLastDayOfMonth().getTime();
-        } else if (period.equalsIgnoreCase(this.context.getString(R.string.future_transactions))) {
-            // Future transactions
-            dateFrom = cal.setNow().addDays(1).getTime();
-            dateTo = cal.addYear(1000).getTime();
-        } else {
-            dateFrom = null;
-            dateTo = null;
-        }
-
-        DateRange result = new DateRange(dateFrom, dateTo);
-        return result;
-    }
-
 }

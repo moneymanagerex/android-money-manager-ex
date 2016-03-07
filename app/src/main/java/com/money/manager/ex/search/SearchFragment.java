@@ -67,7 +67,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * The search form with search parameter input fields.
+ * The form with search parameter input fields.
  */
 public class SearchFragment
     extends Fragment {
@@ -75,14 +75,14 @@ public class SearchFragment
     // ID REQUEST code
     public static final int REQUEST_PICK_PAYEE = 1;
     public static final int REQUEST_PICK_CATEGORY = 3;
-    public static final int REQUEST_AMOUNT = 4;
+//    public static final int REQUEST_AMOUNT = 4;
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
 
     // reference view into layout
     private Spinner spinAccount, spinStatus;
     private EditText txtTransNumber, txtNotes;
-    private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtFromDate, txtToDate;
+    private TextView txtToAmount, txtFromAmount, txtSelectCategory, txtSelectPayee, txtDateFrom, txtDateTo;
     private CheckBox cbxWithdrawal, cbxDeposit, cbxTransfer;
     // arrays list account name and account id
     private ArrayList<String> mAccountNameList = new ArrayList<>();
@@ -190,10 +190,10 @@ public class SearchFragment
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStatus.setAdapter(adapterStatus);
 
-        // from date
-        txtFromDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtFromDate));
-        // to date
-        txtToDate.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtToDate));
+        // Date from
+        txtDateFrom.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtDateFrom));
+        // Date to
+        txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtDateTo));
 
         initializeResetButton(view);
 
@@ -463,15 +463,16 @@ public class SearchFragment
 
         // Date from
         if (mSearchParameters.dateFrom == null) {
-            txtFromDate.setTag(null);
+            txtDateFrom.setTag(null);
         }
         else {
-            txtFromDate.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateFrom));
+            txtDateFrom.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateFrom));
         }
-        txtFromDate.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
+        txtDateFrom.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateFrom));
         // Date to
-        txtToDate.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
-        txtToDate.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateTo));
+        txtDateTo.setTag(MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
+        txtDateTo.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), mSearchParameters.dateTo));
+
         // Payee
         txtSelectPayee.setTag(mSearchParameters.payeeId);
         txtSelectPayee.setText(mSearchParameters.payeeName);
@@ -549,12 +550,12 @@ public class SearchFragment
         }
 
         // Date from
-        if (txtFromDate.getTag() != null) {
-            mSearchParameters.dateFrom = new DateTime(txtFromDate.getTag().toString());
+        if (txtDateFrom.getTag() != null) {
+            mSearchParameters.dateFrom = new DateTime(txtDateFrom.getTag().toString());
         }
         // Date to
-        if (txtToDate.getTag() != null) {
-            String dateString = txtToDate.getTag().toString();
+        if (txtDateTo.getTag() != null) {
+            String dateString = txtDateTo.getTag().toString();
             mSearchParameters.dateTo = MyDateTimeUtils.from(dateString);
         }
         // Payee
@@ -642,8 +643,8 @@ public class SearchFragment
 
         spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
 
-        txtFromDate = (TextView) view.findViewById(R.id.textViewFromDate);
-        txtToDate = (TextView) view.findViewById(R.id.textViewToDate);
+        txtDateFrom = (TextView) view.findViewById(R.id.textViewFromDate);
+        txtDateTo = (TextView) view.findViewById(R.id.textViewToDate);
 
         // transaction number
         txtTransNumber = (EditText) view.findViewById(R.id.editTextTransNumber);
