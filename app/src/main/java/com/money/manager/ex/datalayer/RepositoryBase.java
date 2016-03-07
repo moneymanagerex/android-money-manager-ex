@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
@@ -74,12 +75,18 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public Cursor openCursor(String[] projection, String selection, String[] args, String sort) {
-        Cursor cursor = getContext().getContentResolver().query(getUri(),
-            projection,
-            selection,
-            args,
-            sort);
-        return cursor;
+        try {
+            Cursor cursor = getContext().getContentResolver().query(getUri(),
+                projection,
+                selection,
+                args,
+                sort);
+            return cursor;
+        } catch (SQLiteDiskIOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(ex, "querying database");
+            return null;
+        }
     }
 
     public int add(EntityBase entity) {
