@@ -39,8 +39,8 @@ public class SecurityPriceUpdaterFactory {
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
                 break;
             case YahooCsv:
-                updater = new YahooCsvSecurityPriceUpdater(context);
-                //todo updater = new YahooCsvQuoteDownloaderRetrofit(context);
+//                updater = new YahooCsvSecurityPriceUpdater(context);
+                updater = new YahooCsvQuoteDownloaderRetrofit(context);
                 break;
             default:
                 // yql
