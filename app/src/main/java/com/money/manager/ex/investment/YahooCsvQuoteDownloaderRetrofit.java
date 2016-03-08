@@ -17,10 +17,12 @@
 
 package com.money.manager.ex.investment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.utils.DialogUtils;
 
 import java.util.List;
 
@@ -35,7 +37,13 @@ public class YahooCsvQuoteDownloaderRetrofit
     implements ISecurityPriceUpdater {
 
     private Context mContext;
+    private ProgressDialog mDialog = null;
     private IYahooCsvService yahooCsvService;
+    /**
+     * Tracks the number of records to update. Used to close progress dialog when all done.
+     */
+    private int mCounter;
+    private int mTotalRecords;
 
     public YahooCsvQuoteDownloaderRetrofit(Context context) {
         this.mContext = context;
@@ -44,6 +52,10 @@ public class YahooCsvQuoteDownloaderRetrofit
     @Override
     public void downloadPrices(List<String> symbols) {
         if (symbols == null) return;
+        mTotalRecords = symbols.size();
+        if (mTotalRecords == 0) return;
+
+        showProgressDialog(mTotalRecords);
 
         IYahooCsvService service = getService();
 
@@ -70,6 +82,27 @@ public class YahooCsvQuoteDownloaderRetrofit
         }
     }
 
+    private void closeProgressDialog() {
+        try {
+            if (mDialog != null) {
+                DialogUtils.closeProgressDialog(mDialog);
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "closing dialog");
+        }
+    }
+
+    private synchronized void finishIfAllDone() {
+        if (mCounter != mTotalRecords) return;
+
+        closeProgressDialog();
+
+        // Notify user that all the prices have been downloaded.
+        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+        handler.showMessage(mContext.getString(R.string.download_complete));
+    }
+
     private Context getContext() {
         return mContext;
     }
@@ -82,21 +115,35 @@ public class YahooCsvQuoteDownloaderRetrofit
     }
 
     private void onContentDownloaded(String content) {
-        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+        mCounter++;
+        mDialog.setProgress(mCounter);
 
         if (content == null) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getContext().getString(R.string.error_updating_rates));
+//            closeProgressDialog();
             return;
         }
 
-        getPriceFrom(content);
-
-        // Notify user that all the prices have been downloaded.
-        handler.showMessage(mContext.getString(R.string.download_complete));
-    }
-
-    private void getPriceFrom(String content){
         PriceCsvParser parser = new PriceCsvParser(getContext());
         parser.parse(content);
+
+        finishIfAllDone();
+    }
+
+    private void showProgressDialog(Integer max) {
+        Context context = mContext;
+
+        mDialog = new ProgressDialog(context);
+
+        mDialog.setMessage(context.getString(R.string.starting_price_update));
+        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        if (max != null) {
+            mDialog.setMax(max);
+        }
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
     }
 }
