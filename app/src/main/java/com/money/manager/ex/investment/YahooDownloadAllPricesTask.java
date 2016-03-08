@@ -117,8 +117,6 @@ public class YahooDownloadAllPricesTask
                 csv = downloader.downloadAsText(url);
             } catch (IOException iox) {
                 ExceptionHandler handler = new ExceptionHandler(getContext());
-//                Log.e(LOGCAT, iox.getMessage());
-//                iox.printStackTrace();
                 handler.handle(iox, "downloading quote");
                 return false;
             }

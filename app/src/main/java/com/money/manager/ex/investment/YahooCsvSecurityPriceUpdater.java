@@ -91,43 +91,11 @@ public class YahooCsvSecurityPriceUpdater
      */
     @Override
     public void onContentDownloaded(String content) {
-        // validation
-        if (TextUtils.isEmpty(content)) {
-            throw new IllegalArgumentException("Downloaded CSV contents are empty");
-        }
+        PriceCsvParser parser = new PriceCsvParser(getContext());
+        parser.parse(content);
 
-        // parse CSV contents to get proper fields that can be saved to the database.
-        CSVParser csvParser = new CSVParser();
-        String[] values;
-        try {
-            values = csvParser.parseLineMulti(content);
-        } catch (IOException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing downloaded CSV contents");
-            return;
-        }
-
-        // convert csv values to their original type.
-
-        String symbol = values[0];
-
-        // price
-        String priceString = values[1];
-        if (!NumericHelper.isNumeric(priceString)) return;
-        Money price = MoneyFactory.fromString(priceString);
-        // LSE stocks are expressed in GBp (pence), not Pounds.
-        // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-        String currency = values[3];
-        if (currency.equals("GBp")) {
-            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
-        }
-
-        // date
-        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
-        DateTime date = format.parseDateTime(values[2]);
-
-        // Notify the caller by invoking the interface method.
-        EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));
+//        // Notify the caller by invoking the interface method.
+//        EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));
     }
 
     private Context getContext() {

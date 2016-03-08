@@ -16,22 +16,25 @@
  */
 package com.money.manager.ex.investment;
 
-import com.google.gson.JsonElement;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * Service interface using Retrofit, to fetch data from YQL service.
+ * Service interface using Retrofit, to fetch quotes from Yahoo, using CSV.
  */
-public interface IYqlService {
+public interface IYahooCsvService {
 //    @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
 //    Call<YqlStockPriceResponse> getPrices(@Query("q") String query);
 
 //    @GET("/v1/public/yql?q={query}&format=json&env=store://datatables.org/alltableswithkeys")
 //    Call<List<SecurityPriceModel>> getPrices(@Query("query") String query, Callback<List<SecurityPriceModel>> callback);
 
-    @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
-    Call<JsonElement> getPrices(@Query("q") String query);
+    /**
+     * "http://download.finance.yahoo.com/d/quotes.csv?f=sl1d1c4&e=.csv"
+     * @param symbol Yahoo Finance symbol to update
+     * //@return Contents of the CSV result from Yahoo
+     */
+    @GET("/d/quotes.csv?f=sl1d1c4&e=.csv")
+    Call<String> getPrice(@Query("s") String symbol);
 }

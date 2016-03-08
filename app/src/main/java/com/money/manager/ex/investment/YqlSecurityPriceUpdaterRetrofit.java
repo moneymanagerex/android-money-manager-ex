@@ -40,9 +40,10 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
@@ -87,12 +88,12 @@ public class YqlSecurityPriceUpdaterRetrofit
         // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
             @Override
-            public void onResponse(Response<JsonElement> response, Retrofit retrofit) {
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 onContentDownloaded(response.body());
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<JsonElement> call, Throwable t) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
                 handler.handle(t, "fetching price");
                 closeProgressDialog();
@@ -127,7 +128,6 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Notify the listener via callback.
         for (SecurityPriceModel model : pricesList) {
-
             // Notify the caller.
             EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
         }
