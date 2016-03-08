@@ -18,22 +18,22 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
+import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
- * Utilities for DateTime (date4j). Deprecated. Use Joda Time.
+ * Utilities for DateTime.
  */
 public class MyDateTimeUtils {
 
@@ -96,7 +96,7 @@ public class MyDateTimeUtils {
     public static String getUserStringFromDateTime(Context ctx, DateTime dateTime) {
         if (dateTime == null) return "";
 
-        String userDatePattern = DateUtils.getUserDatePattern(ctx);
+        String userDatePattern = getUserDatePattern(ctx);
 
         return dateTime.toString(userDatePattern);
     }
@@ -175,4 +175,30 @@ public class MyDateTimeUtils {
         return result;
     }
 
+    /**
+     * Get pattern defined by the user.
+     * @return pattern user define
+     */
+    public static String getUserDatePattern(Context context) {
+        InfoService service = new InfoService(context);
+        String pattern = service.getInfoValue("DATEFORMAT");
+
+        if (!StringUtils.isEmpty(pattern)) {
+            //replace part of pattern
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
+                .replace("%y", "yy").replace("%Y", "yyyy")
+                .replace("'", "''");
+        }
+
+        if (StringUtils.isEmpty(pattern)
+            && context.getResources().getStringArray(R.array.date_format_mask) != null
+            && context.getResources().getStringArray(R.array.date_format_mask).length > 0){
+            pattern= context.getResources().getStringArray(R.array.date_format_mask)[0];
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
+                .replace("%y", "yy").replace("%Y", "yyyy")
+                .replace("'", "''");
+        }
+
+        return pattern;
+    }
 }

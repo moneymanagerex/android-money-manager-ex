@@ -28,16 +28,11 @@ import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import info.javaperformance.money.Money;
 

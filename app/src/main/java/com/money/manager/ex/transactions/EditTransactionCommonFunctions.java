@@ -70,7 +70,6 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 
@@ -108,12 +107,10 @@ public class EditTransactionCommonFunctions {
 
     // Model
     public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
-//    public String mDate = "";   // datepicker value
     public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    //public int accountId = Constants.NOT_SET;
     public int toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
@@ -539,8 +536,7 @@ public class EditTransactionCommonFunctions {
 
         DateTime dateTime = DateTime.parse(dateString);
 
-        DateUtils dateUtils = new DateUtils(getContext());
-        dateUtils.formatExtendedDate(viewHolder.dateTextView, dateTime);
+        viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 
     public void initNotesControls() {

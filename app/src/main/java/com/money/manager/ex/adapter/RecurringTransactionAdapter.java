@@ -37,11 +37,15 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import info.javaperformance.money.MoneyFactory;
 
@@ -81,15 +85,14 @@ public class RecurringTransactionAdapter
         }
         // account name
         txtAccountName.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.ACCOUNTNAME)));
-        // write data
-        try {
-            Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT).parse(
-                    cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE)));
-//            Locale locale = context.getResources().getConfiguration().locale;
-            txtDate.setText(new SimpleDateFormat("EEEE dd MMMM yyyy").format(date));
-        } catch (ParseException e) {
-            txtDate.setText(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.USERNEXTOCCURRENCEDATE)));
-        }
+
+        // Payment Date
+        String paymentDate = cursor.getString(cursor.getColumnIndex(QueryBillDeposits.NEXTOCCURRENCEDATE));
+        DateTime dateTime = MyDateTimeUtils.from(paymentDate);
+        Locale locale = context.getResources().getConfiguration().locale;
+        String displayValue = dateTime.toString("EEEE dd MMMM yyyy", locale);
+        txtDate.setText(displayValue);
+
         // take daysleft
         int daysLeft = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.DAYSLEFT));
         if (daysLeft == 0) {
@@ -102,6 +105,7 @@ public class RecurringTransactionAdapter
         // show group
         txtDate.setVisibility(mHeadersIndexAccountDate.containsValue(cursor.getPosition()) ? View.VISIBLE : View.GONE);
         txtNextDueDate.setVisibility(txtDate.getVisibility());
+
         // show follow up icon
         if ("F".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(QueryBillDeposits.STATUS)))) {
             imgFollowUp.setVisibility(View.VISIBLE);
@@ -110,7 +114,6 @@ public class RecurringTransactionAdapter
         }
 
         int recurrence = cursor.getInt(cursor.getColumnIndex(QueryBillDeposits.REPEATS));
-//        String recurrenceString = MoneyManagerApplication.getInstanceApp().getRecurrenceLocalizedName(recurrence);
         String recurrenceString = new RecurringTransactionService(context).getRecurrenceLocalizedName(recurrence);
         txtRepeat.setText(recurrenceString);
 

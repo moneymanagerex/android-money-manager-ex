@@ -34,14 +34,9 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.utils.CalendarUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
-import com.money.manager.ex.utils.DateUtils;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-
-import java.util.Calendar;
 
 public abstract class BaseReportFragment
     extends BaseListFragment

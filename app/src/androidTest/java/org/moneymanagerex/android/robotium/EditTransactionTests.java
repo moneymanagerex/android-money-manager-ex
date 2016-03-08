@@ -103,7 +103,6 @@ public class EditTransactionTests
         String monthDisplay = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, defaultLocale);
         String yearDisplay = calendar.getDisplayName(Calendar.YEAR, Calendar.LONG, defaultLocale);
         int year = calendar.get(Calendar.YEAR);
-//        DateUtils dateUtils = new DateUtils(getActivity());
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.LONG_DATE_PATTERN, defaultLocale);
         String todayFormatted = dateFormat.format(today);
 

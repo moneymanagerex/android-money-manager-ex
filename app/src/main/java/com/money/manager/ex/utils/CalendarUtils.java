@@ -21,7 +21,6 @@ import java.util.Date;
 
 /**
  * Various calendar utilities.
- * Created by Alen on 6/09/2015.
  */
 public class CalendarUtils {
     public CalendarUtils() {

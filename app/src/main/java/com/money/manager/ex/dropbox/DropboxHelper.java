@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -51,9 +52,11 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DropboxSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtilities;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -378,7 +381,9 @@ public class DropboxHelper {
         }
 
         SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
-        if (!prefs.edit().putString(file.toUpperCase(), new SimpleDateFormat(DATE_FORMAT).format(date)).commit()) {
+//        String dateString = new SimpleDateFormat(DATE_FORMAT).format(date);
+        String dateString = new DateTime(date).toString(DATE_FORMAT);
+        if (!prefs.edit().putString(file.toUpperCase(), dateString).commit()) {
             Log.e(LOGCAT, "Dropbox: commit last modified date failed!");
         }
     }

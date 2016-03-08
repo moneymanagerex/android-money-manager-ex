@@ -53,10 +53,12 @@ import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import java.text.SimpleDateFormat;
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 
 import info.javaperformance.money.MoneyFactory;
@@ -65,10 +67,9 @@ import info.javaperformance.money.MoneyFactory;
  * This fragment is not used (?).
  */
 public class DashboardFragment
-        extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
-    @SuppressWarnings("unused")
-    private static final String LOGCAT = DashboardFragment.class.getSimpleName();
+    extends Fragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
+
     // ID LOADER
     private static final int ID_LOADER_SCREEN1 = 0x000;
     private static final int ID_LOADER_SCREEN2 = 0x001;
@@ -276,11 +277,14 @@ public class DashboardFragment
         // titles
         int year = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.YEAR));
         int month = cursor.getInt(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Month));
+
         // format month
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, 1);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(year, month - 1, 1);
+        DateTime dateTime = MyDateTimeUtils.from(year, month - 1, 1);
         // titles
-        titles[1] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
+//        titles[1] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
+        titles[1] = Integer.toString(year) + "-" + dateTime.toString("MMM");
 
         // compose bundle for arguments
         Bundle args = new Bundle();

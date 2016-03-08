@@ -21,6 +21,9 @@ import android.content.Context;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
+import com.money.manager.ex.utils.MyDateTimeUtils;
+
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,11 +105,8 @@ public class QifExport
 
     private String generateFileName() {
         // use just the date for now?
-        Date today = new Date();
         String format = "yyyy-MM-dd_HHmmss";
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String result = sdf.format(today);
+        String result = MyDateTimeUtils.today().toString(format);
 
         // append file extension.
         result += ".qif";

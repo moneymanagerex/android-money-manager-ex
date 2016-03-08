@@ -29,15 +29,12 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
-import com.money.manager.ex.utils.DateUtils;
-import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;
