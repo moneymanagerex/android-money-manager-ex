@@ -40,6 +40,7 @@ public class SecurityPriceUpdaterFactory {
                 break;
             case YahooCsv:
                 updater = new YahooCsvSecurityPriceUpdater(context);
+                //todo updater = new YahooCsvQuoteDownloaderRetrofit(context);
                 break;
             default:
                 // yql

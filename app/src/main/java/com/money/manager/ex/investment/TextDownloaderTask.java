@@ -26,6 +26,8 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.utils.DialogUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 /**
@@ -120,6 +122,7 @@ public class TextDownloaderTask
             }
             // notify parent about the price update
             mFeedback.onContentDownloaded(content);
+            //todo EventBus.getDefault().post(new PriceDownloadedEvent);
 
             mProgressCount += 1;
             publishProgress(mProgressCount);

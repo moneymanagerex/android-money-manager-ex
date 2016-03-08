@@ -17,19 +17,19 @@
 package com.money.manager.ex.investment;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Creates a Yql service for HTTP requests with Retrofit.
  */
-public class YqlService {
-    private static String BASE_URL = "https://query.yahooapis.com";
+public class YahooCsvService {
+    private static String BASE_URL = "https://download.finance.yahoo.com";
 
-    public static IYqlService getService() {
+    public static IYahooCsvService getService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build();
-        return retrofit.create(IYqlService.class);
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .baseUrl(BASE_URL)
+            .build();
+        return retrofit.create(IYahooCsvService.class);
     }
 }
