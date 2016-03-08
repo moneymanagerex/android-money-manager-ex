@@ -358,24 +358,24 @@ public class SearchFragment
 
         // from amount
         if (mSearchParameters.amountFrom != null) {
-            where.addStatement(QueryAllData.Amount, ">=", mSearchParameters.amountFrom);
+            where.addStatement(QueryAllData.Amount, " >= ", mSearchParameters.amountFrom);
         }
         // to amount
         if (mSearchParameters.amountTo != null) {
-            where.addStatement(QueryAllData.Amount, "<=", mSearchParameters.amountTo);
+            where.addStatement(QueryAllData.Amount, " <= ", mSearchParameters.amountTo);
         }
 
         // from date
         if (mSearchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, ">=", MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateFrom));
+            where.addStatement(QueryAllData.Date, " >= ", MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateFrom));
         }
         // to date
         if (mSearchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, "<=", MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
+            where.addStatement(QueryAllData.Date, " <= ", MyDateTimeUtils.getIsoStringFrom(mSearchParameters.dateTo));
         }
         // payee
         if (mSearchParameters.payeeId != null) {
-            where.addStatement(QueryAllData.PayeeID, "=", mSearchParameters.payeeId);
+            where.addStatement(QueryAllData.PayeeID, " = ", mSearchParameters.payeeId);
         }
         // category
         if (mSearchParameters.category != null) {

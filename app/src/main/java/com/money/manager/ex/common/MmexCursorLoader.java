@@ -29,7 +29,6 @@ import com.money.manager.ex.core.ExceptionHandler;
 /**
  * The cursor loader with exception handling. It should be used instead of ordinary
  * CursorLoader.
- * Created by Alen Siljak on 06/07/2015.
  */
 public class MmexCursorLoader
     extends CursorLoader {

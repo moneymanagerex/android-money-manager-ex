@@ -26,6 +26,10 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.CalendarUtils;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,7 +90,6 @@ public class BehaviourSettingsFragment
 
     private void showTimePicker() {
         final BehaviourSettings settings = new BehaviourSettings(getActivity());
-        final SimpleDateFormat formatter = new SimpleDateFormat(Constants.TIME_FORMAT);
 
         RadialTimePickerDialogFragment.OnTimeSetListener timeSetListener = new RadialTimePickerDialogFragment.OnTimeSetListener() {
             @Override
@@ -98,19 +101,11 @@ public class BehaviourSettingsFragment
 
         // get time to display (current setting)
         String timeString = settings.getNotificationTime();
-        CalendarUtils utils = new CalendarUtils();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.TIME_FORMAT);
+        DateTime currentValue = formatter.parseDateTime(timeString);
 
-        Date currentValue;
-        try {
-            currentValue = formatter.parse(timeString);
-            utils.setTime(currentValue);
-        } catch (ParseException ex) {
-            // use current time
-            currentValue = null;
-        }
-
-        int hour = currentValue != null ? utils.getHour() : 8;
-        int minute = currentValue != null ? utils.getMinute() : 0;
+        int hour = currentValue != null ? currentValue.getHourOfDay() : 8;
+        int minute = currentValue != null ? currentValue.getMinuteOfHour() : 0;
 
         RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment()
             .setOnTimeSetListener(timeSetListener)

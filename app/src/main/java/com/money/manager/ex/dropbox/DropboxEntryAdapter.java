@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
@@ -38,7 +37,6 @@ import java.util.List;
 
 /**
  * Adapter for the file list on Dropbox.
- * Created by Alen Siljak on 14/09/2015.
  */
 public class DropboxEntryAdapter extends ArrayAdapter<DropboxAPI.Entry> {
     private int mLayoutId;

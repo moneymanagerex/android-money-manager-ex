@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
@@ -39,10 +38,9 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter
- * Created by Alen Siljak on 6/07/2015.
  */
 public class IncomeVsExpensesAdapter
-        extends CursorAdapter {
+    extends CursorAdapter {
 
     private LayoutInflater mInflater;
 
@@ -70,7 +68,6 @@ public class IncomeVsExpensesAdapter
         income = cursor.getDouble(cursor.getColumnIndex(IncomeVsExpenseReportEntity.Income));
         // attach data
         txtYear.setText(Integer.toString(year));
-        //txtMonth.setText(new SimpleDateFormat("MMMM").format(new Date(year, month - 1, 1)));
         String formatMonth = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "MMM" : "MMMM";
 
         if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {

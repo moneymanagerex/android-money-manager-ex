@@ -26,11 +26,8 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.MyDateTimeUtils;
-import com.money.manager.ex.utils.DateUtils;
 
 import org.joda.time.DateTime;
-
-import java.util.Calendar;
 
 /**
  * Click listener
@@ -52,15 +49,17 @@ public class OnDateButtonClickListener
 
     @Override
     public void onClick(View v) {
-        Calendar calendar = Calendar.getInstance();
-        if (!TextUtils.isEmpty(mTextView.getText())) {
-            calendar.setTime(DateUtils.getDateFromUserString(mParent.getApplicationContext(), mTextView.getText().toString()));
+        DateTime dateTime = MyDateTimeUtils.today();
+        String calendarValue = mTextView.getText().toString();
+
+        if (!TextUtils.isEmpty(calendarValue)) {
+            dateTime = MyDateTimeUtils.from(MyDateTimeUtils.getUserDatePattern(mParent.getApplicationContext()));
         }
 
         CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                .setOnDateSetListener(mDateSetListener)
-                .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-                .setThemeDark();
+            .setOnDateSetListener(mDateSetListener)
+            .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
+            .setThemeDark();
         datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
     }
 

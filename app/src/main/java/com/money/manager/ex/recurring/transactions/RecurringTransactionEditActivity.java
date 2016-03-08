@@ -37,7 +37,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -53,7 +52,6 @@ import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -374,8 +372,7 @@ public class RecurringTransactionEditActivity
     private void initializePaymentDateSelector() {
         if (mViewHolder.paymentDateTextView == null) return;
 
-        final DateUtils dateUtils = new DateUtils(this);
-        dateUtils.formatExtendedDate(mViewHolder.paymentDateTextView, mRecurringTransaction.getPaymentDate());
+        mViewHolder.paymentDateTextView.setText(mRecurringTransaction.getPaymentDate().toString(Constants.LONG_DATE_PATTERN));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -387,7 +384,7 @@ public class RecurringTransactionEditActivity
 
                     mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
                     mRecurringTransaction.setPaymentDate(dateTime);
-                    dateUtils.formatExtendedDate(mViewHolder.paymentDateTextView, dateTime);
+                    mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 }
             };
 

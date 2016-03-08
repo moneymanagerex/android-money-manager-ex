@@ -568,8 +568,8 @@ public class Core {
     }
 
     public String getDefaultSystemDateFormat() {
-        Locale loc = Locale.getDefault();
-        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, loc);
+        Locale locale = Locale.getDefault();
+        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
         String pattern = sdf.toLocalizedPattern();
         // replace date
         if (pattern.contains("dd")) {

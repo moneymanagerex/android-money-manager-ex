@@ -34,7 +34,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
@@ -144,8 +143,6 @@ public class InvestmentTransactionEditActivity
     }
 
     private void initializeForm() {
-        final DateUtils dateUtils = new DateUtils(getApplicationContext());
-
         // load account & currency
         Intent intent = getIntent();
         if (intent != null) {
@@ -159,7 +156,7 @@ public class InvestmentTransactionEditActivity
         // Purchase Date
 
         final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
-        dateUtils.formatExtendedDate(dateView, mStock.getPurchaseDate());
+        dateView.setText(mStock.getPurchaseDate().toString(Constants.LONG_DATE_PATTERN));
         dateView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
@@ -167,7 +164,7 @@ public class InvestmentTransactionEditActivity
                     setDirty(true);
 
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    dateUtils.formatExtendedDate(dateView, dateTime);
+                    dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 }
             };
 

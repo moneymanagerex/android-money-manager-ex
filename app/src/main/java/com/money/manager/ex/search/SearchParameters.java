@@ -20,13 +20,10 @@ package com.money.manager.ex.search;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-
-import java.util.Date;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;

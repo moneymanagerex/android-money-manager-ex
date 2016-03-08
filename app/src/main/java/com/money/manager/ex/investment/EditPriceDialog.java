@@ -41,7 +41,7 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.utils.DateUtils;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -142,11 +142,11 @@ public class EditPriceDialog
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     try {
                         String enteredDate = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
-                        Date date = DateUtils.getDateFromString(enteredDate, Constants.ISO_DATE_FORMAT);
+                        Date date = MyDateTimeUtils.from(enteredDate, Constants.ISO_DATE_FORMAT).toDate();
                         mDateTextView.setTag(date);
                         mDateTextView.setText(new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN,
                             MoneyManagerApplication.getInstanceApp().getAppLocale())
-                                .format((Date) mDateTextView.getTag()));
+                                .format(date));
 
                         mPriceDate = enteredDate;
                     } catch (Exception e) {
@@ -158,11 +158,10 @@ public class EditPriceDialog
         };
         mDateTextView.setOnClickListener(dateClickListener);
 
-        Date latestDate;
         if (StringUtils.isEmpty(mPriceDate)) {
-            mPriceDate = DateUtils.getStringFromDate(getContext(), new Date(), Constants.ISO_DATE_FORMAT);
+            mPriceDate = DateTime.now().toString(Constants.ISO_DATE_FORMAT);
         }
-        latestDate = DateUtils.getDateFromString(mPriceDate, Constants.ISO_DATE_FORMAT);
+        Date latestDate = MyDateTimeUtils.from(mPriceDate, Constants.ISO_DATE_FORMAT).toDate();
         mDateTextView.setTag(latestDate);
         formatExtendedDate(mDateTextView);
 

@@ -17,36 +17,26 @@
 package com.money.manager.ex.dropbox;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.RESTUtility;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Dropbox file browser fragment.
- * Created by Alen Siljak on 14/09/2015.
  */
 public class DropboxBrowserFragment
         extends BaseListFragment {

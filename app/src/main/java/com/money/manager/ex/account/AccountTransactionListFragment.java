@@ -48,7 +48,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
@@ -66,7 +65,6 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.DateUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
