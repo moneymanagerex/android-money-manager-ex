@@ -36,7 +36,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.common.eventbus.Subscribe;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
@@ -56,6 +55,7 @@ import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Arrays;
 
