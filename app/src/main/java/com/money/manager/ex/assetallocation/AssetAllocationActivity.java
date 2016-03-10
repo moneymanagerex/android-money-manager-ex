@@ -29,6 +29,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequested;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
@@ -47,12 +48,13 @@ import org.parceler.Parcels;
 
 public class AssetAllocationActivity
     extends BaseFragmentActivity
-    implements DetailFragmentCallbacks, LoaderManager.LoaderCallbacks<AssetClass> {
+    implements DetailFragmentCallbacks {
 
     private static final int LOADER_ASSET_ALLOCATION = 1;
     private static final String KEY_ASSET_ALLOCATION = "assetAllocation";
 
     private AssetClass assetAllocation;
+    LoaderManager.LoaderCallbacks<AssetClass> mLoaderCallbacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class AssetAllocationActivity
             setSupportActionBar(toolbar);
             setToolbarStandardAction(toolbar);
             // change home icon to 'back'.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setDisplayHomeAsUpEnabled(true);
         }
 
         if (savedInstanceState != null) {
@@ -74,7 +76,8 @@ public class AssetAllocationActivity
         } else {
             // Load asset allocation
             // Ref: http://developer.android.com/guide/components/loaders.html
-            getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, this);
+            mLoaderCallbacks = setUpLoaderCallbacks();
+            getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
         }
     }
 
@@ -82,7 +85,6 @@ public class AssetAllocationActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // Save allocation?
         outState.putParcelable(KEY_ASSET_ALLOCATION, Parcels.wrap(this.assetAllocation));
     }
 
@@ -98,12 +100,6 @@ public class AssetAllocationActivity
         super.onStop();
 
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     // Menu
@@ -167,47 +163,12 @@ public class AssetAllocationActivity
         return result;
     }
 
-    // Loader
-
-    @Override
-    public Loader<AssetClass> onCreateLoader(int id, Bundle args) {
-        return new AssetAllocationLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<AssetClass> loader, final AssetClass data) {
-        this.assetAllocation = data;
-
-        // Create handler to perform showing of fragment(s).
-        Handler h = new Handler(Looper.getMainLooper());
-        Runnable runnable = new Runnable() {
-            public void run() {
-                showAssetClass(data);
-            }
-        };
-
-        // show the data
-        AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
-        // If there are no other fragments, create the initial view.
-        if (fragment == null) {
-            h.post(runnable);
-        } else {
-            // Otherwise, find the fragment and update the data.
-            refreshDataInFragment(data);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<AssetClass> loader) {
-        // Remove any references to the data.
-    }
-
     // Events
 
     @Subscribe
     public void onEvent(AssetAllocationReloadRequested event) {
         // reload Asset Allocation
-        getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
+        getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
     }
 
     @Subscribe
@@ -242,7 +203,7 @@ public class AssetAllocationActivity
         Integer id = fragment.getArguments().getInt(AssetAllocationFragment.PARAM_ASSET_CLASS_ID);
 
         AssetClass toShow;
-        if (id != null) {
+        if (id != Constants.NOT_SET) {
             // find it again in the reloaded data
             AssetAllocationService service = new AssetAllocationService(this);
             toShow = service.findChild(id, assetAllocation);
@@ -253,6 +214,43 @@ public class AssetAllocationActivity
 
         // reload data for the fragment
         fragment.showData(toShow);
+    }
+
+    private LoaderManager.LoaderCallbacks<AssetClass> setUpLoaderCallbacks() {
+        return new LoaderManager.LoaderCallbacks<AssetClass>() {
+            @Override
+            public Loader<AssetClass> onCreateLoader(int id, Bundle args) {
+                return new AssetAllocationLoader(AssetAllocationActivity.this);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<AssetClass> loader, final AssetClass data) {
+                AssetAllocationActivity.this.assetAllocation = data;
+
+                // Create handler to perform showing of fragment(s).
+                Handler h = new Handler(Looper.getMainLooper());
+                Runnable runnable = new Runnable() {
+                    public void run() {
+                        showAssetClass(data);
+                    }
+                };
+
+                // show the data
+                AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(AssetAllocationActivity.this);
+                // If there are no other fragments, create the initial view.
+                if (fragment == null) {
+                    h.post(runnable);
+                } else {
+                    // Otherwise, find the fragment and update the data.
+                    refreshDataInFragment(data);
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<AssetClass> loader) {
+                // adapter swap cursor?
+            }
+        };
     }
 
     private void showAssetClass(AssetClass assetClass) {
