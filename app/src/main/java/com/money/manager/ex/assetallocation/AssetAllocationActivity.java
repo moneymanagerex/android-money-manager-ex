@@ -70,7 +70,7 @@ public class AssetAllocationActivity
 
         if (savedInstanceState != null) {
             // use existing asset allocation
-            this.assetAllocation = savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION);
+            this.assetAllocation = Parcels.unwrap(savedInstanceState.getParcelable(KEY_ASSET_ALLOCATION));
         } else {
             // Load asset allocation
             // Ref: http://developer.android.com/guide/components/loaders.html
@@ -91,14 +91,6 @@ public class AssetAllocationActivity
         super.onStart();
 
         EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // reload data
-        //getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, this);
     }
 
     @Override
