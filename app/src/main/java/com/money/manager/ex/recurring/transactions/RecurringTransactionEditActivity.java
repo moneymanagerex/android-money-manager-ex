@@ -372,7 +372,9 @@ public class RecurringTransactionEditActivity
     private void initializePaymentDateSelector() {
         if (mViewHolder.paymentDateTextView == null) return;
 
-        mViewHolder.paymentDateTextView.setText(mRecurringTransaction.getPaymentDate().toString(Constants.LONG_DATE_PATTERN));
+        DateTime paymentDate = mRecurringTransaction.getPaymentDate();
+        mViewHolder.paymentDateTextView.setText(paymentDate.toString(Constants.LONG_DATE_PATTERN));
+        mViewHolder.paymentDateTextView.setTag(paymentDate);
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
