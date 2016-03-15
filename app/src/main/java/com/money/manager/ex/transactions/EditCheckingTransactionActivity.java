@@ -94,7 +94,7 @@ public class EditCheckingTransactionActivity
 
         // manage save instance
         if ((savedInstanceState != null)) {
-            retrieveValuesFromSavedInstanceState(savedInstanceState);
+            restoreInstanceState(savedInstanceState);
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
@@ -480,15 +480,13 @@ public class EditCheckingTransactionActivity
             externalIntegration(intent);
 
             // Select the default account if none set.
-            AppSettings settings = new AppSettings(this);
-            Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-            if (defaultAccountId != null) {
-                mCommonFunctions.transactionEntity.setAccountId(defaultAccountId);
-                // selecting the account here won't work because the data has not been loaded.
-//                if (mCommonFunctions.mAccountIdList.contains(defaultAccountId)) {
-//                    int index = mCommonFunctions.mAccountIdList.indexOf(defaultAccountId);
-//                    mCommonFunctions.viewHolder.spinAccount.setSelection(index);
-//                }
+            Integer account = mCommonFunctions.transactionEntity.getAccountId();
+            if (account == null || account == Constants.NOT_SET) {
+                AppSettings settings = new AppSettings(this);
+                Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+                if (defaultAccountId != null) {
+                    mCommonFunctions.transactionEntity.setAccountId(defaultAccountId);
+                }
             }
         }
 
@@ -545,7 +543,7 @@ public class EditCheckingTransactionActivity
         }
     }
 
-    private void retrieveValuesFromSavedInstanceState(Bundle savedInstanceState) {
+    private void restoreInstanceState(Bundle savedInstanceState) {
         mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.transactionEntity.setAccountId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID));
         mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
