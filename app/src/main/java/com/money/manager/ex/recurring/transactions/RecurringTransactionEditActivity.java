@@ -515,7 +515,8 @@ public class RecurringTransactionEditActivity
 
         // Payment Date
 
-        value = mViewHolder.paymentDateTextView.getTag().toString();
+        Object tag = mViewHolder.paymentDateTextView.getTag();
+        value = tag.toString();
         mRecurringTransaction.setPaymentDate(MyDateTimeUtils.from(value));
 
         // Payments Left
