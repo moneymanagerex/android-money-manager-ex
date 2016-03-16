@@ -34,12 +34,14 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class IncomeVsExpensesChartFragment extends Fragment implements
         OnChartValueSelectedListener {
@@ -82,7 +84,7 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
         dataSetExpenses.setColor(getResources().getColor(R.color.material_red_500));
         dataSetIncomes.setColor(getResources().getColor(R.color.material_green_500));
 
-        ArrayList<BarDataSet> dataSets = new ArrayList<>();
+        List<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataSetIncomes);
         dataSets.add(dataSetExpenses);
 
