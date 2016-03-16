@@ -28,6 +28,8 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Click listener
@@ -53,7 +55,9 @@ public class OnDateButtonClickListener
         String calendarValue = mTextView.getText().toString();
 
         if (!TextUtils.isEmpty(calendarValue)) {
-            dateTime = MyDateTimeUtils.from(MyDateTimeUtils.getUserDatePattern(mParent.getApplicationContext()));
+            String userDatePattern = MyDateTimeUtils.getUserDatePattern(mParent.getApplicationContext());
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
+            dateTime = formatter.parseDateTime(calendarValue);
         }
 
         CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
