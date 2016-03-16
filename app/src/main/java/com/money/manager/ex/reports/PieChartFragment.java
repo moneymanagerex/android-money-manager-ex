@@ -151,8 +151,7 @@ public class PieChartFragment
         mChart.setUsePercentValues(true);
 
         // change the color of the center-hole
-        // mChart.setHoleColor(Color.rgb(235, 235, 235));
-        mChart.setHoleColorTransparent(true);
+        mChart.setHoleColor(Color.TRANSPARENT);
 
         mChart.setHoleRadius(30f);
         mChart.setDescription("");
