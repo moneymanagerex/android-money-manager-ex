@@ -212,13 +212,13 @@ public class SingleAccountWidget
         Intent intent = new Intent(context, EditCheckingTransactionActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
 
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
