@@ -354,7 +354,9 @@ public class EditTransactionCommonFunctions {
 
         AccountRepository accountRepository = new AccountRepository(getContext());
         Integer accountId = transactionEntity.getAccountId();
-        addMissingAccountToSelectors(accountRepository, accountId);
+        if (accountId != null) {
+            addMissingAccountToSelectors(accountRepository, accountId);
+        }
         addMissingAccountToSelectors(accountRepository, toAccountId);
         // add the default account, if any.
         Integer defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
