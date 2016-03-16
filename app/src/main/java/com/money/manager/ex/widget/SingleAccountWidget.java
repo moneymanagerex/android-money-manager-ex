@@ -196,7 +196,6 @@ public class SingleAccountWidget
         if (account == null) return;
 
 //        CharSequence widgetText = SingleAccountWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
-
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // display the account name
@@ -212,6 +211,14 @@ public class SingleAccountWidget
     private void initializeNewTransactionCommand(Context context, RemoteViews views) {
         Intent intent = new Intent(context, EditCheckingTransactionActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         views.setOnClickPendingIntent(R.id.newTransactionPanel, pendingIntent);
