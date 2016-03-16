@@ -490,7 +490,7 @@ public class EditCheckingTransactionActivity
                 AppSettings settings = new AppSettings(this);
                 Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
                 if (defaultAccountId == null) {
-//                    Core.alertDialog(this, R.string.default_account_not_set);
+                    // Show toast message.
                     new ExceptionHandler(this).showMessage(getString(R.string.default_account_not_set));
                     return false;
                 } else {
