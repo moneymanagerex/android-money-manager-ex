@@ -27,6 +27,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -102,7 +103,11 @@ public class EditCheckingTransactionActivity
 
         // manage intent
         if (getIntent() != null) {
-            handleIntent(savedInstanceState);
+            boolean handled = handleIntent(savedInstanceState);
+            if (!handled) {
+                finish();
+                return;
+            }
         }
 
         initializeInputControls();
@@ -399,7 +404,7 @@ public class EditCheckingTransactionActivity
      * Also used for Tasker integration, for example.
      * @param savedInstanceState parameters
      */
-    private void handleIntent(Bundle savedInstanceState) {
+    private boolean handleIntent(Bundle savedInstanceState) {
         Intent intent = getIntent();
         mIntentAction = intent.getAction();
 
@@ -484,7 +489,11 @@ public class EditCheckingTransactionActivity
             if (account == null || account == Constants.NOT_SET) {
                 AppSettings settings = new AppSettings(this);
                 Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
-                if (defaultAccountId != null) {
+                if (defaultAccountId == null) {
+//                    Core.alertDialog(this, R.string.default_account_not_set);
+                    new ExceptionHandler(this).showMessage(getString(R.string.default_account_not_set));
+                    return false;
+                } else {
                     mCommonFunctions.transactionEntity.setAccountId(defaultAccountId);
                 }
             }
@@ -494,6 +503,8 @@ public class EditCheckingTransactionActivity
         getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
                 ? R.string.new_transaction
                 : R.string.edit_transaction);
+
+        return true;
     }
 
     /**
