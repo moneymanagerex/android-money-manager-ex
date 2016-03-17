@@ -21,7 +21,8 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    //buildToolsVersion '23.0.2'
+    buildToolsVersion '24 rc1'
 
     defaultConfig {
         applicationId "com.money.manager.ex"
@@ -166,7 +167,6 @@ dependencies {
             // encryption
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
             'org.greenrobot:eventbus:3.0.0',
-//            'com.darwinsys:hirondelle-date4j:1.5.1',
             'net.danlew:android.joda:2.9.2',
             'org.parceler:parceler-api:1.0.4'
     )

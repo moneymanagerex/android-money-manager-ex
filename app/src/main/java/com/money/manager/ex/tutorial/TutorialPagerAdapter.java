@@ -17,23 +17,20 @@
 
 package com.money.manager.ex.tutorial;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Adapter that returns the tutorial pages.
- * Created by Alen on 17/03/2015.
  */
-public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
-    public TutorialPagerAdapter(FragmentManager fm, Activity parent) {
+public class TutorialPagerAdapter
+    extends FragmentStatePagerAdapter {
+
+    public TutorialPagerAdapter(FragmentManager fm) {
         super(fm);
 
-        mParentActivity = parent;
     }
-
-    private Activity mParentActivity;
 
     @Override
     public Fragment getItem(int i) {
@@ -41,7 +38,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
 
         switch(i){
             case 0:
-                pageFragment = TutorialAccountsFragment.newInstance();
+                pageFragment = new TutorialAccountsFragment();
                 break;
             case 1:
                 pageFragment = TutorialTransactionsFragment.newInstance();
@@ -56,7 +53,7 @@ public class TutorialPagerAdapter extends FragmentStatePagerAdapter {
                 pageFragment = TutorialSyncFragment.newInstance();
                 break;
             default:
-                pageFragment = TutorialAccountsFragment.newInstance();
+                pageFragment = new TutorialAccountsFragment();
         }
 
         return pageFragment;

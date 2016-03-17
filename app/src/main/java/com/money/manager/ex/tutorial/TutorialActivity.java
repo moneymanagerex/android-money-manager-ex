@@ -40,7 +40,7 @@ import me.relex.circleindicator.CircleIndicator;
  * See: http://developer.android.com/training/implementing-navigation/lateral.html
  */
 public class TutorialActivity
-        extends FragmentActivity {
+    extends FragmentActivity {
 
     public static final int RESULT_OK = 1;
 
@@ -56,7 +56,7 @@ public class TutorialActivity
         CircleIndicator circleIndicator = (CircleIndicator) findViewById(R.id.indicator_default);
 
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
-        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager(), this);
+        TutorialPagerAdapter pagerAdapter = new TutorialPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
 

@@ -14,9 +14,8 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:svgimageview="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,24 +31,14 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <!--<com.shamanland.fonticon.FontIconView-->
-            <!--android:id="@+id/image"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="@string/ic_tutorial_accounts"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="@color/material_grey_200" />-->
-        <!--android:textSize="@dimen/icon_size"-->
-        <!--android:textScaleX=""-->
-
         <!--<ImageView-->
             <!--android:id="@+id/imageView"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
             <!--android:layout_gravity="center_horizontal"-->
             <!--android:layout_margin="40dp"-->
-            <!--android:scaleType="fitCenter" />-->
+            <!--android:scaleType="fitCenter"-->
+            <!--app:srcCompat="@drawable/tutorial_accounts" />-->
 
         <com.caverock.androidsvg.SVGImageView
             android:id="@+id/imageView"
@@ -58,7 +47,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="40dp"
             android:scaleType="fitCenter"
-            svgimageview:svg="tutorial_images/accounts.svg"/>
+            app:svg="tutorial_images/accounts.svg"/>
 
     </LinearLayout>
 
