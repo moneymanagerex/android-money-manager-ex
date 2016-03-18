@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.account;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -115,9 +117,16 @@ public class AccountTransactionListFragment
             mAccountReconciled = MoneyFactory.fromDouble(0);
     private Account mAccount;
     private AccountTransactionsListViewHolder viewHolder;
+    //private Context context;
 
     // filter
     private TransactionFilter mFilter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -488,9 +497,9 @@ public class AccountTransactionListFragment
         MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
 
         // Use a font icon.
-        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_filter);
+        FontIconDrawable icon = FontIconDrawable.inflate(getContext(), R.xml.ic_filter);
         // get the toolbar item color.
-        icon.setTextColor(UIHelper.getColor(getActivity(), R.attr.toolbarItemColor)); // Color.RED
+        icon.setTextColor(UIHelper.getColor(getContext(), R.attr.toolbarItemColor)); // Color.RED
         item.setIcon(icon);
 
         // selection handled in onOptionsItemSelected
