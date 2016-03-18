@@ -90,7 +90,7 @@ public class FilterDialogFragment
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mTransactionFilter = getArguments().getParcelable(ARG_TX_FILTER);
+            mTransactionFilter = Parcels.unwrap(getArguments().getParcelable(ARG_TX_FILTER));
             mAccount = getArguments().getParcelable(ARG_ACCOUNT);
             mRecords = getArguments().getInt(ARG_RECORDS);
         }
