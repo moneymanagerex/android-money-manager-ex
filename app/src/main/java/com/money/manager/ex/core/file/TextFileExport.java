@@ -37,7 +37,6 @@ public class TextFileExport {
         mContext = context;
     }
 
-    protected static final String ProviderAuthority = "com.money.manager.ex.fileprovider";
     protected static final String ExportDirectory = "export";
     protected final String LOGCAT = this.getClass().getSimpleName();
     protected Context mContext;
@@ -68,8 +67,7 @@ public class TextFileExport {
      * Delete all existing files in export directory.
      * @throws Exception
      */
-    private void clearCache()
-            throws IOException {
+    private void clearCache() throws IOException {
         // delete all cached files.
         File path = getExportDirectory();
         File[] files = path.listFiles();
@@ -79,8 +77,7 @@ public class TextFileExport {
         }
     }
 
-    private File createExportFile(String fileName)
-            throws IOException {
+    private File createExportFile(String fileName) throws IOException {
         File path = getExportDirectory();
 
 //        tempFile = File.createTempFile(filePath, ".qif", path);
@@ -114,8 +111,8 @@ public class TextFileExport {
      * @return A directory into which to temporarily export .qif file.
      * @throws IOException
      */
-    private File getExportDirectory()
-            throws IOException {
+    private File getExportDirectory() throws IOException {
+
         File path = new File(mContext.getFilesDir(), ExportDirectory);
 //        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
 //        File path = this.context.getExternalFilesDir(null);
@@ -133,7 +130,10 @@ public class TextFileExport {
     }
 
     private void offerFile(File file) {
-        Uri contentUri = FileProvider.getUriForFile(mContext, ProviderAuthority, file);
+        //protected static final String ProviderAuthority = mContext.getApplicationContext().getPackageName() + "com.money.manager.ex.fileprovider";
+        String authority = mContext.getApplicationContext().getPackageName() + ".fileprovider";
+
+        Uri contentUri = FileProvider.getUriForFile(mContext, authority, file);
         offerFile(contentUri);
     }
 
