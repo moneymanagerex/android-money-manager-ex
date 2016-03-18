@@ -86,6 +86,9 @@ android {
                 }
             }
         }
+        beta {
+            applicationIdSuffix ".beta"
+        }
     }
 
     dataBinding {
