@@ -218,8 +218,6 @@ public class RecurringTransactionEditActivity
         outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
         outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
-//        outState.putString(KEY_NEXT_OCCURRENCE, mCommonFunctions.viewHolder.dateTextView.getTag().toString());
-//        outState.putInt(KEY_REPEATS, mFrequencies);
 
         outState.putString(KEY_ACTION, mIntentAction);
     }
@@ -374,7 +372,7 @@ public class RecurringTransactionEditActivity
 
         DateTime paymentDate = mRecurringTransaction.getPaymentDate();
         mViewHolder.paymentDateTextView.setText(paymentDate.toString(Constants.LONG_DATE_PATTERN));
-        mViewHolder.paymentDateTextView.setTag(paymentDate);
+        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -414,6 +412,7 @@ public class RecurringTransactionEditActivity
         mRecurringTransaction = new RecurringTransaction();
 
         mRecurringTransaction.setDueDate(MyDateTimeUtils.today());
+        mRecurringTransaction.setPaymentDate(MyDateTimeUtils.today());
     }
 
     private void initializeViewHolder() {
@@ -517,9 +516,8 @@ public class RecurringTransactionEditActivity
 
         // Payment Date
 
-        DateTime tag = (DateTime) mViewHolder.paymentDateTextView.getTag();
-        value = tag.toString(Constants.ISO_DATE_FORMAT);
-        mRecurringTransaction.setPaymentDate(MyDateTimeUtils.from(value));
+        DateTime dateTime = MyDateTimeUtils.from(mViewHolder.paymentDateTextView.getTag().toString());
+        mRecurringTransaction.setPaymentDate(dateTime);
 
         // Payments Left
 
