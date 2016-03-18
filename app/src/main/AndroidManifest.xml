@@ -86,8 +86,8 @@
         <receiver android:name=".dropbox.DropboxScheduler" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX" />
-                <action android:name="com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
+                <action android:name="${applicationId}.custom.intent.action.START_SERVICE_DROPBOX" />
+                <action android:name="${applicationId}.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
             </intent-filter>
         </receiver>
         <receiver android:name=".dropbox.DropboxStartServiceReceiver" />
@@ -104,20 +104,20 @@
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service android:name=".dropbox.DropboxServiceIntent" >
             <intent-filter>
-                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_SYNC" />
-                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_DOWNLOAD" />
-                <action android:name="com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD" />
+                <action android:name="${applicationId}.custom.intent.action.DROPBOX_SYNC" />
+                <action android:name="${applicationId}.custom.intent.action.DROPBOX_DOWNLOAD" />
+                <action android:name="${applicationId}.custom.intent.action.DROPBOX_UPLOAD" />
             </intent-filter>
         </service>
 
         <provider
             android:name=".MmexContentProvider"
-            android:authorities="com.money.manager.ex.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="true" />
         <!-- used for qif export -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.money.manager.ex.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -297,7 +297,7 @@
             android:label="@string/dropbox" />
         <activity android:name=".PasscodeActivity" >
             <intent-filter>
-                <action android:name="com.money.manager.ex.custom.intent.action.REQUEST_PASSWORD" />
+                <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>
         </activity>
         <activity
@@ -325,8 +325,8 @@
             android:name=".HelpActivity"
             android:label="@string/help" >
             <intent-filter>
-                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_RAW_FILE" />
-                <action android:name="com.money.manager.ex.custom.intent.action.WEB_VIEW_URL" />
+                <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_RAW_FILE" />
+                <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_URL" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
