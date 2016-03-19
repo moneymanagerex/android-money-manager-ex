@@ -71,6 +71,7 @@ public class DropboxSettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         addPreferencesFromResource(R.xml.settings_dropbox);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 

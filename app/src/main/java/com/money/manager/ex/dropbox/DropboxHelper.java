@@ -68,13 +68,12 @@ import java.util.Date;
 import java.util.List;
 
 public class DropboxHelper {
-    // info dropbox
+
     public static final String ROOT = "/";
     private static final String LOGCAT = DropboxHelper.class.getSimpleName();
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
     private static final int DROPBOX_FILE_LIMIT = 1000;
 
-    // info to access sharedpref
     // singleton
     private static DropboxHelper mHelper;
     private static Context mContext;
@@ -85,13 +84,13 @@ public class DropboxHelper {
     // Delayed synchronization
     private static Handler mDelayedHandler = null;
     private static Runnable mRunSyncRunnable = null;
+
     // Dropbox API
-    DropboxAPI<AndroidAuthSession> mDropboxApi;
+    private DropboxAPI<AndroidAuthSession> mDropboxApi;
 
     /**
-     * Get a singleton of dropbox. if object don't exists it does create
-     *
-     * @param context Executing context
+     * Get a singleton of dropbox. Creates the object if it does not exist.
+     * @param context Executing context.
      * @return A dropbox helper instance.
      */
     public static DropboxHelper getInstance(Context context) {
@@ -168,6 +167,8 @@ public class DropboxHelper {
         DropboxHelper.mDisableAutoUpload = mDisableAutoUpload;
     }
 
+    // Public methods.
+
     public boolean shouldAutoSynchronize() {
         // Check WiFi settings.
         // should we sync only on wifi?
@@ -194,6 +195,10 @@ public class DropboxHelper {
 
         AndroidAuthSession session = buildSession();
         mDropboxApi = new DropboxAPI<>(session);
+    }
+
+    private Context getContext() {
+        return mContext;
     }
 
     /**
@@ -342,7 +347,7 @@ public class DropboxHelper {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Login dropbox service");
         // Start the remote authentication
         //mDropboxApi.getSession().startAuthentication(context);
-        mDropboxApi.getSession().startOAuth2Authentication(mContext);
+        mDropboxApi.getSession().startOAuth2Authentication(getContext());
     }
 
     /**
