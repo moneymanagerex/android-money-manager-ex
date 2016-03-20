@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+//import com.dropbox.chooser.android.DbxChooser;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.dropbox.DropboxScheduler;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -63,6 +64,7 @@ import java.io.File;
 public class DropboxSettingsFragment
     extends PreferenceFragment {
 
+    private static final int REQUEST_DBX_CHOOSER = 10;
     private static final int REQUEST_DROPBOX_FILE = 20;
 
     private DropboxHelper mDropboxHelper = null;
@@ -78,6 +80,78 @@ public class DropboxSettingsFragment
         // dropbox preference screen
         mDropboxHelper = DropboxHelper.getInstance(getActivity().getApplicationContext());
 
+        initializeControls();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_DBX_CHOOSER:
+//                handleFileSelectionAll(resultCode, data);
+                break;
+            case REQUEST_DROPBOX_FILE:
+                handleFileSelection(resultCode, data);
+                break;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // register as event bus listener
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // complete process authentication
+        if (mDropboxLoginBegin) {
+            mDropboxHelper.completeAuthenticationDropbox();
+            mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_START);
+            mDropboxLoginBegin = false;
+        }
+
+        // dropbox link and unlink
+        if (findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK)) != null) {
+            findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK)).setSelectable(!mDropboxHelper.isLinked());
+            findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK)).setEnabled(!mDropboxHelper.isLinked());
+        }
+        if (findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)) != null) {
+            findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setSelectable(mDropboxHelper.isLinked());
+            findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setEnabled(mDropboxHelper.isLinked());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    // event handling
+
+    /**
+     * Called when file is downloaded from Dropbox.
+     */
+    @Subscribe
+    public void onEvent(DbFileDownloadedEvent event) {
+        // set main activity to reload.
+//        MainActivity.setRestartActivity(true);
+        EventBus.getDefault().post(new AppRestartRequiredEvent());
+
+        // open the new database.
+        DropboxManager dropbox = new DropboxManager(getActivity(), mDropboxHelper);
+        dropbox.openDownloadedDatabase();
+    }
+
+    // private
+
+    private void initializeControls() {
         final PreferenceScreen pDropbox = (PreferenceScreen) findPreference(getString(PreferenceConstants.PREF_DROPBOX_HOWITWORKS));
         if (pDropbox != null) {
             pDropbox.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -136,7 +210,8 @@ public class DropboxSettingsFragment
             });
         }
 
-        //link file
+        // Select file from app folder
+
         final Preference pDropboxFile = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE));
         if (pDropboxFile != null) {
             pDropboxFile.setSummary(mDropboxHelper.getLinkedRemoteFile());
@@ -149,13 +224,30 @@ public class DropboxSettingsFragment
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(getActivity(), DropboxBrowserActivity.class);
-                    intent.putExtra(DropboxBrowserActivity.INTENT_DROBPOXFILE_PATH, mDropboxHelper.getLinkedRemoteFile());
-                    startActivityForResult(intent, REQUEST_DROPBOX_FILE);
+                    selectFileFromAppDirectory();
                     return false;
                 }
             });
         }
+
+        // Select file anywhere in Dropbox
+
+//        final Preference dropboxFileAll = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE_ALL));
+//        if (dropboxFileAll != null) {
+//            dropboxFileAll.setSummary(mDropboxHelper.getLinkedRemoteFile());
+//            // check if summary is null and
+//            if (TextUtils.isEmpty(dropboxFileAll.getSummary())) {
+//                dropboxFileAll.setSummary(R.string.dropbox_file_summary_all);
+//            }
+//            // open Dropbox Browser Activity
+//            dropboxFileAll.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    showDropboxChooser();
+//                    return false;
+//                }
+//            });
+//        }
 
         //force download
         PreferenceScreen pDownload = (PreferenceScreen) findPreference(getString(PreferenceConstants.PREF_DROPBOX_DOWNLOAD));
@@ -203,96 +295,57 @@ public class DropboxSettingsFragment
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void handleFileSelection(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null) return;
 
-        // Currently only handling REQUEST_DROPBOX_FILE request.
+        final Preference pDropboxFile = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE));
+        if (pDropboxFile == null) return;
 
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            final Preference pDropboxFile = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE));
-            if (pDropboxFile != null) {
-                CharSequence oldFile = "", newFile;
-                if (!TextUtils.isEmpty(pDropboxFile.getSummary())) {
-                    oldFile = pDropboxFile.getSummary();
-                }
-                newFile = data.getStringExtra(DropboxBrowserActivity.INTENT_DROBPOXFILE_PATH);
+        CharSequence oldFile = "", newFile;
+        if (!TextUtils.isEmpty(pDropboxFile.getSummary())) {
+            oldFile = pDropboxFile.getSummary();
+        }
+        newFile = data.getStringExtra(DropboxBrowserActivity.INTENT_DROBPOXFILE_PATH);
 
-                if (newFile == null) return;
+        if (newFile == null) return;
 
-                // save value
-                mDropboxHelper.setLinkedRemoteFile(newFile.toString());
-                pDropboxFile.setSummary(newFile);
-                // check if files is modified
-                if (!oldFile.equals(newFile)) {
-                    // force download file
-                    downloadFileFromDropbox();
-                }
-            }
+        // save value
+        mDropboxHelper.setLinkedRemoteFile(newFile.toString());
+        pDropboxFile.setSummary(newFile);
+        // check if files is modified
+        if (!oldFile.equals(newFile)) {
+            // force download file
+            downloadFileFromDropbox();
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+//    private void handleFileSelectionAll(int resultCode, Intent data) {
+//        if (resultCode != Activity.RESULT_OK || data == null) return;
+//
+//        DbxChooser.Result result = new DbxChooser.Result(data);
+//        String fileName = result.getName();
+//        Uri uri = result.getLink();
+//    }
+//
+//    private void showDropboxChooser() {
+//        DbxChooser chooser = new DbxChooser(DropboxHelper.DROPBOX_APP_KEY);
+//        chooser.forResultType(DbxChooser.ResultType.DIRECT_LINK)
+//            .launch(this, REQUEST_DBX_CHOOSER);
+//        // PREVIEW_LINK
+//    }
 
-        // register as event bus listener
-        EventBus.getDefault().register(this);
+    private void selectFileFromAppDirectory() {
+        Intent intent = new Intent(getActivity(), DropboxBrowserActivity.class);
+        intent.putExtra(DropboxBrowserActivity.INTENT_DROBPOXFILE_PATH, mDropboxHelper.getLinkedRemoteFile());
+        startActivityForResult(intent, REQUEST_DROPBOX_FILE);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // complete process authentication
-        if (mDropboxLoginBegin) {
-            mDropboxHelper.completeAuthenticationDropbox();
-            mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_START);
-            mDropboxLoginBegin = false;
-        }
-
-        // dropbox link and unlink
-        if (findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK)) != null) {
-            findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK)).setSelectable(!mDropboxHelper.isLinked());
-            findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK)).setEnabled(!mDropboxHelper.isLinked());
-        }
-        if (findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)) != null) {
-            findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setSelectable(mDropboxHelper.isLinked());
-            findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setEnabled(mDropboxHelper.isLinked());
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        EventBus.getDefault().unregister(this);
-    }
-
-    // event handling
-
-    /**
-     * Called when file is downloaded from Dropbox.
-     */
-    @Subscribe
-    public void onEvent(DbFileDownloadedEvent event) {
-        // set main activity to reload.
-//        MainActivity.setRestartActivity(true);
-        EventBus.getDefault().post(new AppRestartRequiredEvent());
-
-        // open the new database.
-        DropboxManager dropbox = new DropboxManager(getActivity(), mDropboxHelper);
-        dropbox.openDownloadedDatabase();
-    }
-
-    // private
 
     private void showWebTipsDialog(final String key, final CharSequence title, final int rawResources, boolean force) {
         if (!force) {
             if (getActivity().getSharedPreferences(TipsDialogFragment.PREF_DIALOG, 0).getBoolean(key, false))
                 return;
         }
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            // title and icons
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getActivity())
             .setTitle(title);
         // view body
         @SuppressLint("InflateParams")

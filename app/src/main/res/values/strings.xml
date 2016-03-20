@@ -54,7 +54,8 @@
     <string name="dropbox_syncProgress">Synchronizing file. Please wait…</string>
     <string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>
     <string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>
-    <string name="dropbox_linkedFile">File Dropbox</string>
+    <string name="dropbox_linkedFile">Dropbox File</string>
+    <string name="dropbox_file_summary_all">File anywhere in Dropbox</string>
 
     <!-- preferences -->
     <string name="preferences_general">General</string>

@@ -19,14 +19,11 @@ package com.money.manager.ex.settings;
 import android.os.Bundle;
 
 public class DropboxSettingsActivity
-        extends BaseSettingsFragmentActivity {
-
-//    private static String LOGCAT = DropboxSettingsActivity.class.getSimpleName();
+    extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setSettingFragment(new DropboxSettingsFragment());
     }
-
 }

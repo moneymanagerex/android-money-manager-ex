@@ -55,6 +55,8 @@ public class PreferenceConstants {
     public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
     public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
     public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
+    // Preference button for file anywhere in Drobpox
+    public static final Integer PREF_DROPBOX_LINKED_FILE_ALL = R.string.pref_dropbox_linked_file_all;
     public static final Integer PREF_DONATE = R.string.pref_donate;
     public static final Integer PREF_VERSION_NAME = R.string.pref_version_name;
 

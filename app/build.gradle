@@ -130,6 +130,7 @@ dependencies {
             fileTree(dir: 'libs', include: ['*.jar']),
             // androidSVG
             project(':androidSVG_12'),
+//            project(':dropboxChooserSDK'),
 //        'com.caverock:androidsvg:1.2.2-beta-1',
             'com.google.android.apps.dashclock:dashclock-api:2.0.0',
             // Dropbox

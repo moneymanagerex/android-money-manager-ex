@@ -55,6 +55,7 @@
     <string name="pref_dropbox_link">dropbox2link</string>
     <string name="pref_dropbox_unlink">dropbox2unlink</string>
     <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
+    <string name="pref_dropbox_linked_file_all">dropbox2fileAll</string>
     <string name="pref_donate">donate</string>
     <string name="pref_version_name">versionname</string>
     <string name="pref_version_code">versioncode</string>
