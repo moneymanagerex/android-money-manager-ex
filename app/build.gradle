@@ -172,8 +172,9 @@ dependencies {
             // encryption
 //            'net.zetetic:android-database-sqlcipher:3.3.1-2'
             'org.greenrobot:eventbus:3.0.0',
-            'net.danlew:android.joda:2.9.2',
-            'org.parceler:parceler-api:1.0.4'
+            'net.danlew:android.joda:2.9.2'
+            ,'org.parceler:parceler-api:1.0.4'
+//            ,'com.nononsenseapps:filepicker:2.5.2' // dropbox file picker
     )
 //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 
