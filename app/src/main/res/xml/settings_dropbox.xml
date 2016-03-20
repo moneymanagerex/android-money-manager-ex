@@ -27,12 +27,12 @@
         android:key="@string/pref_dropbox_linked_file"
         android:title="@string/dropbox_linkedFile" />
 
-    <Preference
-        android:key="@string/pref_dropbox_linked_file_all"
-        android:icon="@null"
-        android:dependency="@string/pref_dropbox_unlink"
-        android:title="@string/dropbox_linkedFile"
-        android:summary="@string/dropbox_file_summary_all" />
+    <!--<Preference-->
+        <!--android:key="@string/pref_dropbox_linked_file_all"-->
+        <!--android:icon="@null"-->
+        <!--android:dependency="@string/pref_dropbox_unlink"-->
+        <!--android:title="@string/dropbox_linkedFile"-->
+        <!--android:summary="@string/dropbox_file_summary_all" />-->
 
     <ListPreference
         android:icon="@null"
