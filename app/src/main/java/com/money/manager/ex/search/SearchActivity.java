@@ -18,7 +18,7 @@ package com.money.manager.ex.search;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,11 +27,9 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.events.FragmentViewCreatedEvent;
 import com.money.manager.ex.database.QueryAllData;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
 
 public class SearchActivity
     extends BaseFragmentActivity {
@@ -68,12 +66,12 @@ public class SearchActivity
     protected void onStart() {
         super.onStart();
 
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
 
         super.onStop();
     }
@@ -104,28 +102,23 @@ public class SearchActivity
 
     // Events
 
-    @Subscribe
-    public void onFragmentViewCreated(FragmentViewCreatedEvent event) {
-        String tag = event.fragmentTag;
-
-        if (mSearchParameters != null && tag.equals(SearchFragment.class.getSimpleName())) {
-            // Get search criteria if any was sent from an external caller.
-            getSearchFragment().handleSearchRequest(mSearchParameters);
-            performSearch();
-            // remove search parameters once used.
-            mSearchParameters = null;
-        }
-    }
-
 //    @Subscribe
-//    public void onSearchResultsRequested(ShowSearchResultsRequestEvent event) {
-//        showSearchResultsFragment(event.conditions);
+//    public void onFragmentViewCreated(FragmentViewCreatedEvent event) {
+//        String tag = event.fragmentTag;
+//
+//        if (mSearchParameters != null && tag.equals(SearchFragment.class.getSimpleName())) {
+//            // Get search criteria if any was sent from an external caller.
+//            getSearchFragment().setSearchParameters(mSearchParameters);
+//            performSearch();
+//            // remove search parameters once used.
+//            mSearchParameters = null;
+//        }
 //    }
 
     // Public
 
     private SearchFragment createSearchFragment() {
-        SearchFragment searchFragment = new SearchFragment();
+        SearchFragment searchFragment = SearchFragment.createInstance();
 
         // add to stack
         getSupportFragmentManager().beginTransaction()
@@ -156,29 +149,29 @@ public class SearchActivity
         if (intent == null) return;
 
         // see if we have the search criteria.
-        mSearchParameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
+        Parcelable searchParcel = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
+        mSearchParameters = Parcels.unwrap(searchParcel);
+
+        if (mSearchParameters != null) {
+            performSearch();
+        }
     }
 
     private void performSearch() {
         // Perform search
 
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
+        SearchFragment searchFragment = getSearchFragment();
 
-        if (fragment != null && fragment instanceof SearchFragment) {
-//            ((SearchFragment) fragment).executeSearch();
-            String where = ((SearchFragment) fragment).getWhereStatement();
-            showSearchResultsFragment(where);
+        SearchParameters existingSearch = searchFragment.getSearchParameters();
+        if (existingSearch == null) {
+            searchFragment.setSearchParameters(mSearchParameters);
         } else {
-            if (!mIsDualPanel) {
-                SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
-                    .findFragmentByTag(SearchFragment.class.getSimpleName());
-                if (searchFragment != null) {
-                    getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
-                        .commit();
-                }
-            }
+
         }
+
+        String where = searchFragment.getWhereStatement();
+
+        showSearchResultsFragment(where);
     }
 
     private void showSearchResultsFragment(String where) {

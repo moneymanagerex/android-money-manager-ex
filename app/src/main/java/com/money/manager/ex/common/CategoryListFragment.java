@@ -56,6 +56,8 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.parceler.Parcels;
+
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -736,7 +738,7 @@ public class CategoryListFragment
 
     private void showSearchActivityFor(SearchParameters parameters) {
         Intent intent = new Intent(getActivity(), SearchActivity.class);
-        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
     }
