@@ -124,33 +124,14 @@ public class Core {
     }
 
     /**
-     * Method, which allows you to change the language of the application
-     *
+     * Method, which allows you to change the language of the application.
      * @param context        Context
      * @param languageToLoad language to load for the locale
      * @return and indicator whether the operation was successful
      */
-    public static boolean changeAppLocale(Context context, String languageToLoad) {
-        Locale locale;
+    public static boolean setAppLocale(Context context, String languageToLoad) {
         try {
-            if (!TextUtils.isEmpty(languageToLoad)) {
-                locale = new Locale(languageToLoad);
-                // Below method is not available in emulator 4.1.1 (?!).
-//                locale = Locale.forLanguageTag(languageToLoad);
-            } else {
-                locale = Locale.getDefault();
-            }
-            // http://developer.android.com/reference/java/util/Locale.html#setDefault%28java.util.Locale%29
-//            Locale.setDefault(locale);
-
-            // change locale to configuration
-            Resources resources = context.getResources();
-//            Configuration config = new Configuration();
-            Configuration config = new Configuration(resources.getConfiguration());
-            config.locale = locale;
-            // set new locale
-            resources.updateConfiguration(config, resources.getDisplayMetrics());
-//            getBaseContext().getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+            setAppLocale_Internal(context, languageToLoad);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(context, null);
             handler.handle(e, "changing app locale");
@@ -158,6 +139,35 @@ public class Core {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Change/set locale.
+     * Ref: http://stackoverflow.com/questions/22402491/android-change-and-set-default-locale-within-the-app
+     */
+    private static void setAppLocale_Internal(Context context, String languageToLoad) {
+        Locale locale;
+
+        if (!TextUtils.isEmpty(languageToLoad)) {
+            locale = new Locale(languageToLoad);
+            // Below method is not available in emulator 4.1.1 (?!).
+//                locale = Locale.forLanguageTag(languageToLoad);
+        } else {
+            locale = Locale.getDefault();
+        }
+        // http://developer.android.com/reference/java/util/Locale.html#setDefault%28java.util.Locale%29
+//            Locale.setDefault(locale);
+
+        // change locale of the configuration
+        Resources resources = context.getResources();
+//            Configuration config = new Configuration();
+//            Configuration config = new Configuration(resources.getConfiguration());
+        Configuration config = resources.getConfiguration();
+
+        config.locale = locale;
+        // set new locale
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+//            getBaseContext().getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
     }
 
     // Instance

@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -707,24 +708,24 @@ public class MainActivity
      */
     public void restartActivity() {
         if (mRestartActivity) {
-//            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
-//                // this is for APIs < 11.
-//                Intent intent = getIntent();
-//                overridePendingTransition(0, 0);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                // this is for APIs < 11.
+                Intent intent = getIntent();
+                overridePendingTransition(0, 0);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 // finish this activity
                 finish();
-//                overridePendingTransition(0, 0);
-//                // restart
-//                startActivity(intent);
+                overridePendingTransition(0, 0);
+                // restart
+                startActivity(intent);
 ////            // kill process
 ////            android.os.Process.killProcess(android.os.Process.myPid());
-//            } else {
+            } else {
 //                // new api:
-//                this.recreate();
-//            }
+                this.recreate();
+//                startMainActivity();
+            }
 
-            startMainActivity();
         }
         // set state a false
         setRestartActivity(false);
@@ -750,10 +751,16 @@ public class MainActivity
             .show();
     }
 
-    public void startMainActivity() {
-        Intent intent = getBaseContext().getPackageManager()
-            .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    private void startMainActivity() {
+//        Context baseContext = getBaseContext();
+//        Intent intent = baseContext.getPackageManager()
+//            .getLaunchIntentForPackage( baseContext.getPackageName() );
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+
+        // option 2
+        Intent intent = getIntent();
+        finish();
         startActivity(intent);
     }
 
@@ -1309,7 +1316,7 @@ public class MainActivity
         }
     }
 
-    private void setRestartActivity(boolean mRestart) {
+    public static void setRestartActivity(boolean mRestart) {
         MainActivity.mRestartActivity = mRestart;
     }
 

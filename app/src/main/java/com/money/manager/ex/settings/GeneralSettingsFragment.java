@@ -29,6 +29,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -58,10 +59,36 @@ public class GeneralSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppSettings settings = new AppSettings(getActivity());
-
         addPreferencesFromResource(R.xml.settings_general);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        initializeControls();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_PICK_CURRENCY:
+                // Returning from the currency picker screen.
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
+                    // set preference
+                    CurrencyService utils = new CurrencyService(getActivity());
+                    utils.saveBaseCurrencyId(currencyId);
+                    // refresh the displayed value.
+                    showCurrentDefaultCurrency();
+
+                    // notify the user to update exchange rates!
+                    showCurrencyChangeNotification();
+                }
+                break;
+        }
+    }
+
+    // Private
+
+    private void initializeControls() {
+        AppSettings settings = new AppSettings(getActivity());
 
         // Application Locale
 
@@ -70,13 +97,12 @@ public class GeneralSettingsFragment
             String summary = settings.getGeneralSettings().getApplicationLanguage();
             setSummaryListPreference(lstLocaleApp, summary, R.array.application_locale_values, R.array.application_locale_entries);
             lstLocaleApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String language = String.valueOf(newValue);
                     setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
-//                    MainActivity.setRestartActivity(true);
-                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+                    MainActivity.setRestartActivity(true);
+//                    EventBus.getDefault().post(new AppRestartRequiredEvent());
                     return true;
                 }
             });
@@ -143,6 +169,7 @@ public class GeneralSettingsFragment
         }
 
         //default payee
+
         final ListPreference lstDefaultPayee = (ListPreference) findPreference(getString(PreferenceConstants.PREF_DEFAULT_PAYEE));
         if (lstDefaultPayee != null) {
             setSummaryListPreference(lstDefaultPayee, lstDefaultPayee.getValue(), R.array.new_transaction_dialog_values, R.array.new_transaction_dialog_items);
@@ -155,7 +182,8 @@ public class GeneralSettingsFragment
             });
         }
 
-        // financial day and month
+        // financial year, day and month
+
         final Preference pFinancialDay = findPreference(getString(PreferenceConstants.PREF_FINANCIAL_YEAR_STARTDATE));
         if (pFinancialDay != null) {
             pFinancialDay.setSummary(infoService.getInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY));
@@ -228,26 +256,6 @@ public class GeneralSettingsFragment
         }
 
         initDefaultAccount();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_PICK_CURRENCY:
-                // Returning from the currency picker screen.
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
-                    // set preference
-                    CurrencyService utils = new CurrencyService(getActivity());
-                    utils.saveBaseCurrencyId(currencyId);
-                    // refresh the displayed value.
-                    showCurrentDefaultCurrency();
-
-                    // notify the user to update exchange rates!
-                    showCurrencyChangeNotification();
-                }
-                break;
-        }
     }
 
     private void showCurrencyChangeNotification() {
