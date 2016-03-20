@@ -19,17 +19,22 @@ package com.money.manager.ex.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.ICommonFragmentCallbacks;
+import com.money.manager.ex.common.events.FragmentViewCreatedEvent;
+import com.money.manager.ex.database.QueryAllData;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class SearchActivity
-    extends BaseFragmentActivity
-    implements ICommonFragmentCallbacks {
+    extends BaseFragmentActivity {
 
     public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
 
@@ -52,7 +57,6 @@ public class SearchActivity
             // set dual panel
             LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
-            searchFragment.setDualPanel(mIsDualPanel);
         }
         // reconfigure the toolbar event
         setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
@@ -60,7 +64,21 @@ public class SearchActivity
         handleSearchRequest();
     }
 
-	@Override
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Override
 	protected void onResume() {
 		super.onResume();
 		AllDataListFragment fragment;
@@ -79,9 +97,77 @@ public class SearchActivity
 
     @Override
     public boolean onActionDoneClick() {
+        performSearch();
+
+        return super.onActionDoneClick();
+    }
+
+    // Events
+
+    @Subscribe
+    public void onFragmentViewCreated(FragmentViewCreatedEvent event) {
+        String tag = event.fragmentTag;
+
+        if (mSearchParameters != null && tag.equals(SearchFragment.class.getSimpleName())) {
+            // Get search criteria if any was sent from an external caller.
+            getSearchFragment().handleSearchRequest(mSearchParameters);
+            performSearch();
+            // remove search parameters once used.
+            mSearchParameters = null;
+        }
+    }
+
+//    @Subscribe
+//    public void onSearchResultsRequested(ShowSearchResultsRequestEvent event) {
+//        showSearchResultsFragment(event.conditions);
+//    }
+
+    // Public
+
+    private SearchFragment createSearchFragment() {
+        SearchFragment searchFragment = new SearchFragment();
+
+        // add to stack
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                .commit();
+
+        return searchFragment;
+    }
+
+    private SearchFragment getSearchFragment() {
+        if (mSearchFragment == null) {
+            // try to find the search fragment
+            mSearchFragment = (SearchFragment) getSupportFragmentManager()
+                    .findFragmentByTag(SearchFragment.class.getSimpleName());
+
+            if (mSearchFragment == null) {
+                mSearchFragment = createSearchFragment();
+            }
+        }
+        return mSearchFragment;
+    }
+
+    /**
+     * Read the search request from the intent, if the activity was invoked from elsewhere.
+     */
+    private void handleSearchRequest() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        // see if we have the search criteria.
+        mSearchParameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
+    }
+
+    private void performSearch() {
+        // Perform search
+
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContent);
+
         if (fragment != null && fragment instanceof SearchFragment) {
-            ((SearchFragment) fragment).executeSearch();
+//            ((SearchFragment) fragment).executeSearch();
+            String where = ((SearchFragment) fragment).getWhereStatement();
+            showSearchResultsFragment(where);
         } else {
             if (!mIsDualPanel) {
                 SearchFragment searchFragment = (SearchFragment) getSupportFragmentManager()
@@ -93,48 +179,54 @@ public class SearchActivity
                 }
             }
         }
-        return super.onActionDoneClick();
     }
 
-    private SearchFragment createSearchFragment() {
-        SearchFragment searchFragment = new SearchFragment();
+    private void showSearchResultsFragment(String where) {
+        //create a fragment for search results.
+        AllDataListFragment searchResultsFragment = (AllDataListFragment) this.getSupportFragmentManager()
+                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
 
-        // add to stack
-        getSupportFragmentManager().beginTransaction()
-            .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
-            .commit();
-
-        return searchFragment;
-    }
-
-    private SearchFragment getSearchFragment() {
-        if (mSearchFragment == null) {
-            // try to find the search fragment
-            mSearchFragment = (SearchFragment) getSupportFragmentManager()
-                .findFragmentByTag(SearchFragment.class.getSimpleName());
-
-            if (mSearchFragment == null) {
-                mSearchFragment = createSearchFragment();
-            }
+        if (searchResultsFragment != null) {
+            this.getSupportFragmentManager().beginTransaction()
+                    .remove(searchResultsFragment)
+                    .commit();
         }
-        return mSearchFragment;
-    }
 
-    private void handleSearchRequest() {
-        Intent intent = getIntent();
-        if (intent == null) return;
+        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET);
 
-        // see if we have the search criteria.
-        mSearchParameters = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
-    }
+        searchResultsFragment.showTotalsFooter();
 
-    @Override
-    public void onFragmentViewCreated(String tag) {
-        if (mSearchParameters != null && tag.equals(SearchFragment.class.getSimpleName())) {
-            // Get search criteria if any was sent from an external caller.
-            getSearchFragment().handleSearchRequest(mSearchParameters);
-            // remove search parameters once used.
-            mSearchParameters = null;
+        //create parameter bundle
+        Bundle args = new Bundle();
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
+        // Sorting
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
+                QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +
+                        QueryAllData.TransactionType + ", " + QueryAllData.ID);
+        //set arguments
+        searchResultsFragment.setArguments(args);
+
+//        if (getActivity() instanceof SearchActivity) {
+//            SearchActivity activity = (SearchActivity) getActivity();
+//            activity.ShowAccountHeaders = true;
+//        }
+        this.ShowAccountHeaders = true;
+
+        //add fragment
+        FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
+        //animation
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+                R.anim.slide_in_right, R.anim.slide_out_left);
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack.
+        if (mIsDualPanel) {
+            transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
+        } else {
+            // transaction.remove()
+            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataListFragment.class.getSimpleName());
+            transaction.addToBackStack(null);
         }
+        // Commit the transaction
+        transaction.commit();
     }
 }

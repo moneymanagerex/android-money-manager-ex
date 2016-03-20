@@ -14,11 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.common;
+
+package com.money.manager.ex.common.events;
 
 /**
- * Common fragment callbacks to the host activity.
+ * Requesting to show the search results.
  */
-public interface ICommonFragmentCallbacks {
-    void onFragmentViewCreated(String tag);
+public class ShowSearchResultsRequestEvent {
+
+    public ShowSearchResultsRequestEvent(String where) {
+        this.conditions = where;
+    }
+
+    public String conditions;
 }
