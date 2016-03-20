@@ -68,7 +68,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DropboxHelper {
-
+    public static final String DROPBOX_APP_KEY = "cakbv9zh9l083ep";
     public static final String ROOT = "/";
     private static final String LOGCAT = DropboxHelper.class.getSimpleName();
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
@@ -276,7 +276,7 @@ public class DropboxHelper {
             Log.e(LOGCAT, log(e.getMessage(), "buildSession Exception"));
         }
 
-        AppKeyPair appKeyPair = new AppKeyPair(MoneyManagerApplication.DROPBOX_APP_KEY, secret);
+        AppKeyPair appKeyPair = new AppKeyPair(DROPBOX_APP_KEY, secret);
         AndroidAuthSession session = null;
 
         String oAuth2Token = getOauth2Token();
@@ -672,7 +672,6 @@ public class DropboxHelper {
                     // link file if not linked
                     if (TextUtils.isEmpty(getLinkedRemoteFile())) {
                         setLinkedRemoteFile(entry.path);
-                        //Toast.makeText(context, context.getString(R.string.dropbox_linkedFile) + ": " + entry.path, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -782,43 +781,45 @@ public class DropboxHelper {
      * @return int
      */
     public int checkIfFileIsSync() {
-        if (isLinked()) {
-            String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
-            String remotePath = getLinkedRemoteFile();
-            // check if file is correct
-            if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath))
-                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
-            // check if remoteFile path is contain into localFile
-            if (!localPath.toLowerCase().contains(remotePath.toLowerCase()))
-                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
-            // get File and Entry
-            File localFile = new File(localPath);
-            DropboxAPI.Entry remoteFile = getEntry(remotePath);
-            // date last Modified
-            Date localLastModified;
-            Date remoteLastModified;
-            try {
-                localLastModified = getDateLastModified(remoteFile.fileName());
-                if (localLastModified == null)
-                    localLastModified = new Date(localFile.lastModified());
-                remoteLastModified = getLastModifiedEntry(remoteFile);
-            } catch (Exception e) {
-                String errorMessage = e.getMessage() == null
-                        ? "Error in retrieving the last modified date in checkIfFileIsSync."
-                        : e.getMessage();
-
-                Log.e(LOGCAT, errorMessage);
-                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
-            }
-            if (remoteLastModified.after(localLastModified)) {
-                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD;
-            } else if (remoteLastModified.before(localLastModified)) {
-                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD;
-            } else {
-                return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
-            }
+        if (!isLinked()) {
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
         }
-        return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+
+        String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
+        String remotePath = getLinkedRemoteFile();
+        // check if file is correct
+        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath))
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        // check if remoteFile path is contain into localFile
+        if (!localPath.toLowerCase().contains(remotePath.toLowerCase()))
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        // get File and Entry
+        File localFile = new File(localPath);
+        Entry remoteFile = getEntry(remotePath);
+        // date last Modified
+        Date localLastModified;
+        Date remoteLastModified;
+        try {
+            localLastModified = getDateLastModified(remoteFile.fileName());
+            if (localLastModified == null)
+                localLastModified = new Date(localFile.lastModified());
+            remoteLastModified = getLastModifiedEntry(remoteFile);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage() == null
+                    ? "Error in retrieving the last modified date in checkIfFileIsSync."
+                    : e.getMessage();
+
+            Log.e(LOGCAT, errorMessage);
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
+
+        if (remoteLastModified.after(localLastModified)) {
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+        } else if (remoteLastModified.before(localLastModified)) {
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD;
+        } else {
+            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
     }
 
     // interface for callbacks when call

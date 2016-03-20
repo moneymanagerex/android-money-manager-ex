@@ -71,12 +71,6 @@ public class MoneyManagerApplication
 
     ///////////////////////////////////////////////////////////////////////////
     public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
-    ///////////////////////////////////////////////////////////////////////////
-    //                      drop box app settings                            //
-    ///////////////////////////////////////////////////////////////////////////
-    public static final String DROPBOX_APP_KEY = "cakbv9zh9l083ep";
-//    public static final String DROPBOX_APP_SECRET = "5E01FC70A055AE4A6C9DB346343CE822";
-//    public static final AccessType DROPBOX_ACCESS_TYPE = AccessType.APP_FOLDER;
 
     private static final String LOGCAT = "MoneyManagerApplication";
 
