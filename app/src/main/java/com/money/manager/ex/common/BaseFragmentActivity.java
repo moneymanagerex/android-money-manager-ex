@@ -29,18 +29,15 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 
 public abstract class BaseFragmentActivity
-        extends AppCompatActivity {
+    extends AppCompatActivity {
 
     private boolean mDisplayHomeAsUpEnabled = false;
     private Toolbar mToolbar;
 
     @Override
     public void setContentView(int layoutResID) {
-        // why twice?
-//        setTheme();
-
-        // call super method
         super.setContentView(layoutResID);
+
         // check if Toolbar define into layout
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
@@ -54,7 +51,8 @@ public abstract class BaseFragmentActivity
 
         AppSettings settings = new AppSettings(this);
         String locale = settings.getGeneralSettings().getApplicationLanguage();
-        Core.changeAppLocale(getApplicationContext(), locale);
+//        Core.setAppLocale(getApplicationContext(), locale);
+        Core.setAppLocale(this, locale);
 
         super.onCreate(savedInstance);
 
