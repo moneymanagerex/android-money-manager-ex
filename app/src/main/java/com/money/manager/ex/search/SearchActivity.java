@@ -192,24 +192,21 @@ public class SearchActivity
                     .commit();
         }
 
-        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET);
+        searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false);
 
         searchResultsFragment.showTotalsFooter();
 
         //create parameter bundle
-        Bundle args = new Bundle();
+//        Bundle args = new Bundle();
+        Bundle args = searchResultsFragment.getArguments();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +
                         QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
-        searchResultsFragment.setArguments(args);
+//        searchResultsFragment.setArguments(args);
 
-//        if (getActivity() instanceof SearchActivity) {
-//            SearchActivity activity = (SearchActivity) getActivity();
-//            activity.ShowAccountHeaders = true;
-//        }
         this.ShowAccountHeaders = true;
 
         //add fragment
