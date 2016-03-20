@@ -68,7 +68,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DropboxHelper {
-    public static final String DROPBOX_APP_KEY = "cakbv9zh9l083ep";
+    public static final String DROPBOX_APP_KEY = "i6trbis92p3zh5w";
     public static final String ROOT = "/";
     private static final String LOGCAT = DropboxHelper.class.getSimpleName();
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
