@@ -198,8 +198,6 @@ public class SearchFragment
         // Store search criteria values into the controls.
         displaySearchCriteria(view);
 
-//        EventBus.getDefault().post(new FragmentViewCreatedEvent(this.getTag()));
-
         return view;
     }
 
@@ -291,8 +289,6 @@ public class SearchFragment
 
         getArguments().putParcelable(KEY_SEARCH_CRITERIA, Parcels.wrap(parameters));
         displaySearchCriteria();
-
-//        executeSearch();
     }
 
     // Private

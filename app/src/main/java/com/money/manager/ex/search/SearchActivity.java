@@ -43,7 +43,6 @@ public class SearchActivity
 
 	private boolean mIsDualPanel = false;
     private SearchFragment mSearchFragment;
-    private SearchParameters mSearchParameters;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,21 +99,6 @@ public class SearchActivity
         return super.onActionDoneClick();
     }
 
-    // Events
-
-//    @Subscribe
-//    public void onFragmentViewCreated(FragmentViewCreatedEvent event) {
-//        String tag = event.fragmentTag;
-//
-//        if (mSearchParameters != null && tag.equals(SearchFragment.class.getSimpleName())) {
-//            // Get search criteria if any was sent from an external caller.
-//            getSearchFragment().setSearchParameters(mSearchParameters);
-//            performSearch();
-//            // remove search parameters once used.
-//            mSearchParameters = null;
-//        }
-//    }
-
     // Public
 
     private SearchFragment createSearchFragment() {
@@ -150,34 +134,24 @@ public class SearchActivity
 
         // see if we have the search criteria.
         Parcelable searchParcel = intent.getParcelableExtra(EXTRA_SEARCH_PARAMETERS);
-        mSearchParameters = Parcels.unwrap(searchParcel);
+        SearchParameters searchParameters = Parcels.unwrap(searchParcel);
 
-        if (mSearchParameters != null) {
+        if (searchParameters != null) {
+            getSearchFragment().setSearchParameters(searchParameters);
             performSearch();
         }
     }
 
     private void performSearch() {
-        // Perform search
-
         SearchFragment searchFragment = getSearchFragment();
-
-        SearchParameters existingSearch = searchFragment.getSearchParameters();
-        if (existingSearch == null) {
-            searchFragment.setSearchParameters(mSearchParameters);
-        } else {
-
-        }
-
         String where = searchFragment.getWhereStatement();
-
         showSearchResultsFragment(where);
     }
 
     private void showSearchResultsFragment(String where) {
         //create a fragment for search results.
         AllDataListFragment searchResultsFragment = (AllDataListFragment) this.getSupportFragmentManager()
-                .findFragmentByTag(AllDataListFragment.class.getSimpleName());
+            .findFragmentByTag(AllDataListFragment.class.getSimpleName());
 
         if (searchResultsFragment != null) {
             this.getSupportFragmentManager().beginTransaction()
@@ -190,15 +164,14 @@ public class SearchActivity
         searchResultsFragment.showTotalsFooter();
 
         //create parameter bundle
-//        Bundle args = new Bundle();
-        Bundle args = searchResultsFragment.getArguments();
+        Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
         // Sorting
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
                 QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + ", " +
                         QueryAllData.TransactionType + ", " + QueryAllData.ID);
         //set arguments
-//        searchResultsFragment.setArguments(args);
+        searchResultsFragment.getArguments().putAll(args);
 
         this.ShowAccountHeaders = true;
 
