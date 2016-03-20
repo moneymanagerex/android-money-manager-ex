@@ -232,22 +232,23 @@ public class DropboxSettingsFragment
 
         // Select file anywhere in Dropbox
 
-//        final Preference dropboxFileAll = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE_ALL));
-//        if (dropboxFileAll != null) {
-//            dropboxFileAll.setSummary(mDropboxHelper.getLinkedRemoteFile());
-//            // check if summary is null and
-//            if (TextUtils.isEmpty(dropboxFileAll.getSummary())) {
-//                dropboxFileAll.setSummary(R.string.dropbox_file_summary_all);
-//            }
-//            // open Dropbox Browser Activity
-//            dropboxFileAll.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//                @Override
-//                public boolean onPreferenceClick(Preference preference) {
+        final Preference dropboxFileAll = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE_ALL));
+        if (dropboxFileAll != null) {
+            dropboxFileAll.setSummary(mDropboxHelper.getLinkedRemoteFile());
+            // check if summary is null and
+            if (TextUtils.isEmpty(dropboxFileAll.getSummary())) {
+                dropboxFileAll.setSummary(R.string.dropbox_file_summary_all);
+            }
+            // open Dropbox Browser Activity
+            dropboxFileAll.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
 //                    showDropboxChooser();
-//                    return false;
-//                }
-//            });
-//        }
+                    showNoNonsenseFilePicker();
+                    return false;
+                }
+            });
+        }
 
         //force download
         PreferenceScreen pDownload = (PreferenceScreen) findPreference(getString(PreferenceConstants.PREF_DROPBOX_DOWNLOAD));
@@ -333,6 +334,10 @@ public class DropboxSettingsFragment
 //            .launch(this, REQUEST_DBX_CHOOSER);
 //        // PREVIEW_LINK
 //    }
+
+    private void showNoNonsenseFilePicker() {
+//        Intent i = new Intent(getActivity(), FilePickerActivity.class);
+    }
 
     private void selectFileFromAppDirectory() {
         Intent intent = new Intent(getActivity(), DropboxBrowserActivity.class);
