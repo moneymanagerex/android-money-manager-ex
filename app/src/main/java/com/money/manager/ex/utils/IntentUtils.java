@@ -22,6 +22,8 @@ import android.content.Intent;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 
+import org.parceler.Parcels;
+
 /**
  * Various helper methods for Intent creation and starting of activities.
  */
@@ -39,7 +41,7 @@ public class IntentUtils {
 
     public Intent getIntentForSearch(SearchParameters parameters) {
         Intent intent = new Intent(getContext(), SearchActivity.class);
-        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
         intent.setAction(Intent.ACTION_INSERT);
         //getContext().startActivity(intent);
         return intent;

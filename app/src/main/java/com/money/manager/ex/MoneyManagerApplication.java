@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.dropbox.client2.session.Session.AccessType;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -46,14 +47,25 @@ import com.shamanland.fonticon.FontIconTypefaceHolder;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.parceler.Parcel;
+import org.parceler.ParcelClass;
+import org.parceler.ParcelClasses;
 
 import java.io.File;
 import java.util.Locale;
 
+import info.javaperformance.money.Money;
+
 /**
  * This class extends Application and implements all the methods common in the
  * former money manager application for Android
+ * Here we define the parcel converter for Money type.
  */
+@ParcelClasses(
+    @ParcelClass(
+        value = Money.class,
+        annotation = @Parcel(converter = MoneyParcelConverter.class))
+)
 public class MoneyManagerApplication
     extends Application {
 
@@ -65,11 +77,7 @@ public class MoneyManagerApplication
     public static final String DROPBOX_APP_KEY = "cakbv9zh9l083ep";
     public static final String DROPBOX_APP_SECRET = "5E01FC70A055AE4A6C9DB346343CE822";
     public static final AccessType DROPBOX_ACCESS_TYPE = AccessType.APP_FOLDER;
-    ///////////////////////////////////////////////////////////////////////////
-    //                         CONSTANTS VALUES                              //
-    ///////////////////////////////////////////////////////////////////////////
-//    public static final int TYPE_HOME_CLASSIC = R.layout.main_activity;
-//    public static final int TYPE_HOME_ADVANCE = R.layout.main_pager_activity;
+
     private static final String LOGCAT = "MoneyManagerApplication";
 
     private static MoneyManagerApplication myInstance;

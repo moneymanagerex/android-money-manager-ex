@@ -15,16 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.common.events;
+package com.money.manager.ex.common;
+
+import android.os.Parcel;
+
+import org.parceler.ParcelConverter;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
- * Requesting to show the search results.
+ * Converts Money type to parcel for Parceler.
  */
-public class ShowSearchResultsRequestEvent {
+public class MoneyParcelConverter
+    implements ParcelConverter<Money> {
 
-    public ShowSearchResultsRequestEvent(String where) {
-        this.conditions = where;
+    @Override
+    public void toParcel(Money input, Parcel parcel) {
+        // store as string
+        parcel.writeString(input.toString());
     }
 
-    public String conditions;
+    @Override
+    public Money fromParcel(Parcel parcel) {
+        String amountString = parcel.readString();
+        return MoneyFactory.fromString(amountString);
+    }
 }

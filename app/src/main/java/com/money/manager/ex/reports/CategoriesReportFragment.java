@@ -48,6 +48,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 
 import org.apache.commons.lang3.StringUtils;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -380,7 +381,7 @@ public class CategoriesReportFragment
 
     private void showSearchActivityFor(SearchParameters parameters) {
         Intent intent = new Intent(getActivity(), SearchActivity.class);
-        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, parameters);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
     }

@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.domainmodel;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 

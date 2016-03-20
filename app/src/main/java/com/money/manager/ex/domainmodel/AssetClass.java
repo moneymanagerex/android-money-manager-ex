@@ -23,9 +23,7 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.assetallocation.ItemType;
 
 import org.parceler.Parcel;
-import org.parceler.ParcelClass;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
