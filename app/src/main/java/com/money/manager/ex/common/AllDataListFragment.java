@@ -87,15 +87,27 @@ public class AllDataListFragment
     extends BaseListFragment
     implements LoaderCallbacks<Cursor>, IAllDataMultiChoiceModeListenerCallbacks {
 
+    private static final String ARG_ACCOUNT_ID = "AccountId";
+    private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
+
+    public static AllDataListFragment newInstance(int accountId) {
+        return newInstance(accountId, true);
+    }
+
     /**
      * Create a new instance of AllDataListFragment with accountId params
      *
      * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataListFragment
      */
-    public static AllDataListFragment newInstance(int accountId) {
+    public static AllDataListFragment newInstance(int accountId, boolean showFloatingButton) {
         AllDataListFragment fragment = new AllDataListFragment();
-        fragment.AccountId = accountId;
+//        fragment.AccountId = accountId;
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_ACCOUNT_ID, accountId);
+        args.putBoolean(ARG_SHOW_FLOATING_BUTTON, showFloatingButton);
+        fragment.setArguments(args);
 
         return fragment;
     }
@@ -127,6 +139,9 @@ public class AllDataListFragment
 
         setEmptyText(getString(R.string.no_data));
         setListShown(false);
+
+        // Read arguments
+        this.AccountId = getArguments().getInt(ARG_ACCOUNT_ID);
 
         // Read header indicator directly from the activity.
         // todo: make this a parameter or a property.
@@ -181,9 +196,12 @@ public class AllDataListFragment
         // set animation progress
         setListShown(false);
 
-        // Show floating action button.
-        setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        boolean showAddButton = getArguments().getBoolean(ARG_SHOW_FLOATING_BUTTON);
+        if (showAddButton) {
+            // Show floating action button.
+            setFloatingActionButtonVisible(true);
+            setFloatingActionButtonAttachListView(true);
+        }
 
         // start loader if asked to do so by the caller.
         if (isAutoStarLoader()) {

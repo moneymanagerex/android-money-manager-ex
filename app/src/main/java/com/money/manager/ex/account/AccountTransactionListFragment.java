@@ -821,8 +821,11 @@ public class AccountTransactionListFragment
 
         mAllDataListFragment = AllDataListFragment.newInstance(mAccountId);
 
-        // set arguments and settings of fragment
-        mAllDataListFragment.setArguments(prepareQuery());
+        // append search arguments
+//        mAllDataListFragment.setArguments(prepareQuery());
+        Bundle searchQuery = prepareQuery();
+        mAllDataListFragment.getArguments().putAll(searchQuery);
+
         if (header != null) mAllDataListFragment.setListHeader(header);
         mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
             .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
