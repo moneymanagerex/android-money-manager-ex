@@ -138,7 +138,8 @@ public class DropboxServiceIntent
      * @param remoteFile
      */
     public void syncFile(final File localFile, final Entry remoteFile) {
-        Date localLastModified = null, remoteLastModified;
+        Date localLastModified = null;
+        Date remoteLastModified;
         try {
             localLastModified = mDropboxHelper.getDateLastModified(remoteFile.fileName());
         } catch (Exception e) {
