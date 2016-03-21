@@ -144,12 +144,16 @@ public class AccountTransaction
         return getString(ITransactionEntity.NOTES);
     }
 
-    public int getPayeeId() {
+    public Integer getPayeeId() {
         return getInt(ITransactionEntity.PAYEEID);
     }
 
-    public void setPayeeId(int value) {
+    public void setPayeeId(Integer value) {
         setInt(ITransactionEntity.PAYEEID, value);
+    }
+
+    public boolean hasPayee() {
+        return getPayeeId() != null && getPayeeId() != Constants.NOT_SET;
     }
 
     public String getStatus() {
@@ -162,10 +166,6 @@ public class AccountTransaction
 
     public void setSubcategoryId(Integer value) {
         setInt(ITransactionEntity.SUBCATEGID, value);
-    }
-
-    public Integer getToAccountId() {
-        return getInt(ITransactionEntity.TOACCOUNTID);
     }
 
     public String getTransCode() {

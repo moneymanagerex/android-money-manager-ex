@@ -107,9 +107,10 @@ public class EditTransactionCommonFunctions {
 
     // Model
     public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
+
     public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
-    public int payeeId = Constants.NOT_SET; // Payee
+//    public Integer payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
     //public int toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
@@ -267,7 +268,7 @@ public class EditTransactionCommonFunctions {
             values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
         } else {
             values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
-            values.put(ITransactionEntity.PAYEEID, this.payeeId);
+            values.put(ITransactionEntity.PAYEEID, this.transactionEntity.getPayeeId());
         }
 
         // Category and subcategory
@@ -327,7 +328,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public boolean hasPayee() {
-        return this.payeeId > 0;
+        return this.transactionEntity.getPayeeId() > 0;
     }
 
     public boolean hasSplitCategories() {
@@ -582,7 +583,7 @@ public class EditTransactionCommonFunctions {
             public void onClick(View v) {
                 setDirty(true);
 
-                payeeId = Constants.NOT_SET;
+                transactionEntity.setPayeeId(Constants.NOT_SET);
                 payeeName = "";
 
                 refreshPayeeName();
@@ -786,12 +787,12 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                payeeId = data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
+                transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
                 if (!isSplitSelected() && this.transactionEntity.getCategoryId() != null
                     && this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
-                    if (setCategoryFromPayee(payeeId)) {
+                    if (setCategoryFromPayee(transactionEntity.getPayeeId())) {
                         refreshCategoryName(); // refresh UI
                     }
                 }
