@@ -132,7 +132,9 @@ public class AccountRepository
         return account.getCurrencyId();
     }
 
-    public String loadName(int id) {
+    public String loadName(Integer id) {
+        if (id == null) return null;
+
         String name = null;
 
         Cursor cursor = openCursor(new String[]{Account.ACCOUNTNAME},

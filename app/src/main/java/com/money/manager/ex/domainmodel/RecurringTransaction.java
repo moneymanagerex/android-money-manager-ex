@@ -51,6 +51,14 @@ public class RecurringTransaction
      */
     public static final String NUMOCCURRENCES = "NUMOCCURRENCES";
 
+    public static RecurringTransaction createInstance() {
+        RecurringTransaction tx = new RecurringTransaction();
+        tx.setCategoryId(Constants.NOT_SET);
+        tx.setSubcategoryId(Constants.NOT_SET);
+
+        return tx;
+    }
+
     public RecurringTransaction() {
         super();
     }
@@ -124,8 +132,12 @@ public class RecurringTransaction
     }
 
     @Override
-    public void setCategoryId(int value) {
+    public void setCategoryId(Integer value) {
         setInt(ITransactionEntity.CATEGID, value);
+    }
+
+    public boolean hasCategory() {
+        return getCategoryId() != null && getCategoryId() != Constants.NOT_SET;
     }
 
     public String getDueDateString() {
@@ -180,6 +192,10 @@ public class RecurringTransaction
 
     public String getNotes() {
         return getString(ITransactionEntity.NOTES);
+    }
+
+    public void setNotes(String value) {
+        setString(ITransactionEntity.NOTES, value);
     }
 
     public Integer getPaymentsLeft() {
@@ -253,4 +269,9 @@ public class RecurringTransaction
     public String getTransactionNumber() {
         return getString(ITransactionEntity.TRANSACTIONNUMBER);
     }
+
+    public void setTransactionNumber(String value) {
+        setString(ITransactionEntity.TRANSACTIONNUMBER, value);
+    }
+
 }

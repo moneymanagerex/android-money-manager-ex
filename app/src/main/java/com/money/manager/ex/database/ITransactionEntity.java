@@ -52,7 +52,8 @@ public interface ITransactionEntity {
     boolean hasAccountTo();
 
     Integer getCategoryId();
-    void setCategoryId(int value);
+    void setCategoryId(Integer value);
+    boolean hasCategory();
 
     Integer getSubcategoryId();
     void setSubcategoryId(Integer value);
@@ -72,7 +73,13 @@ public interface ITransactionEntity {
     String getDateString();
     void setDate(DateTime value);
 
+    String getNotes();
+    void setNotes(String value);
+
     Integer getPayeeId();
     void setPayeeId(Integer value);
     boolean hasPayee();
+
+    String getTransactionNumber();
+    void setTransactionNumber(String value);
 }
