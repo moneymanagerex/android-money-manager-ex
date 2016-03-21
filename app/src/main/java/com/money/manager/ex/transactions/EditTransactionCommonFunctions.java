@@ -114,8 +114,8 @@ public class EditTransactionCommonFunctions {
     public String payeeName;
     //public int toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
-    public String mNotes = "";
-    public String mTransNumber = "";
+//    public String mNotes = "";
+//    public String mTransNumber = "";
 
     public List<Account> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
@@ -214,7 +214,7 @@ public class EditTransactionCommonFunctions {
      * @return A boolean indicating whether the operation was successful.
      */
     public boolean displayCategoryName() {
-        if(this.transactionEntity.getCategoryId() <= 0 && this.transactionEntity.getSubcategoryId() <= 0) return false;
+        if(!this.transactionEntity.hasCategory() && this.transactionEntity.getSubcategoryId() <= 0) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
         Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
@@ -544,8 +544,8 @@ public class EditTransactionCommonFunctions {
 
     public void initNotesControls() {
         edtNotes = (EditText) mParent.findViewById(R.id.editTextNotes);
-        if (!(TextUtils.isEmpty(mNotes))) {
-            edtNotes.setText(mNotes);
+        if (!(TextUtils.isEmpty(transactionEntity.getNotes()))) {
+            edtNotes.setText(transactionEntity.getNotes());
         }
 
         edtNotes.addTextChangedListener(new TextWatcher() {
@@ -651,8 +651,8 @@ public class EditTransactionCommonFunctions {
         // Transaction number
 
         edtTransNumber = (EditText) mParent.findViewById(R.id.editTextTransNumber);
-        if (!TextUtils.isEmpty(mTransNumber)) {
-            edtTransNumber.setText(mTransNumber);
+        if (!TextUtils.isEmpty(transactionEntity.getTransactionNumber())) {
+            edtTransNumber.setText(transactionEntity.getTransactionNumber());
         }
 
         // handle change
@@ -1128,23 +1128,21 @@ public class EditTransactionCommonFunctions {
             }
 
             // Amount To is required and has to be positive.
-//            Money amountTo = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
-            if (this.transactionEntity.getAmountTo().toDouble() < 0) {
+            if (this.transactionEntity.getAmountTo().toDouble() <= 0) {
                 Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
-//        Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
-        if (transactionEntity.getAmount().toDouble() < 0) {
+        if (transactionEntity.getAmount().toDouble() <= 0) {
             Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
             return false;
         }
 
         // Category is required if tx is not a split or transfer.
-        if ((this.transactionEntity.getCategoryId() == null || this.transactionEntity.getCategoryId() == Constants.NOT_SET) &&
-            (!isSplitSelected()) && !isTransfer) {
+        boolean hasCategory = transactionEntity.hasCategory();
+        if (!hasCategory && (!isSplitSelected()) && !isTransfer) {
             Core.alertDialog(mParent, R.string.error_category_not_selected);
             return false;
         }

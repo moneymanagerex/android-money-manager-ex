@@ -122,8 +122,12 @@ public class AccountTransaction
         return getInt(ITransactionEntity.CATEGID);
     }
 
-    public void setCategoryId(int value) {
+    public void setCategoryId(Integer value) {
         setInt(ITransactionEntity.CATEGID, value);
+    }
+
+    public boolean hasCategory() {
+        return getCategoryId() != null && getCategoryId() != Constants.NOT_SET;
     }
 
     public String getDateString() {
@@ -142,6 +146,10 @@ public class AccountTransaction
 
     public String getNotes() {
         return getString(ITransactionEntity.NOTES);
+    }
+
+    public void setNotes(String value) {
+        setString(ITransactionEntity.NOTES, value);
     }
 
     public Integer getPayeeId() {
@@ -174,6 +182,10 @@ public class AccountTransaction
 
     public String getTransactionNumber() {
         return getString(ITransactionEntity.TRANSACTIONNUMBER);
+    }
+
+    public void setTransactionNumber(String value) {
+        setString(ITransactionEntity.TRANSACTIONNUMBER, value);
     }
 
     public TransactionTypes getTransType() {
