@@ -230,7 +230,7 @@ public class DropboxHelper {
         SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         Editor edit = prefs.edit();
         edit.clear();
-        edit.commit();
+        edit.apply();
     }
 
     private void storeKeysToken(String key, String secret) {
@@ -239,7 +239,7 @@ public class DropboxHelper {
         Editor edit = prefs.edit();
         edit.putString(PreferenceConstants.PREF_DROPBOX_ACCESS_KEY_NAME, key);
         edit.putString(PreferenceConstants.PREF_DROPBOX_ACCESS_SECRET_NAME, secret);
-        edit.commit();
+        edit.apply();
     }
 
     private SharedPreferences getDropboxPreferences() {
@@ -260,7 +260,7 @@ public class DropboxHelper {
         SharedPreferences prefs = getDropboxPreferences();
         Editor edit = prefs.edit();
         edit.putString(PreferenceConstants.PREF_DROPBOX_OAUTH2_TOKEN, token);
-        edit.commit();
+        edit.apply();
     }
 
     /**
@@ -416,7 +416,7 @@ public class DropboxHelper {
     /**
      * get the file path Dropbox linked to the application
      *
-     * @return
+     * @return Full path to the file in Dropbox, from the base directory.
      */
     public String getLinkedRemoteFile() {
         return mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0)
@@ -426,26 +426,14 @@ public class DropboxHelper {
     /**
      * set the file path Dropbox linked to the application
      *
-     * @param fileDropbox
+     * @param fileDropbox Path to Dropbox file.
      */
     public void setLinkedRemoteFile(String fileDropbox) {
         SharedPreferences prefs = mContext.getSharedPreferences(PreferenceConstants.PREF_DROPBOX_ACCOUNT_PREFS_NAME, 0);
         prefs.edit().putString(mContext.getString(PreferenceConstants.PREF_DROPBOX_LINKED_FILE), fileDropbox)
                 .putString(PreferenceConstants.PREF_DROPBOX_REMOTE_FILE, fileDropbox)
-//                .apply();
-                .commit();
+                .apply();
     }
-
-//    public boolean isActiveAutoUpload() {
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//        boolean result = false;
-//
-//        if (prefs != null) {
-//            result = prefs.getBoolean(context.getString(PreferenceConstants.PREF_DROPBOX_UPLOAD_IMMEDIATE), true);
-//        }
-//
-//        return result;
-//    }
 
     /**
      * Send a broadcast intent for start service scheduled
@@ -504,9 +492,6 @@ public class DropboxHelper {
 
     /**
      * Get notification builder for download complete
-     *
-     * @param pendingIntent
-     * @return
      */
     public NotificationCompat.Builder getNotificationBuilderDownloadComplete(PendingIntent pendingIntent) {
         // compose notification big view
@@ -532,8 +517,6 @@ public class DropboxHelper {
 
     /**
      * Get the builder of a notification for upload
-     *
-     * @return
      */
     public NotificationCompat.Builder getNotificationBuilderUpload() {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
@@ -544,7 +527,7 @@ public class DropboxHelper {
                         //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(mContext.getResources().getColor(R.color.md_primary));
-        ;
+
         // only for previous version!
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             Intent intent = new Intent(mContext, MainActivity.class);
@@ -556,9 +539,6 @@ public class DropboxHelper {
 
     /**
      * Get notification builder for upload complete
-     *
-     * @param pendingIntent
-     * @return
      */
     public NotificationCompat.Builder getNotificationBuilderUploadComplete(PendingIntent pendingIntent) {
         // compose notification big view
@@ -577,7 +557,6 @@ public class DropboxHelper {
                 .setStyle(inboxStyle)
                 .setTicker(mContext.getString(R.string.upload_file_to_dropbox_complete))
                 .setColor(mContext.getResources().getColor(R.color.md_primary));
-        ;
 
         return notification;
     }
@@ -601,7 +580,6 @@ public class DropboxHelper {
      * Get a first entry from dropbox
      *
      * @param entry path dropbox entry
-     * @return
      */
     public Entry getEntry(String entry) {
         try {
@@ -710,7 +688,7 @@ public class DropboxHelper {
      * Download file from dropbox to local storage
      *
      * @param dropboxFile The file on dropbox.
-     * @param localFile
+     * @param localFile Path to local database file.
      */
     public void downloadFileAsync(final Entry dropboxFile, final File localFile,
                                   final OnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
@@ -825,11 +803,9 @@ public class DropboxHelper {
                 localLastModified = new Date(localFile.lastModified());
             remoteLastModified = getLastModifiedEntry(remoteFile);
         } catch (Exception e) {
-            String errorMessage = e.getMessage() == null
-                    ? "Error in retrieving the last modified date in checkIfFileIsSync."
-                    : e.getMessage();
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(e, "retrieving the last modified date in checkIfFileIsSync");
 
-            Log.e(LOGCAT, errorMessage);
             return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
         }
 
