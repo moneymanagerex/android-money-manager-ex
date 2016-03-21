@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -68,7 +69,6 @@ import java.util.Date;
 import java.util.List;
 
 public class DropboxHelper {
-    public static final String DROPBOX_APP_KEY = "i6trbis92p3zh5w";
     public static final String ROOT = "/";
     private static final String LOGCAT = DropboxHelper.class.getSimpleName();
     private static final String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
@@ -276,7 +276,8 @@ public class DropboxHelper {
             Log.e(LOGCAT, log(e.getMessage(), "buildSession Exception"));
         }
 
-        AppKeyPair appKeyPair = new AppKeyPair(DROPBOX_APP_KEY, secret);
+        String appKey = getAppKey();
+        AppKeyPair appKeyPair = new AppKeyPair(appKey, secret);
         AndroidAuthSession session = null;
 
         String oAuth2Token = getOauth2Token();
@@ -298,6 +299,25 @@ public class DropboxHelper {
         }
 
         return session;
+    }
+
+    private String getAppKey() {
+        // different keys are used for Beta/Stable versions.
+
+        String key = DropboxConstants.APP_KEY;
+        String packageName = getContext().getPackageName();
+        try {
+            String version = getContext().getPackageManager()
+                    .getPackageInfo(packageName, PackageManager.GET_META_DATA).versionName;
+            if (version.contains("beta")) {
+                // use beta key
+                key = DropboxConstants.APP_KEY_BETA;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(e, "checking version name");
+        }
+        return key;
     }
 
     /**
