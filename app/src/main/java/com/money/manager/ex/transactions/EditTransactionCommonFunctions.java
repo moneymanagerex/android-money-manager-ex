@@ -111,7 +111,7 @@ public class EditTransactionCommonFunctions {
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public int payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    public int toAccountId = Constants.NOT_SET;  // accounts
+    //public int toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
     public String mNotes = "";
     public String mTransNumber = "";
@@ -263,7 +263,7 @@ public class EditTransactionCommonFunctions {
         // Accounts & Payee
         values.put(ITransactionEntity.ACCOUNTID, this.transactionEntity.getAccountId());
         if (isTransfer) {
-            values.put(ITransactionEntity.TOACCOUNTID, this.toAccountId);
+            values.put(ITransactionEntity.TOACCOUNTID, this.transactionEntity.getAccountTo());
             values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
         } else {
             values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
@@ -303,7 +303,7 @@ public class EditTransactionCommonFunctions {
 
     public int getDestinationCurrencyId() {
         AccountRepository repo = new AccountRepository(getContext());
-        Integer currencyId = repo.loadCurrencyIdFor(this.toAccountId);
+        Integer currencyId = repo.loadCurrencyIdFor(this.transactionEntity.getAccountTo());
         return currencyId;
     }
 
@@ -338,10 +338,10 @@ public class EditTransactionCommonFunctions {
      * Initialize account selectors.
      */
     public void initAccountSelectors() {
-        AppSettings settings = new AppSettings(mContext);
+        AppSettings settings = new AppSettings(getContext());
 
         // account list to populate the drop-downs.
-        AccountService accountService = new AccountService(mContext);
+        AccountService accountService = new AccountService(getContext());
         this.AccountList = accountService.getTransactionAccounts(
                 settings.getLookAndFeelSettings().getViewOpenAccounts(),
                 settings.getLookAndFeelSettings().getViewFavouriteAccounts());
@@ -357,7 +357,7 @@ public class EditTransactionCommonFunctions {
         if (accountId != null) {
             addMissingAccountToSelectors(accountRepository, accountId);
         }
-        addMissingAccountToSelectors(accountRepository, toAccountId);
+        addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountTo());
         // add the default account, if any.
         Integer defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
@@ -401,8 +401,8 @@ public class EditTransactionCommonFunctions {
 
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinAccountTo.setAdapter(accountAdapter);
-        if (toAccountId != Constants.NOT_SET && mAccountIdList.indexOf(toAccountId) >= 0) {
-            viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(toAccountId), true);
+        if (transactionEntity.hasAccountTo() && mAccountIdList.indexOf(transactionEntity.getAccountTo()) >= 0) {
+            viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(transactionEntity.getAccountTo()), true);
         }
         viewHolder.spinAccountTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -410,7 +410,7 @@ public class EditTransactionCommonFunctions {
                 setDirty(true);
 
                 if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    toAccountId = mAccountIdList.get(position);
+                    transactionEntity.setAccountTo(mAccountIdList.get(position));
                     //Money amount = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
                     // recalculate the destination amount if the currency has changed?
                     convertAndDisplayAmount(true, getSourceCurrencyId(), getDestinationCurrencyId(),
@@ -462,7 +462,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
-        displayAmountFormatted(viewHolder.txtAmountTo, transactionEntity.getAmountTo(), toAccountId);
+        displayAmountFormatted(viewHolder.txtAmountTo, transactionEntity.getAmountTo(), transactionEntity.getAccountTo());
         viewHolder.txtAmountTo.setOnClickListener(onClickAmount);
     }
 
@@ -804,7 +804,7 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                toAccountId = data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET);
+                transactionEntity.setAccountTo(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
@@ -885,7 +885,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // Display the formatted amount in selected field.
-        accountId = isSourceAmount ? transactionEntity.getAccountId() : this.toAccountId;
+        accountId = isSourceAmount ? transactionEntity.getAccountId() : this.transactionEntity.getAccountTo();
         displayAmountFormatted(((TextView) view), amount, accountId);
     }
 
@@ -970,7 +970,7 @@ public class EditTransactionCommonFunctions {
                 amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getName()));
             }
-            index = mAccountIdList.indexOf(toAccountId);
+            index = mAccountIdList.indexOf(transactionEntity.getAccountTo());
             if (index >= 0) {
                 amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
                         this.AccountList.get(index).getName()));
@@ -1117,11 +1117,11 @@ public class EditTransactionCommonFunctions {
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
         if (isTransfer) {
-            if (toAccountId == Constants.NOT_SET) {
+            if (transactionEntity.getAccountTo() == Constants.NOT_SET) {
                 Core.alertDialog(mParent, R.string.error_toaccount_not_selected);
                 return false;
             }
-            if (toAccountId == transactionEntity.getAccountId()) {
+            if (transactionEntity.getAccountTo().equals(transactionEntity.getAccountId())) {
                 Core.alertDialog(mParent, R.string.error_transfer_to_same_account);
                 return false;
             }
@@ -1210,14 +1210,13 @@ public class EditTransactionCommonFunctions {
 
     // Private
 
-    private void addMissingAccountToSelectors(AccountRepository accountRepository, int accountId) {
-        if (accountId <= 0) return;
+    private void addMissingAccountToSelectors(AccountRepository accountRepository, Integer accountId) {
+        if (accountId == null || accountId <= 0) return;
 
         // #316. In case the account from recurring transaction is not in the visible list,
         // load it separately.
-        Account savedAccount;
         if (!mAccountIdList.contains(accountId)) {
-            savedAccount = accountRepository.load(accountId);
+            Account savedAccount = accountRepository.load(accountId);
 
             if (savedAccount != null) {
                 this.AccountList.add(savedAccount);
@@ -1246,7 +1245,7 @@ public class EditTransactionCommonFunctions {
         }
 
         Integer destinationAccountId = isAmountFrom
-                ? this.toAccountId
+                ? this.transactionEntity.getAccountTo()
                 : transactionEntity.getAccountId();
 
         // get the destination value.
@@ -1334,15 +1333,15 @@ public class EditTransactionCommonFunctions {
         // calculate the destination amount if the source amount has been set.
         if (!transactionEntity.getAmount().isZero() && transactionEntity.getAmountTo().isZero()) {
             // select the first destination account id, if none set.
-            if (toAccountId == Constants.NOT_SET) {
-                toAccountId = mAccountIdList.get(0);
+            if (transactionEntity.getAccountTo() == Constants.NOT_SET) {
+                transactionEntity.setAccountTo(mAccountIdList.get(0));
             }
             onFinishedInputAmountDialog(R.id.textViewAmount, transactionEntity.getAmount());
         }
     }
 
     private void displayDestinationAmount() {
-        displayAmountFormatted(viewHolder.txtAmountTo, this.transactionEntity.getAmountTo(), this.toAccountId);
+        displayAmountFormatted(viewHolder.txtAmountTo, this.transactionEntity.getAmountTo(), this.transactionEntity.getAccountTo());
     }
 
     private void displaySourceAmount() {

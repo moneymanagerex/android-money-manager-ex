@@ -73,7 +73,7 @@ public class Currency
     }
 
     public void setCurrencyid(int value) {
-        setInteger(CURRENCYID, value);
+        setInt(CURRENCYID, value);
     }
 
     public String getDecimalSeparator() {
@@ -117,7 +117,7 @@ public class Currency
     }
 
     public void setScale(int value) {
-        setInteger(SCALE, value);
+        setInt(SCALE, value);
     }
 
     public String getSfxSymbol() {

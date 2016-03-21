@@ -102,7 +102,7 @@ public class EntityBase {
         return contentValues.getAsInteger(column);
     }
 
-    protected void setInteger(String fieldName, Integer value) {
+    protected void setInt(String fieldName, Integer value) {
         contentValues.put(fieldName, value);
     }
 

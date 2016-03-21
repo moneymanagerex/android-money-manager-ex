@@ -46,7 +46,11 @@ public interface ITransactionEntity {
     void setId(int splitTransId);
 
     Integer getAccountId();
-    void setAccountId(int value);
+    void setAccountId(Integer value);
+
+    Integer getAccountTo();
+    void setAccountTo(Integer value);
+    boolean hasAccountTo();
 
     Integer getCategoryId();
     void setCategoryId(int categId);

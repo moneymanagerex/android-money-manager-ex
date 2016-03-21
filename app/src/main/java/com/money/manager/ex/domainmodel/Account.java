@@ -83,7 +83,7 @@ public class Account
     }
 
     public void setId(Integer value) {
-        setInteger(Account.ACCOUNTID, value);
+        setInt(Account.ACCOUNTID, value);
     }
 
     public Integer getCurrencyId() {
@@ -91,7 +91,7 @@ public class Account
     }
 
     public void setCurrencyId(Integer currencyId) {
-        setInteger(Account.CURRENCYID, currencyId);
+        setInt(Account.CURRENCYID, currencyId);
     }
 
     public String getName() {

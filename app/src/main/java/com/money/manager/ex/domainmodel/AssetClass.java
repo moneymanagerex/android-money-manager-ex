@@ -116,7 +116,7 @@ public class AssetClass
     }
 
     public void setId(int value) {
-        setInteger(ID, value);
+        setInt(ID, value);
     }
 
     public Integer getParentId() {
@@ -124,7 +124,7 @@ public class AssetClass
     }
 
     public void setParentId(int value) {
-        setInteger(PARENTID, value);
+        setInt(PARENTID, value);
     }
 
     public Money getAllocation() {
@@ -150,7 +150,7 @@ public class AssetClass
     }
 
     public void setSortOrder(int value) {
-        setInteger(SORTORDER, value);
+        setInt(SORTORDER, value);
     }
 
     public void addChild(AssetClass child) {

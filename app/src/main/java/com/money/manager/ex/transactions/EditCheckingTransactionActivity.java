@@ -141,10 +141,14 @@ public class EditCheckingTransactionActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        // Save the whole transaction.
+        outState.putParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY,
+                Parcels.wrap(mCommonFunctions.transactionEntity));
+
         // save the state interface
         outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
         outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.transactionEntity.getAccountId());
-        outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
+        outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.transactionEntity.getAccountTo());
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
 //        outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommonFunctions.mDate);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
@@ -308,8 +312,8 @@ public class EditCheckingTransactionActivity
             mTransId = tx.getId();
         }
 //        mCommonFunctions.accountId = tx.getAccountId();
-        Integer toAccountId = tx.getToAccountId();
-        mCommonFunctions.toAccountId = toAccountId == null ? Constants.NOT_SET : toAccountId;
+//        Integer toAccountId = tx.getToAccountId();
+//        mCommonFunctions.toAccountId = toAccountId == null ? Constants.NOT_SET : toAccountId;
         mCommonFunctions.transactionType = tx.getTransType();
         mCommonFunctions.status = tx.getStatus();
         mCommonFunctions.transactionEntity.setAmount(tx.getAmount());
@@ -342,7 +346,7 @@ public class EditCheckingTransactionActivity
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         mCommonFunctions.displayCategoryName();
@@ -374,8 +378,8 @@ public class EditCheckingTransactionActivity
 
         mCommonFunctions.transactionEntity.setDate(recurringTx.getPaymentDate());
         mCommonFunctions.transactionEntity.setAccountId(recurringTx.getAccountId());
+        mCommonFunctions.transactionEntity.setAccountTo(recurringTx.getToAccountId());
 
-        mCommonFunctions.toAccountId = recurringTx.getToAccountId();
         String transCode = recurringTx.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = recurringTx.getStatus();
@@ -388,7 +392,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.mNotes = recurringTx.getNotes();
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         mCommonFunctions.displayCategoryName();
@@ -555,9 +559,11 @@ public class EditCheckingTransactionActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
+        mCommonFunctions.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY));
+
         mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.transactionEntity.setAccountId(savedInstanceState.getInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID));
-        mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
+//        mCommonFunctions.toAccountId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
 //        mCommonFunctions.mDate = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_DATE);
         String transCode = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_CODE);

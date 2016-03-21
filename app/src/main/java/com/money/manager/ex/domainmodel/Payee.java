@@ -42,7 +42,7 @@ public class Payee
     }
 
     public void setId(Integer value) {
-        setInteger(Payee.PAYEEID, value);
+        setInt(Payee.PAYEEID, value);
     }
 
     public String getName() {
@@ -58,7 +58,7 @@ public class Payee
     }
 
     public void setCategoryId(Integer value) {
-        setInteger(Payee.CATEGID, value);
+        setInt(Payee.CATEGID, value);
     }
 
     public Integer getSubcategoryId() {
@@ -66,6 +66,6 @@ public class Payee
     }
 
     public void setSubcategoryId(Integer value) {
-        setInteger(SUBCATEGID, value);
+        setInt(SUBCATEGID, value);
     }
 }
