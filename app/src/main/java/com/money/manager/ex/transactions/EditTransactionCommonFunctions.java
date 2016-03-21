@@ -108,7 +108,7 @@ public class EditTransactionCommonFunctions {
     // Model
     public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
 
-    public String status = null;
+//    public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
 //    public Integer payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
@@ -251,7 +251,7 @@ public class EditTransactionCommonFunctions {
         values.put(ITransactionEntity.TRANSCODE, this.getTransactionType());
 
         // Status
-        values.put(ITransactionEntity.STATUS, this.status);
+        values.put(ITransactionEntity.STATUS, this.transactionEntity.getStatus());
 
         // Amount
         //Money amount = getAmount();
@@ -620,13 +620,12 @@ public class EditTransactionCommonFunctions {
         viewHolder.spinStatus.setAdapter(adapterStatus);
 
         // select current value
-        if (!(TextUtils.isEmpty(status))) {
-            if (Arrays.asList(mStatusValues).indexOf(status) >= 0) {
-                viewHolder.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(status), true);
+        if (!(TextUtils.isEmpty(transactionEntity.getStatus()))) {
+            if (Arrays.asList(mStatusValues).indexOf(transactionEntity.getStatus()) >= 0) {
+                viewHolder.spinStatus.setSelection(Arrays.asList(mStatusValues).indexOf(transactionEntity.getStatus()), true);
             }
         } else {
-//            status = (String) this.spinStatus.getSelectedItem();
-            status = mStatusValues[0];
+            transactionEntity.setStatus(mStatusValues[0]);
         }
         viewHolder.spinStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -634,10 +633,10 @@ public class EditTransactionCommonFunctions {
                 if ((position >= 0) && (position <= mStatusValues.length)) {
                     String selectedStatus = mStatusValues[position];
                     // If Status has been changed manually, mark data as dirty.
-                    if (!selectedStatus.equalsIgnoreCase(EditTransactionCommonFunctions.this.status)) {
+                    if (!selectedStatus.equalsIgnoreCase(transactionEntity.getStatus())) {
                         setDirty(true);
                     }
-                    EditTransactionCommonFunctions.this.status = selectedStatus;
+                    transactionEntity.setStatus(selectedStatus);
                 }
             }
 
