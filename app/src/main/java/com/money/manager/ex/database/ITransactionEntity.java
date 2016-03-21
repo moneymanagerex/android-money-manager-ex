@@ -80,6 +80,9 @@ public interface ITransactionEntity {
     void setPayeeId(Integer value);
     boolean hasPayee();
 
+    String getStatus();
+    void setStatus(String value);
+
     String getTransactionNumber();
     void setTransactionNumber(String value);
 }

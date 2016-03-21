@@ -179,12 +179,9 @@ public class RecurringTransactionEditActivity
         outState.putParcelable(KEY_MODEL, Parcels.wrap(mRecurringTransaction));
 
         // save the state interface
-//        outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
-//        outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.accountId);
-//        outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(KEY_TRANS_STATUS, mCommonFunctions.status);
+        outState.putString(KEY_TRANS_STATUS, mCommonFunctions.transactionEntity.getStatus());
 
         // Amount To
         String value = "";
@@ -202,17 +199,8 @@ public class RecurringTransactionEditActivity
         }
         outState.putString(KEY_TRANS_AMOUNT, value);
 
-//        outState.putInt(KEY_PAYEE_ID, mCommonFunctions.transactionEntity.getPayeeId());
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-//        int categoryId = mCommonFunctions.transactionEntity.getCategoryId() != null
-//            ? mCommonFunctions.transactionEntity.getCategoryId()
-//            : Constants.NOT_SET;
-//        outState.putInt(KEY_CATEGORY_ID, categoryId);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
-//        int subCategoryId = mCommonFunctions.transactionEntity.getSubcategoryId() != null
-//            ? mCommonFunctions.transactionEntity.getSubcategoryId()
-//            : Constants.NOT_SET;
-//        outState.putInt(KEY_SUBCATEGORY_ID, subCategoryId);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
         outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
@@ -451,23 +439,11 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.transactionEntity = mRecurringTransaction;
 
         // Read data.
-//        mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
         String transCode = mRecurringTransaction.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = mRecurringTransaction.getStatus();
-//        mCommonFunctions.transactionEntity.setAmount(mRecurringTransaction.getAmount());
-//        mCommonFunctions.transactionEntity.setAmountTo(mRecurringTransaction.getAmountTo());
-//        mCommonFunctions.transactionEntity.setPayeeId(mRecurringTransaction.getPayeeId());
-//        mCommonFunctions.transactionEntity.setCategoryId(mRecurringTransaction.getCategoryId());
-//        mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
-//        mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
-//        mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
-//        mCommonFunctions.mDate = mRecurringTransaction.getPaymentDateString();
-//        mFrequencies = mRecurringTransaction.getRecurrenceInt();
 
         // load split transactions only if no category selected.
-        if ((mCommonFunctions.transactionEntity.getCategoryId() == null || mCommonFunctions.transactionEntity.getCategoryId() == Constants.NOT_SET)
-            && mCommonFunctions.mSplitTransactions == null) {
+        if (!mCommonFunctions.transactionEntity.hasCategory() && mCommonFunctions.mSplitTransactions == null) {
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(recurringTransactionId, this);
             mCommonFunctions.mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
@@ -652,27 +628,14 @@ public class RecurringTransactionEditActivity
         // Restore the transaction entity.
         mRecurringTransaction = savedInstanceState.getParcelable(KEY_MODEL);
 
-//        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
-//        mCommonFunctions.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-//        mCommonFunctions.toAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = savedInstanceState.getString(KEY_TRANS_STATUS);
-//        mCommonFunctions.transactionEntity.setAmount(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT)));
-//        mCommonFunctions.transactionEntity.setAmountTo(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO)));
-//        mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-//        mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(KEY_CATEGORY_ID));
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-//        mCommonFunctions.transactionEntity.setSubcategoryId(savedInstanceState.getInt(KEY_SUBCATEGORY_ID));
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
-//        mCommonFunctions.mNotes = savedInstanceState.getString(KEY_NOTES);
-//        mCommonFunctions.mTransNumber = savedInstanceState.getString(KEY_TRANS_NUMBER);
         mCommonFunctions.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
         mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
-//        mCommonFunctions.mDate = savedInstanceState.getString(KEY_NEXT_OCCURRENCE);
-//        mFrequencies = savedInstanceState.getInt(KEY_REPEATS);
 
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);

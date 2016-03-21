@@ -250,6 +250,10 @@ public class RecurringTransaction
         return getString(ITransactionEntity.STATUS);
     }
 
+    public void setStatus(String value) {
+        setString(ITransactionEntity.STATUS, value);
+    }
+
     public Integer getSubcategoryId() {
         return getInt(ITransactionEntity.SUBCATEGID);
     }

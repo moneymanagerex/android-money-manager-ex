@@ -147,32 +147,21 @@ public class EditCheckingTransactionActivity
 
         // save the state interface
         outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
-        outState.putInt(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mCommonFunctions.transactionEntity.getAccountId());
-        outState.putInt(EditTransactionActivityConstants.KEY_TO_ACCOUNT_ID, mCommonFunctions.transactionEntity.getAccountTo());
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
-//        outState.putString(EditTransactionActivityConstants.KEY_TRANS_DATE, mCommonFunctions.mDate);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_STATUS, mCommonFunctions.status);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.viewHolder.txtAmount.getTag().toString());
-        outState.putInt(EditTransactionActivityConstants.KEY_PAYEE_ID, mCommonFunctions.transactionEntity.getPayeeId());
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putInt(EditTransactionActivityConstants.KEY_CATEGORY_ID, mCommonFunctions.transactionEntity.getCategoryId());
         outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
-        outState.putInt(EditTransactionActivityConstants.KEY_SUBCATEGORY_ID, mCommonFunctions.transactionEntity.getSubcategoryId());
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
-//        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION, mCommonFunctions.mSplitTransactions);
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION,
                 Parcels.wrap(mCommonFunctions.mSplitTransactions));
-//        outState.putParcelableArrayList(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
-//                mCommonFunctions.mSplitTransactionsDeleted);
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
                 Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
         // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
-//        outState.putString(EditTransactionActivityConstants.KEY_NEXT_OCCURRENCE, mNextOccurrence);
 
         outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
@@ -311,21 +300,7 @@ public class EditCheckingTransactionActivity
         if (!duplicate) {
             mTransId = tx.getId();
         }
-//        mCommonFunctions.accountId = tx.getAccountId();
-//        Integer toAccountId = tx.getToAccountId();
-//        mCommonFunctions.toAccountId = toAccountId == null ? Constants.NOT_SET : toAccountId;
         mCommonFunctions.transactionType = tx.getTransType();
-        mCommonFunctions.status = tx.getStatus();
-//        mCommonFunctions.transactionEntity.setAmount(tx.getAmount());
-//        mCommonFunctions.transactionEntity.setAmountTo(tx.getAmountTo());
-//        mCommonFunctions.payeeId = tx.getPayeeId();
-//        mCommonFunctions.transactionEntity.setCategoryId(tx.getCategoryId());
-//        mCommonFunctions.transactionEntity.setSubcategoryId(tx.getSubcategoryId());
-//        mCommonFunctions.mTransNumber = tx.getTransactionNumber();
-//        mCommonFunctions.mNotes = tx.getNotes();
-//        if (!duplicate) {
-//            mCommonFunctions.mDate = tx.getDateString();
-//        }
 
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
@@ -340,10 +315,10 @@ public class EditCheckingTransactionActivity
             }
         }
 
-        // convert status in uppercase string
-        if (!TextUtils.isEmpty(mCommonFunctions.status)) {
-            mCommonFunctions.status = mCommonFunctions.status.toUpperCase();
-        }
+//        // convert status in uppercase string
+//        if (!TextUtils.isEmpty(mCommonFunctions.transactionEntity.getStatus())) {
+//            mCommonFunctions.status = mCommonFunctions.status.toUpperCase();
+//        }
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
@@ -382,7 +357,7 @@ public class EditCheckingTransactionActivity
 
         String transCode = recurringTx.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
-        mCommonFunctions.status = recurringTx.getStatus();
+        mCommonFunctions.transactionEntity.setStatus(recurringTx.getStatus());
         mCommonFunctions.transactionEntity.setAmount(recurringTx.getAmount());
         mCommonFunctions.transactionEntity.setAmountTo(recurringTx.getAmountTo());
         mCommonFunctions.transactionEntity.setPayeeId(recurringTx.getPayeeId());
@@ -438,9 +413,10 @@ public class EditCheckingTransactionActivity
         // New transaction
 
         if (mIntentAction.equals(Intent.ACTION_INSERT)) {
-            if (mCommonFunctions.status == null) {
-                mCommonFunctions.status = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            if (mCommonFunctions.transactionEntity.getStatus() == null) {
+                String defaultStatus = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(PreferenceConstants.PREF_DEFAULT_STATUS), "");
+                mCommonFunctions.transactionEntity.setStatus(defaultStatus);
             }
 
             if ("L".equals(PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
@@ -548,8 +524,7 @@ public class EditCheckingTransactionActivity
             mCommonFunctions.transactionEntity.setCategoryId(parameters.categoryId);
             mCommonFunctions.categoryName = parameters.categoryName;
         } else {
-            // No id sent.
-            // create a category if it was sent but does not exist (id not found by the parser).
+            // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
             if (parameters.categoryName != null) {
                 CategoryService newCategory = new CategoryService(this);
                 mCommonFunctions.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
@@ -563,7 +538,6 @@ public class EditCheckingTransactionActivity
 
         mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
-        mCommonFunctions.status = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TRANS_STATUS);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME);
