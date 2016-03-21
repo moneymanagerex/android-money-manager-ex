@@ -202,7 +202,7 @@ public class RecurringTransactionEditActivity
         }
         outState.putString(KEY_TRANS_AMOUNT, value);
 
-        outState.putInt(KEY_PAYEE_ID, mCommonFunctions.payeeId);
+//        outState.putInt(KEY_PAYEE_ID, mCommonFunctions.transactionEntity.getPayeeId());
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         int categoryId = mCommonFunctions.transactionEntity.getCategoryId() != null
             ? mCommonFunctions.transactionEntity.getCategoryId()
@@ -450,18 +450,16 @@ public class RecurringTransactionEditActivity
 
         mCommonFunctions.transactionEntity = mRecurringTransaction;
 
-        // todo: just use a model object instead of a bunch of individual properties.
-
         // Read data.
 //        mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
         String transCode = mRecurringTransaction.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = mRecurringTransaction.getStatus();
-        mCommonFunctions.transactionEntity.setAmount(mRecurringTransaction.getAmount());
-        mCommonFunctions.transactionEntity.setAmountTo(mRecurringTransaction.getAmountTo());
-        mCommonFunctions.payeeId = mRecurringTransaction.getPayeeId();
-        mCommonFunctions.transactionEntity.setCategoryId(mRecurringTransaction.getCategoryId());
-        mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
+//        mCommonFunctions.transactionEntity.setAmount(mRecurringTransaction.getAmount());
+//        mCommonFunctions.transactionEntity.setAmountTo(mRecurringTransaction.getAmountTo());
+//        mCommonFunctions.transactionEntity.setPayeeId(mRecurringTransaction.getPayeeId());
+//        mCommonFunctions.transactionEntity.setCategoryId(mRecurringTransaction.getCategoryId());
+//        mCommonFunctions.transactionEntity.setSubcategoryId(mRecurringTransaction.getSubcategoryId());
         mCommonFunctions.mTransNumber = mRecurringTransaction.getTransactionNumber();
         mCommonFunctions.mNotes = mRecurringTransaction.getNotes();
 //        mCommonFunctions.mDate = mRecurringTransaction.getPaymentDateString();
@@ -477,7 +475,7 @@ public class RecurringTransactionEditActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
 
-        mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
+        mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.displayCategoryName();
 
         return true;
@@ -616,8 +614,9 @@ public class RecurringTransactionEditActivity
                 }
             }
         }
+
         // update category and subcategory payee
-        if ((!(isTransfer)) && (mCommonFunctions.payeeId > 0) && (!hasSplitTransaction)) {
+        if ((!(isTransfer)) && (mCommonFunctions.transactionEntity.getPayeeId() > 0) && (!hasSplitTransaction)) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
@@ -628,10 +627,10 @@ public class RecurringTransactionEditActivity
             // update data
             if (getContentResolver().update(payee.getUri(),
                     values,
-                    Payee.PAYEEID + "=" + Integer.toString(mCommonFunctions.payeeId),
+                    Payee.PAYEEID + "=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()),
                     null) <= 0) {
                 Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.payeeId) + " return <= 0");
+                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
             }
         }
 
@@ -650,6 +649,7 @@ public class RecurringTransactionEditActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
+        // Restore the transaction entity.
         mRecurringTransaction = savedInstanceState.getParcelable(KEY_MODEL);
 
 //        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
@@ -660,10 +660,10 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = savedInstanceState.getString(KEY_TRANS_STATUS);
 
-        mCommonFunctions.transactionEntity.setAmount(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT)));
-        mCommonFunctions.transactionEntity.setAmountTo(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO)));
+//        mCommonFunctions.transactionEntity.setAmount(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNT)));
+//        mCommonFunctions.transactionEntity.setAmountTo(MoneyFactory.fromString(savedInstanceState.getString(KEY_TRANS_AMOUNTTO)));
 
-        mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
+//        mCommonFunctions.payeeId = savedInstanceState.getInt(KEY_PAYEE_ID);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
         mCommonFunctions.transactionEntity.setCategoryId(savedInstanceState.getInt(KEY_CATEGORY_ID));
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);

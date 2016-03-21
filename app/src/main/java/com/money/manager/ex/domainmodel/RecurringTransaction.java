@@ -194,6 +194,14 @@ public class RecurringTransaction
         return getInt(ITransactionEntity.PAYEEID);
     }
 
+    public void setPayeeId(Integer value) {
+        setInt(ITransactionEntity.PAYEEID, value);
+    }
+
+    public boolean hasPayee() {
+        return getPayeeId() != null && getPayeeId() != Constants.NOT_SET;
+    }
+
     /**
      * The recurrence type
      * @return the recurrence type

@@ -22,9 +22,8 @@ import org.joda.time.DateTime;
 import info.javaperformance.money.Money;
 
 /**
- * Interface for Split Category entity and Recurring/Checking transactions.
+ * Interface for Recurring/Checking transactions.
  * This is a common transaction (the common fields in Account & Recurring transactions).
- * A subset is used by split categories on account transactions and on recurring transactions.
  */
 public interface ITransactionEntity {
 
@@ -53,10 +52,10 @@ public interface ITransactionEntity {
     boolean hasAccountTo();
 
     Integer getCategoryId();
-    void setCategoryId(int categId);
+    void setCategoryId(int value);
 
     Integer getSubcategoryId();
-    void setSubcategoryId(Integer subCategId);
+    void setSubcategoryId(Integer value);
 
     /**
      * @return the splitTransAmount
@@ -72,4 +71,8 @@ public interface ITransactionEntity {
 
     String getDateString();
     void setDate(DateTime value);
+
+    Integer getPayeeId();
+    void setPayeeId(Integer value);
+    boolean hasPayee();
 }
