@@ -37,7 +37,7 @@ public class Budget
     }
 
     public void setId(Integer value) {
-        setInteger(BUDGETYEARID, value);
+        setInt(BUDGETYEARID, value);
     }
 
     public String getName() {

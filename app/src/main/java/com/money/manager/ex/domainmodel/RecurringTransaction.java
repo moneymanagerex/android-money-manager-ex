@@ -69,15 +69,27 @@ public class RecurringTransaction
     }
 
     public void setId(int id) {
-        setInteger(BDID, id);
+        setInt(BDID, id);
     }
 
     public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }
 
-    public void setAccountId(int value) {
-        setInteger(ITransactionEntity.ACCOUNTID, value);
+    public void setAccountId(Integer value) {
+        setInt(ITransactionEntity.ACCOUNTID, value);
+    }
+
+    public Integer getAccountTo() {
+        return getInt(ITransactionEntity.TOACCOUNTID);
+    }
+
+    public void setAccountTo(Integer value) {
+        setInt(ITransactionEntity.TOACCOUNTID, value);
+    }
+
+    public boolean hasAccountTo() {
+        return getAccountTo() != null && getAccountTo() != Constants.NOT_SET;
     }
 
     public Money getAmount() {
@@ -113,7 +125,7 @@ public class RecurringTransaction
 
     @Override
     public void setCategoryId(int value) {
-        setInteger(ITransactionEntity.CATEGID, value);
+        setInt(ITransactionEntity.CATEGID, value);
     }
 
     public String getDueDateString() {
@@ -175,7 +187,7 @@ public class RecurringTransaction
     }
 
     public void setPaymentsLeft(Integer value) {
-        setInteger(NUMOCCURRENCES, value);
+        setInt(NUMOCCURRENCES, value);
     }
 
     public Integer getPayeeId() {
@@ -197,7 +209,7 @@ public class RecurringTransaction
     }
 
     public void setRecurrence(Integer value) {
-        setInteger(REPEATS, value);
+        setInt(REPEATS, value);
     }
 
     public Recurrence getRecurrence() {
@@ -219,7 +231,7 @@ public class RecurringTransaction
     }
 
     public void setSubcategoryId(Integer value) {
-        setInteger(ITransactionEntity.SUBCATEGID, value);
+        setInt(ITransactionEntity.SUBCATEGID, value);
     }
 
     public Integer getToAccountId() {

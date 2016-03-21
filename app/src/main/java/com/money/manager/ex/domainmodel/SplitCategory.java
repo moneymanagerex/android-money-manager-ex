@@ -63,7 +63,7 @@ public class SplitCategory
     }
 
     public void setId(int value) {
-        setInteger(SPLITTRANSID, value);
+        setInt(SPLITTRANSID, value);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SplitCategory
 
     @Override
     public void setAccountId(int value) {
-        setInteger(ITransactionEntity.ACCOUNTID, value);
+        setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class SplitCategory
 
     @Override
     public void setCategoryId(int categoryId) {
-        setInteger(CATEGID, categoryId);
+        setInt(CATEGID, categoryId);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SplitCategory
 
     @Override
     public void setSubcategoryId(Integer subCategoryId) {
-        setInteger(SUBCATEGID, subCategoryId);
+        setInt(SUBCATEGID, subCategoryId);
     }
 
     @Override
@@ -118,6 +118,6 @@ public class SplitCategory
     }
 
     public void setTransId(Integer value) {
-        setInteger(TRANSID, value);
+        setInt(TRANSID, value);
     }
 }

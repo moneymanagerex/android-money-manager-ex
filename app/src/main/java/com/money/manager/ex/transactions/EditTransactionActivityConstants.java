@@ -23,6 +23,8 @@ package com.money.manager.ex.transactions;
 public class EditTransactionActivityConstants {
     public static final String LOGCAT = EditCheckingTransactionActivity.class.getSimpleName();
 
+    public static final String KEY_TRANSACTION_ENTITY = "AllDataActivity:Transaction";
+
     public static final String KEY_TRANS_ID = "AllDataActivity:TransId";
     public static final String KEY_BDID_ID = "AllDataActivity:bdId";
     public static final String KEY_ACCOUNT_ID = "AllDataActivity:AccountId";

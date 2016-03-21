@@ -20,11 +20,9 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 
-import org.apache.commons.lang3.StringUtils;
 import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
@@ -63,7 +61,7 @@ public class SplitRecurringCategory
     }
 
     public void setId(int value) {
-        setInteger(SPLITTRANSID, value);
+        setInt(SPLITTRANSID, value);
     }
 
     @Override
@@ -73,7 +71,7 @@ public class SplitRecurringCategory
 
     @Override
     public void setAccountId(int value) {
-        setInteger(ITransactionEntity.ACCOUNTID, value);
+        setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class SplitRecurringCategory
 
     @Override
     public void setCategoryId(int categId) {
-        setInteger(CATEGID, categId);
+        setInt(CATEGID, categId);
     }
 
     @Override
@@ -103,7 +101,7 @@ public class SplitRecurringCategory
 
     @Override
     public void setSubcategoryId(Integer subCategoryId) {
-        setInteger(SUBCATEGID, subCategoryId);
+        setInt(SUBCATEGID, subCategoryId);
     }
 
     @Override
@@ -118,6 +116,6 @@ public class SplitRecurringCategory
     }
 
     public void setTransId(int value) {
-        setInteger(TRANSID, value);
+        setInt(TRANSID, value);
     }
 }

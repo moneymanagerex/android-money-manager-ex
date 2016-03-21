@@ -69,15 +69,27 @@ public class AccountTransaction
     }
 
     public void setId(int id) {
-        setInteger(TRANSID, id);
+        setInt(TRANSID, id);
     }
 
     public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }
 
-    public void setAccountId(int value) {
-        setInteger(ITransactionEntity.ACCOUNTID, value);
+    public void setAccountId(Integer value) {
+        setInt(ITransactionEntity.ACCOUNTID, value);
+    }
+
+    public Integer getAccountTo() {
+        return getInt(ITransactionEntity.TOACCOUNTID);
+    }
+
+    public void setAccountTo(Integer value) {
+        setInt(ITransactionEntity.TOACCOUNTID, value);
+    }
+
+    public boolean hasAccountTo() {
+        return getAccountTo() != null && getAccountTo() != Constants.NOT_SET;
     }
 
     public Money getAmount() {
@@ -111,7 +123,7 @@ public class AccountTransaction
     }
 
     public void setCategoryId(int value) {
-        setInteger(ITransactionEntity.CATEGID, value);
+        setInt(ITransactionEntity.CATEGID, value);
     }
 
     public String getDateString() {
@@ -137,7 +149,7 @@ public class AccountTransaction
     }
 
     public void setPayeeId(int value) {
-        setInteger(ITransactionEntity.PAYEEID, value);
+        setInt(ITransactionEntity.PAYEEID, value);
     }
 
     public String getStatus() {
@@ -149,7 +161,7 @@ public class AccountTransaction
     }
 
     public void setSubcategoryId(Integer value) {
-        setInteger(ITransactionEntity.SUBCATEGID, value);
+        setInt(ITransactionEntity.SUBCATEGID, value);
     }
 
     public Integer getToAccountId() {

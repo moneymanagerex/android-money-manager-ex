@@ -181,7 +181,7 @@ public class RecurringTransactionEditActivity
         // save the state interface
 //        outState.putInt(KEY_BILL_DEPOSITS_ID, mBillDepositsId);
 //        outState.putInt(KEY_ACCOUNT_ID, mCommonFunctions.accountId);
-        outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
+//        outState.putInt(KEY_TO_ACCOUNT_ID, mCommonFunctions.toAccountId);
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mCommonFunctions.status);
@@ -453,7 +453,7 @@ public class RecurringTransactionEditActivity
         // todo: just use a model object instead of a bunch of individual properties.
 
         // Read data.
-        mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
+//        mCommonFunctions.toAccountId = mRecurringTransaction.getToAccountId();
         String transCode = mRecurringTransaction.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.status = mRecurringTransaction.getStatus();
@@ -475,7 +475,7 @@ public class RecurringTransactionEditActivity
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.toAccountId);
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.payeeId);
         mCommonFunctions.displayCategoryName();
@@ -654,7 +654,7 @@ public class RecurringTransactionEditActivity
 
 //        mBillDepositsId = savedInstanceState.getInt(KEY_BILL_DEPOSITS_ID);
 //        mCommonFunctions.accountId = savedInstanceState.getInt(KEY_ACCOUNT_ID);
-        mCommonFunctions.toAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
+//        mCommonFunctions.toAccountId = savedInstanceState.getInt(KEY_TO_ACCOUNT_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);

@@ -43,7 +43,7 @@ public class AssetClassStock
     }
 
     public void setId(int value) {
-        setInteger(ID, value);
+        setInt(ID, value);
     }
 
     public Integer getAssetClassId() {
@@ -51,7 +51,7 @@ public class AssetClassStock
     }
 
     public void setAssetClassId(int value) {
-        setInteger(ASSETCLASSID, value);
+        setInt(ASSETCLASSID, value);
     }
 
     public String getStockSymbol() {
