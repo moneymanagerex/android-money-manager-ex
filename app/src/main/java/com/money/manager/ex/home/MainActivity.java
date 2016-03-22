@@ -721,9 +721,9 @@ public class MainActivity
 ////            // kill process
 ////            android.os.Process.killProcess(android.os.Process.myPid());
             } else {
-//                // new api:
-                this.recreate();
-//                startMainActivity();
+//                // New api. This will keep the Intent, which hangs after Dropbox update.
+//                this.recreate();
+                startMainActivity();
             }
 
         }
@@ -752,16 +752,16 @@ public class MainActivity
     }
 
     private void startMainActivity() {
-//        Context baseContext = getBaseContext();
-//        Intent intent = baseContext.getPackageManager()
-//            .getLaunchIntentForPackage( baseContext.getPackageName() );
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
+        Context baseContext = getBaseContext();
+        Intent intent = baseContext.getPackageManager()
+            .getLaunchIntentForPackage( baseContext.getPackageName() );
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
 
         // option 2
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+//        Intent intent = getIntent();
+//        finish();
+//        startActivity(intent);
     }
 
     /**
@@ -1214,7 +1214,8 @@ public class MainActivity
     }
 
     private void handleIntent() {
-        if (getIntent() == null || getIntent().getData() == null) return;
+        Intent intent = getIntent();
+        if (intent == null || intent.getData() == null) return;
 
         String pathFile = getIntent().getData().getEncodedPath();
         // decode
