@@ -132,11 +132,6 @@ public class DropboxServiceIntent
         }
     }
 
-    /**
-     * 
-     * @param localFile
-     * @param remoteFile
-     */
     public void syncFile(final File localFile, final Entry remoteFile) {
         Date localLastModified = null;
         Date remoteLastModified;

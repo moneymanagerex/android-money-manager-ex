@@ -752,6 +752,8 @@ public class MainActivity
     }
 
     private void startMainActivity() {
+        // Don't reuse the same Intent. It loops when called after Dropbox download.
+        
         Context baseContext = getBaseContext();
         Intent intent = baseContext.getPackageManager()
             .getLaunchIntentForPackage( baseContext.getPackageName() );
