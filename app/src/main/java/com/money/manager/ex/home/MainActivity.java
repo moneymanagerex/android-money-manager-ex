@@ -47,6 +47,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.AnalyticsTrackers;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
@@ -1264,9 +1265,10 @@ public class MainActivity
     }
 
     private void pingStats() {
-        AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP)
-            .send(new HitBuilders.ScreenViewBuilder().build());
-        //mTracker.setScreenName("Activity~MainActivity");
+        MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
+        Tracker t = app.getDefaultTracker();
+        t.setScreenName("~MainActivity");
+        t.send(new HitBuilders.EventBuilder().build());
         //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

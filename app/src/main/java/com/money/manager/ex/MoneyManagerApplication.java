@@ -23,7 +23,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-//import android.support.multidex.MultiDex;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
@@ -79,6 +78,7 @@ public class MoneyManagerApplication
     private static float mTextSize;
     // user name application
     private static String userName = "";
+    private static Tracker mTracker;
 
     public static MoneyManagerApplication getInstanceApp() {
         return myInstance;
@@ -225,9 +225,6 @@ public class MoneyManagerApplication
         // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
 
-        // Initialize analytics.
-        AnalyticsTrackers.initialize(this);
-
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
     }
@@ -336,13 +333,11 @@ public class MoneyManagerApplication
     private double getSummaryAccountsInternal(Context context) {
         double curTotal = 0;
 
-//        Core core = new Core(context);
         LookAndFeelSettings settings = new AppSettings(context)
             .getLookAndFeelSettings();
         // compose whereClause
         String where = "";
         // check if show only open accounts
-//        if (core.getAccountsOpenVisible()) {
         if (settings.getViewOpenAccounts()) {
             where = "LOWER(STATUS)='open'";
         }
@@ -378,24 +373,31 @@ public class MoneyManagerApplication
         return context.getPackageManager().resolveActivity(intent, 0) != null;
     }
 
-    //private Tracker mTracker;
+    // Private
 
-//    /**
-//     * Gets the default {@link Tracker} for this {@link Application}.
-//     * @return tracker
-//     */
-//    synchronized public Tracker getDefaultTracker() {
-//        if (mTracker == null) {
-//            //GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-//            //AnalyticsTrackers.getInstance().initialize(this);
-//            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-//            mTracker = analytics.newTracker(R.xml.app_tracker);
-//
-//            Core core = new Core(getApplicationContext());
-//            mTracker.setAppVersion(core.getAppVersionName());
-//        }
-//
-//        return mTracker;
-//    }
+    private void initTrackers() {
+        //AnalyticsTrackers.initialize(this);
+
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+        mTracker = analytics.newTracker(R.xml.app_tracker);
+
+        Core core = new Core(this);
+        mTracker.setAppVersion(core.getAppVersionName());
+
+        // Enable reporting uncaught exceptions.
+        mTracker.enableExceptionReporting(true);
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            initTrackers();
+        }
+
+        return mTracker;
+    }
 
 }
