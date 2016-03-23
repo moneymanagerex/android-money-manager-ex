@@ -1264,6 +1264,9 @@ public class MainActivity
         requestDatabaseChange(recentDb.filePath);
     }
 
+    /**
+     * Ref: https://developers.google.com/analytics/devguides/collection/android/v4/events
+     */
     private void pingStats() {
         MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
         Tracker t = app.getDefaultTracker();
