@@ -1272,7 +1272,7 @@ public class MainActivity
         Tracker t = app.getDefaultTracker();
         t.setScreenName("~MainActivity");
         t.send(new HitBuilders.EventBuilder().build());
-        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        //t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**
