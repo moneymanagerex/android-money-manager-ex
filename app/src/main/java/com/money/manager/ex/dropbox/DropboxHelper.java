@@ -265,7 +265,6 @@ public class DropboxHelper {
 
     /**
      * Create a session for access to Dropbox service
-     *
      * @return AndroidAuthSession
      */
     private AndroidAuthSession buildSession() {

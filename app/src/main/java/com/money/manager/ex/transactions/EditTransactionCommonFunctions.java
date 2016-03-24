@@ -1331,7 +1331,7 @@ public class EditTransactionCommonFunctions {
         // calculate the destination amount if the source amount has been set.
         if (!transactionEntity.getAmount().isZero() && transactionEntity.getAmountTo().isZero()) {
             // select the first destination account id, if none set.
-            if (transactionEntity.getAccountTo() == Constants.NOT_SET) {
+            if (!transactionEntity.hasAccountTo()) {
                 transactionEntity.setAccountTo(mAccountIdList.get(0));
             }
             onFinishedInputAmountDialog(R.id.textViewAmount, transactionEntity.getAmount());
