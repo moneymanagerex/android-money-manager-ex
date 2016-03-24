@@ -59,6 +59,10 @@ public class ExceptionHandler
     private Context mContext;
     private Object mHost;
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public void handle(Exception ex, String errorMessage) {
         this.handle((Throwable) ex, errorMessage);
     }
@@ -77,6 +81,10 @@ public class ExceptionHandler
         } else {
             return "unknown";
         }
+    }
+
+    public void showMessage(int resourceId) {
+        showMessage(getContext().getString(resourceId));
     }
 
     public void showMessage(final String message) {
@@ -172,6 +180,8 @@ public class ExceptionHandler
 //        System.exit(10);
         System.exit(1);
     }
+
+    // private
 
     private void sendEmail(String text) {
         Intent intent = new Intent (Intent.ACTION_SEND);

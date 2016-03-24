@@ -94,7 +94,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                 handler.handle(t, "fetching price");
                 closeProgressDialog();
             }
@@ -105,7 +105,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 //            prices = yql.getPrices(query).execute().body();
             yql.getPrices(query).enqueue(callback);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "fetching prices");
         }
     }
@@ -118,24 +118,26 @@ public class YqlSecurityPriceUpdaterRetrofit
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
 
         if (response == null) {
-            handler.showMessage(getContext().getString(R.string.error_updating_rates));
+            handler.showMessage(R.string.error_updating_rates);
             closeProgressDialog();
             return;
         }
 
         // parse Json results
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
-
-        // Notify the listener via callback.
-        for (SecurityPriceModel model : pricesList) {
-            // Notify the caller.
-            EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
+        if (pricesList == null) {
+            handler.showMessage(R.string.error_no_price_found_for_symbol);
+        } else {
+            // Send the parsed price data to the listener(s).
+            for (SecurityPriceModel model : pricesList) {
+                // Notify the caller.
+                EventBus.getDefault().post(new PriceDownloadedEvent(model.symbol, model.price, model.date));
+            }
         }
-
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        handler.showMessage(mContext.getString(R.string.download_complete));
+        handler.showMessage(R.string.download_complete);
     }
 
     private void closeProgressDialog() {
@@ -144,7 +146,7 @@ public class YqlSecurityPriceUpdaterRetrofit
                 DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "closing dialog");
         }
     }
@@ -153,9 +155,11 @@ public class YqlSecurityPriceUpdaterRetrofit
         ArrayList<SecurityPriceModel> result = new ArrayList<>();
 
         // check whether there is only one item or more
-        JsonElement quoteElement = root.get("query").getAsJsonObject()
-            .get("results").getAsJsonObject()
-            .get("quote");
+        JsonElement results = root.get("query").getAsJsonObject()
+                .get("results");
+        if (results == null) return null;
+
+        JsonElement quoteElement = results.getAsJsonObject().get("quote");
         if (quoteElement instanceof JsonArray) {
             JsonArray quotes = quoteElement.getAsJsonArray();
 
@@ -190,13 +194,13 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         JsonElement priceElement = quote.get("LastTradePriceOnly");
         if (priceElement == JsonNull.INSTANCE) {
-            handler.showMessage(mContext.getString(R.string.error_no_price_found_for_symbol) + " " +
+            handler.showMessage(getContext().getString(R.string.error_no_price_found_for_symbol) + " " +
                 priceModel.symbol);
             return null;
         }
         String priceString = priceElement.getAsString();
         if (!NumericHelper.isNumeric(priceString)) {
-            handler.showMessage(mContext.getString(R.string.error_no_price_found_for_symbol) + " " +
+            handler.showMessage(getContext().getString(R.string.error_no_price_found_for_symbol) + " " +
                     priceModel.symbol);
             return null;
         }
@@ -227,11 +231,9 @@ public class YqlSecurityPriceUpdaterRetrofit
     }
 
     private void showProgressDialog(Integer max) {
-        Context context = mContext;
+        mDialog = new ProgressDialog(getContext());
 
-        mDialog = new ProgressDialog(context);
-
-        mDialog.setMessage(context.getString(R.string.starting_price_update));
+        mDialog.setMessage(getContext().getString(R.string.starting_price_update));
 //        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         if (max != null) {
