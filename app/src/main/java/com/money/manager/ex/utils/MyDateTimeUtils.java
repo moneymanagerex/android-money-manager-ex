@@ -37,6 +37,10 @@ import java.util.Calendar;
  */
 public class MyDateTimeUtils {
 
+    public static DateTime now() {
+        return DateTime.now();
+    }
+
     public static DateTime today() {
         return DateTime.now()
                 .withHourOfDay(0)
