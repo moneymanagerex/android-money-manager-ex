@@ -17,21 +17,41 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Kişisel mali, banka hesapları, aile bütçesini vb. yönetmek için basit ve kullanımı kolay bir uygulama.</string>
   <string name="application_credits">Android Projesi için tasarlanan MoneyManagerEx ActionBarSherlock kütüphanesini kullanır</string>
   <string name="application_license">Açık Kaynak Lisansları</string>
+  <!-- database -->
   <string name="db_insert_failed">Veri ekleme başarısız oldu</string>
   <string name="db_delete_failed">Veri silme başarısız oldu</string>
   <string name="db_update_failed">Veri güncelleştirme başarısız oldu</string>
+  <!-- menu -->
+  <!--<string name="menu">Menu</string>-->
   <string name="menu_exit">Çıkış</string>
+  <!--<string name="menu_import_export">Import/Export</string>-->
+  <!--<string name="menu_sync">Synchronize</string>-->
+  <!--<string name="menu_import_from_storage">Import from storage</string>-->
+  <!--<string name="menu_export_to_storage">Export to storage</string>-->
   <string name="menu_manage">Yönet</string>
+  <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+  <!--<string name="menu_tools">Tools</string>-->
+  <!--<string name="menu_use_external_db">Use External Database</string>-->
+  <!-- import / export database -->
+  <!--<string name="emptyFolder">Empty folder</string>-->
+  <!--<string name="upLevel">Up level</string>-->
+  <!--<string name="import_export">Import / Export</string>-->
+  <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+  <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+  <!--<string name="import_export_failed">Import / Export failed</string>-->
+  <!-- dropbox -->
   <string name="dropbox_link">Dropbox bağlantısı</string>
   <string name="dropbox_unlink">Dropbox bağlantısını kaldır</string>
   <string name="dropbox_syncProgress">Dosya eşitleniyor. Lütfen bekleyin&#8230;</string>
   <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
   <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
   <string name="dropbox_linkedFile">Dropbox Dosyası</string>
+  <!-- preferences -->
   <string name="preferences_general">Genel</string>
   <string name="preferences_dispaly">Görünüm</string>
   <string name="preferences_behaviour">Davranış</string>
@@ -50,11 +70,14 @@
   <string name="preferences_behaviour_focus_filter_summary">Seçiciler filtrede odaklanmak. Aksi takdirde göz atın.</string>
   <string name="pref_auto_sync_via_wifi">Sadece Wifi olduğunda eşitle</string>
   <string name="pref_auto_sync_via_wifi_summary">Yalnızca WiFi bağlantısı olduğunda otomatik eşitle.</string>
+  <!-- account -->
   <string name="account">Hesap</string>
   <string name="account_list">Hesap Listesi</string>
   <string name="account_empty_list">Hiçbir hesap bulunamadı. Yeni bir hesap oluşturmak için yeşil artı butonuna dokun.</string>
   <string name="account_balance">Hesap bakiyesi</string>
   <string name="account_reconciled_balance">Onaylanmış Bakiye</string>
+  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
+  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Hesabı Sil</string>
   <string name="account_name">Hesap ismi</string>
   <string name="account_type">Hesap tipi</string>
@@ -76,6 +99,7 @@
   <string name="error_accounttype_empty">Hesap tipi gereklidir</string>
   <string name="error_status_empty">Hesap durumu gereklidir</string>
   <string name="error_amount_must_be_positive">Tutar pozitif olmalıdır. Negatif işareti işlem türüne göre belirlenir.</string>
+  <!-- payee -->
   <string name="payee_name">Alacaklı ismi</string>
   <string name="edit_payeeName">Alacaklı Düzenle</string>
   <string name="delete_payee">Alacaklı Sil</string>
@@ -84,6 +108,7 @@
   <string name="payee_empty_list">Hiçbir alacaklı bulunamadı. Yeni bir alacaklı oluşturmak için yeşil artı butonuna dokunun.</string>
   <string name="from">Başlangıç</string>
   <string name="db_payee_update_failed">Alacaklı güncelleştirme başarısız oldu</string>
+  <!-- category / subcategory -->
   <string name="category">Kategori</string>
   <string name="subcategory">Alt kategori</string>
   <string name="category_empty_list">Hiçbir kategori bulunamadı. Oluşturmak için yeşil artı düğmesine dokunun.</string>
@@ -92,6 +117,7 @@
   <string name="add_subcategory">Alt Kategori Seç</string>
   <string name="edit_categoryName">Kategori Düzenle</string>
   <string name="delete_category">Kategori Sil</string>
+  <!-- currency -->
   <string name="currency_name">Para birimi adı</string>
   <string name="currency_symbol">Para birimi sembolü</string>
   <string name="delete_currency">Para Birimi Sil</string>
@@ -103,6 +129,7 @@
   <string name="scale">Aralık</string>
   <string name="conversion_to_base_rate">Dönüşüm</string>
   <string name="currency_name_empty">Para birimi adı gereklidir</string>
+  <!-- transaction -->
   <string name="amount">Tutar</string>
   <string name="total_amount">Toplam tutar</string>
   <string name="deposit">Mevduat</string>
@@ -124,9 +151,9 @@
   <string name="error_category_not_selected">Kategori gereklidir</string>
   <string name="error_totamount_empty">Toplam tutar gereklidir</string>
   <string name="error_transfer_to_same_account">Transfer için iki hesabın farklı olması gerekir</string>
+  <!-- application string -->
   <string name="about">Hakkında</string>
   <string name="add">Ekle</string>
-  <string name="confirmDelete">Silmek istediğinizden emin misiniz?</string>
   <string name="date">Tarih</string>
   <string name="delete">Sil</string>
   <string name="download">İndir</string>
@@ -155,6 +182,7 @@
   <string name="theme_application">Tema</string>
   <string name="theme_holo">Koyu Tema</string>
   <string name="theme_light">Açık Tema</string>
+  <!-- 20120906 -->
   <string name="close_application">Uygulamayı kapat</string>
   <string name="question_close_application">Uygulamayı kapatmak istiyor musunuz?</string>
   <string name="attention">Dikkat</string>
@@ -162,6 +190,7 @@
   <string name="account_can_not_deleted">Seçilen hesap silinemedi çünkü hesap ile ilişkilendirilmiş işlemler bulunuyor</string>
   <string name="currency_can_not_deleted">Seçilen para birimi silinemedi çünkü para birimi ile ilişkilendirilmiş işlemler bulunuyor</string>
   <string name="category_can_not_deleted">Seçilen kategori silinemedi çünkü kategori ile ilişkilendirilmiş işlemler buluyor</string>
+  <!-- transaction list periods -->
   <string name="all_transaction">Tüm işlemler</string>
   <string name="today">Bugün</string>
   <string name="last7days">Son 7 gün</string>
@@ -175,6 +204,7 @@
   <string name="widget_summary">Özet</string>
   <string name="widget_all_accounts">Tüm Hesaplar</string>
   <string name="widget_add_transaction">İşlem Ekle</string>
+  <!-- Recurring Transactions -->
   <string name="none">Hiçbiri</string>
   <string name="once">Bir defa</string>
   <string name="weekly">Haftalık</string>
@@ -206,7 +236,10 @@
   <string name="notification_repeating_transaction_expired">Süresi dolan tekrar eden işlemler var</string>
   <string name="notification_click_to_check_repeating_transaction">İşlemi vadesi geçmiş olarak işaretlemek için dokun</string>
   <string name="num_repeating_transaction_expired">%1$d tekrar eden işlem süresi geçti</string>
+  <!-- 20121121 -->
   <string name="send_feedback">Geri bildirim yolla</string>
+  <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+  <!-- 20121122 -->
   <string name="preferences_info_application">Bilgi</string>
   <string name="preferences_security">Güvenlik</string>
   <string name="preferences_active_passcode">Giriş Parolasını Etkinleştir</string>
@@ -216,7 +249,9 @@
   <string name="preferences_edit_passcode">Giriş Parolası Düzenle</string>
   <string name="preferences_disable_passcode">Giriş Parolasını Devre Dışı Bırak</string>
   <string name="enter_your_previous_passcode">Mevcut parolanızı girin</string>
+  <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">parola güncellenemedi</string>
+  <!-- 20121217 -->
   <string name="income_vs_expenses_current_month">Gelirler ve Giderler: Bu ay</string>
   <string name="income">Gelir</string>
   <string name="expenses">Gider</string>
@@ -228,25 +263,34 @@
   <string name="menu_reports">Raporlar</string>
   <string name="menu_report_income_vs_expenses">Gelir ve Giderler</string>
   <string name="total">Toplam</string>
+  <!--<string name="option">Option</string>-->
   <string name="all_time">Tüm Zamanlar</string>
   <string name="last_month">Önceki Ay</string>
   <string name="last30days">Son 30 gün</string>
   <string name="last_year">Önceki Yıl</string>
+  <!-- 20130106 -->
+  <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">Bulunan işlem sayısı: %1$d</string>
+  <!-- 20130108 -->
   <string name="date_format">Tarih Biçimi</string>
   <string name="financial_year_start_day">Mali Yıl: Başlangıç günü</string>
   <string name="financial_year_start_month">Mali Yıl: Başlangıç Ayı</string>
+  <!--<string name="release_date">Release Date</string>-->
+  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Veritabanını dışa aktar</string>
   <string name="database_has_been_moved">Veritabanı taşındı: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Veritabanını harici belleğe taşıma başarısız</string>
   <string name="path_database_using">Kullandığınız veritabanı şurada kayıtlı: %1$s</string>
+  <!-- 20130129 -->
   <string name="split_transaction">İşlemi Böl</string>
+  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Böl</string>
   <string name="error_split_transaction_empty">Bölünen işlemin en az bir bölmesi gereklidir</string>
   <string name="export_data_to_csv">Veriyi CSV olarak kaydet</string>
   <string name="export_data_in_progress">Veri dışa aktarılıyor. Lütfen bekleyin&#8230;</string>
   <string name="export_file_complete">Veri %1$s dosyasına başarılı bir şekilde aktarıldı</string>
   <string name="export_file_failed">%1$s dosyasına aktarma başarısız</string>
+  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx Android ücretsiz olarak sunulmaktadır. Eğer bu uygulamayı beğendiyseniz geliştirme ekibini bağışlarınız ile destekleyin.</string>
   <string name="donate_in_app_title">Google Play Uygulama-içi Satın Alma</string>
   <string name="donate_in_app_description">Google Play Uygulama İçi Ödeme ile bağış yap.</string>
@@ -261,13 +305,18 @@
   <string name="donate_license">Google LisansIarı nedeniyle, bağış bağlantılarını doğrudan uygulama içinde veremiyoruz.</string>
   <string name="donate_button_text">Bağış yap</string>
   <string name="homepage_button">Anasayfayı aç</string>
+  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite Sürümü</string>
+  <!-- 20130301 -->
+  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Azalan</string>
   <string name="descending">Artan</string>
   <string name="sorting_month">Ayları sıralama</string>
+  <!-- 20130305 -->
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Mobile klasörü boş. Eğer MoneyManagerEx\'i halihazırda zaten kullanıyorsanız, kullandığınız cihazdan veritabanını bu klasöre kopyalayın ve bu ekranı yenileyin.</string>
   <string name="dropbox_select_file">Dropbox\'tan bir dosya seç</string>
   <string name="last_modified">Son düzenlenen</string>
+  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
   <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
@@ -283,9 +332,11 @@
   <string name="open_database">Veritabanı Aç</string>
   <string name="synchronization_interval">Eşitleme Aralığı</string>
   <string name="summary_synchronization_interval">Ne sıklıkla eşitlenmesini istersiniz?</string>
+  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">1.2.0 versiyonundan itibaren Android için Money Manager Ex\'in Dropbox eşitleme yönetimi değişti. Halihazırda Dropbox ile eşitlenmiş veritabanı kullanan kullanıcıların Dropbox yapılandırmasını tekrar yapmaları gerekmektedir.\nSeçilen bir veritabanını Dropbox ile eşitlemek yapılandırma Ayarlar menüsünde yer almaktadır.\nAndroid için Money Manager Ex\'in 1.2.0 sürümünden sonraki sürümleri veritabanını Dropbox ile otomatik olarak eşitlemektedir</string>
   <string name="title_dropbox_upload_immediate">Veritabanında her değişiklik yapıldığında eşitle</string>
   <string name="summary_dropbox_upload_immediate">Bu seçenek veritabnının değişklik yapılır yapılmaz Dropbox ile eşitlemesini sağar</string>
+  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Her işlemde bakiye görüntüle</string>
   <string name="summary_transaction_shown_balance">Her işlemde bakiyeyi gösterir. Her işlemde bakiye göstermek uygulamanın yavaş çalışmasına neden olur</string>
   <string name="menu_open_database">Veritabanı aç</string>
@@ -300,25 +351,40 @@
   <string name="Default">Varsayılan</string>
   <string name="medium">Orta</string>
   <string name="large">Büyük</string>
+  <!-- 20130528 -->
   <string name="dropbox_download_is_starting">Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
   <string name="dropbox_upload_is_starting">Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
+  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Para Nereye Gidiyor</string>
   <string name="menu_report_where_money_comes_from">Para Nereden Geliyor</string>
-  <string name="title_check_repeating_transaction">İşlem Kontrol Saati</string>
+  <!-- 20130728 -->
   <string name="summary_check_repeating_transaction">Tarihi gelmiş tekrar eden işlem olup olmadığının her gün hangi saatte kontrol edilmesini istediğinizi belirleyin. (Varsayılan saat 08:00)</string>
+  <!-- 20130730 -->
   <string name="credits">Ekip</string>
+  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
+  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">En fazla para çekme: Son 30 gün</string>
   <string name="top_payees_last_30_days">En Çok Kullanılan Alacaklılar: Son 30 gün</string>
+  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Yaklaşan İşlemler</string>
   <string name="quantity">Miktar</string>
   <string name="dashboard">Başlangıç</string>
+  <!-- 20130808 -->
   <string name="dropbox_database_is_synchronized">Veritabanı güncel</string>
+  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Son 3 ay</string>
   <string name="last6months">Son 6 ay</string>
+  <!-- 20130816 -->
   <string name="empty_category">Boş Kategori</string>
   <string name="empty_payee">Boş alacaklı</string>
+  <!-- 20130831 -->
   <string name="help">Yardım</string>
+  <!-- 20130927 -->
   <string name="delete_repeating_transaction">Tekrar Eden İşlemi Sil</string>
+  <!-- 20131007 -->
+  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
+  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
+  <!-- 20131104 -->
   <string name="last">Son</string>
   <string name="accounts">Hesaplar</string>
   <string name="to_account">Şu hesaba</string>
@@ -334,8 +400,13 @@
   <string name="repeating_transactions">Tekrar Eden İşlemler</string>
   <string name="theme_holo_light">Holo Açık</string>
   <string name="new_account">Yeni Hesap</string>
+  <!--<string name="edit_account">Edit Account</string>-->
+  <!--<string name="new_currency">New Currency</string>-->
+  <!--<string name="edit_currency">Edit Currency</string>-->
   <string name="import_all_currencies">Para Birimleri İçe Aktar</string>
   <string name="import_currencies_in_progress">Para birimleri alınıyor. Lütfen bekleyin&#8230;</string>
+  <!--<string name="from_date">From the date</string>-->
+  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Miktar büyük veya eşit</string>
   <string name="amount_from">Hesaptan alınan miktar</string>
   <string name="amount_less_or_equal">Miktar daha az veya eşit</string>
@@ -360,6 +431,7 @@
   <string name="add_transaction">İşlem Ekle</string>
   <string name="welcome_header">MoneyManagerEx\'e hoş geldiniz!</string>
   <string name="configure_dropbox">Dropbox Yapılandır</string>
+  <!-- 20140115 -->
   <string name="rate_application">Uygulamayı Puanla</string>
   <string name="update_menu_currency_exchange_rates">Döviz Kuru Güncelleştirme</string>
   <string name="question_update_currency_exchange_rates">Döviz kurunu güncelleştirmek istiyor musunuz?</string>
@@ -389,8 +461,8 @@
   <string name="credit_card_accounts">Kredi Kartı Hesapları</string>
   <string name="montly_last_days">Aylık (son gün)</string>
   <string name="montly_last_bussines_day">Aylık (son iş günü)</string>
+  <!-- languages -->
   <string name="locale_application">Uygulama Dili</string>
-  <string name="transaction_cancel_confirm">Bu işlemi iptal etmek istediğinizden emin misiniz?</string>
   <string name="keep_editing">Düzenleme devam et</string>
   <string name="discard">İptal et</string>
   <string name="invalid_expression">Geçersiz ifade</string>
@@ -477,6 +549,7 @@
   <string name="currencies_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı düğmesine dokunun.</string>
   <string name="current_database">Geçerli veritabanı</string>
   <string name="transaction_type_filter">İşlem Türüne Göre Filtrele</string>
+  <!-- Password entry activity -->
   <string name="title_activity_password">Veritabanı parolasını girin</string>
   <string name="income_expense_period">Gelir/gider dönemi</string>
   <string name="income_expense_period_summary">Gelir/gider dönemine genel bakış, başlangıç ekranının alt kısmında yer alır.</string>
@@ -485,6 +558,7 @@
   <string name="add_widget">Widget Ekle</string>
   <string name="single_account">Tek Hesap</string>
   <string name="watchlist">İzleme Listesi</string>
+  <!-- edit investment transaction -->
   <string name="purchase_date">Satın Alma Tarihi</string>
   <string name="symbol">Sembol</string>
   <string name="number_of_shares">Paylaşım Sayısı</string>
@@ -495,9 +569,12 @@
   <string name="value">Değer</string>
   <string name="view_transactions">İşlemleri görüntüle</string>
   <string name="error_downloading_symbol">Fiyat sembolü indirilirken hata oluştu</string>
+  <!-- asset allocation -->
   <string name="move_up">Yukarı git</string>
   <string name="move_down">Aşağıya git</string>
   <string name="stock">Stok</string>
   <string name="all_accounts">Tüm Hesaplar</string>
   <string name="records">kayıtlar</string>
+  <!-- db password entry -->
+  <!-- budgets -->
 </resources>

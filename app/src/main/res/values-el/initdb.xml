@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- default category -->
   <string name="category_1">Λογαριασμοί</string>
   <string name="category_2">Φαγητό</string>
   <string name="category_3">Ελεύθερος Χρόνος</string>
@@ -33,6 +34,7 @@
   <string name="category_14">Άλλα Έσοδα</string>
   <string name="category_15">Άλλα Έξοδα</string>
   <string name="category_16">Μεταφορά</string>
+  <!-- default subcategory -->
   <string name="subcategory_1">Τηλέφωνο</string>
   <string name="subcategory_2">Ηλεκτρικό ρεύμα</string>
   <string name="subcategory_3">Αέριο</string>

@@ -17,21 +17,41 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">個人の財政状況や銀行口座、家族の予算などを管理する、シンプルで使いやすいアプリケーションです。</string>
   <string name="application_credits">MoneyManagerEx for Android プロジェクトは、ActionBarSherlock ライブラリーを使用しています。</string>
   <string name="application_license">オープン ソース ライセンス</string>
+  <!-- database -->
   <string name="db_insert_failed">データの挿入に失敗しました</string>
   <string name="db_delete_failed">データの削除に失敗しました</string>
   <string name="db_update_failed">データの更新に失敗しました</string>
+  <!-- menu -->
+  <!--<string name="menu">Menu</string>-->
   <string name="menu_exit">終了</string>
+  <!--<string name="menu_import_export">Import/Export</string>-->
+  <!--<string name="menu_sync">Synchronize</string>-->
+  <!--<string name="menu_import_from_storage">Import from storage</string>-->
+  <!--<string name="menu_export_to_storage">Export to storage</string>-->
   <string name="menu_manage">管理</string>
+  <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+  <!--<string name="menu_tools">Tools</string>-->
+  <!--<string name="menu_use_external_db">Use External Database</string>-->
+  <!-- import / export database -->
+  <!--<string name="emptyFolder">Empty folder</string>-->
+  <!--<string name="upLevel">Up level</string>-->
+  <!--<string name="import_export">Import / Export</string>-->
+  <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+  <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+  <!--<string name="import_export_failed">Import / Export failed</string>-->
+  <!-- dropbox -->
   <string name="dropbox_link">Dropbox にリンク</string>
   <string name="dropbox_unlink">Dropbox のリンクを解除</string>
   <string name="dropbox_syncProgress">ファイルを同期しています。しばらくお待ちください&#8230;</string>
   <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
   <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
   <string name="dropbox_linkedFile">Dropbox のファイル</string>
+  <!-- preferences -->
   <string name="preferences_general">全般</string>
   <string name="preferences_dispaly">ルック &amp; フィール</string>
   <string name="preferences_behaviour">動作</string>
@@ -51,11 +71,14 @@
   <string name="preferences_behaviour_focus_filter_summary">セレクターでフィルターにフォーカスを当てます。それ以外の場合、参照します。</string>
   <string name="pref_auto_sync_via_wifi">WiFi でのみ自動同期</string>
   <string name="pref_auto_sync_via_wifi_summary">WiFi 接続時のみ自動同期します。</string>
+  <!-- account -->
   <string name="account">アカウント</string>
   <string name="account_list">アカウント一覧</string>
   <string name="account_empty_list">アカウントが見つかりません。作成するには緑のプラスボタンをタップします。</string>
   <string name="account_balance">アカウントの残高</string>
   <string name="account_reconciled_balance">調整残高</string>
+  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
+  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">アカウントを削除</string>
   <string name="account_name">アカウント名</string>
   <string name="account_type">アカウント種類</string>
@@ -77,6 +100,7 @@
   <string name="error_accounttype_empty">アカウントの種類が必要です</string>
   <string name="error_status_empty">アカウントの状態が必要です</string>
   <string name="error_amount_must_be_positive">金額は正でなければなりません。正負は取引の種類によって決まります。</string>
+  <!-- payee -->
   <string name="payee_name">支払先名</string>
   <string name="edit_payeeName">支払先を編集</string>
   <string name="delete_payee">支払先を削除</string>
@@ -85,6 +109,7 @@
   <string name="payee_empty_list">支払先が見つかりません。作成するには緑のプラスボタンをタップします。</string>
   <string name="from">差出人</string>
   <string name="db_payee_update_failed">支払先の更新に失敗しました</string>
+  <!-- category / subcategory -->
   <string name="category">カテゴリー</string>
   <string name="subcategory">サブカテゴリー</string>
   <string name="category_empty_list">カテゴリが見つかりません。作成するには緑のプラスボタンをタップします。</string>
@@ -93,6 +118,7 @@
   <string name="add_subcategory">サブカテゴリーを追加</string>
   <string name="edit_categoryName">カテゴリーを編集</string>
   <string name="delete_category">カテゴリーを削除</string>
+  <!-- currency -->
   <string name="currency_name">通貨名</string>
   <string name="currency_symbol">通貨記号</string>
   <string name="delete_currency">通貨を削除</string>
@@ -105,6 +131,7 @@
   <string name="scale">小数点以下の桁数</string>
   <string name="conversion_to_base_rate">変換</string>
   <string name="currency_name_empty">通貨名が必要です</string>
+  <!-- transaction -->
   <string name="amount">金額</string>
   <string name="total_amount">合計金額</string>
   <string name="deposit">預金</string>
@@ -127,9 +154,9 @@
   <string name="error_category_not_selected">カテゴリーが必要です</string>
   <string name="error_totamount_empty">合計金額が必要です</string>
   <string name="error_transfer_to_same_account">振替する 2 つのアカウントは一意である必要があります</string>
+  <!-- application string -->
   <string name="about">アプリついて</string>
   <string name="add">追加</string>
-  <string name="confirmDelete">削除してもよろしいですか?</string>
   <string name="date">日付</string>
   <string name="delete">削除</string>
   <string name="download">ダウンロード</string>
@@ -158,6 +185,7 @@
   <string name="theme_application">テーマ</string>
   <string name="theme_holo">マテリアルダーク</string>
   <string name="theme_light">マテリアルライト</string>
+  <!-- 20120906 -->
   <string name="close_application">アプリケーションを閉じる</string>
   <string name="question_close_application">アプリケーションを閉じますか?</string>
   <string name="error_intent_pick_file">ファイル選択のインテントを処理するアクティビティが見つかりません</string>
@@ -166,6 +194,7 @@
   <string name="account_can_not_deleted">参照されているため、選択したアカウントは削除できません</string>
   <string name="currency_can_not_deleted">参照されているため、選択した通貨は削除できません</string>
   <string name="category_can_not_deleted">参照されているため、選択したカテゴリーは削除できません</string>
+  <!-- transaction list periods -->
   <string name="all_transaction">すべての取引</string>
   <string name="today">今日</string>
   <string name="last7days">過去 7 日間</string>
@@ -179,6 +208,7 @@
   <string name="widget_summary">概要</string>
   <string name="widget_all_accounts">すべてのアカウント</string>
   <string name="widget_add_transaction">取引を追加</string>
+  <!-- Recurring Transactions -->
   <string name="none">なし</string>
   <string name="once">1 回</string>
   <string name="weekly">毎週</string>
@@ -215,7 +245,10 @@
   <string name="notification_repeating_transaction_expired">期限切れの定期的な取引があります</string>
   <string name="notification_click_to_check_repeating_transaction">タッチして期限切れの取引を確認</string>
   <string name="num_repeating_transaction_expired">%1$d の定期的な取引が期限切れ</string>
+  <!-- 20121121 -->
   <string name="send_feedback">フィードバックを送信</string>
+  <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+  <!-- 20121122 -->
   <string name="preferences_info_application">情報</string>
   <string name="preferences_security">セキュリティ</string>
   <string name="preferences_active_passcode">パスコードを有効にする</string>
@@ -225,7 +258,9 @@
   <string name="preferences_edit_passcode">パスコードを編集</string>
   <string name="preferences_disable_passcode">パスコードを無効にする</string>
   <string name="enter_your_previous_passcode">前のパスコードを入力してください</string>
+  <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">パスコードは更新されません</string>
+  <!-- 20121217 -->
   <string name="lookups_wildcard">検索に % ワイルドカード文字を使用することができます</string>
   <string name="income_vs_expenses_current_month">収入と支出: 今月</string>
   <string name="income">収入</string>
@@ -238,25 +273,34 @@
   <string name="menu_reports">レポート</string>
   <string name="menu_report_income_vs_expenses">収入と支出</string>
   <string name="total">合計</string>
+  <!--<string name="option">Option</string>-->
   <string name="all_time">すべての期間</string>
   <string name="last_month">前月</string>
   <string name="last30days">過去 30 日間</string>
   <string name="last_year">前年</string>
+  <!-- 20130106 -->
+  <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">見つかった取引の数: %1$d</string>
+  <!-- 20130108 -->
   <string name="date_format">日付の形式</string>
   <string name="financial_year_start_day">会計年度: 開始日</string>
   <string name="financial_year_start_month">会計年度: 開始月</string>
+  <!--<string name="release_date">Release Date</string>-->
+  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">データベースをエクスポート</string>
   <string name="database_has_been_moved">データベースは移動されました: %1$s</string>
   <string name="copy_database_on_external_storage_failed">データベースを外部ストレージにコピーできませんでした</string>
   <string name="path_database_using">以下に保存されたデータベースを使用しています: %1$s</string>
+  <!-- 20130129 -->
   <string name="split_transaction">取引を分割</string>
+  <!--<string name="split_category">Split Category</string>-->
   <string name="split">分割</string>
   <string name="error_split_transaction_empty">少なくとも1つの分割取引が必要です</string>
   <string name="export_data_to_csv">データを CSV ファイルにエクスポートします</string>
   <string name="export_data_in_progress">データをエクスポートしています。しばらくお待ちください&#8230;</string>
   <string name="export_file_complete">データはファイル %1$s にエクスポートされました</string>
   <string name="export_file_failed">ファイル %1$s のエクスポートに失敗しました</string>
+  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx for Android はフリーで提供しています。このアプリケーションを気に入っていただいた方は、寄付によって開発チームをサポートすることができます。</string>
   <string name="donate_in_app_title">Google Play アプリ内課金</string>
   <string name="donate_in_app_description">Google Play アプリ内課金で寄付します。</string>
@@ -271,13 +315,18 @@
   <string name="donate_license">Google ライセンス上の理由から、私たちはアプリ内に直接寄付のリンクを配置することはできません。</string>
   <string name="donate_button_text">寄付</string>
   <string name="homepage_button">ホームページを開く</string>
+  <!-- 20130225 -->
   <string name="android_sqlite_vesion">SQLite バージョン</string>
+  <!-- 20130301 -->
+  <!--<string name="sort">Sort</string>-->
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
   <string name="sorting_month">月で並べ替え</string>
+  <!-- 20130305 -->
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex モバイルのフォルダーは空です。既に MoneyManagerEx を使用している場合は、コンピューターでこのフォルダーにデータベースをコピーしてから、更新してください。</string>
   <string name="dropbox_select_file">Dropbox からファイルを選択</string>
   <string name="last_modified">最終更新</string>
+  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
   <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
@@ -293,9 +342,11 @@
   <string name="open_database">データベースを開く</string>
   <string name="synchronization_interval">同期間隔</string>
   <string name="summary_synchronization_interval">同期の頻度は?</string>
+  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Money Manager Ex for Android のバージョン 1.2.0 から Dropbox との同期の管理が変更されました。Dropbox で既に同期を使用しているユーザーは、構成をやり直す必要があります。\nDropbox との同期の構成とデータベースの選択は設定で行います\nMoney Manager Ex for Android のバージョン 1.2.0 から Dropbox とデータベースは自動的に同期することができます。</string>
   <string name="title_dropbox_upload_immediate">変更時にすぐにデータベースをアップロード</string>
   <string name="summary_dropbox_upload_immediate">このオプションで、データベースを変更するとすぐに自動的にアップロードすることができます。</string>
+  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">各取引の残高を表示</string>
   <string name="summary_transaction_shown_balance">各取引の残高を表示します。残高を表示するとアプリケーションの動作が遅くなります。</string>
   <string name="menu_open_database">データベースを開く</string>
@@ -310,25 +361,40 @@
   <string name="Default">デフォルト</string>
   <string name="medium">中</string>
   <string name="large">大</string>
+  <!-- 20130528 -->
   <string name="dropbox_download_is_starting">Dropbox からダウンロードしています。しばらくお待ちください&#8230;</string>
   <string name="dropbox_upload_is_starting">Dropbox にアップロードしています。しばらくお待ちください&#8230;</string>
+  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">お金の行き先</string>
   <string name="menu_report_where_money_comes_from">お金の入り元</string>
-  <string name="title_check_repeating_transaction">確認時間</string>
+  <!-- 20130728 -->
   <string name="summary_check_repeating_transaction">期限切れの定期的な取引があるかの確認を、何時に行いますか? (デフォルト 8:00)</string>
+  <!-- 20130730 -->
   <string name="credits">クレジット</string>
+  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
+  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">上位の払戻: 過去 30 日間</string>
   <string name="top_payees_last_30_days">上位の支払先: 過去 30 日間</string>
+  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">今後の取引</string>
   <string name="quantity">数量</string>
   <string name="dashboard">ダッシュボード</string>
+  <!-- 20130808 -->
   <string name="dropbox_database_is_synchronized">データベースは最新の状態です</string>
+  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">過去 3 ヶ月</string>
   <string name="last6months">過去 6 ヶ月</string>
+  <!-- 20130816 -->
   <string name="empty_category">空のカテゴリー</string>
   <string name="empty_payee">空の支払先</string>
+  <!-- 20130831 -->
   <string name="help">ヘルプ</string>
+  <!-- 20130927 -->
   <string name="delete_repeating_transaction">定期的な取引を削除</string>
+  <!-- 20131007 -->
+  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
+  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
+  <!-- 20131104 -->
   <string name="last">最後</string>
   <string name="accounts">アカウント</string>
   <string name="to_account">先アカウント</string>
@@ -347,8 +413,13 @@
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新しいアカウント</string>
   <string name="create_new_account">新規アカウントを作成</string>
+  <!--<string name="edit_account">Edit Account</string>-->
+  <!--<string name="new_currency">New Currency</string>-->
+  <!--<string name="edit_currency">Edit Currency</string>-->
   <string name="import_all_currencies">通貨のインポート</string>
   <string name="import_currencies_in_progress">通貨をインポートしています。しばらくお待ちください&#8230;</string>
+  <!--<string name="from_date">From the date</string>-->
+  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">金額が以上</string>
   <string name="amount_from">金額 から</string>
   <string name="amount_less_or_equal">金額が以下</string>
@@ -375,6 +446,7 @@
   <string name="welcome_body">MoneyManagerEx のすべての取引はアカウントに属します。\n\n現在、表示可能なアカウントがありません。設定で、表示するアカウントのフィルターを調整するか、次のオプションのいずれかを選択してください。</string>
   <string name="welcome_body_dropbox">Windows、Linux または Mac で既に MoneyManagerEx を使用している場合は、Dropbox であなたのデータベースを同期するように、このアプリケーションをリンクしてください</string>
   <string name="configure_dropbox">Dropbox を構成</string>
+  <!-- 20140115 -->
   <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
   <string name="search_text_contain_summary">開始文字ではなく含まれる文字で、支払先、カテゴリー、通貨、等&#8230; を検索します</string>
   <string name="rate_application">アプリケーションの評価</string>
@@ -411,8 +483,8 @@
   <string name="credit_card_accounts">クレジット カード アカウント</string>
   <string name="montly_last_days">毎月 (最終日)</string>
   <string name="montly_last_bussines_day">毎月 (最終営業日)</string>
+  <!-- languages -->
   <string name="locale_application">アプリケーションの言語</string>
-  <string name="transaction_cancel_confirm">この取引を破棄してもよろしいですか?</string>
   <string name="keep_editing">編集を続ける</string>
   <string name="discard">破棄</string>
   <string name="invalid_expression">式が正しくありません</string>
@@ -512,6 +584,7 @@
   <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
   <string name="transaction_type_filter">取引の種類でフィルター</string>
   <string name="status_filter">ステータスでフィルター</string>
+  <!-- Password entry activity -->
   <string name="title_activity_password">データベースのパスワードを入力してください</string>
   <string name="income_expense_period">収入/支出の期間</string>
   <string name="income_expense_period_summary">ホーム画面フッターの、収入/支出の概要の期間。</string>
@@ -520,6 +593,7 @@
   <string name="add_widget">ウィジェットを追加</string>
   <string name="single_account">単一アカウント</string>
   <string name="watchlist">ウォッチリスト</string>
+  <!-- edit investment transaction -->
   <string name="purchase_date">購入日</string>
   <string name="stock_name">銘柄名</string>
   <string name="symbol">シンボル</string>
@@ -534,6 +608,7 @@
   <string name="other">その他</string>
   <string name="cleared">クリアしました</string>
   <string name="delete_success">アイテムを削除しました</string>
+  <!-- asset allocation -->
   <string name="asset_allocation">資産の割当て</string>
   <string name="asset_classes_empty">資産分類が定義されていません。作成するには、緑のプラスボタンをタップします。</string>
   <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
@@ -553,6 +628,7 @@
   <string name="stock">株式</string>
   <string name="all_accounts">すべてのアカウント</string>
   <string name="records">レコード</string>
+  <!-- db password entry -->
   <string name="enter_password">パスワードを入力</string>
   <string name="title_activity_portfolio">PortfolioActivity</string>
   <string name="success">操作が正常終了しました</string>
@@ -561,4 +637,5 @@
   <string name="asset_allocation_diff_threshold">資産配分差異しきい値</string>
   <string name="asset_allocation_diff_threshold_summary">差異の値に色を付けるしきい値。</string>
   <string name="error_saving_record">レコードの保存中にエラー</string>
+  <!-- budgets -->
 </resources>

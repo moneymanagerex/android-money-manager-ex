@@ -17,21 +17,41 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Prosta i łatwa w użyciu aplikacja do zarządzania osobistymi wydatkami, kontami bankowymi, rodzinnym budżetem itp.</string>
   <string name="application_credits">MoneyManagerEx dla Androida używa biblioteki ActionBarSherlock</string>
   <string name="application_license">Licencje open source</string>
+  <!-- database -->
   <string name="db_insert_failed">Dodanie danych nie powiodło się</string>
   <string name="db_delete_failed">Usunięcie danych nie powiodło się</string>
   <string name="db_update_failed">Aktualizacja danych nie powiodła się</string>
+  <!-- menu -->
+  <!--<string name="menu">Menu</string>-->
   <string name="menu_exit">Zakończ</string>
+  <!--<string name="menu_import_export">Import/Export</string>-->
+  <!--<string name="menu_sync">Synchronize</string>-->
+  <!--<string name="menu_import_from_storage">Import from storage</string>-->
+  <!--<string name="menu_export_to_storage">Export to storage</string>-->
   <string name="menu_manage">Zarządzaj</string>
+  <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+  <!--<string name="menu_tools">Tools</string>-->
+  <!--<string name="menu_use_external_db">Use External Database</string>-->
+  <!-- import / export database -->
+  <!--<string name="emptyFolder">Empty folder</string>-->
+  <!--<string name="upLevel">Up level</string>-->
+  <!--<string name="import_export">Import / Export</string>-->
+  <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+  <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+  <!--<string name="import_export_failed">Import / Export failed</string>-->
+  <!-- dropbox -->
   <string name="dropbox_link">Połącz z Dropboxem</string>
   <string name="dropbox_unlink">Odłącz od Dropboxa</string>
   <string name="dropbox_syncProgress">Synchronizacja pliku. Proszę czekać&#8230;</string>
   <string name="dropbox_downloadProgress">Pobieranie pliku z Dropboxa. Proszę czekać&#8230;</string>
   <string name="dropbox_uploadProgress">Przesyłanie pliku do Dropboxa. Proszę czekać&#8230;</string>
   <string name="dropbox_linkedFile">Plik Dropboksa</string>
+  <!-- preferences -->
   <string name="preferences_general">Ogólne</string>
   <string name="preferences_dispaly">Wygląd</string>
   <string name="preferences_behaviour">Zachowanie</string>
@@ -47,11 +67,14 @@
   <string name="summary_show_tutorial">Włączyć samouczek przy następnym uruchomieniu aplikacji?</string>
   <string name="pref_auto_sync_via_wifi">Autosynchronizacja tylko na WiFi</string>
   <string name="pref_auto_sync_via_wifi_summary">Autosynchronizacja tylko na połączeniu z WiFi.</string>
+  <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Lista kont</string>
   <string name="account_empty_list">Konta nie zostały odnalezione. Aby utworzyć, wybierz zielony przycisk.</string>
   <string name="account_balance">Saldo konta</string>
   <string name="account_reconciled_balance">Uzgodnione saldo</string>
+  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
+  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Usuń konto</string>
   <string name="account_name">Nazwa konta</string>
   <string name="account_type">Typ konta</string>
@@ -73,6 +96,7 @@
   <string name="error_accounttype_empty">Typ konta jest wymagany</string>
   <string name="error_status_empty">Status konta jest wymagany</string>
   <string name="error_amount_must_be_positive">Kwota musi być pozytywna. Znak jest określony przez typ transakcji.</string>
+  <!-- payee -->
   <string name="payee_name">Nazwa podmiotu</string>
   <string name="edit_payeeName">Edytuj podmiot</string>
   <string name="delete_payee">Usuń podmiot</string>
@@ -81,6 +105,7 @@
   <string name="payee_empty_list">Odbiorca nie został odnaleziony. Aby utworzyć, wybierz zielony przycisk.</string>
   <string name="from">Z</string>
   <string name="db_payee_update_failed">Aktualizacja podmiotu nie powiodła się</string>
+  <!-- category / subcategory -->
   <string name="category">Kategoria</string>
   <string name="subcategory">Podkategoria</string>
   <string name="category_empty_list">Kategoria nie została odnaleziona. Aby utworzyć, wybierz zielony przycisk.</string>
@@ -89,6 +114,7 @@
   <string name="add_subcategory">Dodaj podkategorię</string>
   <string name="edit_categoryName">Edytuj kategorię</string>
   <string name="delete_category">Usuń kategorię</string>
+  <!-- currency -->
   <string name="currency_name">Nazwa waluty</string>
   <string name="currency_symbol">Symbol waluty</string>
   <string name="delete_currency">Usuń walutę</string>
@@ -101,6 +127,7 @@
   <string name="scale">Skala</string>
   <string name="conversion_to_base_rate">Kurs wymiany</string>
   <string name="currency_name_empty">Nazwa waluty jest wymagana</string>
+  <!-- transaction -->
   <string name="amount">Kwota</string>
   <string name="total_amount">Łączna kwota</string>
   <string name="deposit">Wpłata</string>
@@ -122,9 +149,9 @@
   <string name="error_category_not_selected">Kategoria jest wymagana</string>
   <string name="error_totamount_empty">Całkowita kwota jest wymagana</string>
   <string name="error_transfer_to_same_account">Dwa konta dla przelewu muszą być różne</string>
+  <!-- application string -->
   <string name="about">O aplikacji</string>
   <string name="add">Dodaj</string>
-  <string name="confirmDelete">Czy na pewno chcesz usunąć?</string>
   <string name="date">Data</string>
   <string name="delete">Usuń</string>
   <string name="download">Pobierz</string>
@@ -153,6 +180,7 @@
   <string name="theme_application">Motyw</string>
   <string name="theme_holo">Material Dark</string>
   <string name="theme_light">Material Light</string>
+  <!-- 20120906 -->
   <string name="close_application">Zamknij aplikację</string>
   <string name="question_close_application">Czy na pewno chcesz zamknąć aplikację?</string>
   <string name="error_intent_pick_file">Nie znaleziono aplikacji do obsługi żądania wybrania pliku</string>
@@ -161,6 +189,7 @@
   <string name="account_can_not_deleted">Wybrane konto nie może zostać usunięte, ponieważ istnieją odwołania do niego</string>
   <string name="currency_can_not_deleted">Wybrana waluta nie może zostać usunięta, ponieważ istnieją odwołania do niej</string>
   <string name="category_can_not_deleted">Wybrana kategoria nie może zostać usunięta, ponieważ istnieją odwołania do niej</string>
+  <!-- transaction list periods -->
   <string name="all_transaction">Wszystkie transakcje</string>
   <string name="today">Dzisiaj</string>
   <string name="last7days">Z ostatnich 7 dni</string>
@@ -172,6 +201,7 @@
   <string name="transaction_number">Numer transakcji</string>
   <string name="widget_summary">Podsumowanie</string>
   <string name="widget_add_transaction">Dodaj transakcję</string>
+  <!-- Recurring Transactions -->
   <string name="none">Brak</string>
   <string name="once">Raz</string>
   <string name="weekly">Co tydzień</string>
@@ -204,7 +234,10 @@
   <string name="notification_repeating_transaction_expired">Występuja zaległe cykliczne płatności</string>
   <string name="notification_click_to_check_repeating_transaction">Dotknij, aby sprawdzić zaległe transakcje</string>
   <string name="num_repeating_transaction_expired">%1$d zaległych cyklicznych transakcji</string>
+  <!-- 20121121 -->
   <string name="send_feedback">Prześlij opinię</string>
+  <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+  <!-- 20121122 -->
   <string name="preferences_info_application">Informacje</string>
   <string name="preferences_security">Bezpieczeństwo</string>
   <string name="preferences_active_passcode">Aktywuj hasło</string>
@@ -214,7 +247,9 @@
   <string name="preferences_edit_passcode">Zmień kod dostępu</string>
   <string name="preferences_disable_passcode">Dezaktywuj kod dostępu</string>
   <string name="enter_your_previous_passcode">Wprowadź poprzedni kod dostępu</string>
+  <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">Kod dostępu nie został zaktualizowany</string>
+  <!-- 20121217 -->
   <string name="lookups_wildcard">Do wyszukiwania można użyć wieloznacznego symbolu %</string>
   <string name="income_vs_expenses_current_month">Przychody a wydatki: bieżący miesiąc</string>
   <string name="income">Przychód</string>
@@ -226,25 +261,34 @@
   <string name="menu_reports">Raporty</string>
   <string name="menu_report_income_vs_expenses">Przychody a wydatki</string>
   <string name="total">Łącznie</string>
+  <!--<string name="option">Option</string>-->
   <string name="all_time">Wszystko</string>
   <string name="last_month">Poprzedni miesiąc</string>
   <string name="last30days">Ostatnie 30 dni</string>
   <string name="last_year">Poprzedni rok</string>
+  <!-- 20130106 -->
+  <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">Liczba znalezionych transakcji: %1$d</string>
+  <!-- 20130108 -->
   <string name="date_format">Format daty</string>
   <string name="financial_year_start_day">Rok finansowy: początkowy dzień</string>
   <string name="financial_year_start_month">Rok finansowy: początkowy miesiąc</string>
+  <!--<string name="release_date">Release Date</string>-->
+  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Eksportuj bazę danych</string>
   <string name="database_has_been_moved">Baza danych została przeniesiona: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Kopiowanie bazy danych na zewnętrzny nośnik nie powiodło się</string>
   <string name="path_database_using">Używasz bazy danych zapisanej w: %1$s</string>
+  <!-- 20130129 -->
   <string name="split_transaction">Podziel transakcję</string>
+  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Podziel</string>
   <string name="error_split_transaction_empty">Wymagany jest przynajmniej jeden element podzielonej transakcji</string>
   <string name="export_data_to_csv">Eksportuj dane do pliku CSV</string>
   <string name="export_data_in_progress">Eksportowanie danych.  Prosze czekać&#8230;</string>
   <string name="export_file_complete">Dane zostały pomyślnie wyeksportowane do pliku %1$s</string>
   <string name="export_file_failed">Eksport do pliku %1$s nie powiódł się</string>
+  <!-- 20130220 -->
   <string name="donate_header">MoneyManagerEx dla Androida jest dostępny bezpłatnie. Jeżeli podoba ci się ta aplikacja, możesz wesprzeć zespół twórców dotacją.</string>
   <string name="donate_in_app_title">Google Play wbudowana aplikacja płatnicza</string>
   <string name="donate_in_app_description">Wesprzyj przy pomocy Google Play In-App Billing.</string>
@@ -258,13 +302,18 @@
   <string name="donate_bitcoin">Teraz akceptujemy również darowizny w bitcoinach.</string>
   <string name="donate_license">Ze względu na zasady Google, nie możemy umieścić linku do strony pozwalającej nas wesprzeć bezpośrednio w aplikacji.</string>
   <string name="donate_button_text">Wesprzyj</string>
+  <!-- 20130225 -->
   <string name="android_sqlite_vesion">Wersja SQLite</string>
+  <!-- 20130301 -->
+  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Rosnąco</string>
   <string name="descending">Malejąco</string>
   <string name="sorting_month">Sortowanie miesięcy</string>
+  <!-- 20130305 -->
   <string name="dropbox_empty_folder">Katalog Dropbox/Apps/Money Manager Ex Mobile jest pusty. Jeśli wcześniej używałeś MoneyManagerEx, skopiuj bazę danych do tego katalogu, a następnie odśwież.</string>
   <string name="dropbox_select_file">Wybierz plik z Dropboksa</string>
   <string name="last_modified">Ostatnia modyfikacja</string>
+  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Baza danych została pobrana</string>
   <string name="dropbox_open_database_downloaded">Aby użyć pobranej bazy danych, dotknij przycisku \"Otwórz bazę danych\"</string>
@@ -280,9 +329,11 @@
   <string name="open_database">Otwórz bazę danych</string>
   <string name="synchronization_interval">Interwał synchronizacji</string>
   <string name="summary_synchronization_interval">Jak często synchronizować?</string>
+  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Od wersji 1.2.0 Money Manager Ex dla Androida zmienił sposób zarządzania synchronizacją z Dropboxem. Użytkownicy, którzy używali wcześniej synchronizacji z Dropboxem, muszą ponownie przeprowadzić konfigurację.\nKonfiguracja synchronizacji z Dropboxem jest dostępna w ustawieniach.\nOd wersji 1.2.0 Money Manager Ex dla Androida może automatycznie synchronizować bazę danych z Dropboxem.</string>
   <string name="title_dropbox_upload_immediate">Prześlij bazę danych przy każdej zmianie</string>
   <string name="summary_dropbox_upload_immediate">Ta opcja pozwala na automatyczne przesłanie bazy danych za każdym razem, gdy zostanie ona zmieniona</string>
+  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Pokazuj saldo każdej transakcji</string>
   <string name="summary_transaction_shown_balance">Wyświetla saldo dla każdej transakcji. Włączenie tej opcji może spowolnić działanie aplikacji</string>
   <string name="menu_open_database">Otwórz bazę danych</string>
@@ -297,25 +348,40 @@
   <string name="Default">Domyślnie</string>
   <string name="medium">Średni</string>
   <string name="large">Duży</string>
+  <!-- 20130528 -->
   <string name="dropbox_download_is_starting">Pobieranie danych z Dropboksa. Proszę czekać&#8230;</string>
   <string name="dropbox_upload_is_starting">Przesyłanie danych do Dropboksa. Proszę czekać&#8230;</string>
+  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Cele wydatków</string>
   <string name="menu_report_where_money_comes_from">Źródła przychodów</string>
-  <string name="title_check_repeating_transaction">Czas sprawdzania</string>
+  <!-- 20130728 -->
   <string name="summary_check_repeating_transaction">O której godzinie sprawdzać, czy są zaległe cykliczne transakcje? (domyślnie 8:00)</string>
+  <!-- 20130730 -->
   <string name="credits">Twórcy</string>
+  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
+  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Największe wypłaty: ostatnie 30 dni</string>
   <string name="top_payees_last_30_days">Główne podmioty: ostatnie 30 dni</string>
+  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Nadchodzące transakcje</string>
   <string name="quantity">Ilość</string>
   <string name="dashboard">Panel</string>
+  <!-- 20130808 -->
   <string name="dropbox_database_is_synchronized">Baza danych jest aktualna</string>
+  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Ostatnie 3 miesiące</string>
   <string name="last6months">Ostatnie 6 miesięcy</string>
+  <!-- 20130816 -->
   <string name="empty_category">Pusta kategoria</string>
   <string name="empty_payee">Pusty podmiot</string>
+  <!-- 20130831 -->
   <string name="help">Pomoc</string>
+  <!-- 20130927 -->
   <string name="delete_repeating_transaction">Usuń cykliczną transakcję</string>
+  <!-- 20131007 -->
+  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
+  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
+  <!-- 20131104 -->
   <string name="last">Ostatnie</string>
   <string name="accounts">Konta</string>
   <string name="to_account">Konto docelowe</string>
@@ -331,8 +397,13 @@
   <string name="repeating_transactions">Cykliczne transakcje</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Tworzenie konta</string>
+  <!--<string name="edit_account">Edit Account</string>-->
+  <!--<string name="new_currency">New Currency</string>-->
+  <!--<string name="edit_currency">Edit Currency</string>-->
   <string name="import_all_currencies">Importuj waluty</string>
   <string name="import_currencies_in_progress">Importowanie walut. Proszę czekać&#8230;</string>
+  <!--<string name="from_date">From the date</string>-->
+  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Kwota większa lub równa</string>
   <string name="amount_less_or_equal">Kwota mniejsza lub równa</string>
   <string name="amount_to">Kwota do</string>
@@ -356,6 +427,7 @@
   <string name="welcome_header">Witaj w Money Manager Ex!</string>
   <string name="welcome_body_dropbox">Jeśli używasz już aplikacji Moneye Manager Ex dla systemu Windows, Linux lub Mac OS, połącz tę aplikację z Dropboxem, aby sychronizować swoją bazę danych</string>
   <string name="configure_dropbox">Skonfiguruj Dropbox</string>
+  <!-- 20140115 -->
   <string name="search_text_contain_title">Wyszukiwanie w zawartości tekstów, a nie w ich początkach</string>
   <string name="search_text_contain_summary">Wyszukuj w całych nazwach płatników, kategorii, walut itd., a nie tylko w ich początkach</string>
   <string name="rate_application">Oceń aplikację</string>
@@ -389,8 +461,8 @@
   <string name="credit_card_accounts">Konta kart kredytowych</string>
   <string name="montly_last_days">Miesięczne (ostatni dzień)</string>
   <string name="montly_last_bussines_day">Miesięczne (ostatni dzień roboczy)</string>
+  <!-- languages -->
   <string name="locale_application">Język aplikacji</string>
-  <string name="transaction_cancel_confirm">Czy na pewno chcesz odrzucić tę transakcję?</string>
   <string name="keep_editing">Kontynuuj edycję</string>
   <string name="discard">Odrzuć</string>
   <string name="invalid_expression">Nieprawidłowe wyrażenie</string>
@@ -475,6 +547,7 @@
   <string name="title_activity_currency_rates_report">Kursy walut</string>
   <string name="frequency">Częstotliwość</string>
   <string name="current_database">Bieżąca baza danych</string>
+  <!-- Password entry activity -->
   <string name="title_activity_password">Wprowadź hasło bazy danych</string>
   <string name="income_expense_period">Okres przychodu/wydatku</string>
   <string name="appwidget_text">PRZYKŁAD</string>
@@ -482,6 +555,7 @@
   <string name="add_widget">Dodaj Widżet</string>
   <string name="single_account">Jedno konto</string>
   <string name="watchlist">Lista obserwowanych</string>
+  <!-- edit investment transaction -->
   <string name="purchase_date">Data Zakupu</string>
   <string name="stock_name">Nazwa akcji</string>
   <string name="symbol">Symbol</string>
@@ -492,4 +566,7 @@
   <string name="value">Wartość</string>
   <string name="view_transactions">Zobacz transakcje</string>
   <string name="error_downloading_symbol">Błąd pobierania cena symbolu</string>
+  <!-- asset allocation -->
+  <!-- db password entry -->
+  <!-- budgets -->
 </resources>

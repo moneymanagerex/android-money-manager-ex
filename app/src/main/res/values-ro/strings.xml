@@ -17,21 +17,41 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">O aplicație simplă și ușor de folosit pentru a administra finanțele personale, conturi bancare, bugetul familiei, etc.</string>
   <string name="application_credits">Proiectul Managerul Finanțelor Ex pentru Android folosește librăria ActionBarSherlock</string>
   <string name="application_license">Licențe cu sursă deschisă</string>
+  <!-- database -->
   <string name="db_insert_failed">Introducerea datelor a eșuat</string>
   <string name="db_delete_failed">Ştergerea datelor a eșuat</string>
   <string name="db_update_failed">Actualizarea datelor a eșuat</string>
+  <!-- menu -->
+  <!--<string name="menu">Menu</string>-->
   <string name="menu_exit">Ieșire</string>
+  <!--<string name="menu_import_export">Import/Export</string>-->
+  <!--<string name="menu_sync">Synchronize</string>-->
+  <!--<string name="menu_import_from_storage">Import from storage</string>-->
+  <!--<string name="menu_export_to_storage">Export to storage</string>-->
   <string name="menu_manage">Administrează</string>
+  <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+  <!--<string name="menu_tools">Tools</string>-->
+  <!--<string name="menu_use_external_db">Use External Database</string>-->
+  <!-- import / export database -->
+  <!--<string name="emptyFolder">Empty folder</string>-->
+  <!--<string name="upLevel">Up level</string>-->
+  <!--<string name="import_export">Import / Export</string>-->
+  <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+  <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+  <!--<string name="import_export_failed">Import / Export failed</string>-->
+  <!-- dropbox -->
   <string name="dropbox_link">Link la Dropbox</string>
   <string name="dropbox_unlink">Dezactivează link-ul la Dropbox</string>
   <string name="dropbox_syncProgress">Sincronizare fişier. Te rog să aştepţi&#8230;</string>
   <string name="dropbox_downloadProgress">Se descarcă fișierul din Dropbox. Te rog să aştepţi&#8230;</string>
   <string name="dropbox_uploadProgress">Se încarcă fișierul în Dropbox. Te rog să aştepţi&#8230;</string>
   <string name="dropbox_linkedFile">Fişier Dropbox</string>
+  <!-- preferences -->
   <string name="preferences_general">Setări Generale</string>
   <string name="preferences_dispaly">Privește &amp; Simte</string>
   <string name="preferences_behaviour">Comportament</string>
@@ -51,11 +71,14 @@
   <string name="preferences_behaviour_focus_filter_summary">Concentrează filtrarea pe selectoare. Dacă nu, navighează.</string>
   <string name="pref_auto_sync_via_wifi">Sincronizează automat doar pe WiFi</string>
   <string name="pref_auto_sync_via_wifi_summary">Sincronizează automat doar când e conectat la WiFi.</string>
+  <!-- account -->
   <string name="account">Cont</string>
   <string name="account_list">Lista de conturi</string>
   <string name="account_empty_list">Nu s-a găsit nici un cont. Pentru a crea unul, apasă butonul verde plus.</string>
   <string name="account_balance">Soldul contului</string>
   <string name="account_reconciled_balance">Reglarea balanței</string>
+  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
+  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Șterge contul</string>
   <string name="account_name">Numele contului</string>
   <string name="account_type">Tipul contului</string>
@@ -77,6 +100,7 @@
   <string name="error_accounttype_empty">Tipul de cont trebuie precizat</string>
   <string name="error_status_empty">Starea contului trebuie precizată</string>
   <string name="error_amount_must_be_positive">Valoarea trebuie să fie pozitivă. Semnul este determinat de tipul de tranzacţie.</string>
+  <!-- payee -->
   <string name="payee_name">Numele beneficiarului</string>
   <string name="edit_payeeName">Editează beneficiarul</string>
   <string name="delete_payee">Şterge beneficiarul</string>
@@ -85,6 +109,7 @@
   <string name="payee_empty_list">Nu a fost găsit nici un beneficiar. Pentru a crea unul, apasă butonul verde plus.</string>
   <string name="from">De la</string>
   <string name="db_payee_update_failed">Actualizarea beneficiarului a eșuat</string>
+  <!-- category / subcategory -->
   <string name="category">Categorie</string>
   <string name="subcategory">Subcategorie</string>
   <string name="category_empty_list">Nu a fost găsită nici o categorie. Pentru a crea una, apasă butonul verde plus.</string>
@@ -93,6 +118,7 @@
   <string name="add_subcategory">Adaugă subcategorie</string>
   <string name="edit_categoryName">Editează Categoria</string>
   <string name="delete_category">Șterge Categoria</string>
+  <!-- currency -->
   <string name="currency_name">Nume monedă</string>
   <string name="currency_symbol">Simbol monedă</string>
   <string name="delete_currency">Şterge Moneda</string>
@@ -105,6 +131,7 @@
   <string name="scale">Mărime</string>
   <string name="conversion_to_base_rate">Schimb valutar</string>
   <string name="currency_name_empty">Trebuie precizat numele monedei</string>
+  <!-- transaction -->
   <string name="amount">Sumă</string>
   <string name="total_amount">Suma totală</string>
   <string name="deposit">Depozit</string>
@@ -127,9 +154,9 @@
   <string name="error_category_not_selected">Trebuie precizată categoria</string>
   <string name="error_totamount_empty">Trebuie precizată suma totală</string>
   <string name="error_transfer_to_same_account">Cele două conturi pentru transfer trebuie să fie distincte</string>
+  <!-- application string -->
   <string name="about">Despre</string>
   <string name="add">Adaugă</string>
-  <string name="confirmDelete">Eşti sigur că dorești să ștergi?</string>
   <string name="date">Data</string>
   <string name="delete">Șterge</string>
   <string name="download">Descarcă</string>
@@ -158,6 +185,7 @@
   <string name="theme_application">Temă</string>
   <string name="theme_holo">Întunecată</string>
   <string name="theme_light">Deschisă</string>
+  <!-- 20120906 -->
   <string name="close_application">Închide aplicația</string>
   <string name="question_close_application">Vrei să închizi aplicația?</string>
   <string name="error_intent_pick_file">Nu s-a găsit nici o activitate care să modifice fișierul Intent pick</string>
@@ -166,6 +194,7 @@
   <string name="account_can_not_deleted">Contul selectat nu poate fi șters deoarece este punct de referință</string>
   <string name="currency_can_not_deleted">Moneda selectată nu poate fi ștearsă deoarece este punct de referință</string>
   <string name="category_can_not_deleted">Categoria selectată nu poate fi ștearsă deoarece este punct de referință</string>
+  <!-- transaction list periods -->
   <string name="all_transaction">Toate tranzacţiile</string>
   <string name="today">Azi</string>
   <string name="last7days">Ultimele 7 zile</string>
@@ -179,6 +208,7 @@
   <string name="widget_summary">Sumar</string>
   <string name="widget_all_accounts">Toate conturile</string>
   <string name="widget_add_transaction">Adaugă Tranzacție</string>
+  <!-- Recurring Transactions -->
   <string name="none">Niciunul</string>
   <string name="once">O singură dată</string>
   <string name="weekly">Săptămânal</string>
@@ -215,7 +245,10 @@
   <string name="notification_repeating_transaction_expired">Există tranzacții recurente învechite</string>
   <string name="notification_click_to_check_repeating_transaction">Atinge pentru a verifica perioada de întârziere a tranzacției</string>
   <string name="num_repeating_transaction_expired">%1$d tranzacții recurente în întârziere</string>
+  <!-- 20121121 -->
   <string name="send_feedback">Trimite Feedback</string>
+  <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+  <!-- 20121122 -->
   <string name="preferences_info_application">Info</string>
   <string name="preferences_security">Securitate</string>
   <string name="preferences_active_passcode">Activează Codul de Securitate</string>
@@ -225,7 +258,9 @@
   <string name="preferences_edit_passcode">Editează Codul de Securitate</string>
   <string name="preferences_disable_passcode">Dezactivează Codul de Securitate</string>
   <string name="enter_your_previous_passcode">Introdu Codul de Securitate anterior</string>
+  <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">codul de securitate nu este actualizat</string>
+  <!-- 20121217 -->
   <string name="lookups_wildcard">Pentru căutări poți folosi caracterul de înlocuire %</string>
   <string name="income_vs_expenses_current_month">Venituri vs. Cheltuieli: Luna Curentă</string>
   <string name="income">Venit</string>
@@ -238,25 +273,34 @@
   <string name="menu_reports">Rapoarte</string>
   <string name="menu_report_income_vs_expenses">Venituri Vs Cheltuieli</string>
   <string name="total">Total</string>
+  <!--<string name="option">Option</string>-->
   <string name="all_time">De la început</string>
   <string name="last_month">Luna precedentă</string>
   <string name="last30days">Ultimele 30 de zile</string>
   <string name="last_year">Anul precedent</string>
+  <!-- 20130106 -->
+  <!--<string name="result">Result</string>-->
   <string name="number_transaction_found">Numărul de tranzacţii găsite: %1$d</string>
+  <!-- 20130108 -->
   <string name="date_format">Format dată</string>
   <string name="financial_year_start_day">Anul financiar: prima zi</string>
   <string name="financial_year_start_month">Anul financiar: prima lună</string>
+  <!--<string name="release_date">Release Date</string>-->
+  <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Exportă baza de date</string>
   <string name="database_has_been_moved">Baza de date a fost mutată: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Copierea bazei de date pe dispozitivul extern de stocare a eșuat</string>
   <string name="path_database_using">Folosești baza de date salvată în: %1$s</string>
+  <!-- 20130129 -->
   <string name="split_transaction">Împarte tranzacția</string>
+  <!--<string name="split_category">Split Category</string>-->
   <string name="split">Împarte</string>
   <string name="error_split_transaction_empty">Este necesară măcar o împărțire a tranzacției</string>
   <string name="export_data_to_csv">Exportă datele ca fișier CSV</string>
   <string name="export_data_in_progress">Se exportă datele. Te rog să aștepți&#8230;</string>
   <string name="export_file_complete">Datele au fost exportate cu succes în fișierul %1$s</string>
   <string name="export_file_failed">Exportarea fișierului %1$s a eșuat</string>
+  <!-- 20130220 -->
   <string name="donate_header">Managerul Finanțelor Ex pentru Android este oferit gratuit. Dacă îți place aplicația, poți sprijini echipa de dezvoltare cu o donație.</string>
   <string name="donate_in_app_title">Google Play Achiziții în aplicație</string>
   <string name="donate_in_app_description">Donează prin Google Play Achiziții în aplicație.</string>
@@ -271,13 +315,18 @@
   <string name="donate_license">Din motive de licențiere Google, nu ne este permis să punem link-uri de donație în interiorul aplicației.</string>
   <string name="donate_button_text">Donează</string>
   <string name="homepage_button">Deschide pagina de start</string>
+  <!-- 20130225 -->
   <string name="android_sqlite_vesion">Versiunea SQLite</string>
+  <!-- 20130301 -->
+  <!--<string name="sort">Sort</string>-->
   <string name="ascending">Crescător</string>
   <string name="descending">Descrescător</string>
   <string name="sorting_month">Sortarea lunilor</string>
+  <!-- 20130305 -->
   <string name="dropbox_empty_folder">Dosarul din Dropbox/Apps/Managerul Finanțelor Ex Mobil este gol. Dacă deja folosești Managerul Finanțelor Ex copie baza ta de date în acest dosar din calculatorul tău, și după asta reîmprospătează.</string>
   <string name="dropbox_select_file">Selectează un fișier din Dropbox</string>
   <string name="last_modified">Ultima modificare</string>
+  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Baza ta de date a fost descărcată</string>
   <string name="dropbox_open_database_downloaded">Pentru a folosi baza de date descărcată, atinge Deschide Baza de date</string>
@@ -293,9 +342,11 @@
   <string name="open_database">Deschide baza de date</string>
   <string name="synchronization_interval">Interval de sincronizare</string>
   <string name="summary_synchronization_interval">Cât de des să sincronizez?</string>
+  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Începând cu versiunea 1.2.0 a Money Manager Ex pentru Android s-a schimbat managementul sincronizării cu Dropbox. Utilizatorii care deja folosesc sincronizarea cu Dropbox trebuie să reconfigureze setările.\n Configurarea sincronizării cu Dropbox și selectarea bazei de date este localizată în setări.\n Începând cu versiunea 1.2.0 a Money Manager Ex pentru Android sincronizarea se poate face automat în baza de date cu Dropbox</string>
   <string name="title_dropbox_upload_immediate">Încarcă baza de date imediat după efectuarea schimbărilor</string>
   <string name="summary_dropbox_upload_immediate">Această opțiune permisă să încarci baza de date automat imediat ce termini de efectuat schimbările</string>
+  <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Afișează soldul pentru fiecare tranzacție</string>
   <string name="summary_transaction_shown_balance">Afișează soldul pentru fiecare tranzacție. Afișarea soldului poate încetini aplicația</string>
   <string name="menu_open_database">Deschide baza de date</string>
@@ -310,25 +361,40 @@
   <string name="Default">Implicit</string>
   <string name="medium">Medie</string>
   <string name="large">Mare</string>
+  <!-- 20130528 -->
   <string name="dropbox_download_is_starting">Se descarcă din Dropbox. Te rog să aştepţi&#8230;</string>
   <string name="dropbox_upload_is_starting">Se încarcă în Dropbox. Te rog să aştepţi&#8230;</string>
+  <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Unde merg banii</string>
   <string name="menu_report_where_money_comes_from">De unde vin banii</string>
-  <string name="title_check_repeating_transaction">Verifică timpul</string>
+  <!-- 20130728 -->
   <string name="summary_check_repeating_transaction">La ce oră vrei să verifici dacă sunt tranzacții recurente în întârziere? (prestabilit 08:00)</string>
+  <!-- 20130730 -->
   <string name="credits">Credite</string>
+  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
+  <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Retragerile de top: Ultimele 30 de zile</string>
   <string name="top_payees_last_30_days">Beneficiari de top: Ultimele 30 de zile</string>
+  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Tranzacții viitoare</string>
   <string name="quantity">Cantitate</string>
   <string name="dashboard">Panou de control</string>
+  <!-- 20130808 -->
   <string name="dropbox_database_is_synchronized">Baza de date este actualizată</string>
+  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Ultimele 3 luni</string>
   <string name="last6months">Ultimele 6 luni</string>
+  <!-- 20130816 -->
   <string name="empty_category">Golește categoria</string>
   <string name="empty_payee">Golește Beneficiari</string>
+  <!-- 20130831 -->
   <string name="help">Ajutor</string>
+  <!-- 20130927 -->
   <string name="delete_repeating_transaction">Șterge tranzacția recurentă</string>
+  <!-- 20131007 -->
+  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
+  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
+  <!-- 20131104 -->
   <string name="last">Ultimul</string>
   <string name="accounts">Conturi</string>
   <string name="to_account">Către contul</string>
@@ -347,8 +413,13 @@
   <string name="theme_holo_light">Lumina Holo</string>
   <string name="new_account">Cont Nou</string>
   <string name="create_new_account">Creează cont nou</string>
+  <!--<string name="edit_account">Edit Account</string>-->
+  <!--<string name="new_currency">New Currency</string>-->
+  <!--<string name="edit_currency">Edit Currency</string>-->
   <string name="import_all_currencies">Importă Monede</string>
   <string name="import_currencies_in_progress">Se importă monedele. Te rog să aştepţi&#8230;</string>
+  <!--<string name="from_date">From the date</string>-->
+  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Suma e mai mare sau egală</string>
   <string name="amount_from">Suma de la</string>
   <string name="amount_less_or_equal">Suma e mai mică sau egală</string>
@@ -375,6 +446,7 @@
   <string name="welcome_body">Toate tranzacțiile efectuate în MoneyManagerEx aparțin unor conturi.\n\n În prezent nu ai nici un cont vizibil. Fie setezi filtrul pentru conturi vizibile în Setări, fie alegi una dintre opțiunile de mai jos.</string>
   <string name="welcome_body_dropbox">Dacă deja folosești MoneyManagerEx pe Windows, Linux sau Mac conectează această aplicație la Dropbox pentru a sincroniza baza ta de date</string>
   <string name="configure_dropbox">Configurează Dropbox</string>
+  <!-- 20140115 -->
   <string name="search_text_contain_title">Caută conținutul textului și nu textul care începe cu</string>
   <string name="search_text_contain_summary">Caută beneficiari, categorii, monede, etc... după conținut și nu după caracterele inițiale</string>
   <string name="rate_application">Evaluează Aplicația</string>
@@ -411,8 +483,8 @@
   <string name="credit_card_accounts">Conturile Cardului de Credit</string>
   <string name="montly_last_days">Lunar (ultima zi)</string>
   <string name="montly_last_bussines_day">Lunar (ultima zi lucrătoare)</string>
+  <!-- languages -->
   <string name="locale_application">Limba Aplicației</string>
-  <string name="transaction_cancel_confirm">Ești sigur că vrei anulezi această tranzacție?</string>
   <string name="keep_editing">Continuă să editezi</string>
   <string name="discard">Anulează</string>
   <string name="invalid_expression">Expresie invalidă</string>
@@ -512,6 +584,7 @@
   <string name="about_logcat_header">Poți să ne trimiți jurnalul aplicației apăsând butonul de mai jos.</string>
   <string name="transaction_type_filter">Filtrare după Tipul Tranzacției</string>
   <string name="status_filter">Filtrare după Situație</string>
+  <!-- Password entry activity -->
   <string name="title_activity_password">Introdu parola bazei de date</string>
   <string name="income_expense_period">Perioada pentru Venituri/Cheltuieli</string>
   <string name="income_expense_period_summary">Sumar perioadă pentru Venituri/Cheltuieli afișat ca notă de subsol în pagina de start.</string>
@@ -520,6 +593,7 @@
   <string name="add_widget">Adaugă widget</string>
   <string name="single_account">Un singur cont</string>
   <string name="watchlist">Pagini urmărite</string>
+  <!-- edit investment transaction -->
   <string name="purchase_date">Data achiziției</string>
   <string name="stock_name">Numele acțiunii</string>
   <string name="symbol">Simbol</string>
@@ -534,6 +608,7 @@
   <string name="other">Altele</string>
   <string name="cleared">Golit</string>
   <string name="delete_success">Element șters</string>
+  <!-- asset allocation -->
   <string name="asset_allocation">Alocarea Activelor</string>
   <string name="asset_classes_empty">Nu au fost definite clasele de active. Pentru a crea una, apasă butonul verde plus.</string>
   <string name="title_activity_asset_class_edit">Activitatea de Editare a Claselor de Active</string>
@@ -553,6 +628,7 @@
   <string name="stock">Acțiuni</string>
   <string name="all_accounts">Toate conturile</string>
   <string name="records">înregistrări</string>
+  <!-- db password entry -->
   <string name="enter_password">Introdu parola</string>
   <string name="title_activity_portfolio">Activitate Portofoliu</string>
   <string name="success">Operație reușită</string>
@@ -561,4 +637,5 @@
   <string name="asset_allocation_diff_threshold">Prag de diferență în alocarea activelor</string>
   <string name="asset_allocation_diff_threshold_summary">Pragul care va iniția evidențierea prin culoare a valorii diferite.</string>
   <string name="error_saving_record">Eroare la salvarea înregistrării</string>
+  <!-- budgets -->
 </resources>
