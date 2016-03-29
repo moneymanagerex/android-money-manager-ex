@@ -26,6 +26,7 @@ import com.money.manager.ex.account.AccountTypes;
 import org.parceler.Parcel;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Account entity
@@ -63,6 +64,9 @@ public class Account
         account.setStatus(status);
         account.setFavorite(favorite);
         account.setCurrencyId(currencyId);
+        // defaults
+        account.setId(Constants.NOT_SET);
+        account.setInitialBalance(MoneyFactory.fromDouble(0));
 
         return account;
     }
@@ -103,17 +107,17 @@ public class Account
         setString(Account.ACCOUNTNAME, value);
     }
 
-    public AccountTypes getAccountType() {
-        String type = getType();
-        return AccountTypes.valueOf(type);
-    }
-
-    public String getType() {
+    public String getTypeName() {
         return getString(Account.ACCOUNTTYPE);
     }
 
+    public AccountTypes getType() {
+        String typeName = getTypeName();
+        return AccountTypes.get(typeName);
+    }
+
     public void setType(AccountTypes value) {
-        setString(Account.ACCOUNTTYPE, value.name());
+        setString(Account.ACCOUNTTYPE, value.title);
     }
 
     public String getAccountNumber() {
@@ -129,27 +133,39 @@ public class Account
     }
 
     public void setStatus(AccountStatuses value) {
-        setString(Account.STATUS, value.name());
+        setString(Account.STATUS, value.title);
     }
 
     public String getNotes() {
         return getString(Account.NOTES);
     }
 
+    public void setNotes(String value) {
+        setString(Account.NOTES, value);
+    }
+
     public String getHeldAt() {
         return getString(Account.HELDAT);
     }
 
-    public String getWebSite() {
-        return getString(Account.WEBSITE);
+    public void setHeldAt(String value) {
+        setString(Account.HELDAT, value);
     }
 
     public String getContactInfo() {
         return getString(Account.CONTACTINFO);
     }
 
+    public void setContactInfo(String value) {
+        setString(Account.CONTACTINFO, value);
+    }
+
     public String getAccessInfo() {
         return getString(Account.ACCESSINFO);
+    }
+
+    public void setAccessInfo(String value) {
+        setString(Account.ACCESSINFO, value);
     }
 
     public Money getInitialBalance() {
@@ -170,5 +186,13 @@ public class Account
 
     public void setFavorite(boolean value) {
         setBoolean(Account.FAVORITEACCT, value);
+    }
+
+    public String getWebSite() {
+        return getString(Account.WEBSITE);
+    }
+
+    public void setWebSite(String value) {
+        setString(Account.WEBSITE, value);
     }
 }

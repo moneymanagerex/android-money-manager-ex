@@ -1,6 +1,7 @@
 package com.money.manager.ex.account;
 
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.money.manager.ex.view.RobotoTextView;
@@ -15,4 +16,5 @@ public class AccountViewHolder {
     public RobotoTextView defaultAccountText;
     public FontIconView imageViewAccountFav;
     public RobotoTextView favouriteAccountTextView;
+    public EditText webSiteEditText;
 }
