@@ -155,8 +155,18 @@ public class AccountRepository
         return (Account) first(Account.class, null, selection, null, null);
     }
 
+    /**
+     * Updates entity.
+     * @param value Account to be updated.
+     * @return  Boolean indicating whether the update was successful.
+     */
     public boolean save(Account value) {
-        int id = value.getId();
+        Integer id = value.getId();
+
+        // todo: based on id, see whether to insert or update the entity.
+//        if (id == null) {
+//            this.insert(value);
+//        }
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Account.ACCOUNTID, "=", id);
