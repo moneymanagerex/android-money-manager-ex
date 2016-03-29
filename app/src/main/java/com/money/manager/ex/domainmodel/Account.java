@@ -19,6 +19,7 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 
@@ -102,6 +103,11 @@ public class Account
         setString(Account.ACCOUNTNAME, value);
     }
 
+    public AccountTypes getAccountType() {
+        String type = getType();
+        return AccountTypes.valueOf(type);
+    }
+
     public String getType() {
         return getString(Account.ACCOUNTTYPE);
     }
@@ -148,6 +154,14 @@ public class Account
 
     public Money getInitialBalance() {
         return getMoney(Account.INITIALBAL);
+    }
+
+    public boolean hasInitialBalance() {
+        return this.getInitialBalance() != null && !getInitialBalance().equals(Constants.NOT_SET);
+    }
+
+    public void setInitialBalance(Money value) {
+        setMoney(Account.INITIALBAL, value);
     }
 
     public Boolean getFavorite() {

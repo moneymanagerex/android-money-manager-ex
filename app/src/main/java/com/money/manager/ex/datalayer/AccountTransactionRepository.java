@@ -67,14 +67,14 @@ public class AccountTransactionRepository
         return tx;
     }
 
-    public AccountTransaction insert(AccountTransaction item) {
-        item.contentValues.remove(AccountTransaction.TRANSID);
+    public AccountTransaction insert(AccountTransaction entity) {
+        entity.contentValues.remove(AccountTransaction.TRANSID);
 
-        int id = insert(item.contentValues);
+        int id = insert(entity.contentValues);
 
-        item.setId(id);
+        entity.setId(id);
 
-        return item;
+        return entity;
     }
 
     public boolean update(AccountTransaction item) {

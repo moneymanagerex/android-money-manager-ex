@@ -49,8 +49,14 @@ public class AccountRepository
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
     }
 
-    public int insert(Account entity) {
-        return this.insert(entity.contentValues);
+    public Account insert(Account entity) {
+        entity.contentValues.remove(Account.ACCOUNTID);
+
+        Integer id = insert(entity.contentValues);
+
+        entity.setId(id);
+
+        return entity;
     }
 
     public Account load(int id) {

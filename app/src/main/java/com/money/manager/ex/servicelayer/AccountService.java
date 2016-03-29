@@ -37,7 +37,6 @@ import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.TableAccountList;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -71,8 +70,8 @@ public class AccountService
 
         // save
         AccountRepository repo = new AccountRepository(getContext());
-        int id = repo.insert(account);
-        account.setId(id);
+        repo.insert(account);
+//        account.setId(id);
 
         return account;
     }
@@ -100,21 +99,6 @@ public class AccountService
     public List<Account> getAccountList(boolean open, boolean favorite) {
         // create a return list
         return loadAccounts(open, favorite, null);
-    }
-
-    /**
-     * @param id account id to be search
-     * @return Account, return null if account id not find
-     */
-    public TableAccountList getTableAccountList(int id) {
-        TableAccountList account = null;
-        try {
-            account = loadAccount(id);
-        } catch (SQLiteDiskIOException | IllegalStateException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "loading account: " + Integer.toString(id));
-        }
-        return account;
     }
 
     /**
@@ -382,7 +366,7 @@ public class AccountService
     // Private
 
     private Cursor getCursorInternal(boolean openOnly, boolean favoriteOnly, List<String> accountTypes) {
-        TableAccountList account = new TableAccountList();
+        AccountRepository repo = new AccountRepository(getContext());
 
         String where = getWhereFilterFor(openOnly, favoriteOnly);
 
@@ -390,8 +374,8 @@ public class AccountService
             where = DatabaseUtils.concatenateWhere(where, getWherePartFor(accountTypes));
         }
 
-        Cursor cursor = getContext().getContentResolver().query(account.getUri(),
-                account.getAllColumns(),
+        Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
+                repo.getAllColumns(),
                 where,
                 null,
                 "lower (" + Account.ACCOUNTNAME + ")"
@@ -432,26 +416,5 @@ public class AccountService
         where.append(")");
 
         return where.toString();
-    }
-
-    private TableAccountList loadAccount(int id) {
-        TableAccountList account = new TableAccountList();
-        String selection = Account.ACCOUNTID + "=?";
-
-        Cursor cursor = getContext().getContentResolver().query(account.getUri(),
-                null,
-                selection,
-                new String[]{Integer.toString(id)},
-                null);
-        if (cursor == null) return null;
-
-        if (cursor.moveToFirst()) {
-            account = new TableAccountList();
-            account.setValueFromCursor(cursor);
-
-            cursor.close();
-        }
-
-        return account;
     }
 }

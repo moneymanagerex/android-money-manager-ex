@@ -18,12 +18,13 @@ package com.money.manager.ex.servicelayer.qif;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.text.TextUtils;
 
-import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.TableAccountList;
 
 import java.util.HashMap;
 
@@ -37,9 +38,22 @@ public class QifHeader {
 
     private Context mContext;
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public String parse(Cursor cursor) {
         StringBuilder builder = new StringBuilder();
-        TableAccountList account = loadAccount(cursor);
+
+        // Line separator.
+        String separator;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+            separator = System.getProperty("line.separator");
+        } else {
+            separator = System.lineSeparator();
+        }
+
+        Account account = loadAccount(cursor);
 
         /* header from mmex desktop:
 !Account
@@ -54,27 +68,27 @@ $57.300000
         // header depends on the account type.
 
         builder.append("!Account");
-        builder.append(System.lineSeparator());
+        builder.append(separator);
 
         // name
         builder.append("N");
-        String name = account.getAccountName();
+        String name = account.getName();
         builder.append(name);
-        builder.append(System.lineSeparator());
+        builder.append(separator);
 
         // description
         String description = account.getNotes();
         if (!TextUtils.isEmpty(description)) {
             builder.append("D");
             builder.append(description);
-            builder.append(System.lineSeparator());
+            builder.append(separator);
         }
 
         // account type
         String accountType = getAccountType(account);
         builder.append("T");
         builder.append(accountType);
-        builder.append(System.lineSeparator());
+        builder.append(separator);
 
         // Limit, for credit cards only.
 //        if (accountType.equals(Constants.ACCOUNT_TYPE_CREDIT_CARD)) {
@@ -85,18 +99,18 @@ $57.300000
 
         // Header separator.
         builder.append("^");
-        builder.append(System.lineSeparator());
+        builder.append(separator);
 
         // also add the first line for transaction list.
         builder.append("!Type:");
         builder.append(accountType);
-        builder.append(System.lineSeparator());
+        builder.append(separator);
 
         return builder.toString();
     }
 
-    private String getAccountType(TableAccountList account) {
-        String accountType = account.getAccountType();
+    private String getAccountType(Account account) {
+        String accountType = account.getType();
 
         // Translation table:
         HashMap<String, String> accountDictionary = new HashMap<>();
@@ -127,11 +141,11 @@ L5,000.00
         return "not implemented";
     }
 
-    private TableAccountList loadAccount(Cursor cursor) {
+    private Account loadAccount(Cursor cursor) {
 //        int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.ACCOUNTID));
         int accountId = cursor.getInt(cursor.getColumnIndex(QueryAllData.TOACCOUNTID));
-        AccountService service = new AccountService(mContext);
-        TableAccountList account = service.getTableAccountList(accountId);
+        AccountRepository repo = new AccountRepository(getContext());
+        Account account = repo.load(accountId);
         return account;
     }
 }

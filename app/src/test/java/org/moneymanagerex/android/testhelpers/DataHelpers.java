@@ -147,7 +147,8 @@ public class DataHelpers {
         // Investment account
         Account account = Account.create("investment", AccountTypes.INVESTMENT, AccountStatuses.OPEN,
             true, eur.getCurrencyId());
-        int accountId = accountRepo.insert(account);
+        accountRepo.insert(account);
+        int accountId = account.getId();
 
         // Stock symbols
         Stock stock = Stock.create();
