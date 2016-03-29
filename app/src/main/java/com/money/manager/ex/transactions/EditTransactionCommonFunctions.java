@@ -414,8 +414,8 @@ public class EditTransactionCommonFunctions {
                     transactionEntity.setAccountTo(mAccountIdList.get(position));
                     //Money amount = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
                     // recalculate the destination amount if the currency has changed?
-                    convertAndDisplayAmount(true, getSourceCurrencyId(), getDestinationCurrencyId(),
-                            transactionEntity.getAmount());
+                    Money amount = convertAmount(true, getSourceCurrencyId(), getDestinationCurrencyId(), transactionEntity.getAmount());
+                    displayAmount(true, amount);
 
 //                    displayAmountFormatted(viewHolder.txtAmountTo, amount , toAccountId);
                     refreshControlTitles();
@@ -876,7 +876,8 @@ public class EditTransactionCommonFunctions {
             } else {
                 // Different currency. Convert the value and write the amount into the other input box.
                 try {
-                    convertAndDisplayAmount(isSourceAmount, fromCurrencyId, toCurrencyId, amount);
+                    Money convertedAmount = convertAmount(isSourceAmount, fromCurrencyId, toCurrencyId, amount);
+                    displayAmount(isSourceAmount, convertedAmount);
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
                     handler.handle(e, "converting the value for transfer");
@@ -1229,36 +1230,48 @@ public class EditTransactionCommonFunctions {
         mParent.finish();
     }
 
-    private void convertAndDisplayAmount(boolean isAmountFrom, int fromCurrencyId, int toCurrencyId,
-                                         Money amount) {
-        CurrencyService currencyService = new CurrencyService(mContext);
-        TextView destinationTextView = viewHolder.txtAmountTo;
+    private Money convertAmount(boolean isAmountFrom, int fromCurrencyId, int toCurrencyId, Money amount) {
+        CurrencyService currencyService = new CurrencyService(getContext());
 
-        if (!isAmountFrom) {
-            fromCurrencyId = getDestinationCurrencyId();
-            AccountRepository repo = new AccountRepository(mContext);
-            toCurrencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());
+        if (isAmountFrom) {
+            return currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
+        } else {
+            return currencyService.doCurrencyExchange(fromCurrencyId, amount, toCurrencyId);
+        }
+    }
 
+    private void displayAmount(boolean isAmountFrom, Money amount) {
+        TextView destinationTextView;
+        Integer destinationAccountId;
+
+        if (isAmountFrom) {
+            destinationTextView = viewHolder.txtAmountTo;
+            destinationAccountId = this.transactionEntity.getAccountTo();
+        } else {
             destinationTextView = viewHolder.txtAmount;
+            destinationAccountId = transactionEntity.getAccountId();
         }
 
-        Integer destinationAccountId = isAmountFrom
-                ? this.transactionEntity.getAccountTo()
-                : transactionEntity.getAccountId();
-
-        // get the destination value.
-//        String destinationTagValue = destinationTextView.getTag().toString();
-//        Money destinationAmount = MoneyFactory.fromString(destinationTagValue);
+        // Sanitize null values.
         if (this.transactionEntity.getAmountTo() == null) {
-            this.transactionEntity.setAmountTo(MoneyFactory.fromString("0"));
+            this.transactionEntity.setAmountTo(MoneyFactory.fromDouble(0));
+        }
+        if (this.transactionEntity.getAmount() == null) {
+            this.transactionEntity.setAmount(MoneyFactory.fromDouble(0));
         }
 
-        // Update the destination value.
-        if (this.transactionEntity.getAmountTo().isZero()) {
-            Money amountExchange = currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-            this.transactionEntity.setAmountTo(amountExchange);
-
-            displayAmountFormatted(destinationTextView, amountExchange, destinationAccountId);
+        // Update the destination value. Only if it is 0.
+        if (isAmountFrom) {
+            if (this.transactionEntity.getAmountTo().isZero()) {
+                this.transactionEntity.setAmountTo(amount);
+                displayAmountFormatted(destinationTextView, amount, destinationAccountId);
+            }
+        } else {
+            // reverse controls. Amount To entered, need to populate Amount From.
+            if (this.transactionEntity.getAmount().isZero()) {
+                this.transactionEntity.setAmount(amount);
+                displayAmountFormatted(destinationTextView, amount, destinationAccountId);
+            }
         }
     }
 
