@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- default category -->
   <string name="category_1">Hóa đơn</string>
   <string name="category_2">Thực phẩm</string>
   <string name="category_3">Giải trí</string>
@@ -33,6 +34,7 @@
   <string name="category_14">Thu nhập khác</string>
   <string name="category_15">Chi phí khác</string>
   <string name="category_16">Truyền</string>
+  <!-- default subcategory -->
   <string name="subcategory_1">Điện thoại</string>
   <string name="subcategory_2">Điện</string>
   <string name="subcategory_3">Gas</string>

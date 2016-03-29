@@ -5,7 +5,7 @@
 ::set src_root=d:\temp
 ::set dest_root=d:\dev\android-money-manager-ex\res
 set src_root=d:\temp
-set dest_root=d:\dev\GitHub\android-money-manager-ex\res
+set dest_root=d:\src\android-money-manager-ex\app\src\main\res
 
 :: Bosnian
 set lang=bs

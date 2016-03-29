@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- default category -->
   <string name="category_1">Facturas</string>
   <string name="category_2">Comida</string>
   <string name="category_3">Ocio</string>
@@ -33,6 +34,7 @@
   <string name="category_14">Otros Ingresos</string>
   <string name="category_15">Otros gastos</string>
   <string name="category_16">Transferencia</string>
+  <!-- default subcategory -->
   <string name="subcategory_1">Teléfono</string>
   <string name="subcategory_2">Electricidad</string>
   <string name="subcategory_3">Gas</string>

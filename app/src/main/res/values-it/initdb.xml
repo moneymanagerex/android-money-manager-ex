@@ -17,12 +17,13 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- default category -->
   <string name="category_1">Bollette</string>
   <string name="category_2">Cibo</string>
   <string name="category_3">Tempo libero</string>
   <string name="category_4">Automobile</string>
   <string name="category_5">Istruzione</string>
-  <string name="category_6">Bisogni di casa</string>
+  <string name="category_6">Spese domestiche</string>
   <string name="category_7">Salute</string>
   <string name="category_8">Assicurazione</string>
   <string name="category_9">Vacanza</string>
@@ -33,6 +34,7 @@
   <string name="category_14">Altri redditi</string>
   <string name="category_15">Altre spese</string>
   <string name="category_16">Trasferimento</string>
+  <!-- default subcategory -->
   <string name="subcategory_1">Telefono</string>
   <string name="subcategory_2">Elettricità</string>
   <string name="subcategory_3">Gas</string>

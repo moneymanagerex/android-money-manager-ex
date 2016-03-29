@@ -16,4 +16,85 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"/>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- application -->
+  <!-- database -->
+  <!-- menu -->
+  <!--<string name="menu">Menu</string>-->
+  <!--<string name="menu_import_export">Import/Export</string>-->
+  <!--<string name="menu_sync">Synchronize</string>-->
+  <!--<string name="menu_import_from_storage">Import from storage</string>-->
+  <!--<string name="menu_export_to_storage">Export to storage</string>-->
+  <!--<string name="menu_sync_dropbox">Dropbox Sync</string>-->
+  <!--<string name="menu_tools">Tools</string>-->
+  <!--<string name="menu_use_external_db">Use External Database</string>-->
+  <!-- import / export database -->
+  <!--<string name="emptyFolder">Empty folder</string>-->
+  <!--<string name="upLevel">Up level</string>-->
+  <!--<string name="import_export">Import / Export</string>-->
+  <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
+  <!--<string name="import_export_success">Import / Export completed successfully</string>-->
+  <!--<string name="import_export_failed">Import / Export failed</string>-->
+  <!-- dropbox -->
+  <!-- preferences -->
+  <!-- account -->
+  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
+  <!--<string name="select_to_account">Select To Acct</string>-->
+  <!-- payee -->
+  <!-- category / subcategory -->
+  <!-- currency -->
+  <!-- transaction -->
+  <!-- application string -->
+  <!-- 20120906 -->
+  <!-- transaction list periods -->
+  <!-- Recurring Transactions -->
+  <!-- 20121121 -->
+  <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
+  <!-- 20121122 -->
+  <!--<string name="passcode_update">passcode is updated</string>-->
+  <!-- 20121217 -->
+  <!--<string name="option">Option</string>-->
+  <!-- 20130106 -->
+  <!--<string name="result">Result</string>-->
+  <!-- 20130108 -->
+  <!--<string name="release_date">Release Date</string>-->
+  <!-- 20130121 -->
+  <!-- 20130129 -->
+  <!--<string name="split_category">Split Category</string>-->
+  <!-- 20130220 -->
+  <!-- 20130225 -->
+  <!-- 20130301 -->
+  <!--<string name="sort">Sort</string>-->
+  <!-- 20130305 -->
+  <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
+  <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
+  <!-- 20130426 -->
+  <!-- 20130528 -->
+  <!-- 20130606 -->
+  <!-- 20130728 -->
+  <!-- 20130730 -->
+  <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
+  <!-- 20130801 -->
+  <!--<string name="transaction_statistics">Transaction Statistics</string>-->
+  <!-- 20130808 -->
+  <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
+  <!-- 20130816 -->
+  <!-- 20130831 -->
+  <!-- 20130927 -->
+  <!-- 20131007 -->
+  <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
+  <!--<string name="term_accounts_total">Term Accounts Total</string>-->
+  <!-- 20131104 -->
+  <!--<string name="edit_account">Edit Account</string>-->
+  <!--<string name="new_currency">New Currency</string>-->
+  <!--<string name="edit_currency">Edit Currency</string>-->
+  <!--<string name="from_date">From the date</string>-->
+  <!--<string name="at_the_date">At the date</string>-->
+  <!-- 20140115 -->
+  <!-- languages -->
+  <!-- Password entry activity -->
+  <!-- edit investment transaction -->
+  <!-- asset allocation -->
+  <!-- db password entry -->
+  <!-- budgets -->
+</resources>
