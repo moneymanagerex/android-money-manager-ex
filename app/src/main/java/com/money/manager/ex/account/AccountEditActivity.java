@@ -686,8 +686,13 @@ public class AccountEditActivity
     }
 
     private void saveDefaultAccount() {
-        Integer defaultAccountId = mIsDefault ? mAccount.getId() : null;
         AppSettings settings = new AppSettings(AccountEditActivity.this);
-        settings.getGeneralSettings().setDefaultAccountId(defaultAccountId);
+        Integer currentDefaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+
+        Integer defaultAccountId = mIsDefault ? mAccount.getId() : currentDefaultAccountId;
+        // Save only if default account changed.
+        if (!defaultAccountId.equals(currentDefaultAccountId)) {
+            settings.getGeneralSettings().setDefaultAccountId(defaultAccountId);
+        }
     }
 }
