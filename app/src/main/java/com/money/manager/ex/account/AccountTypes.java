@@ -29,28 +29,35 @@ public enum AccountTypes {
     TERM ("Term"),
     CREDIT_CARD ("Credit Card");
 
+    public static AccountTypes get(String name) {
+        for (AccountTypes type : AccountTypes.values()) {
+            if (type.title.equals(name)) return type;
+        }
+        return null;
+    }
+
     public static String[] getNames() {
         List<String> list = new ArrayList<>();
 
         for (AccountTypes type : AccountTypes.values()) {
-            list.add(type.name);
+            list.add(type.title);
         }
 
         String[] result = new String[list.size()];
         return list.toArray(result);
     }
 
-    private final String name;
+    public final String title;
 
     private AccountTypes(String s) {
-        name = s;
+        title = s;
     }
 
-    public boolean equalsName(String otherName) {
-        return (otherName == null) ? false : name.equalsIgnoreCase(otherName);
+    public boolean equalsName(String otherTitle) {
+        return (otherTitle == null) ? false : title.equalsIgnoreCase(otherTitle);
     }
 
     public String toString(){
-        return name;
+        return this.title;
     }
 }

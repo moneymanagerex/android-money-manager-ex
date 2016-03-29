@@ -23,17 +23,24 @@ public enum AccountStatuses {
     OPEN ("Open"),
     CLOSED ("Closed");
 
-    private final String name;
+    public static AccountStatuses get(String title) {
+        for(AccountStatuses status : AccountStatuses.values()) {
+            if (status.title.equals(title)) return status;
+        }
+        return null;
+    }
+
+    public final String title;
 
     private AccountStatuses(String s) {
-        name = s;
+        title = s;
     }
 
     public boolean equalsName(String otherName) {
-        return (otherName == null) ? false : name.equalsIgnoreCase(otherName);
+        return (otherName == null) ? false : title.equalsIgnoreCase(otherName);
     }
 
     public String toString(){
-        return name;
+        return title;
     }
 }

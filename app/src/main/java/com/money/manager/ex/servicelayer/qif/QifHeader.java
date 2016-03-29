@@ -110,7 +110,7 @@ $57.300000
     }
 
     private String getAccountType(Account account) {
-        String accountType = account.getType();
+        String accountType = account.getTypeName();
 
         // Translation table:
         HashMap<String, String> accountDictionary = new HashMap<>();
