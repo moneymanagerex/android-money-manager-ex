@@ -106,7 +106,7 @@ public class QifExport
     private String generateFileName() {
         // use just the date for now?
         String format = "yyyy-MM-dd_HHmmss";
-        String result = MyDateTimeUtils.today().toString(format);
+        String result = DateTime.now().toString(format);
 
         // append file extension.
         result += ".qif";
