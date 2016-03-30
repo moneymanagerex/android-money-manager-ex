@@ -179,12 +179,9 @@ public class AccountEditActivity
                     mAccount.setCurrencyId(currencyId);
 
                     mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
-                    // refresh displayed Currency
                     refreshCurrencyName();
 
                     // refresh amount
-//                    NumericHelper numericHelper = new NumericHelper(getApplicationContext());
-//                    BigDecimal initialBalance = numericHelper.getNumberFromString(txtInitialBalance.getTag().toString());
                     Money initialBalance = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
                     if (initialBalance != null) {
                         onEvent(new AmountEnteredEvent("ignored", initialBalance));
@@ -204,8 +201,6 @@ public class AccountEditActivity
 
         outState.putParcelable(KEY_ACCOUNT_ENTITY, Parcels.wrap(mAccount));
 
-//        outState.putString(KEY_FAVORITE_ACCT, String.valueOf(imgFavouriteAccount.getTag()));
-//        outState.putBoolean(KEY_FAVORITE_ACCT, mAccount.getFavorite());
         outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
         outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
         outState.putString(KEY_ACTION, mIntentAction);
@@ -269,6 +264,14 @@ public class AccountEditActivity
         mViewHolder.imageViewAccountFav.setText(imageResource);
     }
 
+    private AccountTypes getSelectedAccountType() {
+        int accountTypePosition = mViewHolder.accountTypeSpinner.getSelectedItemPosition();
+        String accountTypeName = mAccountTypeValues[accountTypePosition];
+        AccountTypes accountType = AccountTypes.get(accountTypeName);
+
+        return accountType;
+    }
+
     private void initializeControls() {
         mViewHolder = new AccountViewHolder();
 
@@ -312,11 +315,11 @@ public class AccountEditActivity
         mViewHolder.accountTypeSpinner.setAdapter(adapterAccountType);
         if (!(TextUtils.isEmpty(mAccount.getTypeName()))) {
             if (Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName()) >= 0) {
-                mViewHolder.accountTypeSpinner.setSelection(Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName()), true);
+                int position = Arrays.asList(mAccountTypeValues).indexOf(mAccount.getTypeName());
+                mViewHolder.accountTypeSpinner.setSelection(position, true);
             }
         } else {
-            String accountTypeName = (String) mViewHolder.accountTypeSpinner.getSelectedItem();
-            AccountTypes accountType = AccountTypes.get(accountTypeName);
+            AccountTypes accountType = getSelectedAccountType();
             mAccount.setType(accountType);
         }
 
@@ -501,10 +504,9 @@ public class AccountEditActivity
      * Replace with data binding later.
      */
     private void collectInput() {
-        // Getting control values
         mAccount.setName(edtAccountName.getText().toString());
 
-        AccountTypes accountType = AccountTypes.get((String) mViewHolder.accountTypeSpinner.getSelectedItem());
+        AccountTypes accountType = getSelectedAccountType();
         mAccount.setType(accountType);
 
         mAccount.setAccountNumber(edtAccountNumber.getText().toString());
@@ -512,11 +514,8 @@ public class AccountEditActivity
         mAccount.setWebSite(mViewHolder.webSiteEditText.getText().toString());
         mAccount.setContactInfo(edtContact.getText().toString());
         mAccount.setAccessInfo(edtAccessInfo.getText().toString());
-//        mInitialBal = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
         mAccount.setNotes(edtNotes.getText().toString());
 
-//        values.put(Account.INITIALBAL, MoneyFactory.fromString(txtInitialBalance.getTag().toString()).toDouble() *
-//                (spinSymbolInitialBalance.getSelectedItemPosition() == PLUS ? 1 : -1));
         if (spinSymbolInitialBalance.getSelectedItemPosition() != PLUS) {
             Money initialBalance = mAccount.getInitialBalance();
             initialBalance = initialBalance.negate();
@@ -562,7 +561,6 @@ public class AccountEditActivity
 //            }
         }
 
-        // Default account.
         saveDefaultAccount();
 
         return true;
@@ -588,7 +586,6 @@ public class AccountEditActivity
     private void restoreInstanceState(Bundle savedInstanceState) {
         mAccount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_ACCOUNT_ENTITY));
 
-        // load into Account model object.
         if (savedInstanceState.getInt(KEY_SYMBOL) == MINUS) {
             mAccount.setInitialBalance(mAccount.getInitialBalance().negate());
         }
