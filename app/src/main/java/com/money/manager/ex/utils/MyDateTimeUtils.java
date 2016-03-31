@@ -42,7 +42,7 @@ public class MyDateTimeUtils {
     }
 
     public static DateTime today() {
-        return DateTime.now()
+        return new DateTime()
                 .withHourOfDay(0)
                 .withMinuteOfHour(0)
                 .withSecondOfMinute(0)
