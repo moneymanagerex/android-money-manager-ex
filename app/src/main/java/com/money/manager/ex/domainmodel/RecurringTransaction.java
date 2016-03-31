@@ -80,7 +80,7 @@ public class RecurringTransaction
         return getInt(BDID);
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         setInt(BDID, id);
     }
 
