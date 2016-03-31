@@ -108,7 +108,7 @@ public class AssetClass
 //
 //        setCurrentValue(MoneyFactory.fromString(source.readString()));
 //        setDifference(MoneyFactory.fromString(source.readString()));
-//        setType(ItemType.valueOf(source.readString()));
+//        setTransactionType(ItemType.valueOf(source.readString()));
 //    }
 
     public Integer getId() {

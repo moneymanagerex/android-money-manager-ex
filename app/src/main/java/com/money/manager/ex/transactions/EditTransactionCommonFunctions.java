@@ -96,11 +96,11 @@ public class EditTransactionCommonFunctions {
 
     public static final String DATEPICKER_TAG = "datepicker";
 
-    public EditTransactionCommonFunctions(Context context, BaseFragmentActivity parentActivity,
+    public EditTransactionCommonFunctions(BaseFragmentActivity parentActivity,
                                           ITransactionEntity transactionEntity) {
         super();
 
-        mContext = context.getApplicationContext();
+        mContext = parentActivity.getApplicationContext();
         mParent = parentActivity;
         this.transactionEntity = transactionEntity;
     }
@@ -108,14 +108,9 @@ public class EditTransactionCommonFunctions {
     // Model
     public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
 
-//    public String status = null;
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
-//    public Integer payeeId = Constants.NOT_SET; // Payee
     public String payeeName;
-    //public int toAccountId = Constants.NOT_SET;  // accounts
     public String mToAccountName;
-//    public String mNotes = "";
-//    public String mTransNumber = "";
 
     public List<Account> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
@@ -183,29 +178,6 @@ public class EditTransactionCommonFunctions {
         withdrawalButton = (RelativeLayout) mParent.findViewById(R.id.withdrawalButton);
         depositButton = (RelativeLayout) mParent.findViewById(R.id.depositButton);
         transferButton = (RelativeLayout) mParent.findViewById(R.id.transferButton);
-
-    }
-
-    public void displayAmountFormatted(TextView view, Money amount, Integer accountId) {
-        if (amount == null) return;
-
-        Integer currencyId = null;
-
-        int index = mAccountIdList.indexOf(accountId);
-        if (index != Constants.NOT_SET) {
-            currencyId = this.AccountList.get(index).getCurrencyId();
-        }
-
-        CurrencyService currencyService = new CurrencyService(mContext);
-        String amountDisplay;
-
-        if (currencyId == null) {
-            amountDisplay = currencyService.getBaseCurrencyFormatted(amount);
-        } else {
-            amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount);
-        }
-        view.setText(amountDisplay);
-        view.setTag(amount.toString());
     }
 
     /**
@@ -264,7 +236,7 @@ public class EditTransactionCommonFunctions {
         // Accounts & Payee
         values.put(ITransactionEntity.ACCOUNTID, this.transactionEntity.getAccountId());
         if (isTransfer) {
-            values.put(ITransactionEntity.TOACCOUNTID, this.transactionEntity.getAccountTo());
+            values.put(ITransactionEntity.TOACCOUNTID, this.transactionEntity.getAccountToId());
             values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
         } else {
             values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
@@ -290,6 +262,12 @@ public class EditTransactionCommonFunctions {
         return mContext;
     }
 
+    public int getAccountCurrencyId(int accountId) {
+        AccountRepository repo = new AccountRepository(getContext());
+        Integer currencyId = repo.loadCurrencyIdFor(accountId);
+        return currencyId;
+    }
+
     public String getTransactionType() {
         if (transactionType == null) {
             return null;
@@ -302,17 +280,18 @@ public class EditTransactionCommonFunctions {
         return (FontIconView) mParent.findViewById(R.id.depositButtonIcon);
     }
 
-    public int getDestinationCurrencyId() {
-        AccountRepository repo = new AccountRepository(getContext());
-        Integer currencyId = repo.loadCurrencyIdFor(this.transactionEntity.getAccountTo());
-        return currencyId;
+    public Integer getDestinationCurrencyId() {
+        Integer accountId = this.transactionEntity.getAccountToId();
+        // The destination account/currency is hidden by default and may be uninitialized.
+        if (accountId == null) {
+            accountId = mAccountIdList.get(0);
+        }
+
+        return getAccountCurrencyId(accountId);
     }
 
     public int getSourceCurrencyId() {
-        AccountRepository repo = new AccountRepository(getContext());
-        Integer currencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());
-
-        return currencyId;
+        return getAccountCurrencyId(this.transactionEntity.getAccountId());
     }
 
     public boolean getDirty() {
@@ -341,7 +320,8 @@ public class EditTransactionCommonFunctions {
     public void initAccountSelectors() {
         AppSettings settings = new AppSettings(getContext());
 
-        // account list to populate the drop-downs.
+        // Account list as the data source to populate the drop-downs.
+
         AccountService accountService = new AccountService(getContext());
         this.AccountList = accountService.getTransactionAccounts(
                 settings.getLookAndFeelSettings().getViewOpenAccounts(),
@@ -358,74 +338,105 @@ public class EditTransactionCommonFunctions {
         if (accountId != null) {
             addMissingAccountToSelectors(accountRepository, accountId);
         }
-        addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountTo());
+        addMissingAccountToSelectors(accountRepository, transactionEntity.getAccountToId());
         // add the default account, if any.
         Integer defaultAccount = settings.getGeneralSettings().getDefaultAccountId();
         // Set the current account, if not set already.
-        if ((accountId == Constants.NOT_SET) && defaultAccount != null && defaultAccount != Constants.NOT_SET) {
+        if ((accountId != null && accountId == Constants.NOT_SET) && (defaultAccount != null && defaultAccount != Constants.NOT_SET)) {
             accountId = defaultAccount;
             addMissingAccountToSelectors(accountRepository, accountId);
             // Set the default account as the active account.
             transactionEntity.setAccountId(accountId);
         }
 
-        // create adapter for spinAccount
+        // Adapter for account selectors.
+
         ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(mParent,
                 android.R.layout.simple_spinner_item, mAccountNameList);
 
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinAccount.setAdapter(accountAdapter);
+        viewHolder.spinAccountTo.setAdapter(accountAdapter);
+
+        // Selection handler.
+
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if ((position < 0) || (position > mAccountIdList.size())) {
+                    return;
+                }
+
+                setDirty(true);
+
+                boolean isSource = view.getParent() == viewHolder.spinAccount;
+                Integer accountId = mAccountIdList.get(position);
+
+                if (isSource) {
+                    transactionEntity.setAccountId(accountId);
+
+                    if (transactionEntity.getAmountTo().isZero()) {
+                        // recalculate the corresponding amount if the currency has changed?
+                        Money convertedAmount = calculateAmountTo();
+                        displayAmountFrom(convertedAmount);
+                    }
+                    // If this is a transfer, recalculate the amount when the currency changes.
+                    if (transactionEntity.getTransactionType() == TransactionTypes.Transfer) {
+                        displayAmountFrom(calculateAmountFrom());
+                    }
+                } else {
+                    transactionEntity.setAccountToId(accountId);
+
+                    if (transactionEntity.getAmount().isZero()) {
+                        // recalculate the corresponding amount if the currency has changed?
+                        Money convertedAmount = calculateAmountFrom();
+                        displayAmountTo(convertedAmount);
+                    }
+                    // If this is a transfer, recalculate the amount when the currency changes.
+                    if (transactionEntity.getTransactionType() == TransactionTypes.Transfer) {
+                        displayAmountTo(calculateAmountTo());
+                    }
+                }
+
+                refreshControlTitles();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+
+        // Account
         // select current value
         int accountIndex = mAccountIdList.indexOf(accountId);
         if (accountIndex >= 0) {
             viewHolder.spinAccount.setSelection(accountIndex, true);
         }
-        viewHolder.spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setDirty(true);
-
-                if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    transactionEntity.setAccountId(mAccountIdList.get(position));
-                    Money amount = MoneyFactory.fromString(viewHolder.txtAmount.getTag().toString());
-                    displayAmountFormatted(viewHolder.txtAmount, amount, transactionEntity.getAccountId());
-                    refreshControlTitles();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+//        viewHolder.spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                setDirty(true);
+//
+//                if ((position >= 0) && (position <= mAccountIdList.size())) {
+//                    transactionEntity.setAccountId(mAccountIdList.get(position));
+//                    displaySourceAmount();
+//                    refreshControlTitles();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+        viewHolder.spinAccount.setOnItemSelectedListener(listener);
 
         // To Account
 
-        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        viewHolder.spinAccountTo.setAdapter(accountAdapter);
-        if (transactionEntity.hasAccountTo() && mAccountIdList.indexOf(transactionEntity.getAccountTo()) >= 0) {
-            viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(transactionEntity.getAccountTo()), true);
+//        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (transactionEntity.hasAccountTo() && mAccountIdList.indexOf(transactionEntity.getAccountToId()) >= 0) {
+            viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(transactionEntity.getAccountToId()), true);
         }
-        viewHolder.spinAccountTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setDirty(true);
-
-                if ((position >= 0) && (position <= mAccountIdList.size())) {
-                    transactionEntity.setAccountTo(mAccountIdList.get(position));
-                    //Money amount = MoneyFactory.fromString(viewHolder.txtAmountTo.getTag().toString());
-                    // recalculate the destination amount if the currency has changed?
-                    Money amount = convertAmount(true, getSourceCurrencyId(), getDestinationCurrencyId(), transactionEntity.getAmount());
-                    displayAmount(true, amount);
-
-//                    displayAmountFormatted(viewHolder.txtAmountTo, amount , toAccountId);
-                    refreshControlTitles();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        viewHolder.spinAccountTo.setOnItemSelectedListener(listener);
     }
 
     public void initAmountSelectors() {
@@ -434,23 +445,20 @@ public class EditTransactionCommonFunctions {
             @Override
             public void onClick(View v) {
                 // Get currency id from the account for which the amount has been modified.
-                Integer currencyId = null;
-                int selectedPosition;
+                Integer currencyId;
+                Money amount;
+
                 if (v.equals(viewHolder.txtAmountTo)) {
-                    selectedPosition = viewHolder.spinAccountTo.getSelectedItemPosition();
-                    if (selectedPosition >= 0 && selectedPosition < AccountList.size()) {
-                        currencyId = AccountList.get(selectedPosition).getCurrencyId();
-                    }
+                    // clicked Amount To.
+                    currencyId = getDestinationCurrencyId();
+                    amount = transactionEntity.getAmountTo();
                 } else {
-                    // Amount.
-                    selectedPosition = viewHolder.spinAccount.getSelectedItemPosition();
-                    if (selectedPosition >= 0 && selectedPosition < AccountList.size()) {
-                        currencyId = AccountList.get(selectedPosition).getCurrencyId();
-                    }
+                    // clicked Amount.
+                    currencyId = getSourceCurrencyId();
+                    amount = transactionEntity.getAmount();
                 }
-                Money amount = MoneyFactory.fromString(v.getTag().toString());
-                AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(),
-                        amount, currencyId);
+
+                AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(), amount, currencyId);
                 dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
                 // The result is received in onFinishedInputAmountDialog.
@@ -458,12 +466,11 @@ public class EditTransactionCommonFunctions {
         };
 
         // amount
-        displayAmountFormatted(viewHolder.txtAmount, transactionEntity.getAmount(),
-                transactionEntity.getAccountId());
+        displaySourceAmount();
         viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
-        displayAmountFormatted(viewHolder.txtAmountTo, transactionEntity.getAmountTo(), transactionEntity.getAccountTo());
+        displayDestinationAmount();
         viewHolder.txtAmountTo.setOnClickListener(onClickAmount);
     }
 
@@ -522,8 +529,6 @@ public class EditTransactionCommonFunctions {
             @Override
             public void onClick(View v) {
                 DateTime dateTime = DateTime.parse(viewHolder.dateTextView.getTag().toString());
-
-
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
@@ -706,13 +711,11 @@ public class EditTransactionCommonFunctions {
                 cursor.close();
             }
         });
-
     }
 
     public void initTransactionTypeSelector() {
 
         // Handle click events.
-
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -804,7 +807,7 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                transactionEntity.setAccountTo(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
+                transactionEntity.setAccountToId(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
@@ -850,7 +853,6 @@ public class EditTransactionCommonFunctions {
 
         setDirty(true);
 
-        int accountId;
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
         boolean isSourceAmount = id == R.id.textViewAmount;
 
@@ -865,7 +867,7 @@ public class EditTransactionCommonFunctions {
             Integer fromCurrencyId = getSourceCurrencyId();
             Integer toCurrencyId = getDestinationCurrencyId();
             if (fromCurrencyId.equals(toCurrencyId)) {
-                // Same currency. Modify both values if the transfer is in the same currency.
+                // Same currency. Update both values if the transfer is in the same currency.
                 this.transactionEntity.setAmount(amount);
                 this.transactionEntity.setAmountTo(amount);
 
@@ -875,19 +877,29 @@ public class EditTransactionCommonFunctions {
                 return;
             } else {
                 // Different currency. Convert the value and write the amount into the other input box.
-                try {
-                    Money convertedAmount = convertAmount(isSourceAmount, fromCurrencyId, toCurrencyId, amount);
-                    displayAmount(isSourceAmount, convertedAmount);
-                } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(mParent, mParent);
-                    handler.handle(e, "converting the value for transfer");
+                Money convertedAmount;
+                if (isSourceAmount) {
+                    convertedAmount = calculateAmountTo();
+                    transactionEntity.setAmountTo(convertedAmount);
+                } else {
+                    convertedAmount = calculateAmountFrom();
+                    transactionEntity.setAmount(convertedAmount);
+                }
+
+                if (isSourceAmount) {
+                    displayAmountTo(convertedAmount);
+                } else {
+                    displayAmountFrom(convertedAmount);
                 }
             }
         }
 
-        // Display the formatted amount in selected field.
-        accountId = isSourceAmount ? transactionEntity.getAccountId() : this.transactionEntity.getAccountTo();
-        displayAmountFormatted(((TextView) view), amount, accountId);
+        // Display the entered formatted amount in the UI.
+        if (isSourceAmount) {
+            displayAmountFrom(amount);
+        } else {
+            displayAmountTo(amount);
+        }
     }
 
     /**
@@ -922,6 +934,8 @@ public class EditTransactionCommonFunctions {
      * Reflect the transaction type change. Show and hide controls appropriately.
      */
     public void onTransactionTypeChange(TransactionTypes transactionType) {
+        transactionEntity.setTransactionType(transactionType);
+
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
         accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
@@ -971,7 +985,7 @@ public class EditTransactionCommonFunctions {
                 amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getName()));
             }
-            index = mAccountIdList.indexOf(transactionEntity.getAccountTo());
+            index = mAccountIdList.indexOf(transactionEntity.getAccountToId());
             if (index >= 0) {
                 amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
                         this.AccountList.get(index).getName()));
@@ -1118,11 +1132,11 @@ public class EditTransactionCommonFunctions {
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
         if (isTransfer) {
-            if (transactionEntity.getAccountTo() == Constants.NOT_SET) {
+            if (transactionEntity.getAccountToId() == Constants.NOT_SET) {
                 Core.alertDialog(mParent, R.string.error_toaccount_not_selected);
                 return false;
             }
-            if (transactionEntity.getAccountTo().equals(transactionEntity.getAccountId())) {
+            if (transactionEntity.getAccountToId().equals(transactionEntity.getAccountId())) {
                 Core.alertDialog(mParent, R.string.error_transfer_to_same_account);
                 return false;
             }
@@ -1225,54 +1239,26 @@ public class EditTransactionCommonFunctions {
         }
     }
 
+    /**
+     * Perform currency exchange to get the Amount From.
+     */
+    private Money calculateAmountFrom() {
+        CurrencyService currencyService = new CurrencyService(getContext());
+
+        return currencyService.doCurrencyExchange(getSourceCurrencyId(), transactionEntity.getAmountTo(),
+                getDestinationCurrencyId());
+    }
+
+    private Money calculateAmountTo() {
+        CurrencyService currencyService = new CurrencyService(getContext());
+
+        return currencyService.doCurrencyExchange(getDestinationCurrencyId(), transactionEntity.getAmount(),
+                getSourceCurrencyId());
+    }
+
     private void cancelActivity() {
         mParent.setResult(Activity.RESULT_CANCELED);
         mParent.finish();
-    }
-
-    private Money convertAmount(boolean isAmountFrom, int fromCurrencyId, int toCurrencyId, Money amount) {
-        CurrencyService currencyService = new CurrencyService(getContext());
-
-        if (isAmountFrom) {
-            return currencyService.doCurrencyExchange(toCurrencyId, amount, fromCurrencyId);
-        } else {
-            return currencyService.doCurrencyExchange(fromCurrencyId, amount, toCurrencyId);
-        }
-    }
-
-    private void displayAmount(boolean isAmountFrom, Money amount) {
-        TextView destinationTextView;
-        Integer destinationAccountId;
-
-        if (isAmountFrom) {
-            destinationTextView = viewHolder.txtAmountTo;
-            destinationAccountId = this.transactionEntity.getAccountTo();
-        } else {
-            destinationTextView = viewHolder.txtAmount;
-            destinationAccountId = transactionEntity.getAccountId();
-        }
-
-        // Sanitize null values.
-        if (this.transactionEntity.getAmountTo() == null) {
-            this.transactionEntity.setAmountTo(MoneyFactory.fromDouble(0));
-        }
-        if (this.transactionEntity.getAmount() == null) {
-            this.transactionEntity.setAmount(MoneyFactory.fromDouble(0));
-        }
-
-        // Update the destination value. Only if it is 0.
-        if (isAmountFrom) {
-            if (this.transactionEntity.getAmountTo().isZero()) {
-                this.transactionEntity.setAmountTo(amount);
-                displayAmountFormatted(destinationTextView, amount, destinationAccountId);
-            }
-        } else {
-            // reverse controls. Amount To entered, need to populate Amount From.
-            if (this.transactionEntity.getAmount().isZero()) {
-                this.transactionEntity.setAmount(amount);
-                displayAmountFormatted(destinationTextView, amount, destinationAccountId);
-            }
-        }
     }
 
     /**
@@ -1310,6 +1296,26 @@ public class EditTransactionCommonFunctions {
         this.getSplitTransactions().add(entity);
     }
 
+    private void displayAmountFrom(Money amount) {
+        displayAmountFormatted(viewHolder.txtAmount, amount, getSourceCurrencyId());
+    }
+
+    private void displayAmountTo(Money amount) {
+        displayAmountFormatted(viewHolder.txtAmountTo, amount, getDestinationCurrencyId());
+    }
+
+    private void displayAmountFormatted(TextView view, Money amount, Integer currencyId) {
+        if (amount == null) return;
+        if (currencyId == null || currencyId == Constants.NOT_SET) return;
+
+        CurrencyService currencyService = new CurrencyService(getContext());
+
+        String amountDisplay = currencyService.getCurrencyFormatted(currencyId, amount);
+
+        view.setText(amountDisplay);
+        view.setTag(amount.toString());
+    }
+
     private ArrayList<ISplitTransaction> getSplitTransactions() {
         if (mSplitTransactions == null) {
             mSplitTransactions = new ArrayList<>();
@@ -1317,9 +1323,11 @@ public class EditTransactionCommonFunctions {
         return mSplitTransactions;
     }
 
+    /**
+     * The user is switching to Transfer transaction type.
+     * Check whether to delete split categories, if any.
+     */
     private void onTransferSelected() {
-        // The user is switching to Transfer transaction type.
-
         if(hasSplitCategories()) {
             // Prompt the user to confirm deleting split categories.
             // Use DialogFragment in order to redraw the dialog when switching device orientation.
@@ -1341,22 +1349,24 @@ public class EditTransactionCommonFunctions {
         // un-check split.
         setSplit(false);
 
-        // calculate the destination amount if the source amount has been set.
-        if (!transactionEntity.getAmount().isZero() && transactionEntity.getAmountTo().isZero()) {
-            // select the first destination account id, if none set.
-            if (!transactionEntity.hasAccountTo()) {
-                transactionEntity.setAccountTo(mAccountIdList.get(0));
-            }
-            onFinishedInputAmountDialog(R.id.textViewAmount, transactionEntity.getAmount());
-        }
+//         calculate the destination amount if the source amount has been set.
+//        if (!transactionEntity.getAmount().isZero() && transactionEntity.getAmountTo().isZero()) {
+//            // select the first destination account id, if none set.
+//            if (!transactionEntity.hasAccountTo()) {
+//                transactionEntity.setAccountToId(mAccountIdList.get(0));
+//            }
+//            onFinishedInputAmountDialog(R.id.textViewAmount, transactionEntity.getAmount());
+//        }
     }
 
     private void displayDestinationAmount() {
-        displayAmountFormatted(viewHolder.txtAmountTo, this.transactionEntity.getAmountTo(), this.transactionEntity.getAccountTo());
+        Money amount = transactionEntity.getAmountTo() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmountTo();
+        displayAmountTo(amount);
     }
 
     private void displaySourceAmount() {
-        displayAmountFormatted(viewHolder.txtAmount, this.transactionEntity.getAmount(), transactionEntity.getAccountId());
+        Money amount = transactionEntity.getAmount() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmount();
+        displayAmountFrom(amount);
     }
 
     private void showSplitCategoriesForm(String datasetName) {
@@ -1366,8 +1376,7 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
         intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
-        AccountRepository repo = new AccountRepository(mContext);
-        Integer fromCurrencyId = repo.loadCurrencyIdFor(transactionEntity.getAccountId());
+        Integer fromCurrencyId = getSourceCurrencyId();
         intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);

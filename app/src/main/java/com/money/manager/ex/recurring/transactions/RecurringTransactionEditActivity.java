@@ -73,22 +73,22 @@ public class RecurringTransactionEditActivity
     public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
-    public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
+//    public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
     public static final String KEY_TO_ACCOUNT_NAME = "RepeatingTransaction:ToAccountName";
     public static final String KEY_TRANS_CODE = "RepeatingTransaction:TransCode";
     public static final String KEY_TRANS_STATUS = "RepeatingTransaction:TransStatus";
     public static final String KEY_TRANS_AMOUNT = "RepeatingTransaction:TransAmount";
     public static final String KEY_TRANS_AMOUNTTO = "RepeatingTransaction:TransTotAmount";
-    public static final String KEY_PAYEE_ID = "RepeatingTransaction:PayeeId";
+//    public static final String KEY_PAYEE_ID = "RepeatingTransaction:PayeeId";
     public static final String KEY_PAYEE_NAME = "RepeatingTransaction:PayeeName";
-    public static final String KEY_CATEGORY_ID = "RepeatingTransaction:CategoryId";
+//    public static final String KEY_CATEGORY_ID = "RepeatingTransaction:CategoryId";
     public static final String KEY_CATEGORY_NAME = "RepeatingTransaction:CategoryName";
-    public static final String KEY_SUBCATEGORY_ID = "RepeatingTransaction:SubCategoryId";
+//    public static final String KEY_SUBCATEGORY_ID = "RepeatingTransaction:SubCategoryId";
     public static final String KEY_SUBCATEGORY_NAME = "RepeatingTransaction:SubCategoryName";
     public static final String KEY_NOTES = "RepeatingTransaction:Notes";
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
 //    public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
-    public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
+//    public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
     //    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
@@ -112,7 +112,7 @@ public class RecurringTransactionEditActivity
 
         initializeModel();
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this, this, mRecurringTransaction);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, mRecurringTransaction);
 
         setToolbarStandardAction(getToolbar());
 
@@ -449,7 +449,7 @@ public class RecurringTransactionEditActivity
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.displayCategoryName();
