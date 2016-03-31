@@ -1094,7 +1094,7 @@ public class EditTransactionCommonFunctions {
         // Clear all buttons.
 
         Core core = new Core(mContext);
-        int backgroundInactive = core.getColourAttribute(R.attr.button_background_inactive);
+        int backgroundInactive = core.getColourFromAttribute(R.attr.button_background_inactive);
 
         withdrawalButton.setBackgroundColor(backgroundInactive);
         getWithdrawalButtonIcon().setTextColor(ContextCompat.getColor(mContext, R.color.material_red_700));

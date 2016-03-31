@@ -42,6 +42,7 @@
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
 
         <!-- Colors -->
+        <!--<item name="android:textAppearance"-->
         <!--<item name="android:textColorPrimary">@color/material_amber_50</item>-->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">#202020</item>
@@ -60,7 +61,9 @@
         <item name="chartTextColor">@color/material_grey_50</item>
         <!-- other -->
         <item name="color_list_header">@color/material_grey_900</item>
-        <item name="toolbarItemColor">@color/material_white</item>
+        <!-- toolbar -->
+        <item name="toolbarItemColor">@color/material_grey_50</item>
+        <item name="toolbar_spinner_item_text_color">@color/material_grey_50</item>
 
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
