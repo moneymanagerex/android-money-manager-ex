@@ -30,6 +30,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.ToolbarSpinnerAdapter;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -229,7 +230,7 @@ public class AccountService
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getContext(),
+        ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
             android.R.layout.simple_spinner_item,
             cursor,
             new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },

@@ -411,8 +411,8 @@ public class AssetAllocationFragment
 
         // formatting
         Core core = new Core(getActivity());
-        holder.container.setBackgroundColor(core.getColourAttribute(R.attr.color_list_header));
-//        holder.container.setBackgroundResource(core.getColourAttribute(R.attr.color_list_header));
+        holder.container.setBackgroundColor(core.getColourFromAttribute(R.attr.color_list_header));
+//        holder.container.setBackgroundResource(core.getColourFromAttribute(R.attr.color_list_header));
 
         listView.addHeaderView(view, null, false);
 //        listView.addHeaderView(view);
@@ -438,8 +438,8 @@ public class AssetAllocationFragment
 
         // todo: formatting & colours
         Core core = new Core(getActivity());
-        holder.container.setBackgroundColor(core.getColourAttribute(R.attr.color_list_header));
-//        holder.container.setBackgroundResource(core.getColourAttribute(R.attr.color_list_header));
+        holder.container.setBackgroundColor(core.getColourFromAttribute(R.attr.color_list_header));
+//        holder.container.setBackgroundResource(core.getColourFromAttribute(R.attr.color_list_header));
         holder.assetClassTextView.setTypeface(null, Typeface.BOLD);
 //        holder.allocationTextView.setTypeface(null, Typeface.BOLD);
 //        holder.valueTextView.setTypeface(null, Typeface.BOLD);

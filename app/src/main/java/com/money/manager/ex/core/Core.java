@@ -37,6 +37,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -289,7 +290,7 @@ public class Core {
             String lightTheme = Constants.THEME_LIGHT;
 
             String key = mContext.getString(PreferenceConstants.PREF_THEME);
-            String currentTheme = PreferenceManager.getDefaultSharedPreferences(mContext)
+            String currentTheme = PreferenceManager.getDefaultSharedPreferences(getContext())
                     .getString(key, lightTheme);
 
             if (currentTheme.endsWith(darkTheme)) {
@@ -612,13 +613,19 @@ public class Core {
         return result;
     }
 
-    public int getColourAttribute(int attribute) {
+    public int getColourFromAttribute(int attribute) {
         TypedArray ta = getAttributeValue(attribute);
         int result = ta.getColor(0, Color.TRANSPARENT);
 
         ta.recycle();
 
         return result;
+    }
+
+    public int getColourFromThemeAttribute(int attribute) {
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(android.R.attr.textAppearanceLarge, typedValue, true);
+        return typedValue.resourceId;
     }
 
     public boolean usingDarkTheme(){

@@ -38,7 +38,6 @@
     <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
-        <item name="android:colorAccent">@color/md_accent</item>
         <!-- ** Do not overwrite these colors ** >
         <item name="android:textColorPrimary">@color/md_primary_text</item>
         <item name="android:textColorSecondary">@color/md_secondary_text</item>
@@ -84,7 +83,9 @@
         <item name="chartTextColor">@color/md_primary_text</item>
         <!-- other -->
         <item name="color_list_header">@color/material_green_100</item>
-        <item name="toolbarItemColor">@color/material_white</item>
+        <!-- toolbar -->
+        <item name="toolbarItemColor">@color/material_grey_50</item>
+        <item name="toolbar_spinner_item_text_color">@color/material_grey_900</item>
 
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>

@@ -85,6 +85,7 @@
         <!-- colors -->
         <attr name="color_list_header" format="color|reference" />
         <attr name="toolbarItemColor" format="color|reference" />
+        <attr name="toolbar_spinner_item_text_color" format="color|reference" />
 
         <!-- number input dialog / calculator -->
         <attr name="calculator_button_background" format="reference" />

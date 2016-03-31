@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -621,8 +622,9 @@ public class AccountTransactionListFragment
                 int accountId = account.getId();
                 switchAccount(accountId);
 
-                // color the spinner text
-                ((TextView) spinner.getSelectedView()).setTextColor(getResources().getColor(R.color.material_white));
+                // color the spinner text of the selected item.
+                int spinnerItemTextColor = getResources().getColor(R.color.material_grey_50);
+                ((TextView) spinner.getSelectedView()).setTextColor(spinnerItemTextColor);
             }
 
             @Override

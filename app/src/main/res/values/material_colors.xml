@@ -287,7 +287,7 @@
 
     <!-- GREY -->
     <color name="material_white">#FFFFFF</color>
-    <color name="material_grey_50">#FAFAFA</color>
+    <color name="material_grey_50" tools:override="true">#FAFAFA</color>
     <color name="material_grey_100">#F5F5F5</color>
     <color name="material_grey_200">#EEEEEE</color>
     <color name="material_grey_300" tools:override="true">#E0E0E0</color>
@@ -309,6 +309,6 @@
     <color name="material_blue_grey_600">#546E7A</color>
     <color name="material_blue_grey_700">#455A64</color>
     <color name="material_blue_grey_800">#37474F</color>
-    <color name="material_blue_grey_900">#263238</color>
+    <color name="material_blue_grey_900" tools:override="true">#263238</color>
 
 </resources>
