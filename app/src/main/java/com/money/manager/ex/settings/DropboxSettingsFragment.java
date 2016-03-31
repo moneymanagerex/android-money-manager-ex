@@ -78,7 +78,7 @@ public class DropboxSettingsFragment
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // dropbox preference screen
-        mDropboxHelper = DropboxHelper.getInstance(getActivity().getApplicationContext());
+        mDropboxHelper = DropboxHelper.getInstance(getActivity());
 
         initializeControls();
     }
@@ -165,7 +165,7 @@ public class DropboxSettingsFragment
             });
         }
 
-        //login to dropbox
+        // login to Dropbox
         final Preference pDropboxLink = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK));
         pDropboxLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -177,7 +177,7 @@ public class DropboxSettingsFragment
             }
         });
 
-        //logout from dropbox
+        // logout from dropbox
         final Preference pDropboxUnlink = findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK));
         pDropboxUnlink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
