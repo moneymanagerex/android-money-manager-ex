@@ -260,7 +260,7 @@ public class AccountService
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(getContext(),
+        ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
             android.R.layout.simple_spinner_item,
             extendedCursor,
             new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },

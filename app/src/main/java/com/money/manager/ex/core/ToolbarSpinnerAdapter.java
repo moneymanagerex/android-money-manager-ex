@@ -43,14 +43,18 @@ public class ToolbarSpinnerAdapter
     public View getDropDownView(int position, View convertView, ViewGroup parent){
         View view = super.getDropDownView(position, convertView, parent);
 
-//        TextView textView = (TextView) view.findViewById(android.R.id.text1);
-//
-//        Core core = new Core(mContext);
+        TextView textView = (TextView) view.findViewById(android.R.id.text1);
+
+        Core core = new Core(mContext);
+        int textColor = mContext.getResources().getColor(R.color.material_grey_900);
 //        int textColorId = core.getColourFromThemeAttribute(R.attr.toolbar_spinner_item_text_color);
-////        int textColorId = core.getColourFromAttribute(R.attr.toolbar_spinner_item_text_color);
+//        int textColorId = core.getColourFromAttribute(R.attr.toolbar_spinner_item_text_color);
 //        int textColor = mContext.getResources().getColor(textColorId);
-//
-//        textView.setTextColor(textColor);
+        if (core.usingDarkTheme()) {
+            textColor = mContext.getResources().getColor(R.color.material_grey_50);
+        }
+
+        textView.setTextColor(textColor);
 
         return view;
     }
