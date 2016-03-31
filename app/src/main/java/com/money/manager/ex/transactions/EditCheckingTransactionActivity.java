@@ -554,25 +554,21 @@ public class EditCheckingTransactionActivity
         boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
 
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
-        AccountTransaction tx = new AccountTransaction();
-        tx.contentValues = mCommonFunctions.getContentValues(isTransfer);
-//        tx.setId(this.mTransId);
 
         // Insert or update?
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
             // insert
-            tx = repo.insert(tx);
+            mCommonFunctions.transactionEntity = repo.insert((AccountTransaction) mCommonFunctions.transactionEntity);
 
-            int id = tx.getId();
+            int id = mCommonFunctions.transactionEntity.getId();
             if (id == Constants.NOT_SET) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
                 return false;
             }
-//            mTransId = id;
         } else {
             // update
-            boolean updated = repo.update(tx);
+            boolean updated = repo.update((AccountTransaction) mCommonFunctions.transactionEntity);
             if (!updated) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");

@@ -369,32 +369,51 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                boolean isSource = view.getParent() == viewHolder.spinAccount;
+                boolean isSource = parent == viewHolder.spinAccount;
+                boolean isTransfer = transactionEntity.getTransactionType() == TransactionTypes.Transfer;
                 Integer accountId = mAccountIdList.get(position);
 
                 if (isSource) {
+                    int originalCurrencyId = getSourceCurrencyId();
+
                     transactionEntity.setAccountId(accountId);
 
-                    if (transactionEntity.getAmountTo().isZero()) {
-                        // recalculate the corresponding amount if the currency has changed?
-                        Money convertedAmount = calculateAmountTo();
-                        displayAmountFrom(convertedAmount);
-                    }
-                    // If this is a transfer, recalculate the amount when the currency changes.
-                    if (transactionEntity.getTransactionType() == TransactionTypes.Transfer) {
-                        displayAmountFrom(calculateAmountFrom());
+                    if (isTransfer) {
+                        // calculate the exchange amount if it is 0.
+                        if (transactionEntity.getAmountTo().isZero()) {
+                            Money convertedAmount = calculateAmountTo();
+                            transactionEntity.setAmountTo(convertedAmount);
+                            displayAmountTo();
+                        }
+                        // Recalculate the original amount when the currency changes.
+                        if (originalCurrencyId != getSourceCurrencyId()) {
+                            Money exchangeAmount = calculateAmountFrom();
+                            transactionEntity.setAmount(exchangeAmount);
+                            displayAmountFrom();
+                        }
+                    } else {
+                        displayAmountFrom();
                     }
                 } else {
+                    int originalCurrencyId = getDestinationCurrencyId();
+
                     transactionEntity.setAccountToId(accountId);
 
-                    if (transactionEntity.getAmount().isZero()) {
-                        // recalculate the corresponding amount if the currency has changed?
-                        Money convertedAmount = calculateAmountFrom();
-                        displayAmountTo(convertedAmount);
-                    }
-                    // If this is a transfer, recalculate the amount when the currency changes.
-                    if (transactionEntity.getTransactionType() == TransactionTypes.Transfer) {
-                        displayAmountTo(calculateAmountTo());
+                    if (isTransfer) {
+                        // calculate the exchange amount if it is 0.
+                        if (transactionEntity.getAmount().isZero()) {
+                            Money convertedAmount = calculateAmountFrom();
+                            transactionEntity.setAmount(convertedAmount);
+                            displayAmountFrom();
+                        }
+                        // Recalculate the original amount when the currency changes.
+                        if (originalCurrencyId != getDestinationCurrencyId()) {
+                            Money exchangeAmount = calculateAmountTo();
+                            transactionEntity.setAmountTo(exchangeAmount);
+                            displayAmountTo();
+                        }
+                    } else {
+                        displayAmountTo();
                     }
                 }
 
@@ -407,32 +426,15 @@ public class EditTransactionCommonFunctions {
         };
 
         // Account
-        // select current value
+
         int accountIndex = mAccountIdList.indexOf(accountId);
         if (accountIndex >= 0) {
             viewHolder.spinAccount.setSelection(accountIndex, true);
         }
-//        viewHolder.spinAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                setDirty(true);
-//
-//                if ((position >= 0) && (position <= mAccountIdList.size())) {
-//                    transactionEntity.setAccountId(mAccountIdList.get(position));
-//                    displaySourceAmount();
-//                    refreshControlTitles();
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
         viewHolder.spinAccount.setOnItemSelectedListener(listener);
 
         // To Account
 
-//        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (transactionEntity.hasAccountTo() && mAccountIdList.indexOf(transactionEntity.getAccountToId()) >= 0) {
             viewHolder.spinAccountTo.setSelection(mAccountIdList.indexOf(transactionEntity.getAccountToId()), true);
         }
@@ -466,11 +468,11 @@ public class EditTransactionCommonFunctions {
         };
 
         // amount
-        displaySourceAmount();
+        displayAmountFrom();
         viewHolder.txtAmount.setOnClickListener(onClickAmount);
 
         // amount to
-        displayDestinationAmount();
+        displayAmountTo();
         viewHolder.txtAmountTo.setOnClickListener(onClickAmount);
     }
 
@@ -537,14 +539,6 @@ public class EditTransactionCommonFunctions {
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
-    }
-
-    private void showDate(String dateString) {
-        viewHolder.dateTextView.setTag(dateString);
-
-        DateTime dateTime = DateTime.parse(dateString);
-
-        viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 
     public void initNotesControls() {
@@ -836,7 +830,7 @@ public class EditTransactionCommonFunctions {
                         splitSum = splitSum.add(mSplitTransactions.get(i).getAmount());
                     }
                     transactionEntity.setAmount(splitSum);
-                    displaySourceAmount();
+                    displayAmountFrom();
                 }
                 // deleted item
                 if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
@@ -856,13 +850,16 @@ public class EditTransactionCommonFunctions {
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
         boolean isSourceAmount = id == R.id.textViewAmount;
 
-        // Update amount value.
+        // Set and display the selected amount.
         if (isSourceAmount) {
             this.transactionEntity.setAmount(amount);
+            displayAmountFrom();
         } else {
             this.transactionEntity.setAmountTo(amount);
+            displayAmountTo();
         }
 
+        // Handle currency exchange on Transfers.
         if (isTransfer) {
             Integer fromCurrencyId = getSourceCurrencyId();
             Integer toCurrencyId = getDestinationCurrencyId();
@@ -871,8 +868,8 @@ public class EditTransactionCommonFunctions {
                 this.transactionEntity.setAmount(amount);
                 this.transactionEntity.setAmountTo(amount);
 
-                displaySourceAmount();
-                displayDestinationAmount();
+                displayAmountFrom();
+                displayAmountTo();
                 // Exit here.
                 return;
             } else {
@@ -887,18 +884,11 @@ public class EditTransactionCommonFunctions {
                 }
 
                 if (isSourceAmount) {
-                    displayAmountTo(convertedAmount);
+                    displayAmountTo();
                 } else {
-                    displayAmountFrom(convertedAmount);
+                    displayAmountFrom();
                 }
             }
-        }
-
-        // Display the entered formatted amount in the UI.
-        if (isSourceAmount) {
-            displayAmountFrom(amount);
-        } else {
-            displayAmountTo(amount);
         }
     }
 
@@ -1296,11 +1286,17 @@ public class EditTransactionCommonFunctions {
         this.getSplitTransactions().add(entity);
     }
 
-    private void displayAmountFrom(Money amount) {
+    private void displayAmountFrom() {
+        Money amount = transactionEntity.getAmount() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmount();
+//        displayAmountFrom(amount);
+
         displayAmountFormatted(viewHolder.txtAmount, amount, getSourceCurrencyId());
     }
 
-    private void displayAmountTo(Money amount) {
+    private void displayAmountTo() {
+        Money amount = transactionEntity.getAmountTo() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmountTo();
+        //displayAmountTo(amount);
+
         displayAmountFormatted(viewHolder.txtAmountTo, amount, getDestinationCurrencyId());
     }
 
@@ -1348,16 +1344,19 @@ public class EditTransactionCommonFunctions {
 
         // un-check split.
         setSplit(false);
+
+        // calculate AmountTo
+        Money amountTo = calculateAmountTo();
+        transactionEntity.setAmountTo(amountTo);
+        displayAmountTo();
     }
 
-    private void displayDestinationAmount() {
-        Money amount = transactionEntity.getAmountTo() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmountTo();
-        displayAmountTo(amount);
-    }
+    private void showDate(String dateString) {
+        viewHolder.dateTextView.setTag(dateString);
 
-    private void displaySourceAmount() {
-        Money amount = transactionEntity.getAmount() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmount();
-        displayAmountFrom(amount);
+        DateTime dateTime = DateTime.parse(dateString);
+
+        viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 
     private void showSplitCategoriesForm(String datasetName) {
