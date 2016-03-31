@@ -79,7 +79,7 @@ public class AccountTransaction
         return getInt(TRANSID);
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         setInt(TRANSID, id);
     }
 

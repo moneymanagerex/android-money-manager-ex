@@ -44,7 +44,7 @@ public interface ITransactionEntity {
     String FOLLOWUPID = "FOLLOWUPID";
 
     Integer getId();
-    void setId(int splitTransId);
+    void setId(Integer value);
 
     Integer getAccountId();
     void setAccountId(Integer value);

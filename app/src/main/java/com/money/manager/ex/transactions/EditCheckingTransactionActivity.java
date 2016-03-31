@@ -56,6 +56,7 @@ import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class EditCheckingTransactionActivity
 
     // action type intent
     public String mIntentAction;
-    public int mTransId = Constants.NOT_SET;
+//    public int mTransId = Constants.NOT_SET;
 
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
@@ -144,7 +145,7 @@ public class EditCheckingTransactionActivity
                 Parcels.wrap(mCommonFunctions.transactionEntity));
 
         // save the state interface
-        outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
+//        outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
@@ -236,6 +237,23 @@ public class EditCheckingTransactionActivity
         return true;
     }
 
+    private void duplicateTransaction() {
+        // Reset transaction id. To be inserted when the transaction is saved.
+        mCommonFunctions.transactionEntity.setId(null);
+
+        // Use today's date.
+        mCommonFunctions.transactionEntity.setDate(DateTime.now());
+
+        // Remove transaction id in split categories.
+        if (mCommonFunctions.mSplitTransactions != null) {
+            // Reset ids so that the transactions get inserted on save.
+            for (ISplitTransaction split : mCommonFunctions.mSplitTransactions) {
+                split.setId(Constants.NOT_SET);
+            }
+        }
+
+    }
+
     private void initializeInputControls() {
         // Transaction Type
         mCommonFunctions.initTransactionTypeSelector();
@@ -272,51 +290,20 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.initNotesControls();
     }
 
-    private boolean loadCheckingAccount(int transId, boolean duplicate) {
-        try {
-            return loadCheckingAccountInternal(transId, duplicate);
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(e, "loading checking account");
-        }
-        return false;
-    }
-
-    /**
-     * getApplicationContext() method allows you to search the transaction data
-     *
-     * @param transId transaction id
-     * @return true if data selected, false nothing
-     */
-    private boolean loadCheckingAccountInternal(int transId, boolean duplicate) {
+    private boolean loadCheckingAccount(int transId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
         AccountTransaction tx = repo.load(transId);
         if (tx == null) return false;
 
         mCommonFunctions.transactionEntity = tx;
 
-        if (!duplicate) {
-            mTransId = tx.getId();
-        }
         mCommonFunctions.transactionType = tx.getTransactionType();
 
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
             mCommonFunctions.mSplitTransactions = splitRepo.loadSplitCategoriesFor(transId);
-
-            if (duplicate && (mCommonFunctions.mSplitTransactions != null)) {
-                // Reset ids so that the transactions get inserted on save.
-                for (ISplitTransaction split : mCommonFunctions.mSplitTransactions) {
-                    split.setId(Constants.NOT_SET);
-                }
-            }
         }
-
-//        // convert status in uppercase string
-//        if (!TextUtils.isEmpty(mCommonFunctions.transactionEntity.getStatus())) {
-//            mCommonFunctions.status = mCommonFunctions.status.toUpperCase();
-//        }
 
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
@@ -393,13 +380,19 @@ public class EditCheckingTransactionActivity
 
             // Edit transaction.
 
-            if (mIntentAction != null && Intent.ACTION_EDIT.equals(mIntentAction)) {
-                mTransId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
-                // select data transaction
-                loadCheckingAccount(mTransId, false);
-            } else if (mIntentAction != null && Intent.ACTION_PASTE.equals(mIntentAction)) {
-                // select data transaction
-                loadCheckingAccount(intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET), true);
+            if (mIntentAction != null) {
+                int transactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_TRANS_ID, Constants.NOT_SET);
+
+                switch (mIntentAction) {
+                    case Intent.ACTION_EDIT:
+                        loadCheckingAccount(transactionId);
+                        break;
+                    case Intent.ACTION_PASTE:
+                        // duplicate transaction
+                        loadCheckingAccount(transactionId);
+                        duplicateTransaction();
+                        break;
+                }
             } else {
                 mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
                 if (mRecurringTransactionId > Constants.NOT_SET) {
@@ -534,7 +527,7 @@ public class EditCheckingTransactionActivity
     private void restoreInstanceState(Bundle savedInstanceState) {
         mCommonFunctions.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY));
 
-        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
+//        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
@@ -563,7 +556,7 @@ public class EditCheckingTransactionActivity
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
         AccountTransaction tx = new AccountTransaction();
         tx.contentValues = mCommonFunctions.getContentValues(isTransfer);
-        tx.setId(this.mTransId);
+//        tx.setId(this.mTransId);
 
         // Insert or update?
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
@@ -576,7 +569,7 @@ public class EditCheckingTransactionActivity
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
                 return false;
             }
-            mTransId = id;
+//            mTransId = id;
         } else {
             // update
             boolean updated = repo.update(tx);
@@ -624,8 +617,9 @@ public class EditCheckingTransactionActivity
     }
 
     private boolean saveSplitCategories() {
-        // has split categories
+        int transactionId = mCommonFunctions.transactionEntity.getId();
         boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
+
         // update split transaction
         if (hasSplitCategories) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
@@ -639,7 +633,7 @@ public class EditCheckingTransactionActivity
                     continue;
                 }
 
-                entity.setTransId(mTransId);
+                entity.setTransId(transactionId);
 
                 if (entity.getId() == null || entity.getId() == Constants.NOT_SET) {
                     // insert data
@@ -658,6 +652,7 @@ public class EditCheckingTransactionActivity
                 }
             }
         }
+
         // deleted old split transaction
         if (mCommonFunctions.mSplitTransactionsDeleted != null && !mCommonFunctions.mSplitTransactionsDeleted.isEmpty()) {
             ContentValues values = new ContentValues();
