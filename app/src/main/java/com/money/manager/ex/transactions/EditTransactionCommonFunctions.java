@@ -283,7 +283,7 @@ public class EditTransactionCommonFunctions {
     public Integer getDestinationCurrencyId() {
         Integer accountId = this.transactionEntity.getAccountToId();
         // The destination account/currency is hidden by default and may be uninitialized.
-        if (accountId == null) {
+        if (!transactionEntity.hasAccountTo()) {
             accountId = mAccountIdList.get(0);
         }
 
@@ -1348,15 +1348,6 @@ public class EditTransactionCommonFunctions {
 
         // un-check split.
         setSplit(false);
-
-//         calculate the destination amount if the source amount has been set.
-//        if (!transactionEntity.getAmount().isZero() && transactionEntity.getAmountTo().isZero()) {
-//            // select the first destination account id, if none set.
-//            if (!transactionEntity.hasAccountTo()) {
-//                transactionEntity.setAccountToId(mAccountIdList.get(0));
-//            }
-//            onFinishedInputAmountDialog(R.id.textViewAmount, transactionEntity.getAmount());
-//        }
     }
 
     private void displayDestinationAmount() {
