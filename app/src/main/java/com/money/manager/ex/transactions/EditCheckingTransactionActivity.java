@@ -84,7 +84,7 @@ public class EditCheckingTransactionActivity
         DropboxHelper dropbox = DropboxHelper.getInstance();
         if (dropbox == null) {
             // create helper
-            DropboxHelper.getInstance(getApplicationContext());
+            DropboxHelper.getInstance(this);
         }
 
         setToolbarStandardAction(getToolbar());

@@ -179,7 +179,7 @@ public class MainActivity
         notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 
         // Create a connection to Dropbox.
-        this.mDropboxHelper = DropboxHelper.getInstance(getApplicationContext());
+        this.mDropboxHelper = DropboxHelper.getInstance(this);
 
         createLayout();
 

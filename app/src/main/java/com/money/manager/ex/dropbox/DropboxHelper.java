@@ -95,6 +95,7 @@ public class DropboxHelper {
      */
     public static DropboxHelper getInstance(Context context) {
         if (mHelper == null) {
+            // getApplicationContext()
             mHelper = new DropboxHelper(context);
         }
         return mHelper;
