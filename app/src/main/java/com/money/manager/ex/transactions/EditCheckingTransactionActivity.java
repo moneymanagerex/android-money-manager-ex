@@ -22,15 +22,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -61,8 +60,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import info.javaperformance.money.MoneyFactory;
-
 /**
  * Activity for editing Checking Account Transaction
  */
@@ -83,8 +80,6 @@ public class EditCheckingTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        mCommonFunctions = new EditTransactionCommonFunctions(this, this, new AccountTransaction());
-
         DropboxHelper dropbox = DropboxHelper.getInstance();
         if (dropbox == null) {
             // create helper
@@ -97,6 +92,9 @@ public class EditCheckingTransactionActivity
         if ((savedInstanceState != null)) {
             restoreInstanceState(savedInstanceState);
         }
+
+        ITransactionEntity model = AccountTransaction.create();
+        mCommonFunctions = new EditTransactionCommonFunctions(this, model);
 
         // Controls need to be at the beginning as they are referenced throughout the code.
         mCommonFunctions.findControls();
@@ -300,7 +298,7 @@ public class EditCheckingTransactionActivity
         if (!duplicate) {
             mTransId = tx.getId();
         }
-        mCommonFunctions.transactionType = tx.getTransType();
+        mCommonFunctions.transactionType = tx.getTransactionType();
 
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
@@ -321,7 +319,7 @@ public class EditCheckingTransactionActivity
 //        }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.displayCategoryName();
@@ -353,7 +351,7 @@ public class EditCheckingTransactionActivity
 
         mCommonFunctions.transactionEntity.setDate(recurringTx.getPaymentDate());
         mCommonFunctions.transactionEntity.setAccountId(recurringTx.getAccountId());
-        mCommonFunctions.transactionEntity.setAccountTo(recurringTx.getToAccountId());
+        mCommonFunctions.transactionEntity.setAccountToId(recurringTx.getToAccountId());
 
         String transCode = recurringTx.getTransactionCode();
         mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
@@ -367,7 +365,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.transactionEntity.setNotes(recurringTx.getNotes());
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountTo());
+        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.displayCategoryName();

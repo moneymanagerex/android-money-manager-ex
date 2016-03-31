@@ -17,6 +17,8 @@
 
 package com.money.manager.ex.database;
 
+import com.money.manager.ex.core.TransactionTypes;
+
 import org.joda.time.DateTime;
 
 import info.javaperformance.money.Money;
@@ -47,8 +49,8 @@ public interface ITransactionEntity {
     Integer getAccountId();
     void setAccountId(Integer value);
 
-    Integer getAccountTo();
-    void setAccountTo(Integer value);
+    Integer getAccountToId();
+    void setAccountToId(Integer value);
     boolean hasAccountTo();
 
     Integer getCategoryId();
@@ -85,4 +87,7 @@ public interface ITransactionEntity {
 
     String getTransactionNumber();
     void setTransactionNumber(String value);
+
+    TransactionTypes getTransactionType();
+    void setTransactionType(TransactionTypes value);
 }

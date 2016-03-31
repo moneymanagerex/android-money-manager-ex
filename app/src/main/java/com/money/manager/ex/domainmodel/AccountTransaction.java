@@ -39,16 +39,27 @@ public class AccountTransaction
 
     public static final String TRANSID = "TRANSID";
 
+    /**
+     * Creates default, empty transaction.
+     * @return Account Transaction records with default values.
+     */
+    public static AccountTransaction create() {
+        return create(Constants.NOT_SET, Constants.NOT_SET, TransactionTypes.Withdrawal,
+                Constants.NOT_SET, Constants.NOT_SET, MoneyFactory.fromDouble(0));
+    }
+
     public static AccountTransaction create(int accountId, int payeeId, TransactionTypes type,
                                             int categoryId, int subCategoryId, Money amount) {
         AccountTransaction tx = new AccountTransaction();
 
         tx.setAccountId(accountId);
         tx.setPayeeId(payeeId);
-        tx.setType(type);
+        tx.setTransactionType(type);
         tx.setCategoryId(categoryId);
         tx.setSubcategoryId(subCategoryId);
         tx.setAmount(amount);
+
+        tx.setAmountTo(MoneyFactory.fromDouble(0));
 
         return tx;
     }
@@ -80,16 +91,18 @@ public class AccountTransaction
         setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
-    public Integer getAccountTo() {
+    @Override
+    public Integer getAccountToId() {
         return getInt(ITransactionEntity.TOACCOUNTID);
     }
 
-    public void setAccountTo(Integer value) {
+    @Override
+    public void setAccountToId(Integer value) {
         setInt(ITransactionEntity.TOACCOUNTID, value);
     }
 
     public boolean hasAccountTo() {
-        return getAccountTo() != null && getAccountTo() != Constants.NOT_SET;
+        return getAccountToId() != null && getAccountToId() != Constants.NOT_SET;
     }
 
     public Money getAmount() {
@@ -192,13 +205,13 @@ public class AccountTransaction
         setString(ITransactionEntity.TRANSACTIONNUMBER, value);
     }
 
-    public TransactionTypes getTransType() {
+    public TransactionTypes getTransactionType() {
         String code = getTransCode();
         return TransactionTypes.valueOf(code);
     }
 
-    public void setType(TransactionTypes value) {
+    @Override
+    public void setTransactionType(TransactionTypes value) {
         setString(ITransactionEntity.TRANSCODE, value.name());
     }
-
 }

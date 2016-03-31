@@ -22,6 +22,7 @@ import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.MyDateTimeUtils;
@@ -53,6 +54,9 @@ public class RecurringTransaction
 
     public static RecurringTransaction createInstance() {
         RecurringTransaction tx = new RecurringTransaction();
+
+        tx.setAmount(MoneyFactory.fromDouble(0));
+        tx.setAmountTo(MoneyFactory.fromDouble(0));
         tx.setCategoryId(Constants.NOT_SET);
         tx.setSubcategoryId(Constants.NOT_SET);
 
@@ -88,16 +92,18 @@ public class RecurringTransaction
         setInt(ITransactionEntity.ACCOUNTID, value);
     }
 
-    public Integer getAccountTo() {
+    @Override
+    public Integer getAccountToId() {
         return getInt(ITransactionEntity.TOACCOUNTID);
     }
 
-    public void setAccountTo(Integer value) {
+    @Override
+    public void setAccountToId(Integer value) {
         setInt(ITransactionEntity.TOACCOUNTID, value);
     }
 
     public boolean hasAccountTo() {
-        return getAccountTo() != null && getAccountTo() != Constants.NOT_SET;
+        return getAccountToId() != null && getAccountToId() != Constants.NOT_SET;
     }
 
     public Money getAmount() {
@@ -276,6 +282,15 @@ public class RecurringTransaction
 
     public void setTransactionNumber(String value) {
         setString(ITransactionEntity.TRANSACTIONNUMBER, value);
+    }
+
+    public TransactionTypes getTransactionType() {
+        String code = getTransactionCode();
+        return TransactionTypes.valueOf(code);
+    }
+
+    public void setTransactionType(TransactionTypes value) {
+        setString(ITransactionEntity.TRANSCODE, value.name());
     }
 
 }
