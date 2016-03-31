@@ -622,9 +622,14 @@ public class Core {
         return result;
     }
 
+//    public int getColourFromStyledAttribute(int attribute) {
+//        int[] attrs = { attribute };
+//        TypedArray ta = getContext().obtainStyledAttributes(getContext().getTheme(), attrs);
+//    }
+
     public int getColourFromThemeAttribute(int attribute) {
         TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(android.R.attr.textAppearanceLarge, typedValue, true);
+        getContext().getTheme().resolveAttribute(attribute, typedValue, true);
         return typedValue.resourceId;
     }
 
@@ -650,7 +655,7 @@ public class Core {
         int[] attrs = new int[] { attribute /* index 0 */};
         // Obtain the styled attributes. 'themedContext' is a context with a
         // theme, typically the current Activity (i.e. 'this')
-        TypedArray ta = mContext.obtainStyledAttributes(attrs);
+        TypedArray ta = getContext().obtainStyledAttributes(attrs);
         // To get the value of the 'listItemBackground' attribute that was
         // set in the theme used in 'themedContext'. The parameter is the index
         // of the attribute in the 'attrs' array. The returned Drawable

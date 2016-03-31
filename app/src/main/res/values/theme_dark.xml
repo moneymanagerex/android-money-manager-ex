@@ -63,7 +63,7 @@
         <item name="color_list_header">@color/material_grey_900</item>
         <!-- toolbar -->
         <item name="toolbarItemColor">@color/material_grey_50</item>
-        <item name="toolbar_spinner_item_text_color">@color/material_grey_50</item>
+        <!--<item name="toolbar_spinner_item_text_color">@color/material_grey_50</item>-->
 
         <!-- Drawables -->
         <item name="ic_action_add">@drawable/ic_action_add_dark</item>
