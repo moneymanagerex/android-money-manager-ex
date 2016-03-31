@@ -108,6 +108,7 @@ public class DropboxSettingsFragment
     @Override
     public void onResume() {
         super.onResume();
+
         // complete process authentication
         if (mDropboxLoginBegin) {
             mDropboxHelper.completeAuthenticationDropbox();
@@ -124,6 +125,8 @@ public class DropboxSettingsFragment
             findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setSelectable(mDropboxHelper.isLinked());
             findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK)).setEnabled(mDropboxHelper.isLinked());
         }
+        // todo Hide linked file name.
+
     }
 
     @Override
@@ -165,7 +168,8 @@ public class DropboxSettingsFragment
             });
         }
 
-        // login to Dropbox
+        // Login to Dropbox.
+
         final Preference pDropboxLink = findPreference(getString(PreferenceConstants.PREF_DROPBOX_LINK));
         pDropboxLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
@@ -177,16 +181,16 @@ public class DropboxSettingsFragment
             }
         });
 
-        // logout from dropbox
+        // Logout from dropbox
+
         final Preference pDropboxUnlink = findPreference(getString(PreferenceConstants.PREF_DROPBOX_UNLINK));
         pDropboxUnlink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 mDropboxHelper.logOut();
-                /* SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                sharedPreferences.edit().putString(PreferenceConstants.PREF_DROPBOX_TIMES_REPEAT, null).commit(); */
                 mDropboxHelper.sendBroadcastStartServiceScheduled(DropboxScheduler.ACTION_CANCEL);
+
                 // refresh ui
                 onResume();
                 return false;
