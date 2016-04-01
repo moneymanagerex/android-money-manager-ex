@@ -158,6 +158,9 @@ public abstract class RepositoryBase<T extends EntityBase>
      * Generic insert method.
      */
     protected int insert(ContentValues values) {
+        // sanitize
+        values.remove("_id");
+
         Uri insertUri = getContext().getContentResolver().insert(this.getUri(),
             values);
         if (insertUri == null) return Constants.NOT_SET;
