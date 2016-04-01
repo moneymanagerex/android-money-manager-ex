@@ -30,7 +30,7 @@ Money Manager Ex for Android is an port of the PC/Desktop personal finance appli
 
 #### Contact
 
-For any question, bug report, suggestion please drop us a line  [android.money.manager.ex@gmail.com](mailto:android.money.manager.ex@gmail.com)
+For any question, bug report, suggestion please drop us a line [android@moneymanagerex.org](mailto:android@moneymanagerex.org)
 
 #### Translate
 

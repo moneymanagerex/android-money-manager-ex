@@ -26,11 +26,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.common.BaseFragmentActivity;
 
-/**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- */
 public class RecurringTransactionListActivity
-        extends BaseFragmentActivity {
+    extends BaseFragmentActivity {
 
     public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RecurringTransactionListActivity:LaunchNotification";
     public static final int INTENT_REQUEST_PASSCODE = 2;

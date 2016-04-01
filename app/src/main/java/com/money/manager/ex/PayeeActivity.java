@@ -26,11 +26,8 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.fragment.PayeeListFragment;
 
-/**
- * @author Alessandro Lazzari (lazzari.ale@gmail.com)
- */
 public class PayeeActivity
-        extends BaseFragmentActivity {
+    extends BaseFragmentActivity {
 
     public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
     public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
