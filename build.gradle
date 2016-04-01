@@ -40,6 +40,9 @@ allprojects {
             force 'org.hamcrest:hamcrest-core:1.3'
             force 'junit:junit:4.12'
             force 'com.android.support:support-annotations:23.2.1'
+            force 'com.android.support:appcompat-v7:23.2.1'
+            force 'com.android.support:design:23.2.1'
+            force 'com.google.code.gson:gson:2.6.1'
         }
     }
 }
