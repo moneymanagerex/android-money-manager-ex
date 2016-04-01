@@ -107,11 +107,11 @@ public class DropboxServiceIntent
         Entry remoteFile = mDropboxHelper.getEntry(remote);
         // check if local file or remote file is null, then exit
         if (remoteFile == null && INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-            Log.w(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent force create remote file auto");
+            Log.w(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent forcing creation of the remote file.");
             remoteFile = new Entry();
             remoteFile.path = remote;
         } else if (remoteFile == null) {
-            Log.e(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent don't execute");
+            Log.e(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent premature exit.");
             return;
         }
 

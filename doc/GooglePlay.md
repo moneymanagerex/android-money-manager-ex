@@ -42,7 +42,7 @@ With Dropbox synchronization can keep updated your expenses and incomes on your 
 If you want to join our translation team: https://crowdin.net/project/android-money-manager-ex and sign in.
 
 ☆ <b>CONTACT</b>
-email: android.money.manager.ex@gmail.com
+email: android@moneymanagerex.org
 Web: http://android.moneymanagerex.org/
 G+: http://google.com/+AndroidMoneyManagerEx
 G+ Community: http://goo.gl/R693Ih
