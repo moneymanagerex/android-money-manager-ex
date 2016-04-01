@@ -392,11 +392,11 @@ public class EditCheckingTransactionActivity
                         loadCheckingAccount(transactionId);
                         duplicateTransaction();
                         break;
-                }
-            } else {
-                mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
-                if (mRecurringTransactionId > Constants.NOT_SET) {
-                    loadRecurringTransaction(mRecurringTransactionId);
+                    case Intent.ACTION_INSERT:
+                        mRecurringTransactionId = intent.getIntExtra(EditTransactionActivityConstants.KEY_BDID_ID, Constants.NOT_SET);
+                        if (mRecurringTransactionId > Constants.NOT_SET) {
+                            loadRecurringTransaction(mRecurringTransactionId);
+                        }
                 }
             }
         }
