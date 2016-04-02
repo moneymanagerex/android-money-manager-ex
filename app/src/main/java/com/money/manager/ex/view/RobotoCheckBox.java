@@ -25,8 +25,6 @@ import android.widget.TextView;
 
 /**
  * Implementation of a {@link TextView} with native support for all the Roboto fonts on all versions of Android.
- *
- * @author a.lazzari
  */
 public class RobotoCheckBox extends CheckBox {
     /**
@@ -89,26 +87,25 @@ public class RobotoCheckBox extends CheckBox {
     	RobotoView.parseAttributes(context, this, attrs);
     }
 
-    /**
-     * Adjust the margin between the checkbox and the text.
-     * A fix for displaying on JellyBean.
-     * Reference: http://stackoverflow.com/questions/4037795/android-spacing-between-checkbox-and-text
-     * Android version codes: http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
-     * @return Left padding for the text component.
-     */
-    @Override
-    public int getCompoundPaddingLeft() {
-        int result = super.getCompoundPaddingLeft();
-
-        // fix for padding on Jelly Bean (4.2 and lower)
-        int currentApiVersion = Build.VERSION.SDK_INT;
-        // Build.VERSION_CODES.KITKAT = 4.4
-        if(currentApiVersion <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            final float scale = this.getResources().getDisplayMetrics().density;
-            //result = (super.getCompoundPaddingLeft() + (int) (10.0f * scale + 0.5f));
-            result = (super.getCompoundPaddingLeft() + (int) (30.0f * scale + 0.5f));
-        }
-
-        return result;
-    }
+//    /**
+//     * Adjust the margin between the checkbox and the text.
+//     * A fix for displaying on JellyBean.
+//     * Reference: http://stackoverflow.com/questions/4037795/android-spacing-between-checkbox-and-text
+//     * Android version codes: http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+//     * @return Left padding for the text component.
+//     */
+//    @Override
+//    public int getCompoundPaddingLeft() {
+//        int result = super.getCompoundPaddingLeft();
+//
+//        // fix for padding on Jelly Bean (4.2 and lower)
+//        // Build.VERSION_CODES.KITKAT = 4.4
+//        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            final float scale = this.getResources().getDisplayMetrics().density;
+//            //result = (super.getCompoundPaddingLeft() + (int) (10.0f * scale + 0.5f));
+//            result = (super.getCompoundPaddingLeft() + (int) (30.0f * scale + 0.5f));
+//        }
+//
+//        return result;
+//    }
 }
