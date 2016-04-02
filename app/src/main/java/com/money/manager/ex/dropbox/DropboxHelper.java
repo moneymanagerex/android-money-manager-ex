@@ -101,11 +101,11 @@ public class DropboxHelper {
         return mHelper;
     }
 
-    public static DropboxHelper getInstance() {
-//        if (mHelper == null) throw new Exception("Dropbox Helper not yet instantiated");
-
-        return mHelper;
-    }
+//    public static DropboxHelper getInstance() {
+////        if (mHelper == null) throw new Exception("Dropbox Helper not yet instantiated");
+//
+//        return mHelper;
+//    }
 
     /**
      * called whenever the database has changed and should be resynchronized.
