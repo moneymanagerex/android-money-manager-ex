@@ -33,7 +33,9 @@ import io.selendroid.standalone.SelendroidConfiguration;
 import io.selendroid.standalone.SelendroidLauncher;
 
 /**
- * First selenium tests
+ * First selenium tests.
+ * This class runs the selenium server during the test setup. This is ok for one test class
+ * but won't work when running a set of tests.
  */
 public class FirstTests {
     private static SelendroidLauncher selendroidServer = null;
