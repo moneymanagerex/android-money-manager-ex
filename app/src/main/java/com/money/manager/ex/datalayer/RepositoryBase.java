@@ -114,21 +114,6 @@ public abstract class RepositoryBase<T extends EntityBase>
         return entity;
     }
 
-
-    // Protected
-
-    protected List<T> query(Class<T> resultType, String selection) {
-        return query(resultType, null, selection, null, null);
-    }
-//
-//    protected List<ContentValues> query(String[] projection, String selection, String[] args) {
-//        return query(projection, selection, args, null);
-//    }
-//
-//    protected List<ContentValues> query(String selection, String[] args, String sort) {
-//        return query(null, selection, args, sort);
-//    }
-
     public List<T> query(Class<T> resultType, String[] projection, String selection, String[] args,
                          String sort) {
         Cursor c = openCursor(projection, selection, args, sort);
@@ -153,6 +138,11 @@ public abstract class RepositoryBase<T extends EntityBase>
         return results;
     }
 
+    // Protected
+
+    protected int bulkInsert(ContentValues[] items) {
+        return getContext().getContentResolver().bulkInsert(this.getUri(), items);
+    }
 
     /**
      * Generic insert method.
@@ -170,8 +160,8 @@ public abstract class RepositoryBase<T extends EntityBase>
         return (int) id;
     }
 
-    protected int bulkInsert(ContentValues[] items) {
-        return getContext().getContentResolver().bulkInsert(this.getUri(), items);
+    protected List<T> query(Class<T> resultType, String selection) {
+        return query(resultType, null, selection, null, null);
     }
 
     /**

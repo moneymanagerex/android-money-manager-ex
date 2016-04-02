@@ -81,11 +81,11 @@ public class EditCheckingTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        DropboxHelper dropbox = DropboxHelper.getInstance();
-        if (dropbox == null) {
-            // create helper
-            DropboxHelper.getInstance(this);
-        }
+        DropboxHelper dropbox = DropboxHelper.getInstance(this);
+//        if (dropbox == null) {
+//            // create helper
+//            DropboxHelper.getInstance(this);
+//        }
 
         setToolbarStandardAction(getToolbar());
 
