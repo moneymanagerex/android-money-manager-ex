@@ -263,6 +263,8 @@ public class EditTransactionCommonFunctions {
     }
 
     public int getAccountCurrencyId(int accountId) {
+        if (accountId == Constants.NOT_SET) return Constants.NOT_SET;
+
         AccountRepository repo = new AccountRepository(getContext());
         Integer currencyId = repo.loadCurrencyIdFor(accountId);
         return currencyId;
