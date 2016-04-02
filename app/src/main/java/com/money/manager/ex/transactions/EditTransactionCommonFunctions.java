@@ -532,7 +532,7 @@ public class EditTransactionCommonFunctions {
 
             @Override
             public void onClick(View v) {
-                DateTime dateTime = DateTime.parse(viewHolder.dateTextView.getTag().toString());
+                DateTime dateTime = MyDateTimeUtils.from(viewHolder.dateTextView.getTag().toString());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
@@ -1356,7 +1356,7 @@ public class EditTransactionCommonFunctions {
     private void showDate(String dateString) {
         viewHolder.dateTextView.setTag(dateString);
 
-        DateTime dateTime = DateTime.parse(dateString);
+        DateTime dateTime = MyDateTimeUtils.from(dateString);
 
         viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }

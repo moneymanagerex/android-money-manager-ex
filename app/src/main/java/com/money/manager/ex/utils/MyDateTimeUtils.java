@@ -27,6 +27,8 @@ import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -34,6 +36,9 @@ import java.util.Calendar;
 
 /**
  * Utilities for DateTime.
+ * Most methods specify UTC as the time zone, since time zones play no role in MMEX as we work
+ * only with dates, not times. Many exceptions happen in different time zones during DST,
+ * especially the ones that transition at midnight.
  */
 public class MyDateTimeUtils {
 
@@ -42,7 +47,7 @@ public class MyDateTimeUtils {
     }
 
     public static DateTime today() {
-        return new DateTime()
+        return new DateTime(DateTimeZone.UTC)
                 .withHourOfDay(0)
                 .withMinuteOfHour(0)
                 .withSecondOfMinute(0)
@@ -50,14 +55,15 @@ public class MyDateTimeUtils {
     }
 
     public static DateTime from(String isoString) {
-        DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
-        DateTime dateTime = format.parseDateTime(isoString);
-        return dateTime;
+        String pattern = Constants.ISO_DATE_FORMAT;
+        return from(isoString, pattern);
     }
 
     public static DateTime from(String dateString, String pattern) {
         DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
-        DateTime dateTime = format.parseDateTime(dateString);
+//        DateTime dateTime = format.parseDateTime(dateString);
+        DateTime dateTime = format.withZoneUTC()
+                .parseDateTime(dateString);
         return dateTime;
     }
 
@@ -74,7 +80,14 @@ public class MyDateTimeUtils {
     }
 
     public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
-        return new DateTime(year, monthOfYear, dayOfMonth, 0, 0);
+        //DateTimeZone.setDefault(DateTimeZone.UTC); <-- sets the default for JodaTime.
+        return new DateTime(DateTimeZone.UTC)
+                .withYear(year)
+                .withMonthOfYear(monthOfYear)
+                .withDayOfMonth(dayOfMonth)
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0);
     }
 
     public static DateTime from(DatePicker datePicker) {

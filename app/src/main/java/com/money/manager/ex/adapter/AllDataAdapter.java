@@ -37,6 +37,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -148,9 +149,7 @@ public class AllDataAdapter
 
         String dateString = cursor.getString(cursor.getColumnIndex(DATE));
         if (StringUtils.isNotEmpty(dateString)) {
-//            Date date = new SimpleDateFormat(Constants.ISO_DATE_FORMAT).parse();
-            DateTimeFormatter format = DateTimeFormat.forPattern(Constants.ISO_DATE_FORMAT);
-            DateTime dateTime = format.parseDateTime(dateString);
+            DateTime dateTime = MyDateTimeUtils.from(dateString);
 
             Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
 
