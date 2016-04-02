@@ -81,11 +81,8 @@ public class EditCheckingTransactionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        DropboxHelper dropbox = DropboxHelper.getInstance(this);
-//        if (dropbox == null) {
-//            // create helper
-//            DropboxHelper.getInstance(this);
-//        }
+        // Create Dropbox helper if not yet created. i.e. when started from a widget.
+        DropboxHelper.getInstance(this);
 
         setToolbarStandardAction(getToolbar());
 
@@ -145,21 +142,15 @@ public class EditCheckingTransactionActivity
                 Parcels.wrap(mCommonFunctions.transactionEntity));
 
         // save the state interface
-//        outState.putInt(EditTransactionActivityConstants.KEY_TRANS_ID, mTransId);
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_TOTAMOUNT, mCommonFunctions.viewHolder.txtAmountTo.getTag().toString());
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_AMOUNT, mCommonFunctions.viewHolder.txtAmount.getTag().toString());
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putString(EditTransactionActivityConstants.KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putString(EditTransactionActivityConstants.KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
-        outState.putString(EditTransactionActivityConstants.KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION,
                 Parcels.wrap(mCommonFunctions.mSplitTransactions));
         outState.putParcelable(EditTransactionActivityConstants.KEY_SPLIT_TRANSACTION_DELETED,
                 Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
-        outState.putString(EditTransactionActivityConstants.KEY_NOTES, mCommonFunctions.edtNotes.getText().toString());
-        // bill deposits
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
 
         outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
@@ -527,7 +518,6 @@ public class EditCheckingTransactionActivity
     private void restoreInstanceState(Bundle savedInstanceState) {
         mCommonFunctions.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY));
 
-//        mTransId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_TRANS_ID);
         mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
         mCommonFunctions.categoryName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_CATEGORY_NAME);
