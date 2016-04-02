@@ -29,6 +29,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -563,6 +564,7 @@ public class EditTransactionCommonFunctions {
             @Override
             public void afterTextChanged(Editable editable) {
                 setDirty(true);
+                transactionEntity.setNotes(editable.toString());
             }
         });
     }
