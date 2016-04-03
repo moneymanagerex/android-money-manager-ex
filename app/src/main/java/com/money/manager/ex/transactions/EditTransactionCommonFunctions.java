@@ -611,11 +611,16 @@ public class EditTransactionCommonFunctions {
         splitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSplit(!isSplitSelected());
+                boolean splitting = !isSplitSelected();
+
+                if (splitting) {
+                    createSplitForCategoryAndAmount();
+                }
+
+                setSplit(splitting);
 
                 // if the split has just been set, show the splits dialog immediately?
                 if (isSplitSelected()) {
-                    createSplitForCategoryAndAmount();
                     showSplitCategoriesForm(mSplitCategoryEntityName);
                 }
             }

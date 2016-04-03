@@ -57,14 +57,16 @@ public class RecurringTransaction
 
         tx.setAmount(MoneyFactory.fromDouble(0));
         tx.setAmountTo(MoneyFactory.fromDouble(0));
-        tx.setCategoryId(Constants.NOT_SET);
-        tx.setSubcategoryId(Constants.NOT_SET);
 
         return tx;
     }
 
     public RecurringTransaction() {
         super();
+
+        setCategoryId(Constants.NOT_SET);
+        setSubcategoryId(Constants.NOT_SET);
+        setRecurrence(Recurrence.ONCE);
     }
 
     @Override
