@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -245,18 +246,64 @@ public class EditCheckingTransactionActivity
 
     }
 
+    /**
+     * Get any parameters, if sent, when intent was raised. This is used when called
+     * from Tasker or any external caller.
+     * @param intent The intent received.
+     */
+    private void externalIntegration(Intent intent) {
+        Uri data = intent.getData();
+        if (data == null) return;
+
+        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
+
+        // transaction type
+        mCommonFunctions.transactionType = parameters.transactionType;
+
+        if (parameters.accountId > 0) {
+            this.mCommonFunctions.transactionEntity.setAccountId(parameters.accountId);
+        }
+        mCommonFunctions.transactionEntity.setAmount(parameters.amount);
+        // payee
+        if (parameters.payeeId > 0) {
+            this.mCommonFunctions.transactionEntity.setPayeeId(parameters.payeeId);
+            this.mCommonFunctions.payeeName = parameters.payeeName;
+        } else {
+            // create payee if it does not exist
+            if (parameters.payeeName != null) {
+                PayeeService payeeService = new PayeeService(this);
+                Payee payee = payeeService.createNew(parameters.payeeName);
+                mCommonFunctions.transactionEntity.setPayeeId(payee.getId());
+                mCommonFunctions.payeeName = payee.getName();
+            }
+        }
+
+        // category
+        if (parameters.categoryId > 0) {
+            mCommonFunctions.transactionEntity.setCategoryId(parameters.categoryId);
+            mCommonFunctions.categoryName = parameters.categoryName;
+        } else {
+            // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
+            if (parameters.categoryName != null) {
+                CategoryService newCategory = new CategoryService(this);
+                mCommonFunctions.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
+                mCommonFunctions.categoryName = parameters.categoryName;
+            }
+        }
+    }
+
     private void initializeInputControls() {
+        // Transaction date
+        mCommonFunctions.initDateSelector();
+
         // Transaction Type
         mCommonFunctions.initTransactionTypeSelector();
-
-        // account(s)
-        mCommonFunctions.initAccountSelectors();
 
         // status
         mCommonFunctions.initStatusSelector();
 
-        // Transaction date
-        mCommonFunctions.initDateSelector();
+        // account(s)
+        mCommonFunctions.initAccountSelectors();
 
         // Payee
         mCommonFunctions.initPayeeControls();
@@ -469,54 +516,9 @@ public class EditCheckingTransactionActivity
         return true;
     }
 
-    /**
-     * Get any parameters, if sent, when intent was raised. This is used when called
-     * from Tasker or any external caller.
-     * @param intent The intent received.
-     */
-    private void externalIntegration(Intent intent) {
-        Uri data = intent.getData();
-        if (data == null) return;
-
-        IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
-
-        // transaction type
-        mCommonFunctions.transactionType = parameters.transactionType;
-
-        if (parameters.accountId > 0) {
-            this.mCommonFunctions.transactionEntity.setAccountId(parameters.accountId);
-        }
-        mCommonFunctions.transactionEntity.setAmount(parameters.amount);
-        // payee
-        if (parameters.payeeId > 0) {
-            this.mCommonFunctions.transactionEntity.setPayeeId(parameters.payeeId);
-            this.mCommonFunctions.payeeName = parameters.payeeName;
-        } else {
-            // create payee if it does not exist
-            if (parameters.payeeName != null) {
-                PayeeService payeeService = new PayeeService(this);
-                Payee payee = payeeService.createNew(parameters.payeeName);
-                mCommonFunctions.transactionEntity.setPayeeId(payee.getId());
-                mCommonFunctions.payeeName = payee.getName();
-            }
-        }
-
-        // category
-        if (parameters.categoryId > 0) {
-            mCommonFunctions.transactionEntity.setCategoryId(parameters.categoryId);
-            mCommonFunctions.categoryName = parameters.categoryName;
-        } else {
-            // No id sent. Create a category if it was sent but does not exist (id not found by the parser).
-            if (parameters.categoryName != null) {
-                CategoryService newCategory = new CategoryService(this);
-                mCommonFunctions.transactionEntity.setCategoryId(newCategory.createNew(parameters.categoryName));
-                mCommonFunctions.categoryName = parameters.categoryName;
-            }
-        }
-    }
-
     private void restoreInstanceState(Bundle savedInstanceState) {
-        mCommonFunctions.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY));
+        Parcelable parcelTx = savedInstanceState.getParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY);
+        mCommonFunctions.transactionEntity = Parcels.unwrap(parcelTx);
 
         mCommonFunctions.mToAccountName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME);
         mCommonFunctions.payeeName = savedInstanceState.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME);
