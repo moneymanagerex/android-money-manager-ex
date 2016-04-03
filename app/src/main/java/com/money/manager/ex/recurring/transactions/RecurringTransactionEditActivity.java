@@ -507,10 +507,21 @@ public class RecurringTransactionEditActivity
         if (!validateData()) return false;
 
         boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        ContentValues values = getContentValues(isTransfer);
 
-        // Insert or update
+        // Split Categories
+
+        if(!mCommonFunctions.isSplitSelected()) {
+            // Delete any split categories if split is unchecked.
+            mCommonFunctions.removeAllSplitCategories();
+        }
+        if (!saveSplitCategories()) {
+            return false;
+        }
+
+        // Transaction
+
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+        ContentValues values = getContentValues(isTransfer);
 
         if (Intent.ACTION_INSERT.equals(mIntentAction)) {
             // insert
@@ -533,33 +544,19 @@ public class RecurringTransactionEditActivity
             }
         }
 
-        if(!mCommonFunctions.isSplitSelected()) {
-            // Delete any split categories if split is unchecked.
-            mCommonFunctions.removeAllSplitCategories();
-        }
-
-        if (!saveSplitCategories()) {
-            return false;
-        }
-
-        // update category and subcategory payee
-        if ((!isTransfer) && mCommonFunctions.transactionEntity.hasPayee() && (!mCommonFunctions.hasSplitCategories())) {
-            // clear content value for update categoryId, subCategoryId
-            values.clear();
-            // set categoryId and subCategoryId
-            values.put(Payee.CATEGID, mCommonFunctions.transactionEntity.getCategoryId());
-            values.put(Payee.SUBCATEGID, mCommonFunctions.transactionEntity.getSubcategoryId());
-
-            PayeeRepository payeeRepository = new PayeeRepository(this);
-            // update data
-            if (getContentResolver().update(payeeRepository.getUri(),
-                    values,
-                    Payee.PAYEEID + "=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()),
-                    null) <= 0) {
-                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
-            }
-        }
+//        // update category and subcategory for the payee.
+//        if ((!isTransfer) && mCommonFunctions.transactionEntity.hasPayee() && (!mCommonFunctions.hasSplitCategories())) {
+//            PayeeRepository payeeRepository = new PayeeRepository(this);
+//            Payee payee = payeeRepository.load(mCommonFunctions.transactionEntity.getPayeeId());
+//
+//            payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
+//            payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
+//
+//            if (!payeeRepository.save(payee)) {
+//                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
+//                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
+//            }
+//        }
 
         return true;
     }
@@ -630,19 +627,5 @@ public class RecurringTransactionEditActivity
 
         return true;
     }
-
-//    private boolean deleteMarkedSplits() {
-//        for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
-//            SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
-//            ISplitTransaction splitToDelete = mCommonFunctions.mSplitTransactionsDeleted.get(i);
-//            if (!splitRepo.delete(splitToDelete)) {
-//                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-//                Log.w(LOGCAT, "Delete split transaction failed!");
-//                return false;
-//            }
-//        }
-//
-//        return true;
-//    }
 }
 
