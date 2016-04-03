@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SplitTransactionsActivity;
+import com.money.manager.ex.SplitCategoriesActivity;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -41,8 +41,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Config(constants = BuildConfig.class)
 public class SplitCategoriesActivityTests {
 
-    private ActivityController<SplitTransactionsActivity> controller;
-//    private SplitTransactionsActivity activity;
+    private ActivityController<SplitCategoriesActivity> controller;
+//    private SplitCategoriesActivity activity;
 
     @BeforeClass
     public static void suiteSetup() {
@@ -55,7 +55,7 @@ public class SplitCategoriesActivityTests {
         UnitTestHelper.setupContentProvider();
         // todo: insert any data here, if needed.
 
-        this.controller = UnitTestHelper.getController(SplitTransactionsActivity.class);
+        this.controller = UnitTestHelper.getController(SplitCategoriesActivity.class);
     }
 
     @After
@@ -68,7 +68,7 @@ public class SplitCategoriesActivityTests {
 
     @Test
     public void activityRunsStandalone() {
-        SplitTransactionsActivity activity = UnitTestHelper.getActivity(this.controller);
+        SplitCategoriesActivity activity = UnitTestHelper.getActivity(this.controller);
         assertThat(activity).isNotNull();
     }
 
@@ -85,12 +85,12 @@ public class SplitCategoriesActivityTests {
 
         // run
 
-        SplitTransactionsActivity activity = this.controller
+        SplitCategoriesActivity activity = this.controller
                 .withIntent(intent)
                 .create().visible().start().get();
 
         assertThat(activity).isNotNull();
-        assertThat(activity.getIntent().getStringExtra(SplitTransactionsActivity.KEY_DATASET_TYPE))
+        assertThat(activity.getIntent().getStringExtra(SplitCategoriesActivity.KEY_DATASET_TYPE))
                 .isEqualTo(SplitCategory.class.getSimpleName());
 
         // enter number
@@ -129,12 +129,12 @@ public class SplitCategoriesActivityTests {
 
         // this is a copy of production intent code
 
-        Intent intent = new Intent(context, SplitTransactionsActivity.class);
-        intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
-        intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
-        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
-        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
-        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, currencyId);
+        Intent intent = new Intent(context, SplitCategoriesActivity.class);
+        intent.putExtra(SplitCategoriesActivity.KEY_DATASET_TYPE, datasetName);
+        intent.putExtra(SplitCategoriesActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
+        intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
+        intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
+        intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, currencyId);
 
 //        mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
 

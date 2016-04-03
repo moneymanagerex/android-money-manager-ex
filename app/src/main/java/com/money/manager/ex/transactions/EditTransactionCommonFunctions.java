@@ -40,6 +40,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -47,13 +48,14 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SplitTransactionsActivity;
+import com.money.manager.ex.SplitCategoriesActivity;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
@@ -140,7 +142,44 @@ public class EditTransactionCommonFunctions {
     private BaseFragmentActivity mParent;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
-    private String mDatasetName;
+    private String mSplitCategoryEntityName;
+
+    public boolean deleteMarkedSplits(IRepository repository) {
+        for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
+            ISplitTransaction splitToDelete = mSplitTransactionsDeleted.get(i);
+
+            // Ignore unsaved entities.
+            if (splitToDelete.getId() == Constants.NOT_SET) continue;
+
+            if (!repository.delete(splitToDelete)) {
+                Toast.makeText(getContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void displayCategoryName() {
+        // validation
+        if (this.viewHolder.categoryTextView == null) return;
+
+        this.viewHolder.categoryTextView.setText("");
+
+        if (isSplitSelected()) {
+            // Split transaction. Show ...
+            this.viewHolder.categoryTextView.setText("\u2026");
+        } else {
+            if (!TextUtils.isEmpty(categoryName)) {
+                this.viewHolder.categoryTextView.setText(categoryName);
+                if (!TextUtils.isEmpty(subCategoryName)) {
+                    this.viewHolder.categoryTextView.setText(Html.fromHtml(
+                            this.viewHolder.categoryTextView.getText() + " : <i>" + subCategoryName + "</i>"));
+                }
+            }
+        }
+    }
 
     public void findControls() {
         this.viewHolder = new ViewHolder();
@@ -187,7 +226,7 @@ public class EditTransactionCommonFunctions {
      *
      * @return A boolean indicating whether the operation was successful.
      */
-    public boolean displayCategoryName() {
+    public boolean loadCategoryName() {
         if(!this.transactionEntity.hasCategory() && this.transactionEntity.getSubcategoryId() <= 0) return false;
 
         CategoryRepository categoryRepository = new CategoryRepository(getContext());
@@ -486,7 +525,7 @@ public class EditTransactionCommonFunctions {
      */
     public void initCategoryControls(final String datasetName) {
         // keep the dataset name for later.
-        this.mDatasetName = datasetName;
+        this.mSplitCategoryEntityName = datasetName;
 
         this.viewHolder.categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -498,7 +537,7 @@ public class EditTransactionCommonFunctions {
                     mParent.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     // select split categories.
-                    showSplitCategoriesForm(mDatasetName);
+                    showSplitCategoriesForm(mSplitCategoryEntityName);
                 }
 
                 // results are handled in onActivityResult.
@@ -605,7 +644,7 @@ public class EditTransactionCommonFunctions {
                 // if the split has just been set, show the splits dialog immediately?
                 if (isSplitSelected()) {
                     createSplitForCategoryAndAmount();
-                    showSplitCategoriesForm(mDatasetName);
+                    showSplitCategoriesForm(mSplitCategoryEntityName);
                 }
             }
         });
@@ -793,10 +832,9 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
-                if (!isSplitSelected() && this.transactionEntity.getCategoryId() != null
-                    && this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
+                if (!isSplitSelected() && this.transactionEntity.hasCategory() ) {
                     if (setCategoryFromPayee(transactionEntity.getPayeeId())) {
-                        refreshCategoryName(); // refresh UI
+                        displayCategoryName(); // refresh UI
                     }
                 }
                 // refresh UI
@@ -822,7 +860,7 @@ public class EditTransactionCommonFunctions {
                 this.transactionEntity.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET));
                 subCategoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
                 // refresh UI category
-                refreshCategoryName();
+                displayCategoryName();
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
@@ -830,7 +868,7 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                mSplitTransactions = Parcels.unwrap(data.getParcelableExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION));
+                mSplitTransactions = Parcels.unwrap(data.getParcelableExtra(SplitCategoriesActivity.INTENT_RESULT_SPLIT_TRANSACTION));
                 if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
                     Money splitSum = MoneyFactory.fromString("0");
                     for (int i = 0; i < mSplitTransactions.size(); i++) {
@@ -840,7 +878,7 @@ public class EditTransactionCommonFunctions {
                     displayAmountFrom();
                 }
                 // deleted items
-                Parcelable parcelDeletedSplits = data.getParcelableExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                Parcelable parcelDeletedSplits = data.getParcelableExtra(SplitCategoriesActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                 if (parcelDeletedSplits != null) {
                     mSplitTransactionsDeleted = Parcels.unwrap(parcelDeletedSplits);
                 }
@@ -903,19 +941,24 @@ public class EditTransactionCommonFunctions {
      * Handle the controls after the split is checked.
      */
     public void onSplitSet() {
-        // update category field
-        refreshCategoryName();
+        if (isSplitSelected()) {
+            // update transaction, remove category & subcategory.
+            transactionEntity.setCategoryId(Constants.NOT_SET);
+            transactionEntity.setSubcategoryId(Constants.NOT_SET);
+        }
+        // display category field
+        displayCategoryName();
 
         // enable/disable Amount field.
         viewHolder.txtAmount.setEnabled(!mSplitSelected);
         viewHolder.txtAmountTo.setEnabled(!mSplitSelected);
 
+        // update Split button
         int buttonColour, buttonBackground;
         if (isSplitSelected()) {
             buttonColour = R.color.button_foreground_active;
             buttonBackground = R.color.button_background_active;
             // #188: if there is a Category selected and we are switching to Split Categories.
-
         } else {
             buttonColour = R.color.button_foreground_inactive;
             Core core = new Core(mContext);
@@ -944,26 +987,6 @@ public class EditTransactionCommonFunctions {
 
         if (isTransfer) {
             onTransferSelected();
-        }
-    }
-
-    public void refreshCategoryName() {
-        // validation
-        if (this.viewHolder.categoryTextView == null) return;
-
-        this.viewHolder.categoryTextView.setText("");
-
-        if (isSplitSelected()) {
-            // Split transaction. Show ...
-            this.viewHolder.categoryTextView.setText("\u2026");
-        } else {
-            if (!TextUtils.isEmpty(categoryName)) {
-                this.viewHolder.categoryTextView.setText(categoryName);
-                if (!TextUtils.isEmpty(subCategoryName)) {
-                    this.viewHolder.categoryTextView.setText(Html.fromHtml(
-                        this.viewHolder.categoryTextView.getText() + " : <i>" + subCategoryName + "</i>"));
-                }
-            }
         }
     }
 
@@ -1005,6 +1028,7 @@ public class EditTransactionCommonFunctions {
 
     public void setSplit(final boolean checked) {
         mSplitSelected = checked;
+
         onSplitSet();
     }
 
@@ -1034,7 +1058,8 @@ public class EditTransactionCommonFunctions {
      */
     public boolean setCategoryFromPayee(int payeeId) {
         boolean ret = false;
-        // take data of payee
+        // load payee data
+        //PayeeRepository repo = new PayeeRepository(getContext());
         TablePayee payee = new TablePayee();
         Cursor curPayee = mParent.getContentResolver().query(payee.getUri(),
                 payee.getAllColumns(),
@@ -1218,6 +1243,27 @@ public class EditTransactionCommonFunctions {
         return mSplitTransactionsDeleted;
     }
 
+    /**
+     * Check if there is only one Split Category and transforms the transaction to a non-split
+     * transaction, removing the split category record.
+     */
+    public void handleOneSplit() {
+        if (mSplitTransactions.size() != 1) return;
+
+        // use the first split category record.
+        ISplitTransaction splitTransaction = mSplitTransactions.get(0);
+
+        // reuse the amount & category
+        transactionEntity.setAmount(splitTransaction.getAmount());
+        transactionEntity.setCategoryId(splitTransaction.getCategoryId());
+        transactionEntity.setSubcategoryId(splitTransaction.getSubcategoryId());
+
+        getDeletedSplitCategories().add(splitTransaction);
+        getSplitTransactions().remove(splitTransaction);
+
+        // handle deletion in the specific implementation.
+    }
+
     // Private
 
     private void addMissingAccountToSelectors(AccountRepository accountRepository, Integer accountId) {
@@ -1265,18 +1311,16 @@ public class EditTransactionCommonFunctions {
      */
     private void createSplitForCategoryAndAmount() {
         // Add the new split record.
-        ISplitTransaction entity = SplitItemFactory.create(this.mDatasetName);
+        ISplitTransaction entity = SplitItemFactory.create(this.mSplitCategoryEntityName);
 
         // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
 
         // Add category
 
-        if (this.transactionEntity.getCategoryId() == null || this.transactionEntity.getCategoryId() == Constants.NOT_SET) {
-            return;
-        }
+        if (!this.transactionEntity.hasCategory()) return;
 
-        // This category should not be inside the any existing splits, then.
+        // This category should not be inside any of the existing splits, then.
         if (!this.getSplitTransactions().isEmpty()) {
             for (ISplitTransaction split : this.mSplitTransactions) {
                 if (split.getCategoryId().equals(this.transactionEntity.getCategoryId())) {
@@ -1367,14 +1411,14 @@ public class EditTransactionCommonFunctions {
     }
 
     private void showSplitCategoriesForm(String datasetName) {
-        Intent intent = new Intent(mParent, SplitTransactionsActivity.class);
-        intent.putExtra(SplitTransactionsActivity.KEY_DATASET_TYPE, datasetName);
-        intent.putExtra(SplitTransactionsActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
-        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
-        intent.putExtra(SplitTransactionsActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
+        Intent intent = new Intent(mParent, SplitCategoriesActivity.class);
+        intent.putExtra(SplitCategoriesActivity.KEY_DATASET_TYPE, datasetName);
+        intent.putExtra(SplitCategoriesActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
+        intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
+        intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
         Integer fromCurrencyId = getSourceCurrencyId();
-        intent.putExtra(SplitTransactionsActivity.KEY_CURRENCY_ID, fromCurrencyId);
+        intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }

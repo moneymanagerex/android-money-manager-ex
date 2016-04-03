@@ -20,10 +20,8 @@ package com.money.manager.ex.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -37,9 +35,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
-
-import org.apache.commons.lang3.StringUtils;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 
 import info.javaperformance.money.Money;
 
@@ -209,7 +205,7 @@ public class SingleAccountWidget
     }
 
     private void initializeNewTransactionCommand(Context context, RemoteViews views) {
-        Intent intent = new Intent(context, EditCheckingTransactionActivity.class);
+        Intent intent = new Intent(context, CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

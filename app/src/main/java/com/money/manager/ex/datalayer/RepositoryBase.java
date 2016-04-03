@@ -151,8 +151,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         // sanitize
         values.remove("_id");
 
-        Uri insertUri = getContext().getContentResolver().insert(this.getUri(),
-            values);
+        Uri insertUri = getContext().getContentResolver().insert(this.getUri(), values);
         if (insertUri == null) return Constants.NOT_SET;
 
         long id = ContentUris.parseId(insertUri);

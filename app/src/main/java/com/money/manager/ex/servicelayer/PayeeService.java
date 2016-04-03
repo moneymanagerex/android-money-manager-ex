@@ -36,41 +36,42 @@ public class PayeeService
     public PayeeService(Context context) {
         super(context);
 
-        mPayee = new TablePayee();
         this.payeeRepository = new PayeeRepository(context);
     }
 
-    private TablePayee mPayee;
     private PayeeRepository payeeRepository;
 
-    public TablePayee loadByName(String name) {
+    public Payee loadByName(String name) {
+        Payee payee = null;
         String selection = Payee.PAYEENAME + "='" + name + "'";
 
         Cursor cursor = getContext().getContentResolver().query(
-                mPayee.getUri(),
-                mPayee.getAllColumns(),
+                this.payeeRepository.getUri(),
+                this.payeeRepository.getAllColumns(),
                 selection,
                 null,
                 null);
+        if (cursor == null) return null;
 
         if(cursor.moveToFirst()) {
-            mPayee.setValueFromCursor(cursor);
+            payee = new Payee();
+            payee.loadFromCursor(cursor);
         }
 
         cursor.close();
 
-        return mPayee;
+        return payee;
     }
 
     public int loadIdByName(String name) {
-        int result = -1;
+        int result = Constants.NOT_SET;
 
         if(TextUtils.isEmpty(name)) return result;
 
         String selection = Payee.PAYEENAME + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(
-                mPayee.getUri(),
+                payeeRepository.getUri(),
                 new String[]{ Payee.PAYEEID },
                 selection,
                 new String[] { name },
@@ -104,7 +105,7 @@ public class PayeeService
     public boolean exists(String name) {
         name = name.trim();
 
-        TablePayee payee = loadByName(name);
+        Payee payee = loadByName(name);
         return (payee != null);
     }
 
@@ -122,11 +123,9 @@ public class PayeeService
         ContentValues values = new ContentValues();
         values.put(Payee.PAYEENAME, name);
 
-        int result = getContext().getContentResolver().update(mPayee.getUri(),
+        return getContext().getContentResolver().update(payeeRepository.getUri(),
                 values,
                 Payee.PAYEEID + "=" + id,
                 null);
-
-        return result;
     }
 }

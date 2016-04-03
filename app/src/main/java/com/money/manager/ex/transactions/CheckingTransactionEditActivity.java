@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.transactions;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -65,7 +64,7 @@ import java.util.ArrayList;
 /**
  * Activity for editing Checking Account Transaction
  */
-public class EditCheckingTransactionActivity
+public class CheckingTransactionEditActivity
     extends BaseFragmentActivity {
 
     // action type intent
@@ -112,7 +111,7 @@ public class EditCheckingTransactionActivity
         // refresh user interface
         mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
         mCommonFunctions.refreshPayeeName();
-        mCommonFunctions.refreshCategoryName();
+        mCommonFunctions.displayCategoryName();
     }
 
     @Override
@@ -347,7 +346,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
-        mCommonFunctions.displayCategoryName();
+        mCommonFunctions.loadCategoryName();
 
         return true;
     }
@@ -393,7 +392,7 @@ public class EditCheckingTransactionActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
-        mCommonFunctions.displayCategoryName();
+        mCommonFunctions.loadCategoryName();
 
         // handle splits
         createSplitCategoriesFromRecurringTransaction();
@@ -455,20 +454,20 @@ public class EditCheckingTransactionActivity
                     protected Boolean doInBackground(Void... params) {
                         try {
                             Core core = new Core(getApplicationContext());
-                            TablePayee payee = core.getLastPayeeUsed();
+                            Payee payee = core.getLastPayeeUsed();
                             if (payee != null && mCommonFunctions.transactionEntity.getPayeeId() == Constants.NOT_SET) {
                                 // get id payee and category
-                                mCommonFunctions.transactionEntity.setPayeeId(payee.getPayeeId());
-                                mCommonFunctions.payeeName = payee.getPayeeName();
-                                mCommonFunctions.transactionEntity.setCategoryId(payee.getCategId());
-                                mCommonFunctions.transactionEntity.setSubcategoryId(payee.getSubCategId());
+                                mCommonFunctions.transactionEntity.setPayeeId(payee.getId());
+                                mCommonFunctions.payeeName = payee.getName();
+                                mCommonFunctions.transactionEntity.setCategoryId(payee.getCategoryId());
+                                mCommonFunctions.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
                                 // load category and subcategory name
-                                mCommonFunctions.displayCategoryName();
+                                mCommonFunctions.loadCategoryName();
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {
-                            ExceptionHandler handler = new ExceptionHandler(EditCheckingTransactionActivity.this,
-                                    EditCheckingTransactionActivity.this);
+                            ExceptionHandler handler = new ExceptionHandler(CheckingTransactionEditActivity.this,
+                                    CheckingTransactionEditActivity.this);
                             handler.handle(e, "loading default payee");
                         }
                         return Boolean.FALSE;
@@ -481,7 +480,7 @@ public class EditCheckingTransactionActivity
                             try {
                                 // refresh field
                                 mCommonFunctions.refreshPayeeName();
-                                mCommonFunctions.refreshCategoryName();
+                                mCommonFunctions.displayCategoryName();
                             } catch (Exception e) {
                                 Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
                             }
@@ -547,7 +546,7 @@ public class EditCheckingTransactionActivity
 
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
 
-        // Insert or update?
+        // Save the transaction.
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
             // insert
             mCommonFunctions.transactionEntity = repo.insert((AccountTransaction) mCommonFunctions.transactionEntity);
@@ -606,17 +605,23 @@ public class EditCheckingTransactionActivity
 
     private boolean saveSplitCategories() {
         int transactionId = mCommonFunctions.transactionEntity.getId();
-        boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
+        SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
+        ArrayList<ISplitTransaction> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
+
+        mCommonFunctions.handleOneSplit();
+
+        // deleted old split transaction
+        if (!deletedSplits.isEmpty()) {
+            if (!mCommonFunctions.deleteMarkedSplits(splitRepo)) return false;
+        }
 
         // update split transaction
+        boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
         if (hasSplitCategories) {
-            SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
-
             for (ISplitTransaction split : mCommonFunctions.mSplitTransactions) {
                 SplitCategory entity = (SplitCategory) split;
 
                 // do nothing if the split is marked for deletion.
-                ArrayList<ISplitTransaction> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
                 if(deletedSplits.contains(split)) {
                     continue;
                 }
@@ -637,28 +642,6 @@ public class EditCheckingTransactionActivity
                         Log.w(EditTransactionActivityConstants.LOGCAT, "Update split transaction failed!");
                         return false;
                     }
-                }
-            }
-        }
-
-        // deleted old split transaction
-        if (mCommonFunctions.mSplitTransactionsDeleted != null && !mCommonFunctions.mSplitTransactionsDeleted.isEmpty()) {
-            ContentValues values = new ContentValues();
-
-            for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
-                values.clear();
-
-                values.put(SplitCategory.SPLITTRANSAMOUNT,
-                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getAmount().toString());
-
-                SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
-                // todo: use repo to delete the record.
-                if (getContentResolver().delete(splitRepo.getUri(),
-                        SplitCategory.SPLITTRANSID + "=?",
-                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getId())}) <= 0) {
-                    Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                    Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
-                    return false;
                 }
             }
         }

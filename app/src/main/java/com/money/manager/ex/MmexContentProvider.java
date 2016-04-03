@@ -51,6 +51,7 @@ import com.money.manager.ex.datalayer.BudgetEntryRepository;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
@@ -110,7 +111,7 @@ public class MmexContentProvider
             new AccountTransactionRepository(context),
                 new TableCurrencyFormats(),
             new InfoRepository(context),
-                new TablePayee(),
+            new PayeeRepository(context),
             new RecurringTransactionRepository(context),
             new SplitCategoriesRepository(context),
             new SplitRecurringCategoriesRepository(context),

@@ -15,30 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.database;
+package com.money.manager.ex.datalayer;
 
-import com.money.manager.ex.datalayer.IEntity;
-
-import info.javaperformance.money.Money;
+import android.content.ContentValues;
 
 /**
- * Common interface for split transactions and recurring splits.
+ * Interface for a database entity.
  */
-public interface ISplitTransaction
-    extends IEntity {
-
-    Integer getId();
-    void setId(int splitTransId);
-
-    Integer getAccountId();
-    void setAccountId(int value);
-
-    Money getAmount();
-    void setAmount(Money splitTransAmount);
-
-    Integer getCategoryId();
-    void setCategoryId(int categoryId);
-
-    Integer getSubcategoryId();
-    void setSubcategoryId(Integer subCategoryId);
+public interface IEntity {
+    ContentValues getContentValues();
 }

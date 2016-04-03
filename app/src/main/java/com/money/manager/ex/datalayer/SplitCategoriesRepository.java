@@ -23,6 +23,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.domainmodel.SplitCategory;
 
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ import java.util.ArrayList;
  * Repository for Split Categories (TableSplitTransaction).
  */
 public class SplitCategoriesRepository
-    extends RepositoryBase {
+    extends RepositoryBase
+    implements IRepository {
 
     public SplitCategoriesRepository(Context context) {
         super(context, SplitCategory.TABLE_NAME, DatasetType.TABLE, "splittransaction");
@@ -87,5 +89,15 @@ public class SplitCategoriesRepository
         where.addStatement(SplitCategory.SPLITTRANSID, "=", entity.getId());
 
         return update(entity, where.getWhere());
+    }
+
+    public boolean delete(ISplitTransaction entity) {
+        int deleted = super.delete(SplitCategory.SPLITTRANSID + "=?",
+                new String[]{ Integer.toString(entity.getId()) });
+        return deleted == 1;
+    }
+
+    public boolean delete(IEntity entity) {
+        return delete((ISplitTransaction) entity);
     }
 }
