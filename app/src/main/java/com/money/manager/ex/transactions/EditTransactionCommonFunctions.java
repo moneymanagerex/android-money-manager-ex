@@ -118,7 +118,7 @@ public class EditTransactionCommonFunctions {
     public List<Account> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
-    public TransactionTypes transactionType = TransactionTypes.Withdrawal;
+//    public TransactionTypes transactionType = TransactionTypes.Withdrawal;
     public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 
@@ -284,11 +284,11 @@ public class EditTransactionCommonFunctions {
     }
 
     public String getTransactionType() {
-        if (transactionType == null) {
+        if (this.transactionEntity.getTransactionType() == null) {
             return null;
         }
 
-        return transactionType.name();
+        return transactionEntity.getTransactionType().name();
     }
 
     public FontIconView getDepositButtonIcon() {
@@ -755,11 +755,10 @@ public class EditTransactionCommonFunctions {
             transferButton.setOnClickListener(onClickListener);
         }
 
-        // Check if the transaction type has been set (for example, when editing an existing
-        // transaction).
-        TransactionTypes current = transactionType == null
+        // Check if the transaction type has been set (for example, when editing an existing transaction).
+        TransactionTypes current = transactionEntity.getTransactionType() == null
                 ? TransactionTypes.Withdrawal
-                : transactionType;
+                : transactionEntity.getTransactionType();
         selectTransactionType(current);
     }
 
@@ -890,7 +889,7 @@ public class EditTransactionCommonFunctions {
 
         setDirty(true);
 
-        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+        boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
         boolean isSourceAmount = id == R.id.textViewAmount;
 
         // Set and display the selected amount.
@@ -994,7 +993,7 @@ public class EditTransactionCommonFunctions {
     public void refreshControlTitles() {
         if (amountHeaderTextView == null || amountToHeaderTextView == null) return;
 
-        if (!transactionType.equals(TransactionTypes.Transfer)) {
+        if (!transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
             amountHeaderTextView.setText(R.string.amount);
         } else {
             // Transfer. Adjust the headers on amount text boxes.
@@ -1064,24 +1063,10 @@ public class EditTransactionCommonFunctions {
         if (payee.hasCategory()) {
             this.transactionEntity.setCategoryId(payee.getCategoryId());
             this.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
-            // create instance of query
-            QueryCategorySubCategory category = new QueryCategorySubCategory(getContext());
-            // compose selection
-            String where = "CATEGID=" + Integer.toString(this.transactionEntity.getCategoryId()) +
-                    " AND SUBCATEGID=" + Integer.toString(this.transactionEntity.getSubcategoryId());
-            Cursor curCategory = mParent.getContentResolver().query(category.getUri(),
-                    category.getAllColumns(), where, null, null);
-            // check cursor is valid
-            if ((curCategory != null) && (curCategory.moveToFirst())) {
-                // take names of category and subcategory
-                categoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                subCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-                // return true
-                result = true;
-            }
-            if (curCategory != null) {
-                curCategory.close();
-            }
+
+            loadCategoryName();
+
+            result = true;
         }
 
         return result;
@@ -1097,8 +1082,8 @@ public class EditTransactionCommonFunctions {
      * @param transactionType The type to set the transaction to.
      */
     public void selectTransactionType(TransactionTypes transactionType) {
-        this.previousTransactionType = this.transactionType;
-        this.transactionType = transactionType;
+        this.previousTransactionType = this.transactionEntity.getTransactionType();
+        this.transactionEntity.setTransactionType(transactionType);
 
         // Clear all buttons.
 
@@ -1138,7 +1123,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public boolean validateData() {
-        boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
+        boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
 
         if (isTransfer) {
             if (transactionEntity.getAccountToId() == Constants.NOT_SET) {
@@ -1185,8 +1170,8 @@ public class EditTransactionCommonFunctions {
     public void confirmDeletingCategories() {
         removeAllSplitCategories();
         setSplit(false);
-        transactionType = TransactionTypes.Transfer;
-        onTransactionTypeChange(transactionType);
+        transactionEntity.setTransactionType(TransactionTypes.Transfer);
+        onTransactionTypeChange(TransactionTypes.Transfer);
     }
 
     /**
@@ -1399,7 +1384,7 @@ public class EditTransactionCommonFunctions {
     private void showSplitCategoriesForm(String datasetName) {
         Intent intent = new Intent(mParent, SplitCategoriesActivity.class);
         intent.putExtra(SplitCategoriesActivity.KEY_DATASET_TYPE, datasetName);
-        intent.putExtra(SplitCategoriesActivity.KEY_TRANSACTION_TYPE, transactionType.getCode());
+        intent.putExtra(SplitCategoriesActivity.KEY_TRANSACTION_TYPE, transactionEntity.getTransactionType().getCode());
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
