@@ -21,7 +21,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import com.robotium.solo.Solo;
 
@@ -43,12 +43,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(AndroidJUnit4.class)
 public class EditTransactionTests
-    extends ActivityInstrumentationTestCase2<EditCheckingTransactionActivity> {
+    extends ActivityInstrumentationTestCase2<CheckingTransactionEditActivity> {
 
   private Solo solo;
 
   public EditTransactionTests() {
-    super(EditCheckingTransactionActivity.class);
+    super(CheckingTransactionEditActivity.class);
   }
 
     @Before
@@ -65,13 +65,13 @@ public class EditTransactionTests
 
     @Test
     public void testActivityExists() {
-        EditCheckingTransactionActivity activity = getActivity();
+        CheckingTransactionEditActivity activity = getActivity();
         assertNotNull(activity);
     }
 
     @Test
     public void testStatusChange() {
-        solo.waitForActivity(EditCheckingTransactionActivity.class.getSimpleName());
+        solo.waitForActivity(CheckingTransactionEditActivity.class.getSimpleName());
 
         boolean spinnerFound = solo.searchText("None");
         assertThat(spinnerFound).isTrue();

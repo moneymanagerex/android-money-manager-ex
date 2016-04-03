@@ -21,7 +21,7 @@ package com.money.manager.ex.transactions;
  * Constants used by the Checking Account
  */
 public class EditTransactionActivityConstants {
-    public static final String LOGCAT = EditCheckingTransactionActivity.class.getSimpleName();
+    public static final String LOGCAT = CheckingTransactionEditActivity.class.getSimpleName();
 
     public static final String KEY_TRANSACTION_ENTITY = "AllDataActivity:Transaction";
 

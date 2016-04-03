@@ -31,7 +31,8 @@ import java.util.ArrayList;
  * Repository for Recurring Split Categories (TableBudgetSplitTransactions).
  */
 public class SplitRecurringCategoriesRepository
-    extends RepositoryBase {
+    extends RepositoryBase
+    implements IRepository {
 
     public SplitRecurringCategoriesRepository(Context context) {
         super(context, SplitRecurringCategory.TABLE_NAME, DatasetType.TABLE, "budgetsplittransactions");
@@ -87,5 +88,15 @@ public class SplitRecurringCategoriesRepository
         where.addStatement(SplitRecurringCategory.SPLITTRANSID, "=", entity.getId());
 
         return update(entity, where.getWhere());
+    }
+
+    public boolean delete(ISplitTransaction entity) {
+        int deleted = super.delete(SplitRecurringCategory.SPLITTRANSID + "=?",
+                new String[]{ Integer.toString(entity.getId()) });
+        return deleted == 1;
+    }
+
+    public boolean delete(IEntity entity) {
+        return delete((ISplitTransaction) entity);
     }
 }

@@ -23,6 +23,7 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.datalayer.IEntity;
 
 import org.parceler.Parcel;
 
@@ -35,7 +36,7 @@ import info.javaperformance.money.MoneyFactory;
 @Parcel
 public class SplitCategory
     extends EntityBase
-    implements ISplitTransaction {
+    implements ISplitTransaction, IEntity {
 
     public static String TABLE_NAME = "SPLITTRANSACTIONS_V1";
 

@@ -37,7 +37,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
-import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
@@ -298,7 +298,7 @@ public class RecurringTransactionListFragment
         RecurringTransaction tx = repo.load(recurringTransactionId);
         if (tx == null) return;
 
-        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, recurringTransactionId);
         // start for insert new transaction

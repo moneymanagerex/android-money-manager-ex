@@ -22,6 +22,7 @@ import android.database.DatabaseUtils;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.datalayer.IEntity;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -34,7 +35,8 @@ import info.javaperformance.money.MoneyFactory;
  * Base for the model entities. Keeps a reference to a cursor that contains the underlying data.
  */
 @Parcel
-public class EntityBase {
+public class EntityBase
+    implements IEntity {
 
     /**
      * Default constructor.
@@ -49,24 +51,15 @@ public class EntityBase {
 
     public ContentValues contentValues;
 
-    /**
-     * Contains the pointer to the actual data when loading from content provider.
-     */
-//    private Cursor mCursor;
-
-//    protected Cursor getCursor() {
-//        return mCursor;
-//    }
-
     public void loadFromCursor(Cursor c) {
         this.contentValues.clear();
 
         DatabaseUtils.cursorRowToContentValues(c, contentValues);
     }
 
-//    public void setCursor(Cursor c) {
-//        this.mCursor = c;
-//    }
+    public ContentValues getContentValues() {
+        return this.contentValues;
+    }
 
     protected Boolean getBoolean(String column) {
         return contentValues.getAsBoolean(column);

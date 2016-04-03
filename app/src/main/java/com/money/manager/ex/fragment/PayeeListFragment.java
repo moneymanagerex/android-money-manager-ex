@@ -69,7 +69,6 @@ public class PayeeListFragment
     // add menu ite,
 //    private static final int MENU_ITEM_ADD = 1;
     private static final int ID_LOADER_PAYEE = 0;
-    private static TablePayee mPayee = new TablePayee();
 
     private static final String SORT_BY_USAGE = "(SELECT COUNT(*) FROM CHECKINGACCOUNT_V1 WHERE PAYEE_V1.PAYEEID = CHECKINGACCOUNT_V1.PAYEEID) DESC";
     private static final String SORT_BY_NAME = "UPPER(" + Payee.PAYEENAME + ")";
@@ -206,9 +205,6 @@ public class PayeeListFragment
             case ContextMenuIds.DELETE:
                 PayeeService service = new PayeeService(getActivity());
                 if (!service.isPayeeUsed(payee.getId())) {
-//                ContentValues contentValues = new ContentValues();
-//                contentValues.put(Payee.PAYEEID, payee.getId());
-//                if (new TablePayee().canDelete(getActivity(), contentValues, TablePayee.class.getName())) {
                     showDialogDeletePayee(payee.getId());
                 } else {
                     new AlertDialogWrapper.Builder(getActivity())
@@ -252,8 +248,9 @@ public class PayeeListFragment
                     whereClause = Payee.PAYEENAME + " LIKE ?"; // + mCurFilter + "%'";
                     selectionArgs = new String[]{mCurFilter + '%'};
                 }
-                return new MmexCursorLoader(getActivity(), mPayee.getUri(),
-                        mPayee.getAllColumns(),
+                PayeeRepository repo = new PayeeRepository(getActivity());
+                return new MmexCursorLoader(getActivity(), repo.getUri(),
+                        repo.getAllColumns(),
                         whereClause, selectionArgs,
                         mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
         }

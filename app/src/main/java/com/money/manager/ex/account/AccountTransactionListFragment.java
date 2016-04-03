@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.account;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -44,7 +43,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -58,7 +56,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
@@ -846,7 +844,7 @@ public class AccountTransactionListFragment
      */
     private void startCheckingAccountActivity(Integer transId) {
         // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), EditCheckingTransactionActivity.class);
+        Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, mAccountId);
         // check transId not null
         if (transId != null) {

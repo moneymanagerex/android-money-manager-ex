@@ -31,16 +31,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.SplitCategoriesActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SplitTransactionsActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -273,7 +272,7 @@ public class SplitItemFragment
 
         int transactionTypeSelection;
 
-        SplitTransactionsActivity splitActivity = (SplitTransactionsActivity) getActivity();
+        SplitCategoriesActivity splitActivity = (SplitCategoriesActivity) getActivity();
         boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
         Money amount = mSplitTransaction.getAmount();
         if(parentIsWithdrawal){

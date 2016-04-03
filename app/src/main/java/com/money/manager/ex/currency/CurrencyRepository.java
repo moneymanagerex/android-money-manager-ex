@@ -34,7 +34,7 @@ import info.javaperformance.money.Money;
  * Currency repository. Provides access to TableCurrencyFormats entities.
  */
 public class CurrencyRepository
-    extends RepositoryBase {
+    extends RepositoryBase<Currency> {
 
     public CurrencyRepository(Context context) {
         super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats");
@@ -148,5 +148,4 @@ public class CurrencyRepository
 
         return account;
     }
-
 }

@@ -28,7 +28,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.transactions.SplitItemFactory;
 import com.money.manager.ex.transactions.SplitItemFragment;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
@@ -43,17 +42,17 @@ import java.util.List;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
-public class SplitTransactionsActivity
+public class SplitCategoriesActivity
     extends BaseFragmentActivity {
 
-    public static final String KEY_SPLIT_TRANSACTION = "SplitTransactionsActivity:ArraysSplitTransaction";
-    public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ArraysSplitTransactionDeleted";
-    public static final String KEY_TRANSACTION_TYPE = "SplitTransactionsActivity:TransactionType";
-    public static final String KEY_DATASET_TYPE = "SplitTransactionsActivity:DatasetType";
-    public static final String KEY_CURRENCY_ID = "SplitTransactionsActivity:CurrencyId";
+    public static final String KEY_SPLIT_TRANSACTION = "SplitCategoriesActivity:ArraysSplitTransaction";
+    public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitCategoriesActivity:ArraysSplitTransactionDeleted";
+    public static final String KEY_TRANSACTION_TYPE = "SplitCategoriesActivity:TransactionType";
+    public static final String KEY_DATASET_TYPE = "SplitCategoriesActivity:DatasetType";
+    public static final String KEY_CURRENCY_ID = "SplitCategoriesActivity:CurrencyId";
 
-    public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitTransactionsActivity:ResultSplitTransaction";
-    public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitTransactionsActivity:ResultSplitTransactionDeleted";
+    public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitCategoriesActivity:ResultSplitTransaction";
+    public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitCategoriesActivity:ResultSplitTransactionDeleted";
 
     private static int mIdTag = 0x8000;
 
@@ -126,7 +125,7 @@ public class SplitTransactionsActivity
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransaction splitTransactions = allSplitTransactions.get(i);
             if (splitTransactions.getCategoryId() == -1 && splitTransactions.getSubcategoryId() == -1) {
-                Core.alertDialog(SplitTransactionsActivity.this, R.string.error_category_not_selected);
+                Core.alertDialog(SplitCategoriesActivity.this, R.string.error_category_not_selected);
                 return false;
             }
 

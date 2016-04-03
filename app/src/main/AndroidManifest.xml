@@ -220,7 +220,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".transactions.EditCheckingTransactionActivity"
+            android:name=".transactions.CheckingTransactionEditActivity"
             android:label="@string/new_edit_transaction" >
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -312,7 +312,7 @@
             android:name=".search.SearchActivity"
             android:label="@string/search" />
         <activity
-            android:name=".SplitTransactionsActivity"
+            android:name=".SplitCategoriesActivity"
             android:label="@string/split_transaction" />
         <activity
             android:name=".DonateActivity"

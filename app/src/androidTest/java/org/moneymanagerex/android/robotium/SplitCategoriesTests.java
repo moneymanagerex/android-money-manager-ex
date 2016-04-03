@@ -21,7 +21,6 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.transactions.EditCheckingTransactionActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;

@@ -313,10 +313,10 @@ public class Core {
      *
      * @return last payee used
      */
-    public TablePayee getLastPayeeUsed() {
+    public Payee getLastPayeeUsed() {
         MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
         SQLiteDatabase database = helper.getReadableDatabase();
-        TablePayee payee = null;
+        Payee payee = null;
 
         String sql =
         "SELECT C.TransID, C.TransDate, C.PAYEEID, P.PAYEENAME, P.CATEGID, P.SUBCATEGID " +
@@ -330,11 +330,12 @@ public class Core {
 
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {
-            payee = new TablePayee();
-            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID)));
-            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
-            payee.setCategId(cursor.getInt(cursor.getColumnIndex(Payee.CATEGID)));
-            payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(Payee.SUBCATEGID)));
+            payee = new Payee();
+//            payee.setPayeeId(cursor.getInt(cursor.getColumnIndex(Payee.PAYEEID)));
+//            payee.setPayeeName(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
+//            payee.setCategId(cursor.getInt(cursor.getColumnIndex(Payee.CATEGID)));
+//            payee.setSubCategId(cursor.getInt(cursor.getColumnIndex(Payee.SUBCATEGID)));
+            payee.loadFromCursor(cursor);
 
             cursor.close();
         }

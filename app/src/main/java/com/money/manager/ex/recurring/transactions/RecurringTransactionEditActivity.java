@@ -37,9 +37,9 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
-import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -60,8 +60,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
-import info.javaperformance.money.MoneyFactory;
-
 /**
  * Recurring transactions are stored in BillsDeposits table.
  */
@@ -73,23 +71,16 @@ public class RecurringTransactionEditActivity
     public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
-//    public static final String KEY_TO_ACCOUNT_ID = "RepeatingTransaction:ToAccountId";
     public static final String KEY_TO_ACCOUNT_NAME = "RepeatingTransaction:ToAccountName";
     public static final String KEY_TRANS_CODE = "RepeatingTransaction:TransCode";
     public static final String KEY_TRANS_STATUS = "RepeatingTransaction:TransStatus";
     public static final String KEY_TRANS_AMOUNT = "RepeatingTransaction:TransAmount";
     public static final String KEY_TRANS_AMOUNTTO = "RepeatingTransaction:TransTotAmount";
-//    public static final String KEY_PAYEE_ID = "RepeatingTransaction:PayeeId";
     public static final String KEY_PAYEE_NAME = "RepeatingTransaction:PayeeName";
-//    public static final String KEY_CATEGORY_ID = "RepeatingTransaction:CategoryId";
     public static final String KEY_CATEGORY_NAME = "RepeatingTransaction:CategoryName";
-//    public static final String KEY_SUBCATEGORY_ID = "RepeatingTransaction:SubCategoryId";
     public static final String KEY_SUBCATEGORY_NAME = "RepeatingTransaction:SubCategoryName";
     public static final String KEY_NOTES = "RepeatingTransaction:Notes";
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
-//    public static final String KEY_NEXT_OCCURRENCE = "RepeatingTransaction:NextOccurrence";
-//    public static final String KEY_REPEATS = "RepeatingTransaction:Repeats";
-    //    public static final String KEY_NUM_OCCURRENCE = "RepeatingTransaction:NumOccurrence";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
@@ -148,7 +139,7 @@ public class RecurringTransactionEditActivity
         // refresh user interface
         mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
         mCommonFunctions.refreshPayeeName();
-        mCommonFunctions.refreshCategoryName();
+        mCommonFunctions.displayCategoryName();
 
         showPaymentsLeft();
     }
@@ -452,7 +443,7 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
         mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
-        mCommonFunctions.displayCategoryName();
+        mCommonFunctions.loadCategoryName();
 
         return true;
     }
@@ -543,65 +534,26 @@ public class RecurringTransactionEditActivity
             }
         }
 
-        // has split transaction
-        boolean hasSplitTransaction = mCommonFunctions.mSplitTransactions != null && mCommonFunctions.mSplitTransactions.size() > 0;
-        if (hasSplitTransaction) {
-            SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
-
-            for (ISplitTransaction item : mCommonFunctions.mSplitTransactions) {
-                SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
-
-                splitEntity.setTransId(mRecurringTransaction.getId());
-
-                if (splitEntity.getId() == null || splitEntity.getId() == Constants.NOT_SET) {
-                    // insert data
-                    if (!splitRepo.insert(splitEntity)) {
-                        Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(LOGCAT, "Insert new split transaction failed!");
-                        return false;
-                    }
-                } else {
-                    // update data
-                    if (!splitRepo.update(splitEntity)) {
-                        Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(LOGCAT, "Update split transaction failed!");
-                        return false;
-                    }
-                }
-            }
+        if(!mCommonFunctions.isSplitSelected()) {
+            // Delete any split categories if split is unchecked.
+            mCommonFunctions.removeAllSplitCategories();
         }
 
-        // deleted old split transaction
-        if (mCommonFunctions.mSplitTransactionsDeleted != null && mCommonFunctions.mSplitTransactionsDeleted.size() > 0) {
-            for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
-                values.clear();
-                //put value
-                values.put(SplitCategory.SPLITTRANSAMOUNT,
-                        mCommonFunctions.mSplitTransactionsDeleted.get(i).getAmount().toString());
-
-                SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
-                // todo: use repo to delete the record.
-                if (getContentResolver().delete(splitRepo.getUri(),
-                    SplitCategory.SPLITTRANSID + "=?",
-                        new String[]{Integer.toString(mCommonFunctions.mSplitTransactionsDeleted.get(i).getId())}) <= 0) {
-                    Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                    Log.w(LOGCAT, "Delete split transaction failed!");
-                    return false;
-                }
-            }
+        if (!saveSplitCategories()) {
+            return false;
         }
 
         // update category and subcategory payee
-        if ((!isTransfer) && mCommonFunctions.transactionEntity.hasPayee() && (!hasSplitTransaction)) {
+        if ((!isTransfer) && mCommonFunctions.transactionEntity.hasPayee() && (!mCommonFunctions.hasSplitCategories())) {
             // clear content value for update categoryId, subCategoryId
             values.clear();
             // set categoryId and subCategoryId
             values.put(Payee.CATEGID, mCommonFunctions.transactionEntity.getCategoryId());
             values.put(Payee.SUBCATEGID, mCommonFunctions.transactionEntity.getSubcategoryId());
-            // create instance TablePayee for update
-            TablePayee payee = new TablePayee();
+
+            PayeeRepository payeeRepository = new PayeeRepository(this);
             // update data
-            if (getContentResolver().update(payee.getUri(),
+            if (getContentResolver().update(payeeRepository.getUri(),
                     values,
                     Payee.PAYEEID + "=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()),
                     null) <= 0) {
@@ -640,5 +592,58 @@ public class RecurringTransactionEditActivity
         // action
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
+
+    private boolean saveSplitCategories() {
+        SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
+
+        mCommonFunctions.handleOneSplit();
+
+        // deleted old split transaction
+        if (mCommonFunctions.getDeletedSplitCategories().size() > 0) {
+            if (!mCommonFunctions.deleteMarkedSplits(splitRepo)) return false;
+        }
+
+        // has split transaction
+        boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
+        if (hasSplitCategories) {
+            for (ISplitTransaction item : mCommonFunctions.mSplitTransactions) {
+                SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
+
+                splitEntity.setTransId(mRecurringTransaction.getId());
+
+                if (splitEntity.getId() == null || splitEntity.getId() == Constants.NOT_SET) {
+                    // insert data
+                    if (!splitRepo.insert(splitEntity)) {
+                        Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+                        Log.w(LOGCAT, "Insert new split transaction failed!");
+                        return false;
+                    }
+                } else {
+                    // update data
+                    if (!splitRepo.update(splitEntity)) {
+                        Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                        Log.w(LOGCAT, "Update split transaction failed!");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+//    private boolean deleteMarkedSplits() {
+//        for (int i = 0; i < mCommonFunctions.mSplitTransactionsDeleted.size(); i++) {
+//            SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
+//            ISplitTransaction splitToDelete = mCommonFunctions.mSplitTransactionsDeleted.get(i);
+//            if (!splitRepo.delete(splitToDelete)) {
+//                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+//                Log.w(LOGCAT, "Delete split transaction failed!");
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 }
 
