@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -838,10 +839,10 @@ public class EditTransactionCommonFunctions {
                     transactionEntity.setAmount(splitSum);
                     displayAmountFrom();
                 }
-                // deleted item
-                if (data.getParcelableArrayListExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED) != null) {
-                    mSplitTransactionsDeleted = Parcels.unwrap(data.getParcelableExtra(
-                            SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED));
+                // deleted items
+                Parcelable parcelDeletedSplits = data.getParcelableExtra(SplitTransactionsActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
+                if (parcelDeletedSplits != null) {
+                    mSplitTransactionsDeleted = Parcels.unwrap(parcelDeletedSplits);
                 }
                 break;
         }

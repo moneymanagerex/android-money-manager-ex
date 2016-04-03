@@ -256,7 +256,7 @@ public class SplitTransactionsActivity
         }
 
         // Add item to delete. Only if not a new, non-saved split item.
-        if (splitTransaction.getId() != null && splitTransaction.getId() != -1) {
+        if (splitTransaction.getId() != null && splitTransaction.getId() != Constants.NOT_SET) {
             // not new split transaction
             mSplitDeleted.add(splitTransaction);
         }
