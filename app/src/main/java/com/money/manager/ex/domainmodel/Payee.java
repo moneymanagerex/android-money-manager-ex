@@ -18,6 +18,8 @@ package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
 
+import com.money.manager.ex.Constants;
+
 /**
  * Payee model.
  */
@@ -59,6 +61,10 @@ public class Payee
 
     public void setCategoryId(Integer value) {
         setInt(Payee.CATEGID, value);
+    }
+
+    public boolean hasCategory() {
+        return this.getCategoryId() != null && this.getCategoryId() != Constants.NOT_SET;
     }
 
     public Integer getSubcategoryId() {

@@ -69,7 +69,6 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
@@ -219,33 +218,6 @@ public class EditTransactionCommonFunctions {
         withdrawalButton = (RelativeLayout) mParent.findViewById(R.id.withdrawalButton);
         depositButton = (RelativeLayout) mParent.findViewById(R.id.depositButton);
         transferButton = (RelativeLayout) mParent.findViewById(R.id.transferButton);
-    }
-
-    /**
-     * Loads info for Category and Subcategory
-     *
-     * @return A boolean indicating whether the operation was successful.
-     */
-    public boolean loadCategoryName() {
-        if(!this.transactionEntity.hasCategory() && this.transactionEntity.getSubcategoryId() <= 0) return false;
-
-        CategoryRepository categoryRepository = new CategoryRepository(getContext());
-        Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
-        if (category != null) {
-            this.categoryName = category.getName();
-        } else {
-            this.categoryName = null;
-        }
-
-        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
-        Subcategory subcategory = subRepo.load(this.transactionEntity.getSubcategoryId());
-        if (subcategory != null) {
-            this.subCategoryName = subcategory.getName();
-        } else {
-            this.subCategoryName = null;
-        }
-
-        return true;
     }
 
     /**
@@ -799,6 +771,32 @@ public class EditTransactionCommonFunctions {
         return mSplitSelected;
     }
 
+    /**
+     * Loads info for Category and Subcategory
+     * @return A boolean indicating whether the operation was successful.
+     */
+    public boolean loadCategoryName() {
+        if(!this.transactionEntity.hasCategory() && this.transactionEntity.getSubcategoryId() <= 0) return false;
+
+        CategoryRepository categoryRepository = new CategoryRepository(getContext());
+        Category category = categoryRepository.load(this.transactionEntity.getCategoryId());
+        if (category != null) {
+            this.categoryName = category.getName();
+        } else {
+            this.categoryName = null;
+        }
+
+        SubcategoryRepository subRepo = new SubcategoryRepository(getContext());
+        Subcategory subcategory = subRepo.load(this.transactionEntity.getSubcategoryId());
+        if (subcategory != null) {
+            this.subCategoryName = subcategory.getName();
+        } else {
+            this.subCategoryName = null;
+        }
+
+        return true;
+    }
+
     public boolean onActionCancelClick() {
         if (getDirty()) {
             final MaterialDialog dialog = new MaterialDialog.Builder(mParent)
@@ -832,7 +830,7 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
-                if (!isSplitSelected() && this.transactionEntity.hasCategory() ) {
+                if (!isSplitSelected() && !this.transactionEntity.hasCategory() ) {
                     if (setCategoryFromPayee(transactionEntity.getPayeeId())) {
                         displayCategoryName(); // refresh UI
                     }
@@ -1057,47 +1055,36 @@ public class EditTransactionCommonFunctions {
      * @return true if category set
      */
     public boolean setCategoryFromPayee(int payeeId) {
-        boolean ret = false;
-        // load payee data
-        //PayeeRepository repo = new PayeeRepository(getContext());
-        TablePayee payee = new TablePayee();
-        Cursor curPayee = mParent.getContentResolver().query(payee.getUri(),
-                payee.getAllColumns(),
-                Payee.PAYEEID + "=?",
-                new String[]{ Integer.toString(payeeId) },
-                null);
-        // check cursor is valid
-        if ((curPayee != null) && (curPayee.moveToFirst())) {
-            // check if category is valid
-            if (curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)) != Constants.NOT_SET) {
-                this.transactionEntity.setCategoryId(curPayee.getInt(curPayee.getColumnIndex(Payee.CATEGID)));
-                this.transactionEntity.setSubcategoryId(curPayee.getInt(curPayee.getColumnIndex(Payee.SUBCATEGID)));
-                // create instance of query
-                QueryCategorySubCategory category = new QueryCategorySubCategory(mParent.getApplicationContext());
-                // compose selection
-                String where = "CATEGID=" + Integer.toString(this.transactionEntity.getCategoryId()) +
+        boolean result = false;
+
+        PayeeRepository repo = new PayeeRepository(getContext());
+        Payee payee = repo.load(payeeId);
+
+        // check if category is valid
+        if (payee.hasCategory()) {
+            this.transactionEntity.setCategoryId(payee.getCategoryId());
+            this.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
+            // create instance of query
+            QueryCategorySubCategory category = new QueryCategorySubCategory(getContext());
+            // compose selection
+            String where = "CATEGID=" + Integer.toString(this.transactionEntity.getCategoryId()) +
                     " AND SUBCATEGID=" + Integer.toString(this.transactionEntity.getSubcategoryId());
-                Cursor curCategory = mParent.getContentResolver().query(category.getUri(),
-                        category.getAllColumns(), where, null, null);
-                // check cursor is valid
-                if ((curCategory != null) && (curCategory.moveToFirst())) {
-                    // take names of category and subcategory
-                    categoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
-                    subCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
-                    // return true
-                    ret = true;
-                }
-                if (curCategory != null) {
-                    curCategory.close();
-                }
+            Cursor curCategory = mParent.getContentResolver().query(category.getUri(),
+                    category.getAllColumns(), where, null, null);
+            // check cursor is valid
+            if ((curCategory != null) && (curCategory.moveToFirst())) {
+                // take names of category and subcategory
+                categoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.CATEGNAME));
+                subCategoryName = curCategory.getString(curCategory.getColumnIndex(QueryCategorySubCategory.SUBCATEGNAME));
+                // return true
+                result = true;
+            }
+            if (curCategory != null) {
+                curCategory.close();
             }
         }
 
-        if (curPayee != null) {
-            curPayee.close();
-        }
-
-        return ret;
+        return result;
     }
 
     public void setDirty(boolean dirty) {
@@ -1248,7 +1235,7 @@ public class EditTransactionCommonFunctions {
      * transaction, removing the split category record.
      */
     public void handleOneSplit() {
-        if (mSplitTransactions.size() != 1) return;
+        if (getSplitTransactions().size() != 1) return;
 
         // use the first split category record.
         ISplitTransaction splitTransaction = mSplitTransactions.get(0);
@@ -1339,7 +1326,6 @@ public class EditTransactionCommonFunctions {
 
     private void displayAmountFrom() {
         Money amount = transactionEntity.getAmount() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmount();
-//        displayAmountFrom(amount);
 
         displayAmountFormatted(viewHolder.txtAmount, amount, getSourceCurrencyId());
     }

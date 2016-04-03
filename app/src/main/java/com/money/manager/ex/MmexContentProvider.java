@@ -41,7 +41,6 @@ import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.TableCurrencyFormats;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
