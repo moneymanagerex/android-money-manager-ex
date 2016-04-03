@@ -543,9 +543,19 @@ public class CheckingTransactionEditActivity
 
         boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
 
-        AccountTransactionRepository repo = new AccountTransactionRepository(this);
+        // Split Categories
 
-        // Save the transaction.
+        if(!mCommonFunctions.isSplitSelected()) {
+            // Delete any split categories if split is unchecked.
+            mCommonFunctions.removeAllSplitCategories();
+        }
+        if (!saveSplitCategories()) {
+            return false;
+        }
+
+        // Transaction
+
+        AccountTransactionRepository repo = new AccountTransactionRepository(this);
         if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
             // insert
             mCommonFunctions.transactionEntity = repo.insert((AccountTransaction) mCommonFunctions.transactionEntity);
@@ -564,17 +574,6 @@ public class CheckingTransactionEditActivity
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");
                 return false;
             }
-        }
-
-        // Split Categories
-
-        if(!mCommonFunctions.isSplitSelected()) {
-            // Delete any split categories if split is unchecked.
-            mCommonFunctions.removeAllSplitCategories();
-        }
-
-        if (!saveSplitCategories()) {
-            return false;
         }
 
         // update category and subcategory for the default payee

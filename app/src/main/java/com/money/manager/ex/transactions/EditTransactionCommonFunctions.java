@@ -1232,8 +1232,11 @@ public class EditTransactionCommonFunctions {
 
         // reuse the amount & category
         transactionEntity.setAmount(splitTransaction.getAmount());
+        displayAmountFrom();
+
         transactionEntity.setCategoryId(splitTransaction.getCategoryId());
         transactionEntity.setSubcategoryId(splitTransaction.getSubcategoryId());
+        displayCategoryName();
 
         getDeletedSplitCategories().add(splitTransaction);
         getSplitTransactions().remove(splitTransaction);
