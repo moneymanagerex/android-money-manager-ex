@@ -672,6 +672,8 @@ public class EditTransactionCommonFunctions {
             @Override
             public void afterTextChanged(Editable editable) {
                 setDirty(true);
+
+                transactionEntity.setTransactionNumber(editable.toString());
             }
         });
 
