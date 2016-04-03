@@ -85,13 +85,13 @@ public class CheckingTransactionEditActivity
 
         setToolbarStandardAction(getToolbar());
 
+        ITransactionEntity model = AccountTransaction.create();
+        mCommonFunctions = new EditTransactionCommonFunctions(this, model);
+
         // manage save instance
         if ((savedInstanceState != null)) {
             restoreInstanceState(savedInstanceState);
         }
-
-        ITransactionEntity model = AccountTransaction.create();
-        mCommonFunctions = new EditTransactionCommonFunctions(this, model);
 
         // Controls need to be at the beginning as they are referenced throughout the code.
         mCommonFunctions.findControls();
