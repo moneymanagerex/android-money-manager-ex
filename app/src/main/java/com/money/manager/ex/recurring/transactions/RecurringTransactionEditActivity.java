@@ -136,7 +136,7 @@ public class RecurringTransactionEditActivity
         initializeControls();
 
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
+        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionEntity.getTransactionType());
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.displayCategoryName();
 
@@ -430,7 +430,7 @@ public class RecurringTransactionEditActivity
 
         // Read data.
         String transCode = mRecurringTransaction.getTransactionCode();
-        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
+        mCommonFunctions.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
 
         // load split transactions only if no category selected.
         if (!mCommonFunctions.transactionEntity.hasCategory() && mCommonFunctions.mSplitTransactions == null) {
@@ -506,7 +506,7 @@ public class RecurringTransactionEditActivity
 
         if (!validateData()) return false;
 
-        boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
+        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
         ContentValues values = getContentValues(isTransfer);
 
         // Insert or update
@@ -581,7 +581,7 @@ public class RecurringTransactionEditActivity
 
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
-        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
+//        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);

@@ -108,7 +108,7 @@ public class CheckingTransactionEditActivity
         initializeInputControls();
 
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionType);
+        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionEntity.getTransactionType());
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.displayCategoryName();
     }
@@ -256,7 +256,7 @@ public class CheckingTransactionEditActivity
         IntentDataParameters parameters = IntentDataParameters.parseData(this, data);
 
         // transaction type
-        mCommonFunctions.transactionType = parameters.transactionType;
+        mCommonFunctions.transactionEntity.setTransactionType(parameters.transactionType);
 
         if (parameters.accountId > 0) {
             this.mCommonFunctions.transactionEntity.setAccountId(parameters.accountId);
@@ -333,7 +333,7 @@ public class CheckingTransactionEditActivity
 
         mCommonFunctions.transactionEntity = tx;
 
-        mCommonFunctions.transactionType = tx.getTransactionType();
+//        mCommonFunctions.transactionEntity.setTransactionType(tx.getTransactionType());
 
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
@@ -377,7 +377,7 @@ public class CheckingTransactionEditActivity
         mCommonFunctions.transactionEntity.setAccountToId(recurringTx.getToAccountId());
 
         String transCode = recurringTx.getTransactionCode();
-        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
+        mCommonFunctions.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
         mCommonFunctions.transactionEntity.setStatus(recurringTx.getStatus());
         mCommonFunctions.transactionEntity.setAmount(recurringTx.getAmount());
         mCommonFunctions.transactionEntity.setAmountTo(recurringTx.getAmountTo());
@@ -541,7 +541,7 @@ public class CheckingTransactionEditActivity
     private boolean saveData() {
         if (!mCommonFunctions.validateData()) return false;
 
-        boolean isTransfer = mCommonFunctions.transactionType.equals(TransactionTypes.Transfer);
+        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
 
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
 
