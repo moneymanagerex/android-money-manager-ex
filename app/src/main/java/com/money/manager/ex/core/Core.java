@@ -49,7 +49,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;

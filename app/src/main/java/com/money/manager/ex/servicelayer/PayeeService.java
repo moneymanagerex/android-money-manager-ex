@@ -23,7 +23,6 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.Payee;

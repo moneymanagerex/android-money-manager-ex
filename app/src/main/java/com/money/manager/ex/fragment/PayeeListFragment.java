@@ -17,7 +17,6 @@
 package com.money.manager.ex.fragment;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +38,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -49,9 +47,7 @@ import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
-import com.money.manager.ex.database.TablePayee;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.IntentUtils;
