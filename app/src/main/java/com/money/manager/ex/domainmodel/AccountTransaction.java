@@ -67,8 +67,10 @@ public class AccountTransaction
     public AccountTransaction() {
         super();
 
-        this.setCategoryId(Constants.NOT_SET);
-        this.setSubcategoryId(Constants.NOT_SET);
+        setAccountToId(Constants.NOT_SET);
+        setCategoryId(Constants.NOT_SET);
+        setSubcategoryId(Constants.NOT_SET);
+        setFollowUpId(Constants.NOT_SET);
     }
 
     public AccountTransaction(ContentValues contentValues) {
@@ -155,6 +157,14 @@ public class AccountTransaction
     public void setDate(DateTime value) {
         String dateString = value.toString(Constants.ISO_DATE_FORMAT);
         setString(ITransactionEntity.TRANSDATE, dateString);
+    }
+
+    public Integer getFollowUpId() {
+        return getInt(FOLLOWUPID);
+    }
+
+    public void setFollowUpId(Integer value) {
+        setInt(FOLLOWUPID, value);
     }
 
     public String getNotes() {
