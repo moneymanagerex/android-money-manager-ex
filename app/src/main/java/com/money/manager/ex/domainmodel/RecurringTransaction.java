@@ -67,6 +67,7 @@ public class RecurringTransaction
         setCategoryId(Constants.NOT_SET);
         setSubcategoryId(Constants.NOT_SET);
         setRecurrence(Recurrence.ONCE);
+        setTransactionType(TransactionTypes.Withdrawal);
     }
 
     @Override
