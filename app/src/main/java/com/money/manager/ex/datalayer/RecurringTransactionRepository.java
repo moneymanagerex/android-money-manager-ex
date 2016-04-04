@@ -85,6 +85,16 @@ public class RecurringTransactionRepository
         return entity;
     }
 
+    public RecurringTransaction insert(RecurringTransaction entity) {
+        entity.contentValues.remove(RecurringTransaction.BDID);
+
+        int id = insert(entity.contentValues);
+
+        entity.setId(id);
+
+        return entity;
+    }
+
     public boolean update(RecurringTransaction value) {
         int id = value.getId();
 

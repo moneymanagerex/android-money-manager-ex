@@ -45,6 +45,7 @@ public interface ITransactionEntity {
 
     Integer getId();
     void setId(Integer value);
+    boolean hasId();
 
     Integer getAccountId();
     void setAccountId(Integer value);

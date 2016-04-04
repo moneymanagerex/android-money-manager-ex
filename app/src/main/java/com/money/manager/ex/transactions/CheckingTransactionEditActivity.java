@@ -543,38 +543,21 @@ public class CheckingTransactionEditActivity
 
         boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
 
+        // Transaction. Need the Id for split categories.
+
+        if (!saveTransaction()) return false;
+
         // Split Categories
+
+        if (mCommonFunctions.handleOneSplit()) {
+            saveTransaction();
+        }
 
         if(!mCommonFunctions.isSplitSelected()) {
             // Delete any split categories if split is unchecked.
             mCommonFunctions.removeAllSplitCategories();
         }
-        if (!saveSplitCategories()) {
-            return false;
-        }
-
-        // Transaction
-
-        AccountTransactionRepository repo = new AccountTransactionRepository(this);
-        if (mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)) {
-            // insert
-            mCommonFunctions.transactionEntity = repo.insert((AccountTransaction) mCommonFunctions.transactionEntity);
-
-            int id = mCommonFunctions.transactionEntity.getId();
-            if (id == Constants.NOT_SET) {
-                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
-                return false;
-            }
-        } else {
-            // update
-            boolean updated = repo.update((AccountTransaction) mCommonFunctions.transactionEntity);
-            if (!updated) {
-                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");
-                return false;
-            }
-        }
+        if (!saveSplitCategories()) return false;
 
         // update category and subcategory for the default payee
         if ((!isTransfer) && mCommonFunctions.hasPayee() && !mCommonFunctions.hasSplitCategories()) {
@@ -602,11 +585,9 @@ public class CheckingTransactionEditActivity
     }
 
     private boolean saveSplitCategories() {
-        int transactionId = mCommonFunctions.transactionEntity.getId();
+        Integer transactionId = mCommonFunctions.transactionEntity.getId();
         SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
         ArrayList<ISplitTransaction> deletedSplits = mCommonFunctions.getDeletedSplitCategories();
-
-        mCommonFunctions.handleOneSplit();
 
         // deleted old split transaction
         if (!deletedSplits.isEmpty()) {
@@ -644,6 +625,30 @@ public class CheckingTransactionEditActivity
             }
         }
 
+        return true;
+    }
+
+    private boolean saveTransaction() {
+        AccountTransactionRepository repo = new AccountTransactionRepository(this);
+        // mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)
+        if (!mCommonFunctions.transactionEntity.hasId()) {
+            // insert
+            mCommonFunctions.transactionEntity = repo.insert((AccountTransaction) mCommonFunctions.transactionEntity);
+
+            if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
+                Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
+                Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
+                return false;
+            }
+        } else {
+            // update
+            boolean updated = repo.update((AccountTransaction) mCommonFunctions.transactionEntity);
+            if (!updated) {
+                Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
+                Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");
+                return false;
+            }
+        }
         return true;
     }
 }

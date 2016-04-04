@@ -1223,9 +1223,10 @@ public class EditTransactionCommonFunctions {
     /**
      * Check if there is only one Split Category and transforms the transaction to a non-split
      * transaction, removing the split category record.
+     * @return True if there is only one split. Need to save the transaction.
      */
-    public void handleOneSplit() {
-        if (getSplitTransactions().size() != 1) return;
+    public boolean handleOneSplit() {
+        if (getSplitTransactions().size() != 1) return false;
 
         // use the first split category record.
         ISplitTransaction splitTransaction = mSplitTransactions.get(0);
@@ -1242,6 +1243,7 @@ public class EditTransactionCommonFunctions {
         getSplitTransactions().remove(splitTransaction);
 
         // handle deletion in the specific implementation.
+        return true;
     }
 
     // Private
