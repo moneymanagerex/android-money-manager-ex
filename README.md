@@ -42,15 +42,9 @@ Opt-in to test the latest releases at [https://play.google.com/apps/testing/com.
 
 #### The Android Money Manager Ex Project Team
 
-##### Project Manager
-
-Alen Siljak
-
 ##### Developers
 
-Alen Siljak<br/>
-Alessandro Lazzari<br/>
-Patrick Rannou<br/>
+Alen Siljak
 
 # License
 
