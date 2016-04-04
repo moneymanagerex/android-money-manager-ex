@@ -506,57 +506,21 @@ public class RecurringTransactionEditActivity
 
         if (!validateData()) return false;
 
-        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+        // Transaction. Need the id for split categories.
+
+        if (!saveTransaction()) return false;
 
         // Split Categories
+
+        if (mCommonFunctions.handleOneSplit()) {
+            saveTransaction();
+        }
 
         if(!mCommonFunctions.isSplitSelected()) {
             // Delete any split categories if split is unchecked.
             mCommonFunctions.removeAllSplitCategories();
         }
-        if (!saveSplitCategories()) {
-            return false;
-        }
-
-        // Transaction
-
-        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        ContentValues values = getContentValues(isTransfer);
-
-        if (Intent.ACTION_INSERT.equals(mIntentAction)) {
-            // insert
-            Uri insert = getContentResolver().insert(repo.getUri(), values);
-            if (insert == null) {
-                Core.alertDialog(this, R.string.db_checking_insert_failed);
-                Log.w(LOGCAT, "Insert new repeating transaction failed!");
-                return false;
-            }
-            long id = ContentUris.parseId(insert);
-            mRecurringTransaction.setId((int) id);
-        } else {
-            // update
-            if (getContentResolver().update(repo.getUri(), values,
-                    com.money.manager.ex.domainmodel.RecurringTransaction.BDID + "=?",
-                    new String[]{Integer.toString(mRecurringTransaction.getId())}) <= 0) {
-                Core.alertDialog(this, R.string.db_checking_update_failed);
-                Log.w(LOGCAT, "Update repeating  transaction failed!");
-                return false;
-            }
-        }
-
-//        // update category and subcategory for the payee.
-//        if ((!isTransfer) && mCommonFunctions.transactionEntity.hasPayee() && (!mCommonFunctions.hasSplitCategories())) {
-//            PayeeRepository payeeRepository = new PayeeRepository(this);
-//            Payee payee = payeeRepository.load(mCommonFunctions.transactionEntity.getPayeeId());
-//
-//            payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
-//            payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
-//
-//            if (!payeeRepository.save(payee)) {
-//                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-//                Log.w(LOGCAT, "Update Payee with Id=" + Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
-//            }
-//        }
+        if (!saveSplitCategories()) return false;
 
         return true;
     }
@@ -592,8 +556,6 @@ public class RecurringTransactionEditActivity
     private boolean saveSplitCategories() {
         SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
 
-        mCommonFunctions.handleOneSplit();
-
         // deleted old split transaction
         if (mCommonFunctions.getDeletedSplitCategories().size() > 0) {
             if (!mCommonFunctions.deleteMarkedSplits(splitRepo)) return false;
@@ -625,6 +587,40 @@ public class RecurringTransactionEditActivity
             }
         }
 
+        return true;
+    }
+
+    private boolean saveTransaction() {
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
+
+        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+        ContentValues values = getContentValues(isTransfer);
+
+        // mIntentAction.equals(Intent.ACTION_INSERT)
+        if (!mCommonFunctions.transactionEntity.hasId()) {
+            // insert
+//            Uri insert = getContentResolver().insert(repo.getUri(), values);
+//            if (insert == null) {
+            mCommonFunctions.transactionEntity = repo.insert((RecurringTransaction) mCommonFunctions.transactionEntity);
+
+            if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
+                Core.alertDialog(this, R.string.db_checking_insert_failed);
+                Log.w(LOGCAT, "Insert new repeating transaction failed!");
+                return false;
+            }
+//            long id = ContentUris.parseId(insert);
+//            mRecurringTransaction.setId((int) id);
+        } else {
+            // update
+//            if (getContentResolver().update(repo.getUri(), values,
+//                    com.money.manager.ex.domainmodel.RecurringTransaction.BDID + "=?",
+//                    new String[]{Integer.toString(mRecurringTransaction.getId())}) <= 0) {
+            if (!repo.update((RecurringTransaction) mCommonFunctions.transactionEntity)) {
+                Core.alertDialog(this, R.string.db_checking_update_failed);
+                Log.w(LOGCAT, "Update repeating  transaction failed!");
+                return false;
+            }
+        }
         return true;
     }
 }

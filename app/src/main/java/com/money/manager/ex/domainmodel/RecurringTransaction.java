@@ -86,6 +86,10 @@ public class RecurringTransaction
         setInt(BDID, id);
     }
 
+    public boolean hasId() {
+        return getId() != null && getId() != Constants.NOT_SET;
+    }
+
     public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }
