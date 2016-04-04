@@ -26,19 +26,18 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -103,8 +102,9 @@ public class AccountListFragment
         Cursor cursor = (Cursor) adapter.getItem(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
 
-        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
-        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
+        MenuHelper menuHelper = new MenuHelper(getActivity());
+        menuHelper.addEditToContextMenu(menu);
+        menuHelper.addDeleteToContextMenu(menu);
     }
 
     @Override
@@ -112,13 +112,14 @@ public class AccountListFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int accountId = (int) info.id;
         int itemId = item.getItemId();
+        ContextMenuIds menuId = ContextMenuIds.get(itemId);
 
-        switch (itemId) {
-            case ContextMenuIds.EDIT:
+        switch (menuId) {
+            case EDIT:
                 startAccountListEditActivity(accountId);
                 break;
 
-            case ContextMenuIds.DELETE:
+            case DELETE:
                 AccountService service = new AccountService(getActivity());
                 if (service.isAccountUsed(accountId)) {
                     new AlertDialogWrapper.Builder(getContext())
@@ -133,7 +134,7 @@ public class AccountListFragment
                         })
                         .create().show();
                 } else {
-                    showDialogDeleteAccount(accountId);
+                    showDeleteConfirmationDialog(accountId);
                 }
                 break;
         }
@@ -249,7 +250,7 @@ public class AccountListFragment
         getActivity().openContextMenu(v);
     }
 
-    private void showDialogDeleteAccount(final int accountId) {
+    private void showDeleteConfirmationDialog(final int accountId) {
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_account)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))

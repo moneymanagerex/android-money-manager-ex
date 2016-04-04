@@ -92,10 +92,11 @@
     </string-array>
 
     <!-- context menu for watchlist entries -->
-    <string-array name="context_menu_watchlist">
-        <item>@string/download_price</item>
-        <item>@string/edit_price</item>
-    </string-array>
+    <!--<string-array name="context_menu_watchlist">-->
+        <!--<item>@string/download_price</item>-->
+        <!--<item>@string/edit_price</item>-->
+        <!--<item>@string/delete</item>-->
+    <!--</string-array>-->
 
     <!-- context menu options for currency list -->
     <string-array name="context_menu_currencies">

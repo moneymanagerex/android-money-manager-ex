@@ -69,7 +69,7 @@ public class AccountRepository
     }
 
     public boolean delete(int id) {
-        int result = delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(id)});
+        int result = super.delete(Account.ACCOUNTID + "=?", new String[] { Integer.toString(id)});
         return result > 0;
     }
 

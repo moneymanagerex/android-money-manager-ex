@@ -41,6 +41,7 @@ import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 
@@ -196,8 +197,9 @@ public class BudgetListFragment
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME)));
 
-        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
-        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
+        MenuHelper menuHelper = new MenuHelper(getActivity());
+        menuHelper.addEditToContextMenu(menu);
+        menuHelper.addDeleteToContextMenu(menu);
         //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
     }
 
@@ -206,15 +208,16 @@ public class BudgetListFragment
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int budgetId = (int) info.id;
         int id = item.getItemId();
+        ContextMenuIds menuId = ContextMenuIds.get(id);
 
-        switch (id) {
-            case ContextMenuIds.EDIT:
+        switch (menuId) {
+            case EDIT:
                 editBudget(budgetId);
                 break;
-            case ContextMenuIds.DELETE:
+            case DELETE:
                 confirmDelete(budgetId);
                 break;
-            case ContextMenuIds.COPY:
+            case COPY:
                 BudgetService service = new BudgetService(getActivity());
                 service.copy(budgetId);
                 break;

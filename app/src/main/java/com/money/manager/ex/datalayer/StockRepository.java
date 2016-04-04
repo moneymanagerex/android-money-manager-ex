@@ -53,6 +53,11 @@ public class StockRepository
         return ArrayUtils.addAll(idColumn, tableColumns());
     }
 
+    public boolean delete(int id) {
+        int result = super.delete(Stock.STOCKID + "=?", new String[] { Integer.toString(id)});
+        return result > 0;
+    }
+
     public String[] tableColumns() {
         return new String[] {
             Stock.STOCKID,
