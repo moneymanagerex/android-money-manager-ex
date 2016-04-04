@@ -17,6 +17,7 @@
 package com.money.manager.ex.investment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -34,10 +35,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -49,6 +54,7 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -181,10 +187,14 @@ public class WatchlistItemsFragment
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Stock.SYMBOL)));
 
-        String[] menuItems = getResources().getStringArray(R.array.context_menu_watchlist);
-        for (int i = 0; i < menuItems.length; i++) {
-            menu.add(Menu.NONE, i, i, menuItems[i]);
-        }
+//        String[] menuItems = getResources().getStringArray(R.array.context_menu_watchlist);
+//        for (int i = 0; i < menuItems.length; i++) {
+//            menu.add(Menu.NONE, i, i, menuItems[i]);
+//        }
+        MenuHelper menuHelper = new MenuHelper(getActivity());
+        menuHelper.addItemToContextMenu(ContextMenuIds.DownloadPrice, menu);
+        menuHelper.addItemToContextMenu(ContextMenuIds.EditPrice, menu);
+        menuHelper.addItemToContextMenu(ContextMenuIds.DELETE, menu);
     }
 
     /**
@@ -204,16 +214,16 @@ public class WatchlistItemsFragment
         String symbol = stock.getSymbol();
 
         boolean result = false;
-        int itemId = item.getItemId();
+        ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
 
-        switch (itemId) {
-            case 0:
+        switch (menuId) {
+            case DownloadPrice:
                 // Update price
                 EventBus.getDefault().post(new PriceUpdateRequestEvent(symbol));
                 result = true;
                 break;
 
-            case 1:
+            case EditPrice:
                 // Edit price
                 int accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
@@ -221,6 +231,10 @@ public class WatchlistItemsFragment
                 EditPriceDialog dialog = new EditPriceDialog();
                 dialog.setParameters(accountId, symbol, currentPrice);
                 dialog.show(getChildFragmentManager(), "input-amount");
+                break;
+
+            case DELETE:
+                showDeleteConfirmationDialog(stock.getId());
                 break;
         }
 
@@ -239,7 +253,8 @@ public class WatchlistItemsFragment
             Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
             childFragmentManager.setAccessible(true);
             childFragmentManager.set(this, null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (Exception e) {
+            // NoSuchFieldException | IllegalAccessException
             throw new RuntimeException(e);
         }
     }
@@ -442,4 +457,37 @@ public class WatchlistItemsFragment
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
     }
+
+    private void showDeleteConfirmationDialog(final int id) {
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+                .setTitle(R.string.delete_transaction)
+                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+                .setMessage(R.string.confirmDelete);
+
+        alertDialog.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        StockRepository repo = new StockRepository(getActivity());
+                        if (!repo.delete(id)) {
+                            ExceptionHandler handler = new ExceptionHandler(getActivity());
+                            handler.showMessage(R.string.db_delete_failed);
+                        }
+
+                        // restart loader
+                        reloadData();
+                    }
+                });
+
+        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // close dialog
+                dialog.cancel();
+            }
+        });
+        // show dialog
+        alertDialog.create().show();
+    }
+
 }

@@ -21,9 +21,28 @@ package com.money.manager.ex.core;
  * Ids for context menus.
  * For easier handling.
  */
-public class ContextMenuIds {
-    public static final int EDIT = 1;
-    public static final int DELETE = 2;
-    public static final int COPY = 3;
-    public static final int VIEW_TRANSACTIONS = 4;
+public enum ContextMenuIds {
+    EDIT(1),
+    DELETE(2),
+    COPY(3),
+    VIEW_TRANSACTIONS(4),
+    DownloadPrice(5),
+    EditPrice(6);
+
+    public static ContextMenuIds get(int id) {
+        for(ContextMenuIds itemId : ContextMenuIds.values()) {
+            if (itemId.getId() == id) return itemId;
+        }
+        return null;
+    }
+
+    ContextMenuIds(int id) {
+        this.id = id;
+    }
+
+    private int id;
+
+    public int getId() {
+        return this.id;
+    }
 }

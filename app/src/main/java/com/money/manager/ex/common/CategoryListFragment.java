@@ -164,9 +164,9 @@ public class CategoryListFragment
         }
 
         // context menu from resource
-        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
-        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
-        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS, Menu.NONE, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
     }
 
     @Override
@@ -193,8 +193,9 @@ public class CategoryListFragment
                     .getSubcategoryName().toString();
         }
         // manage select menu
-        switch (item.getItemId()) {
-            case ContextMenuIds.EDIT:
+        ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
+        switch (menuId) {
+            case EDIT:
                 if (categoryIds.subCategId == ExpandableListView.INVALID_POSITION) {
                     showDialogEditCategoryName(SQLTypeTransaction.UPDATE, categoryIds.categId,
                             categoryIds.categName);
@@ -204,11 +205,11 @@ public class CategoryListFragment
                 }
                 break;
 
-            case ContextMenuIds.DELETE:
+            case DELETE:
                 showDialogDeleteCategorySub(categoryIds);
                 break;
 
-            case ContextMenuIds.VIEW_TRANSACTIONS: // view transactions
+            case VIEW_TRANSACTIONS: // view transactions
                 SearchParameters parameters = new SearchParameters();
                 parameters.category = categoryIds;
 

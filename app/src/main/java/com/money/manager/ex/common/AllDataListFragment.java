@@ -318,6 +318,7 @@ public class AllDataListFragment
         MenuItem itemExportToCsv = menu.findItem(R.id.menu_export_to_csv);
         if (itemExportToCsv != null) itemExportToCsv.setVisible(true);
         MenuItem itemSearch = menu.findItem(R.id.menu_search_transaction);
+
         if (itemSearch != null) {
             itemSearch.setVisible(!activity.getClass().getSimpleName()
                     .equals(SearchActivity.class.getSimpleName()));

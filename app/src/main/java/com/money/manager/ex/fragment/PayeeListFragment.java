@@ -177,9 +177,9 @@ public class PayeeListFragment
         cursor.moveToPosition(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Payee.PAYEENAME)));
 
-        menu.add(Menu.NONE, ContextMenuIds.EDIT, Menu.NONE, getString(R.string.edit));
-        menu.add(Menu.NONE, ContextMenuIds.DELETE, Menu.NONE, getString(R.string.delete));
-        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS, Menu.NONE, getString(R.string.view_transactions));
+        menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getString(R.string.edit));
+        menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getString(R.string.delete));
+        menu.add(Menu.NONE, ContextMenuIds.VIEW_TRANSACTIONS.getId(), Menu.NONE, getString(R.string.view_transactions));
     }
 
     @Override
@@ -193,12 +193,13 @@ public class PayeeListFragment
         Payee payee = new Payee();
         payee.loadFromCursor(cursor);
 
-        switch (item.getItemId()) {
-            case ContextMenuIds.EDIT:
+        ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
+        switch (menuId) {
+            case EDIT:
                 showDialogEditPayeeName(SQLTypeTransaction.UPDATE, payee.getId(), payee.getName());
                 break;
 
-            case ContextMenuIds.DELETE:
+            case DELETE:
                 PayeeService service = new PayeeService(getActivity());
                 if (!service.isPayeeUsed(payee.getId())) {
                     showDialogDeletePayee(payee.getId());
@@ -219,7 +220,7 @@ public class PayeeListFragment
                 }
                 break;
 
-            case ContextMenuIds.VIEW_TRANSACTIONS:
+            case VIEW_TRANSACTIONS:
                 SearchParameters parameters = new SearchParameters();
                 parameters.payeeId = payee.getId();
                 parameters.payeeName = payee.getName();

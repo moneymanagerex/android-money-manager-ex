@@ -65,6 +65,7 @@ public class InvestmentTransactionEditActivity
     private boolean mDirty = false;
     private Account mAccount;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
