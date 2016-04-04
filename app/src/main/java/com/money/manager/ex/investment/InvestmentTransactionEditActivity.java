@@ -107,9 +107,8 @@ public class InvestmentTransactionEditActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
@@ -320,10 +319,25 @@ public class InvestmentTransactionEditActivity
     }
 
     private boolean save() {
+        collectData();
+
         if (!validate()) return false;
 
         boolean result;
 
+        // save
+        StockRepository repository = new StockRepository(getApplicationContext());
+        if (mStock.getId() != null) {
+            repository.save(mStock);
+        } else {
+            repository.insert(mStock);
+        }
+        result = true;
+
+        return result;
+    }
+
+    private void collectData() {
         // add missing fields (text) and sanitize text values.
 
         mStock.setHeldAt(mAccount.getId());
@@ -338,17 +352,6 @@ public class InvestmentTransactionEditActivity
 
         RobotoEditTextFontIcon notesText = (RobotoEditTextFontIcon) findViewById(R.id.notesEdit);
         mStock.setNotes(notesText.getText().toString());
-
-        // save
-        StockRepository repository = new StockRepository(getApplicationContext());
-        if (mStock.getId() != null) {
-            repository.save(mStock);
-        } else {
-            repository.insert(mStock);
-        }
-        result = true;
-
-        return result;
     }
 
     private boolean validate() {

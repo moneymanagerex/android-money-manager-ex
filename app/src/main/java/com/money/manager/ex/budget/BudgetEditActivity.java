@@ -59,7 +59,7 @@ public class BudgetEditActivity
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // todo
+        // todo save model
         //outState.
     }
 
