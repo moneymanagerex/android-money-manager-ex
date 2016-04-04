@@ -18,6 +18,7 @@ package com.money.manager.ex.investment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.databinding.ActivityInvestmentTransactionEditBinding;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -61,23 +63,26 @@ public class InvestmentTransactionEditActivity
     public static final int ID_COMMISSION = 3;
     public static final int ID_CURRENT_PRICE = 4;
 
-    private Stock mStock;
     private boolean mDirty = false;
     private Account mAccount;
-
+    private Stock mStock;
+    private ActivityInvestmentTransactionEditBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
 
+        //todo mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
+
         // this handles OK/Cancel button clicks in the toolbar.
         setToolbarStandardAction(getToolbar());
 
         // todo: receive the account id (and read currency)
-
         // todo: change this initialization after adding editing feature.
+
         mStock = Stock.create();
+        //todo mBinding.setStock(mStock);
 
         initializeForm();
     }
