@@ -298,7 +298,7 @@ public class EditTransactionCommonFunctions {
     public Integer getDestinationCurrencyId() {
         Integer accountId = this.transactionEntity.getAccountToId();
         // The destination account/currency is hidden by default and may be uninitialized.
-        if (!transactionEntity.hasAccountTo()) {
+        if (!transactionEntity.hasAccountTo() && !mAccountIdList.isEmpty()) {
             accountId = mAccountIdList.get(0);
         }
 
