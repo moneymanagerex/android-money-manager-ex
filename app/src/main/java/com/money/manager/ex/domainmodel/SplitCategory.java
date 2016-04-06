@@ -68,6 +68,11 @@ public class SplitCategory
     }
 
     @Override
+    public boolean hasId() {
+        return getId() != null && getId() != Constants.NOT_SET;
+    }
+
+    @Override
     public Integer getAccountId() {
         return getInt(ITransactionEntity.ACCOUNTID);
     }

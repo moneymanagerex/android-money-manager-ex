@@ -20,6 +20,7 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 
@@ -56,12 +57,19 @@ public class SplitRecurringCategory
         return entity;
     }
 
+    @Override
     public Integer getId() {
         return getInt(SPLITTRANSID);
     }
 
+    @Override
     public void setId(int value) {
         setInt(SPLITTRANSID, value);
+    }
+
+    @Override
+    public boolean hasId() {
+        return getId() != null && getId() != Constants.NOT_SET;
     }
 
     @Override

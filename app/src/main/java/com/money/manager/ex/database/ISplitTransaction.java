@@ -29,6 +29,7 @@ public interface ISplitTransaction
 
     Integer getId();
     void setId(int splitTransId);
+    boolean hasId();
 
     Integer getAccountId();
     void setAccountId(int value);

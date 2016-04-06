@@ -148,7 +148,7 @@ public class EditTransactionCommonFunctions {
             ISplitTransaction splitToDelete = mSplitTransactionsDeleted.get(i);
 
             // Ignore unsaved entities.
-            if (splitToDelete.getId() == Constants.NOT_SET) continue;
+            if (!splitToDelete.hasId()) continue;
 
             if (!repository.delete(splitToDelete)) {
                 Toast.makeText(getContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
