@@ -538,11 +538,9 @@ public class RecurringTransactionEditActivity
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         // Restore the transaction entity.
-        mRecurringTransaction = savedInstanceState.getParcelable(KEY_MODEL);
+        mRecurringTransaction = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MODEL));
 
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-        String transCode = savedInstanceState.getString(KEY_TRANS_CODE);
-//        mCommonFunctions.transactionType = TransactionTypes.valueOf(transCode);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
         mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
         mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
@@ -593,14 +591,8 @@ public class RecurringTransactionEditActivity
     private boolean saveTransaction() {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
 
-        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        ContentValues values = getContentValues(isTransfer);
-
-        // mIntentAction.equals(Intent.ACTION_INSERT)
         if (!mCommonFunctions.transactionEntity.hasId()) {
             // insert
-//            Uri insert = getContentResolver().insert(repo.getUri(), values);
-//            if (insert == null) {
             mCommonFunctions.transactionEntity = repo.insert((RecurringTransaction) mCommonFunctions.transactionEntity);
 
             if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
@@ -608,13 +600,8 @@ public class RecurringTransactionEditActivity
                 Log.w(LOGCAT, "Insert new repeating transaction failed!");
                 return false;
             }
-//            long id = ContentUris.parseId(insert);
-//            mRecurringTransaction.setId((int) id);
         } else {
             // update
-//            if (getContentResolver().update(repo.getUri(), values,
-//                    com.money.manager.ex.domainmodel.RecurringTransaction.BDID + "=?",
-//                    new String[]{Integer.toString(mRecurringTransaction.getId())}) <= 0) {
             if (!repo.update((RecurringTransaction) mCommonFunctions.transactionEntity)) {
                 Core.alertDialog(this, R.string.db_checking_update_failed);
                 Log.w(LOGCAT, "Update repeating  transaction failed!");
@@ -624,4 +611,3 @@ public class RecurringTransactionEditActivity
         return true;
     }
 }
-
