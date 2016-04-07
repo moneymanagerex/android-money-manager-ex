@@ -99,3 +99,6 @@
   public static final android.os.Parcelable$Creator *;
 }
 -keep class org.parceler.Parceler$$Parcels
+
+#SQLCipher
+-keep class net.sqlcipher.** { *; }
