@@ -28,7 +28,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 
-import net.sqlcipher.database.SQLiteDatabase;
+//import net.sqlcipher.database.SQLiteDatabase;
 
 public abstract class BaseFragmentActivity
     extends AppCompatActivity {
