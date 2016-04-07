@@ -111,7 +111,7 @@ public class WatchlistFragment
         loadAccount();
 
         if ((savedInstanceState != null)) {
-            mAccount = savedInstanceState.getParcelable(KEY_ACCOUNT);
+            mAccount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_ACCOUNT));
         }
 
         mUpdateCounter = 0;
