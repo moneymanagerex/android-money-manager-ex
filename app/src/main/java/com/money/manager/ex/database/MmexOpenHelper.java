@@ -188,7 +188,7 @@ public class MmexOpenHelper
         try {
             db = super.getReadableDatabase(password);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "opening readable database");
         }
         return db;

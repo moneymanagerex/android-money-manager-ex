@@ -278,10 +278,13 @@ public class MainActivity
 
             case REQUEST_PASSWORD:
                 if (resultCode == RESULT_OK && data != null) {
-                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
+//                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
                     String password = data.getStringExtra(PasswordActivity.EXTRA_PASSWORD);
 
-                    changeDatabase(dbPath, password);
+//                    changeDatabase(dbPath, password);
+                    MmexOpenHelper.getInstance(this).setPassword(password);
+                    // continue
+                    initializeDatabaseAccess(null);
                 }
         }
     }
@@ -1042,7 +1045,6 @@ public class MainActivity
 
         if (currentDatabase.contentEquals(dbFilePath)) {
             // just restart the main Activity?
-            // restart this activity
             setRestartActivity(true);
             restartActivity();
         } else {
