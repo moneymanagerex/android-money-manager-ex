@@ -65,9 +65,11 @@ public class MyDatabaseUtils {
      * @return A boolean indicating whether the check was successfully completed.
      */
     public boolean checkIntegrity() {
-        boolean result = MmexOpenHelper.getInstance(getContext())
-                .getReadableDatabase()
-                .isDatabaseIntegrityOk();
+//        boolean result = MmexOpenHelper.getInstance(getContext())
+//                .getReadableDatabase()
+//                .isDatabaseIntegrityOk();
+        // todo handle this case. No support for integrity check with encrypted databases.
+        boolean result = false;
         return result;
     }
 
@@ -77,7 +79,7 @@ public class MyDatabaseUtils {
 
     public String makePlaceholders(int len) {
         if (len < 1) {
-            // It will lead to an invalid query anyway ..
+            // It would lead to an invalid query anyway ..
             throw new RuntimeException("No placeholders");
         } else {
             StringBuilder sb = new StringBuilder(len * 2 - 1);

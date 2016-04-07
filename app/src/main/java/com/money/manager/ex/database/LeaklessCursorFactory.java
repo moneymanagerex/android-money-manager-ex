@@ -17,15 +17,21 @@
 
 package com.money.manager.ex.database;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteCursorDriver;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQuery;
+//import android.database.Cursor;
+//import android.database.sqlite.SQLiteCursorDriver;
+//import android.database.sqlite.SQLiteDatabase;
+//import android.database.sqlite.SQLiteQuery;
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteCursorDriver;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteQuery;
 
 /**
  * http://stackoverflow.com/questions/4547461/closing-the-database-in-a-contentprovider
  */
-public class LeaklessCursorFactory implements SQLiteDatabase.CursorFactory {
+public class LeaklessCursorFactory
+    implements SQLiteDatabase.CursorFactory {
+
     @Override
     public Cursor newCursor(SQLiteDatabase db, SQLiteCursorDriver masterQuery,
                             String editTable, SQLiteQuery query) {

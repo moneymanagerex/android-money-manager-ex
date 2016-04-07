@@ -1294,7 +1294,6 @@ public class MainActivity
     private void requestDatabasePassword(String dbFilePath) {
         // request password
         Intent intent = new Intent(this, PasswordActivity.class);
-        //intent.setAction(Intent.A.INTENT_REQUEST_PASSWORD);
         intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
         startActivityForResult(intent, REQUEST_PASSWORD);
         // continues onActivityResult.

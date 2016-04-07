@@ -20,10 +20,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-//import net.sqlcipher.database.SQLiteDatabase;
-//import net.sqlcipher.database.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+//import android.database.sqlite.SQLiteDatabase;
+//import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -103,12 +103,12 @@ public class MmexOpenHelper
         return this.mContext;
     }
 
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        Log.v(LOGCAT, "event onConfigure( )");
-        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
-    }
+//    @Override
+//    public void onConfigure(SQLiteDatabase db) {
+//        super.onConfigure(db);
+//        Log.v(LOGCAT, "event onConfigure( )");
+//        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+//    }
 
     /**
      * Called when the database is being created.
@@ -161,12 +161,12 @@ public class MmexOpenHelper
         updateDatabase(db, oldVersion, newVersion);
     }
 
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // nothing to do for now.
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
-            " to " + Integer.toString(newVersion));
-    }
+//    @Override
+//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//        // nothing to do for now.
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
+//            " to " + Integer.toString(newVersion));
+//    }
 
     @Override
     public synchronized void close() {
@@ -178,16 +178,15 @@ public class MmexOpenHelper
         mInstance = null;
     }
 
-//    public SQLiteDatabase getReadableDatabase() {
-//        return this.getReadableDatabase(this.mPassword);
-//    }
+    public SQLiteDatabase getReadableDatabase() {
+        return this.getReadableDatabase(this.mPassword);
+    }
 
     @Override
-    public SQLiteDatabase getReadableDatabase() {
-        // String password
+    public SQLiteDatabase getReadableDatabase(String password) {
         SQLiteDatabase db = null;
         try {
-            db = super.getReadableDatabase();
+            db = super.getReadableDatabase(password);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening readable database");
@@ -195,14 +194,14 @@ public class MmexOpenHelper
         return db;
     }
 
-//    public SQLiteDatabase getWritableDatabase() {
-//        return getWritableDatabase(this.mPassword);
-//    }
+    public SQLiteDatabase getWritableDatabase() {
+        return getWritableDatabase(this.mPassword);
+    }
 
     @Override
-    public SQLiteDatabase getWritableDatabase() {
+    public SQLiteDatabase getWritableDatabase(String password) {
         try {
-            return getWritableDatabase_Internal();
+            return getWritableDatabase_Internal(password);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "opening writable database");
@@ -218,10 +217,10 @@ public class MmexOpenHelper
         return !TextUtils.isEmpty(this.mPassword);
     }
 
-    private SQLiteDatabase getWritableDatabase_Internal() {
+    private SQLiteDatabase getWritableDatabase_Internal(String password) {
         // String password
 
-        SQLiteDatabase db = super.getWritableDatabase();
+        SQLiteDatabase db = super.getWritableDatabase(password);
 
         if (db != null) {
             db.rawQuery("PRAGMA journal_mode=OFF", null).close();
