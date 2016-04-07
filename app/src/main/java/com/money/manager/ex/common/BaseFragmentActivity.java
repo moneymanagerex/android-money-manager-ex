@@ -28,6 +28,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 public abstract class BaseFragmentActivity
     extends AppCompatActivity {
 
@@ -53,6 +55,9 @@ public abstract class BaseFragmentActivity
         String locale = settings.getGeneralSettings().getApplicationLanguage();
 //        Core.setAppLocale(getApplicationContext(), locale);
         Core.setAppLocale(this, locale);
+
+        // Initialize database encryption.
+        //todo SQLiteDatabase.loadLibs(this);
 
         super.onCreate(savedInstance);
 

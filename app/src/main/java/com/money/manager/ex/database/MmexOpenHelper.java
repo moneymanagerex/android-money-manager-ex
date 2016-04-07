@@ -93,9 +93,6 @@ public class MmexOpenHelper
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
 
-        // Initialize database encryption.
-//        SQLiteDatabase.loadLibs(getContext());
-
         Log.v(LOGCAT, "event onCreate( )");
     }
 
@@ -204,7 +201,6 @@ public class MmexOpenHelper
 
     @Override
     public SQLiteDatabase getWritableDatabase() {
-        // String password
         try {
             return getWritableDatabase_Internal();
         } catch (Exception ex) {
