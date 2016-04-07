@@ -1062,22 +1062,21 @@ public class EditTransactionCommonFunctions {
      * @return true if category set
      */
     public boolean setCategoryFromPayee(int payeeId) {
-        boolean result = false;
+        if (payeeId == Constants.NOT_SET) return false;
 
         PayeeRepository repo = new PayeeRepository(getContext());
         Payee payee = repo.load(payeeId);
+        if (payee == null) return false;
+        if (!payee.hasCategory()) return false;
 
-        // check if category is valid
-        if (payee.hasCategory()) {
-            this.transactionEntity.setCategoryId(payee.getCategoryId());
-            this.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
+        // otherwise
 
-            loadCategoryName();
+        this.transactionEntity.setCategoryId(payee.getCategoryId());
+        this.transactionEntity.setSubcategoryId(payee.getSubcategoryId());
 
-            result = true;
-        }
+        loadCategoryName();
 
-        return result;
+        return true;
     }
 
     public void setDirty(boolean dirty) {
