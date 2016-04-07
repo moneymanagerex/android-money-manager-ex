@@ -60,16 +60,16 @@ public class MyDatabaseUtils {
 
     private Context mContext;
 
-//    /**
-//     * Runs SQLite pragma check on the database file.
-//     * @return A boolean indicating whether the check was successfully completed.
-//     */
-//    public boolean checkIntegrity() {
-//        boolean result = MmexOpenHelper.getInstance(getContext())
-//                .getReadableDatabase()
-//                .isDatabaseIntegrityOk();
-//        return result;
-//    }
+    /**
+     * Runs SQLite pragma check on the database file.
+     * @return A boolean indicating whether the check was successfully completed.
+     */
+    public boolean checkIntegrity() {
+        boolean result = MmexOpenHelper.getInstance(getContext())
+                .getReadableDatabase()
+                .isDatabaseIntegrityOk();
+        return result;
+    }
 
     public Context getContext() {
         return mContext;

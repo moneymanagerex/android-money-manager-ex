@@ -21,8 +21,8 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import net.sqlcipher.database.SQLiteDatabase;
-//import android.database.sqlite.SQLiteDatabase;
+//import net.sqlcipher.database.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.money.manager.ex.core.ExceptionHandler;

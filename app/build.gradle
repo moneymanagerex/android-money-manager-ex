@@ -28,7 +28,7 @@ android {
         //multiDexEnabled true
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 819
+        versionCode 821
         versionName '2016.04.07'
         // 601 = 1.4.17, stable
 
@@ -169,7 +169,7 @@ dependencies {
             'com.squareup.retrofit2:converter-gson:2.0.0',
             'com.squareup.retrofit2:converter-scalars:2.0.0'
             // database encryption
-            ,'net.zetetic:android-database-sqlcipher:3.4.0'
+//            ,'net.zetetic:android-database-sqlcipher:3.4.0'
             ,'org.greenrobot:eventbus:3.0.0',
             'net.danlew:android.joda:2.9.2'
             ,'org.parceler:parceler-api:1.0.4'

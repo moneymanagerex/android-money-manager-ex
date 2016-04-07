@@ -20,10 +20,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteOpenHelper;
-//import android.database.sqlite.SQLiteDatabase;
-//import android.database.sqlite.SQLiteOpenHelper;
+//import net.sqlcipher.database.SQLiteDatabase;
+//import net.sqlcipher.database.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -161,12 +161,12 @@ public class MmexOpenHelper
         updateDatabase(db, oldVersion, newVersion);
     }
 
-//    @Override
-//    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        // nothing to do for now.
-//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
-//            " to " + Integer.toString(newVersion));
-//    }
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // nothing to do for now.
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
+            " to " + Integer.toString(newVersion));
+    }
 
     @Override
     public synchronized void close() {
@@ -178,15 +178,11 @@ public class MmexOpenHelper
         mInstance = null;
     }
 
-    public SQLiteDatabase getReadableDatabase() {
-        return this.getReadableDatabase(this.mPassword);
-    }
-
     @Override
-    public SQLiteDatabase getReadableDatabase(String password) {
+    public SQLiteDatabase getReadableDatabase() {
         SQLiteDatabase db = null;
         try {
-            db = super.getReadableDatabase(password);
+            db = super.getReadableDatabase();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "opening readable database");
@@ -194,20 +190,45 @@ public class MmexOpenHelper
         return db;
     }
 
-    public SQLiteDatabase getWritableDatabase() {
-        return getWritableDatabase(this.mPassword);
-    }
+//    public SQLiteDatabase getReadableDatabase() {
+//        return this.getReadableDatabase(this.mPassword);
+//    }
+//    @Override
+//    public SQLiteDatabase getReadableDatabase(String password) {
+//        SQLiteDatabase db = null;
+//        try {
+//            db = super.getReadableDatabase(password);
+//        } catch (Exception ex) {
+//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+//            handler.handle(ex, "opening readable database");
+//        }
+//        return db;
+//    }
 
     @Override
-    public SQLiteDatabase getWritableDatabase(String password) {
+    public SQLiteDatabase getWritableDatabase() {
         try {
-            return getWritableDatabase_Internal(password);
+            return getWritableDatabase_Internal();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "opening writable database");
         }
         return null;
     }
+
+//    public SQLiteDatabase getWritableDatabase() {
+//        return getWritableDatabase(this.mPassword);
+//    }
+//    @Override
+//    public SQLiteDatabase getWritableDatabase(String password) {
+//        try {
+//            return getWritableDatabase_Internal(password);
+//        } catch (Exception ex) {
+//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+//            handler.handle(ex, "opening writable database");
+//        }
+//        return null;
+//    }
 
     public void setPassword(String password) {
         this.mPassword = password;
@@ -217,10 +238,11 @@ public class MmexOpenHelper
         return !TextUtils.isEmpty(this.mPassword);
     }
 
-    private SQLiteDatabase getWritableDatabase_Internal(String password) {
+    private SQLiteDatabase getWritableDatabase_Internal() {
         // String password
-
-        SQLiteDatabase db = super.getWritableDatabase(password);
+//
+//        SQLiteDatabase db = super.getWritableDatabase(password);
+        SQLiteDatabase db = super.getWritableDatabase();
 
         if (db != null) {
             db.rawQuery("PRAGMA journal_mode=OFF", null).close();
@@ -234,7 +256,7 @@ public class MmexOpenHelper
      * @param rawId id raw resource
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
-        String sqlRaw = MmexFileUtils.getRawAsString(mContext, rawId);
+        String sqlRaw = MmexFileUtils.getRawAsString(getContext(), rawId);
         String sqlStatement[] = sqlRaw.split(";");
         // process all statements
         for (String aSqlStatment : sqlStatement) {
@@ -247,7 +269,7 @@ public class MmexOpenHelper
                 if (errorMessage != null && errorMessage.equals("not an error (code 0)")) {
                     Log.w(LOGCAT, errorMessage);
                 } else {
-                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                     handler.handle(e, "executing raw sql: " + aSqlStatment);
                 }
             }
@@ -270,7 +292,7 @@ public class MmexOpenHelper
                 }
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "getting sqlite version");
         } finally {
             if (cursor != null) cursor.close();
@@ -361,30 +383,12 @@ public class MmexOpenHelper
      * @param database Database being initialized.
      */
     private void initDateFormat(SQLiteDatabase database) {
-//        Cursor cursor;
-
-        // date format
         try {
-            Core core = new Core(mContext);
+            Core core = new Core(getContext());
             String pattern = core.getDefaultSystemDateFormat();
             if (pattern == null) return;
 
-//            InfoRepository repo = new InfoRepository(mContext);
-
-//            cursor = database.rawQuery("SELECT * FROM " + repo.getSource() +
-//                            " WHERE " + Info.INFONAME + "=?",
-//                    new String[]{InfoService.DATEFORMAT});
-//
-//            if (cursor == null) return;
-
-//            String existingValue = null;
-//            if (cursor.moveToNext()) {
-//                // read existing value for comparison
-//                existingValue = cursor.getString(cursor.getColumnIndex(InfoService.DATEFORMAT));
-//            }
-//            cursor.close();
-
-            InfoService infoService = new InfoService(mContext);
+            InfoService infoService = new InfoService(getContext());
 
 //            if (!pattern.equalsIgnoreCase(existingValue)) {
 //                // check if pattern exists
@@ -393,7 +397,7 @@ public class MmexOpenHelper
                 infoService.updateRaw(database, InfoKeys.DATEFORMAT, pattern);
 //            }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "init database, date format");
         }
     }
@@ -403,11 +407,11 @@ public class MmexOpenHelper
 
         // currencies
         try {
-            CurrencyService currencyService = new CurrencyService(mContext);
+            CurrencyService currencyService = new CurrencyService(getContext());
             Currency systemCurrency = currencyService.getSystemDefaultCurrency();
             if (systemCurrency == null) return;
 
-            InfoService infoService = new InfoService(mContext);
+            InfoService infoService = new InfoService(getContext());
 
             currencyCursor = db.rawQuery("SELECT * FROM " + infoService.repository.getSource() +
                             " WHERE " + Info.INFONAME + "=?",
@@ -424,14 +428,14 @@ public class MmexOpenHelper
             if (!recordExists && (currencyId != Constants.NOT_SET)) {
                 long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
                 if (newId <= 0) {
-                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                     handler.showMessage("error inserting base currency on init");
                 }
             } else {
                 // Update the (empty) record to the default currency.
                 long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
                 if (updatedRecords <= 0) {
-                    ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                     handler.showMessage("error updating base currency on init");
                 }
             }
@@ -442,7 +446,7 @@ public class MmexOpenHelper
 //            if (!StringUtils.isEmpty(baseCurrencyId)) return;
 //            infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "init database, currency");
         }
     }

@@ -17,14 +17,14 @@
 
 package com.money.manager.ex.database;
 
-//import android.database.Cursor;
-//import android.database.sqlite.SQLiteCursorDriver;
-//import android.database.sqlite.SQLiteDatabase;
-//import android.database.sqlite.SQLiteQuery;
-import net.sqlcipher.Cursor;
-import net.sqlcipher.database.SQLiteCursorDriver;
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteQuery;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursorDriver;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQuery;
+//import net.sqlcipher.Cursor;
+//import net.sqlcipher.database.SQLiteCursorDriver;
+//import net.sqlcipher.database.SQLiteDatabase;
+//import net.sqlcipher.database.SQLiteQuery;
 
 /**
  * http://stackoverflow.com/questions/4547461/closing-the-database-in-a-contentprovider

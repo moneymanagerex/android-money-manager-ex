@@ -64,6 +64,7 @@ public class RecurringTransaction
     public RecurringTransaction() {
         super();
 
+        setPayeeId(Constants.NOT_SET);
         setCategoryId(Constants.NOT_SET);
         setSubcategoryId(Constants.NOT_SET);
         setRecurrence(Recurrence.ONCE);
