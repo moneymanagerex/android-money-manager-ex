@@ -48,7 +48,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.money.manager.ex.AnalyticsTrackers;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -278,13 +277,17 @@ public class MainActivity
 
             case REQUEST_PASSWORD:
                 if (resultCode == RESULT_OK && data != null) {
-//                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
+                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
                     String password = data.getStringExtra(PasswordActivity.EXTRA_PASSWORD);
 
-//                    changeDatabase(dbPath, password);
-                    MmexOpenHelper.getInstance(this).setPassword(password);
-                    // continue
-                    initializeDatabaseAccess(null);
+                    // Figure out what to do next. Switch the db or continue with init?
+                    if (StringUtils.isEmpty(dbPath)) {
+                        MmexOpenHelper.getInstance(this).setPassword(password);
+                        // continue
+                        initializeDatabaseAccess(null);
+                    } else {
+                        changeDatabase(dbPath, password);
+                    }
                 }
         }
     }
@@ -465,7 +468,7 @@ public class MainActivity
             String key = item.getTag().toString();
             RecentDatabaseEntry recentDb = this.recentDbs.map.get(key);
             if (recentDb != null) {
-                openDatabase(recentDb);
+                onOpenDatabaseClick(recentDb);
             }
         }
         if (item.getId() == null) return false;
@@ -613,7 +616,7 @@ public class MainActivity
         // check if we require a password.
         String dbPath = MoneyManagerApplication.getDatabasePath(this);
         if (MyDatabaseUtils.isEncryptedDatabase(dbPath) && !MmexOpenHelper.getInstance(this).hasPassword()) {
-            requestDatabasePassword(dbPath);
+            requestDatabasePassword();
         } else {
             initializeDatabaseAccess(savedInstanceState);
         }
@@ -1252,7 +1255,7 @@ public class MainActivity
      * called when quick-switching the recent databases from the navigation menu.
      * @param recentDb selected recent database entry
      */
-    private void openDatabase(RecentDatabaseEntry recentDb) {
+    private void onOpenDatabaseClick(RecentDatabaseEntry recentDb) {
         // do nothing if selecting the currently open database
         String currentDb = MoneyManagerApplication.getDatabasePath(this);
         if (recentDb.filePath.equals(currentDb)) return;
@@ -1283,7 +1286,7 @@ public class MainActivity
      * @param dbFilePath The path to the database file.
      */
     private void requestDatabaseChange(String dbFilePath) {
-        Log.v(LOGCAT, "Change database: " + dbFilePath);
+        Log.v(LOGCAT, "Changing database to: " + dbFilePath);
 
         // handle encrypted database(s)
         if (MyDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
@@ -1291,6 +1294,11 @@ public class MainActivity
         } else {
             changeDatabase(dbFilePath, null);
         }
+    }
+
+    private void requestDatabasePassword() {
+        // request password for the current database.
+        requestDatabasePassword(null);
     }
 
     private void requestDatabasePassword(String dbFilePath) {
