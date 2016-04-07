@@ -263,11 +263,9 @@ public class MmexOpenHelper
     public String getSQLiteVersion() {
         String sqliteVersion = null;
         Cursor cursor = null;
-        SQLiteDatabase database;
         try {
-            database = getReadableDatabase();
-            if (database != null) {
-                cursor = database.rawQuery("select sqlite_version() AS sqlite_version", null);
+            if (getReadableDatabase() != null) {
+                cursor = getReadableDatabase().rawQuery("select sqlite_version() AS sqlite_version", null);
                 if (cursor != null && cursor.moveToFirst()) {
                     sqliteVersion = cursor.getString(0);
                 }

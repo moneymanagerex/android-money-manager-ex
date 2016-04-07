@@ -18,8 +18,6 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.util.Log;
 import android.widget.Toast;
@@ -67,10 +65,9 @@ public class MyDatabaseUtils {
      * @return A boolean indicating whether the check was successfully completed.
      */
     public boolean checkIntegrity() {
-        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext())
-            .getReadableDatabase();
-
-        boolean result = db.isDatabaseIntegrityOk();
+        boolean result = MmexOpenHelper.getInstance(getContext())
+                .getReadableDatabase()
+                .isDatabaseIntegrityOk();
         return result;
     }
 
@@ -259,10 +256,8 @@ public class MyDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        SQLiteDatabase db = MmexOpenHelper.getInstance(mContext)
-                .getReadableDatabase();
-
-        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        Cursor c = MmexOpenHelper.getInstance(getContext()).getReadableDatabase()
+                .rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         ArrayList<String> result = new ArrayList<>();
         int i = 0;
         while (c.moveToNext()) {

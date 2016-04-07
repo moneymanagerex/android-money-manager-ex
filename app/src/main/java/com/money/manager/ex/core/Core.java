@@ -26,8 +26,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-//import net.sqlcipher.database.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -314,7 +312,6 @@ public class Core {
      */
     public Payee getLastPayeeUsed() {
         MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
-        SQLiteDatabase database = helper.getReadableDatabase();
         Payee payee = null;
 
         String sql =
@@ -325,7 +322,7 @@ public class Core {
         "ORDER BY C.TransDate DESC, C.TransId DESC " +
         "LIMIT 1";
 
-        Cursor cursor = database.rawQuery(sql, null);
+        Cursor cursor = helper.getReadableDatabase().rawQuery(sql, null);
 
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {

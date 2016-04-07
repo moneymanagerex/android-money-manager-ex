@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.settings;
 
-//import net.sqlcipher.database.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -129,10 +127,10 @@ public class DatabaseSettingsFragment
 
         String version = "N/A";
 
-        SQLiteDatabase db = MmexOpenHelper.getInstance(getActivity())
-                .getReadableDatabase();
-        if (db != null) {
-            int versionNumber = db.getVersion();
+        MmexOpenHelper dbHelper = MmexOpenHelper.getInstance(getActivity());
+
+        if (dbHelper.getReadableDatabase() != null) {
+            int versionNumber = dbHelper.getReadableDatabase().getVersion();
             version = Integer.toString(versionNumber);
         }
 

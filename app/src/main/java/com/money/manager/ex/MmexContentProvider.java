@@ -155,12 +155,9 @@ public class MmexContentProvider
 
         // find object from uri
         Object ret = getObjectFromUri(uri);
-        // database reference
-        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
         long id = Constants.NOT_SET;
         String parse;
-        // check instance type object
+
         if (Dataset.class.isInstance(ret)) {
             Dataset dataset = ((Dataset) ret);
             switch (dataset.getType()) {
@@ -169,7 +166,10 @@ public class MmexContentProvider
 
                     //database.beginTransaction();
                     try {
-                        id = database.insertOrThrow(dataset.getSource(), null, values);
+                        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
+
+                        id = databaseHelper.getWritableDatabase()
+                                .insertOrThrow(dataset.getSource(), null, values);
                         //database.setTransactionSuccessful();
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
@@ -181,7 +181,7 @@ public class MmexContentProvider
                     throw new IllegalArgumentException("Type of dataset not supported for update");
             }
         } else {
-            throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
+            throw new IllegalArgumentException("Object ret of mapContent is not instance of dataset");
         }
 
         if (id > 0) {
@@ -251,8 +251,6 @@ public class MmexContentProvider
 //            return 0;
         }
         // take a database reference
-        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
         int rowsDelete = 0;
 
         if (Dataset.class.isInstance(ret)) {
@@ -261,7 +259,9 @@ public class MmexContentProvider
                 case TABLE:
                     logDelete(dataset, selection, selectionArgs);
                     try {
-                        rowsDelete = database.delete(dataset.getSource(), selection, selectionArgs);
+                        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
+                        rowsDelete = databaseHelper.getWritableDatabase()
+                                .delete(dataset.getSource(), selection, selectionArgs);
 
                         // committed
                         //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");

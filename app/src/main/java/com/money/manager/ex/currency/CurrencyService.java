@@ -35,6 +35,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.servicelayer.ServiceBase;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,7 +51,8 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * This class implements all the methods of utility for the management of currencies.
  */
-public class CurrencyService {
+public class CurrencyService
+    extends ServiceBase {
 
     private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
@@ -67,13 +69,8 @@ public class CurrencyService {
     }
 
     public CurrencyService(Context context) {
-        mContext = context.getApplicationContext();
-    }
+        super(context);
 
-    private Context mContext;
-
-    public Context getContext() {
-        return mContext;
     }
 
     /**
@@ -88,7 +85,7 @@ public class CurrencyService {
 
         // if not cached, try to load it.
         if (result == null) {
-            CurrencyRepository repository = new CurrencyRepository(mContext);
+            CurrencyRepository repository = new CurrencyRepository(getContext());
             result = repository.loadCurrency(currencyId);
 
             // cache
@@ -111,8 +108,8 @@ public class CurrencyService {
 
         Currency currency = this.getCurrency(baseCurrencyId);
         if (currency == null) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.showMessage(mContext.getString(R.string.base_currency_not_set));
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.showMessage(getContext().getString(R.string.base_currency_not_set));
             return null;
         }
         return currency.getCode();
@@ -150,7 +147,7 @@ public class CurrencyService {
     }
 
     public List<Currency> getUsedCurrencies() {
-        AccountService service = new AccountService(mContext);
+        AccountService service = new AccountService(getContext());
 
         List<Account> accounts = service.getAccountList();
         if (accounts == null) return null;
@@ -317,7 +314,8 @@ public class CurrencyService {
 
                 newCurrency = new Currency();
 
-                newCurrency.setName(localeCurrency.getDisplayName());
+                //newCurrency.setName(localeCurrency.getDisplayName());
+                newCurrency.setName(localeCurrency.getSymbol());
                 newCurrency.setCode(localeCurrency.getCurrencyCode());
 
                 if (symbols != null && symbols.containsKey(localeCurrency.getCurrencyCode())) {
@@ -377,7 +375,7 @@ public class CurrencyService {
      * @return Id base currency
      */
     protected Integer loadBaseCurrencyId() {
-        InfoService infoService = new InfoService(mContext);
+        InfoService infoService = new InfoService(getContext());
         String currencyString = infoService.getInfoValue(InfoKeys.BASECURRENCYID);
         Integer currencyId = null;
 
@@ -403,7 +401,7 @@ public class CurrencyService {
             if (defaultLocale != null) {
                 message += " for " + defaultLocale.getCountry();
             }
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, message);
         }
         return currency;
@@ -436,8 +434,8 @@ public class CurrencyService {
     private HashMap<String, String> getCurrenciesCodeAndSymbol() {
         HashMap<String, String> map = new HashMap<>();
         // compose map
-        String[] codes = mContext.getResources().getStringArray(R.array.currencies_code);
-        String[] symbols = mContext.getResources().getStringArray(R.array.currencies_symbol);
+        String[] codes = getContext().getResources().getStringArray(R.array.currencies_code);
+        String[] symbols = getContext().getResources().getStringArray(R.array.currencies_symbol);
 
         for (int i = 0; i < codes.length; i++) {
             map.put(codes[i], symbols[i]);
