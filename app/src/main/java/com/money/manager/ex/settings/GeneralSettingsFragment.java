@@ -27,6 +27,7 @@ import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.home.MainActivity;
@@ -363,10 +364,10 @@ public class GeneralSettingsFragment
         final AccountRepository repository = new AccountRepository(getActivity());
 
         // set account name as the value here
-        String defaultAccount = preference.getValue();
+        Integer defaultAccountId = new GeneralSettings(getActivity()).getDefaultAccountId();
         String accountName = entries[0]; // none
-        if (!TextUtils.isEmpty(defaultAccount) && !defaultAccount.equalsIgnoreCase("-1")) {
-            accountName = repository.loadName(Integer.parseInt(defaultAccount));
+        if (defaultAccountId != Constants.NOT_SET) {
+            accountName = repository.loadName(defaultAccountId);
         }
         preference.setSummary(accountName);
 
@@ -375,10 +376,12 @@ public class GeneralSettingsFragment
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String accountName = entries[0];
                 int accountId = Integer.parseInt(newValue.toString());
-                if (accountId != -1) {
+                if (accountId != Constants.NOT_SET) {
                     accountName = repository.loadName(accountId);
                 }
                 preference.setSummary(accountName);
+
+                new GeneralSettings(getActivity()).setDefaultAccountId(accountId);
 
                 return true;
             }
