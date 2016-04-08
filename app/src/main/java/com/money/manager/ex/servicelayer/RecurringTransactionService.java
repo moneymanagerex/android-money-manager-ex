@@ -211,6 +211,14 @@ public class RecurringTransactionService
             default:
                 break;
         }
+
+        // Save changes
+
+        RecurringTransactionRepository repo = getRepository();
+        boolean updated = repo.update(mRecurringTransaction);
+        if (!updated) {
+            Core.alertDialog(getContext(), R.string.error_saving_record);
+        }
     }
 
     /**
@@ -389,14 +397,6 @@ public class RecurringTransactionService
 
         if (newPaymentDate != null) {
             mRecurringTransaction.setPaymentDate(newPaymentDate);
-        }
-
-        // Save changes
-
-        RecurringTransactionRepository repo = getRepository();
-        boolean updated = repo.update(mRecurringTransaction);
-        if (!updated) {
-            Core.alertDialog(getContext(), R.string.error_saving_record);
         }
     }
 
