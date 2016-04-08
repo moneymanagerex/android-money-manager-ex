@@ -73,8 +73,6 @@ public class DropboxHelper {
     // singleton
     private static DropboxHelper mHelper;
     private static Context mContext;
-    // flag status upload immediate
-    private static boolean mDelayedUploadImmediate= false;
     // flag temp disable auto upload
     private static boolean mDisableAutoUpload = false;
     // Delayed synchronization
@@ -97,15 +95,9 @@ public class DropboxHelper {
         return mHelper;
     }
 
-//    public static DropboxHelper getInstance() {
-////        if (mHelper == null) throw new Exception("Dropbox Helper not yet instantiated");
-//
-//        return mHelper;
-//    }
-
     /**
-     * called whenever the database has changed and should be resynchronized.
-     * Sets the timer for delayed sync of the database.
+     * Called whenever the database has changed and should be uploaded.
+     * (Re-)Sets the timer for delayed sync of the database.
      */
     public static void notifyDataChanged() {
         if (mHelper == null) return;
@@ -115,7 +107,7 @@ public class DropboxHelper {
         File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
         mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
 
-        // Should we also synchronize immediately?
+        // Should we upload automatically?
         if (getAutoUploadDisabled()) return;
         DropboxHelper helper = new DropboxHelper(mContext);
         if (!helper.shouldAutoSynchronize()) {
@@ -123,34 +115,15 @@ public class DropboxHelper {
             return;
         }
 
-        //check if upload as immediate
+        // Should we schedule an upload?
         DropboxSettings settings = new AppSettings(mContext).getDropboxSettings();
-
-        if (settings.getImmediatelyUploadChanges() && !mDelayedUploadImmediate) {
-            // Create task/runnable for synchronization.
-            mRunSyncRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(LOGCAT, "Start postDelayed task to upload database");
-                    }
-
-                    mHelper.sendBroadcastStartService(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
-                    mDelayedUploadImmediate = false;
-                }
-            };
-
-            // Schedule delayed execution of the sync task.
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Launch Handler postDelayed");
-            mDelayedHandler = new Handler();
-            // Synchronize after 30 seconds.
-            mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
-            mDelayedUploadImmediate = true;
+        if (settings.getImmediatelyUploadChanges()) {
+            abortScheduledUpload();
+            scheduleUpload();
         }
     }
 
-    public static void resetDelayedSync() {
-        mDelayedUploadImmediate = false;
+    public static void abortScheduledUpload() {
         if (mDelayedHandler != null) {
             mDelayedHandler.removeCallbacks(mRunSyncRunnable);
         }
@@ -162,6 +135,31 @@ public class DropboxHelper {
 
     public static void setAutoUploadDisabled(boolean mDisableAutoUpload) {
         DropboxHelper.mDisableAutoUpload = mDisableAutoUpload;
+    }
+
+    public static void scheduleUpload() {
+        // Create task/runnable for synchronization.
+        if (mRunSyncRunnable == null) {
+            mRunSyncRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (BuildConfig.DEBUG) {
+                        Log.d(LOGCAT, "Starting delayed upload");
+                    }
+
+                    mHelper.sendBroadcastStartService(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
+                    abortScheduledUpload();
+                }
+            };
+        }
+
+        // Schedule delayed execution of the sync task.
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Scheduling delayed upload to Dropbox.");
+
+        mDelayedHandler = new Handler();
+
+        // Synchronize after 30 seconds.
+        mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
     }
 
     // Public methods.
@@ -650,7 +648,7 @@ public class DropboxHelper {
 
         setDateLastModified(dropboxFile.fileName(), RESTUtility.parseDate(dropboxFile.modified));
 
-        DropboxHelper.resetDelayedSync();
+        DropboxHelper.abortScheduledUpload();
 
         return true;
     }
@@ -675,7 +673,7 @@ public class DropboxHelper {
             return false;
         }
 
-        DropboxHelper.resetDelayedSync();
+        DropboxHelper.abortScheduledUpload();
 
         return true;
     }
