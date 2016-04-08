@@ -898,10 +898,10 @@ public class EditTransactionCommonFunctions {
         setDirty(true);
 
         boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        boolean isSourceAmount = id == R.id.textViewAmount;
+        boolean isAmountFrom = id == R.id.textViewAmount;
 
         // Set and display the selected amount.
-        if (isSourceAmount) {
+        if (isAmountFrom) {
             this.transactionEntity.setAmount(amount);
             displayAmountFrom();
         } else {
@@ -922,20 +922,22 @@ public class EditTransactionCommonFunctions {
                 displayAmountTo();
                 // Exit here.
                 return;
-            } else {
-                // Different currency. Convert the value and write the amount into the other input box.
+            }
+
+            // Different currency. Recalculate the other amount only if it has not been set.
+            boolean shouldConvert = isAmountFrom
+                    ? transactionEntity.getAmountTo().isZero()
+                    : transactionEntity.getAmount().isZero();
+            if (shouldConvert){
+                // Convert the value and write the amount into the other input box.
                 Money convertedAmount;
-                if (isSourceAmount) {
+                if (isAmountFrom) {
                     convertedAmount = calculateAmountTo();
                     transactionEntity.setAmountTo(convertedAmount);
+                    displayAmountTo();
                 } else {
                     convertedAmount = calculateAmountFrom();
                     transactionEntity.setAmount(convertedAmount);
-                }
-
-                if (isSourceAmount) {
-                    displayAmountTo();
-                } else {
                     displayAmountFrom();
                 }
             }
