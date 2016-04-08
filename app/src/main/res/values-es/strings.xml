@@ -51,6 +51,7 @@
   <string name="dropbox_downloadProgress">Descargando archivo desde Dropbox. Por favor espere&#8230;</string>
   <string name="dropbox_uploadProgress">Cargando archivo en Dropbox. Espera&#8230;</string>
   <string name="dropbox_linkedFile">Archivo Dropbox</string>
+  <string name="dropbox_file_summary_all">Archivo en cualquier parte en Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Generales</string>
   <string name="preferences_dispaly">Apariencia</string>
@@ -157,6 +158,7 @@
   <!-- application string -->
   <string name="about">Acerca de</string>
   <string name="add">Agregar</string>
+  <string name="confirmDelete">¿Realmente quiere borrar el registro?</string>
   <string name="date">Fecha</string>
   <string name="delete">Borrar</string>
   <string name="download">Descargar</string>
@@ -237,6 +239,7 @@
   <string name="repeats">Frecuencia</string>
   <string name="occurs">Se produce</string>
   <string name="payments_left">Pagos restantes</string>
+  <string name="payments_left_required">Un valor en los pagos de la izquierda es necesario</string>
   <string name="due_date_required">La fecha de vencimiento es requerida</string>
   <string name="error_next_occurrence_not_populate">La siguiente repetición es requerida</string>
   <string name="enter_next_occurrence">Efectuar Siguiente Ocurrencia</string>
@@ -368,6 +371,7 @@
   <string name="menu_report_where_money_goes">¿A dónde va el dinero?</string>
   <string name="menu_report_where_money_comes_from">¿De dónde viene el dinero?</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Tiempo de notificación</string>
   <string name="summary_check_repeating_transaction">¿A qué hora desea comprobar las transacciones vencidas? (8:00 por defecto)</string>
   <!-- 20130730 -->
   <string name="credits">Créditos</string>
@@ -485,6 +489,7 @@
   <string name="montly_last_bussines_day">Mensual (último día hábil)</string>
   <!-- languages -->
   <string name="locale_application">Idioma de la aplicación</string>
+  <string name="transaction_cancel_confirm">¿Realmente quiere descartar los cambios?</string>
   <string name="keep_editing">Seguir editando</string>
   <string name="discard">Descartar</string>
   <string name="invalid_expression">Expresión no válida</string>
@@ -562,6 +567,7 @@
   <string name="choose_type">Elegir un tipo</string>
   <string name="default_account">Cuenta Predeterminada</string>
   <string name="default_account_summary">La cuenta a usar cuando se ingrese una nueva transacción.</string>
+  <string name="default_account_not_set">Cuenta por defecto no configurada.</string>
   <string name="balance_account">Balance de cuenta</string>
   <string name="balance_adjustment">Ajuste del Balance</string>
   <string name="cash">Efectivo</string>
@@ -584,6 +590,7 @@
   <string name="about_logcat_header">Puede enviarnos el registro de la aplicación haciendo click en el botón de abajo.</string>
   <string name="transaction_type_filter">Filtrar por Tipo de Transacción</string>
   <string name="status_filter">Filtrar por Estado</string>
+  <string name="filter_options_info">Opciones de filtrado e información</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Ingrese la contraseña de la base de datos</string>
   <string name="income_expense_period">Periódo de Ingresos/Gastos</string>
@@ -605,6 +612,8 @@
   <string name="value">Valor</string>
   <string name="view_transactions">Ver transacciones</string>
   <string name="error_downloading_symbol">Error descargando precio para símbolo</string>
+  <string name="error_updating_rates">Error al actualizar las tasas</string>
+  <string name="error_no_price_found_for_symbol">No hay resultados para símbolo de precio</string>
   <string name="other">Otros</string>
   <string name="cleared">Limpiado</string>
   <string name="delete_success">Elemento eliminado</string>
@@ -630,8 +639,24 @@
   <string name="records">registros</string>
   <!-- db password entry -->
   <string name="enter_password">Ingresar contraseña</string>
+  <string name="title_activity_portfolio">Actividad de cartera</string>
   <string name="success">Operación exitosa</string>
   <string name="overview">Resumen</string>
+  <string name="title_activity_asset_allocation_overview">Visión de asignación de activos</string>
+  <string name="asset_allocation_diff_threshold">Asignación de activos por diferencia de umbral</string>
+  <string name="asset_allocation_diff_threshold_summary">El umbral activará la coloración de diferentes valores.</string>
   <string name="error_saving_record">Ocurrió un error guardando el registro</string>
+  <string name="symbol_required">Símbolo es requerido</string>
+  <string name="recurrence_type_not_set">Tipo de recurrencia sin definir</string>
+  <string name="invalid_recurrence_type">Tipo de recurrencia inválida</string>
+  <string name="account_not_found">Cuenta no encontrada</string>
+  <string name="favourite">Favorito</string>
   <!-- budgets -->
+  <string name="add_budget">Agregar Presupuesto</string>
+  <string name="budget_name">Nombre del Presupuesto</string>
+  <string name="budget_year">Año del Presupuesto</string>
+  <string name="budget_month">Presupuesto Mensual</string>
+  <string name="quote_provider">Proveedor de cotización</string>
+  <string name="copy">Copiar</string>
+  <string name="app_restart">Reiniciar la aplicación para que los cambios tengan efecto.</string>
 </resources>

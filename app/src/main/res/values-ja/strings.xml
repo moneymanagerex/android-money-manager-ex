@@ -51,6 +51,7 @@
   <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
   <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
   <string name="dropbox_linkedFile">Dropbox のファイル</string>
+  <string name="dropbox_file_summary_all">Dropbox の任意の場所にあるファイル</string>
   <!-- preferences -->
   <string name="preferences_general">全般</string>
   <string name="preferences_dispaly">ルック &amp; フィール</string>
@@ -157,6 +158,7 @@
   <!-- application string -->
   <string name="about">アプリついて</string>
   <string name="add">追加</string>
+  <string name="confirmDelete">レコードを削除してもよろしいですか?</string>
   <string name="date">日付</string>
   <string name="delete">削除</string>
   <string name="download">ダウンロード</string>
@@ -237,6 +239,7 @@
   <string name="repeats">繰り返し</string>
   <string name="occurs">発生</string>
   <string name="payments_left">支払残</string>
+  <string name="payments_left_required">支払い残の値が必要です</string>
   <string name="due_date_required">期日は必須です</string>
   <string name="error_next_occurrence_not_populate">次回発生が必要です</string>
   <string name="enter_next_occurrence">次回発生を入力してください</string>
@@ -368,6 +371,7 @@
   <string name="menu_report_where_money_goes">お金の行き先</string>
   <string name="menu_report_where_money_comes_from">お金の入り元</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">通知時間</string>
   <string name="summary_check_repeating_transaction">期限切れの定期的な取引があるかの確認を、何時に行いますか? (デフォルト 8:00)</string>
   <!-- 20130730 -->
   <string name="credits">クレジット</string>
@@ -485,6 +489,7 @@
   <string name="montly_last_bussines_day">毎月 (最終営業日)</string>
   <!-- languages -->
   <string name="locale_application">アプリケーションの言語</string>
+  <string name="transaction_cancel_confirm">変更を破棄してもよろしいですか?</string>
   <string name="keep_editing">編集を続ける</string>
   <string name="discard">破棄</string>
   <string name="invalid_expression">式が正しくありません</string>
@@ -562,6 +567,7 @@
   <string name="choose_type">種類を選択してください</string>
   <string name="default_account">デフォルトアカウント</string>
   <string name="default_account_summary">新しい取引を入力するときに使用するアカウント。</string>
+  <string name="default_account_not_set">デフォルトのアカウントが設定されていません。</string>
   <string name="balance_account">残高アカウント</string>
   <string name="balance_adjustment">残高調整</string>
   <string name="cash">現金</string>
@@ -584,6 +590,7 @@
   <string name="about_logcat_header">下のボタンをクリックすると、私たちにアプリケーション ログを送信できます。</string>
   <string name="transaction_type_filter">取引の種類でフィルター</string>
   <string name="status_filter">ステータスでフィルター</string>
+  <string name="filter_options_info">フィルターのオプションと情報</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">データベースのパスワードを入力してください</string>
   <string name="income_expense_period">収入/支出の期間</string>
@@ -605,6 +612,8 @@
   <string name="value">価値</string>
   <string name="view_transactions">取引の表示</string>
   <string name="error_downloading_symbol">シンボルの価格をダウンロード中にエラー</string>
+  <string name="error_updating_rates">レートの更新中にエラー</string>
+  <string name="error_no_price_found_for_symbol">シンボルの価格が見つかりません</string>
   <string name="other">その他</string>
   <string name="cleared">クリアしました</string>
   <string name="delete_success">アイテムを削除しました</string>
@@ -637,5 +646,17 @@
   <string name="asset_allocation_diff_threshold">資産配分差異しきい値</string>
   <string name="asset_allocation_diff_threshold_summary">差異の値に色を付けるしきい値。</string>
   <string name="error_saving_record">レコードの保存中にエラー</string>
+  <string name="symbol_required">シンボルが必要です</string>
+  <string name="recurrence_type_not_set">定期的なアイテムの種類が設定されていません</string>
+  <string name="invalid_recurrence_type">定期的なアイテムの種類が無効です</string>
+  <string name="account_not_found">アカウントが見つかりません</string>
+  <string name="favourite">お気に入り</string>
   <!-- budgets -->
+  <string name="add_budget">予算を追加</string>
+  <string name="budget_name">予算名</string>
+  <string name="budget_year">予算年度</string>
+  <string name="budget_month">予算月</string>
+  <string name="quote_provider">プロバイダーの引用</string>
+  <string name="copy">コピー</string>
+  <string name="app_restart">変更を適用するためアプリを閉じます。再起動してください。</string>
 </resources>

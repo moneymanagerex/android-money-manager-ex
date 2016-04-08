@@ -51,6 +51,7 @@
   <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите&#8230;</string>
   <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Подождите, пожалуйста&#8230;</string>
   <string name="dropbox_linkedFile">Файл Dropbox</string>
+  <string name="dropbox_file_summary_all">Файл в любом месте в Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Основные</string>
   <string name="preferences_dispaly">Внешний вид</string>
@@ -66,7 +67,7 @@
   <string name="path">Путь к базе данных</string>
   <string name="database_version">Версия базы данных</string>
   <string name="title_show_tutorial">Показать учебник</string>
-  <string name="summary_show_tutorial">Показать учебник на следующий раз?</string>
+  <string name="summary_show_tutorial">Показать учебник при следующем запуске?</string>
   <string name="preferences_behaviour_focus_filter_title">Фокус на поле фильтра</string>
   <string name="preferences_behaviour_focus_filter_summary">Фокус на поле фильтра при выборе сущностей. Иначе просмотр.</string>
   <string name="pref_auto_sync_via_wifi">Авто-синхр только через WiFi</string>
@@ -153,10 +154,11 @@
   <string name="error_toaccount_not_selected">Требуется указать счет получателя</string>
   <string name="error_category_not_selected">Требуется указать категорию</string>
   <string name="error_totamount_empty">Требуется указать полную сумму</string>
-  <string name="error_transfer_to_same_account">Два счета для операции перевода должны быть различны</string>
+  <string name="error_transfer_to_same_account">Для перевода требуются два разных счёта</string>
   <!-- application string -->
   <string name="about">О программе</string>
   <string name="add">Добавить</string>
+  <string name="confirmDelete">Удалить эту запись?</string>
   <string name="date">Дата</string>
   <string name="delete">Удалить</string>
   <string name="download">Скачать</string>
@@ -202,7 +204,7 @@
   <string name="current_month">Текущий месяц</string>
   <string name="current_year">Текущий год</string>
   <string name="future_transactions">Будущие транзакции</string>
-  <string name="show_transaction">Показывать проводки</string>
+  <string name="show_transaction">Период отображения транзакций</string>
   <string name="changelog">История изменений</string>
   <string name="transaction_number">Номер проводки</string>
   <string name="widget_summary">Сводка</string>
@@ -225,7 +227,7 @@
   <string name="in_x_months">В (x) месяц</string>
   <string name="every_x_days">Каждые (x) дней</string>
   <string name="every_x_months">Каждые (x) месяцев</string>
-  <string name="repeating_empty_transaction">Не найдено ни одного перевода. Чтобы создать его, нажмите на зеленый плюс.</string>
+  <string name="repeating_empty_transaction">Повторяющиеся транзакции отсутствуют. Для создания нажмите кнопку с зелёным плюсом.</string>
   <string name="inactive">Неактивна</string>
   <string name="activates">Активировать</string>
   <string name="days_overdue">дней просрочки!</string>
@@ -235,8 +237,9 @@
   <string name="next_occurrence">Следующее начисление</string>
   <string name="payment_date">Дата оплаты</string>
   <string name="repeats">Повторы</string>
-  <string name="occurs">Происходит</string>
+  <string name="occurs">Повтор</string>
   <string name="payments_left">Осталось платежей</string>
+  <string name="payments_left_required">Требуется значение Осталось Платежей</string>
   <string name="due_date_required">Требуется дата платежа</string>
   <string name="error_next_occurrence_not_populate">Требуется указать следующее вхождение</string>
   <string name="enter_next_occurrence">Ввести следующее начисление</string>
@@ -251,7 +254,7 @@
   <!-- 20121122 -->
   <string name="preferences_info_application">Информация</string>
   <string name="preferences_security">Защита</string>
-  <string name="preferences_active_passcode">Активировать пароль</string>
+  <string name="preferences_active_passcode">Установить пароль</string>
   <string name="enter_your_passcode">Введите ваш пароль</string>
   <string name="reinsert_your_passcode">Повторно введите Ваш новый пароль</string>
   <string name="passocde_no_macth">Пароли не совпадают</string>
@@ -338,7 +341,7 @@
   <string name="upload_file_to_dropbox_complete">Ваша база данных была успешно загружена</string>
   <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
   <string name="dropbox_how_it_works">Как Dropbox работает с Money Manager Ex\?</string>
-  <string name="dont_show_again">Не показывать снова</string>
+  <string name="dont_show_again">Больше не показывать</string>
   <string name="open_database">Открыть БД</string>
   <string name="synchronization_interval">Интервал синхронизации</string>
   <string name="summary_synchronization_interval">Как часто требуется синхронизация?</string>
@@ -347,7 +350,7 @@
   <string name="title_dropbox_upload_immediate">Загрузка сразу после изменений</string>
   <string name="summary_dropbox_upload_immediate">Эта опция позволяет автоматически загружать БД вскоре после ваших изменений</string>
   <!-- 20130426 -->
-  <string name="title_transaction_shown_balance">Показывать баланс для каждой проводки</string>
+  <string name="title_transaction_shown_balance">Баланс для каждой транзакции</string>
   <string name="summary_transaction_shown_balance">Показывать баланс для каждой транзакции. Это может замедлить работу приложения</string>
   <string name="menu_open_database">Открыть Базу данных</string>
   <string name="database">База данных</string>
@@ -368,6 +371,7 @@
   <string name="menu_report_where_money_goes">Куда расходуются деньги</string>
   <string name="menu_report_where_money_comes_from">Откуда приходят деньги</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Время уведомления</string>
   <string name="summary_check_repeating_transaction">Укажите время проверки наличия просроченных транзакций ? (по умолчанию 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Благодарность</string>
@@ -447,8 +451,8 @@
   <string name="welcome_body_dropbox">Если вы уже используете MoneyManagerEx на Windows, Linux или Mac синхронизируйте базу данных приложения через Dropbox</string>
   <string name="configure_dropbox">Настройка Dropbox</string>
   <!-- 20140115 -->
-  <string name="search_text_contain_title">Поиск по содержимому текста, а не только с начала строки</string>
-  <string name="search_text_contain_summary">Поиск среди контрагентов, категорий, валют и.т.д.&#8230; по всему содержимому текста, а не только с начала строки</string>
+  <string name="search_text_contain_title">Поиск внутри строк</string>
+  <string name="search_text_contain_summary">Искать по всему тексту, а не только с начала строки (контрагенты, категории&#8230;)</string>
   <string name="rate_application">Оценить приложение</string>
   <string name="start_currency_exchange_rates">Обновление курсов валют. Пожалуйста подождите&#8230;</string>
   <string name="update_currency_exchange_rates">Обновляем обменный курс:\n%1$s</string>
@@ -485,6 +489,7 @@
   <string name="montly_last_bussines_day">Ежемесячно (последний рабочий день)</string>
   <!-- languages -->
   <string name="locale_application">Язык приложения</string>
+  <string name="transaction_cancel_confirm">Отменить изменения?</string>
   <string name="keep_editing">Продолжить редактирование</string>
   <string name="discard">Не сохранять</string>
   <string name="invalid_expression">Недопустимое выражение</string>
@@ -562,6 +567,7 @@
   <string name="choose_type">Выберите тип</string>
   <string name="default_account">Счет по умолчанию</string>
   <string name="default_account_summary">Счет для использования при вводе новой проводки.</string>
+  <string name="default_account_not_set">Не задан счёт по умолчанию.</string>
   <string name="balance_account">Баланс счета</string>
   <string name="balance_adjustment">Корректировка баланса</string>
   <string name="cash">Наличные</string>
@@ -584,6 +590,7 @@
   <string name="about_logcat_header">Вы можете отправить нам лог приложения, нажав на кнопку ниже.</string>
   <string name="transaction_type_filter">Фильтр по типу транзакции</string>
   <string name="status_filter">Фильтр по статусу</string>
+  <string name="filter_options_info">Параметры фильтра и информация</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Введите пароль базы данных</string>
   <string name="income_expense_period">Период доходов/расходов</string>
@@ -605,6 +612,8 @@
   <string name="value">Значение</string>
   <string name="view_transactions">Просмотр транзакций</string>
   <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
+  <string name="error_updating_rates">Ошибка обновление курсов</string>
+  <string name="error_no_price_found_for_symbol">Цена для символа не найдена</string>
   <string name="other">Другое</string>
   <string name="cleared">Очищено</string>
   <string name="delete_success">Элемент удален</string>
@@ -634,5 +643,17 @@
   <string name="asset_allocation_diff_threshold">Порог разницы распределения активов</string>
   <string name="asset_allocation_diff_threshold_summary">Порог, вызывающий смену окраски различных значений.</string>
   <string name="error_saving_record">Ошибка при сохранении записи</string>
+  <string name="symbol_required">Требуется Символ</string>
+  <string name="recurrence_type_not_set">Не задан тип повторения</string>
+  <string name="invalid_recurrence_type">Недопустимый тип повторения</string>
+  <string name="account_not_found">Аккаунт не найден</string>
+  <string name="favourite">Избранный</string>
   <!-- budgets -->
+  <string name="add_budget">Добавить бюджет</string>
+  <string name="budget_name">Название бюджета</string>
+  <string name="budget_year">Год бюджета</string>
+  <string name="budget_month">Месяц бюджета</string>
+  <string name="quote_provider">Поставщик цен</string>
+  <string name="copy">Копировать</string>
+  <string name="app_restart">Для принятия изменений программу необходимо перезапустить.</string>
 </resources>

@@ -168,7 +168,7 @@
   <string name="new_edit_transaction">Nova/izmjena transakcije</string>
   <string name="refresh">Osvježi</string>
   <string name="search">Traži</string>
-  <string name="settings">Postavke</string>
+  <string name="settings">Podešavanja</string>
   <string name="summary">Sažetak</string>
   <string name="sync">Sinhronizacija</string>
   <string name="synchronize">Sinhronizuj</string>
@@ -497,7 +497,7 @@
   <string name="dropbox_database_can_be_updted">Na Dropbox-u se nalazi novija verzija baze podataka</string>
   <string name="due_today">Dospijeva danas</string>
   <string name="issues_tracker">Pratite sugestije na Github-u</string>
-  <string name="action_settings">Postavke</string>
+  <string name="action_settings">Podešavanja</string>
   <string name="close">Zatvori</string>
   <string name="tutorial_accounts_1">Više vrsta računa: tekući, štedni, kreditni, imovina i investicije.</string>
   <string name="tutorial_accounts_2">Prevucite lijevo za nastavak&#8230;</string>

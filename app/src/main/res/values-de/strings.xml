@@ -51,6 +51,7 @@
   <string name="dropbox_downloadProgress">Downloade Datei von Dropbox. Bitte warten...</string>
   <string name="dropbox_uploadProgress">Uploade Datei bei Dropbox. Bitte warten...</string>
   <string name="dropbox_linkedFile">Datei Dropbox</string>
+  <string name="dropbox_file_summary_all">Eine Datei irgendwo in Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Allgemein</string>
   <string name="preferences_dispaly">Design</string>
@@ -154,6 +155,7 @@
   <!-- application string -->
   <string name="about">Über</string>
   <string name="add">Hinzufügen</string>
+  <string name="confirmDelete">Möchten Sie die Aufnahme wirklich löschen?</string>
   <string name="date">Datum</string>
   <string name="delete">Löschen</string>
   <string name="download">Download</string>
@@ -229,8 +231,10 @@
   <string name="days_remaining">Tage verbleibend</string>
   <string name="new_edit_repeating_transaction">Neu/editieren wiederholte Transaktionen</string>
   <string name="next_occurrence">Nächstes Vorkommen</string>
+  <string name="payment_date">Tag der Zahlung</string>
   <string name="repeats">Wiederholungen</string>
   <string name="occurs">Ereignisse</string>
+  <string name="payments_left">Ausstehende Zahlungen</string>
   <string name="error_next_occurrence_not_populate">Nächstes Vorkommen ist erforderlich</string>
   <string name="enter_next_occurrence">Gib den nächsten Vorgang ein</string>
   <string name="skip_next_occurrence">Überspringe den nächsten Vorgang</string>
@@ -361,6 +365,7 @@
   <string name="menu_report_where_money_goes">Wohin das Geld geht</string>
   <string name="menu_report_where_money_comes_from">Wo das Geld herkommt</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Erinnerungszeitpunkt</string>
   <string name="summary_check_repeating_transaction">Welche Zeit wollen Sie wählen für eine überfällige wiederholte Transaktion? (default 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Credits</string>
@@ -404,6 +409,7 @@
   <string name="repeating_transactions">Wiederholte Transaktionen</string>
   <string name="theme_holo_light">Holo hell</string>
   <string name="new_account">Neues Konto</string>
+  <string name="create_new_account">Einen neuen Account erstellen</string>
   <!--<string name="edit_account">Edit Account</string>-->
   <!--<string name="new_currency">New Currency</string>-->
   <!--<string name="edit_currency">Edit Currency</string>-->
@@ -473,6 +479,7 @@
   <string name="montly_last_bussines_day">Monatlich (letzter Geschäftstag)</string>
   <!-- languages -->
   <string name="locale_application">Sprache der Anwendung</string>
+  <string name="transaction_cancel_confirm">Sind sie sicher, dass Sie alle Änderungen entfernen möchten?</string>
   <string name="keep_editing">Weiter editieren</string>
   <string name="discard">Verwerfen</string>
   <string name="invalid_expression">Ungültiger Ausdruck</string>
@@ -542,6 +549,7 @@
   <string name="db_check_schema_summary">Überprüfen Sie, ob alle Tabellen in der Datenbank vorhanden sind.</string>
   <string name="db_check_schema_success">Die erforderlichen Tabellen sind in der Datenbank vorhanden.</string>
   <string name="db_check_schema_error">Fehler: Tabellen in der Datenbank fehlen!</string>
+  <string name="db_fix_duplicates">Entfernen von Duplikaten</string>
   <string name="split_amount_negative">Der Gesamtbetrag darf nicht negativ sein.</string>
   <string name="select_all">Alle auswählen</string>
   <string name="db_not_dropbox">Die aktuelle Datenbank ist nicht synchronisiert. Bitte richten Sie die Dropbox-Synchronisation ein.</string>
@@ -570,6 +578,7 @@
   <string name="current_database">Aktuelle Datenbank</string>
   <string name="about_logcat_header">Sie können uns den Anwendungslog senden, indem Sie auf den Button unten drücken.</string>
   <string name="transaction_type_filter">Filtern nach Transaktionstyp</string>
+  <string name="status_filter">Nach Status sortieren</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Datenbankkennwort eingeben</string>
   <string name="income_expense_period">Ausgaben/Einnahmen Zeitraum</string>
@@ -591,6 +600,7 @@
   <string name="value">Wert</string>
   <string name="view_transactions">Transaktionen anzeigen</string>
   <string name="error_downloading_symbol">Fehler Download Preis für Symbol</string>
+  <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
   <string name="other">Diverses</string>
   <string name="cleared">Gelöscht</string>
   <string name="delete_success">Element gelöscht</string>
@@ -615,5 +625,15 @@
   <string name="all_accounts">Alle Konten</string>
   <string name="records">Aufzeichnungen</string>
   <!-- db password entry -->
+  <string name="enter_password">Passwort eingeben</string>
+  <string name="success">Operation erfolgreich</string>
+  <string name="overview">Übersicht</string>
+  <string name="error_saving_record">Fehler beim Sichern der Aufnahme</string>
+  <string name="symbol_required">Ein Symbol wird benötigt</string>
+  <string name="account_not_found">Account wurde nicht gefunden</string>
+  <string name="favourite">Lieblings</string>
   <!-- budgets -->
+  <string name="add_budget">Budget hinzufügen</string>
+  <string name="copy">Kopie</string>
+  <string name="app_restart">Die App wird sich nun schließen, um die Änderungen wirksam zu machen. Bitte starten Sie neu.</string>
 </resources>

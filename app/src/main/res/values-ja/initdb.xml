@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- default category -->
   <string name="category_1">証書</string>
   <string name="category_2">食費</string>
   <string name="category_3">余暇</string>
@@ -33,6 +34,7 @@
   <string name="category_14">その他の収入</string>
   <string name="category_15">その他の支出</string>
   <string name="category_16">振替</string>
+  <!-- default subcategory -->
   <string name="subcategory_1">電話</string>
   <string name="subcategory_2">電気</string>
   <string name="subcategory_3">ガス</string>
