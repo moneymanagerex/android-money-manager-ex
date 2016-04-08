@@ -21,11 +21,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Currency;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 
 import info.javaperformance.money.Money;
 
@@ -58,6 +54,18 @@ public class NumericHelper {
     public static int toInt(String value) {
         return Integer.parseInt(value);
     }
+
+    public static Integer toInteger(String value) {
+        Integer result;
+        if (!TextUtils.isEmpty(value) && NumericHelper.isNumeric(value)) {
+            result = Integer.parseInt(value);
+        } else {
+            result = null;
+        }
+        return result;
+    }
+
+    // Instance methods
 
     public NumericHelper(Context context) {
         mContext = context;

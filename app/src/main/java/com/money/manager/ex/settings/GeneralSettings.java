@@ -22,7 +22,9 @@ import android.content.SharedPreferences;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,28 +44,26 @@ public class GeneralSettings
         return result;
     }
 
+    /**
+     * Fetches the default account id. The default account is set per database.
+     * @return Default account id.
+     */
     public Integer getDefaultAccountId() {
-//        String key = getContext().getString(R.string.pref_default_account);
-        String value = get(R.string.pref_default_account, "");
-//        String result = get(PreferenceConstants.PREF_DEFAULT_ACCOUNT, "");
-//        Integer result = get(R.string.pref_default_account, Constants.NOT_SET);
-        Integer result;
-        if (!StringUtils.isEmpty(value) && NumericHelper.isNumeric(value)) {
-            result = Integer.parseInt(value);
-        } else {
-            result = null;
-        }
-        return result;
+//        String value = get(R.string.pref_default_account, "");
+        InfoService service = new InfoService(getContext());
+        String value = service.getInfoValue(InfoKeys.DEFAULT_ACCOUNT_ID);
+
+        return NumericHelper.toInteger(value);
     }
 
     public void setDefaultAccountId(Integer accountId) {
-//        String value = accountId == null ? "" : Integer.toString(accountId);
-//        set(R.string.pref_default_account, value);
-//        set(PreferenceConstants.PREF_DEFAULT_ACCOUNT, accountId);
         String value = "";
         if (accountId != null) {
             value = accountId.toString();
         }
-        set(R.string.pref_default_account, value);
+//        set(R.string.pref_default_account, value);
+
+        InfoService service = new InfoService(getContext());
+        service.setInfoValue(InfoKeys.DEFAULT_ACCOUNT_ID, value);
     }
 }
