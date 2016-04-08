@@ -366,7 +366,7 @@ public class GeneralSettingsFragment
         // set account name as the value here
         Integer defaultAccountId = new GeneralSettings(getActivity()).getDefaultAccountId();
         String accountName = entries[0]; // none
-        if (defaultAccountId != Constants.NOT_SET) {
+        if (defaultAccountId != null && defaultAccountId != Constants.NOT_SET) {
             accountName = repository.loadName(defaultAccountId);
         }
         preference.setSummary(accountName);
