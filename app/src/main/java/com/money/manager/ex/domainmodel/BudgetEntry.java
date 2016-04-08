@@ -15,4 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':androidSVG_12'
+package com.money.manager.ex.domainmodel;
+
+/**
+ * A Budget Entry, part of the budget.
+ */
+public class BudgetEntry
+    extends EntityBase {
+
+    public static final String BUDGETENTRYID = "BUDGETENTRYID";
+    public static final String BUDGETYEARID = "BUDGETYEARID";
+    public static final String CATEGID = "CATEGID";
+    public static final String SUBCATEGID = "SUBCATEGID";
+    public static final String PERIOD = "PERIOD";
+
+}

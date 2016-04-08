@@ -15,4 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':androidSVG_12'
+package com.money.manager.ex.domainmodel;
+
+/**
+ * Represents a Budget.
+ * Table: budgetyear_v1
+ */
+public class Budget
+    extends EntityBase {
+    public static final String BUDGETYEARID = "BUDGETYEARID";
+    public static final String BUDGETYEARNAME = "BUDGETYEARNAME";
+
+    public String getName() {
+        return getString(BUDGETYEARNAME);
+    }
+
+    public void setName(String value) {
+        setString(BUDGETYEARNAME, value);
+    }
+}

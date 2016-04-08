@@ -15,4 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':androidSVG_12'
+package com.money.manager.ex.budget;
+
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+/**
+ * Test
+ * An observable view model, used for data binding.
+ */
+public class BudgetViewModel
+    extends BaseObservable {
+
+    private String name;
+
+    @Bindable
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String value) {
+        this.name = value;
+//        notifyPropertyChanged(BR.name);
+    }
+}

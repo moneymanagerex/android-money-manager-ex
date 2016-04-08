@@ -15,4 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':androidSVG_12'
+package com.money.manager.ex.datalayer;
+
+import android.content.Context;
+
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.domainmodel.Budget;
+
+/**
+ * Budget repository.
+ */
+public class BudgetRepository
+    extends RepositoryBase<Budget> {
+
+    public BudgetRepository(Context context) {
+        super(context, "budgetyear_v1", DatasetType.TABLE, "budgetyear");
+
+    }
+
+    @Override
+    public String[] getAllColumns() {
+        return new String[] {"BUDGETYEARID AS _id", Budget.BUDGETYEARID, Budget.BUDGETYEARNAME};
+    }
+
+}
