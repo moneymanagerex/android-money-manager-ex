@@ -323,14 +323,7 @@ public class SearchFragment
             where.addStatement(QueryAllData.Status, "=", searchParameters.status);
         }
 
-        // from amount
-        if (searchParameters.amountFrom != null) {
-            where.addStatement(QueryAllData.Amount, " >= ", searchParameters.amountFrom);
-        }
-        // to amount
-        if (searchParameters.amountTo != null) {
-            where.addStatement(QueryAllData.Amount, " <= ", searchParameters.amountTo);
-        }
+        addAmountStatements(where, searchParameters);
 
         // from date
         if (searchParameters.dateFrom != null) {
@@ -379,6 +372,26 @@ public class SearchFragment
         }
 
         return where.getWhere();
+    }
+
+    private void addAmountStatements(WhereStatementGenerator where, SearchParameters searchParameters) {
+        // Automatically decide from/to amounts by comparing them.
+        Money lowerAmount = searchParameters.amountFrom.compareTo(searchParameters.amountTo) == -1
+                ? searchParameters.amountFrom
+                : searchParameters.amountTo;
+        Money higherAmount = searchParameters.amountFrom.compareTo(searchParameters.amountTo) == 1
+                ? searchParameters.amountFrom
+                : searchParameters.amountTo;
+
+        // from amount
+        if (searchParameters.amountFrom != null) {
+            where.addStatement(QueryAllData.Amount, " >= ", lowerAmount);
+        }
+        // to amount
+        if (searchParameters.amountTo != null) {
+            where.addStatement(QueryAllData.Amount, " <= ", higherAmount);
+        }
+
     }
 
     private SearchParameters collectSearchCriteria() {
