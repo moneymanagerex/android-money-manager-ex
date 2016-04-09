@@ -375,6 +375,25 @@ public class SearchFragment
     }
 
     private void addAmountStatements(WhereStatementGenerator where, SearchParameters searchParameters) {
+        if (searchParameters.amountFrom != null && searchParameters.amountTo != null) {
+            addAmountStatementForBothAmounts(where, searchParameters);
+            return;
+        }
+
+        // Only one on no amounts entered.
+
+        // from amount
+        if (searchParameters.amountFrom != null) {
+            where.addStatement(QueryAllData.Amount, " >= ", searchParameters.amountFrom);
+        }
+        // to amount
+        if (searchParameters.amountTo != null) {
+            where.addStatement(QueryAllData.Amount, " <= ", searchParameters.amountTo);
+        }
+
+    }
+
+    private void addAmountStatementForBothAmounts(WhereStatementGenerator where, SearchParameters searchParameters) {
         // Automatically decide from/to amounts by comparing them.
         Money lowerAmount = searchParameters.amountFrom.compareTo(searchParameters.amountTo) == -1
                 ? searchParameters.amountFrom
@@ -391,7 +410,6 @@ public class SearchFragment
         if (searchParameters.amountTo != null) {
             where.addStatement(QueryAllData.Amount, " <= ", higherAmount);
         }
-
     }
 
     private SearchParameters collectSearchCriteria() {
