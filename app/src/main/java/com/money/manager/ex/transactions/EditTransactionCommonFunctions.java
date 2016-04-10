@@ -308,8 +308,16 @@ public class EditTransactionCommonFunctions {
         return getAccountCurrencyId(accountId);
     }
 
-    public int getSourceCurrencyId() {
-        return getAccountCurrencyId(this.transactionEntity.getAccountId());
+    public Integer getSourceCurrencyId() {
+        Integer accountId = this.transactionEntity.getAccountId();
+        //if (!transactionEntity.has)
+        if (accountId == null || !mAccountIdList.isEmpty()) {
+            accountId = mAccountIdList.get(0);
+        }
+
+        if (accountId == 0) accountId = Constants.NOT_SET;
+        
+        return getAccountCurrencyId(accountId);
     }
 
     public boolean getDirty() {

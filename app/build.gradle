@@ -175,7 +175,7 @@ dependencies {
             ,'org.parceler:parceler-api:1.0.4'
 //            ,'com.nononsenseapps:filepicker:2.5.2' // dropbox file picker
     )
-//    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
+//    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 
     apt 'org.parceler:parceler:1.0.4'
 
