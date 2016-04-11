@@ -218,7 +218,6 @@ public class RecurringTransactionService
         RecurringTransactionRepository repo = getRepository();
         boolean updated = repo.update(mRecurringTransaction);
         if (!updated) {
-//            Core.alertDialog(getContext(), R.string.error_saving_record);
             ExceptionHandler handler = new ExceptionHandler(getContext());
             handler.showMessage(R.string.error_saving_record);
         }
