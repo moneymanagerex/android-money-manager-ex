@@ -275,11 +275,15 @@ public class EditTransactionCommonFunctions {
         return mContext;
     }
 
-    public int getAccountCurrencyId(int accountId) {
+    public Integer getAccountCurrencyId(int accountId) {
         if (accountId == Constants.NOT_SET) return Constants.NOT_SET;
 
         AccountRepository repo = new AccountRepository(getContext());
         Integer currencyId = repo.loadCurrencyIdFor(accountId);
+        if (currencyId == null) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.showMessage(R.string.error_loading_currency);
+        }
         return currencyId;
     }
 

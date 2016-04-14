@@ -124,7 +124,7 @@ public class AccountRepository
         return result;
     }
 
-    public int loadCurrencyIdFor(int id) {
+    public Integer loadCurrencyIdFor(int id) {
         Account account = (Account) first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
@@ -132,8 +132,9 @@ public class AccountRepository
             null);
 
         if (account == null) {
-            String message = this.getContext().getString(R.string.account_not_found) + " " + id;
-            throw new IllegalArgumentException(message);
+            return null;
+//            String message = this.getContext().getString(R.string.account_not_found) + " " + id;
+//            throw new IllegalArgumentException(message);
         }
         return account.getCurrencyId();
     }

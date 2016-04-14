@@ -698,6 +698,7 @@
     <string name="asset_allocation_diff_threshold_summary">The threshold that will trigger the coloring of difference values.</string>
 
     <string name="error_saving_record">Error saving record</string>
+    <string name="error_loading_currency">Error loading currency</string>
     <string name="times_repeated" translatable="false">to delete</string>
     <string name="symbol_required">Symbol is required</string>
     <string name="recurrence_type_not_set">Recurrence type not set</string>
