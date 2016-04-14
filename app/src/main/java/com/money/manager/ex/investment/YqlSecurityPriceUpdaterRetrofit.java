@@ -194,14 +194,12 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         JsonElement priceElement = quote.get("LastTradePriceOnly");
         if (priceElement == JsonNull.INSTANCE) {
-            handler.showMessage(getContext().getString(R.string.error_no_price_found_for_symbol) + " " +
-                priceModel.symbol);
+            handler.showMessage(getContext().getString(R.string.error_no_price_found_for_symbol) + " " + priceModel.symbol);
             return null;
         }
         String priceString = priceElement.getAsString();
         if (!NumericHelper.isNumeric(priceString)) {
-            handler.showMessage(getContext().getString(R.string.error_no_price_found_for_symbol) + " " +
-                    priceModel.symbol);
+            handler.showMessage(getContext().getString(R.string.error_no_price_found_for_symbol) + " " + priceModel.symbol);
             return null;
         }
 

@@ -142,7 +142,7 @@ dependencies {
             'com.android.support:preference-v14:23.2.1',
             'com.android.support:support-annotations:23.2.1',
 //        'com.nispok:snackbar:2.10.10',
-            'com.opencsv:opencsv:3.5',
+            'com.opencsv:opencsv:3.7',
             'net.objecthunter:exp4j:0.4.5',
 //            'com.github.gabrielemariotti.changeloglib:changelog:2.0.0',
             'commons-io:commons-io:2.4',

@@ -55,6 +55,9 @@ public class PriceCsvParser {
      * @param content CSV content to parse into price information.
      */
     public void parse(String content) {
+        // cleanup
+        content = content.trim();
+
         // validation
         if (TextUtils.isEmpty(content)) {
             throw new IllegalArgumentException("Downloaded CSV contents are empty");
