@@ -55,8 +55,8 @@ public class PayeeRepository
         return result > 0;
     }
 
-    public Payee load(int id) {
-        if (id == Constants.NOT_SET) return null;
+    public Payee load(Integer id) {
+        if (id == null || id == Constants.NOT_SET) return null;
 
         Payee payee = (Payee) super.first(Payee.class,
                 getAllColumns(),
