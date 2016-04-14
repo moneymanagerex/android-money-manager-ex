@@ -134,7 +134,7 @@ public class WatchlistFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if ((savedInstanceState != null)) {
-            mAccount = savedInstanceState.getParcelable(KEY_ACCOUNT);
+            mAccount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_ACCOUNT));
         }
 
         if (container == null) return null;
