@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.domainmodel.AssetClass;
 
@@ -47,8 +48,15 @@ public class MatrixCursorColumns {
         String display;
         Money value;
 
+        // Id
         values.id = (int) cursor.getLong(cursor.getColumnIndex(MatrixCursorColumns.ID));
+
+        // Name. Translate "Cash" into current locale.
         values.name = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.NAME));
+        if (values.name.equalsIgnoreCase("Cash")) {
+            values.name = context.getString(R.string.cash);
+        }
+        // Allocation.
         values.allocation = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.ALLOCATION));
 
         String valueString = cursor.getString(cursor.getColumnIndex(MatrixCursorColumns.VALUE));

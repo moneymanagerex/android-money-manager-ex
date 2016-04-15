@@ -59,6 +59,8 @@ import info.javaperformance.money.MoneyFactory;
 public class AssetAllocationService
     extends ServiceBase {
 
+    private static final String CashName = "Cash";
+
     public AssetAllocationService(Context context) {
         super(context);
 
@@ -274,8 +276,8 @@ public class AssetAllocationService
      * @param assetAllocation Main asset allocation object.
      */
     private void addCash(AssetClass assetAllocation) {
-        String cashLocalizedName = getContext().getString(R.string.cash);
-        AssetClass cash = assetAllocation.getDirectChild(cashLocalizedName);
+        //String cashLocalizedName = getContext().getString(R.string.cash);
+        AssetClass cash = assetAllocation.getDirectChild(CashName);
 
         if (cash == null) {
             cash = createCashAssetClass();
@@ -335,10 +337,10 @@ public class AssetAllocationService
     }
 
     private AssetClass createCashAssetClass() {
-        String cashLocalizedName = getContext().getString(R.string.cash);
+        //String cashLocalizedName = getContext().getString(R.string.cash);
 
         // Create a new asset class for Cash.
-        AssetClass cash = AssetClass.create(cashLocalizedName);
+        AssetClass cash = AssetClass.create(CashName);
 
         AssetClassRepository repo = new AssetClassRepository(getContext());
         repo.insert(cash);
