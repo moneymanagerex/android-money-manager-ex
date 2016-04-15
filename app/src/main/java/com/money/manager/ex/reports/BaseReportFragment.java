@@ -29,6 +29,7 @@ import android.widget.DatePicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
@@ -70,8 +71,10 @@ public abstract class BaseReportFragment
                 String dateFromString = savedInstanceState.getString(KEY_FROM_DATE);
                 mDateFrom = MyDateTimeUtils.from(dateFromString);
             }
-            if (savedInstanceState.containsKey(KEY_TO_DATE))
-                mDateTo = (DateTime) savedInstanceState.getSerializable(KEY_TO_DATE);
+            if (savedInstanceState.containsKey(KEY_TO_DATE)) {
+                String dateToString = savedInstanceState.getString(KEY_TO_DATE);
+                mDateTo = MyDateTimeUtils.from(dateToString);
+            }
         }
         //start loader
         startLoader(savedInstanceState);
@@ -211,10 +214,10 @@ public abstract class BaseReportFragment
         outState.putString(KEY_WHERE_CLAUSE, getWhereClause());
         if (mDateFrom != null) {
 //            outState.putSerializable(KEY_FROM_DATE, mDateFrom);
-            outState.putString(KEY_FROM_DATE, mDateFrom.toString());
+            outState.putString(KEY_FROM_DATE, mDateFrom.toString(Constants.ISO_DATE_FORMAT));
         }
         if (mDateTo != null)
-            outState.putSerializable(KEY_TO_DATE, mDateTo);
+            outState.putString(KEY_TO_DATE, mDateTo.toString(Constants.ISO_DATE_FORMAT));
     }
 
     protected View addListViewHeaderFooter(int layout) {
