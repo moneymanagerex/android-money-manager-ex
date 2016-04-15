@@ -283,6 +283,8 @@ public class EditTransactionCommonFunctions {
         if (currencyId == null) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
             handler.showMessage(R.string.error_loading_currency);
+
+            currencyId = Constants.NOT_SET;
         }
         return currencyId;
     }
