@@ -1,4 +1,5 @@
 -- Accounts with balances
+-- This query is used only for All Accounts widget.
 SELECT
     ACCOUNTLIST_V1.ACCOUNTID AS _id,
     ACCOUNTLIST_V1.ACCOUNTID,
@@ -14,6 +15,7 @@ SELECT
 FROM ACCOUNTLIST_V1 LEFT OUTER JOIN ( 
     select accountid, SUM(total) as total, SUM(reconciled) as reconciled
     from (
+        -- Withdrawals
         select accountid, transcode, sum(case when status in ('R', 'F', 'D', '') then -transamount else 0 end) as total,
             sum(case when status = 'R' then -transamount else 0 end) as reconciled
         from checkingaccount_v1
@@ -43,6 +45,17 @@ FROM ACCOUNTLIST_V1 LEFT OUTER JOIN (
         from checkingaccount_v1
         where transcode in ('Transfer') and toaccountid <> -1
         group by toaccountid, transcode
+
+        union
+
+        -- Investments
+        select HeldAt as accountid,
+            'Deposit' as transcode,
+            sum(NumShares * CurrentPrice) as total,
+            sum(NumShares * CurrentPrice) as reconciled
+        from stock_v1
+        group by accountid, transcode
+
     )  t
     group by accountid
 ) T1 ON ACCOUNTLIST_V1.ACCOUNTID=T1.ACCOUNTID 
