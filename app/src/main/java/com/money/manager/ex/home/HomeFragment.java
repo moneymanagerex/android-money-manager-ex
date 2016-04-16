@@ -103,9 +103,7 @@ public class HomeFragment
 
     private static final int LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
-//    private static final int LOADER_BILL_DEPOSITS = 3;
     private static final int LOADER_INCOME_EXPENSES = 4;
-    private static final int LOADER_INVESTMENTS = 5;
 
     private static final String TAG_BALANCE_ACCOUNT = "HomeFragment:BalanceAccount";
     private static final int REQUEST_BALANCE_ACCOUNT = 1;
@@ -113,9 +111,6 @@ public class HomeFragment
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
 
-    private QueryAccountBills mAccountBillsQuery;
-
-    // Controls. view show in layout
     // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
     private ViewGroup linearHome, linearFooter, linearWelcome;
@@ -133,10 +128,6 @@ public class HomeFragment
     private Money mGrandTotal = MoneyFactory.fromDouble(0);
     private Money mGrandReconciled = MoneyFactory.fromDouble(0);
 
-    private Cursor mInvestmentsCursor;
-    private boolean mAccountTransactionsLoaded = false;
-    private boolean mInvestmentTransactionsLoaded = false;
-
     private int accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
 
@@ -145,7 +136,6 @@ public class HomeFragment
         super.onCreate(savedInstanceState);
 
         mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
-        mAccountBillsQuery = new QueryAccountBills(getActivity());
 
         AppSettings settings = new AppSettings(getActivity());
         mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
@@ -227,8 +217,6 @@ public class HomeFragment
                 break;
 
             case LOADER_ACCOUNT_BILLS:
-                mAccountTransactionsLoaded = false;
-
                 setListViewAccountBillsVisible(false);
 
                 LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
@@ -242,18 +230,14 @@ public class HomeFragment
                 if (settings.getViewFavouriteAccounts()) {
                     where = "LOWER(" + QueryAccountBills.FAVORITEACCT + ")='true'";
                 }
-                result = new MmexCursorLoader(getActivity(), mAccountBillsQuery.getUri(),
-                        mAccountBillsQuery.getAllColumns(),
+
+                QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
+
+                result = new MmexCursorLoader(getActivity(), queryAccountBills.getUri(),
+                        queryAccountBills.getAllColumns(),
                         where, null,
                         QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
                 break;
-
-//            case LOADER_BILL_DEPOSITS:
-//                QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-//                result = new MmexCursorLoader(getActivity(),
-//                        billDeposits.getUri(), null,
-//                        QueryBillDeposits.DAYSLEFT + "<=0", null, null);
-//                break;
 
             case LOADER_INCOME_EXPENSES:
                 // todo: Get custom period. pref_income_expense_footer_period
@@ -274,38 +258,6 @@ public class HomeFragment
                         report.getAllColumns(),
                         whereStatement,
                         null,
-                        null);
-                break;
-
-            case LOADER_INVESTMENTS:
-                mInvestmentTransactionsLoaded = false;
-
-                // get investment accounts
-                String investmentTitle = getString(R.string.investment);
-                List<QueryAccountBills> investmentAccounts = null;
-                if (mAccountsByType != null) {
-                    investmentAccounts = mAccountsByType.get(investmentTitle);
-                }
-                String[] accountList = null;
-                if (investmentAccounts != null) {
-                    accountList = new String[investmentAccounts.size()];
-                    for(int i = 0; i < investmentAccounts.size(); i++) {
-                        accountList[i] = Integer.toString(investmentAccounts.get(i).getAccountId());
-                    }
-                }
-
-                String selection = "";
-                if (accountList != null && accountList.length > 0) {
-                    MyDatabaseUtils databaseUtils = new MyDatabaseUtils(getActivity());
-                    selection = Stock.HELDAT + " IN (" + databaseUtils.makePlaceholders(investmentAccounts.size()) + ")";
-                }
-
-                StockRepository stockRepository = new StockRepository(getActivity());
-                result = new MmexCursorLoader(getActivity(), stockRepository.getUri(),
-                        new String[] { Stock.HELDAT, Stock.SYMBOL, Stock.NUMSHARES,
-                                Stock.CURRENTPRICE },
-                        selection,
-                        accountList,
                         null);
                 break;
 
@@ -358,11 +310,6 @@ public class HomeFragment
                 EventBus.getDefault().post(new AccountsTotalLoadedEvent(txtTotalAccounts.getText().toString()));
                 break;
 
-//            case LOADER_BILL_DEPOSITS:
-//                // Recurring Transactions.
-//                mainActivity.setDrawableRepeatingTransactions(data != null ? data.getCount() : 0);
-//                break;
-
             case LOADER_INCOME_EXPENSES:
                 double income = 0, expenses = 0;
                 if (data != null) {
@@ -406,17 +353,6 @@ public class HomeFragment
                         barIncome.setProgress((int) Math.abs(income));
                         barExpenses.setProgress((int) Math.abs(expenses));
                     }
-                }
-                break;
-
-            case LOADER_INVESTMENTS:
-                mInvestmentsCursor = data;
-                mInvestmentTransactionsLoaded = true;
-                try {
-                    showInvestmentTotals(data);
-                } catch (NullPointerException e) {
-                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                    handler.handle(e, "showing investment totals");
                 }
                 break;
         }
@@ -474,9 +410,6 @@ public class HomeFragment
 
     /**
      * Context menu for account entries.
-     * @param menu
-     * @param v
-     * @param menuInfo
      */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -599,9 +532,7 @@ public class HomeFragment
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.restartLoader(LOADER_USER_NAME, null, this);
         loaderManager.restartLoader(LOADER_ACCOUNT_BILLS, null, this);
-        /*getLoaderManager().restartLoader(LOADER_BILL_DEPOSITS, null, this);*/
         loaderManager.restartLoader(LOADER_INCOME_EXPENSES, null, this);
-        loaderManager.restartLoader(LOADER_INVESTMENTS, null, this);
     }
 
     public void startBalanceAccount(QueryAccountBills account) {
@@ -901,8 +832,6 @@ public class HomeFragment
         // display individual accounts with balances
         if (cursor != null) {
             showAccountTotals(cursor);
-            mAccountTransactionsLoaded = true;
-            showInvestmentTotals(mInvestmentsCursor);
         }
 
         // write accounts total
@@ -916,86 +845,6 @@ public class HomeFragment
 
         setVisibilityOfAccountGroups();
         setListViewAccountBillsVisible(true);
-    }
-
-    private void showInvestmentTotals(Cursor cursor) {
-        if (!(mAccountTransactionsLoaded && mInvestmentTransactionsLoaded)) return;
-        if (cursor == null) return;
-        if (mAccountsByType == null || mAccountsByType.size() <= 0) return;
-        if (mTotalsByType == null || mTotalsByType.size() <= 0) return;
-
-        // get investment accounts
-        String investmentTitle = AccountTypes.INVESTMENT.toString().toLowerCase();
-        HashMap<Integer, QueryAccountBills> investmentAccounts = new HashMap<>();
-        List<QueryAccountBills> investmentAccountList = mAccountsByType.get(investmentTitle);
-        if (investmentAccountList == null) return;
-        for(QueryAccountBills account : investmentAccountList) {
-            // reset totals
-            account.setTotalBaseConvRate(0);
-            // add to collection where they are easy to retrieve by id later in the loop.
-            investmentAccounts.put(account.getAccountId(), account);
-        }
-
-        // reset cursor's position
-        int currentCursorPosition = cursor.getPosition();
-        if (currentCursorPosition != Constants.NOT_SET) {
-            cursor.moveToPosition(Constants.NOT_SET);
-        }
-
-        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
-        int baseCurrencyId = currencyService.getBaseCurrencyId();
-
-        Money total = MoneyFactory.fromString("0");
-        while(cursor.moveToNext()) {
-            int accountId = cursor.getInt(cursor.getColumnIndex(Stock.HELDAT));
-            QueryAccountBills account = investmentAccounts.get(accountId);
-            if (account == null) continue;
-
-//            String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
-            double price = cursor.getDouble(cursor.getColumnIndex(Stock.CURRENTPRICE));
-            double numShares = cursor.getDouble(cursor.getColumnIndex(Stock.NUMSHARES));
-            double amount = price * numShares;
-
-            // total in local currency
-            double currentTotal = account.getTotal();
-            account.setTotal(currentTotal + amount);
-
-            // currency
-            int currencyId = account.getCurrencyId();
-            if (baseCurrencyId == Constants.NOT_SET) {
-                // avoid crash if no Base currency set. Explicitly use the account currency.
-                baseCurrencyId = currencyId;
-                ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                handler.showMessage(getString(R.string.base_currency_not_set));
-            }
-
-            Money amountInBaseCurrency = currencyService.doCurrencyExchange(baseCurrencyId,
-                    MoneyFactory.fromDouble(amount), currencyId);
-            if (amountInBaseCurrency == null) {
-                amountInBaseCurrency = MoneyFactory.fromDouble(amount);
-            }
-            double currentTotalInBase = account.getTotalBaseConvRate();
-            account.setTotalBaseConvRate(currentTotalInBase + amountInBaseCurrency.toDouble());
-
-            total = total.add(amountInBaseCurrency);
-        }
-
-        // show total for all investment accounts
-        QueryAccountBills investmentTotalRecord = mTotalsByType.get(investmentTitle);
-        investmentTotalRecord.setTotalBaseConvRate(total.toDouble());
-        investmentTotalRecord.setReconciledBaseConvRate(total.toDouble());
-
-        // Notify about the changes
-        HomeAccountsExpandableAdapter accountsAdapter = (HomeAccountsExpandableAdapter) mExpandableListView.getExpandableListAdapter();
-        if (accountsAdapter != null) {
-            accountsAdapter.notifyDataSetChanged();
-        }
-
-        // also add to grand total of all accounts
-        mGrandTotal = mGrandTotal.add(total);
-        mGrandReconciled = mGrandReconciled.add(total);
-        // refresh the footer
-        addFooterToExpandableListView(mGrandTotal.toDouble(), mGrandReconciled.toDouble());
     }
 
     private void showAccountTotals(Cursor cursor) {

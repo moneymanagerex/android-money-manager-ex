@@ -101,11 +101,6 @@ public class HomeAccountsExpandableAdapter
 
     /**
      * Creates a view for the group header row.
-     * @param groupPosition
-     * @param isExpanded
-     * @param convertView
-     * @param parent
-     * @return
      */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
@@ -155,16 +150,12 @@ public class HomeAccountsExpandableAdapter
             if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
                 holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_bill));
             } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
-//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_money_safe));
                 holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_temple));
             } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_money_finance));
                 holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_calendar));
             } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_credit_card));
                 holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_credit_card));
             } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-//                holder.imgAccountType.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.portfolio));
                 holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_briefcase));
             }
         }
@@ -174,12 +165,6 @@ public class HomeAccountsExpandableAdapter
 
     /**
      * Creates a view for the group item row.
-     * @param groupPosition
-     * @param childPosition
-     * @param isLastChild
-     * @param convertView
-     * @param parent
-     * @return
      */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,

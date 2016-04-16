@@ -1,5 +1,5 @@
 -- Accounts with balances
--- This query is used only for All Accounts widget.
+-- This query is used for All Accounts widget and the balances in the Home screen.
 SELECT
     ACCOUNTLIST_V1.ACCOUNTID AS _id,
     ACCOUNTLIST_V1.ACCOUNTID,
