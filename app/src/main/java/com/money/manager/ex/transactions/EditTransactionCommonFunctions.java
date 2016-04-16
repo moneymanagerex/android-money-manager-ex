@@ -316,8 +316,9 @@ public class EditTransactionCommonFunctions {
 
     public Integer getSourceCurrencyId() {
         Integer accountId = this.transactionEntity.getAccountId();
+
         //if (!transactionEntity.has)
-        if (accountId == null || !mAccountIdList.isEmpty()) {
+        if (accountId == null && !mAccountIdList.isEmpty()) {
             accountId = mAccountIdList.get(0);
         }
 

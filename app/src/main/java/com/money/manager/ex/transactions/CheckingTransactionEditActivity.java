@@ -66,9 +66,7 @@ import java.util.ArrayList;
 public class CheckingTransactionEditActivity
     extends BaseFragmentActivity {
 
-    // action type intent
     public String mIntentAction;
-//    public int mTransId = Constants.NOT_SET;
 
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
