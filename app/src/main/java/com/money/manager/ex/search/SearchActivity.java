@@ -56,7 +56,7 @@ public class SearchActivity
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
         }
         // reconfigure the toolbar event
-        setToolbarStandardAction(getToolbar(), R.id.action_cancel, R.id.action_search);
+        setToolbarStandardActions(getToolbar(), R.id.action_cancel, R.id.action_search);
 
         handleSearchRequest();
     }

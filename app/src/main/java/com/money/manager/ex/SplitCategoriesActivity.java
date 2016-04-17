@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -90,10 +89,9 @@ public class SplitCategoriesActivity
         setContentView(R.layout.splittransaction_activity);
 
         // toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            setToolbarStandardAction(toolbar);
+        if (getToolbar() != null) {
+            setSupportActionBar();
+            setToolbarStandardActions();
         }
 
         // 'Add' button

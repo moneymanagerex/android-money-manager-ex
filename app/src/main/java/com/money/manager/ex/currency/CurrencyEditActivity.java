@@ -20,8 +20,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -83,7 +81,7 @@ public class CurrencyEditActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.currency_edit_activity);
-        setToolbarStandardAction(getToolbar());
+        setToolbarStandardActions();
 
 
         this.holder = CurrencyEditViewHolder.initialize(this);

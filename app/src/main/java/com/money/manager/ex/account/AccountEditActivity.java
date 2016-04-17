@@ -19,7 +19,6 @@ package com.money.manager.ex.account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -137,10 +136,9 @@ public class AccountEditActivity
         setContentView(R.layout.activity_edit_account);
 
         // toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            setToolbarStandardAction(toolbar);
+        if (getToolbar() != null) {
+            setSupportActionBar();
+            setToolbarStandardActions();
         }
 
         initializeControls();

@@ -75,7 +75,7 @@ public class InvestmentTransactionEditActivity
         //todo mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
-        setToolbarStandardAction(getToolbar());
+        setToolbarStandardActions();
 
         // todo: receive the account id (and read currency)
         // todo: change this initialization after adding editing feature.

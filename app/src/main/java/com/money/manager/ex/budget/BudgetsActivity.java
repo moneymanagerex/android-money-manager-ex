@@ -45,7 +45,7 @@ public class BudgetsActivity
         setContentView(R.layout.activity_budgets);
 
         setSupportActionBar(getToolbar());
-        setToolbarStandardAction(getToolbar());
+        setToolbarStandardActions(getToolbar());
         // enable returning back from toolbar.
         setDisplayHomeAsUpEnabled(true);
 

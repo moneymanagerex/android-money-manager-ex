@@ -17,14 +17,10 @@
 package com.money.manager.ex.assetallocation;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -32,7 +28,6 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.servicelayer.AssetAllocationService;
 
 public class AssetClassEditActivity
     extends BaseFragmentActivity {
@@ -48,7 +43,7 @@ public class AssetClassEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_class_edit);
 
-        setToolbarStandardAction(getToolbar());
+        setToolbarStandardActions();
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);

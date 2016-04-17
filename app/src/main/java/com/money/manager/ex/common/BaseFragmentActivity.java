@@ -97,11 +97,18 @@ public abstract class BaseFragmentActivity
     }
 
     /**
+     * Uses the default toolbar and action buttons.
+     */
+    public void setToolbarStandardActions() {
+        setToolbarStandardActions(getToolbar());
+    }
+
+    /**
      * Sets OK & Cancel as the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
      * @param toolbar Toolbar element.
      */
-    public void setToolbarStandardAction(Toolbar toolbar) {
-        setToolbarStandardAction(toolbar, R.id.action_cancel, R.id.action_done);
+    public void setToolbarStandardActions(Toolbar toolbar) {
+        setToolbarStandardActions(toolbar, R.id.action_cancel, R.id.action_done);
     }
 
     /**
@@ -110,7 +117,7 @@ public abstract class BaseFragmentActivity
      * @param actionCancel  R.id of the negative (cancel) button
      * @param actionDone    R.id of the positive (action) button
      */
-    public void setToolbarStandardAction(Toolbar toolbar, int actionCancel, int actionDone) {
+    public void setToolbarStandardActions(Toolbar toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
             View cancelActionView = toolbar.findViewById(actionCancel);
             if (cancelActionView != null)
@@ -132,10 +139,16 @@ public abstract class BaseFragmentActivity
         }
     }
 
+    /**
+     * Override to handle clicking the Cancel button in the toolbar
+     */
     public boolean onActionCancelClick() {
         return true;
     }
 
+    /**
+     * Override to handle clicking the Action button in the toolbar
+     */
     public boolean onActionDoneClick() {
         return true;
     }
@@ -144,6 +157,15 @@ public abstract class BaseFragmentActivity
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
     }
+
+    /**
+     * Set default toolbar to act as action bar for the activity.
+     */
+    public void setSupportActionBar() {
+        setSupportActionBar(getToolbar());
+    }
+
+    // protected
 
     protected Toolbar getToolbar() {
         return mToolbar;

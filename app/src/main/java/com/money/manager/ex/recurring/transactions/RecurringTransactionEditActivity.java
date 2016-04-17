@@ -16,10 +16,8 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,14 +35,12 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
-import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
@@ -104,7 +100,7 @@ public class RecurringTransactionEditActivity
 
         mCommonFunctions = new EditTransactionCommonFunctions(this, mRecurringTransaction);
 
-        setToolbarStandardAction(getToolbar());
+        setToolbarStandardActions();
 
         // manage save instance
         if (savedInstanceState != null) {
