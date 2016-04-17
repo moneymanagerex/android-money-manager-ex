@@ -57,8 +57,6 @@ import org.parceler.Parcels;
 import java.util.Arrays;
 
 import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
-
 
 /**
  * Edit Account activity/form
@@ -68,7 +66,6 @@ public class AccountEditActivity
 
     public static final String KEY_ACCOUNT_ENTITY = "AccountEditActivity:AccountEntity";
     public static final String KEY_ACCOUNT_ID = "AccountEditActivity:AccountId";
-//    public static final String KEY_FAVORITE_ACCT = "AccountEditActivity:FavoriteAcct";
     public static final String KEY_CURRENCY_NAME = "AccountEditActivity:CurrencyName";
     public static final String KEY_SYMBOL = "AccountEditActivity:Symbol";
     public static final String KEY_DEFAULT_ACCOUNT = "AccountEditActivity:DefaultAccount";
@@ -175,7 +172,7 @@ public class AccountEditActivity
                     refreshCurrencyName();
 
                     // refresh amount
-                    Money initialBalance = MoneyFactory.fromString(mViewHolder.txtInitialBalance.getTag().toString());
+                    Money initialBalance = mAccount.getInitialBalance();
                     if (initialBalance != null) {
                         onEvent(new AmountEnteredEvent("ignored", initialBalance));
                     }
@@ -528,31 +525,7 @@ public class AccountEditActivity
         }
 
         AccountRepository repo = new AccountRepository(this);
-
-        // check whether the application should update or insert
-        if (mIntentAction.equals(Intent.ACTION_INSERT)) {
-            repo.insert(mAccount);
-            // insert
-//            Uri insertUri = getContentResolver().insert(repo.getUri(), mAccount.contentValues);
-//            long id = ContentUris.parseId(insertUri);
-//            if (id == Constants.NOT_SET) {
-//                Core.alertDialog(this, R.string.db_account_insert_failed);
-//                Log.w(LOGCAT, "Error inserting account!");
-//                return false;
-//            }
-        } else {
-            // update
-            repo.save(mAccount);
-//            int updateCount = getContentResolver().update(repo.getUri(),
-//                    mAccount.contentValues,
-//                    Account.ACCOUNTID + "=?",
-//                    new String[]{Integer.toString(mAccount.getId())});
-//            if (updateCount <= 0) {
-//                Core.alertDialog(this, R.string.db_account_update_failed);
-//                Log.w(LOGCAT, "Error updating account!");
-//                return false;
-//            }
-        }
+        repo.save(mAccount);
 
         saveDefaultAccount();
 

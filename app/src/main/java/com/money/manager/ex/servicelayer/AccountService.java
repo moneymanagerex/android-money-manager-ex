@@ -70,8 +70,7 @@ public class AccountService
 
         // save
         AccountRepository repo = new AccountRepository(getContext());
-        repo.insert(account);
-//        account.setId(id);
+        repo.save(account);
 
         return account;
     }

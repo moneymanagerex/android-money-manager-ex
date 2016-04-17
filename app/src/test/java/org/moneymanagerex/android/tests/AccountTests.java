@@ -88,7 +88,7 @@ public class AccountTests {
 
         // When
 
-        repo.insert(account);
+        repo.save(account);
         Integer id = account.getId();
 
         Account loaded = repo.load(id);

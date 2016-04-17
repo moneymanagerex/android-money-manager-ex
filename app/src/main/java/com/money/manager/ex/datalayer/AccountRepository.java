@@ -49,16 +49,6 @@ public class AccountRepository
                 Account.INITIALBAL, Account.FAVORITEACCT, Account.CURRENCYID };
     }
 
-    public Account insert(Account entity) {
-        entity.contentValues.remove(Account.ACCOUNTID);
-
-        Integer id = insert(entity.contentValues);
-
-        entity.setId(id);
-
-        return entity;
-    }
-
     public Account load(int id) {
         if (id == Constants.NOT_SET) return null;
 
@@ -170,10 +160,10 @@ public class AccountRepository
     public boolean save(Account value) {
         Integer id = value.getId();
 
-        // todo: based on id, see whether to insert or update the entity.
-//        if (id == null) {
-//            this.insert(value);
-//        }
+        if (id == null || id == Constants.NOT_SET) {
+            this.insert(value);
+            return true;
+        }
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
         String where = generator.getStatement(Account.ACCOUNTID, "=", id);
@@ -202,4 +192,17 @@ public class AccountRepository
                 MyDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
     }
+
+    // private
+
+    private Account insert(Account entity) {
+        entity.contentValues.remove(Account.ACCOUNTID);
+
+        Integer id = insert(entity.contentValues);
+
+        entity.setId(id);
+
+        return entity;
+    }
+
 }
