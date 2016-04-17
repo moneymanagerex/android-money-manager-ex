@@ -90,16 +90,8 @@ public class AccountEditActivity
     private String mCurrencyName;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
-    // Activity controls
-    private EditText edtAccountName;
-    private EditText edtAccountNumber;
-    private EditText edtAccountHeldAt;
-    private EditText edtContact;
-    private EditText edtAccessInfo;
-    private EditText edtNotes;
-    private Spinner spinSymbolInitialBalance;
-    private TextView txtSelectCurrency, txtInitialBalance;
-    private AccountViewHolder mViewHolder;
+
+    private AccountEditViewHolder mViewHolder;
     private boolean mIsDefault;
 
     @Override
@@ -183,7 +175,7 @@ public class AccountEditActivity
                     refreshCurrencyName();
 
                     // refresh amount
-                    Money initialBalance = MoneyFactory.fromString(txtInitialBalance.getTag().toString());
+                    Money initialBalance = MoneyFactory.fromString(mViewHolder.txtInitialBalance.getTag().toString());
                     if (initialBalance != null) {
                         onEvent(new AmountEnteredEvent("ignored", initialBalance));
                     }
@@ -244,9 +236,9 @@ public class AccountEditActivity
     public void refreshCurrencyName() {
         // write currency into text button
         if (!(TextUtils.isEmpty(mCurrencyName))) {
-            txtSelectCurrency.setText(mCurrencyName);
+            mViewHolder.txtSelectCurrency.setText(mCurrencyName);
         } else {
-            txtSelectCurrency.setText(getResources().getString(R.string.select_currency));
+            mViewHolder.txtSelectCurrency.setText(getResources().getString(R.string.select_currency));
         }
     }
 
@@ -274,32 +266,32 @@ public class AccountEditActivity
     }
 
     private void initializeControls() {
-        mViewHolder = new AccountViewHolder();
+        mViewHolder = new AccountEditViewHolder();
 
         // Get controls from layout
-        edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
+        mViewHolder.edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
         mViewHolder.defaultAccountCheckbox = (CheckBox) findViewById(R.id.defaultAccountCheckbox);
         mViewHolder.defaultAccountText = (RobotoTextView) findViewById(R.id.defaultAccountText);
         mViewHolder.imageViewAccountFav = (FontIconView) findViewById(R.id.imageViewAccountFav);
         mViewHolder.favouriteAccountTextView = (RobotoTextView) findViewById(R.id.favouriteAccountTextView);
         mViewHolder.accountTypeSpinner = (Spinner) findViewById(R.id.spinnerAccountType);
-        edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
-        edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
+        mViewHolder.edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
+        mViewHolder.edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
         mViewHolder.webSiteEditText = (EditText) findViewById(R.id.editTextWebsite);
-        edtContact = (EditText) findViewById(R.id.editTextContact);
-        edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
+        mViewHolder.edtContact = (EditText) findViewById(R.id.editTextContact);
+        mViewHolder.edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
         Spinner spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
-        spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
-        txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
-        edtNotes = (EditText) findViewById(R.id.editTextNotes);
-        txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
+        mViewHolder.spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
+        mViewHolder.txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
+        mViewHolder.edtNotes = (EditText) findViewById(R.id.editTextNotes);
+        mViewHolder.txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
 
         // Initial balance.
 
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
-        spinSymbolInitialBalance.setAdapter(adapterSymbol);
+        mViewHolder.spinSymbolInitialBalance.setAdapter(adapterSymbol);
 
-        txtInitialBalance.setOnClickListener(new OnClickListener() {
+        mViewHolder.txtInitialBalance.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(null, mAccount.getInitialBalance(), mAccount.getCurrencyId());
@@ -379,7 +371,7 @@ public class AccountEditActivity
         // Favourite
         initializeFavouriteAccountControls();
 
-        txtSelectCurrency.setOnClickListener(new OnClickListener() {
+        mViewHolder.txtSelectCurrency.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
@@ -398,7 +390,7 @@ public class AccountEditActivity
 
     private void displayAccountValues() {
         if (!(TextUtils.isEmpty(mAccount.getName()))) {
-            edtAccountName.setText(mAccount.getName());
+            mViewHolder.edtAccountName.setText(mAccount.getName());
         }
 
         // Default account.
@@ -408,32 +400,32 @@ public class AccountEditActivity
         displayFavouriteStatus();
 
         // Initial balance
-        spinSymbolInitialBalance.setSelection(mAccount.getInitialBalance().toDouble() >= 0 ? PLUS : MINUS);
+        mViewHolder.spinSymbolInitialBalance.setSelection(mAccount.getInitialBalance().toDouble() >= 0 ? PLUS : MINUS);
         // always use positive numeric value. The sign is in the spinner.
         if (mAccount.getInitialBalance().toDouble() < 0) {
             mAccount.setInitialBalance(mAccount.getInitialBalance().negate());
         }
-        FormatUtilities.formatAmountTextView(this, txtInitialBalance, mAccount.getInitialBalance(), mAccount.getCurrencyId());
+        FormatUtilities.formatAmountTextView(this, mViewHolder.txtInitialBalance, mAccount.getInitialBalance(), mAccount.getCurrencyId());
 
         // Account Number
         if (!(TextUtils.isEmpty(mAccount.getAccountNumber()))) {
-            edtAccountNumber.setText(mAccount.getAccountNumber());
+            mViewHolder.edtAccountNumber.setText(mAccount.getAccountNumber());
         }
         if (!(TextUtils.isEmpty(mAccount.getHeldAt()))) {
-            edtAccountHeldAt.setText(mAccount.getHeldAt());
+            mViewHolder.edtAccountHeldAt.setText(mAccount.getHeldAt());
         }
         if (!(TextUtils.isEmpty(mAccount.getWebSite()))) {
             mViewHolder.webSiteEditText.setText(mAccount.getWebSite());
         }
         if (!(TextUtils.isEmpty(mAccount.getContactInfo()))) {
-            edtContact.setText(mAccount.getContactInfo());
+            mViewHolder.edtContact.setText(mAccount.getContactInfo());
         }
         if (!(TextUtils.isEmpty(mAccount.getAccessInfo()))) {
-            edtAccessInfo.setText(mAccount.getAccessInfo());
+            mViewHolder.edtAccessInfo.setText(mAccount.getAccessInfo());
         }
         // Notes
         if (!(TextUtils.isEmpty(mAccount.getNotes()))) {
-            edtNotes.setText(mAccount.getNotes());
+            mViewHolder.edtNotes.setText(mAccount.getNotes());
         }
 
     }
@@ -505,19 +497,19 @@ public class AccountEditActivity
      * Replace with data binding later.
      */
     private void collectInput() {
-        mAccount.setName(edtAccountName.getText().toString());
+        mAccount.setName(mViewHolder.edtAccountName.getText().toString());
 
         AccountTypes accountType = getSelectedAccountType();
         mAccount.setType(accountType);
 
-        mAccount.setAccountNumber(edtAccountNumber.getText().toString());
-        mAccount.setHeldAt(edtAccountHeldAt.getText().toString());
+        mAccount.setAccountNumber(mViewHolder.edtAccountNumber.getText().toString());
+        mAccount.setHeldAt(mViewHolder.edtAccountHeldAt.getText().toString());
         mAccount.setWebSite(mViewHolder.webSiteEditText.getText().toString());
-        mAccount.setContactInfo(edtContact.getText().toString());
-        mAccount.setAccessInfo(edtAccessInfo.getText().toString());
-        mAccount.setNotes(edtNotes.getText().toString());
+        mAccount.setContactInfo(mViewHolder.edtContact.getText().toString());
+        mAccount.setAccessInfo(mViewHolder.edtAccessInfo.getText().toString());
+        mAccount.setNotes(mViewHolder.edtNotes.getText().toString());
 
-        if (spinSymbolInitialBalance.getSelectedItemPosition() != PLUS) {
+        if (mViewHolder.spinSymbolInitialBalance.getSelectedItemPosition() != PLUS) {
             Money initialBalance = mAccount.getInitialBalance();
             initialBalance = initialBalance.negate();
             mAccount.setInitialBalance(initialBalance);
