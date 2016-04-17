@@ -28,8 +28,8 @@ android {
         //multiDexEnabled true
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 827
-        versionName '2016.04.16'
+        versionCode 828
+        versionName '2016.04.17'
         // 601 = 1.4.17, stable
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
