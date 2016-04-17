@@ -15,4 +15,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':androidSVG_12', ':dal', ':money'
+include ':app', ':androidSVG_12', ':money'
