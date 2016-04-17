@@ -15,10 +15,10 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/activity_side_margin"
     android:layout_marginRight="@dimen/activity_side_margin"
     android:animateLayoutChanges="true"
@@ -27,12 +27,23 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
+    <!--<include layout="@layout/toolbar_actionbar_button_cancel_done"/>-->
+
+    <!-- default action buttons at the bottom of the screen -->
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/defaultButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true" >
+        <include layout="@layout/actionbar_button_cancel_done"/>
+    </android.support.v7.widget.LinearLayoutCompat>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@id/defaultButtons">
 
         <!-- fields -->
         <LinearLayout
@@ -400,4 +411,4 @@
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

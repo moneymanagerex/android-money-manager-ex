@@ -97,17 +97,32 @@ public abstract class BaseFragmentActivity
     }
 
     /**
+     * Add handlers for the OK/Cancel buttons at the bottom of the screen.
+     */
+    public void addDefaultButtonHandlers() {
+        View container = findViewById(R.id.defaultButtons);
+
+        setToolbarStandardActions(container);
+    }
+
+    /**
      * Uses the default toolbar and action buttons.
      */
     public void setToolbarStandardActions() {
-        setToolbarStandardActions(getToolbar());
+        View toolbar = getToolbar();
+        if (toolbar != null) {
+            setToolbarStandardActions(toolbar);
+        } else {
+            // use the button container at the bottom
+            addDefaultButtonHandlers();
+        }
     }
 
     /**
      * Sets OK & Cancel as the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
      * @param toolbar Toolbar element.
      */
-    public void setToolbarStandardActions(Toolbar toolbar) {
+    public void setToolbarStandardActions(View toolbar) {
         setToolbarStandardActions(toolbar, R.id.action_cancel, R.id.action_done);
     }
 
@@ -117,7 +132,7 @@ public abstract class BaseFragmentActivity
      * @param actionCancel  R.id of the negative (cancel) button
      * @param actionDone    R.id of the positive (action) button
      */
-    public void setToolbarStandardActions(Toolbar toolbar, int actionCancel, int actionDone) {
+    public void setToolbarStandardActions(View toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
             View cancelActionView = toolbar.findViewById(actionCancel);
             if (cancelActionView != null)

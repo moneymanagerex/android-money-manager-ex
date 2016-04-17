@@ -331,8 +331,6 @@ public class CheckingTransactionEditActivity
 
         mCommonFunctions.transactionEntity = tx;
 
-//        mCommonFunctions.transactionEntity.setTransactionType(tx.getTransactionType());
-
         // Load Split Categories.
         if (mCommonFunctions.mSplitTransactions == null) {
             SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(this);
@@ -505,9 +503,11 @@ public class CheckingTransactionEditActivity
         }
 
         // set title
-        getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
-                ? R.string.new_transaction
-                : R.string.edit_transaction);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
+                    ? R.string.new_transaction
+                    : R.string.edit_transaction);
+        }
 
         return true;
     }
