@@ -40,7 +40,6 @@ import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
-import com.raizlabs.android.dbflow.config.FlowManager;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -225,8 +224,6 @@ public class MoneyManagerApplication
         FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
-        // Initialize DbFlow
-        FlowManager.init(this);
     }
 
     @Override
