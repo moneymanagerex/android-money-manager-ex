@@ -24,7 +24,6 @@ import android.database.Cursor;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.datalayer.RepositoryBase;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Currency;
 

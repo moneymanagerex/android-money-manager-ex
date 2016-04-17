@@ -23,7 +23,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
@@ -32,10 +31,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import info.javaperformance.money.Money;
 

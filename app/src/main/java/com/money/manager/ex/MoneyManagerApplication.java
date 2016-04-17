@@ -28,7 +28,6 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dropbox.client2.session.Session.AccessType;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -41,6 +40,7 @@ import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -68,7 +68,6 @@ import info.javaperformance.money.Money;
 public class MoneyManagerApplication
     extends Application {
 
-    ///////////////////////////////////////////////////////////////////////////
     public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
 
     private static final String LOGCAT = "MoneyManagerApplication";
@@ -199,7 +198,7 @@ public class MoneyManagerApplication
     public void onCreate() {
         super.onCreate();
 
-        // Set custom default handler.
+        // Set custom default handler for unhandled exceptions.
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
 
         // save instance of application
@@ -207,7 +206,7 @@ public class MoneyManagerApplication
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
 
-        // create application folder
+        // create the default folder for the database.
         Core core = new Core(getApplicationContext());
         core.getExternalStorageDirectoryApplication();
 
@@ -224,9 +223,10 @@ public class MoneyManagerApplication
 
         // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
-
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
+        // Initialize DbFlow
+        FlowManager.init(this);
     }
 
     @Override

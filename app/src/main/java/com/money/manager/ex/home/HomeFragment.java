@@ -51,9 +51,7 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.InfoRepository;
-import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
@@ -79,7 +77,6 @@ import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.IntentDataParameters;
-import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 

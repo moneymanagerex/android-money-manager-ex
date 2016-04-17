@@ -43,7 +43,6 @@ import info.javaperformance.money.MoneyFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.

@@ -22,10 +22,8 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.view.RobotoTextView;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;

@@ -2,36 +2,19 @@ package com.money.manager.ex.assetallocation;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Activity;
-import android.os.Parcelable;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.Base64;
-import android.util.Xml;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.TextView;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
-import com.money.manager.ex.settings.BehaviourSettings;
 import com.money.manager.ex.settings.InvestmentSettings;
 
-import org.apache.commons.lang3.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import info.javaperformance.money.Money;
 

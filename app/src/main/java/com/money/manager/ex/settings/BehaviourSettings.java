@@ -20,10 +20,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.servicelayer.InfoService;
-
-import org.apache.commons.lang3.StringUtils;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;

@@ -55,7 +55,7 @@
 //import javax.money.format.MonetaryAmountFormat;
 //import javax.money.format.MonetaryFormats;
 //
-//import info.javaperformance.money.MoneyFactory;
+//import MoneyFactory;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
 //
@@ -314,11 +314,11 @@
 //        String currencyCode = "EUR";
 //        CurrencyUnit euro = Monetary.getCurrency(currencyCode);
 //        MonetaryAmount moneta = FastMoney.of(125.14, currencyCode);
-//        info.javaperformance.money.Money money = MoneyFactory.fromString("625.384");
+//        Money money = MoneyFactory.fromString("625.384");
 ////        MonetaryRounding defaultRounding = Monetary.getDefaultRounding();
 //
 //        // to money, use string?
-//        info.javaperformance.money.Money destination = MoneyFactory.fromString(moneta.getNumber().toString());
+//        Money destination = MoneyFactory.fromString(moneta.getNumber().toString());
 //        assertThat(destination.toString()).isEqualTo("125.14");
 //
 //        // Conversion from money. Round to currency settings.

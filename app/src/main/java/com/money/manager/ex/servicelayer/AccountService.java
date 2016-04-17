@@ -21,7 +21,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 

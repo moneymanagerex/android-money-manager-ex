@@ -17,19 +17,7 @@
 package com.money.manager.ex.investment;
 
 import android.content.Context;
-import android.text.TextUtils;
 
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.NumericHelper;
-import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.opencsv.CSVParser;
-
-import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.io.IOException;
 import java.util.List;
 
 import info.javaperformance.money.Money;
