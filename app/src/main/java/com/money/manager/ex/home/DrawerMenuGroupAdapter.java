@@ -42,7 +42,6 @@ public class DrawerMenuGroupAdapter
 
     public ArrayList<DrawerMenuItem> mGroupItems;
     public ArrayList<Object> mChildItems = new ArrayList<>();
-//    public LayoutInflater mInflater;
     public Activity activity;
     private final Context mContext;
 
@@ -54,7 +53,6 @@ public class DrawerMenuGroupAdapter
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        // mChildItems.get(groupPosition)
         ArrayList<DrawerMenuItem> tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
         return tempChild.get(childPosition);
     }
@@ -67,22 +65,11 @@ public class DrawerMenuGroupAdapter
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        // Child item collection
-//        tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
-//        DrawerMenuItem item = tempChild.get(childPosition);
         DrawerMenuItem item = (DrawerMenuItem) getChild(groupPosition, childPosition);
 
         DrawerViewHolder holder = null;
 
         if (convertView == null) {
-//            convertView = new TextView(context);
-//            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            convertView = inflater.inflate(R.layout.item_drawer_child, null);
-//
-//            ImageView imageViewIcon = (ImageView) convertView.findViewById(R.id.imageViewIcon);
-//            View viewDivider = view.findViewById(R.id.viewDivider);
-//            convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
-
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_child, null);
 
             TextView textViewItem = (TextView)convertView.findViewById(R.id.textViewItem);
@@ -91,8 +78,6 @@ public class DrawerMenuGroupAdapter
 
             convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
         }
-//        text = (TextView) convertView;
-//        text.setText(">" + tempChild.get(childPosition));
 
         Object tag = convertView.getTag();
         if (tag instanceof DrawerViewHolder) {
@@ -114,18 +99,6 @@ public class DrawerMenuGroupAdapter
             }
         }
 
-//        RobotoTextView itemTextView = (RobotoTextView) convertView.findViewById(R.id.textViewItem);
-//        itemTextView.setText(tempChild.get(childPosition));
-
-//		convertView.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(activity, tempChild.get(childPosition),
-//						Toast.LENGTH_SHORT).show();
-//			}
-//		});
-
-//        convertView.setTag(item);
         return convertView;
     }
 
@@ -178,14 +151,9 @@ public class DrawerMenuGroupAdapter
             convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
         }
 
-//        TextView view = (TextView) convertView;
-//        view.setText(mGroupItems.get(groupPosition).getText());
-
-//        if (view != null && holder == null) {
-            if (convertView.getTag() instanceof DrawerViewHolder) {
-                holder = (DrawerViewHolder)convertView.getTag();
-            }
-//        }
+        if (convertView.getTag() instanceof DrawerViewHolder) {
+            holder = (DrawerViewHolder)convertView.getTag();
+        }
 
         if (item != null && holder != null) {
             holder.textViewItem.setText(item.getText());
@@ -219,9 +187,6 @@ public class DrawerMenuGroupAdapter
         } else {
             chevronView.setVisibility(View.GONE);
         }
-
-//        convertView.setTag(mGroupItems.get(groupPosition));
-//        return convertView;
 
         return convertView;
     }

@@ -185,7 +185,7 @@ dependencies {
             ,"com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
             // sql-cipher database encyrption (optional)
             //"com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
-            ,'org.joda:joda-money:0.11'
+//            ,'org.joda:joda-money:0.11'
     )
 //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 
