@@ -96,10 +96,20 @@ public abstract class BaseFragmentActivity
             getSupportActionBar().setElevation(0);
     }
 
+    /**
+     * Sets OK & Cancel as the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
+     * @param toolbar Toolbar element.
+     */
     public void setToolbarStandardAction(Toolbar toolbar) {
         setToolbarStandardAction(toolbar, R.id.action_cancel, R.id.action_done);
     }
 
+    /**
+     * Allows customization of the toolbar buttons
+     * @param toolbar       Toolbar element to attach to.
+     * @param actionCancel  R.id of the negative (cancel) button
+     * @param actionDone    R.id of the positive (action) button
+     */
     public void setToolbarStandardAction(Toolbar toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
             View cancelActionView = toolbar.findViewById(actionCancel);
