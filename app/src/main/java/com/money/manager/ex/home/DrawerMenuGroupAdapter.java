@@ -34,18 +34,15 @@ import com.shamanland.fonticon.FontIconView;
 import java.util.ArrayList;
 
 /**
- * Adapter for the expandable drawer menu. Used to avoid displaying the dialogs for the
- * 2nd-stage selection and show menu groups instead.
- *
- * Created by Alen Siljak on 20/07/2015.
+ * Adapter for the expandable drawer menu. Used to avoid displaying the dialogs when selecting the
+ * 2nd-level selection and show them as menu children items instead.
  */
 public class DrawerMenuGroupAdapter
         extends BaseExpandableListAdapter {
 
     public ArrayList<DrawerMenuItem> mGroupItems;
-    public ArrayList<Object> mChildItems = new ArrayList<Object>();
-//    public ArrayList<DrawerMenuItem> tempChild;
-    public LayoutInflater mInflater;
+    public ArrayList<Object> mChildItems = new ArrayList<>();
+//    public LayoutInflater mInflater;
     public Activity activity;
     private final Context mContext;
 
@@ -55,16 +52,10 @@ public class DrawerMenuGroupAdapter
         this.mChildItems = childItems;
     }
 
-//    public void setInflater(LayoutInflater mInflater, Activity act) {
-//        this.mInflater = mInflater;
-//        activity = act;
-//    }
-
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         // mChildItems.get(groupPosition)
         ArrayList<DrawerMenuItem> tempChild = (ArrayList<DrawerMenuItem>) mChildItems.get(groupPosition);
-//        return null;
         return tempChild.get(childPosition);
     }
 
@@ -115,7 +106,7 @@ public class DrawerMenuGroupAdapter
                 holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
             if (item.getIconDrawable() != null) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     holder.imageViewIcon.setBackground(item.getIconDrawable());
                 } else {
                     holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
@@ -175,11 +166,6 @@ public class DrawerMenuGroupAdapter
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-//        if (convertView == null) {
-//            convertView = new TextView(context);
-//        }
-
-//        DrawerMenuItem item = getItem(position);
         DrawerMenuItem item = mGroupItems.get(groupPosition);
         DrawerViewHolder holder = null;
         if (convertView == null) {
@@ -207,10 +193,11 @@ public class DrawerMenuGroupAdapter
             if (item.getIcon() != null) {
                 holder.imageViewIcon.setBackgroundResource(item.getIcon());
             }
-            //if (android.os.Build.VERSION == Build.VERSION.SDK_INT)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                if (item.getIconDrawable() != null) {
+            if (item.getIconDrawable() != null) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     holder.imageViewIcon.setBackground(item.getIconDrawable());
+                } else {
+                    holder.imageViewIcon.setBackgroundDrawable(item.getIconDrawable());
                 }
             }
         }
