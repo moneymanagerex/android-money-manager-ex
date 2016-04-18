@@ -89,10 +89,11 @@ public class SplitCategoriesActivity
         setContentView(R.layout.splittransaction_activity);
 
         // toolbar
-        if (getToolbar() != null) {
-            setSupportActionBar();
-            setToolbarStandardActions();
-        }
+//        if (getToolbar() != null) {
+//            setSupportActionBar();
+//            setToolbarStandardActions();
+//        }
+        setToolbarStandardActions();
 
         // 'Add' button
 

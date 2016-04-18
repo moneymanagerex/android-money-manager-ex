@@ -121,8 +121,10 @@ public class RecurringTransactionEditActivity
             }
             mIntentAction = getIntent().getAction();
             // set title
-            getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
-                ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(Intent.ACTION_INSERT.equals(mIntentAction)
+                        ? R.string.new_repeating_transaction : R.string.edit_repeating_transaction);
+            }
         }
 
         // Controls

@@ -35,12 +35,11 @@
     tools:context="com.money.manager.ex.budget.BudgetEditActivity">
     <!--android:background="?attr/theme_background_color"-->
 
-    <include layout="@layout/toolbar_actionbar_button_cancel_done"/>
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,5 +101,7 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/action_buttons" />
 </LinearLayout>
 </layout>

@@ -24,5 +24,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:layout_weight="0">
+
     <include layout="@layout/actionbar_button_cancel_done"/>
+
 </android.support.v7.widget.LinearLayoutCompat>

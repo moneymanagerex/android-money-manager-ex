@@ -35,11 +35,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar_actionbar_button_cancel_done" />
-
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
@@ -47,22 +45,18 @@
                 <LinearLayout
                     android:id="@+id/linearLayoutSplitTransaction"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical" />
             </ScrollView>
 
+            <include layout="@layout/action_buttons" />
         </LinearLayout>
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_action_add_dark"
+            style="@style/MoneyFloatingActionButton"
+            android:layout_marginBottom="@dimen/fab_margin_bottom_higher"
             fab:fab_colorNormal="@color/md_primary"
             fab:fab_colorPressed="@color/md_primary_dark" />
 

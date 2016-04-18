@@ -136,10 +136,11 @@ public class AccountEditActivity
         setContentView(R.layout.activity_edit_account);
 
         // toolbar
-        if (getToolbar() != null) {
-            setSupportActionBar();
-            setToolbarStandardActions();
-        }
+//        if (getToolbar() != null) {
+//            setSupportActionBar();
+//            setToolbarStandardActions();
+//        }
+        setToolbarStandardActions();
 
         initializeControls();
     }
