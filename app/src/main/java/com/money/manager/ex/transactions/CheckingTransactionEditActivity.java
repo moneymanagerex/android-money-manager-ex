@@ -60,6 +60,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * Activity for editing Checking Account Transaction
  */
@@ -541,6 +543,10 @@ public class CheckingTransactionEditActivity
 
         boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
 
+        if (!isTransfer) {
+            mCommonFunctions.resetTransfer();
+        }
+
         // Transaction. Need the Id for split categories.
 
         if (!saveTransaction()) return false;
@@ -558,20 +564,7 @@ public class CheckingTransactionEditActivity
         if (!saveSplitCategories()) return false;
 
         // update category and subcategory for the default payee
-        if ((!isTransfer) && mCommonFunctions.hasPayee() && !mCommonFunctions.hasSplitCategories()) {
-            PayeeRepository payeeRepository = new PayeeRepository(this);
-            Payee payee = payeeRepository.load(mCommonFunctions.transactionEntity.getPayeeId());
-
-            payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
-            payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
-
-            boolean saved = payeeRepository.save(payee);
-            if (!saved) {
-                Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" +
-                        Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
-            }
-        }
+        saveDefaultPayee(isTransfer);
 
         // Process recurring transaction.
         if (mRecurringTransactionId != Constants.NOT_SET) {
@@ -580,6 +573,26 @@ public class CheckingTransactionEditActivity
         }
 
         return true;
+    }
+
+    private void saveDefaultPayee(boolean isTransfer) {
+        if ((isTransfer) || !mCommonFunctions.hasPayee() || mCommonFunctions.hasSplitCategories()) {
+            return;
+        }
+
+        PayeeRepository payeeRepository = new PayeeRepository(this);
+        Payee payee = payeeRepository.load(mCommonFunctions.transactionEntity.getPayeeId());
+
+        payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
+        payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
+
+        boolean saved = payeeRepository.save(payee);
+        if (!saved) {
+            Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
+            Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" +
+                    Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
+        }
+
     }
 
     private boolean saveSplitCategories() {
@@ -628,12 +641,12 @@ public class CheckingTransactionEditActivity
 
     private boolean saveTransaction() {
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
-        // mIntentAction.equals(Intent.ACTION_INSERT) || mIntentAction.equals(Intent.ACTION_PASTE)
+
         if (!mCommonFunctions.transactionEntity.hasId()) {
             // insert
             mCommonFunctions.transactionEntity = repo.insert((AccountTransaction) mCommonFunctions.transactionEntity);
 
-            if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
+            if (!mCommonFunctions.transactionEntity.hasId()) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
                 Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
                 return false;

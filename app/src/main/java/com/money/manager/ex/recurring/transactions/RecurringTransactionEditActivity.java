@@ -504,6 +504,11 @@ public class RecurringTransactionEditActivity
 
         if (!validateData()) return false;
 
+        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+        if (!isTransfer) {
+            mCommonFunctions.resetTransfer();
+        }
+
         // Transaction. Need the id for split categories.
 
         if (!saveTransaction()) return false;
@@ -521,17 +526,6 @@ public class RecurringTransactionEditActivity
         if (!saveSplitCategories()) return false;
 
         return true;
-    }
-
-    private ContentValues getContentValues(boolean isTransfer) {
-        ContentValues values = mCommonFunctions.getContentValues(isTransfer);
-
-        values.put(RecurringTransaction.TRANSDATE, mRecurringTransaction.getDueDateString());
-        values.put(RecurringTransaction.NEXTOCCURRENCEDATE, mRecurringTransaction.getPaymentDateString());
-        values.put(RecurringTransaction.REPEATS, mRecurringTransaction.getRecurrenceInt());
-        values.put(RecurringTransaction.NUMOCCURRENCES, mRecurringTransaction.getPaymentsLeft());
-
-        return values;
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {

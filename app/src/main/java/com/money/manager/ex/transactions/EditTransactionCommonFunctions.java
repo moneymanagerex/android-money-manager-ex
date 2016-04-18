@@ -117,7 +117,6 @@ public class EditTransactionCommonFunctions {
     public List<Account> AccountList;
     public ArrayList<String> mAccountNameList = new ArrayList<>();
     public ArrayList<Integer> mAccountIdList = new ArrayList<>();
-//    public TransactionTypes transactionType = TransactionTypes.Withdrawal;
     public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
 
@@ -313,6 +312,17 @@ public class EditTransactionCommonFunctions {
         return getAccountCurrencyId(accountId);
     }
 
+    public ArrayList<ISplitTransaction> getDeletedSplitCategories() {
+        if(mSplitTransactionsDeleted == null){
+            mSplitTransactionsDeleted = new ArrayList<>();
+        }
+        return mSplitTransactionsDeleted;
+    }
+
+    public boolean getDirty() {
+        return mDirty;
+    }
+
     public Integer getSourceCurrencyId() {
         Integer accountId = this.transactionEntity.getAccountId();
 
@@ -322,12 +332,8 @@ public class EditTransactionCommonFunctions {
         }
 
         if (accountId == 0) accountId = Constants.NOT_SET;
-        
-        return getAccountCurrencyId(accountId);
-    }
 
-    public boolean getDirty() {
-        return mDirty;
+        return getAccountCurrencyId(accountId);
     }
 
     public FontIconView getTransferButtonIcon() {
@@ -1047,6 +1053,15 @@ public class EditTransactionCommonFunctions {
         }
     }
 
+    /**
+     * Reset the effects of transfer when switching to Withdrawal/Deposit.
+     */
+    public void resetTransfer() {
+        // reset destination account and amount
+        transactionEntity.setAccountToId(Constants.NOT_SET);
+        transactionEntity.setAmountTo(MoneyFactory.fromDouble(0));
+    }
+
     public void setSplit(final boolean checked) {
         mSplitSelected = checked;
 
@@ -1229,13 +1244,6 @@ public class EditTransactionCommonFunctions {
                 }
             }
         }
-    }
-
-    public ArrayList<ISplitTransaction> getDeletedSplitCategories() {
-        if(mSplitTransactionsDeleted == null){
-            mSplitTransactionsDeleted = new ArrayList<>();
-        }
-        return mSplitTransactionsDeleted;
     }
 
     /**
