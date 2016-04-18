@@ -42,6 +42,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.CategoryService;
@@ -49,7 +50,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
@@ -488,7 +488,9 @@ public class CategoryListFragment
                                     Category.CATEGID + "=" + categoryIds.categId,
                                     null);
                         } else {
-                            rowsDelete = getActivity().getContentResolver().delete(new TableSubCategory().getUri(),
+                            SubcategoryRepository repo = new SubcategoryRepository(getActivity());
+
+                            rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
                                 Subcategory.CATEGID + "=" + categoryIds.categId + " AND " +
                                     Subcategory.SUBCATEGID + "=" + categoryIds.subCategId,
                                     null);
@@ -580,7 +582,6 @@ public class CategoryListFragment
     private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
                                                final int subCategoryId, final CharSequence subCategName) {
 
-        final TableSubCategory subCategory = new TableSubCategory();
         // inflate view
         View viewDialog = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_new_edit_subcategory, null);
 
@@ -634,16 +635,19 @@ public class CategoryListFragment
                         ContentValues values = new ContentValues();
                         values.put(Subcategory.CATEGID, categId);
                         values.put(Subcategory.SUBCATEGNAME, name);
+
+                        SubcategoryRepository repo = new SubcategoryRepository(getActivity());
+
                         // check type transaction is request
                         switch (type) {
                             case INSERT:
-                                if (getActivity().getContentResolver().insert(subCategory.getUri(), values) == null) {
+                                if (getActivity().getContentResolver().insert(repo.getUri(), values) == null) {
                                     Toast.makeText(getActivity(), R.string.db_insert_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case UPDATE:
                                 if (getActivity().getContentResolver().update(
-                                    subCategory.getUri(),
+                                    repo.getUri(),
                                     values,
                                     Subcategory.CATEGID + "="
                                     + categoryId + " AND "

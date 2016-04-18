@@ -25,14 +25,13 @@ import com.money.manager.ex.MoneyManagerApplication;
 
 /**
  * Manage settings backup.
- * Created by Alessandro on 03/02/2015.
  */
 public class MoneyManagerBackupAgentHelper
-        extends BackupAgentHelper {
+    extends BackupAgentHelper {
 
     private static final String KEY_BACKUP_APP_PREFERENCES = "KEY_BACKUP_APP_PREFERENCES";
     private static final String KEY_BACKUP_DROPBOX_PREFERENCES = "KEY_BACKUP_DROPBOX_PREFERENCES";
-    private static final String KEY_BACKUP_RECENT_DB_PREFERENCES = "KEY_BACKUP_RECENT_DB_PREFERENCES";
+//    private static final String KEY_BACKUP_RECENT_DB_PREFERENCES = "KEY_BACKUP_RECENT_DB_PREFERENCES";
     private static final String KEY_BACKUP_DB = "KEY_BACKUP_DB";
 
     @Override

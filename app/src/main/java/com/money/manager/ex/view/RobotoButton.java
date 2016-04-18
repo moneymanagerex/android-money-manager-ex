@@ -24,8 +24,6 @@ import android.widget.TextView;
 
 /**
  * Implementation of a {@link TextView} with native support for all the Roboto fonts on all versions of Android.
- *
- * @author a.lazzari
  */
 public class RobotoButton extends Button {
     /**

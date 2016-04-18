@@ -16,10 +16,7 @@
  */
 package org.moneymanagerex.android.testhelpers;
 
-import android.support.test.espresso.matcher.BoundedMatcher;
-
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableSubCategory;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -57,20 +54,5 @@ public class MmexMatchers {
 //            }
 //        };
 //    }
-
-    public static Matcher<TableSubCategory> hasSubCategory(final String subcategoryName){
-        return new TypeSafeMatcher<TableSubCategory>() {
-            @Override
-            public boolean matchesSafely(TableSubCategory item) {
-                boolean result = item.getSubCategName().equals(subcategoryName);
-                return result;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("expected "+ subcategoryName);
-            }
-        };
-    }
 
 }

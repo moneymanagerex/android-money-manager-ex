@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.domainmodel.Currency;
 
@@ -54,7 +53,6 @@ public class CurrencyEditActivity
     private static final String KEY_CONVERSION_TO_BASE = "CurrencyEditActivity:ConversionToBaseRate";
     private static final String KEY_ACTION = "CurrencyEditActivity:Action";
 
-    private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
     private Integer mCurrencyId;
     // type of action
     private String mIntentAction = "";
@@ -142,8 +140,9 @@ public class CurrencyEditActivity
     }
 
     private boolean loadData(int currencyId) {
-        Cursor cursor = getContentResolver().query(mCurrency.getUri(),
-                mCurrency.getAllColumns(),
+        CurrencyRepository repo = new CurrencyRepository(this);
+        Cursor cursor = getContentResolver().query(repo.getUri(),
+                repo.getAllColumns(),
                 Currency.CURRENCYID + "=?",
                 new String[]{Integer.toString(currencyId)}, null);
         // check if cursor is valid and open

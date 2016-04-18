@@ -40,7 +40,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
@@ -73,8 +72,6 @@ public class CurrencyListFragment
     public String mAction = Intent.ACTION_EDIT;
     // Store previous device orientation when showing other screens (chart, etc.)
     public int mPreviousOrientation = -1;
-
-    private TableCurrencyFormats mCurrency = new TableCurrencyFormats();
 
     private String mCurFilter;
     private CurrencyService mCurrencyService;
@@ -253,8 +250,10 @@ public class CurrencyListFragment
                 String selectionArgs[] = new String[arguments.size()];
                 selectionArgs = arguments.toArray(selectionArgs);
 
-                return new MmexCursorLoader(getActivity(), mCurrency.getUri(),
-                        mCurrency.getAllColumns(),
+                CurrencyRepository repo = new CurrencyRepository(getActivity());
+
+                return new MmexCursorLoader(getActivity(), repo.getUri(),
+                        repo.getAllColumns(),
                         whereClause,
                         selectionArgs,
                         "upper(" + Currency.CURRENCYNAME + ")");
@@ -584,13 +583,6 @@ public class CurrencyListFragment
     private void updateSingleCurrencyExchangeRate(final int currencyId) {
         updateCurrencyFromYahoo(currencyId);
     }
-
-//    private void updateAllExchangeRatesFromYahoo(){
-//        CurrencyService utils = getCurrencyUtils();
-//        List<TableCurrencyFormats> currencies = utils.getAllCurrencyFormats();
-//
-//        updateExchangeRatesFromYahoo(currencies);
-//    }
 
     private void updateExchangeRatesFromYahoo(List<Currency> currencies){
         if (currencies == null || currencies.size() <= 0) return;

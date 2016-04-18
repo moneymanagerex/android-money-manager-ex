@@ -32,6 +32,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.domainmodel.Subcategory;
@@ -333,7 +334,8 @@ public class MmexOpenHelper
                         "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
                         "37;10", "38;10", "39;13", "40;13", "41;13"};
                 final String tableCategory = new TableCategory().getSource();
-                final String tableSubcategory = new TableSubCategory().getSource();
+                final String tableSubcategory = new SubcategoryRepository(getContext()).getSource();
+
                 for (String item : categories) {
                     int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
                     int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));

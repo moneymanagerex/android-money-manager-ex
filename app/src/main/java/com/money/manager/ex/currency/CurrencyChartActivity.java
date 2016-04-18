@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.utils.NetworkUtilities;

@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.common;
 
-import java.util.ArrayList;
-
 /**
  * Callbacks from All Data multi-choice mode listener.
  */

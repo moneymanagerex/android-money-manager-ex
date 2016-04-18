@@ -20,7 +20,6 @@ import android.support.test.rule.ActivityTestRule;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableSubCategory;
 import com.money.manager.ex.search.SearchActivity;
 
 import org.junit.After;
@@ -32,18 +31,13 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.moneymanagerex.android.testhelpers.MmexMatchers.hasCategory;
-import static org.moneymanagerex.android.testhelpers.MmexMatchers.hasSubCategory;
 
 /**
  * This is not operational because it is not possible to select a subcategory - a child item
@@ -87,34 +81,14 @@ public class SearchTests {
         onView(withText("Food"))
             .check(matches(isDisplayed()))
             .perform(click());
-        // onView(allOf(withId(R.id.group_list_layout),withText(R.string.group_header))).perform(click());
-//        onData(allOf(
-//            is(instanceOf(TableCategory.class)),
-//            hasCategory("Food")
-//        )).check(matches(isDisplayed()))
-//        .perform(click());
 
-//        onView(withText("Dining out"))
-//            .check(matches(isDisplayed()));
-//        onData(allOf(
-//                is(instanceOf(TableSubCategory.class)),
-//            hasSubCategory("Dining out"))
-//        ).check(matches(isDisplayed()));
-//        onData(allOf(is(instanceOf(ChildObject.class)))).inAdapterView(withId(R.id.expandable_list_view)).atPosition(0).perform(click());
         onData(allOf(is(instanceOf(TableCategory.class))))
-//            .inAdapterView(withId(R.id.expandable_list_view))
-//            .inAdapterView(withId(R.id.container))
             .atPosition(5)
             .onChildView(withId(R.id.selectorText))
             .perform(click());
 
-//        onData(any(TableCategory.class))
-//            .onChildView(withId(R.id.selectorText))
-//            .perform(click());
-
         formOpens();
 
-//        onView(withId(R.id.textViewSelectCategory))
         onView(withHint("Select Category"))
             .check(matches(isDisplayed()))
             .check(matches(withText("Food : Dining out")));

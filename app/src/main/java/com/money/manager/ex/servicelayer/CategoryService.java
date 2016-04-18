@@ -43,10 +43,7 @@ public class CategoryService
     public CategoryService(Context context) {
         super(context);
 
-        mCategory = new TableCategory();
     }
-
-    private TableCategory mCategory;
 
     public int loadIdByName(String name) {
         int result = -1;
@@ -55,8 +52,10 @@ public class CategoryService
 
         String selection = Category.CATEGNAME + "=?";
 
+        CategoryRepository repo = new CategoryRepository(getContext());
+
         Cursor cursor = getContext().getContentResolver().query(
-                mCategory.getUri(),
+                repo.getUri(),
                 new String[] { Category.CATEGID },
                 selection,
                 new String[] { name },
@@ -79,8 +78,10 @@ public class CategoryService
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
 
+        CategoryRepository repo = new CategoryRepository(getContext());
+
         Uri result = getContext().getContentResolver()
-                .insert(mCategory.getUri(), values);
+                .insert(repo.getUri(), values);
         long id = ContentUris.parseId(result);
 
         return ((int) id);
@@ -115,7 +116,9 @@ public class CategoryService
         ContentValues values = new ContentValues();
         values.put(Category.CATEGNAME, name);
 
-        int result = getContext().getContentResolver().update(mCategory.getUri(),
+        CategoryRepository repo = new CategoryRepository(getContext());
+
+        int result = getContext().getContentResolver().update(repo.getUri(),
                 values,
                 Category.CATEGID + "=" + id, null);
 

@@ -25,7 +25,6 @@ import android.support.v4.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Currency;
 
 /**

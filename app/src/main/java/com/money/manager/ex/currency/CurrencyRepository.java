@@ -30,7 +30,7 @@ import com.money.manager.ex.domainmodel.Currency;
 import info.javaperformance.money.Money;
 
 /**
- * Currency repository. Provides access to TableCurrencyFormats entities.
+ * Currency repository. Provides access to Currency entities.
  */
 public class CurrencyRepository
     extends RepositoryBase<Currency> {

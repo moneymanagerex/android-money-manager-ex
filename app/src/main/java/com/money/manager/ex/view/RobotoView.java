@@ -32,8 +32,6 @@ import com.money.manager.ex.R;
 /**
  * Implementation of a {@link TextView} with native support for all the Roboto fonts on all
  * versions of Android, with customization from users.
- *
- * @author a.lazzari
  */
 public class RobotoView {
 	private static final String LOGCAT = RobotoView.class.getSimpleName();

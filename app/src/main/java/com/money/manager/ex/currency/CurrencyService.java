@@ -32,7 +32,6 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
@@ -75,7 +74,7 @@ public class CurrencyService
 
     /**
      * @param currencyId of the currency to be get
-     * @return an instance of class TableCurrencyFormats. Null if fail
+     * @return a Currency. Null if fail
      */
     public Currency getCurrency(Integer currencyId) {
         if (currencyId == null || currencyId == Constants.NOT_SET) return null;
@@ -409,9 +408,10 @@ public class CurrencyService
 
     public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;
-        TableCurrencyFormats currencyEntity = new TableCurrencyFormats();
 
-        Cursor cursor = db.query(currencyEntity.getSource(),
+        CurrencyRepository repo = new CurrencyRepository(getContext());
+
+        Cursor cursor = db.query(repo.getSource(),
             new String[] { Currency.CURRENCYID },
             Currency.CURRENCY_SYMBOL + "=?",
             new String[]{ currencySymbol },

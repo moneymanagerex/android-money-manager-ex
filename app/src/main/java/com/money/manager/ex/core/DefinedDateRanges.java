@@ -24,8 +24,6 @@ import java.util.HashMap;
 
 /**
  * Pre-set collection of available date ranges in the app.
- *
- * Created by Alen Siljak on 23/09/2015.
  */
 public class DefinedDateRanges {
 

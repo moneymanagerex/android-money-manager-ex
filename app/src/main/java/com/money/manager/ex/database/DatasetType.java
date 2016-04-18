@@ -17,12 +17,7 @@
 package com.money.manager.ex.database;
 
 /**
- * 
  * DataSetType represents the type of data that can be represented in a dataset (which will be a table or a query)
- * 
- * @author a.lazzari
- * @version 1.0.0
- * 
  */
 
 public enum DatasetType {

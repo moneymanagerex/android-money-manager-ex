@@ -36,7 +36,7 @@ import com.money.manager.ex.R;
  * List fragment
  */
 public class AbsListFragment
-        extends Fragment {
+    extends Fragment {
 
     final private Handler mHandler = new Handler();
     final private AdapterView.OnItemClickListener mOnClickListener

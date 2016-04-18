@@ -31,6 +31,7 @@ import android.util.Log;
 
 import com.money.manager.ex.budget.BudgetQuery;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.MmexOpenHelper;
@@ -40,7 +41,6 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
-import com.money.manager.ex.database.TableCurrencyFormats;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -102,13 +102,13 @@ public class MmexContentProvider
 
         List<Dataset> objMoneyManager = Arrays.asList(
             new AccountRepository(context),
+            new AccountTransactionRepository(context),
             new AssetClassRepository(context),
             new AssetClassStockRepository(context),
             new BudgetEntryRepository(context),
             new BudgetRepository(context),
             new CategoryRepository(context),
-            new AccountTransactionRepository(context),
-                new TableCurrencyFormats(),
+            new CurrencyRepository(context),
             new InfoRepository(context),
             new PayeeRepository(context),
             new RecurringTransactionRepository(context),

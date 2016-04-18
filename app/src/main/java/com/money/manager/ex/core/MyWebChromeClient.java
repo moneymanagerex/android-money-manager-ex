@@ -23,7 +23,6 @@ import com.money.manager.ex.common.WebViewActivity;
 
 /**
  * Chrome web client customization.
- * Created by Alen Siljak on 09/09/2015.
  */
 public class MyWebChromeClient extends WebChromeClient {
 

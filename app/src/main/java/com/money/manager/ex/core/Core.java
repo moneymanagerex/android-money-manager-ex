@@ -47,7 +47,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.database.TableSubCategory;
+import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.Subcategory;
@@ -402,7 +402,6 @@ public class Core {
         String categoryName = null;
         String subCategoryName, ret;
         TableCategory category = new TableCategory();
-        TableSubCategory subCategory = new TableSubCategory();
         // category
         Cursor cursor = mContext.getContentResolver().query(category.getUri(),
                 null,
@@ -419,7 +418,8 @@ public class Core {
         }
 
         // sub-category
-        cursor = mContext.getContentResolver().query(subCategory.getUri(),
+        SubcategoryRepository repo = new SubcategoryRepository(getContext());
+        cursor = mContext.getContentResolver().query(repo.getUri(),
                 null,
                 Subcategory.SUBCATEGID + "=?",
                 new String[]{Integer.toString(subCategoryId)},

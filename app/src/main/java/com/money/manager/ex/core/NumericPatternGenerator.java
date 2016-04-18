@@ -18,14 +18,8 @@ package com.money.manager.ex.core;
 
 /**
  * Generate the number pattern for each currency.
- *
- * Created by Alen Siljak on 15/09/2015.
  */
 public class NumericPatternGenerator {
-
-//    public void setCurrency(TableCurrencyFormats currency) {
-//
-//    }
 
     public static String getPattern(int decimals) {
         //String pattern = "###G###G###G###D####";
