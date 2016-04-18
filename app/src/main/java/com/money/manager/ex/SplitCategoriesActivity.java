@@ -21,8 +21,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -64,7 +66,7 @@ public class SplitCategoriesActivity
     private String entityTypeName = null;
     private ArrayList<ISplitTransaction> mSplitTransactions = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
-    private FloatingActionButton mFloatingActionButton;
+    private FloatingActionButton mFab;
     private Integer currencyId = Constants.NOT_SET;
 
     @Override
@@ -86,7 +88,7 @@ public class SplitCategoriesActivity
         }
 
         // set view
-        setContentView(R.layout.splittransaction_activity);
+        setContentView(R.layout.activity_split_categories);
 
         // toolbar
 //        if (getToolbar() != null) {
@@ -192,16 +194,6 @@ public class SplitCategoriesActivity
         return splitCategories;
     }
 
-    /**
-     * Set the visibility of the floating button.
-     * @param visible visibility
-     */
-    public void setFloatingActionButtonVisible(boolean visible) {
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
-    }
-
     public void onFloatingActionButtonClickListener() {
         addSplitTransaction();
     }
@@ -261,16 +253,21 @@ public class SplitCategoriesActivity
     }
 
     private void setUpFloatingButton() {
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onFloatingActionButtonClickListener();
-                }
-            });
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        if (mFab == null) return;
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFloatingActionButtonClickListener();
+            }
+        });
+
+        ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
+        if (scrollView != null) {
+            mFab.attachToScrollView(scrollView);
         }
 
-        setFloatingActionButtonVisible(true);
+        mFab.setVisibility(View.VISIBLE);
     }
 }

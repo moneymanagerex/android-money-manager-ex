@@ -34,12 +34,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ScrollView
+            <com.melnykov.fab.ObservableScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
+
+            <!--<ScrollView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp">-->
 
                 <LinearLayout
                     android:id="@+id/linearLayoutSplitTransaction"
@@ -47,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical" />
-            </ScrollView>
+            <!--</ScrollView>-->
+            </com.melnykov.fab.ObservableScrollView>
 
             <include layout="@layout/action_buttons" />
         </LinearLayout>
