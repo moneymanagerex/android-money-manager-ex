@@ -28,7 +28,9 @@ import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -66,7 +68,7 @@ public class SplitCategoriesActivity
      */
     private String entityTypeName = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
-    private Integer currencyId = Constants.NOT_SET;
+//    private Integer currencyId = Constants.NOT_SET;
     private SplitCategoriesAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
@@ -74,7 +76,7 @@ public class SplitCategoriesActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new SplitCategoriesAdapter();
+        mAdapter = new SplitCategoriesAdapter(Constants.NOT_SET);
 
         // load intent
         handleIntent();
@@ -175,6 +177,16 @@ public class SplitCategoriesActivity
         onRemoveItem(event.entity);
     }
 
+    @Subscribe
+    public void onEvent(AmountEnteredEvent event) {
+        int position = Integer.parseInt(event.requestId);
+
+        ISplitTransaction split = mAdapter.splitTransactions.get(position);
+        split.setAmount(event.amount);
+
+        mAdapter.notifyItemChanged(position);
+    }
+
     /**
      * Returns all split categories created on the form.
      * @return List of Split Transactions that are displayed.
@@ -235,7 +247,10 @@ public class SplitCategoriesActivity
         int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
         mParentTransactionType = TransactionTypes.values()[transactionType];
 
-        this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+        int currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
+        //this.cu
+        mAdapter.currencyId = currencyId;
+
 
         List<ISplitTransaction> splits = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
         if (splits != null) {

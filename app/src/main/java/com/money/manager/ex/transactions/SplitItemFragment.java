@@ -95,36 +95,7 @@ public class SplitItemFragment
 
         mViewHolder = new SplitItemViewHolder(layout);
 
-        // Amount
-
-        Money splitTransactionAmount = mSplitTransaction.getAmount();
-        if (splitTransactionAmount != null && !(splitTransactionAmount.isZero())) {
-            // Change the sign to positive.
-            if(splitTransactionAmount.toDouble() < 0) {
-                splitTransactionAmount = splitTransactionAmount.negate();
-            }
-        }
-
-        FormatUtilities formatter = new FormatUtilities(getActivity());
-        formatter.formatAmountTextView(mViewHolder.txtAmount, splitTransactionAmount, this.getCurrencyId());
-
-        mViewHolder.txtAmount.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Object tag = v.getTag();
-                Money amount;
-                if (tag == null) {
-                    amount = MoneyFactory.fromString("0");
-                } else {
-                    amount = MoneyFactory.fromString(tag.toString());
-                }
-
-                AmountInputDialog dialog = AmountInputDialog.getInstance(
-                    SplitItemFragment.this.getTag(),
-                    amount, SplitItemFragment.this.getCurrencyId());
-                dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        });
+        // See SplitCategoriesAdapter.bindAmount
 
         // Transaction Type
 

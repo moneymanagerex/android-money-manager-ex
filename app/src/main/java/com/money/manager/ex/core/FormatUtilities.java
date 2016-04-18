@@ -68,14 +68,16 @@ public class FormatUtilities {
             return;
         }
 
-        CurrencyService currencyService = new CurrencyService(getContext());
+        String displayText;
 
+        CurrencyService currencyService = new CurrencyService(getContext());
         if (currencyId == null) {
-            view.setText(currencyService.getBaseCurrencyFormatted(amount));
+            displayText = currencyService.getBaseCurrencyFormatted(amount);
         } else {
-            view.setText(currencyService.getCurrencyFormatted(currencyId, amount));
+            displayText = currencyService.getCurrencyFormatted(currencyId, amount);
         }
 
+        view.setText(displayText);
         view.setTag(amount);
     }
 
