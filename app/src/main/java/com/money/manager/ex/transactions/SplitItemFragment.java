@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.SplitCategoriesActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CategoryListActivity;
@@ -56,7 +57,6 @@ public class SplitItemFragment
     private static final String ARG_SPLIT = "arg:split";
     public static final String KEY_SPLIT_TRANSACTION = "SplitItemFragment:SplitCategory";
     private static final int REQUEST_PICK_CATEGORY = 1;
-//    private static final int REQUEST_AMOUNT = 2;
 
     public static SplitItemFragment newInstance(ISplitTransaction split, Integer currencyId) {
         SplitItemFragment fragment = new SplitItemFragment();
@@ -72,12 +72,6 @@ public class SplitItemFragment
     private ISplitTransaction mSplitTransaction;
     private TextView txtAmount;
     private Spinner spinTransCode;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +120,6 @@ public class SplitItemFragment
                     AmountInputDialog dialog = AmountInputDialog.getInstance(
                         SplitItemFragment.this.getTag(),
                         amount, SplitItemFragment.this.getCurrencyId());
-//                    dialog.setTargetFragment(SplitItemFragment.this, REQUEST_AMOUNT);
                     dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
                 }
             });
@@ -138,7 +131,7 @@ public class SplitItemFragment
             adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTransCode.setAdapter(adapterTrans);
             // find the split transaction type.
-            int transactionTypeSelection = getTransactionTypeSelection();
+            int transactionTypeSelection = getTransactionTypeCode();
             spinTransCode.setSelection(transactionTypeSelection);
 
             // category and subcategory
@@ -198,9 +191,10 @@ public class SplitItemFragment
                 if (txtSelectCategory != null) {
                     txtSelectCategory.setText(null);
                     if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                        mSplitTransaction.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, -1));
-                        mSplitTransaction.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, -1));
-                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId()));
+                        mSplitTransaction.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
+                        mSplitTransaction.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET));
+                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(
+                                mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId()));
                     }
                 }
         }
@@ -219,15 +213,17 @@ public class SplitItemFragment
 
     @Subscribe
     public void onEvent(AmountEnteredEvent event) {
-        if (this.getTag().toString().equals(event.requestId)) {
-            mSplitTransaction.setAmount(event.amount);
-
-            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, event.amount, getCurrencyId());
-
-            // assign the tag *after* the text to overwrite the amount object with string.
-            String amountTag = event.amount.toString();
-            txtAmount.setTag(amountTag);
+        if (!this.getTag().equals(event.requestId)) {
+            return;
         }
+
+        mSplitTransaction.setAmount(event.amount);
+
+        FormatUtilities.formatAmountTextView(getActivity(), txtAmount, event.amount, getCurrencyId());
+
+        // assign the tag *after* the text to overwrite the amount object with string.
+        String amountTag = event.amount.toString();
+        txtAmount.setTag(amountTag);
     }
 
     // Public
@@ -267,7 +263,7 @@ public class SplitItemFragment
         return mSplitTransaction;
     }
 
-    private int getTransactionTypeSelection(){
+    private int getTransactionTypeCode(){
         // define the transaction type based on the amount and the parent type.
 
         int transactionTypeSelection;
