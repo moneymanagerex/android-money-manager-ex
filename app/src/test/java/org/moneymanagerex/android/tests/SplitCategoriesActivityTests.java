@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SplitCategoriesActivity;
+import com.money.manager.ex.transactions.SplitCategoriesActivity;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;

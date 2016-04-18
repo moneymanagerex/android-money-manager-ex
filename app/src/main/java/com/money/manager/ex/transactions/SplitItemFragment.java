@@ -32,7 +32,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.SplitCategoriesActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.R;
@@ -70,8 +69,7 @@ public class SplitItemFragment
     }
 
     private ISplitTransaction mSplitTransaction;
-    private TextView txtAmount;
-    private Spinner spinTransCode;
+    private SplitItemViewHolder mViewHolder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,80 +88,85 @@ public class SplitItemFragment
             mSplitTransaction = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
         }
 
-        Core core = new Core(getActivity().getApplicationContext());
-
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.item_splittransaction, null);
-        if (layout != null) {
-            // amount
-            txtAmount = (TextView) layout.findViewById(R.id.editTextTotAmount);
-            Money splitTransactionAmount = mSplitTransaction.getAmount();
-            if (splitTransactionAmount != null && !(splitTransactionAmount.isZero())) {
-                // Change the sign to positive.
-                if(splitTransactionAmount.toDouble() < 0) {
-                    splitTransactionAmount = splitTransactionAmount.negate();
-                }
-            }
-            FormatUtilities.formatAmountTextView(getActivity(), txtAmount, splitTransactionAmount,
-                this.getCurrencyId());
-
-            txtAmount.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Object tag = v.getTag();
-                    Money amount;
-                    if (tag == null) {
-                        amount = MoneyFactory.fromString("0");
-                    } else {
-                        amount = MoneyFactory.fromString(tag.toString());
-                    }
-
-                    AmountInputDialog dialog = AmountInputDialog.getInstance(
-                        SplitItemFragment.this.getTag(),
-                        amount, SplitItemFragment.this.getCurrencyId());
-                    dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
-                }
-            });
-
-            // Transaction Type
-            spinTransCode = (Spinner) layout.findViewById(R.id.spinnerTransCode);
-            String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-            ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
-            adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinTransCode.setAdapter(adapterTrans);
-            // find the split transaction type.
-            int transactionTypeSelection = getTransactionTypeCode();
-            spinTransCode.setSelection(transactionTypeSelection);
-
-            // category and subcategory
-            TextView txtSelectCategory = (TextView) layout.findViewById(R.id.textViewCategory);
-            String buttonText = core.getCategSubName(mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId());
-            txtSelectCategory.setText(buttonText);
-
-            txtSelectCategory.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), CategoryListActivity.class);
-                    intent.setAction(Intent.ACTION_PICK);
-                    startActivityForResult(intent, REQUEST_PICK_CATEGORY);
-                }
-            });
-            // image button to remove an item
-            ImageButton btnRemove = (ImageButton) layout.findViewById(R.id.imageButtonCancel);
-            btnRemove.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.remove(SplitItemFragment.this);
-                    transaction.commit();
-
-                    EventBus.getDefault().post(new SplitItemRemovedEvent(mSplitTransaction));
-                }
-            });
-            // tag class
-            layout.setTag(mSplitTransaction);
+        if (layout == null) {
+            return layout;
         }
+
+        mViewHolder = new SplitItemViewHolder(layout);
+
+        // Amount
+
+        Money splitTransactionAmount = mSplitTransaction.getAmount();
+        if (splitTransactionAmount != null && !(splitTransactionAmount.isZero())) {
+            // Change the sign to positive.
+            if(splitTransactionAmount.toDouble() < 0) {
+                splitTransactionAmount = splitTransactionAmount.negate();
+            }
+        }
+        FormatUtilities.formatAmountTextView(getActivity(), mViewHolder.txtAmount, splitTransactionAmount,
+            this.getCurrencyId());
+
+        mViewHolder.txtAmount.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Object tag = v.getTag();
+                Money amount;
+                if (tag == null) {
+                    amount = MoneyFactory.fromString("0");
+                } else {
+                    amount = MoneyFactory.fromString(tag.toString());
+                }
+
+                AmountInputDialog dialog = AmountInputDialog.getInstance(
+                    SplitItemFragment.this.getTag(),
+                    amount, SplitItemFragment.this.getCurrencyId());
+                dialog.show(getFragmentManager(), dialog.getClass().getSimpleName());
+            }
+        });
+
+        // Transaction Type
+
+        String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
+        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
+        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mViewHolder.spinTransCode.setAdapter(adapterTrans);
+        // find the split transaction type.
+        int transactionTypeSelection = getTransactionTypeCode();
+        mViewHolder.spinTransCode.setSelection(transactionTypeSelection);
+
+        // category and subcategory
+
+        Core core = new Core(getActivity().getApplicationContext());
+        String buttonText = core.getCategSubName(mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId());
+        mViewHolder.txtSelectCategory.setText(buttonText);
+
+        mViewHolder.txtSelectCategory.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CategoryListActivity.class);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+            }
+        });
+
+        // image button to remove an item
+
+        ImageButton btnRemove = (ImageButton) layout.findViewById(R.id.imageButtonCancel);
+        btnRemove.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.remove(SplitItemFragment.this);
+                transaction.commit();
+
+                EventBus.getDefault().post(new SplitItemRemovedEvent(mSplitTransaction));
+            }
+        });
+        // tag class
+        layout.setTag(mSplitTransaction);
 
         return layout;
     }
@@ -219,11 +222,11 @@ public class SplitItemFragment
 
         mSplitTransaction.setAmount(event.amount);
 
-        FormatUtilities.formatAmountTextView(getActivity(), txtAmount, event.amount, getCurrencyId());
+        FormatUtilities.formatAmountTextView(getActivity(), mViewHolder.txtAmount, event.amount, getCurrencyId());
 
         // assign the tag *after* the text to overwrite the amount object with string.
         String amountTag = event.amount.toString();
-        txtAmount.setTag(amountTag);
+        mViewHolder.txtAmount.setTag(amountTag);
     }
 
     // Public
@@ -237,7 +240,7 @@ public class SplitItemFragment
      * @return Split Transaction
      */
     public ISplitTransaction getSplitTransaction(TransactionTypes parentTransactionType) {
-        Object tag = txtAmount.getTag();
+        Object tag = mViewHolder.txtAmount.getTag();
 
         if (tag == null) {
             // handle 0 values.
@@ -250,7 +253,7 @@ public class SplitItemFragment
         Money amount = MoneyFactory.fromString(tag.toString());
 
         // toString takes the localized text! Use value.
-        int position = spinTransCode.getSelectedItemPosition();
+        int position = mViewHolder.spinTransCode.getSelectedItemPosition();
         TransactionTypes transactionType = TransactionTypes.values()[position];
 
         if(!parentTransactionType.equals(transactionType)){

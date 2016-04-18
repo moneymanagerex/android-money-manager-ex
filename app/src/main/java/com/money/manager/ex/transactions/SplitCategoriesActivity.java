@@ -14,23 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex;
+package com.money.manager.ex.transactions;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ScrollView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.transactions.SplitItemFactory;
-import com.money.manager.ex.transactions.SplitItemFragment;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,49 +65,47 @@ public class SplitCategoriesActivity
      * Needed to distinguish between SplitCategory and SplitRecurringCategory.
      */
     private String entityTypeName = null;
-    private ArrayList<ISplitTransaction> mSplitTransactions = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
-    private FloatingActionButton mFab;
     private Integer currencyId = Constants.NOT_SET;
+    private SplitCategoriesAdapter mAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAdapter = new SplitCategoriesAdapter();
 
         // load intent
         handleIntent();
 
         // load deleted item
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
-            // todo: is this the correct variable?
-            mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
+//            mAdapter.splitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
+            mSplitDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
         }
 
         // If this is a new split (no existing split categories), then create the first one.
-        if(mSplitTransactions == null || mSplitTransactions.isEmpty()) {
+        if(mAdapter.splitTransactions == null || mAdapter.splitTransactions.isEmpty()) {
             addSplitTransaction();
         }
 
         // set view
         setContentView(R.layout.activity_split_categories);
 
-        // toolbar
-//        if (getToolbar() != null) {
-//            setSupportActionBar();
-//            setToolbarStandardActions();
-//        }
         setToolbarStandardActions();
 
-        // 'Add' button
-
-        if (mSplitTransactions != null) {
-            for (int i = 0; i < mSplitTransactions.size(); i++) {
-                addFragmentChild(mSplitTransactions.get(i));
-            }
-        }
+        // Fill any existing records.
+//        if (mAdapter.splitTransactions != null) {
+//            for (int i = 0; i < mAdapter.splitTransactions.size(); i++) {
+//                addFragmentChild(mAdapter.splitTransactions.get(i));
+//            }
+//        }
 
         // show the floating "Add" button
         setUpFloatingButton();
+
+        initRecyclerView();
     }
 
     @Override
@@ -194,34 +193,37 @@ public class SplitCategoriesActivity
         return splitCategories;
     }
 
-    public void onFloatingActionButtonClickListener() {
-        addSplitTransaction();
-    }
-
     // Private
 
     private void addSplitTransaction() {
-        // find which split transactions data set to instantiate.
         ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName);
-        addFragmentChild(entity);
-    }
+//        addFragmentChild(entity);
+        mAdapter.splitTransactions.add(entity);
 
-    private void addFragmentChild(ISplitTransaction entity) {
-        int tagNumber = entity.getId() == null || entity.getId() == Constants.NOT_SET
-            ? mIdTag++
-            : entity.getId();
-        String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
+        int position = mAdapter.splitTransactions.size() - 1;
+        mAdapter.notifyItemInserted(position);
 
-        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
-
-        if (fragment == null) {
-            fragment = SplitItemFragment.newInstance(entity, this.currencyId);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
-            transaction.commit();
+        if (mRecyclerView != null) {
+            mRecyclerView.smoothScrollToPosition(position);
         }
     }
+
+//    private void addFragmentChild(ISplitTransaction entity) {
+//        int tagNumber = entity.getId() == null || entity.getId() == Constants.NOT_SET
+//            ? mIdTag++
+//            : entity.getId();
+//        String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
+//
+//        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
+//
+//        if (fragment == null) {
+//            fragment = SplitItemFragment.newInstance(entity, this.currencyId);
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+//            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
+//            transaction.commit();
+//        }
+//    }
 
     private void handleIntent() {
         Intent intent = getIntent();
@@ -234,8 +236,25 @@ public class SplitCategoriesActivity
 
         this.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
 
-        mSplitTransactions = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
+        List<ISplitTransaction> splits = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
+        if (splits != null) {
+            mAdapter.splitTransactions = splits;
+        }
         mSplitDeleted = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION_DELETED));
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.splitsRecyclerView);
+        if (mRecyclerView == null) return;
+
+        // adapter
+        mRecyclerView.setAdapter(mAdapter);
+
+        // layout manager - LinearLayoutManager
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // item animator
+        // RecyclerView.ItemAnimator
     }
 
     private void onRemoveItem(ISplitTransaction splitTransaction) {
@@ -253,21 +272,21 @@ public class SplitCategoriesActivity
     }
 
     private void setUpFloatingButton() {
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        if (mFab == null) return;
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if (fab == null) return;
 
-        mFab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onFloatingActionButtonClickListener();
+                addSplitTransaction();
             }
         });
 
         ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
         if (scrollView != null) {
-            mFab.attachToScrollView(scrollView);
+            fab.attachToScrollView(scrollView);
         }
 
-        mFab.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
     }
 }

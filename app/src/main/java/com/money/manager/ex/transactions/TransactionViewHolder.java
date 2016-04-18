@@ -23,7 +23,7 @@ import android.widget.TextView;
 /**
  * Contains all the common view controls
  */
-public class ViewHolder {
+public class TransactionViewHolder {
     public TextView dateTextView;
     public TextView categoryTextView;
     public TextView txtSelectPayee;

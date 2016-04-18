@@ -313,7 +313,7 @@
             android:name=".search.SearchActivity"
             android:label="@string/search" />
         <activity
-            android:name=".SplitCategoriesActivity"
+            android:name=".transactions.SplitCategoriesActivity"
             android:label="@string/split_transaction" />
         <activity
             android:name=".DonateActivity"

@@ -48,7 +48,6 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.SplitCategoriesActivity;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -124,7 +123,7 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
     // Controls
-    public ViewHolder viewHolder;
+    public TransactionViewHolder viewHolder;
     public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
     public TextView accountFromLabel, txtToAccount;
     public TextView amountHeaderTextView, amountToHeaderTextView;
@@ -179,7 +178,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public void findControls() {
-        this.viewHolder = new ViewHolder();
+        this.viewHolder = new TransactionViewHolder();
 
         // Date
         viewHolder.dateTextView = (TextView) mParent.findViewById(R.id.textViewDate);
