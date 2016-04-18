@@ -55,8 +55,11 @@
         <!-- checkboxes and confirmation text in dialogs -->
         <item name="colorAccent">@color/md_primary_dark</item>
         <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
+
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_dark</item>
+        <!--<item name="android:buttonStyle">@style/Money.Button</item>-->
+
         <!-- Charts -->
         <item name="chartTextColor">@color/material_grey_50</item>
         <!-- other -->

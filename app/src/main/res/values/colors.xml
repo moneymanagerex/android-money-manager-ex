@@ -77,7 +77,7 @@
     <color name="md_primary_text">@color/material_grey_900</color>
     <color name="md_secondary_text">#727272</color>
     <!--<color name="md_icons">@color/material_white</color>-->
-    <color name="md_icons">@color/material_grey_50</color>
+    <color name="md_icons">@color/material_grey_100</color>
     <color name="md_divider">#B6B6B6</color>
 
     <color name="md_red">@color/material_red_700</color>
