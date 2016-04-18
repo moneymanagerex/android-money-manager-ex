@@ -221,7 +221,9 @@ public class AccountEditActivity
         }
 
         TextView initialBalanceTextView = (TextView) findViewById(R.id.editTextInitialBalance);
-        FormatUtilities.formatAmountTextView(this, initialBalanceTextView, event.amount, mAccount.getCurrencyId());
+
+        FormatUtilities formatter = new FormatUtilities(this);
+        formatter.formatAmountTextView(initialBalanceTextView, event.amount, mAccount.getCurrencyId());
 
         mAccount.setInitialBalance(event.amount);
     }
@@ -401,7 +403,9 @@ public class AccountEditActivity
         if (mAccount.getInitialBalance().toDouble() < 0) {
             mAccount.setInitialBalance(mAccount.getInitialBalance().negate());
         }
-        FormatUtilities.formatAmountTextView(this, mViewHolder.txtInitialBalance, mAccount.getInitialBalance(), mAccount.getCurrencyId());
+
+        FormatUtilities formatter = new FormatUtilities(this);
+        formatter.formatAmountTextView(mViewHolder.txtInitialBalance, mAccount.getInitialBalance(), mAccount.getCurrencyId());
 
         // Account Number
         if (!(TextUtils.isEmpty(mAccount.getAccountNumber()))) {

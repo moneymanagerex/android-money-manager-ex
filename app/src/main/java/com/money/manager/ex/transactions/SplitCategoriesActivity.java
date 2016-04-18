@@ -204,7 +204,8 @@ public class SplitCategoriesActivity
         mAdapter.notifyItemInserted(position);
 
         if (mRecyclerView != null) {
-            mRecyclerView.smoothScrollToPosition(position);
+//            mRecyclerView.smoothScrollToPosition(position);
+            mRecyclerView.scrollToPosition(position);
         }
     }
 
@@ -255,6 +256,9 @@ public class SplitCategoriesActivity
 
         // item animator
         // RecyclerView.ItemAnimator
+
+        // optimizations
+        mRecyclerView.setHasFixedSize(true);
     }
 
     private void onRemoveItem(ISplitTransaction splitTransaction) {

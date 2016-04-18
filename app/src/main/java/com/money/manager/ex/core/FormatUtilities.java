@@ -42,15 +42,6 @@ public class FormatUtilities {
 
     private static final String LOGCAT = FormatUtilities.class.getSimpleName();
 
-    /**
-     * Compatibility wrapper only.
-     */
-    public static void formatAmountTextView(Context context, TextView view, Money amount,
-                                            Integer currencyId) {
-        FormatUtilities formatter = new FormatUtilities(context);
-        formatter.formatAmountTextView(view, amount, currencyId);
-    }
-
     public static String getIsoDateStringFrom(int year, int month, int day) {
         return String.format("%04d-%02d-%02d", year, month, day);
     }

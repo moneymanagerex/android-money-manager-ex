@@ -89,9 +89,9 @@ public class SplitItemFragment
         }
 
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.item_splittransaction, null);
-        if (layout == null) {
-            return layout;
-        }
+        if (layout == null) return null;
+
+        // View Holder.
 
         mViewHolder = new SplitItemViewHolder(layout);
 
@@ -104,8 +104,9 @@ public class SplitItemFragment
                 splitTransactionAmount = splitTransactionAmount.negate();
             }
         }
-        FormatUtilities.formatAmountTextView(getActivity(), mViewHolder.txtAmount, splitTransactionAmount,
-            this.getCurrencyId());
+
+        FormatUtilities formatter = new FormatUtilities(getActivity());
+        formatter.formatAmountTextView(mViewHolder.txtAmount, splitTransactionAmount, this.getCurrencyId());
 
         mViewHolder.txtAmount.setOnClickListener(new OnClickListener() {
             @Override
@@ -222,7 +223,8 @@ public class SplitItemFragment
 
         mSplitTransaction.setAmount(event.amount);
 
-        FormatUtilities.formatAmountTextView(getActivity(), mViewHolder.txtAmount, event.amount, getCurrencyId());
+        FormatUtilities formatter = new FormatUtilities(getActivity());
+        formatter.formatAmountTextView(mViewHolder.txtAmount, event.amount, getCurrencyId());
 
         // assign the tag *after* the text to overwrite the amount object with string.
         String amountTag = event.amount.toString();
