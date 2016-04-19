@@ -65,7 +65,6 @@ public class SplitCategoriesAdapter
         initAmountControl(viewHolder);
         initTransactionType(mContext, viewHolder);
         initCategorySelector(viewHolder);
-//        initRemoveButton(viewHolder);
 
         return viewHolder;
     }
@@ -76,8 +75,6 @@ public class SplitCategoriesAdapter
     @Override
     public void onBindViewHolder(SplitItemViewHolder holder, int position) {
         ISplitTransaction split = this.splitTransactions.get(position);
-
-        holder.position = position;
 
         bindCategory(getContext(), holder, split);
         bindTransactionType(holder, split);
@@ -135,7 +132,7 @@ public class SplitCategoriesAdapter
                 }
 
                 // Request the amount entry.
-                EventBus.getDefault().post(new AmountEntryRequestedEvent(viewHolder.position, amount));
+                EventBus.getDefault().post(new AmountEntryRequestedEvent(viewHolder.getAdapterPosition(), amount));
             }
         });
     }
@@ -146,23 +143,10 @@ public class SplitCategoriesAdapter
             @Override
             public void onClick(View v) {
                 // request category selection
-                EventBus.getDefault().post(new CategoryRequestedEvent(holder.position));
+                EventBus.getDefault().post(new CategoryRequestedEvent(holder.getAdapterPosition()));
             }
         });
     }
-
-//    private void initRemoveButton(final SplitItemViewHolder viewHolder) {
-//        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ISplitTransaction split = splitTransactions.get(viewHolder.position);
-//                EventBus.getDefault().post(new SplitItemRemovedEvent(split));
-//
-//                splitTransactions.remove(viewHolder.position);
-//                notifyItemRemoved(viewHolder.position);
-//            }
-//        });
-//    }
 
     private void initTransactionType(Context context, final SplitItemViewHolder viewHolder) {
         String[] transCodeItems = context.getResources().getStringArray(R.array.split_transcode_items);
@@ -176,7 +160,7 @@ public class SplitCategoriesAdapter
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TransactionTypes selectedType = TransactionTypes.values()[position];
-                ISplitTransaction split = splitTransactions.get(viewHolder.position);
+                ISplitTransaction split = splitTransactions.get(viewHolder.getAdapterPosition());
 
                 if (selectedType != split.getTransactionType(transactionType)) {
                     split.setAmount(split.getAmount().negate());

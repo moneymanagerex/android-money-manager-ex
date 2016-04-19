@@ -9,12 +9,12 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 
 /**
- * View Holder pattern for Split Category
+ * View Holder pattern for Split Category.
+ * Adapter position is provided automatically by .getAdapterPosition().
  */
 public class SplitItemViewHolder
     extends RecyclerView.ViewHolder {
 
-    public int position;
     public TextView txtSelectCategory;
     public Spinner spinTransCode;
     public TextView txtAmount;
