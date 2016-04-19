@@ -72,6 +72,7 @@ public class CategoryListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public String mAction = Intent.ACTION_EDIT;
+    public Integer requestId;
 
     private static final int ID_LOADER_CATEGORYSUB = 0;
 
@@ -127,8 +128,8 @@ public class CategoryListFragment
             Show simple list when opened independently.
         */
         mLayout = mAction.equals(Intent.ACTION_PICK)
-                ? R.layout.simple_expandable_list_item_selector
-                : android.R.layout.simple_expandable_list_item_2;
+            ? R.layout.simple_expandable_list_item_selector
+            : android.R.layout.simple_expandable_list_item_2;
 //            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
             // todo: use custom chevron as an indicator, like in drawer menu.
 //            mLayout = R.layout.simple_expandable_custom_list_item;
@@ -349,6 +350,8 @@ public class CategoryListFragment
             }
 
             if (result != null) {
+                result.putExtra(CategoryListActivity.KEY_REQUEST_ID, this.requestId);
+
                 getActivity().setResult(Activity.RESULT_OK, result);
             } else {
                 getActivity().setResult(Activity.RESULT_CANCELED);

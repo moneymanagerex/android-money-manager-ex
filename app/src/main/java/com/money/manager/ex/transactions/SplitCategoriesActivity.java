@@ -16,10 +16,9 @@
  */
 package com.money.manager.ex.transactions;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -28,12 +27,15 @@ import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
+import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,9 +60,10 @@ public class SplitCategoriesActivity
     public static final String INTENT_RESULT_SPLIT_TRANSACTION = "SplitCategoriesActivity:ResultSplitTransaction";
     public static final String INTENT_RESULT_SPLIT_TRANSACTION_DELETED = "SplitCategoriesActivity:ResultSplitTransactionDeleted";
 
-    private static int mIdTag = 0x8000;
+    private static final int REQUEST_PICK_CATEGORY = 1;
 
-    public TransactionTypes mParentTransactionType;
+//    private static int mIdTag = 0x8000;
+//    public TransactionTypes mParentTransactionType;
 
     /**
      * The name of the entity to create when adding split transactions.
@@ -76,7 +79,7 @@ public class SplitCategoriesActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new SplitCategoriesAdapter(Constants.NOT_SET);
+        mAdapter = new SplitCategoriesAdapter();
 
         // load intent
         handleIntent();
@@ -111,6 +114,35 @@ public class SplitCategoriesActivity
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_PICK_CATEGORY:
+//                TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
+//                if (txtSelectCategory != null) {
+//                    txtSelectCategory.setText(null);
+                    if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                        int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                        int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+//                        mSplitTransaction.setCategoryId();
+//                        mSplitTransaction.setSubcategoryId();
+//                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(
+//                                mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId()));
+                        // assign
+                        int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
+                        ISplitTransaction split = mAdapter.splitTransactions.get(location);
+                        split.setCategoryId(categoryId);
+                        split.setSubcategoryId(subcategoryId);
+
+                        mAdapter.notifyItemChanged(location);
+                    }
+//                }
+        }
+
+    }
+
+    @Override
     public boolean onActionCancelClick() {
         setResult(RESULT_CANCELED);
         finish();
@@ -120,7 +152,7 @@ public class SplitCategoriesActivity
 
     @Override
     public boolean onActionDoneClick() {
-        ArrayList<ISplitTransaction> allSplitTransactions = getAllSplitCategories();
+        List<ISplitTransaction> allSplitTransactions = getAllSplitCategories();
         Money total = MoneyFactory.fromString("0");
 
         // check data
@@ -187,22 +219,34 @@ public class SplitCategoriesActivity
         mAdapter.notifyItemChanged(position);
     }
 
+    @Subscribe
+    public void onAmountEntryRequested(AmountEntryRequestedEvent event) {
+        AmountInputDialog dialog = AmountInputDialog.getInstance(
+                event.requestId, event.amount, mAdapter.currencyId);
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+    }
+
+    @Subscribe
+    public void onCategoryRequested(CategoryRequestedEvent event) {
+        showCategorySelector(event.requestId);
+    }
+
     /**
      * Returns all split categories created on the form.
      * @return List of Split Transactions that are displayed.
      */
-    public ArrayList<ISplitTransaction> getAllSplitCategories() {
-        ArrayList<ISplitTransaction> splitCategories = new ArrayList<>();
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+    public List<ISplitTransaction> getAllSplitCategories() {
+//        ArrayList<ISplitTransaction> splitCategories = new ArrayList<>();
+//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//        for(Fragment fragment:fragments) {
+//            SplitItemFragment splitFragment = (SplitItemFragment) fragment;
+//            if (splitFragment != null) {
+//                splitCategories.add(splitFragment.getSplitTransaction(mParentTransactionType));
+//            }
+//        }
+//        return splitCategories;
 
-        for(Fragment fragment:fragments) {
-            SplitItemFragment splitFragment = (SplitItemFragment) fragment;
-            if (splitFragment != null) {
-                splitCategories.add(splitFragment.getSplitTransaction(mParentTransactionType));
-            }
-        }
-
-        return splitCategories;
+        return mAdapter.splitTransactions;
     }
 
     // Private
@@ -230,7 +274,7 @@ public class SplitCategoriesActivity
 //        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
 //
 //        if (fragment == null) {
-//            fragment = SplitItemFragment.newInstance(entity, this.currencyId);
+//            fragment = SplitItemFragment.newInstance(entity, mAdapter.currencyId);
 //            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 //            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
@@ -245,7 +289,8 @@ public class SplitCategoriesActivity
         this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
 
         int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-        mParentTransactionType = TransactionTypes.values()[transactionType];
+//        mParentTransactionType = TransactionTypes.values()[transactionType];
+        mAdapter.transactionType = TransactionTypes.values()[transactionType];
 
         int currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
         //this.cu
@@ -307,5 +352,15 @@ public class SplitCategoriesActivity
         }
 
         fab.setVisibility(View.VISIBLE);
+    }
+
+    private void showCategorySelector(int requestId) {
+        Intent intent = new Intent(this, CategoryListActivity.class);
+        intent.setAction(Intent.ACTION_PICK);
+
+        // add id of the item that requested the category.
+        intent.putExtra(CategoryListActivity.KEY_REQUEST_ID, requestId);
+
+        startActivityForResult(intent, REQUEST_PICK_CATEGORY);
     }
 }

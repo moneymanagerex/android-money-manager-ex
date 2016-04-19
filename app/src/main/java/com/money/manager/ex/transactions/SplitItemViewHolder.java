@@ -13,6 +13,7 @@ import com.money.manager.ex.R;
 public class SplitItemViewHolder
     extends RecyclerView.ViewHolder {
 
+    public int position;
     public TextView txtSelectCategory;
     public Spinner spinTransCode;
     public TextView txtAmount;

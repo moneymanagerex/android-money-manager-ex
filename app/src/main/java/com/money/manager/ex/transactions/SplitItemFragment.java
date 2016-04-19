@@ -95,33 +95,13 @@ public class SplitItemFragment
 
         mViewHolder = new SplitItemViewHolder(layout);
 
-        // See SplitCategoriesAdapter.bindAmount
+        // See SplitCategoriesAdapter. init & bindAmount
 
         // Transaction Type
 
-        String[] transCodeItems = getResources().getStringArray(R.array.split_transcode_items);
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, transCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mViewHolder.spinTransCode.setAdapter(adapterTrans);
-        // find the split transaction type.
-        int transactionTypeSelection = getTransactionTypeCode();
-        mViewHolder.spinTransCode.setSelection(transactionTypeSelection);
 
         // category and subcategory
 
-        Core core = new Core(getActivity().getApplicationContext());
-        String buttonText = core.getCategSubName(mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId());
-        mViewHolder.txtSelectCategory.setText(buttonText);
-
-        mViewHolder.txtSelectCategory.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CategoryListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
-            }
-        });
 
         // image button to remove an item
 
@@ -237,29 +217,6 @@ public class SplitItemFragment
         }
 
         return mSplitTransaction;
-    }
-
-    private int getTransactionTypeCode(){
-        // define the transaction type based on the amount and the parent type.
-
-        int transactionTypeSelection;
-
-        SplitCategoriesActivity splitActivity = (SplitCategoriesActivity) getActivity();
-        boolean parentIsWithdrawal = splitActivity.mParentTransactionType.equals(TransactionTypes.Withdrawal);
-        Money amount = mSplitTransaction.getAmount();
-        if(parentIsWithdrawal){
-            // parent is Withdrawal.
-            transactionTypeSelection = amount.toDouble() >= 0
-                    ? TransactionTypes.Withdrawal.getCode() // 0
-                    : TransactionTypes.Deposit.getCode(); // 1;
-        } else {
-            // parent is Deposit.
-            transactionTypeSelection = amount.toDouble() >= 0
-                    ? TransactionTypes.Deposit.getCode() // 1
-                    : TransactionTypes.Withdrawal.getCode(); // 0;
-        }
-
-        return transactionTypeSelection;
     }
 
     private Integer getCurrencyId() {

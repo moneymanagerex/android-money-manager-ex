@@ -22,14 +22,16 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 
 /**
  * List of categories.
  */
 public class CategoryListActivity
-        extends BaseFragmentActivity {
+    extends BaseFragmentActivity {
 
+    public static final String KEY_REQUEST_ID = "CategorySubCategory:RequestId";
     public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";
     public static final String INTENT_RESULT_CATEGNAME = "CategorySubCategory:CategName";
     public static final String INTENT_RESULT_SUBCATEGID = "CategorySubCategory:SubCategId";
@@ -52,6 +54,9 @@ public class CategoryListActivity
 
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
             listFragment.mAction = intent.getAction();
+
+            int requestId = intent.getIntExtra(KEY_REQUEST_ID, Constants.NOT_SET);
+            listFragment.requestId = requestId;
         }
 
         // management fragment
