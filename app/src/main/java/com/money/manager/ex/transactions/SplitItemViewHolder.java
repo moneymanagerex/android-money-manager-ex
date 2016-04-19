@@ -7,6 +7,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.shamanland.fonticon.FontIconView;
 
 /**
  * View Holder pattern for Split Category.
@@ -18,7 +19,7 @@ public class SplitItemViewHolder
     public TextView txtSelectCategory;
     public Spinner spinTransCode;
     public TextView txtAmount;
-//    public ImageButton btnRemove;
+    public FontIconView transactionTypeButton;
 
     public SplitItemViewHolder(View itemView) {
         super(itemView);
@@ -26,6 +27,6 @@ public class SplitItemViewHolder
         txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
         spinTransCode = (Spinner) itemView.findViewById(R.id.spinnerTransCode);
         txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
-//        btnRemove = (ImageButton) itemView.findViewById(R.id.imageButtonCancel);
+        transactionTypeButton = (FontIconView) itemView.findViewById(R.id.transactionTypeButton);
     }
 }

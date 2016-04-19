@@ -26,17 +26,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/imageButtonCancel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:background="@android:color/transparent"-->
-            <!--android:src="?attr/ic_action_cancel_contrast" />-->
-
         <!-- graphical Transaction Type selector -->
         <com.shamanland.fonticon.FontIconView
-            android:id="@+id/transactionTypeDeposit"
+            android:id="@+id/transactionTypeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

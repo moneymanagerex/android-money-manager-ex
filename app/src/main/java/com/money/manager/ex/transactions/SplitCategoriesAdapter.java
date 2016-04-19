@@ -65,7 +65,8 @@ public class SplitCategoriesAdapter
         initAmountControl(viewHolder);
         initTransactionType(mContext, viewHolder);
         initCategorySelector(viewHolder);
-
+        //todo initTransactionTypeButton
+        
         return viewHolder;
     }
 
@@ -172,6 +173,10 @@ public class SplitCategoriesAdapter
 
             }
         });
+    }
+
+    private void initTransactionTypeButton() {
+
     }
 
     /**
