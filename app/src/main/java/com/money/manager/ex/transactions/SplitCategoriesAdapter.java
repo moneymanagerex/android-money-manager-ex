@@ -17,6 +17,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
+import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,9 +60,12 @@ public class SplitCategoriesAdapter
         View view = inflater.inflate(R.layout.item_splittransaction, parent, false);
 
         SplitItemViewHolder viewHolder = new SplitItemViewHolder(view);
+
         initAmountControl(viewHolder);
         initTransactionType(mContext, viewHolder);
         initCategorySelector(viewHolder);
+        initRemoveButton(viewHolder);
+
         return viewHolder;
     }
 
@@ -74,11 +78,9 @@ public class SplitCategoriesAdapter
 
         holder.position = position;
 
-        holder.txtSelectCategory.setText(split.getCategoryId().toString());
-
-        bindAmount(split, holder);
-        bindTransactionType(holder, this.transactionType, split.getAmount());
         bindCategory(getContext(), holder, split);
+        bindTransactionType(holder, this.transactionType, split.getAmount());
+        bindAmount(split, holder);
     }
 
     @Override
@@ -176,6 +178,20 @@ public class SplitCategoriesAdapter
 
     }
 
+    private void initRemoveButton(final SplitItemViewHolder viewHolder) {
+        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ISplitTransaction split = splitTransactions.get(viewHolder.position);
+                EventBus.getDefault().post(new SplitItemRemovedEvent(split));
+
+                splitTransactions.remove(viewHolder.position);
+                notifyItemRemoved(viewHolder.position);
+            }
+        });
+
+    }
+
     private void initTransactionType(Context context, final SplitItemViewHolder viewHolder) {
         String[] transCodeItems = context.getResources().getStringArray(R.array.split_transcode_items);
 
@@ -204,5 +220,4 @@ public class SplitCategoriesAdapter
             }
         });
     }
-
 }

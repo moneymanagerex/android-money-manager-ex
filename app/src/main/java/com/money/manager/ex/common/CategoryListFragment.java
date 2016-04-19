@@ -401,7 +401,7 @@ public class CategoryListFragment
                 category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
                 // add list
                 mCategories.add(category);
-                listSubCategories = new ArrayList<QueryCategorySubCategory>();
+                listSubCategories = new ArrayList<>();
             }
             // check if subcategory != -1
             if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {

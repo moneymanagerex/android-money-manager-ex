@@ -62,16 +62,12 @@ public class SplitCategoriesActivity
 
     private static final int REQUEST_PICK_CATEGORY = 1;
 
-//    private static int mIdTag = 0x8000;
-//    public TransactionTypes mParentTransactionType;
-
     /**
      * The name of the entity to create when adding split transactions.
      * Needed to distinguish between SplitCategory and SplitRecurringCategory.
      */
     private String entityTypeName = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
-//    private Integer currencyId = Constants.NOT_SET;
     private SplitCategoriesAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
@@ -85,8 +81,8 @@ public class SplitCategoriesActivity
         handleIntent();
 
         // load deleted item
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SPLIT_TRANSACTION_DELETED)) {
-//            mAdapter.splitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
+        if (savedInstanceState != null) {
+            mAdapter.splitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
             mSplitDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
         }
 
@@ -119,25 +115,17 @@ public class SplitCategoriesActivity
 
         switch (requestCode) {
             case REQUEST_PICK_CATEGORY:
-//                TextView txtSelectCategory = (TextView) getView().findViewById(R.id.textViewCategory);
-//                if (txtSelectCategory != null) {
-//                    txtSelectCategory.setText(null);
-                    if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                        int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                        int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-//                        mSplitTransaction.setCategoryId();
-//                        mSplitTransaction.setSubcategoryId();
-//                        txtSelectCategory.setText(new Core(getActivity().getApplicationContext()).getCategSubName(
-//                                mSplitTransaction.getCategoryId(), mSplitTransaction.getSubcategoryId()));
-                        // assign
-                        int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
-                        ISplitTransaction split = mAdapter.splitTransactions.get(location);
-                        split.setCategoryId(categoryId);
-                        split.setSubcategoryId(subcategoryId);
+                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
+                    int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                    int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                    int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
 
-                        mAdapter.notifyItemChanged(location);
-                    }
-//                }
+                    ISplitTransaction split = mAdapter.splitTransactions.get(location);
+                    split.setCategoryId(categoryId);
+                    split.setSubcategoryId(subcategoryId);
+
+                    mAdapter.notifyItemChanged(location);
+                }
         }
 
     }
@@ -184,8 +172,12 @@ public class SplitCategoriesActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mSplitDeleted != null)
+
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mAdapter.splitTransactions));
+
+        if (mSplitDeleted != null) {
             outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitDeleted));
+        }
     }
 
     @Override
@@ -236,16 +228,6 @@ public class SplitCategoriesActivity
      * @return List of Split Transactions that are displayed.
      */
     public List<ISplitTransaction> getAllSplitCategories() {
-//        ArrayList<ISplitTransaction> splitCategories = new ArrayList<>();
-//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-//        for(Fragment fragment:fragments) {
-//            SplitItemFragment splitFragment = (SplitItemFragment) fragment;
-//            if (splitFragment != null) {
-//                splitCategories.add(splitFragment.getSplitTransaction(mParentTransactionType));
-//            }
-//        }
-//        return splitCategories;
-
         return mAdapter.splitTransactions;
     }
 
@@ -264,23 +246,6 @@ public class SplitCategoriesActivity
             mRecyclerView.scrollToPosition(position);
         }
     }
-
-//    private void addFragmentChild(ISplitTransaction entity) {
-//        int tagNumber = entity.getId() == null || entity.getId() == Constants.NOT_SET
-//            ? mIdTag++
-//            : entity.getId();
-//        String fragmentTag = SplitItemFragment.class.getSimpleName() + "_" + Integer.toString(tagNumber);
-//
-//        SplitItemFragment fragment = (SplitItemFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
-//
-//        if (fragment == null) {
-//            fragment = SplitItemFragment.newInstance(entity, mAdapter.currencyId);
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-//            transaction.add(R.id.linearLayoutSplitTransaction, fragment, fragmentTag);
-//            transaction.commit();
-//        }
-//    }
 
     private void handleIntent() {
         Intent intent = getIntent();
