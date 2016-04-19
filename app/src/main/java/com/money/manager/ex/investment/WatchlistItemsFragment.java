@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -36,6 +37,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ContextMenuIds;
@@ -457,15 +460,14 @@ public class WatchlistItemsFragment
     }
 
     private void showDeleteConfirmationDialog(final int id) {
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-                .setTitle(R.string.delete_transaction)
-                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-                .setMessage(R.string.confirmDelete);
-
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.delete_transaction)
+                .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+                .content(R.string.confirmDelete)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         StockRepository repo = new StockRepository(getActivity());
                         if (!repo.delete(id)) {
                             ExceptionHandler handler = new ExceptionHandler(getActivity());
@@ -475,17 +477,16 @@ public class WatchlistItemsFragment
                         // restart loader
                         reloadData();
                     }
-                });
-
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // close dialog
-                dialog.cancel();
-            }
-        });
-        // show dialog
-        alertDialog.create().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // close dialog
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
 }

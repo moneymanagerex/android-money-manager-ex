@@ -23,6 +23,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.Constants;
@@ -195,7 +197,19 @@ public class SplitCategoriesActivity
     }
 
     @Subscribe
+    public void onAmountEntryRequested(AmountEntryRequestedEvent event) {
+        AmountInputDialog dialog = AmountInputDialog.getInstance(
+                event.requestId, event.amount, mAdapter.currencyId);
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+    }
+
+    @Subscribe
     public void onEvent(AmountEnteredEvent event) {
+        if (event.amount.toDouble() <= 0) {
+            showInvalidAmountDialog();
+            return;
+        }
+
         int position = Integer.parseInt(event.requestId);
         ISplitTransaction split = mAdapter.splitTransactions.get(position);
 
@@ -207,13 +221,6 @@ public class SplitCategoriesActivity
         split.setAmount(event.amount);
 
         mAdapter.notifyItemChanged(position);
-    }
-
-    @Subscribe
-    public void onAmountEntryRequested(AmountEntryRequestedEvent event) {
-        AmountInputDialog dialog = AmountInputDialog.getInstance(
-                event.requestId, event.amount, mAdapter.currencyId);
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
     }
 
     @Subscribe
@@ -325,5 +332,13 @@ public class SplitCategoriesActivity
         intent.putExtra(CategoryListActivity.KEY_REQUEST_ID, requestId);
 
         startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+    }
+
+    private void showInvalidAmountDialog() {
+        new MaterialDialog.Builder(this)
+            .title(R.string.error)
+            .content(R.string.error_amount_must_be_positive)
+            .positiveText(android.R.string.ok)
+            .show();
     }
 }
