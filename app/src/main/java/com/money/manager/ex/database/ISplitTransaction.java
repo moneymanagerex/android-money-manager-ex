@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.database;
 
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.IEntity;
 
 import info.javaperformance.money.Money;
@@ -42,4 +43,7 @@ public interface ISplitTransaction
 
     Integer getSubcategoryId();
     void setSubcategoryId(Integer subCategoryId);
+
+    TransactionTypes getTransactionType();
+    void setTransactionType(TransactionTypes value);
 }

@@ -1323,6 +1323,12 @@ public class EditTransactionCommonFunctions {
         // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
 
+        if (this.transactionEntity.getAmount().toDouble() > 0) {
+            entity.setTransactionType(TransactionTypes.Deposit);
+        } else {
+            entity.setTransactionType(TransactionTypes.Withdrawal);
+        }
+
         // Add category
 
         if (!this.transactionEntity.hasCategory()) return;

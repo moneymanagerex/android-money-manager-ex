@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.IEntity;
@@ -47,7 +48,7 @@ public class SplitCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
-                                             double amount) {
+                                       TransactionTypes transactionType, double amount) {
         SplitCategory entity = new SplitCategory();
 
         entity.setId(Constants.NOT_SET);
@@ -56,8 +57,12 @@ public class SplitCategory
         entity.setAmount(MoneyFactory.fromDouble(amount));
         entity.setTransId(transactionId);
 
+        entity.setTransactionType(transactionType);
+
         return entity;
     }
+
+    private TransactionTypes transactionType;
 
     public Integer getId() {
         return getInt(SPLITTRANSID);
@@ -125,5 +130,13 @@ public class SplitCategory
 
     public void setTransId(Integer value) {
         setInt(TRANSID, value);
+    }
+
+    public TransactionTypes getTransactionType() {
+        return this.transactionType;
+    }
+
+    public void setTransactionType(TransactionTypes value) {
+        this.transactionType = value;
     }
 }

@@ -79,7 +79,7 @@ public class SplitCategoriesAdapter
         holder.position = position;
 
         bindCategory(getContext(), holder, split);
-        bindTransactionType(holder, this.transactionType, split.getAmount());
+        bindTransactionType(holder, split);
         bindAmount(split, holder);
     }
 
@@ -113,9 +113,10 @@ public class SplitCategoriesAdapter
 
     }
 
-    private void bindTransactionType(SplitItemViewHolder viewHolder, TransactionTypes parentTransactionType, Money amount) {
+    private void bindTransactionType(SplitItemViewHolder viewHolder, ISplitTransaction split) {
         // find the split transaction type.
-        int transactionTypeSelection = getTransactionTypeCode(parentTransactionType, amount);
+//        int transactionTypeSelection = getTransactionTypeCode(parentTransactionType, amount);
+        int transactionTypeSelection = split.getTransactionType().getCode();
         viewHolder.spinTransCode.setSelection(transactionTypeSelection);
     }
 

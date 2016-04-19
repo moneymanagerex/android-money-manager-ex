@@ -199,7 +199,11 @@ public class SplitCategoriesActivity
         int position = Integer.parseInt(event.requestId);
         ISplitTransaction split = mAdapter.splitTransactions.get(position);
 
-        // todo handle the sign
+        int sign = 1;
+        if (split.getTransactionType() == TransactionTypes.Withdrawal) {
+            sign = -1;
+        }
+        event.amount = event.amount.multiply(sign);
         split.setAmount(event.amount);
 
         mAdapter.notifyItemChanged(position);

@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 
@@ -46,7 +47,7 @@ public class SplitRecurringCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
-                                       double amount) {
+                                       TransactionTypes transactionType, double amount) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);
@@ -54,8 +55,12 @@ public class SplitRecurringCategory
         entity.setAmount(MoneyFactory.fromDouble(amount));
         entity.setTransId(transactionId);
 
+        entity.setTransactionType(transactionType);
+
         return entity;
     }
+
+    private TransactionTypes transactionType;
 
     @Override
     public Integer getId() {
@@ -125,5 +130,13 @@ public class SplitRecurringCategory
 
     public void setTransId(int value) {
         setInt(TRANSID, value);
+    }
+
+    public TransactionTypes getTransactionType() {
+        return this.transactionType;
+    }
+
+    public void setTransactionType(TransactionTypes value) {
+        this.transactionType = value;
     }
 }
