@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -47,8 +48,9 @@ public class SplitCategory
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-    public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
-                                       TransactionTypes transactionType, double amount) {
+    public static SplitCategory create(TransactionTypes parentTransactionType,
+                                       int transactionId, int categoryId, int subcategoryId,
+                                       double amount) {
         SplitCategory entity = new SplitCategory();
 
         entity.setId(Constants.NOT_SET);
@@ -57,12 +59,12 @@ public class SplitCategory
         entity.setAmount(MoneyFactory.fromDouble(amount));
         entity.setTransId(transactionId);
 
-        entity.setTransactionType(transactionType);
+        entity.setParentTransactionType(parentTransactionType);
 
         return entity;
     }
 
-    private TransactionTypes transactionType;
+    private TransactionTypes parentTransactionType;
 
     public Integer getId() {
         return getInt(SPLITTRANSID);
@@ -133,10 +135,23 @@ public class SplitCategory
     }
 
     public TransactionTypes getTransactionType() {
-        return this.transactionType;
+        return CommonSplitCategoryLogic.getTransactionType(this.parentTransactionType, this.getAmount());
     }
 
     public void setTransactionType(TransactionTypes value) {
-        this.transactionType = value;
+        TransactionTypes transactionType = getTransactionType();
+
+        // If the type is being changed, just revert the sign.
+        if (value != transactionType) {
+            this.setAmount(this.getAmount().negate());
+        }
+    }
+
+    public TransactionTypes getParentTransactionType() {
+        return this.parentTransactionType;
+    }
+
+    public void setParentTransactionType(TransactionTypes value) {
+        this.parentTransactionType = value;
     }
 }

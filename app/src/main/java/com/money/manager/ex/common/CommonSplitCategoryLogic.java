@@ -15,38 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.database;
+package com.money.manager.ex.common;
 
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.datalayer.IEntity;
 
 import info.javaperformance.money.Money;
 
 /**
- * Common interface for split transactions and recurring splits.
+ * The logic used by Split Category records (transaction & recurring transaction).
  */
-public interface ISplitTransaction
-    extends IEntity {
+public class CommonSplitCategoryLogic {
 
-    Integer getId();
-    void setId(int splitTransId);
-    boolean hasId();
+    public static TransactionTypes getTransactionType(TransactionTypes parentTransactionType,
+                                                      Money amount) {
+        TransactionTypes oppositeType = parentTransactionType == TransactionTypes.Withdrawal
+                ? TransactionTypes.Deposit
+                : TransactionTypes.Withdrawal;
 
-    Integer getAccountId();
-    void setAccountId(int value);
+        if (amount.isZero()) {
+            return parentTransactionType;
+        }
 
-    Money getAmount();
-    void setAmount(Money splitTransAmount);
+        TransactionTypes splitType = amount.toDouble() < 0
+                ? oppositeType
+                : parentTransactionType;
 
-    Integer getCategoryId();
-    void setCategoryId(int categoryId);
-
-    Integer getSubcategoryId();
-    void setSubcategoryId(Integer subCategoryId);
-
-    TransactionTypes getTransactionType();
-    void setTransactionType(TransactionTypes value);
-
-    TransactionTypes getParentTransactionType();
-    void setParentTransactionType(TransactionTypes value);
+        return splitType;
+    }
 }

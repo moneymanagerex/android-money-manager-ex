@@ -214,6 +214,7 @@ public class SplitCategoriesActivity
         ISplitTransaction split = mAdapter.splitTransactions.get(position);
 
         int sign = 1;
+        // mAdapter.transactionType
         if (split.getTransactionType() == TransactionTypes.Withdrawal) {
             sign = -1;
         }
@@ -239,8 +240,8 @@ public class SplitCategoriesActivity
     // Private
 
     private void addSplitTransaction() {
-        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName);
-//        addFragmentChild(entity);
+        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName, mAdapter.transactionType);
+
         mAdapter.splitTransactions.add(entity);
 
         int position = mAdapter.splitTransactions.size() - 1;

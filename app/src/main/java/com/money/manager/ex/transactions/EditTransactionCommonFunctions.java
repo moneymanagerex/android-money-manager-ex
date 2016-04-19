@@ -1318,16 +1318,11 @@ public class EditTransactionCommonFunctions {
      */
     private void createSplitForCategoryAndAmount() {
         // Add the new split record.
-        ISplitTransaction entity = SplitItemFactory.create(this.mSplitCategoryEntityName);
+        ISplitTransaction entity = SplitItemFactory.create(this.mSplitCategoryEntityName,
+                this.transactionEntity.getTransactionType());
 
         // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
-
-        if (this.transactionEntity.getAmount().toDouble() > 0) {
-            entity.setTransactionType(TransactionTypes.Deposit);
-        } else {
-            entity.setTransactionType(TransactionTypes.Withdrawal);
-        }
 
         // Add category
 
