@@ -23,6 +23,7 @@ import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -32,7 +33,8 @@ import info.javaperformance.money.MoneyFactory;
  * Adapter for the recycler view version.
  */
 public class SplitCategoriesAdapter
-    extends RecyclerView.Adapter<SplitItemViewHolder> {
+    extends RecyclerView.Adapter<SplitItemViewHolder>
+    implements SplitItemTouchAdapter {
 
     public SplitCategoriesAdapter() {
         splitTransactions = new ArrayList<>();
@@ -186,5 +188,30 @@ public class SplitCategoriesAdapter
 
             }
         });
+    }
+
+    /**
+     * Swipe support
+     */
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+//        if (fromPosition < toPosition) {
+//            for (int i = fromPosition; i < toPosition; i++) {
+//                Collections.swap(mItems, i, i + 1);
+//            }
+//        } else {
+//            for (int i = fromPosition; i > toPosition; i--) {
+//                Collections.swap(mItems, i, i - 1);
+//            }
+//        }
+//        notifyItemMoved(fromPosition, toPosition);
+//        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        this.splitTransactions.remove(position);
+        notifyItemRemoved(position);
     }
 }

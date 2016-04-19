@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
@@ -283,6 +284,11 @@ public class SplitCategoriesActivity
 
         // optimizations
         mRecyclerView.setHasFixedSize(true);
+
+        // Support for swipe-to-dismiss
+        ItemTouchHelper.Callback swipeCallback = new SplitItemTouchCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(swipeCallback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     private void onRemoveItem(ISplitTransaction splitTransaction) {
