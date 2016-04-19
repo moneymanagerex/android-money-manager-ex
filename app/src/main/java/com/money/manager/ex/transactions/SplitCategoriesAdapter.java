@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
@@ -35,15 +36,13 @@ public class SplitCategoriesAdapter
 
     public SplitCategoriesAdapter() {
         splitTransactions = new ArrayList<>();
-//        this.currencyId = currencyId;
     }
-
-//    public SplitCategoriesAdapter(List<ISplitTransaction> splitTransactions) {
-//        this.splitTransactions = splitTransactions;
-//    }
 
     public List<ISplitTransaction> splitTransactions;
     public int currencyId;
+    /**
+     * Transaction type for the main transaction that contains the splits.
+     */
     public TransactionTypes transactionType;
 
     private Context mContext;
@@ -110,34 +109,12 @@ public class SplitCategoriesAdapter
 
         String buttonText = core.getCategSubName(split.getCategoryId(), split.getSubcategoryId());
         holder.txtSelectCategory.setText(buttonText);
-
     }
 
     private void bindTransactionType(SplitItemViewHolder viewHolder, ISplitTransaction split) {
         // find the split transaction type.
-//        int transactionTypeSelection = getTransactionTypeCode(parentTransactionType, amount);
-        int transactionTypeSelection = split.getTransactionType().getCode();
+        int transactionTypeSelection = split.getTransactionType(transactionType).getCode();
         viewHolder.spinTransCode.setSelection(transactionTypeSelection);
-    }
-
-    private int getTransactionTypeCode(TransactionTypes parentTransactionType, Money amount){
-        // define the transaction type based on the amount and the parent type.
-        int transactionTypeSelection;
-
-        boolean parentIsWithdrawal = parentTransactionType.equals(TransactionTypes.Withdrawal);
-        if(parentIsWithdrawal){
-            // parent is Withdrawal.
-            transactionTypeSelection = amount.toDouble() >= 0
-                ? TransactionTypes.Withdrawal.getCode() // 0
-                : TransactionTypes.Deposit.getCode(); // 1;
-        } else {
-            // parent is Deposit.
-            transactionTypeSelection = amount.toDouble() >= 0
-                ? TransactionTypes.Deposit.getCode() // 1
-                : TransactionTypes.Withdrawal.getCode(); // 0;
-        }
-
-        return transactionTypeSelection;
     }
 
     private void initAmountControl(final SplitItemViewHolder viewHolder) {
@@ -159,7 +136,6 @@ public class SplitCategoriesAdapter
                 EventBus.getDefault().post(new AmountEntryRequestedEvent(viewHolder.position, amount));
             }
         });
-
     }
 
     private void initCategorySelector(final SplitItemViewHolder holder) {
@@ -171,7 +147,6 @@ public class SplitCategoriesAdapter
                 EventBus.getDefault().post(new CategoryRequestedEvent(holder.position));
             }
         });
-
     }
 
     private void initRemoveButton(final SplitItemViewHolder viewHolder) {
@@ -185,7 +160,6 @@ public class SplitCategoriesAdapter
                 notifyItemRemoved(viewHolder.position);
             }
         });
-
     }
 
     private void initTransactionType(Context context, final SplitItemViewHolder viewHolder) {
@@ -199,16 +173,11 @@ public class SplitCategoriesAdapter
         viewHolder.spinTransCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TransactionTypes splitTransactionType = TransactionTypes.values()[position];
+                TransactionTypes selectedType = TransactionTypes.values()[position];
                 ISplitTransaction split = splitTransactions.get(viewHolder.position);
 
-                if (split.getAmount().isZero()) return;
-
-                if(!transactionType.equals(splitTransactionType)){
-                    // parent transaction type is different. Invert the amount. What if the amount is already negative?
+                if (selectedType != split.getTransactionType(transactionType)) {
                     split.setAmount(split.getAmount().negate());
-                } else {
-                    split.setAmount(split.getAmount());
                 }
             }
 

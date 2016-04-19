@@ -47,8 +47,7 @@ public class SplitRecurringCategory
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-    public static SplitRecurringCategory create(TransactionTypes parentTransactionType,
-                                                int transactionId, int categoryId, int subcategoryId,
+    public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
                                                 double amount) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
@@ -57,12 +56,8 @@ public class SplitRecurringCategory
         entity.setAmount(MoneyFactory.fromDouble(amount));
         entity.setTransId(transactionId);
 
-        entity.setParentTransactionType(parentTransactionType);
-
         return entity;
     }
-
-    private TransactionTypes parentTransactionType;
 
     @Override
     public Integer getId() {
@@ -134,24 +129,16 @@ public class SplitRecurringCategory
         setInt(TRANSID, value);
     }
 
-    public TransactionTypes getTransactionType() {
-        return CommonSplitCategoryLogic.getTransactionType(this.parentTransactionType, this.getAmount());
+    public TransactionTypes getTransactionType(TransactionTypes parentTransactionType) {
+        return CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
     }
 
-    public void setTransactionType(TransactionTypes value) {
-        TransactionTypes transactionType = getTransactionType();
+    public void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType) {
+        TransactionTypes transactionType = getTransactionType(parentTransactionType);
 
         // If the type is being changed, just revert the sign.
         if (value != transactionType) {
             this.setAmount(this.getAmount().negate());
         }
-    }
-
-    public TransactionTypes getParentTransactionType() {
-        return this.parentTransactionType;
-    }
-
-    public void setParentTransactionType(TransactionTypes value) {
-        this.parentTransactionType = value;
     }
 }

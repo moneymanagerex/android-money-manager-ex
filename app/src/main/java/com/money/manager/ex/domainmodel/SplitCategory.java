@@ -48,8 +48,7 @@ public class SplitCategory
     public static final String SUBCATEGID = "SUBCATEGID";
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
-    public static SplitCategory create(TransactionTypes parentTransactionType,
-                                       int transactionId, int categoryId, int subcategoryId,
+    public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
                                        double amount) {
         SplitCategory entity = new SplitCategory();
 
@@ -59,12 +58,8 @@ public class SplitCategory
         entity.setAmount(MoneyFactory.fromDouble(amount));
         entity.setTransId(transactionId);
 
-        entity.setParentTransactionType(parentTransactionType);
-
         return entity;
     }
-
-    private TransactionTypes parentTransactionType;
 
     public Integer getId() {
         return getInt(SPLITTRANSID);
@@ -134,24 +129,16 @@ public class SplitCategory
         setInt(TRANSID, value);
     }
 
-    public TransactionTypes getTransactionType() {
-        return CommonSplitCategoryLogic.getTransactionType(this.parentTransactionType, this.getAmount());
+    public TransactionTypes getTransactionType(TransactionTypes parentTransactionType) {
+        return CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
     }
 
-    public void setTransactionType(TransactionTypes value) {
-        TransactionTypes transactionType = getTransactionType();
+    public void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType) {
+        TransactionTypes transactionType = getTransactionType(parentTransactionType);
 
         // If the type is being changed, just revert the sign.
         if (value != transactionType) {
             this.setAmount(this.getAmount().negate());
         }
-    }
-
-    public TransactionTypes getParentTransactionType() {
-        return this.parentTransactionType;
-    }
-
-    public void setParentTransactionType(TransactionTypes value) {
-        this.parentTransactionType = value;
     }
 }

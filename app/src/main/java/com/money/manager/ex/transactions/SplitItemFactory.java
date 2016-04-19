@@ -28,17 +28,15 @@ import com.money.manager.ex.domainmodel.SplitRecurringCategory;
  */
 public class SplitItemFactory {
 
-    public static ISplitTransaction create(String entityClassName, TransactionTypes parentTransactionType) {
+    public static ISplitTransaction create(String entityClassName) {
         ISplitTransaction entity;
         String recurringSplitName = SplitRecurringCategory.class.getSimpleName();
 
         if (entityClassName != null && entityClassName.contains(recurringSplitName)) {
-            entity = SplitRecurringCategory.create(parentTransactionType,
-                    Constants.NOT_SET, Constants.NOT_SET,
+            entity = SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
                     Constants.NOT_SET, 0);
         } else {
-            entity = SplitCategory.create(parentTransactionType,
-                    Constants.NOT_SET, Constants.NOT_SET,
+            entity = SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
                     Constants.NOT_SET, 0);
         }
 

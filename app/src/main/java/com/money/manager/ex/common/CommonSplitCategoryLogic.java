@@ -18,6 +18,7 @@
 package com.money.manager.ex.common;
 
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.database.ISplitTransaction;
 
 import info.javaperformance.money.Money;
 
@@ -41,5 +42,31 @@ public class CommonSplitCategoryLogic {
                 : parentTransactionType;
 
         return splitType;
+    }
+
+    /**
+     * Returns the multiplier (1 or -1) for the amount. The absolute (positive) amount should be
+     * multiplied with this value before assigning to the Amount property.
+     * Example: User enters 10 for Withdrawal on Withdrawal transaction. The sign will be +1.
+     *          User enters 10 for Deposit on Withdrawal transaction. The sign will be -1.
+     *          User enters 10 for Withdrawal on Deposit transaction. The sign will be -1.
+     *          User enters 10 for Deposit on Deposit transaction. The sign will be +1.
+     * @return 1 or -1
+     */
+    public static int getTransactionSign(TransactionTypes parentType, Money amount) {
+//        TransactionTypes parentType = split.getParentTransactionType();
+
+        if (amount.isZero()) return 1;
+
+        int parentSign = parentType == TransactionTypes.Withdrawal
+                ? -1
+                : 1;
+
+        int splitSign = amount.toDouble() < 0
+                ? -1
+                : 1;
+
+        int sign = parentSign * splitSign;
+        return sign;
     }
 }

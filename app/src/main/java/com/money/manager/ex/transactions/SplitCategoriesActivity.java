@@ -31,6 +31,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CategoryListActivity;
+import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
@@ -213,11 +214,7 @@ public class SplitCategoriesActivity
         int position = Integer.parseInt(event.requestId);
         ISplitTransaction split = mAdapter.splitTransactions.get(position);
 
-        int sign = 1;
-        // mAdapter.transactionType
-        if (split.getTransactionType() == TransactionTypes.Withdrawal) {
-            sign = -1;
-        }
+        int sign = CommonSplitCategoryLogic.getTransactionSign(mAdapter.transactionType, split.getAmount());
         event.amount = event.amount.multiply(sign);
         split.setAmount(event.amount);
 
@@ -240,7 +237,7 @@ public class SplitCategoriesActivity
     // Private
 
     private void addSplitTransaction() {
-        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName, mAdapter.transactionType);
+        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName);
 
         mAdapter.splitTransactions.add(entity);
 
@@ -260,13 +257,9 @@ public class SplitCategoriesActivity
         this.entityTypeName = intent.getStringExtra(KEY_DATASET_TYPE);
 
         int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
-//        mParentTransactionType = TransactionTypes.values()[transactionType];
         mAdapter.transactionType = TransactionTypes.values()[transactionType];
 
-        int currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
-        //this.cu
-        mAdapter.currencyId = currencyId;
-
+        mAdapter.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);;
 
         List<ISplitTransaction> splits = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
         if (splits != null) {
