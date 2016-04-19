@@ -310,15 +310,19 @@
     <string name="database_has_been_moved">The database has been moved: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Copy database on external storage failed</string>
     <string name="path_database_using">You\'re using the database saved in: %1$s</string>
-    <!-- 20130129 -->
+
+    <!-- Split Categories -->
     <string name="split_transaction">Split Transaction</string>
     <!--<string name="split_category">Split Category</string>-->
     <string name="split">Split</string>
     <string name="error_split_transaction_empty">At least one of split transaction is required</string>
+    <string name="swipe_to_dismiss">Swipe items to remove.</string>
+
     <string name="export_data_to_csv">Export data to CSV file</string>
     <string name="export_data_in_progress">Exporting data. Please wait…</string>
     <string name="export_file_complete">The data has been successfully exported to the file %1$s</string>
     <string name="export_file_failed">Export file %1$s failed</string>
+
     <!-- 20130220 -->
     <string name="donate_header">MoneyManagerEx for Android is provided for free. If you like the application, you can support the development team with a donation.</string>
     <string name="donate_in_app_title">Google Play In-App Billing</string>
@@ -715,4 +719,5 @@
     <string name="quote_provider">Quote provider</string>
     <string name="copy">Copy</string>
     <string name="app_restart">The app will now close to apply the changes. Please restart.</string>
+
 </resources>

@@ -18,7 +18,7 @@ public class SplitItemViewHolder
     public TextView txtSelectCategory;
     public Spinner spinTransCode;
     public TextView txtAmount;
-    public ImageButton btnRemove;
+//    public ImageButton btnRemove;
 
     public SplitItemViewHolder(View itemView) {
         super(itemView);
@@ -26,6 +26,6 @@ public class SplitItemViewHolder
         txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
         spinTransCode = (Spinner) itemView.findViewById(R.id.spinnerTransCode);
         txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
-        btnRemove = (ImageButton) itemView.findViewById(R.id.imageButtonCancel);
+//        btnRemove = (ImageButton) itemView.findViewById(R.id.imageButtonCancel);
     }
 }

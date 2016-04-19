@@ -65,7 +65,7 @@ public class SplitCategoriesAdapter
         initAmountControl(viewHolder);
         initTransactionType(mContext, viewHolder);
         initCategorySelector(viewHolder);
-        initRemoveButton(viewHolder);
+//        initRemoveButton(viewHolder);
 
         return viewHolder;
     }
@@ -151,18 +151,18 @@ public class SplitCategoriesAdapter
         });
     }
 
-    private void initRemoveButton(final SplitItemViewHolder viewHolder) {
-        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ISplitTransaction split = splitTransactions.get(viewHolder.position);
-                EventBus.getDefault().post(new SplitItemRemovedEvent(split));
-
-                splitTransactions.remove(viewHolder.position);
-                notifyItemRemoved(viewHolder.position);
-            }
-        });
-    }
+//    private void initRemoveButton(final SplitItemViewHolder viewHolder) {
+//        viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ISplitTransaction split = splitTransactions.get(viewHolder.position);
+//                EventBus.getDefault().post(new SplitItemRemovedEvent(split));
+//
+//                splitTransactions.remove(viewHolder.position);
+//                notifyItemRemoved(viewHolder.position);
+//            }
+//        });
+//    }
 
     private void initTransactionType(Context context, final SplitItemViewHolder viewHolder) {
         String[] transCodeItems = context.getResources().getStringArray(R.array.split_transcode_items);

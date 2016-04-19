@@ -25,13 +25,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButtonCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
-            android:src="?attr/ic_action_cancel_contrast" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/imageButtonCancel"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:src="?attr/ic_action_cancel_contrast" />-->
 
         <TableLayout
             android:layout_width="0dp"
