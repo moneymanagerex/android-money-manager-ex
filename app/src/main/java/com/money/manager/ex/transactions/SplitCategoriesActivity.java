@@ -96,13 +96,6 @@ public class SplitCategoriesActivity
 
         setToolbarStandardActions();
 
-        // Fill any existing records.
-//        if (mAdapter.splitTransactions != null) {
-//            for (int i = 0; i < mAdapter.splitTransactions.size(); i++) {
-//                addFragmentChild(mAdapter.splitTransactions.get(i));
-//            }
-//        }
-
         // show the floating "Add" button
         setUpFloatingButton();
 
@@ -204,8 +197,9 @@ public class SplitCategoriesActivity
     @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         int position = Integer.parseInt(event.requestId);
-
         ISplitTransaction split = mAdapter.splitTransactions.get(position);
+
+        // todo handle the sign
         split.setAmount(event.amount);
 
         mAdapter.notifyItemChanged(position);
