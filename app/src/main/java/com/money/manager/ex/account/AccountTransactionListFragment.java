@@ -116,7 +116,6 @@ public class AccountTransactionListFragment
             mAccountReconciled = MoneyFactory.fromDouble(0);
     private Account mAccount;
     private AccountTransactionsListViewHolder viewHolder;
-    //private Context context;
 
     // filter
     private TransactionFilter mFilter;

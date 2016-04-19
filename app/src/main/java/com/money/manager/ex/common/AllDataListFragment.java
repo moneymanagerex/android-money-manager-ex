@@ -102,7 +102,6 @@ public class AllDataListFragment
      */
     public static AllDataListFragment newInstance(int accountId, boolean showFloatingButton) {
         AllDataListFragment fragment = new AllDataListFragment();
-//        fragment.AccountId = accountId;
 
         Bundle args = new Bundle();
         args.putInt(ARG_ACCOUNT_ID, accountId);
@@ -112,18 +111,15 @@ public class AllDataListFragment
         return fragment;
     }
 
-    // ID Loader
     public static final int ID_LOADER_ALL_DATA_DETAIL = 1;
-    // KEY Arguments
+
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
-    public int AccountId = Constants.NOT_SET;
-
     private static final String LOGCAT = AllDataListFragment.class.getSimpleName();
 
+    public int AccountId = Constants.NOT_SET;
     private LinearLayout footer;
-
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
     private boolean mAutoStarLoader = true;
     private boolean mShowHeader = false;
