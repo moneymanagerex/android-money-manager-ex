@@ -49,17 +49,19 @@ public class SplitCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
-                                       double amount) {
+                                       Money amount) {
         SplitCategory entity = new SplitCategory();
 
         entity.setId(Constants.NOT_SET);
         entity.setCategoryId(categoryId);
         entity.setSubcategoryId(subcategoryId);
-        entity.setAmount(MoneyFactory.fromDouble(amount));
+        entity.setAmount(amount);
         entity.setTransId(transactionId);
 
         return entity;
     }
+
+    private TransactionTypes transactionType;
 
     public Integer getId() {
         return getInt(SPLITTRANSID);
@@ -130,14 +132,19 @@ public class SplitCategory
     }
 
     public TransactionTypes getTransactionType(TransactionTypes parentTransactionType) {
-        return CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
+        if (transactionType == null) {
+            transactionType = CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
+        }
+        return transactionType;
     }
 
     public void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType) {
-        TransactionTypes transactionType = getTransactionType(parentTransactionType);
+        TransactionTypes currentType = getTransactionType(parentTransactionType);
+
+        this.transactionType = value;
 
         // If the type is being changed, just revert the sign.
-        if (value != transactionType) {
+        if (value != currentType) {
             this.setAmount(this.getAmount().negate());
         }
     }

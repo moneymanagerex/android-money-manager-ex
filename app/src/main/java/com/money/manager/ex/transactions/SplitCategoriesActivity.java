@@ -140,10 +140,10 @@ public class SplitCategoriesActivity
         List<ISplitTransaction> allSplitTransactions = getAllSplitCategories();
         Money total = MoneyFactory.fromString("0");
 
-        // check data
+        // Validate Category.
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransaction splitTransactions = allSplitTransactions.get(i);
-            if (splitTransactions.getCategoryId() == -1 && splitTransactions.getSubcategoryId() == -1) {
+            if (splitTransactions.getCategoryId() == Constants.NOT_SET) {
                 Core.alertDialog(SplitCategoriesActivity.this, R.string.error_category_not_selected);
                 return false;
             }

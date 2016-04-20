@@ -48,16 +48,18 @@ public class SplitRecurringCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
-                                                double amount) {
+                                                Money amount) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);
         entity.setSubcategoryId(subcategoryId);
-        entity.setAmount(MoneyFactory.fromDouble(amount));
+        entity.setAmount(amount);
         entity.setTransId(transactionId);
 
         return entity;
     }
+
+    private TransactionTypes transactionType;
 
     @Override
     public Integer getId() {
@@ -130,14 +132,19 @@ public class SplitRecurringCategory
     }
 
     public TransactionTypes getTransactionType(TransactionTypes parentTransactionType) {
-        return CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
+        if (transactionType == null) {
+            transactionType = CommonSplitCategoryLogic.getTransactionType(parentTransactionType, this.getAmount());
+        }
+        return transactionType;
     }
 
     public void setTransactionType(TransactionTypes value, TransactionTypes parentTransactionType) {
-        TransactionTypes transactionType = getTransactionType(parentTransactionType);
+        TransactionTypes currentType = getTransactionType(parentTransactionType);
+
+        this.transactionType = value;
 
         // If the type is being changed, just revert the sign.
-        if (value != transactionType) {
+        if (value != currentType) {
             this.setAmount(this.getAmount().negate());
         }
     }

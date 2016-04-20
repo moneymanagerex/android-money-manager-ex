@@ -23,6 +23,8 @@ import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 
+import info.javaperformance.money.MoneyFactory;
+
 /**
  * The factory that creates the Split Category entities
  */
@@ -34,10 +36,10 @@ public class SplitItemFactory {
 
         if (entityClassName != null && entityClassName.contains(recurringSplitName)) {
             entity = SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, 0);
+                    Constants.NOT_SET, MoneyFactory.fromDouble(0));
         } else {
             entity = SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, 0);
+                    Constants.NOT_SET, MoneyFactory.fromDouble(0));
         }
 
         return entity;

@@ -17,16 +17,14 @@ public class SplitItemViewHolder
     extends RecyclerView.ViewHolder {
 
     public TextView txtSelectCategory;
-    public Spinner spinTransCode;
     public TextView txtAmount;
     public FontIconView transactionTypeButton;
 
     public SplitItemViewHolder(View itemView) {
         super(itemView);
 
-        txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
-        spinTransCode = (Spinner) itemView.findViewById(R.id.spinnerTransCode);
-        txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
         transactionTypeButton = (FontIconView) itemView.findViewById(R.id.transactionTypeButton);
+        txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
+        txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
     }
 }
