@@ -50,6 +50,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.MmexOpenHelper;
@@ -710,7 +711,6 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initTransactionTypeSelector() {
-
         // Handle click events.
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -970,6 +970,9 @@ public class EditTransactionCommonFunctions {
 
         if (isTransfer) {
             onTransferSelected();
+        } else {
+            // Change sign for the split records. Transfers should delete split records.
+            CommonSplitCategoryLogic.changeSign(mSplitTransactions);
         }
     }
 
@@ -1153,6 +1156,11 @@ public class EditTransactionCommonFunctions {
         if (isSplitSelected()
             && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
             Core.alertDialog(mParent, R.string.error_split_transaction_empty);
+            return false;
+        }
+        // Splits sum must be positive.
+        if (!CommonSplitCategoryLogic.validateSumSign(mSplitTransactions)){
+            Core.alertDialog(mParent, R.string.split_amount_negative);
             return false;
         }
 

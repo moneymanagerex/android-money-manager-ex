@@ -144,7 +144,7 @@ public class SplitCategoriesActivity
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransaction splitTransactions = allSplitTransactions.get(i);
             if (splitTransactions.getCategoryId() == Constants.NOT_SET) {
-                Core.alertDialog(SplitCategoriesActivity.this, R.string.error_category_not_selected);
+                Core.alertDialog(this, R.string.error_category_not_selected);
                 return false;
             }
 

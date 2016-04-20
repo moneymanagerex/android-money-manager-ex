@@ -20,7 +20,10 @@ package com.money.manager.ex.common;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 
+import java.util.List;
+
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * The logic used by Split Category records (transaction & recurring transaction).
@@ -54,8 +57,6 @@ public class CommonSplitCategoryLogic {
      * @return 1 or -1
      */
     public static int getTransactionSign(TransactionTypes parentType, Money amount) {
-//        TransactionTypes parentType = split.getParentTransactionType();
-
         if (amount.isZero()) return 1;
 
         int parentSign = parentType == TransactionTypes.Withdrawal
@@ -68,5 +69,23 @@ public class CommonSplitCategoryLogic {
 
         int sign = parentSign * splitSign;
         return sign;
+    }
+
+    public static void changeSign(List<ISplitTransaction> splits) {
+        if (splits == null || splits.isEmpty()) return;
+
+        for (ISplitTransaction tx : splits) {
+            tx.setAmount(tx.getAmount().negate());
+        }
+    }
+
+    public static boolean validateSumSign(List<ISplitTransaction> splits) {
+        Money sum = MoneyFactory.fromDouble(0);
+
+        for (ISplitTransaction tx : splits) {
+            sum = sum.add(tx.getAmount());
+        }
+
+        return sum.toDouble() > 0;
     }
 }
