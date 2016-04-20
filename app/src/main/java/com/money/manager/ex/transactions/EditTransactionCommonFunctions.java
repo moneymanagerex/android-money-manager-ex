@@ -123,14 +123,7 @@ public class EditTransactionCommonFunctions {
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
     // Controls
-    public TransactionViewHolder viewHolder;
-    public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
-    public TextView accountFromLabel, txtToAccount;
-    public TextView amountHeaderTextView, amountToHeaderTextView;
-    public FontIconView removePayeeButton, splitButton;
-    public RelativeLayout withdrawalButton, depositButton, transferButton;
-    public ImageButton btnTransNumber;
-    public EditText edtTransNumber, edtNotes;
+    public EditTransactionViewHolder viewHolder;
 
     // Other
 
@@ -177,96 +170,60 @@ public class EditTransactionCommonFunctions {
         }
     }
 
-    public void findControls() {
-        this.viewHolder = new TransactionViewHolder();
-
-        // Date
-        viewHolder.dateTextView = (TextView) mParent.findViewById(R.id.textViewDate);
-
-        // Status
-        viewHolder.spinStatus = (Spinner) mParent.findViewById(R.id.spinnerStatus);
-
-        // Payee
-        this.viewHolder.txtSelectPayee = (TextView) mParent.findViewById(R.id.textViewPayee);
-        removePayeeButton = (FontIconView) mParent.findViewById(R.id.removePayeeButton);
-        tableRowPayee = (ViewGroup) mParent.findViewById(R.id.tableRowPayee);
-
-        // Category / Split
-        splitButton = (FontIconView) mParent.findViewById(R.id.splitButton);
-        this.viewHolder.categoryTextView = (TextView) mParent.findViewById(R.id.textViewCategory);
-
-        // Account
-        viewHolder.spinAccount = (Spinner) mParent.findViewById(R.id.spinnerAccount);
-        accountFromLabel = (TextView) mParent.findViewById(R.id.accountFromLabel);
-
-        tableRowAccountTo = (ViewGroup) mParent.findViewById(R.id.tableRowAccountTo);
-        txtToAccount = (TextView) mParent.findViewById(R.id.textViewToAccount);
-        viewHolder.spinAccountTo = (Spinner) mParent.findViewById(R.id.spinnerToAccount);
-
-        // Amounts
-        amountHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmount);
-        amountToHeaderTextView = (TextView) mParent.findViewById(R.id.textViewHeaderAmountTo);
-
-        viewHolder.txtAmount = (TextView) mParent.findViewById(R.id.textViewAmount);
-        viewHolder.txtAmountTo = (TextView) mParent.findViewById(R.id.textViewTotAmount);
-        tableRowAmountTo = (ViewGroup) mParent.findViewById(R.id.tableRowAmountTo);
-
-        // Transaction Type
-        withdrawalButton = (RelativeLayout) mParent.findViewById(R.id.withdrawalButton);
-        depositButton = (RelativeLayout) mParent.findViewById(R.id.depositButton);
-        transferButton = (RelativeLayout) mParent.findViewById(R.id.transferButton);
+    public void findControls(Activity view) {
+        this.viewHolder = new EditTransactionViewHolder(view);
     }
 
-    /**
-     * Get content values for saving data.
-     * @param isTransfer Indicate whether the transaction is a transfer or not. Used to calculate the values.
-     * @return Content values for saving.
-     */
-    public ContentValues getContentValues(boolean isTransfer) {
-        ContentValues values = new ContentValues();
-
-        // Date
-        String transactionDate = viewHolder.dateTextView.getTag().toString();
-        values.put(ITransactionEntity.TRANSDATE, transactionDate);
-
-        // Transaction Type
-        values.put(ITransactionEntity.TRANSCODE, this.getTransactionType());
-
-        // Status
-        values.put(ITransactionEntity.STATUS, this.transactionEntity.getStatus());
-
-        // Amount
-        //Money amount = getAmount();
-        values.put(ITransactionEntity.TRANSAMOUNT, transactionEntity.getAmount().toDouble());
-
-        // Amount To
-        //Money amountTo = getAmountTo();
-        values.put(ITransactionEntity.TOTRANSAMOUNT, transactionEntity.getAmountTo().toDouble());
-
-        // Accounts & Payee
-        values.put(ITransactionEntity.ACCOUNTID, this.transactionEntity.getAccountId());
-        if (isTransfer) {
-            values.put(ITransactionEntity.TOACCOUNTID, this.transactionEntity.getAccountToId());
-            values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
-        } else {
-            values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
-            values.put(ITransactionEntity.PAYEEID, this.transactionEntity.getPayeeId());
-        }
-
-        // Category and subcategory
-        if (isSplitSelected()) {
-            this.transactionEntity.setCategoryId(Constants.NOT_SET);
-            this.transactionEntity.setSubcategoryId(Constants.NOT_SET);
-        }
-        values.put(ITransactionEntity.CATEGID, this.transactionEntity.getCategoryId());
-        values.put(ITransactionEntity.SUBCATEGID, this.transactionEntity.getSubcategoryId());
-
-        values.put(ITransactionEntity.FOLLOWUPID, Constants.NOT_SET);
-        values.put(ITransactionEntity.TRANSACTIONNUMBER, this.edtTransNumber.getText().toString());
-        values.put(ITransactionEntity.NOTES, this.edtNotes.getText().toString());
-
-        return values;
-    }
+//    /**
+//     * Get content values for saving data.
+//     * @param isTransfer Indicate whether the transaction is a transfer or not. Used to calculate the values.
+//     * @return Content values for saving.
+//     */
+//    public ContentValues getContentValues(boolean isTransfer) {
+//        ContentValues values = new ContentValues();
+//
+//        // Date
+//        String transactionDate = viewHolder.dateTextView.getTag().toString();
+//        values.put(ITransactionEntity.TRANSDATE, transactionDate);
+//
+//        // Transaction Type
+//        values.put(ITransactionEntity.TRANSCODE, this.getTransactionType());
+//
+//        // Status
+//        values.put(ITransactionEntity.STATUS, this.transactionEntity.getStatus());
+//
+//        // Amount
+//        //Money amount = getAmount();
+//        values.put(ITransactionEntity.TRANSAMOUNT, transactionEntity.getAmount().toDouble());
+//
+//        // Amount To
+//        //Money amountTo = getAmountTo();
+//        values.put(ITransactionEntity.TOTRANSAMOUNT, transactionEntity.getAmountTo().toDouble());
+//
+//        // Accounts & Payee
+//        values.put(ITransactionEntity.ACCOUNTID, this.transactionEntity.getAccountId());
+//        if (isTransfer) {
+//            values.put(ITransactionEntity.TOACCOUNTID, this.transactionEntity.getAccountToId());
+//            values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
+//        } else {
+//            values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
+//            values.put(ITransactionEntity.PAYEEID, this.transactionEntity.getPayeeId());
+//        }
+//
+//        // Category and subcategory
+//        if (isSplitSelected()) {
+//            this.transactionEntity.setCategoryId(Constants.NOT_SET);
+//            this.transactionEntity.setSubcategoryId(Constants.NOT_SET);
+//        }
+//        values.put(ITransactionEntity.CATEGID, this.transactionEntity.getCategoryId());
+//        values.put(ITransactionEntity.SUBCATEGID, this.transactionEntity.getSubcategoryId());
+//
+//        values.put(ITransactionEntity.FOLLOWUPID, Constants.NOT_SET);
+//        values.put(ITransactionEntity.TRANSACTIONNUMBER, viewHolder.edtTransNumber.getText().toString());
+//        values.put(ITransactionEntity.NOTES, viewHolder.edtNotes.getText().toString());
+//
+//        return values;
+//    }
 
     public Context getContext() {
         return mContext;
@@ -579,12 +536,12 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initNotesControls() {
-        edtNotes = (EditText) mParent.findViewById(R.id.editTextNotes);
+        viewHolder.edtNotes = (EditText) mParent.findViewById(R.id.editTextNotes);
         if (!(TextUtils.isEmpty(transactionEntity.getNotes()))) {
-            edtNotes.setText(transactionEntity.getNotes());
+            viewHolder.edtNotes.setText(transactionEntity.getNotes());
         }
 
-        edtNotes.addTextChangedListener(new TextWatcher() {
+        viewHolder.edtNotes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -615,7 +572,7 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        removePayeeButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.removePayeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setDirty(true);
@@ -630,7 +587,7 @@ public class EditTransactionCommonFunctions {
 
     public void initSplitCategories() {
         // Split button
-        splitButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.splitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean splitting = !isSplitSelected();
@@ -691,13 +648,13 @@ public class EditTransactionCommonFunctions {
     public void initTransactionNumberControls() {
         // Transaction number
 
-        edtTransNumber = (EditText) mParent.findViewById(R.id.editTextTransNumber);
+        viewHolder.edtTransNumber = (EditText) mParent.findViewById(R.id.editTextTransNumber);
         if (!TextUtils.isEmpty(transactionEntity.getTransactionNumber())) {
-            edtTransNumber.setText(transactionEntity.getTransactionNumber());
+            viewHolder.edtTransNumber.setText(transactionEntity.getTransactionNumber());
         }
 
         // handle change
-        edtTransNumber.addTextChangedListener(new TextWatcher() {
+        viewHolder.edtTransNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -716,8 +673,8 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        btnTransNumber = (ImageButton) mParent.findViewById(R.id.buttonTransNumber);
-        btnTransNumber.setOnClickListener(new View.OnClickListener() {
+        viewHolder.btnTransNumber = (ImageButton) mParent.findViewById(R.id.buttonTransNumber);
+        viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
@@ -739,7 +696,7 @@ public class EditTransactionCommonFunctions {
                     if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
                         try {
                             Money transactionNumber = MoneyFactory.fromString(transNumber);
-                            edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
+                            viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
                                 .toString());
                         } catch (Exception e) {
                             ExceptionHandler handler = new ExceptionHandler(mContext, this);
@@ -766,20 +723,20 @@ public class EditTransactionCommonFunctions {
             }
         };
 
-        if (withdrawalButton != null) {
-            withdrawalButton.setTag(TransactionTypes.Withdrawal);
+        if (viewHolder.withdrawalButton != null) {
+            viewHolder.withdrawalButton.setTag(TransactionTypes.Withdrawal);
 
-            withdrawalButton.setOnClickListener(onClickListener);
+            viewHolder.withdrawalButton.setOnClickListener(onClickListener);
         }
-        if (depositButton != null) {
-            depositButton.setTag(TransactionTypes.Deposit);
+        if (viewHolder.depositButton != null) {
+            viewHolder.depositButton.setTag(TransactionTypes.Deposit);
 
-            depositButton.setOnClickListener(onClickListener);
+            viewHolder.depositButton.setOnClickListener(onClickListener);
         }
-        if (transferButton != null) {
-            transferButton.setTag(TransactionTypes.Transfer);
+        if (viewHolder.transferButton != null) {
+            viewHolder.transferButton.setTag(TransactionTypes.Transfer);
 
-            transferButton.setOnClickListener(onClickListener);
+            viewHolder.transferButton.setOnClickListener(onClickListener);
         }
 
         // Check if the transaction type has been set (for example, when editing an existing transaction).
@@ -992,8 +949,8 @@ public class EditTransactionCommonFunctions {
                 ? R.color.button_background_inactive_dark
                 : R.color.button_background_inactive_light;
         }
-        splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
-        splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
+        viewHolder.splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
+        viewHolder.splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
     }
 
     /**
@@ -1004,10 +961,10 @@ public class EditTransactionCommonFunctions {
 
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
 
-        accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
-        tableRowAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
-        tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
-        tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        viewHolder.accountFromLabel.setText(isTransfer ? R.string.from_account : R.string.account);
+        viewHolder.tableRowAccountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
+        viewHolder.tableRowPayee.setVisibility(!isTransfer ? View.VISIBLE : View.GONE);
+        viewHolder.tableRowAmountTo.setVisibility(isTransfer ? View.VISIBLE : View.GONE);
 
         refreshControlTitles();
 
@@ -1020,20 +977,20 @@ public class EditTransactionCommonFunctions {
      * Update input control titles to reflect the transaction type.
      */
     public void refreshControlTitles() {
-        if (amountHeaderTextView == null || amountToHeaderTextView == null) return;
+        if (viewHolder.amountHeaderTextView == null || viewHolder.amountToHeaderTextView == null) return;
 
         if (!transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
-            amountHeaderTextView.setText(R.string.amount);
+            viewHolder.amountHeaderTextView.setText(R.string.amount);
         } else {
             // Transfer. Adjust the headers on amount text boxes.
             int index = mAccountIdList.indexOf(transactionEntity.getAccountId());
             if (index >= 0) {
-                amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
+                viewHolder.amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
                         this.AccountList.get(index).getName()));
             }
             index = mAccountIdList.indexOf(transactionEntity.getAccountToId());
             if (index >= 0) {
-                amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
+                viewHolder.amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
                         this.AccountList.get(index).getName()));
             }
         }
@@ -1127,11 +1084,11 @@ public class EditTransactionCommonFunctions {
         Core core = new Core(mContext);
         int backgroundInactive = core.getColourFromAttribute(R.attr.button_background_inactive);
 
-        withdrawalButton.setBackgroundColor(backgroundInactive);
+        viewHolder.withdrawalButton.setBackgroundColor(backgroundInactive);
         getWithdrawalButtonIcon().setTextColor(ContextCompat.getColor(mContext, R.color.material_red_700));
-        depositButton.setBackgroundColor(backgroundInactive);
+        viewHolder.depositButton.setBackgroundColor(backgroundInactive);
         getDepositButtonIcon().setTextColor(ContextCompat.getColor(mContext, R.color.material_green_700));
-        transferButton.setBackgroundColor(backgroundInactive);
+        viewHolder.transferButton.setBackgroundColor(backgroundInactive);
         getTransferButtonIcon().setTextColor(ContextCompat.getColor(mContext, R.color.material_grey_700));
 
         // Style the selected button.
@@ -1141,15 +1098,15 @@ public class EditTransactionCommonFunctions {
 
         switch (transactionType) {
             case Deposit:
-                depositButton.setBackgroundColor(backgroundSelected);
+                viewHolder.depositButton.setBackgroundColor(backgroundSelected);
                 getDepositButtonIcon().setTextColor(foregroundSelected);
                 break;
             case Withdrawal:
-                withdrawalButton.setBackgroundColor(backgroundSelected);
+                viewHolder.withdrawalButton.setBackgroundColor(backgroundSelected);
                 getWithdrawalButtonIcon().setTextColor(foregroundSelected);
                 break;
             case Transfer:
-                transferButton.setBackgroundColor(backgroundSelected);
+                viewHolder.transferButton.setBackgroundColor(backgroundSelected);
                 getTransferButtonIcon().setTextColor(foregroundSelected);
                 break;
         }

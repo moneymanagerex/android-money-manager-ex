@@ -16,7 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -32,21 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            style="@android:style/Widget.Button"
+            style="@style/Money.Button.Transparent"
             android:text="@string/ic_diff_added"
             android:textSize="@dimen/md_icon_max_size"
-            android:textColor="@color/material_green_700"
-            android:visibility="gone" />
-        <com.shamanland.fonticon.FontIconView
-            android:id="@+id/transactionTypeWithdrawal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            style="@android:style/Widget.Button"
-            android:text="@string/ic_diff_removed"
-            android:textSize="@dimen/md_icon_max_size"
-            android:textColor="@color/material_red_700"
-            android:visibility="gone" />
+            android:textColor="@color/material_green_700" />
 
         <TableLayout
             android:layout_width="0dp"

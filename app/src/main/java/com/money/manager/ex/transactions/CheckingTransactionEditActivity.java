@@ -94,7 +94,7 @@ public class CheckingTransactionEditActivity
         }
 
         // Controls need to be at the beginning as they are referenced throughout the code.
-        mCommonFunctions.findControls();
+        mCommonFunctions.findControls(this);
 
         // manage intent
         if (getIntent() != null) {

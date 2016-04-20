@@ -190,10 +190,10 @@ public class RecurringTransactionEditActivity
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
-        outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.edtTransNumber.getText().toString());
+        outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.viewHolder.edtTransNumber.getText().toString());
         outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
         outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
-        outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.edtNotes.getTag()));
+        outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.viewHolder.edtNotes.getTag()));
 
         outState.putString(KEY_ACTION, mIntentAction);
     }
@@ -393,7 +393,7 @@ public class RecurringTransactionEditActivity
 
     private void initializeViewHolder() {
         // Controls need to be at the beginning as they are referenced throughout the code.
-        mCommonFunctions.findControls();
+        mCommonFunctions.findControls(this);
 
         mViewHolder = new RecurringTransactionViewHolder();
 

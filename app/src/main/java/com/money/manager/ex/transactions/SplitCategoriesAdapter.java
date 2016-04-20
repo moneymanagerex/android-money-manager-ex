@@ -2,6 +2,7 @@ package com.money.manager.ex.transactions;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,10 +64,10 @@ public class SplitCategoriesAdapter
         SplitItemViewHolder viewHolder = new SplitItemViewHolder(view);
 
         initAmountControl(viewHolder);
-        initTransactionType(mContext, viewHolder);
+//        initTransactionType(mContext, viewHolder);
         initCategorySelector(viewHolder);
-        //todo initTransactionTypeButton
-        
+        initTransactionTypeButton(viewHolder);
+
         return viewHolder;
     }
 
@@ -78,7 +79,8 @@ public class SplitCategoriesAdapter
         ISplitTransaction split = this.splitTransactions.get(position);
 
         bindCategory(getContext(), holder, split);
-        bindTransactionType(holder, split);
+//        bindTransactionType(holder, split);
+        bindTransactionTypeButton(split, holder);
         bindAmount(split, holder);
     }
 
@@ -111,10 +113,33 @@ public class SplitCategoriesAdapter
         holder.txtSelectCategory.setText(buttonText);
     }
 
-    private void bindTransactionType(SplitItemViewHolder viewHolder, ISplitTransaction split) {
-        // find the split transaction type.
-        int transactionTypeSelection = split.getTransactionType(transactionType).getCode();
-        viewHolder.spinTransCode.setSelection(transactionTypeSelection);
+//    private void bindTransactionType(SplitItemViewHolder viewHolder, ISplitTransaction split) {
+//        // find the split transaction type.
+//        int transactionTypeSelection = split.getTransactionType(transactionType).getCode();
+//        viewHolder.spinTransCode.setSelection(transactionTypeSelection);
+//    }
+
+    private void bindTransactionTypeButton(ISplitTransaction split, SplitItemViewHolder viewHolder) {
+        int green;
+        int red;
+        // 15
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            green = getContext().getColor(R.color.material_green_700);
+            red = getContext().getColor(R.color.material_red_700);
+        } else {
+            green = getContext().getResources().getColor(R.color.material_green_700);
+            red = getContext().getResources().getColor(R.color.material_red_700);
+        }
+
+        if (split.getTransactionType(transactionType) == TransactionTypes.Withdrawal) {
+            // withdrawal
+            viewHolder.transactionTypeButton.setText(R.string.ic_diff_removed);
+            viewHolder.transactionTypeButton.setTextColor(red);
+        } else {
+            // deposit
+            viewHolder.transactionTypeButton.setText(R.string.ic_diff_added);
+            viewHolder.transactionTypeButton.setTextColor(green);
+        }
     }
 
     private void initAmountControl(final SplitItemViewHolder viewHolder) {
@@ -149,34 +174,43 @@ public class SplitCategoriesAdapter
         });
     }
 
-    private void initTransactionType(Context context, final SplitItemViewHolder viewHolder) {
-        String[] transCodeItems = context.getResources().getStringArray(R.array.split_transcode_items);
+//    private void initTransactionType(Context context, final SplitItemViewHolder viewHolder) {
+//        String[] transCodeItems = context.getResources().getStringArray(R.array.split_transcode_items);
+//
+//        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, transCodeItems);
+//        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//        viewHolder.spinTransCode.setAdapter(adapterTrans);
+//
+//        viewHolder.spinTransCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                TransactionTypes selectedType = TransactionTypes.values()[position];
+//                ISplitTransaction split = splitTransactions.get(viewHolder.getAdapterPosition());
+//
+//                if (selectedType != split.getTransactionType(transactionType)) {
+//                    split.setAmount(split.getAmount().negate());
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
 
-        ArrayAdapter<String> adapterTrans = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, transCodeItems);
-        adapterTrans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        viewHolder.spinTransCode.setAdapter(adapterTrans);
-
-        viewHolder.spinTransCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void initTransactionTypeButton(final SplitItemViewHolder viewHolder) {
+        viewHolder.transactionTypeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TransactionTypes selectedType = TransactionTypes.values()[position];
-                ISplitTransaction split = splitTransactions.get(viewHolder.getAdapterPosition());
-
-                if (selectedType != split.getTransactionType(transactionType)) {
-                    split.setAmount(split.getAmount().negate());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                int position = viewHolder.getAdapterPosition();
+                // change transaction type.
+                ISplitTransaction split = splitTransactions.get(position);
+                split.setAmount(split.getAmount().negate());
+                notifyItemChanged(position);
             }
         });
-    }
-
-    private void initTransactionTypeButton() {
-
     }
 
     /**
