@@ -81,7 +81,7 @@ public class CommonSplitCategoryLogic {
 
     public static boolean validateSumSign(List<ISplitTransaction> splits) {
         if (splits == null || splits.isEmpty()) return true;
-        
+
         Money sum = MoneyFactory.fromDouble(0);
 
         for (ISplitTransaction tx : splits) {
