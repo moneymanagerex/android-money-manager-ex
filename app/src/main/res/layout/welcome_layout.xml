@@ -50,6 +50,21 @@
                 android:layout_height="2dp"
                 android:background="@drawable/divider_ice_cream_sandwich" />
 
+            <!-- todo: add language selector -->
+            <!--<com.money.manager.ex.view.RobotoTextView-->
+                <!--android:id="@+id/languageHeaderTextView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:text="@string/locale_application"-->
+                <!--android:textSize="14sp"-->
+                <!--app:typeface="roboto_light" />-->
+            <!--<android.support.v7.widget.AppCompatSpinner-->
+                <!--android:id="@+id/languageSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
             <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
