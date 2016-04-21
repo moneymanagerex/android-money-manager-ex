@@ -122,10 +122,11 @@ public class Core {
     }
 
     /**
-     * Method, which allows you to change the language of the application.
+     * Method, which allows you to change the language of the application on the fly.
      * @param context        Context
      * @param languageToLoad language to load for the locale
      * @return and indicator whether the operation was successful
+     * Ref: http://stackoverflow.com/questions/22402491/android-change-and-set-default-locale-within-the-app
      */
     public static boolean setAppLocale(Context context, String languageToLoad) {
         try {
@@ -139,10 +140,6 @@ public class Core {
         return true;
     }
 
-    /**
-     * Change/set locale.
-     * Ref: http://stackoverflow.com/questions/22402491/android-change-and-set-default-locale-within-the-app
-     */
     private static void setAppLocale_Internal(Context context, String languageToLoad) {
         Locale locale;
 

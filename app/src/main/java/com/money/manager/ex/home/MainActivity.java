@@ -590,6 +590,7 @@ public class MainActivity
     @Subscribe
     public void onEvent(AppRestartRequiredEvent event) {
         MainActivity.mRestartActivity = true;
+//        restartActivity();
     }
 
     /**
@@ -715,7 +716,8 @@ public class MainActivity
      */
     public void restartActivity() {
         if (mRestartActivity) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            // <= 10
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
                 // this is for APIs < 11.
                 Intent intent = getIntent();
                 overridePendingTransition(0, 0);
@@ -725,11 +727,12 @@ public class MainActivity
                 overridePendingTransition(0, 0);
                 // restart
                 startActivity(intent);
-////            // kill process
-////            android.os.Process.killProcess(android.os.Process.myPid());
+                // kill process
+//                android.os.Process.killProcess(android.os.Process.myPid());
             } else {
 //                // New api. This will keep the Intent, which hangs after Dropbox update.
 //                this.recreate();
+
                 startMainActivity();
             }
 

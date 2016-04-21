@@ -23,10 +23,13 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +39,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -49,6 +54,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
@@ -60,7 +66,10 @@ import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.settings.GeneralSettings;
+import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -84,6 +93,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -583,8 +593,28 @@ public class HomeFragment
         mExpandableListView.addFooterView(linearFooter, null, false);
     }
 
+    private String[] mLanguageCodes;
+
     private void createWelcomeView(View view) {
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
+
+        // basic settings
+        Button buttonSettings = (Button) view.findViewById(R.id.buttonSettings);
+        if (buttonSettings != null) {
+            buttonSettings.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), GeneralSettingsActivity.class));
+                }
+            });
+        }
+
+        // Show current database
+        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
+        if (currentDatabaseTextView != null) {
+            String path = MoneyManagerApplication.getDatabasePath(getActivity());
+            currentDatabaseTextView.setText(path);
+        }
 
         // add account button
         Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
@@ -610,7 +640,7 @@ public class HomeFragment
             });
         }
 
-        // link to dropbox
+        // link to Dropbox
         Button btnLinkDropbox = (Button) view.findViewById(R.id.buttonLinkDropbox);
         if (btnLinkDropbox != null) {
             btnLinkDropbox.setOnClickListener(new OnClickListener() {
@@ -624,16 +654,53 @@ public class HomeFragment
             });
         }
 
-        // Show current database
-        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
-        if (currentDatabaseTextView != null) {
-            String path = MoneyManagerApplication.getDatabasePath(getActivity());
-            currentDatabaseTextView.setText(path);
-        }
-
         // Database migration v1.4 -> v2.0 location.
         setUpMigrationButton(view);
     }
+
+//    private void initLanguageDropdown(View view) {
+//        TextView languageSelectorHeader = (TextView) view.findViewById(R.id.languageHeaderTextView);
+//        if (languageSelectorHeader != null) {
+//            languageSelectorHeader.setText(getString(R.string.locale_application));
+//        }
+//        AppCompatSpinner languageSpinner = (AppCompatSpinner) view.findViewById(R.id.languageSpinner);
+//        if (languageSpinner != null) {
+//            // populate languages.
+//            ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                    R.array.application_locale_entries, android.R.layout.simple_spinner_item);
+//            languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            languageSpinner.setAdapter(languageAdapter);
+//
+//            mLanguageCodes = getResources().getStringArray(R.array.application_locale_values);
+//
+//            // Select the current language.
+//
+//            String currentLanguage = new GeneralSettings(getActivity()).getApplicationLanguage();
+//            int currentPosition = Arrays.asList(mLanguageCodes).indexOf(currentLanguage);
+//            languageSpinner.setSelection(currentPosition);
+//
+//            // handle selection.
+//
+//            languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    // Set the app language.
+//                    String languageCode = mLanguageCodes[position];
+//                    String currentLanguage = new GeneralSettings(getActivity()).getApplicationLanguage();
+//                    if (languageCode.equals(currentLanguage)) return;
+//
+//                    new GeneralSettings(getActivity()).setApplicationLanguage(languageCode);
+//
+//                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+//                    ((MainActivity) getActivity()).restartActivity();
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> parent) {
+//                }
+//            });
+//        }
+//    }
 
     private QueryAccountBills getAccountBeingBalanced() {
         if (this.accountBeingBalanced == null) {

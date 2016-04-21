@@ -45,6 +45,14 @@ public class GeneralSettings
     }
 
     /**
+     * Set application locale.
+     * @param value Language ISO code (i.e. bs, en)
+     */
+    public void setApplicationLanguage(String value) {
+        set(R.string.pref_locale, value);
+    }
+
+    /**
      * Fetches the default account id. The default account is set per database.
      * @return Default account id.
      */

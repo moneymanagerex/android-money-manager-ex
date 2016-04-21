@@ -50,7 +50,7 @@
                 android:layout_height="2dp"
                 android:background="@drawable/divider_ice_cream_sandwich" />
 
-            <!-- todo: add language selector -->
+            <!-- language selector -->
             <!--<com.money.manager.ex.view.RobotoTextView-->
                 <!--android:id="@+id/languageHeaderTextView"-->
                 <!--android:layout_width="match_parent"-->
@@ -65,6 +65,18 @@
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content" />-->
 
+            <!-- basic settings -->
+            <com.money.manager.ex.view.RobotoButton
+                android:id="@+id/buttonSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/action_settings"
+                android:textSize="18sp"
+                app:typeface="roboto_light" />
+
+            <!-- current database -->
             <com.money.manager.ex.view.RobotoTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
