@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -17,165 +16,188 @@
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="stock" type="com.money.manager.ex.domainmodel.Stock"/>
+
+        <variable
+            name="stock"
+            type="com.money.manager.ex.domainmodel.Stock" />
     </data>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_side_margin"
-    android:layout_marginRight="@dimen/activity_side_margin"
-    android:animateLayoutChanges="true"
-    android:background="?attr/theme_background_color"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_side_margin"
+        android:layout_marginRight="@dimen/activity_side_margin"
+        android:animateLayoutChanges="true"
+        android:background="?attr/theme_background_color"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_padding_side"
-            android:paddingRight="@dimen/activity_padding_side">
-
-            <!-- Purchase Date -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:text="@string/purchase_date"
-                android:textStyle="bold"/>
-            <com.money.manager.ex.view.RobotoTextViewFontIcon
-                android:id="@+id/textViewDate"
-                style="@style/Money.TextView.Widget.EditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconLeft="@xml/ic_calendar_small"
-                android:drawablePadding="@dimen/money_padding"
-                android:hint="@string/purchase_date"
-                android:textStyle="bold"/>
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_padding_side"
+                android:paddingRight="@dimen/activity_padding_side">
 
-            <!-- Stock Name -->
-            <com.money.manager.ex.view.RobotoEditTextFontIcon
-                android:id="@+id/stockNameEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/money_padding"
-                android:gravity="top|start"
-                android:hint="@string/stock_name"
-                android:inputType="text"
-                android:maxLength="1000"
-                android:scrollHorizontally="false"
-                android:textCursorDrawable="@null" />
+                <!-- Purchase Date -->
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/purchase_date"
+                    android:textStyle="bold" />
 
-            <!-- Symbol -->
-            <com.money.manager.ex.view.RobotoEditTextFontIcon
-                android:id="@+id/symbolEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:iconLeft="@xml/ic_building_small"
-                android:drawablePadding="@dimen/money_padding"
-                android:gravity="top|left"
-                android:hint="@string/symbol"
-                android:inputType="textMultiLine"
-                android:maxLength="1000"
-                android:scrollHorizontally="false"
-                android:textCursorDrawable="@null" />
+                <com.money.manager.ex.view.RobotoTextViewFontIcon
+                    android:id="@+id/textViewDate"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/money_padding"
+                    android:hint="@string/purchase_date"
+                    android:textStyle="bold"
+                    app:iconLeft="@xml/ic_calendar_small" />
 
-            <!-- Number of Shares -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/number_of_shares"/>
-            <com.money.manager.ex.view.RobotoTextViewFontIcon
-                android:id="@+id/numSharesView"
-                style="@style/Money.TextView.Widget.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:iconLeft="@xml/ic_hash_small"
-                android:textStyle="bold"
-                android:gravity="end" />
+                <!-- Stock Name -->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <!-- Purchase Price -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/purchase_price"/>
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/purchasePriceView"
-                style="@style/Money.TextView.Widget.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="?attr/ic_calculator"
-                android:drawableStart="?attr/ic_calculator"
-                android:textStyle="bold"
-                android:gravity="end" />
+                    <com.money.manager.ex.view.RobotoEditTextFontIcon
+                        android:id="@+id/stockNameEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/money_padding"
+                        android:gravity="top|start"
+                        android:hint="@string/stock_name"
+                        android:inputType="text"
+                        android:maxLength="1000"
+                        android:scrollHorizontally="false"
+                        android:textCursorDrawable="@null" />
+                </android.support.design.widget.TextInputLayout>
 
-            <!-- Notes -->
-            <com.money.manager.ex.view.RobotoEditTextFontIcon
-                android:id="@+id/notesEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:iconLeft="@xml/ic_clipboard_small"
-                android:drawablePadding="@dimen/money_padding"
-                android:gravity="top|left"
-                android:hint="@string/notes"
-                android:inputType="textMultiLine"
-                android:maxLength="1000"
-                android:scrollHorizontally="false"
-                android:textCursorDrawable="@null" />
+                <!-- Symbol -->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <!-- Commission -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/commission"/>
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/commissionView"
-                style="@style/Money.TextView.Widget.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="?attr/ic_calculator"
-                android:drawableStart="?attr/ic_calculator"
-                android:textStyle="bold"
-                android:gravity="end" />
+                    <com.money.manager.ex.view.RobotoEditTextFontIcon
+                        android:id="@+id/symbolEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/money_padding"
+                        android:gravity="top|left"
+                        android:hint="@string/symbol"
+                        android:inputType="textMultiLine"
+                        android:maxLength="1000"
+                        android:scrollHorizontally="false"
+                        android:textCursorDrawable="@null"
+                        app:iconLeft="@xml/ic_building_small" />
+                </android.support.design.widget.TextInputLayout>
 
-            <!-- Current Price -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/current_price"/>
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/currentPriceView"
-                style="@style/Money.TextView.Widget.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="?attr/ic_calculator"
-                android:drawableStart="?attr/ic_calculator"
-                android:textStyle="bold"
-                android:gravity="end" />
+                <!-- Number of Shares -->
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_of_shares" />
 
-            <!-- Price Date -->
-            <!--<com.money.manager.ex.view.RobotoTextView-->
+                <com.money.manager.ex.view.RobotoTextViewFontIcon
+                    android:id="@+id/numSharesView"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    app:iconLeft="@xml/ic_hash_small" />
+
+                <!-- Purchase Price -->
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/purchase_price" />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/purchasePriceView"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="?attr/ic_calculator"
+                    android:drawableStart="?attr/ic_calculator"
+                    android:gravity="end"
+                    android:textStyle="bold" />
+
+                <!-- Notes -->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.money.manager.ex.view.RobotoEditTextFontIcon
+                        android:id="@+id/notesEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/money_padding"
+                        android:gravity="top|start"
+                        android:hint="@string/notes"
+                        android:inputType="textMultiLine"
+                        android:scrollHorizontally="false"
+                        android:textCursorDrawable="@null"
+                        app:iconLeft="@xml/ic_clipboard_small" />
+                </android.support.design.widget.TextInputLayout>
+
+                <!-- Commission -->
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/commission" />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/commissionView"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="?attr/ic_calculator"
+                    android:drawableStart="?attr/ic_calculator"
+                    android:gravity="end"
+                    android:textStyle="bold" />
+
+                <!-- Current Price -->
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_price" />
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/currentPriceView"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="?attr/ic_calculator"
+                    android:drawableStart="?attr/ic_calculator"
+                    android:gravity="end"
+                    android:textStyle="bold" />
+
+                <!-- Price Date -->
+                <!--<com.money.manager.ex.view.RobotoTextView-->
                 <!--style="@style/Money.TextView.Header.Caption"-->
                 <!--android:layout_width="fill_parent"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:text="@string/price_date"/>-->
-            <!--<com.money.manager.ex.view.RobotoTextView-->
+                <!--<com.money.manager.ex.view.RobotoTextView-->
                 <!--android:id="@+id/priceDateView"-->
                 <!--style="@style/Money.TextView.Widget.EditText"-->
                 <!--android:layout_width="match_parent"-->
@@ -184,25 +206,26 @@
                 <!--android:hint="@string/date"-->
                 <!--android:textStyle="bold"/>-->
 
-            <!-- Value -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/value"/>
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/valueView"
-                style="@style/Money.TextView.Widget.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:gravity="end" />
+                <!-- Value -->
+                <com.money.manager.ex.view.RobotoTextView
+                    style="@style/Money.TextView.Header.Caption"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/value" />
 
-        </LinearLayout>
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/valueView"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textStyle="bold" />
 
-    </ScrollView>
+            </LinearLayout>
 
-    <include layout="@layout/action_buttons" />
+        </ScrollView>
 
-</LinearLayout>
+        <include layout="@layout/action_buttons" />
+
+    </LinearLayout>
 </layout>

@@ -376,17 +376,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
+                <com.money.manager.ex.view.RobotoEditTextFontIcon
                     android:id="@+id/editTextNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="?attr/ic_paste"
-                    android:drawableStart="?attr/ic_paste"
+                    android:drawablePadding="@dimen/money_padding"
                     android:gravity="top|start"
                     android:hint="@string/notes"
                     android:inputType="textMultiLine"
                     android:scrollHorizontally="false"
-                    android:textCursorDrawable="@null" />
+                    android:textCursorDrawable="@null"
+                    app:iconLeft="@xml/ic_clipboard_small" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
