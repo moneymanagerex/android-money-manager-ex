@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -16,6 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/activity_side_margin"
@@ -29,8 +29,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,21 +40,25 @@
             android:paddingRight="@dimen/activity_padding_side">
 
             <!-- account name -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!--<com.money.manager.ex.view.RobotoTextView-->
+            <!--style="?attr/headerTextViewStyle"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/account_name" />-->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/account_name" />
-            <!--android:visibility="gone"-->
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextAccountName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:hint="@string/account_name"
-                android:inputType="text"
-                android:maxLength="100"
-                android:singleLine="true" />
+                android:layout_height="wrap_content">
+
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextAccountName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:hint="@string/account_name"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
             <!-- favourite, default -->
             <LinearLayout
@@ -65,12 +69,14 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
                     <CheckBox
                         android:id="@+id/defaultAccountCheckbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/defaultAccountText"
                         android:layout_width="wrap_content"
@@ -82,23 +88,24 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
                     <com.shamanland.fonticon.FontIconView
                         android:id="@+id/imageViewAccountFav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@color/md_primary"
                         android:text="@string/ic_star_outline"
-                        android:textSize="@dimen/fonticon_drawer"
                         android:textColor="@color/material_white"
-                        android:background="@color/md_primary" />
+                        android:textSize="@dimen/fonticon_drawer" />
                     <!--android:layout_gravity="center"-->
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/favouriteAccountTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/money_margin"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/money_margin"
                         android:text="@string/favourite_account" />
                 </LinearLayout>
             </LinearLayout>
@@ -114,9 +121,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:spinnerMode="dropdown"
-                android:prompt="@string/account_type" />
+                android:prompt="@string/account_type"
+                android:spinnerMode="dropdown" />
 
+            <!-- Currency -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
@@ -132,6 +140,7 @@
                 android:focusableInTouchMode="false"
                 android:textStyle="bold" />
 
+            <!-- Initial Balance -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
@@ -173,101 +182,98 @@
                 android:layout_weight="1"
                 android:prompt="@string/account_status" />
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!-- Account Number -->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/account_number"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextAccountNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/account_number"
-                android:inputType="text"
-                android:maxLength="100"
-                android:singleLine="true" />
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextAccountNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/account_number"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!-- Held at -->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/account_held_at"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextAccountHeldAt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/account_held_at"
-                android:inputType="text"
-                android:maxLength="100"
-                android:singleLine="true" />
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextAccountHeldAt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/account_held_at"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!-- Website -->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/website"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextWebsite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/website"
-                android:inputType="text"
-                android:maxLength="100"
-                android:singleLine="true" />
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextWebsite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/website"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!-- Contact -->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/contact"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextContact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/contact"
-                android:inputType="text"
-                android:maxLength="100"
-                android:singleLine="true" />
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/contact"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!-- Access info -->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/access_info"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextAccessInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/access_info"
-                android:inputType="text"
-                android:maxLength="100"
-                android:singleLine="true" />
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextAccessInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/access_info"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="?attr/headerTextViewStyle"
+            <!-- Notes -->
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/notes"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextNotes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:hint="@string/notes"
-                android:inputType="textMultiLine"
-                android:scrollHorizontally="false" />
+                <com.money.manager.ex.view.RobotoEditTextFontIcon
+                    android:id="@+id/editTextNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/money_padding"
+                    android:gravity="top|start"
+                    android:hint="@string/notes"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null"
+                    app:iconLeft="@xml/ic_clipboard_small" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
 
