@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -30,10 +29,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- fields -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,17 +47,18 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:text="@string/date"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <com.money.manager.ex.view.RobotoTextViewFontIcon
                 android:id="@+id/textViewDate"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconLeft="@xml/ic_calendar_small"
-                app:iconStart="@xml/ic_calendar_small"
                 android:drawablePadding="@dimen/money_padding"
                 android:hint="@string/date"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                app:iconLeft="@xml/ic_calendar_small"
+                app:iconStart="@xml/ic_calendar_small" />
 
             <!-- headers: Transaction Type & Status -->
             <LinearLayout
@@ -72,14 +71,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/transaction_type"/>
+                    android:text="@string/transaction_type" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     style="@style/Money.TextView.Header.Caption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/transaction_status"/>
+                    android:text="@string/transaction_status" />
             </LinearLayout>
 
             <!-- selectors: transaction type & status -->
@@ -92,69 +91,71 @@
                 <!-- Transaction Type toggle buttons -->
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:animateLayoutChanges="true"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
                     <!-- Deposit -->
                     <RelativeLayout
                         android:id="@+id/depositButton"
                         style="@style/Money.Button.Transparent"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
                         <com.shamanland.fonticon.FontIconView
                             android:id="@+id/depositButtonIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:text="@string/ic_diff_added"
-                            android:textSize="@dimen/fonticon_drawer"
                             android:textColor="@color/material_green_700"
-                            android:layout_centerHorizontal="true" />
+                            android:textSize="@dimen/fonticon_drawer" />
                     </RelativeLayout>
                     <!-- Withdrawal -->
                     <RelativeLayout
                         android:id="@+id/withdrawalButton"
                         style="@style/Money.Button.Transparent"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
                         <com.shamanland.fonticon.FontIconView
                             android:id="@+id/withdrawalButtonIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:text="@string/ic_diff_removed"
-                            android:textSize="@dimen/fonticon_drawer"
                             android:textColor="@color/material_red_700"
-                            android:layout_centerHorizontal="true" />
+                            android:textSize="@dimen/fonticon_drawer" />
                     </RelativeLayout>
                     <!-- Transfer -->
                     <RelativeLayout
                         android:id="@+id/transferButton"
                         style="@style/Money.Button.Transparent"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
                         <com.shamanland.fonticon.FontIconView
                             android:id="@+id/transferButtonIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:text="@string/ic_diff_renamed"
-                            android:textSize="@dimen/fonticon_drawer"
                             android:textColor="@color/material_grey_700"
-                            android:layout_centerHorizontal="true" />
+                            android:textSize="@dimen/fonticon_drawer" />
                     </RelativeLayout>
                 </LinearLayout>
 
                 <Spinner
                     android:id="@+id/spinnerStatus"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:prompt="@string/status"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                    />
+                    android:prompt="@string/status" />
 
             </LinearLayout>
 
@@ -171,13 +172,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:text="@string/account"/>
+                    android:text="@string/account" />
+
                 <Spinner
                     android:id="@+id/spinnerAccount"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <!-- Amounts -->
@@ -211,8 +213,8 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="?attr/ic_calculator"
                         android:drawableStart="?attr/ic_calculator"
-                        android:textStyle="bold"
-                        android:gravity="end" />
+                        android:gravity="end"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Account To -->
@@ -233,11 +235,11 @@
 
                     <Spinner
                         android:id="@+id/spinnerToAccount"
+                        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+                        android:focusableInTouchMode="true" />
                 </LinearLayout>
 
                 <!-- Amount To -->
@@ -255,7 +257,7 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/amount_to"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/textViewTotAmount"
@@ -263,8 +265,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="?attr/ic_calculator"
-                        android:textStyle="bold"
-                        android:gravity="end" />
+                        android:gravity="end"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -280,7 +282,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/payee"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -291,19 +293,19 @@
                         android:id="@+id/textViewPayee"
                         style="@style/Money.TextView.Widget.EditText"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableLeft="?attr/ic_users"
                         android:drawableStart="?attr/ic_users"
-                        android:hint="@string/payee"/>
+                        android:hint="@string/payee" />
 
                     <com.shamanland.fonticon.FontIconView
                         android:id="@+id/removePayeeButton"
+                        style="@style/Money.Button"
                         android:layout_width="@dimen/money_button_height"
                         android:layout_height="@dimen/money_button_height"
                         android:text="@string/ic_erase"
-                        android:textSize="@dimen/fonticon_drawer"
-                        style="@style/Money.Button" />
+                        android:textSize="@dimen/fonticon_drawer" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -313,7 +315,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/category"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -327,16 +330,16 @@
                     android:layout_weight="1"
                     android:drawableLeft="?attr/ic_label_outline"
                     android:drawableStart="?attr/ic_label_outline"
-                    android:hint="@string/category"/>
+                    android:hint="@string/category" />
 
                 <!-- Split button -->
                 <com.shamanland.fonticon.FontIconView
                     android:id="@+id/splitButton"
+                    style="@style/Money.Button.Transparent"
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:text="@string/ic_split"
-                    android:textSize="@dimen/fonticon_drawer"
-                    style="@style/Money.Button.Transparent" />
+                    android:textSize="@dimen/fonticon_drawer" />
 
             </LinearLayout>
 
@@ -365,30 +368,26 @@
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_action_plusone_dark"/>
+                    android:src="@drawable/ic_action_plusone_dark" />
             </LinearLayout>
 
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/notes"
-                android:visibility="gone"/>
-
             <!-- Notes -->
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextNotes"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="?attr/ic_paste"
-                android:drawableStart="?attr/ic_paste"
-                android:gravity="top|left"
-                android:hint="@string/notes"
-                android:inputType="textMultiLine"
-                android:scrollHorizontally="false"
-                android:textCursorDrawable="@null" />
-            <!--android:maxLength="1000"-->
+                android:layout_height="wrap_content">
 
+            <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="?attr/ic_paste"
+                    android:drawableStart="?attr/ic_paste"
+                    android:gravity="top|start"
+                    android:hint="@string/notes"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
 
