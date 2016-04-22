@@ -94,22 +94,27 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
-        Cursor c = openCursor(projection, selection, args, sort);
-        if (c == null) return null;
-
         T entity = null;
 
-        if (c.moveToNext()) {
-            try {
-                entity = resultType.newInstance();
-                //resultType.cast(entity);
-                entity.loadFromCursor(c);
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(e, "creating " + resultType.getName());
+        try {
+            Cursor c = openCursor(projection, selection, args, sort);
+            if (c == null) return null;
+
+            if (c.moveToNext()) {
+                try {
+                    entity = resultType.newInstance();
+                    //resultType.cast(entity);
+                    entity.loadFromCursor(c);
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(getContext());
+                    handler.handle(e, "creating " + resultType.getName());
+                }
             }
+            c.close();
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(ex, "fetching first record");
         }
-        c.close();
 
         return entity;
     }

@@ -149,7 +149,7 @@ public class AccountRepository
     }
 
     public Account first(String selection) {
-        return (Account) first(Account.class, null, selection, null, null);
+        return (Account) super.first(Account.class, null, selection, null, null);
     }
 
     /**
