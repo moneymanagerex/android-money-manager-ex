@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -16,11 +15,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:focusable="true"
-              android:focusableInTouchMode="true"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,26 +38,27 @@
             <!-- reset form -->
             <Button
                 android:id="@+id/resetButton"
-                android:text="@string/reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:text="@string/reset" />
 
             <!-- Account -->
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account"/>
+                android:text="@string/account" />
+
             <Spinner
                 android:id="@+id/spinnerAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <requestFocus/>
+                <requestFocus />
             </Spinner>
 
             <!-- Transaction Type -->
@@ -65,7 +66,8 @@
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/transaction_type"/>
+                android:text="@string/transaction_type" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="@string/withdrawal"/>
+                    android:text="@string/withdrawal" />
 
                 <com.money.manager.ex.view.RobotoCheckBox
                     android:id="@+id/checkBoxDeposit"
@@ -85,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="@string/deposit"/>
+                    android:text="@string/deposit" />
 
                 <com.money.manager.ex.view.RobotoCheckBox
                     android:id="@+id/checkBoxTransfer"
@@ -93,20 +95,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="@string/transfer"/>
+                    android:text="@string/transfer" />
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
                 style="?attr/headerTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/transaction_status"/>
+                android:text="@string/transaction_status" />
 
             <Spinner
                 android:id="@+id/spinnerStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:prompt="@string/status"/>
+                android:prompt="@string/status" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,7 +126,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/amount_from"
                     android:singleLine="true"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewToAmount"
@@ -137,7 +139,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/amount_to"
                     android:singleLine="true"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,7 +156,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:hint="@string/from_date"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewToDate"
@@ -165,7 +167,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:hint="@string/to_date"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
@@ -176,7 +178,7 @@
                 android:layout_marginTop="10dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/select_payee"/>
+                android:hint="@string/select_payee" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewSelectCategory"
@@ -186,23 +188,35 @@
                 android:layout_marginTop="10dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/select_category"/>
+                android:hint="@string/select_category" />
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextTransNumber"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/transaction_number"/>
+                android:layout_height="wrap_content">
 
-            <com.money.manager.ex.view.RobotoEditText
-                android:id="@+id/editTextNotes"
+                <com.money.manager.ex.view.RobotoEditText
+                    android:id="@+id/editTextTransNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/transaction_number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:hint="@string/notes"
-                android:inputType="textMultiLine"
-                android:scrollHorizontally="false"/>
+                android:layout_height="wrap_content">
 
+                <com.money.manager.ex.view.RobotoEditTextFontIcon
+                    android:id="@+id/editTextNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/money_padding"
+                    android:gravity="top|start"
+                    android:hint="@string/notes"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null"
+                    app:iconLeft="@xml/ic_clipboard_small" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
 
