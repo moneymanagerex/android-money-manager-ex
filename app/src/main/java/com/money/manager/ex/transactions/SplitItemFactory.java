@@ -30,16 +30,16 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class SplitItemFactory {
 
-    public static ISplitTransaction create(String entityClassName) {
+    public static ISplitTransaction create(String entityClassName, TransactionTypes transactionType) {
         ISplitTransaction entity;
         String recurringSplitName = SplitRecurringCategory.class.getSimpleName();
 
         if (entityClassName != null && entityClassName.contains(recurringSplitName)) {
             entity = SplitRecurringCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, MoneyFactory.fromDouble(0));
+                    Constants.NOT_SET, transactionType, MoneyFactory.fromDouble(0));
         } else {
             entity = SplitCategory.create(Constants.NOT_SET, Constants.NOT_SET,
-                    Constants.NOT_SET, MoneyFactory.fromDouble(0));
+                    Constants.NOT_SET, transactionType, MoneyFactory.fromDouble(0));
         }
 
         return entity;

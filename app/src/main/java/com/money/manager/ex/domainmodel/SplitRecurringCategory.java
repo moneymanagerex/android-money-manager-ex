@@ -48,7 +48,7 @@ public class SplitRecurringCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitRecurringCategory create(int transactionId, int categoryId, int subcategoryId,
-                                                Money amount) {
+                                                TransactionTypes transactionType, Money amount) {
         SplitRecurringCategory entity = new SplitRecurringCategory();
 
         entity.setCategoryId(categoryId);

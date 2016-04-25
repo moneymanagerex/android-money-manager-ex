@@ -137,18 +137,18 @@ public class SplitCategoriesActivity
 
     @Override
     public boolean onActionDoneClick() {
-        List<ISplitTransaction> allSplitTransactions = getAllSplitCategories();
+        List<ISplitTransaction> allSplitTransactions = mAdapter.splitTransactions;
         Money total = MoneyFactory.fromString("0");
 
         // Validate Category.
         for (int i = 0; i < allSplitTransactions.size(); i++) {
-            ISplitTransaction splitTransactions = allSplitTransactions.get(i);
-            if (splitTransactions.getCategoryId() == Constants.NOT_SET) {
+            ISplitTransaction splitTransaction = allSplitTransactions.get(i);
+            if (splitTransaction.getCategoryId() == Constants.NOT_SET) {
                 Core.alertDialog(this, R.string.error_category_not_selected);
                 return false;
             }
 
-            total = total.add(splitTransactions.getAmount());
+            total = total.add(splitTransaction.getAmount());
         }
 
         // total amount must not be negative.
@@ -211,13 +211,13 @@ public class SplitCategoriesActivity
             showInvalidAmountDialog();
             return;
         }
+        // The amount is always positive, ensured by the validation above.
 
         int position = Integer.parseInt(event.requestId);
         ISplitTransaction split = mAdapter.splitTransactions.get(position);
 
-        int sign = CommonSplitCategoryLogic.getTransactionSign(mAdapter.transactionType, split.getAmount());
-        event.amount = event.amount.multiply(sign);
-        split.setAmount(event.amount);
+        Money adjustedAmount = CommonSplitCategoryLogic.getStorageAmount(mAdapter.transactionType, event.amount, split);
+        split.setAmount(adjustedAmount);
 
         mAdapter.notifyItemChanged(position);
     }
@@ -227,18 +227,10 @@ public class SplitCategoriesActivity
         showCategorySelector(event.requestId);
     }
 
-    /**
-     * Returns all split categories created on the form.
-     * @return List of Split Transactions that are displayed.
-     */
-    public List<ISplitTransaction> getAllSplitCategories() {
-        return mAdapter.splitTransactions;
-    }
-
     // Private
 
     private void addSplitTransaction() {
-        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName);
+        ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName, mAdapter.transactionType);
 
         mAdapter.splitTransactions.add(entity);
 
@@ -260,7 +252,7 @@ public class SplitCategoriesActivity
         int transactionType = intent.getIntExtra(KEY_TRANSACTION_TYPE, 0);
         mAdapter.transactionType = TransactionTypes.values()[transactionType];
 
-        mAdapter.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);;
+        mAdapter.currencyId = intent.getIntExtra(KEY_CURRENCY_ID, Constants.NOT_SET);
 
         List<ISplitTransaction> splits = Parcels.unwrap(intent.getParcelableExtra(KEY_SPLIT_TRANSACTION));
         if (splits != null) {

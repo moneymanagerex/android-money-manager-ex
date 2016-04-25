@@ -48,27 +48,20 @@ public class CommonSplitCategoryLogic {
     }
 
     /**
-     * Returns the multiplier (1 or -1) for the amount. The absolute (positive) amount should be
-     * multiplied with this value before assigning to the Amount property.
+     * Adjusts the sign on the amount, required for storage.
+     * @return Returns the amount that should be stored in the Split based on its Transaction Type
+     * and parent transaction's Transaction Type.
      * Example: User enters 10 for Withdrawal on Withdrawal transaction. The sign will be +1.
      *          User enters 10 for Deposit on Withdrawal transaction. The sign will be -1.
      *          User enters 10 for Withdrawal on Deposit transaction. The sign will be -1.
      *          User enters 10 for Deposit on Deposit transaction. The sign will be +1.
-     * @return 1 or -1
      */
-    public static int getTransactionSign(TransactionTypes parentType, Money amount) {
-        if (amount.isZero()) return 1;
+    public static Money getStorageAmount(TransactionTypes parentType, Money amount, ISplitTransaction split) {
+        int splitSign = split.getTransactionType(parentType) == parentType
+                ? +1
+                : -1;
 
-        int parentSign = parentType == TransactionTypes.Withdrawal
-                ? -1
-                : 1;
-
-        int splitSign = amount.toDouble() < 0
-                ? -1
-                : 1;
-
-        int sign = parentSign * splitSign;
-        return sign;
+        return amount.multiply(splitSign);
     }
 
     public static void changeSign(List<ISplitTransaction> splits) {

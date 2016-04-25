@@ -37,8 +37,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1282,29 +1280,30 @@ public class EditTransactionCommonFunctions {
      * the initial split record.
      */
     private void createSplitForCategoryAndAmount() {
-        // Add the new split record.
-        ISplitTransaction entity = SplitItemFactory.create(this.mSplitCategoryEntityName);
+        // Add the new split record of the same type as the parent.
+        ISplitTransaction entity = SplitItemFactory.create(this.mSplitCategoryEntityName, transactionEntity.getTransactionType());
 
         // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
 
         // Add category
 
-        if (!this.transactionEntity.hasCategory()) return;
+        if (this.transactionEntity.hasCategory()) {
 
-        // This category should not be inside any of the existing splits, then.
-        if (!this.getSplitTransactions().isEmpty()) {
-            for (ISplitTransaction split : this.mSplitTransactions) {
-                if (split.getCategoryId().equals(this.transactionEntity.getCategoryId())) {
-                    return;
+            // This category should not be inside any of the existing splits, then.
+            if (!this.getSplitTransactions().isEmpty()) {
+                for (ISplitTransaction split : this.mSplitTransactions) {
+                    if (split.getCategoryId().equals(this.transactionEntity.getCategoryId())) {
+                        return;
+                    }
                 }
             }
+
+            entity.setCategoryId(this.transactionEntity.getCategoryId());
+
+            // SubCategory
+            entity.setSubcategoryId(this.transactionEntity.getSubcategoryId());
         }
-
-        entity.setCategoryId(this.transactionEntity.getCategoryId());
-
-        // SubCategory
-        entity.setSubcategoryId(this.transactionEntity.getSubcategoryId());
 
         this.getSplitTransactions().add(entity);
     }

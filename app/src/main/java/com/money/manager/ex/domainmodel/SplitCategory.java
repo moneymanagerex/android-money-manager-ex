@@ -49,7 +49,7 @@ public class SplitCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
-                                       Money amount) {
+                                       TransactionTypes transactionType, Money amount) {
         SplitCategory entity = new SplitCategory();
 
         entity.setId(Constants.NOT_SET);
