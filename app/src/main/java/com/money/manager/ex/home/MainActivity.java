@@ -20,6 +20,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -109,7 +111,7 @@ import java.util.ArrayList;
  * Main activity of the application.
  */
 public class MainActivity
-    extends BaseFragmentActivity {
+        extends BaseFragmentActivity {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -378,9 +380,9 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        if(mDrawer.isDrawerOpen(Gravity.LEFT)){
+        if (mDrawer.isDrawerOpen(Gravity.LEFT)) {
             mDrawer.closeDrawer(Gravity.LEFT);
-        }else{
+        } else {
             try {
                 super.onBackPressed();
             } catch (IllegalStateException e) {
@@ -393,7 +395,7 @@ public class MainActivity
     // Permissions
 
     @Override
-    public void onRequestPermissionsResult (int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // cancellation
         if (permissions.length == 0) return;
 
@@ -454,6 +456,7 @@ public class MainActivity
 
     /**
      * Handle the callback from the drawer click handler.
+     *
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
@@ -749,7 +752,7 @@ public class MainActivity
 
     private void shutdownWithPrompt() {
         new MaterialDialog.Builder(this)
-            .content(R.string.app_restart)
+                .content(R.string.app_restart)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -758,15 +761,15 @@ public class MainActivity
                     }
                 })
                 .neutralText(android.R.string.cancel)
-            .show();
+                .show();
     }
 
     private void startMainActivity() {
         // Don't reuse the same Intent. It loops when called after Dropbox download.
-        
+
         Context baseContext = getBaseContext();
         Intent intent = baseContext.getPackageManager()
-            .getLaunchIntentForPackage( baseContext.getPackageName() );
+                .getLaunchIntentForPackage(baseContext.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
@@ -820,7 +823,7 @@ public class MainActivity
     /**
      * Displays the fragment and associate the tag
      *
-     * @param fragment Fragment to display
+     * @param fragment    Fragment to display
      * @param tagFragment Tag/name to search for.
      */
     public void showFragment(Fragment fragment, String tagFragment) {
@@ -835,6 +838,7 @@ public class MainActivity
     /**
      * Shows a fragment with the selected account (id) and transactions.
      * Called from Home Fragment when an account is clicked in the main list.
+     *
      * @param accountId id of the account for which to show the transactions
      */
     public void showAccountFragment(int accountId) {
@@ -860,6 +864,7 @@ public class MainActivity
 
     /**
      * Show tutorial on first run.
+     *
      * @return boolean indicator whether the tutorial was displayed or not
      */
     public boolean showTutorial() {
@@ -889,22 +894,28 @@ public class MainActivity
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
     }
 
-    public void onDrawerItemSubDialogs(final DrawerMenuItemAdapter adapter, CharSequence title, Boolean isDarkTheme) {
+    public void onDrawerItemSubDialogs(final DrawerMenuItemAdapter adapter, CharSequence title) {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(title)
-                .adapter(adapter, null)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
+                        dialog.dismiss();
+                    }
+                })
                 .build();
 
-        ListView listView = dialog.getListView();
-        if (listView != null) {
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    onDrawerMenuAndOptionMenuSelected(adapter.getItem(position));
-                    dialog.dismiss();
-                }
-            });
-        }
+//        ListView listView = dialog.getListView();
+//        if (listView != null) {
+//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    onDrawerMenuAndOptionMenuSelected(adapter.getItem(position));
+//                    dialog.dismiss();
+//                }
+//            });
+//        }
 
         dialog.show();
     }
@@ -1063,7 +1074,7 @@ public class MainActivity
         // show main navigation fragment
         final String homeFragmentTag = HomeFragment.class.getSimpleName();
         HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager()
-            .findFragmentByTag(homeFragmentTag);
+                .findFragmentByTag(homeFragmentTag);
 
         if (homeFragment == null) {
             // fragment create
@@ -1077,8 +1088,8 @@ public class MainActivity
             public void run() {
                 try {
                     getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
-                        .commit();
+                            .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
+                            .commit();
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
                     handler.handle(e, "showing initial fragments");
@@ -1097,14 +1108,14 @@ public class MainActivity
             fragment = new HomeFragment();
             // add to stack
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                //.commit();
-                .commitAllowingStateLoss();
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    //.commit();
+                    .commitAllowingStateLoss();
         } else if (core.isTablet()) {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                //.commit();
-                .commitAllowingStateLoss();
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    //.commit();
+                    .commitAllowingStateLoss();
         }
 
         // manage fragment
@@ -1132,63 +1143,63 @@ public class MainActivity
 
         // Home
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
-            .withText(getString(R.string.home))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+                .withText(getString(R.string.home))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
 
         // Open database
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
-            .withText(getString(R.string.open_database))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+                .withText(getString(R.string.open_database))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
 
         // Dropbox synchronize
         if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
-                .withText(getString(R.string.synchronize))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
+                    .withText(getString(R.string.synchronize))
+                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
         }
 
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
-            .withText(getString(R.string.entities))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+                .withText(getString(R.string.entities))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
 
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
-            .withText(getString(R.string.repeating_transactions))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+                .withText(getString(R.string.repeating_transactions))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
 
         // Budgets
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
-            .withText(getString(R.string.budgets))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+                .withText(getString(R.string.budgets))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
 
         // Asset Allocation
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
-            .withText(getString(R.string.asset_allocation))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+                .withText(getString(R.string.asset_allocation))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
-            .withText(getString(R.string.search))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
+                .withText(getString(R.string.search))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
         // reports
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
-            .withText(getString(R.string.menu_reports))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
-            .withDivider(true));
+                .withText(getString(R.string.menu_reports))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
+                .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
-            .withText(getString(R.string.settings))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
+                .withText(getString(R.string.settings))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
         // Donate
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
-            .withText(getString(R.string.donate))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
-            .withDivider(Boolean.TRUE));
+                .withText(getString(R.string.donate))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
+                .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
-            .withText(getString(R.string.about))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
+                .withText(getString(R.string.about))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
 
         return menuItems;
     }
@@ -1201,7 +1212,7 @@ public class MainActivity
                 String title = entry.getFileName();
 
                 DrawerMenuItem item = new DrawerMenuItem()
-                    .withText(title);
+                        .withText(title);
 
                 item.setTag(entry.filePath);
 
@@ -1216,8 +1227,8 @@ public class MainActivity
 
         // Other. Simply open the file picker, as before.
         DrawerMenuItem item = new DrawerMenuItem()
-            .withId(R.id.menu_open_database)
-            .withText(getString(R.string.other));
+                .withId(R.id.menu_open_database)
+                .withText(getString(R.string.other));
         childDatabases.add(item);
 
 
@@ -1256,6 +1267,7 @@ public class MainActivity
 
     /**
      * called when quick-switching the recent databases from the navigation menu.
+     *
      * @param recentDb selected recent database entry
      */
     private void onOpenDatabaseClick(RecentDatabaseEntry recentDb) {
@@ -1265,8 +1277,8 @@ public class MainActivity
 
         // set the Dropbox file, if any.
         String dropboxPath = recentDb.linkedToDropbox
-            ? recentDb.dropboxFileName
-            : "";
+                ? recentDb.dropboxFileName
+                : "";
         mDropboxHelper.setLinkedRemoteFile(dropboxPath);
 
         requestDatabaseChange(recentDb.filePath);
@@ -1325,13 +1337,13 @@ public class MainActivity
         // and then come back to this activity and see what this does. Lots of crashes report this.
         Core core = new Core(this);
         if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
-            && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
+                && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
             for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
                 getSupportFragmentManager().popBackStack();
             }
         }
 
-        if(savedInstanceState.containsKey(KEY_HAS_STARTED)) {
+        if (savedInstanceState.containsKey(KEY_HAS_STARTED)) {
             this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
         }
     }
@@ -1367,32 +1379,54 @@ public class MainActivity
     }
 
     private void showReportsSelector(boolean isDarkTheme, String text) {
-        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        int iconId;
+
         // payee
+        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
-            .withText(getString(R.string.payees))
-            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+                .withText(getString(R.string.payees))
+                .withIconDrawable(getDrawableFromResource(iconId)));
+
         // where money goes
+        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
-            .withText(getString(R.string.menu_report_where_money_goes))
-            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+                .withText(getString(R.string.menu_report_where_money_goes))
+                .withIconDrawable(getDrawableFromResource(iconId)));
+
         // where money comes from
+        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
-            .withText(getString(R.string.menu_report_where_money_comes_from))
-            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));
+                .withText(getString(R.string.menu_report_where_money_comes_from))
+                .withIconDrawable(getDrawableFromResource(iconId)));
+
         // where money comes from
+        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
-            .withText(getString(R.string.categories))
-            .withIcon(isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light));// where money comes from
+                .withText(getString(R.string.categories))
+                .withIconDrawable(getDrawableFromResource(iconId)));
+
         // income vs. expenses
+        iconId = isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
-            .withText(getString(R.string.menu_report_income_vs_expenses))
-            .withIcon(isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light));
+                .withText(getString(R.string.menu_report_income_vs_expenses))
+                .withIconDrawable(getDrawableFromResource(iconId)));
+
         // Asset Allocation Overview
         adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
-            .withText(getString(R.string.asset_allocation))
-            .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+                .withText(getString(R.string.asset_allocation))
+                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
 
-        onDrawerItemSubDialogs(adapter, text, isDarkTheme);
+        onDrawerItemSubDialogs(adapter, text);
+    }
+
+    private Drawable getDrawableFromResource(int resourceId) {
+        Drawable icon;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            icon = getDrawable(resourceId);
+        } else {
+            icon = getResources().getDrawable(resourceId);
+        }
+        return icon;
     }
 }
