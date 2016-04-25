@@ -52,7 +52,7 @@ public class BudgetEditActivity
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
         handleIntent();
     }

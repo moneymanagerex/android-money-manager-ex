@@ -102,16 +102,16 @@ public abstract class BaseFragmentActivity
     public void addDefaultButtonHandlers() {
         View container = findViewById(R.id.defaultButtons);
 
-        setToolbarStandardActions(container);
+        showStandardToolbarActions(container);
     }
 
     /**
      * Uses the default toolbar and action buttons.
      */
-    public void setToolbarStandardActions() {
+    public void showStandardToolbarActions() {
         View toolbar = getToolbar();
         if (toolbar != null) {
-            setToolbarStandardActions(toolbar);
+            showStandardToolbarActions(toolbar);
         } else {
             // use the button container at the bottom
             addDefaultButtonHandlers();
@@ -122,8 +122,8 @@ public abstract class BaseFragmentActivity
      * Sets OK & Cancel as the toolbar buttons with handlers (onActionDoneClick & onActionCancelClick).
      * @param toolbar Toolbar element.
      */
-    public void setToolbarStandardActions(View toolbar) {
-        setToolbarStandardActions(toolbar, R.id.action_cancel, R.id.action_done);
+    public void showStandardToolbarActions(View toolbar) {
+        showStandardToolbarActions(toolbar, R.id.action_cancel, R.id.action_done);
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class BaseFragmentActivity
      * @param actionCancel  R.id of the negative (cancel) button
      * @param actionDone    R.id of the positive (action) button
      */
-    public void setToolbarStandardActions(View toolbar, int actionCancel, int actionDone) {
+    public void showStandardToolbarActions(View toolbar, int actionCancel, int actionDone) {
         if (toolbar != null) {
             View cancelActionView = toolbar.findViewById(actionCancel);
             if (cancelActionView != null)
@@ -176,7 +176,7 @@ public abstract class BaseFragmentActivity
     /**
      * Set default toolbar to act as action bar for the activity.
      */
-    public void setSupportActionBar() {
+    public void showActionBar() {
         setSupportActionBar(getToolbar());
     }
 

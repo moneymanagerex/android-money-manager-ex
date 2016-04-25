@@ -24,7 +24,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
@@ -98,7 +97,7 @@ public class SplitCategoriesActivity
         // set view
         setContentView(R.layout.activity_split_categories);
 
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
         // show the floating "Add" button
         setUpFloatingButton();

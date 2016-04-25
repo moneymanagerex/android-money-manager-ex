@@ -79,7 +79,7 @@ public class CurrencyEditActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.currency_edit_activity);
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
 
         this.holder = CurrencyEditViewHolder.initialize(this);

@@ -137,10 +137,10 @@ public class AccountEditActivity
 
         // toolbar
 //        if (getToolbar() != null) {
-//            setSupportActionBar();
-//            setToolbarStandardActions();
+//            showActionBar();
+//            showStandardToolbarActions();
 //        }
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
         initializeControls();
     }

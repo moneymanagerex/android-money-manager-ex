@@ -43,7 +43,7 @@ public class AssetClassEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_class_edit);
 
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);

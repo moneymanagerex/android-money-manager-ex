@@ -60,8 +60,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import info.javaperformance.money.MoneyFactory;
-
 /**
  * Activity for editing Checking Account Transaction
  */
@@ -83,7 +81,7 @@ public class CheckingTransactionEditActivity
         // Create Dropbox helper if not yet created. i.e. when started from a widget.
         DropboxHelper.getInstance(this);
 
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
         ITransactionEntity model = AccountTransaction.create();
         mCommonFunctions = new EditTransactionCommonFunctions(this, model);

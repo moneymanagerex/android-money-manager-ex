@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -100,7 +99,7 @@ public class RecurringTransactionEditActivity
 
         mCommonFunctions = new EditTransactionCommonFunctions(this, mRecurringTransaction);
 
-        setToolbarStandardActions();
+        showStandardToolbarActions();
 
         // manage save instance
         if (savedInstanceState != null) {

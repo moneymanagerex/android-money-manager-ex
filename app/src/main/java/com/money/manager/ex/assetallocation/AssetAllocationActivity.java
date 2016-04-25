@@ -62,8 +62,8 @@ public class AssetAllocationActivity
         setContentView(R.layout.base_toolbar_activity);
 
         if (getToolbar() != null) {
-            setSupportActionBar();
-            setToolbarStandardActions();
+            showActionBar();
+            showStandardToolbarActions();
             // change home icon to 'back'.
             setDisplayHomeAsUpEnabled(true);
         }
