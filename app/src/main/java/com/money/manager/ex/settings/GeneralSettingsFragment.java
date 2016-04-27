@@ -75,7 +75,7 @@ public class GeneralSettingsFragment
                     int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, -1);
                     // set preference
                     CurrencyService utils = new CurrencyService(getActivity());
-                    utils.saveBaseCurrencyId(currencyId);
+                    utils.setBaseCurrencyId(currencyId);
                     // refresh the displayed value.
                     showCurrentDefaultCurrency();
 

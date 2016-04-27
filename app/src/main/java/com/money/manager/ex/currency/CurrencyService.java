@@ -51,20 +51,20 @@ import info.javaperformance.money.MoneyFactory;
  * This class implements all the methods of utility for the management of currencies.
  */
 public class CurrencyService
-    extends ServiceBase {
+        extends ServiceBase {
 
-    private static Integer mBaseCurrencyId = null;
+    //    private static Integer mBaseCurrencyId = null;
     // hash map of all currencies
-    private static Map<Integer, Currency> mCurrencies;
+//    private static Map<Integer, Currency> mCurrencies;
+
     /**
      * a fast lookup for symbol -> id. i.e. EUR->2.
      */
-    private static HashMap<String, Integer> mCurrencyCodes;
-
+//    private static HashMap<String, Integer> mCurrencyCodes;
     public static void destroy() {
-        mCurrencies = null;
-        mCurrencyCodes = null;
-        mBaseCurrencyId = null;
+//        mCurrencies = null;
+//        mCurrencyCodes = null;
+//        mBaseCurrencyId = null;
     }
 
     public CurrencyService(Context context) {
@@ -79,19 +79,8 @@ public class CurrencyService
     public Currency getCurrency(Integer currencyId) {
         if (currencyId == null || currencyId == Constants.NOT_SET) return null;
 
-        // check if the currency is cached.
-        Currency result =  getCurrenciesStore().get(currencyId);
-
-        // if not cached, try to load it.
-        if (result == null) {
-            CurrencyRepository repository = new CurrencyRepository(getContext());
-            result = repository.loadCurrency(currencyId);
-
-            // cache
-            if (result != null && !getCurrenciesStore().containsKey(currencyId)) {
-                cacheCurrency(result);
-            }
-        }
+        CurrencyRepository repository = new CurrencyRepository(getContext());
+        Currency result = repository.loadCurrency(currencyId);
 
         return result;
     }
@@ -120,29 +109,12 @@ public class CurrencyService
     }
 
     public Integer getIdForCode(String code) {
-        Integer result = getCurrencyCodes().get(code);
+        CurrencyRepository repo = new CurrencyRepository(getContext());
+        Currency currency = repo.loadCurrency(code);
 
-        if (result == null) {
-            CurrencyRepository repo = new CurrencyRepository(getContext());
-            Currency currency = repo.loadCurrency(code);
-            cacheCurrency(currency);
-        }
-
-        result = getCurrencyCodes().get(code);
+        Integer result = currency.getCurrencyId();
 
         return result;
-    }
-
-    public Map<Integer, Currency> getCurrenciesStore() {
-        if (mCurrencies == null) mCurrencies = new HashMap<>();
-        return mCurrencies;
-    }
-
-    public HashMap<String, Integer> getCurrencyCodes() {
-        if (mCurrencyCodes == null) {
-            mCurrencyCodes = new HashMap<>();
-        }
-        return mCurrencyCodes;
     }
 
     public List<Currency> getUsedCurrencies() {
@@ -153,7 +125,7 @@ public class CurrencyService
 
         List<Currency> currencies = new ArrayList<>();
 
-        for(Account account : accounts) {
+        for (Account account : accounts) {
             Currency currency = getCurrency(account.getCurrencyId());
             if (!currencies.contains(currency)) {
                 currencies.add(currency);
@@ -175,11 +147,11 @@ public class CurrencyService
         // check if exists from and to currencies
         if (fromCurrencyFormats == null || toCurrencyFormats == null) {
             String message = fromCurrencyFormats == null
-                ? "currency " + fromCurrencyId + " not loaded."
-                : "";
+                    ? "currency " + fromCurrencyId + " not loaded."
+                    : "";
             message += toCurrencyFormats == null
-                ? " currency " + toCurrencyId + " not loaded."
-                : "";
+                    ? " currency " + toCurrencyId + " not loaded."
+                    : "";
             throw new RuntimeException(message);
         }
 
@@ -194,8 +166,7 @@ public class CurrencyService
     }
 
     /**
-     * Get id of base currency.
-     * Lazy loaded, no need to initialize separately.
+     * Loads id of base currency.
      *
      * @return Id of base currency
      */
@@ -203,44 +174,51 @@ public class CurrencyService
         int result;
 
         // lazy loading the base currency id.
-        if (mBaseCurrencyId == null) {
-            Integer baseCurrencyId = loadBaseCurrencyId();
-            if(baseCurrencyId != null) {
-                setBaseCurrencyId(baseCurrencyId);
-                result = baseCurrencyId;
-            } else {
-                // No base currency set yet. Try to get it from the system.
-                java.util.Currency systemCurrency = this.getSystemDefaultCurrency();
-                if (systemCurrency == null) {
-                    // could not get base currency from the system. Use Euro.
-                    //Currency euro = repo.loadCurrency("EUR");
-                    //result = euro.getCurrencyId();
-                    Log.w("CurrencyService", "system default currency is null!");
-                    result = 2;
-                } else {
-                    CurrencyRepository repo = new CurrencyRepository(getContext());
-                    Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
+//        if (mBaseCurrencyId == null) {
+        Integer baseCurrencyId = loadBaseCurrencyId();
 
-                    if (defaultCurrency != null) {
-                        result = defaultCurrency.getCurrencyId();
-                    } else {
-                        // currency not found.
-                        Log.w("CurrencyService", "currency " + systemCurrency.getCurrencyCode() +
+        if (baseCurrencyId != null) {
+            setBaseCurrencyId(baseCurrencyId);
+            result = baseCurrencyId;
+        } else {
+            // No base currency set yet. Try to get it from the system.
+            java.util.Currency systemCurrency = this.getSystemDefaultCurrency();
+            if (systemCurrency == null) {
+                // could not get base currency from the system. Use Euro?
+                //Currency euro = repo.loadCurrency("EUR");
+                //result = euro.getCurrencyId();
+                Log.w("CurrencyService", "system default currency is null!");
+                result = 2;
+            } else {
+                CurrencyRepository repo = new CurrencyRepository(getContext());
+                Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
+
+                if (defaultCurrency != null) {
+                    result = defaultCurrency.getCurrencyId();
+                } else {
+                    // currency not found.
+                    Log.w("CurrencyService", "currency " + systemCurrency.getCurrencyCode() +
                             "not found!");
-                        result = 2;
-                    }
+                    result = 2;
                 }
             }
-        } else {
-            result = mBaseCurrencyId;
         }
+//        } else {
+//            result = mBaseCurrencyId;
+//        }
 
         setBaseCurrencyId(result);
         return result;
     }
 
     public void setBaseCurrencyId(int baseCurrencyId) {
-        mBaseCurrencyId = baseCurrencyId;
+//        mBaseCurrencyId = baseCurrencyId;
+        InfoService service = new InfoService(getContext());
+        boolean saved = service.setInfoValue(InfoKeys.BASECURRENCYID, Integer.toString(baseCurrencyId));
+        if (!saved) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.showMessage(R.string.error_saving_default_currency);
+        }
     }
 
     public Currency getBaseCurrency() {
@@ -250,6 +228,7 @@ public class CurrencyService
 
     /**
      * Formats the given value, in base currency, as a string for display.
+     *
      * @param value to format
      * @return formatted value
      */
@@ -260,6 +239,7 @@ public class CurrencyService
 
     /**
      * Format the given value with the currency settings.
+     *
      * @param currencyId of the currency to be formatted
      * @param value      value to format
      * @return formatted value
@@ -338,6 +318,7 @@ public class CurrencyService
 
     /**
      * Checks if the currency is used in any of the accounts. Useful before deletion.
+     *
      * @param currencyId Id of the currency to check.
      * @return A boolean indicating if the currency is in use.
      */
@@ -346,30 +327,30 @@ public class CurrencyService
         return accountRepository.anyAccountsUsingCurrency(currencyId);
     }
 
+//    /**
+//     * Update database with new Base Currency Id
+//     *
+//     * @param currencyId of the currency
+//     * @return true if update succeed, otherwise false
+//     */
+//    public Boolean saveBaseCurrencyId(Integer currencyId) {
+//
+//        InfoService infoService = new InfoService(getContext());
+//        boolean success = infoService.setInfoValue(InfoKeys.BASECURRENCYID, Integer.toString(currencyId));
+//
+//        // cache the new base currency
+//        if (success) {
+//            mBaseCurrencyId = currencyId;
+//        } else {
+//            Toast.makeText(getContext(), getContext().getString(R.string.error_saving_default_currency), Toast.LENGTH_SHORT)
+//                    .show();
+//        }
+//
+//        return success;
+//    }
+
     /**
-     * Update database with new Base Currency Id
-     *
-     * @param currencyId of the currency
-     * @return true if update succeed, otherwise false
-     */
-    public Boolean saveBaseCurrencyId(Integer currencyId) {
-
-        InfoService infoService = new InfoService(getContext());
-        boolean success = infoService.setInfoValue(InfoKeys.BASECURRENCYID, Integer.toString(currencyId));
-
-        // cache the new base currency
-        if (success) {
-            mBaseCurrencyId = currencyId;
-        } else {
-            Toast.makeText(getContext(), getContext().getString(R.string.error_saving_default_currency), Toast.LENGTH_SHORT)
-                    .show();
-        }
-
-        return success;
-    }
-
-    /**
-     * Get id of base currency
+     * Loads id of base currency
      *
      * @return Id base currency
      */
@@ -378,7 +359,7 @@ public class CurrencyService
         String currencyString = infoService.getInfoValue(InfoKeys.BASECURRENCYID);
         Integer currencyId = null;
 
-        if(!StringUtils.isEmpty(currencyString)) {
+        if (!StringUtils.isEmpty(currencyString)) {
             currencyId = Integer.parseInt(currencyString);
         }
 
@@ -412,10 +393,10 @@ public class CurrencyService
         CurrencyRepository repo = new CurrencyRepository(getContext());
 
         Cursor cursor = db.query(repo.getSource(),
-            new String[] { Currency.CURRENCYID },
-            Currency.CURRENCY_SYMBOL + "=?",
-            new String[]{ currencySymbol },
-            null, null, null);
+                new String[]{Currency.CURRENCYID},
+                Currency.CURRENCY_SYMBOL + "=?",
+                new String[]{currencySymbol},
+                null, null, null);
         if (cursor == null) return result;
 
         // set BaseCurrencyId
@@ -428,7 +409,6 @@ public class CurrencyService
     }
 
     /**
-     *
      * @return a hash map of currency code / currency symbol
      */
     private HashMap<String, String> getCurrenciesCodeAndSymbol() {
@@ -444,10 +424,10 @@ public class CurrencyService
         return map;
     }
 
-    private void cacheCurrency(Currency currency) {
-        // add currency
-        getCurrenciesStore().put(currency.getCurrencyId(), currency);
-        // add symbol
-        getCurrencyCodes().put(currency.getCode(), currency.getCurrencyId());
-    }
+//    private void cacheCurrency(Currency currency) {
+//        // add currency
+//        getCurrenciesStore().put(currency.getCurrencyId(), currency);
+//        // add symbol
+//        getCurrencyCodes().put(currency.getCode(), currency.getCurrencyId());
+//    }
 }
