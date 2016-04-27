@@ -623,7 +623,6 @@ public class AssetAllocationService
     private Money sumStockValues(List<Stock> stocks) {
         Money sum = MoneyFactory.fromDouble(0);
         int baseCurrencyId = mCurrencyService.getBaseCurrencyId();
-        mAccountCurrencies = new HashMap<>();
 
         for (Stock stock : stocks) {
             // convert the stock value to the base currency.
