@@ -239,7 +239,7 @@ public class CurrencyEditActivity
                 success = repo.insert(currency);
                 break;
 
-            // todo: use ACTION_EDIT explicitely.
+            // todo: use ACTION_EDIT explicitly.
             default:
                 // Add Id value only when updating.
                 if (mCurrencyId != Constants.NOT_SET) {
@@ -249,9 +249,6 @@ public class CurrencyEditActivity
                 success = repo.update(currency);
                 break;
         }
-
-        // destroy currency cache.
-        CurrencyService.destroy();
 
         return success;
     }

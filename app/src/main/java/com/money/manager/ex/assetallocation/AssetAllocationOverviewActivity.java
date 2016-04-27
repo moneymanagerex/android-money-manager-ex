@@ -24,6 +24,7 @@ public class AssetAllocationOverviewActivity
     public static final String VALUE_FORMAT = "%,.2f";
 
     private Money differenceThreshold;
+    private CurrencyService mCurrencyService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +138,13 @@ public class AssetAllocationOverviewActivity
         return html;
     }
 
+    private CurrencyService getCurrencyService() {
+        if (mCurrencyService == null) {
+            mCurrencyService = new CurrencyService(this);
+        }
+        return mCurrencyService;
+    }
+
     /**
      * Create a list with child elements.
      * @param children Asset Allocation/Class
@@ -158,14 +166,13 @@ public class AssetAllocationOverviewActivity
 
     private String getSummaryRow(AssetClass allocation) {
         String html = "";
-        CurrencyService currencyService = new CurrencyService(this);
         FormatUtilities formatter = new FormatUtilities(this);
 
         html += "<p>" +
             allocation.getName() + ", " +
 //            currencyService.getBaseCurrencyCode() + " " +
 //            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble()) +
-            formatter.getValueFormatted(allocation.getCurrentValue(), currencyService.getBaseCurrencyId()) +
+            formatter.getValueFormatted(allocation.getCurrentValue(), getCurrencyService().getBaseCurrencyId()) +
             "</p>";
         return html;
     }

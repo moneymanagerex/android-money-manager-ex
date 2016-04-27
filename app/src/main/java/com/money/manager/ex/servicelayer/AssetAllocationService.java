@@ -65,9 +65,12 @@ public class AssetAllocationService
         super(context);
 
         this.repository = new AssetClassRepository(context);
+        mCurrencyService = new CurrencyService(context);
     }
 
     public AssetClassRepository repository;
+
+    private CurrencyService mCurrencyService;
 
     public boolean deleteAllocation(int assetClassId) {
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
@@ -353,8 +356,7 @@ public class AssetAllocationService
         AccountService accountService = new AccountService(getContext());
         List<String> investmentAccounts = new ArrayList<>();
         investmentAccounts.add(AccountTypes.INVESTMENT.toString());
-        CurrencyService currencyService = new CurrencyService(getContext());
-        int destinationCurrency = currencyService.getBaseCurrencyId();
+        int destinationCurrency = mCurrencyService.getBaseCurrencyId();
 
         List<Account> accounts = accountService.loadAccounts(false, false, investmentAccounts);
 
@@ -363,7 +365,7 @@ public class AssetAllocationService
         // Get the balances in base currency.
         for (Account account : accounts) {
             int sourceCurrency = account.getCurrencyId();
-            Money amountInBase = currencyService.doCurrencyExchange(destinationCurrency,
+            Money amountInBase = mCurrencyService.doCurrencyExchange(destinationCurrency,
                     account.getInitialBalance(), sourceCurrency);
             sum = sum.add(amountInBase);
         }
@@ -615,15 +617,14 @@ public class AssetAllocationService
 
     private Money sumStockValues(List<Stock> stocks) {
         Money sum = MoneyFactory.fromDouble(0);
-        CurrencyService currencyService = new CurrencyService(getContext());
         AccountRepository repo = new AccountRepository(getContext());
-        int baseCurrencyId = currencyService.getBaseCurrencyId();
+        int baseCurrencyId = mCurrencyService.getBaseCurrencyId();
 
         for (Stock stock : stocks) {
             // convert the stock value to the base currency.
             int accountId = stock.getHeldAt();
             int currencyId = repo.loadCurrencyIdFor(accountId);
-            Money value = currencyService.doCurrencyExchange(baseCurrencyId, stock.getValue(), currencyId);
+            Money value = mCurrencyService.doCurrencyExchange(baseCurrencyId, stock.getValue(), currencyId);
 
             sum = sum.add(value);
         }

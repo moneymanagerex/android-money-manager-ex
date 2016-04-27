@@ -56,12 +56,14 @@ public class HomeAccountsExpandableAdapter
         mAccountsByType = accountsByType;
         mTotalsByType = totalsByType;
         mHideReconciled = hideReconciled;
+        mCurrencyService = new CurrencyService(mContext);
     }
 
     private List<String> mAccountTypes = new ArrayList<>();
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
     private boolean mHideReconciled;
+    private CurrencyService mCurrencyService;
 
     @Override
     public int getGroupCount() {
@@ -129,16 +131,15 @@ public class HomeAccountsExpandableAdapter
         }
         holder = (ViewHolderAccountBills) convertView.getTag();
 
-        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
         // Show Totals
         String accountType = mAccountTypes.get(groupPosition);
         QueryAccountBills total = mTotalsByType.get(accountType);
         if (total != null) {
             // set account type value
-            String totalDisplay = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getTotalBaseConvRate()));
+            String totalDisplay = mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getTotalBaseConvRate()));
             holder.txtAccountTotal.setText(totalDisplay);
             if(!mHideReconciled) {
-                String reconciledDisplay = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getReconciledBaseConvRate()));
+                String reconciledDisplay = mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getReconciledBaseConvRate()));
                 holder.txtAccountReconciled.setText(reconciledDisplay);
             }
             // set account name
@@ -187,12 +188,11 @@ public class HomeAccountsExpandableAdapter
         holder = (ViewHolderAccountBills) convertView.getTag();
 
         QueryAccountBills account = getAccountData(groupPosition, childPosition);
-        CurrencyService currencyService = new CurrencyService(mContext.getApplicationContext());
 
         // set account name
         holder.txtAccountName.setText(account.getAccountName());
         // import formatted
-        String value = currencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getTotal()));
+        String value = mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getTotal()));
         // set amount value
         holder.txtAccountTotal.setText(value);
 
@@ -200,7 +200,7 @@ public class HomeAccountsExpandableAdapter
         if(mHideReconciled) {
             holder.txtAccountReconciled.setVisibility(View.GONE);
         } else {
-            value = currencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getReconciled()));
+            value = mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getReconciled()));
             holder.txtAccountReconciled.setText(value);
         }
 

@@ -171,9 +171,6 @@ public class MmexOpenHelper
 
     @Override
     public synchronized void close() {
-        // close CurrencyService
-        CurrencyService.destroy();
-
         super.close();
 
         mInstance = null;
