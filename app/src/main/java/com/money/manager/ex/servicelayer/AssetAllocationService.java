@@ -66,11 +66,16 @@ public class AssetAllocationService
 
         this.repository = new AssetClassRepository(context);
         mCurrencyService = new CurrencyService(context);
+//        mAccountCurrencies = new HashMap<>();
     }
 
     public AssetClassRepository repository;
 
     private CurrencyService mCurrencyService;
+    /**
+     * Hashmap of Account Id / Currency Id pairs to speed up the calculation with caching.
+     */
+    private HashMap<Integer, Integer> mAccountCurrencies;
 
     public boolean deleteAllocation(int assetClassId) {
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
@@ -617,17 +622,35 @@ public class AssetAllocationService
 
     private Money sumStockValues(List<Stock> stocks) {
         Money sum = MoneyFactory.fromDouble(0);
-        AccountRepository repo = new AccountRepository(getContext());
         int baseCurrencyId = mCurrencyService.getBaseCurrencyId();
+        mAccountCurrencies = new HashMap<>();
 
         for (Stock stock : stocks) {
             // convert the stock value to the base currency.
             int accountId = stock.getHeldAt();
-            int currencyId = repo.loadCurrencyIdFor(accountId);
+            int currencyId = getAccountCurrencyId(accountId);
             Money value = mCurrencyService.doCurrencyExchange(baseCurrencyId, stock.getValue(), currencyId);
 
             sum = sum.add(value);
         }
         return sum;
+    }
+
+    private Integer getAccountCurrencyId(int accountId) {
+        if (mAccountCurrencies == null) {
+            mAccountCurrencies = new HashMap<>();
+        }
+
+        if (mAccountCurrencies.containsKey(accountId)) {
+            return mAccountCurrencies.get(accountId);
+        }
+
+        // else load
+
+        AccountRepository repo = new AccountRepository(getContext());
+        Integer currencyId = repo.loadCurrencyIdFor(accountId);
+        mAccountCurrencies.put(accountId, currencyId);
+
+        return currencyId;
     }
 }
