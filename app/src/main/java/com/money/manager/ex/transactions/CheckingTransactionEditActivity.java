@@ -86,7 +86,7 @@ public class CheckingTransactionEditActivity
         ITransactionEntity model = AccountTransaction.create();
         mCommonFunctions = new EditTransactionCommonFunctions(this, model);
 
-        // manage save instance
+        // restore state, if any.
         if ((savedInstanceState != null)) {
             restoreInstanceState(savedInstanceState);
         }
@@ -106,7 +106,7 @@ public class CheckingTransactionEditActivity
         initializeInputControls();
 
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionEntity.getTransactionType());
+        mCommonFunctions.onTransactionTypeChanged(mCommonFunctions.transactionEntity.getTransactionType());
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.displayCategoryName();
     }

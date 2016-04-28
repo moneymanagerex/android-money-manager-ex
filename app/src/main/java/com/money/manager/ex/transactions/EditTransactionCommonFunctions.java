@@ -17,7 +17,6 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,7 +31,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -717,7 +715,7 @@ public class EditTransactionCommonFunctions {
 
                 // find which transaction type this is.
                 TransactionTypes type = (TransactionTypes) v.getTag();
-                selectTransactionType(type);
+                changeTransactionTypeTo(type);
             }
         };
 
@@ -741,7 +739,7 @@ public class EditTransactionCommonFunctions {
         TransactionTypes current = transactionEntity.getTransactionType() == null
                 ? TransactionTypes.Withdrawal
                 : transactionEntity.getTransactionType();
-        selectTransactionType(current);
+        changeTransactionTypeTo(current);
     }
 
     /**
@@ -954,7 +952,7 @@ public class EditTransactionCommonFunctions {
     /**
      * Reflect the transaction type change. Show and hide controls appropriately.
      */
-    public void onTransactionTypeChange(TransactionTypes transactionType) {
+    public void onTransactionTypeChanged(TransactionTypes transactionType) {
         transactionEntity.setTransactionType(transactionType);
 
         boolean isTransfer = transactionType.equals(TransactionTypes.Transfer);
@@ -1076,7 +1074,7 @@ public class EditTransactionCommonFunctions {
      * Entry point and the handler for the type selector input control.
      * @param transactionType The type to set the transaction to.
      */
-    public void selectTransactionType(TransactionTypes transactionType) {
+    public void changeTransactionTypeTo(TransactionTypes transactionType) {
         this.previousTransactionType = this.transactionEntity.getTransactionType();
         this.transactionEntity.setTransactionType(transactionType);
 
@@ -1114,7 +1112,7 @@ public class EditTransactionCommonFunctions {
 
         // Handle the change.
 
-        onTransactionTypeChange(transactionType);
+        onTransactionTypeChanged(transactionType);
     }
 
     public boolean validateData() {
@@ -1171,7 +1169,7 @@ public class EditTransactionCommonFunctions {
         removeAllSplitCategories();
         setSplit(false);
         transactionEntity.setTransactionType(TransactionTypes.Transfer);
-        onTransactionTypeChange(TransactionTypes.Transfer);
+        onTransactionTypeChanged(TransactionTypes.Transfer);
     }
 
     /**
@@ -1180,7 +1178,7 @@ public class EditTransactionCommonFunctions {
      */
     public void cancelChangingTransactionToTransfer() {
         // Select the previous transaction type.
-        selectTransactionType(previousTransactionType);
+        changeTransactionTypeTo(previousTransactionType);
     }
 
     /**
@@ -1366,9 +1364,11 @@ public class EditTransactionCommonFunctions {
         // un-check split.
         setSplit(false);
 
-        // calculate AmountTo
-        Money amountTo = calculateAmountTo();
-        transactionEntity.setAmountTo(amountTo);
+        // calculate AmountTo only if not set previously.
+        if (transactionEntity.getAmountTo().isZero()) {
+            Money amountTo = calculateAmountTo();
+            transactionEntity.setAmountTo(amountTo);
+        }
         displayAmountTo();
     }
 

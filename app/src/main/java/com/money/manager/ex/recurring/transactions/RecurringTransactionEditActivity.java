@@ -133,7 +133,7 @@ public class RecurringTransactionEditActivity
         initializeControls();
 
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChange(mCommonFunctions.transactionEntity.getTransactionType());
+        mCommonFunctions.onTransactionTypeChanged(mCommonFunctions.transactionEntity.getTransactionType());
         mCommonFunctions.refreshPayeeName();
         mCommonFunctions.displayCategoryName();
 
