@@ -294,7 +294,7 @@
   <string name="database_has_been_moved">Il database è stato spostati: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Copia del database su archiviazione esterna fallita</string>
   <string name="path_database_using">Stai utilizzando il database salvato in: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Transazioni Suddivise</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Suddividi</string>

@@ -291,7 +291,7 @@
   <string name="database_has_been_moved">Η βάση δεδομένων έχει μετακινηθεί: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Η αντιγραφή της βάσης των δεδομένων για εξωτερική αποθήκευση απέτυχε</string>
   <string name="path_database_using">Χρησιμοποιείτε τη βάση δεδομένων που αποθηκεύονται στο: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Διαιρεμένη συναλλαγή</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Διαχωρισμός</string>

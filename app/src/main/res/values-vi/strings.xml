@@ -291,7 +291,7 @@
   <string name="database_has_been_moved">Cơ sở dữ liệu đã chuyển: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Sao chép CSDL trên lưu trữ ngoài bị lỗi</string>
   <string name="path_database_using">Bạn đang dùng CSDL được lưu trong: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Phân chia giao dịch</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Phân chia</string>

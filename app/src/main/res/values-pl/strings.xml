@@ -279,7 +279,7 @@
   <string name="database_has_been_moved">Baza danych została przeniesiona: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Kopiowanie bazy danych na zewnętrzny nośnik nie powiodło się</string>
   <string name="path_database_using">Używasz bazy danych zapisanej w: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Podziel transakcję</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Podziel</string>

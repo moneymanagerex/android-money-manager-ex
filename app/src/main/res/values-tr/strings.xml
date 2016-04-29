@@ -281,7 +281,7 @@
   <string name="database_has_been_moved">Veritabanı taşındı: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Veritabanını harici belleğe taşıma başarısız</string>
   <string name="path_database_using">Kullandığınız veritabanı şurada kayıtlı: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">İşlemi Böl</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Böl</string>

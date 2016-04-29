@@ -294,7 +294,7 @@
   <string name="database_has_been_moved">База данных была перемещена: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Копирование базы данных на внешнее хранилище не удалось</string>
   <string name="path_database_using">Путь до используемой базы данных: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Разделение проводки</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Делить</string>

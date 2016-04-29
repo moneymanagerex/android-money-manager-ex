@@ -287,7 +287,7 @@
   <string name="database_has_been_moved">La base de données a été déplacée : %1$s</string>
   <string name="copy_database_on_external_storage_failed">La copie de la base de données sur le stockage externe a échouée</string>
   <string name="path_database_using">Vous utilisez la base de données enregistrée dans : %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Opération ventilée</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Fractionner</string>

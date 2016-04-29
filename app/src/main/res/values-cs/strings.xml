@@ -279,7 +279,7 @@
   <string name="database_has_been_moved">Databáze byla přesunuta: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Kopírování databáze na externí úložiště selhalo</string>
   <string name="path_database_using">Používáte databázi uloženou na: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Rozdělit transakci</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Rozdělit</string>

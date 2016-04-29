@@ -291,7 +291,7 @@
   <string name="database_has_been_moved">Baza de date a fost mutată: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Copierea bazei de date pe dispozitivul extern de stocare a eșuat</string>
   <string name="path_database_using">Folosești baza de date salvată în: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Împarte tranzacția</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Împarte</string>

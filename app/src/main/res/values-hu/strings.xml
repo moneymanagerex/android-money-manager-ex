@@ -291,7 +291,7 @@
   <string name="database_has_been_moved">Az adatbázis másolása megtörtént: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Az adatbázis másolása sikertelen</string>
   <string name="path_database_using">Ün ezt az adatbázist használja: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Tranzakció megosztása</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Megosztás</string>

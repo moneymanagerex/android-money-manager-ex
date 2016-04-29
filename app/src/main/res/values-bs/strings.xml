@@ -294,7 +294,7 @@
   <string name="database_has_been_moved">Baza podataka je prebačena: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Kopiranje baze podataka na vanjski spremnik nije uspjelo</string>
   <string name="path_database_using">Koristite bazu podataka spremljenu u: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Podijeljena transakcija</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Podjela</string>

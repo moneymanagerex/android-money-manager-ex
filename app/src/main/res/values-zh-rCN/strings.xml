@@ -291,7 +291,7 @@
   <string name="database_has_been_moved">数据库已移动：%1$s</string>
   <string name="copy_database_on_external_storage_failed">复制数据库到外部存储失败</string>
   <string name="path_database_using">你的数据库保存在：%1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">拆分交易</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">拆分</string>

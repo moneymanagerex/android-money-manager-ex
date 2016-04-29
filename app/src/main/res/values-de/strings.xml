@@ -288,7 +288,7 @@
   <string name="database_has_been_moved">Die Datenbank wurde verschoben: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Die Datenbank auf den externen Speicher zu kopieren ist fehlgeschlagen</string>
   <string name="path_database_using">Sie verwenden die Datenbank gespeichert in: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">Geteilte Transaktio</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Aufteilen</string>

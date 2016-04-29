@@ -294,7 +294,7 @@
   <string name="database_has_been_moved">データベースは移動されました: %1$s</string>
   <string name="copy_database_on_external_storage_failed">データベースを外部ストレージにコピーできませんでした</string>
   <string name="path_database_using">以下に保存されたデータベースを使用しています: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">取引を分割</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">分割</string>

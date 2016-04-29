@@ -266,7 +266,7 @@
   <string name="database_has_been_moved">מסד הנתונים הועבר: %1$s</string>
   <string name="copy_database_on_external_storage_failed">העתקת מסד הנתונים לאחסון חיצוני נכשלה</string>
   <string name="path_database_using">אתה משתמש במסד נתונים שנשמר ב: %1$s</string>
-  <!-- 20130129 -->
+  <!-- Split Categories -->
   <string name="split_transaction">פצל תנועה</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">פצל</string>
