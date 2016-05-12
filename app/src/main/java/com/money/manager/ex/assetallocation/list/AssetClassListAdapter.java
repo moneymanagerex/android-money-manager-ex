@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.AssetClass;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +34,10 @@ import java.util.List;
  */
 public class AssetClassListAdapter
     extends RecyclerView.Adapter<AssetClassListItemViewHolder> {
+
+    public AssetClassListAdapter() {
+        this.assetClasses = new ArrayList<>();
+    }
 
     public List<AssetClass> assetClasses;
 

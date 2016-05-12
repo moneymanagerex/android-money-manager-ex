@@ -19,16 +19,35 @@ package com.money.manager.ex.assetallocation.list;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.money.manager.ex.R;
 
 public class AssetClassListActivity extends Activity {
+
+    AssetClassListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_class_list);
 
+        mAdapter = new AssetClassListAdapter();
+
+        initRecyclerView();
     }
+
+    private void initRecyclerView() {
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.assetClassListRecyclerView);
+        if (recycler == null) return;
+
+        recycler.setAdapter(mAdapter);
+
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setHasFixedSize(true);
+    }
+
+    // todo load only groups and empty asset classes (not linked to any stocks)
 
 }
