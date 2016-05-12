@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.list.AssetClassListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.domainmodel.AssetClass;
@@ -50,6 +51,7 @@ public class AssetClassEditFragment
     public static final int INPUT_ALLOCATION = 1;
     public static final int INPUT_SORT_ORDER = 2;
     public static final int CONTEXT_MENU_DELETE = 1;
+    public static final int REQUEST_ASSET_CLASS_PARENT = 1;
 
     public AssetClassEditFragment() {
     }
@@ -201,24 +203,25 @@ public class AssetClassEditFragment
 
         if (assetClass.getParentId() == null) {
             name = getString(R.string.none);
-            edit.setText(name);
-            return;
+        } else {
+            AssetAllocationService service = new AssetAllocationService(getActivity());
+            name = service.loadName(assetClass.getParentId());
         }
-
-        AssetAllocationService service = new AssetAllocationService(getActivity());
-        name = service.loadName(assetClass.getParentId());
         edit.setText(name);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: show asset allocation selector.
+                // show asset allocation selector.
+                // todo: send the allocation id to exclude from the selection list.
+                Intent intent = new Intent(getContext(), AssetClassListActivity.class);
+                startActivityForResult(intent, REQUEST_ASSET_CLASS_PARENT);
             }
         };
-        // allow changing parent only on existing items
 
+        // allow changing parent only on existing items
         if (getActivity().getIntent().getAction().equals(Intent.ACTION_EDIT)) {
-            edit.setOnClickListener(onClickListener);
+            //todo edit.setOnClickListener(onClickListener);
         }
     }
 

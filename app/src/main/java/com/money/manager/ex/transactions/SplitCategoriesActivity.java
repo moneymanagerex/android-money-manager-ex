@@ -123,7 +123,6 @@ public class SplitCategoriesActivity
                     mAdapter.notifyItemChanged(location);
                 }
         }
-
     }
 
     @Override
