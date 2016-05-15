@@ -17,7 +17,9 @@
 
 package com.money.manager.ex.assetallocation.list;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -38,6 +40,7 @@ public class AssetClassListActivity
     extends BaseFragmentActivity {
 
     public static int LOADER_ASSET_CLASSES = 1;
+    public static String EXTRA_ASSET_CLASS_ID = "AssetClassId";
 
     private AssetClassListAdapter mAdapter;
 
@@ -71,8 +74,11 @@ public class AssetClassListActivity
 
     @Subscribe
     public void onEvent(ListItemClickedEvent event) {
-        // todo item selected. return
-        Log.d("test", "something selected");
+        Intent data = new Intent();
+        data.putExtra(EXTRA_ASSET_CLASS_ID, event.id);
+
+        setResult(Activity.RESULT_OK, data);
+        finish();
     }
 
     // Private

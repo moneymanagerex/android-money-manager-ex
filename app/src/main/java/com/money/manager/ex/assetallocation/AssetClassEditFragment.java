@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.assetallocation;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -58,10 +59,14 @@ public class AssetClassEditFragment
 
     public AssetClass assetClass;
 
+    private AssetClassEditViewHolder viewHolder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_asset_class_edit, container, false);
+
+        this.viewHolder = new AssetClassEditViewHolder(view);
 
         return view;
     }
@@ -93,6 +98,22 @@ public class AssetClassEditFragment
         EventBus.getDefault().unregister(this);
 
         super.onStop();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+
+        // request code
+
+        int id = data.getIntExtra(AssetClassListActivity.EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
+        if (id == Constants.NOT_SET) return;
+
+        // set the parent for the current item
+        this.assetClass.setParentId(id);
+
+        // refresh the view.
+        displayParent();
     }
 
     // Context menu
@@ -199,16 +220,6 @@ public class AssetClassEditFragment
         TextView edit = (TextView) view.findViewById(R.id.parentAssetClass);
         if (edit == null) return;
 
-        String name;
-
-        if (assetClass.getParentId() == null) {
-            name = getString(R.string.none);
-        } else {
-            AssetAllocationService service = new AssetAllocationService(getActivity());
-            name = service.loadName(assetClass.getParentId());
-        }
-        edit.setText(name);
-
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +234,8 @@ public class AssetClassEditFragment
         if (getActivity().getIntent().getAction().equals(Intent.ACTION_EDIT)) {
             edit.setOnClickListener(onClickListener);
         }
+
+        displayParent();
     }
 
     private void initializeSortOrderInput(View view) {
@@ -254,6 +267,19 @@ public class AssetClassEditFragment
             textView.setText(allocation.toString());
             textView.setTag(allocation.toString());
         }
+    }
+
+    private void displayParent() {
+        String name;
+
+        if (assetClass.getParentId() == null) {
+            name = getString(R.string.none);
+        } else {
+            AssetAllocationService service = new AssetAllocationService(getActivity());
+            name = service.loadName(assetClass.getParentId());
+        }
+
+        viewHolder.parentAssetClass.setText(name);
     }
 
     private void displaySortOrder() {

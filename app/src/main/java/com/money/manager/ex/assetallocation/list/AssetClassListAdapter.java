@@ -55,21 +55,13 @@ public class AssetClassListAdapter
         return viewHolder;
     }
 
-//    @Override
-//    public void onBindViewHolder(AssetClassListItemViewHolder holder, int position) {
-//        mCursor.moveToPosition(position);
-//
-//        AssetClass assetClass = new AssetClass();
-//        assetClass.loadFromCursor(mCursor);
-//        holder.nameView.setText(assetClass.getName());
-//    }
-
     @Override
     public void onBindViewHolder(AssetClassListItemViewHolder viewHolder, Cursor cursor) {
         AssetClass assetClass = new AssetClass();
 
         assetClass.loadFromCursor(cursor);
 
+        viewHolder.id = assetClass.getId();
         viewHolder.nameView.setText(assetClass.getName());
     }
 }

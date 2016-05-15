@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import com.shamanland.fonticon.FontIconTextView;
 
@@ -32,6 +33,8 @@ import org.greenrobot.eventbus.EventBus;
 public class AssetClassListItemViewHolder
     extends RecyclerView.ViewHolder {
 
+    public int id;
+
     public RobotoTextViewFontIcon nameView;
 
     public AssetClassListItemViewHolder(View itemView) {
@@ -41,7 +44,8 @@ public class AssetClassListItemViewHolder
         nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new ListItemClickedEvent());
+                RobotoTextViewFontIcon textView = (RobotoTextViewFontIcon) v;
+                EventBus.getDefault().post(new ListItemClickedEvent(id, textView.getText().toString()));
             }
         });
     }

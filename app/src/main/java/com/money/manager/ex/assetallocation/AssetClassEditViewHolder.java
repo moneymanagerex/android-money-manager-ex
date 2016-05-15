@@ -15,17 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.assetallocation.list;
+package com.money.manager.ex.assetallocation;
+
+import android.view.View;
+
+import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 /**
- * Event for clicking the list items in recycler view.
+ * ViewHolder for Asset Class editing screen.
  */
-public class ListItemClickedEvent {
-    public ListItemClickedEvent(int id, String name) {
-        this.id = id;
-        this.name = name;
+public class AssetClassEditViewHolder {
+    public AssetClassEditViewHolder(View view) {
+        // initialize
+        parentAssetClass = (RobotoTextViewFontIcon) view.findViewById(R.id.parentAssetClass);
     }
 
-    public int id;
-    public String name;
+    public RobotoTextViewFontIcon parentAssetClass;
 }
