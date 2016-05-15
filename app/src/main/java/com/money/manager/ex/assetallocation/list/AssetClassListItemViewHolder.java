@@ -20,17 +20,29 @@ package com.money.manager.ex.assetallocation.list;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoTextViewFontIcon;
+import com.shamanland.fonticon.FontIconTextView;
+
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * View holder for the list item.
  */
 public class AssetClassListItemViewHolder
     extends RecyclerView.ViewHolder {
 
-    // todo controls
+    public RobotoTextViewFontIcon nameView;
 
     public AssetClassListItemViewHolder(View itemView) {
         super(itemView);
 
-        // todo initialize
+        nameView = (RobotoTextViewFontIcon) itemView.findViewById(R.id.nameView);
+        nameView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new ListItemClickedEvent());
+            }
+        });
     }
 }

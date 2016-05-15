@@ -17,35 +17,112 @@
 
 package com.money.manager.ex.assetallocation.list;
 
-import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.datalayer.AssetClassRepository;
 
-public class AssetClassListActivity extends Activity {
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
-    AssetClassListAdapter mAdapter;
+public class AssetClassListActivity
+    extends BaseFragmentActivity {
+
+    public static int LOADER_ASSET_CLASSES = 1;
+
+    private AssetClassListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_class_list);
 
-        mAdapter = new AssetClassListAdapter();
+        mAdapter = new AssetClassListAdapter(null);
+        initRecyclerView(mAdapter);
 
-        initRecyclerView();
+        LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = initLoader();
+
+        // start loader
+        Loader loader = getSupportLoaderManager().initLoader(LOADER_ASSET_CLASSES, null, loaderCallbacks);
     }
 
-    private void initRecyclerView() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEvent(ListItemClickedEvent event) {
+        // todo item selected. return
+        Log.d("test", "something selected");
+    }
+
+    // Private
+
+    private LoaderManager.LoaderCallbacks<Cursor> initLoader() {
+        LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                // handle id if there are multiple loaders
+                Context context = AssetClassListActivity.this;
+                AssetClassRepository repo = new AssetClassRepository(context);
+                // todo filter out the asset class that we are selecting the parent for.
+                return new MmexCursorLoader(context, repo.getUri(), repo.getAllColumns(),
+                        "",
+                        null,
+                        null);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//                if (mAdapter == null) {
+//                    mAdapter = new AssetClassListAdapter(data);
+//                    initRecyclerView(mAdapter);
+//                }
+
+                mAdapter.changeCursor(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                mAdapter.changeCursor(null);
+            }
+        };
+
+        return callbacks;
+    }
+
+    private void initRecyclerView(AssetClassListAdapter adapter) {
         RecyclerView recycler = (RecyclerView) findViewById(R.id.assetClassListRecyclerView);
         if (recycler == null) return;
 
-        recycler.setAdapter(mAdapter);
+        recycler.setAdapter(adapter);
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setHasFixedSize(true);
+
+        // divider between items
+        //recycler.addItemDecoration();
+        //recycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
     }
 
     // todo load only groups and empty asset classes (not linked to any stocks)

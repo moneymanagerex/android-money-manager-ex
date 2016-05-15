@@ -31,7 +31,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Adapter for the recycler view version.
+ * Adapter for the recycler view version of Split Categories view.
  */
 public class SplitCategoriesAdapter
     extends RecyclerView.Adapter<SplitItemViewHolder>

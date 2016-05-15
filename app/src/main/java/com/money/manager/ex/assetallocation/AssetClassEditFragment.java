@@ -221,7 +221,7 @@ public class AssetClassEditFragment
 
         // allow changing parent only on existing items
         if (getActivity().getIntent().getAction().equals(Intent.ACTION_EDIT)) {
-            //todo edit.setOnClickListener(onClickListener);
+            edit.setOnClickListener(onClickListener);
         }
     }
 

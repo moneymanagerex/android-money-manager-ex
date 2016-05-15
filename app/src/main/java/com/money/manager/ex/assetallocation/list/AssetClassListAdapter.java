@@ -17,14 +17,14 @@
 
 package com.money.manager.ex.assetallocation.list;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.view.CursorRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,20 +33,21 @@ import java.util.List;
  * Adapter for the Asset Class list (picker)
  */
 public class AssetClassListAdapter
-    extends RecyclerView.Adapter<AssetClassListItemViewHolder> {
+    extends CursorRecyclerViewAdapter<AssetClassListItemViewHolder> {
 
-    public AssetClassListAdapter() {
+    public AssetClassListAdapter(Cursor cursor) {
+        super(cursor);
+
         this.assetClasses = new ArrayList<>();
     }
 
     public List<AssetClass> assetClasses;
 
-    private Context mContext;
-
     @Override
     public AssetClassListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(mContext);
+        super.onCreateViewHolder(parent, viewType);
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.item_asset_class_list, parent, false);
 
         AssetClassListItemViewHolder viewHolder = new AssetClassListItemViewHolder(view);
@@ -54,13 +55,21 @@ public class AssetClassListAdapter
         return viewHolder;
     }
 
-    @Override
-    public void onBindViewHolder(AssetClassListItemViewHolder holder, int position) {
+//    @Override
+//    public void onBindViewHolder(AssetClassListItemViewHolder holder, int position) {
+//        mCursor.moveToPosition(position);
+//
+//        AssetClass assetClass = new AssetClass();
+//        assetClass.loadFromCursor(mCursor);
+//        holder.nameView.setText(assetClass.getName());
+//    }
 
-    }
-
     @Override
-    public int getItemCount() {
-        return 0;
+    public void onBindViewHolder(AssetClassListItemViewHolder viewHolder, Cursor cursor) {
+        AssetClass assetClass = new AssetClass();
+
+        assetClass.loadFromCursor(cursor);
+
+        viewHolder.nameView.setText(assetClass.getName());
     }
 }

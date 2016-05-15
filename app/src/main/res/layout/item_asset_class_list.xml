@@ -17,10 +17,19 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/md_listitem_height">
 
     <com.money.manager.ex.view.RobotoTextViewFontIcon
-        android:layout_width="wrap_content"
+        android:id="@+id/nameView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <!--android:background="@color/holo_blue_dark"-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
 </LinearLayout>
