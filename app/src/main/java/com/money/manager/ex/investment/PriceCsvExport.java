@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.widget.ListAdapter;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
@@ -61,9 +62,10 @@ public class PriceCsvExport
         boolean result = false;
         String content = this.getContent(adapter);
         String filename = generateFileName(filePrefix);
+        String title = getContext().getString(R.string.export_data_to_csv);
 
         try {
-            result = this.export(filename, content);
+            result = this.export(filename, content, title);
         } catch (IOException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "exporting prices");

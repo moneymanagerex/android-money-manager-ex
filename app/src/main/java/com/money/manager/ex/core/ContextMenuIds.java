@@ -28,7 +28,8 @@ public enum ContextMenuIds {
     VIEW_TRANSACTIONS(4),
     DownloadPrice(5),
     EditPrice(6),
-    Print(7);
+    Print(7),
+    SaveAsHtml(8);
 
     public static ContextMenuIds get(int id) {
         for(ContextMenuIds itemId : ContextMenuIds.values()) {

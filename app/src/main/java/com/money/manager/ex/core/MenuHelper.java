@@ -48,7 +48,7 @@ public class MenuHelper {
     }
 
     private String getItemText(ContextMenuIds menuId) {
-        //todo add remaining items
+        // todo add remaining items
         switch (menuId) {
             case DELETE:
                 return getContext().getString(R.string.delete);
@@ -60,6 +60,8 @@ public class MenuHelper {
                 return getContext().getString(R.string.edit_price);
             case Print:
                 return getContext().getString(R.string.print);
+            case SaveAsHtml:
+                return getContext().getString(R.string.save_as_html);
             default:
                 return "N/A";
         }

@@ -18,6 +18,7 @@ package com.money.manager.ex.servicelayer.qif;
 
 import android.content.Context;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
@@ -65,8 +66,9 @@ public class QifExport
         // get data into qif structure
         IQifGenerator generator = getQifGenerator();
         String content = generator.createFromAdapter(adapter);
+        String title = getContext().getString(R.string.qif_export);
 
-        boolean success = this.export(fileName, content);
+        boolean success = this.export(fileName, content, title);
     }
 
 //    private void dumpContentIntoFile(String content, File file) {
