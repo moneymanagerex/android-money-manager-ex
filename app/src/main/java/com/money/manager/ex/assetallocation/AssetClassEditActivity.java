@@ -60,20 +60,6 @@ public class AssetClassEditActivity
         return true;
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (resultCode != Activity.RESULT_OK) return;
-//
-//        switch (requestCode) {
-//            case REQUEST_STOCK_ID:
-//                String stockSymbol = data.getStringExtra(INTENT_RESULT_STOCK_SYMBOL);
-//                assignStockToAssetClass(stockSymbol);
-//                break;
-//        }
-//    }
-
     @Override
     public boolean onActionDoneClick() {
         if (save()) {

@@ -19,17 +19,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/md_listitem_height">
+    android:paddingLeft="@dimen/money_padding"
+    android:paddingStart="@dimen/money_padding"
+    android:paddingEnd="@dimen/money_padding"
+    android:paddingRight="@dimen/money_padding"
+    android:layout_height="@dimen/md_listitem_height"
+    android:gravity="center_vertical">
 
     <com.money.manager.ex.view.RobotoTextViewFontIcon
         android:id="@+id/nameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <!--android:background="@color/holo_blue_dark"-->
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
 </LinearLayout>

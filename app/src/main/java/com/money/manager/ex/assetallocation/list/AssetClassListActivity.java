@@ -110,6 +110,9 @@ public class AssetClassListActivity
                     where.addStatement(AssetClass.ID, "<>", assetClassId);
                 }
 
+                // todo Do not offer any children of the selected asset class!
+                // todo Load only groups and empty asset classes, not those linked to any stocks!
+
                 return new MmexCursorLoader(context, repo.getUri(), repo.getAllColumns(),
                         where.getWhere(),
                         null,
@@ -118,11 +121,6 @@ public class AssetClassListActivity
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//                if (mAdapter == null) {
-//                    mAdapter = new AssetClassListAdapter(data);
-//                    initRecyclerView(mAdapter);
-//                }
-
                 mAdapter.changeCursor(data);
             }
 
@@ -146,10 +144,6 @@ public class AssetClassListActivity
 
         // divider between items
         //recycler.addItemDecoration();
-        //recycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
+        recycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
-
-    // todo load only groups and empty asset classes (not linked to any stocks)
-
 }
