@@ -7,21 +7,18 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.AdapterView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.report.ReportHtmlFormatter;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -32,16 +29,12 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.money.manager.ex.settings.InvestmentSettings;
-import com.money.manager.ex.utils.MmexFileUtils;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
-import java.util.StringTokenizer;
 
 import info.javaperformance.money.Money;
 
@@ -50,8 +43,6 @@ import info.javaperformance.money.Money;
  */
 public class AssetAllocationOverviewActivity
     extends BaseFragmentActivity {
-
-    public static final String VALUE_FORMAT = "%,.2f";
 
     private Money differenceThreshold;
     private CurrencyService mCurrencyService;
@@ -175,25 +166,6 @@ public class AssetAllocationOverviewActivity
         });
     }
 
-    private String getAssetClassNameHtml(AssetClass allocation) {
-        return allocation.getName();
-    }
-
-    private String getAssetClassDiffPercHtml(AssetClass allocation, String color) {
-        String html = String.format("<span style='color: %s;'>", color);
-        html += allocation.getDiffAsPercentOfSet();
-        html += "%</span>";
-
-        return html;
-    }
-
-    private String getAssetClassDiffAmountHtml(AssetClass allocation, String color) {
-        String html = String.format("<span style='color: %s;'>", color);
-        html += String.format(Locale.UK, VALUE_FORMAT, allocation.getDifference().toDouble());
-        html += "</span>";
-        return html;
-    }
-
     private String getAssetRow(AssetClass allocation) {
         String color = "black";
         double diffPercent = allocation.getDiffAsPercentOfSet().toDouble();
@@ -207,8 +179,8 @@ public class AssetAllocationOverviewActivity
         // style='list-style-position: inside;'
         String html = "<li>";
 
-//        html += getAssetValues(allocation, color);
-        html += getAssetValuesAsList(allocation, color);
+        html += getAssetValues(allocation, color);
+//        html += getAssetValuesAsList(allocation, color);
 
         // Child asset classes
         html += getList(allocation.getChildren());
@@ -221,52 +193,65 @@ public class AssetAllocationOverviewActivity
     private String getAssetValues(AssetClass allocation, String color) {
         String html = "";
 
+        ReportHtmlFormatter formatter = new ReportHtmlFormatter(allocation, color);
+
         // Name
-        html += getAssetClassNameHtml(allocation);
+        html += formatter.getName();
 
         html += " &#183; ";
 
         // diff %
-        html += getAssetClassDiffPercHtml(allocation, color);
+        html += formatter.getDiffPerc();
 
         html += " &#183; ";
 
         // difference amount
-        html += getAssetClassDiffAmountHtml(allocation, color);
+        html += formatter.getDiffAmount();
 
         html += "<br/>";
 
         // Allocation
-        html += String.format(VALUE_FORMAT, allocation.getAllocation().toDouble()) + "/";
+        html += formatter.getAllocation();
 
         // current allocation
-        html += String.format("<span style='color: %s; font-weight: bold;'>", color);
-        html += String.format(VALUE_FORMAT, allocation.getCurrentAllocation().toDouble()) +
-                "</span>";
+        html += formatter.getCurrentAllocation();
 
         html += " &#183; ";
 
         // Value
-        html += String.format(VALUE_FORMAT + "/" + VALUE_FORMAT,
-                allocation.getValue().toDouble(), allocation.getCurrentValue().toDouble());
+        html += formatter.getValue();
 
         return html;
     }
 
     private String getAssetValuesAsList(AssetClass allocation, String color) {
+        ReportHtmlFormatter formatter = new ReportHtmlFormatter(allocation, color);
+
         String html = "<ul class='inline'>";
 
         html += "<li class='inline'>";
-        html += getAssetClassNameHtml(allocation);
+        html += formatter.getName();
         html += "</li>";
 
         html += "<li class='inline'>";
-        html += getAssetClassDiffPercHtml(allocation, color);
+        html += formatter.getDiffPerc();
         html += "</li>";
 
         // difference amount
         html += "<li class='inline'>";
-        html += getAssetClassDiffAmountHtml(allocation, color);
+        html += formatter.getDiffAmount();
+        html += "</li>";
+
+        html += "<li class='inline'>";
+        html += formatter.getAllocation();
+        html += "</li>";
+
+        html += "<li class='inline'>";
+        html += formatter.getCurrentAllocation();
+        html += "</li>";
+
+        html += "<li class='inline'>";
+        html += formatter.getValue();
         html += "</li>";
 
         html += "</ul>";
