@@ -28,10 +28,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.domainmodel.AssetClass;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,8 +57,16 @@ public class AssetClassListActivity
 
         LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = initLoader();
 
+        // get target asset class id, to exclude from the offered list
+        Bundle loaderArgs = null;
+        Intent intent = getIntent();
+        if (intent != null) {
+            loaderArgs = new Bundle();
+            int assetClassId = intent.getIntExtra(EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
+            loaderArgs.putInt(EXTRA_ASSET_CLASS_ID, assetClassId);
+        }
         // start loader
-        Loader loader = getSupportLoaderManager().initLoader(LOADER_ASSET_CLASSES, null, loaderCallbacks);
+        Loader loader = getSupportLoaderManager().initLoader(LOADER_ASSET_CLASSES, loaderArgs, loaderCallbacks);
     }
 
     @Override
@@ -87,12 +98,20 @@ public class AssetClassListActivity
         LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                // handle id if there are multiple loaders
+                // handle id if there are multiple loaders?
+
                 Context context = AssetClassListActivity.this;
                 AssetClassRepository repo = new AssetClassRepository(context);
-                // todo filter out the asset class that we are selecting the parent for.
+
+                // filter out the asset class that we are selecting the parent for.
+                WhereStatementGenerator where = new WhereStatementGenerator();
+                int assetClassId = args.getInt(EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
+                if (assetClassId != Constants.NOT_SET) {
+                    where.addStatement(AssetClass.ID, "<>", assetClassId);
+                }
+
                 return new MmexCursorLoader(context, repo.getUri(), repo.getAllColumns(),
-                        "",
+                        where.getWhere(),
                         null,
                         null);
             }

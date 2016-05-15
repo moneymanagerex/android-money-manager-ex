@@ -122,15 +122,8 @@ public class AssetClassEditActivity
     }
 
     private AssetClassEditFragment getFragment() {
-//        String tag = AssetClassEditFragment.class.getSimpleName();
-
-        //        AssetClassEditFragment fragment = new AssetClassEditFragment();
         FragmentManager fm = getSupportFragmentManager();
-//        if (fm.findFragmentById(R.id.content) == null) {
-//            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
-//        }
 
-//        Fragment fragment = fm.findFragmentByTag(tag);
         Fragment fragment = fm.findFragmentById(R.id.fragment);
         if (fragment == null) return null;
 

@@ -224,8 +224,9 @@ public class AssetClassEditFragment
             @Override
             public void onClick(View v) {
                 // show asset allocation selector.
-                // todo: send the allocation id to exclude from the selection list.
+                // send the allocation id to exclude from the selection list.
                 Intent intent = new Intent(getContext(), AssetClassListActivity.class);
+                intent.putExtra(AssetClassListActivity.EXTRA_ASSET_CLASS_ID, assetClass.getId());
                 startActivityForResult(intent, REQUEST_ASSET_CLASS_PARENT);
             }
         };
