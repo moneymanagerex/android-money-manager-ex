@@ -17,7 +17,6 @@
 package com.money.manager.ex.investment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
@@ -193,9 +191,9 @@ public class WatchlistItemsFragment
 //            menu.add(Menu.NONE, i, i, menuItems[i]);
 //        }
         MenuHelper menuHelper = new MenuHelper(getActivity());
-        menuHelper.addItemToContextMenu(ContextMenuIds.DownloadPrice, menu);
-        menuHelper.addItemToContextMenu(ContextMenuIds.EditPrice, menu);
-        menuHelper.addItemToContextMenu(ContextMenuIds.DELETE, menu);
+        menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice, menu);
+        menuHelper.addToContextMenu(ContextMenuIds.EditPrice, menu);
+        menuHelper.addToContextMenu(ContextMenuIds.DELETE, menu);
     }
 
     /**

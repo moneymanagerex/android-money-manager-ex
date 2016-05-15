@@ -45,6 +45,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
+/**
+ * Asset Allocation view.
+ */
 public class AssetAllocationActivity
     extends BaseFragmentActivity
     implements DetailFragmentCallbacks {

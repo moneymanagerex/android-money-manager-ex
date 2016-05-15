@@ -719,5 +719,6 @@
     <string name="quote_provider">Quote provider</string>
     <string name="copy">Copy</string>
     <string name="app_restart">The app will now close to apply the changes. Please restart.</string>
-
+    <string name="print">Print</string>
+    <string name="min_19">You need at least Android 4.4 to be able to print the document.</string>
 </resources>

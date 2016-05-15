@@ -110,6 +110,7 @@ public class AssetClassListActivity
                     where.addStatement(AssetClass.ID, "<>", assetClassId);
                 }
 
+                // todo: add option None, to be able to move the asset class to the root.
                 // todo Do not offer any children of the selected asset class!
                 // todo Load only groups and empty asset classes, not those linked to any stocks!
 
