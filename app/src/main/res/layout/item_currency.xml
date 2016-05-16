@@ -22,17 +22,13 @@
     android:baselineAligned="false"
     android:orientation="horizontal"
     android:layout_gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingStart="@dimen/money_padding"
-    android:paddingLeft="@dimen/money_padding"
-    android:paddingRight="@dimen/money_padding"
-    android:paddingEnd="@dimen/money_padding" >
-    <!--?android:attr/listPreferredItemPaddingLeft-->
-    <!--?android:attr/listPreferredItemPaddingRight-->
+    android:minHeight="@dimen/mmex_listitem_height"
+    android:paddingStart="@dimen/mmex_listitem_padding_side"
+    android:paddingLeft="@dimen/mmex_listitem_padding_side"
+    android:paddingRight="@dimen/mmex_listitem_padding_side"
+    android:paddingEnd="@dimen/mmex_listitem_padding_side" >
 
     <!-- name -->
-        <!--android:layout_marginLeft="@dimen/money_margin"-->
-        <!--android:layout_marginRight="@dimen/money_margin"-->
     <com.money.manager.ex.view.RobotoTextViewFontIcon
         android:id="@+id/name"
         android:layout_width="0dp"
