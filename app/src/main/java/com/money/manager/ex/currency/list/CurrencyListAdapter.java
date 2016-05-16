@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.CursorAdapter;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.recycler.CurrencyListItemViewHolder;
 import com.money.manager.ex.domainmodel.Currency;
 
 /**
@@ -44,7 +45,7 @@ public class CurrencyListAdapter
         View view = inflater.inflate(R.layout.item_currency, parent, false);
 
         // holder
-        CurrencyListViewHolder holder = new CurrencyListViewHolder(view);
+        CurrencyListItemViewHolder holder = new CurrencyListItemViewHolder(view);
         // add holder to the view.
         view.setTag(holder);
 
@@ -53,13 +54,13 @@ public class CurrencyListAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        CurrencyListViewHolder holder = (CurrencyListViewHolder) view.getTag();
+        CurrencyListItemViewHolder holder = (CurrencyListItemViewHolder) view.getTag();
 
         // name
         String name = cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME));
         holder.name.setText(name);
 
-        // price
+        // exchange rate
         String rate = cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE));
         holder.rate.setText(rate);
     }

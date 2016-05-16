@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.domainmodel.Currency;
 
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
  * Adapter for the currency list implemented with RecyclerView.
  */
 public class CurrencyRecyclerListAdapter
-    extends SectionedRecyclerViewAdapter<CurrencyRecyclerListViewHolder> {
+    extends SectionedRecyclerViewAdapter<CurrencyListItemViewHolder> {
 
     public List<Currency> usedCurrencies;
     public List<Currency> unusedCurrencies;
@@ -63,7 +64,7 @@ public class CurrencyRecyclerListAdapter
     }
 
     @Override
-    public void onBindHeaderViewHolder(CurrencyRecyclerListViewHolder holder, int section) {
+    public void onBindHeaderViewHolder(CurrencyListItemViewHolder holder, int section) {
         // Setup header view.
         String text = null;
         switch (section) {
@@ -78,7 +79,7 @@ public class CurrencyRecyclerListAdapter
     }
 
     @Override
-    public void onBindViewHolder(CurrencyRecyclerListViewHolder holder, int section, int relativePosition, int absolutePosition) {
+    public void onBindViewHolder(CurrencyListItemViewHolder holder, int section, int relativePosition, int absolutePosition) {
         // Setup non-header view.
         // 'section' is section index.
         // 'relativePosition' is index in this section.
@@ -100,10 +101,15 @@ public class CurrencyRecyclerListAdapter
         Currency currency = list.get(relativePosition);
 
         holder.name.setText(currency.getName());
+
+        FormatUtilities format = new FormatUtilities(getContext());
+
+        String rate = Double.toString(currency.getBaseConversionRate());
+        holder.rate.setText(rate);
     }
 
     @Override
-    public CurrencyRecyclerListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CurrencyListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
 
         // Change inflated layout based on 'header'.
@@ -112,7 +118,7 @@ public class CurrencyRecyclerListAdapter
                         ? R.layout.item_currency_list_recycler_header
                         : R.layout.item_currency, parent, false);
         // item_currency_list_recycler_item
-        return new CurrencyRecyclerListViewHolder(v);
+        return new CurrencyListItemViewHolder(v);
     }
 
     public Context getContext() {

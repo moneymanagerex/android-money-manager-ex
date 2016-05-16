@@ -30,9 +30,9 @@
     <dimen name="activity_padding_side">16dp</dimen>
 
     <!-- default padding and margin -->
-    <dimen name="money_padding">4dp</dimen>
-    <dimen name="money_margin">6dp</dimen>
-    <dimen name="money_margin_bottom_top">3dp</dimen>
+    <dimen name="mmex_padding">4dp</dimen>
+    <dimen name="mmex_margin">6dp</dimen>
+    <dimen name="mmex_margin_bottom_top">3dp</dimen>
     <dimen name="money_margin_top_textview_widget_edittext">-8dp</dimen>
 
     <!-- font size amount dialog -->
@@ -70,6 +70,8 @@
     <dimen name="mmex_listitem_height">48dp</dimen>
     <dimen name="mmex_listitem_height_small">40dp</dimen>
     <dimen name="mmex_listitem_padding_side">16dp</dimen>
+    <dimen name="mmex_list_padding_top">8dp</dimen>
+    <dimen name="mmex_list_padding_top_small">4dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

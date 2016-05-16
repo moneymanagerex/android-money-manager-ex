@@ -76,7 +76,7 @@ public class CurrencyListFragment
     private static final int ID_LOADER_CURRENCY = 0;
 
     // Store previous device orientation when showing other screens (chart, etc.)
-    public int mPreviousOrientation = -1;
+    public int mPreviousOrientation = Constants.NOT_SET;
 
     private String mAction = Intent.ACTION_EDIT;
     private String mCurFilter;
@@ -88,6 +88,10 @@ public class CurrencyListFragment
         super.onCreate(savedInstanceState);
 
         mAction = getActivity().getIntent().getAction();
+        if (mAction.equals(Intent.ACTION_MAIN)) {
+            // todo: check if this adjustment is still needed.
+            mAction = Intent.ACTION_EDIT;
+        }
 
         // Filter currencies only if in the standalone Currencies list. Do not filter in pickers.
         mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);

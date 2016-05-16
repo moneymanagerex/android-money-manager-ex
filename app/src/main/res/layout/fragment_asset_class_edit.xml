@@ -68,7 +68,7 @@
                 android:id="@+id/nameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/money_padding"
+                android:drawablePadding="@dimen/mmex_padding"
                 android:gravity="top|start"
                 android:hint="@string/asset_class_name"
                 android:inputType="text"

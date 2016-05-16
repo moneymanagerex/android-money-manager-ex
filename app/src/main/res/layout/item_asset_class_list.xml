@@ -19,10 +19,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingLeft="@dimen/money_padding"
-    android:paddingStart="@dimen/money_padding"
-    android:paddingEnd="@dimen/money_padding"
-    android:paddingRight="@dimen/money_padding"
+    android:paddingLeft="@dimen/mmex_padding"
+    android:paddingStart="@dimen/mmex_padding"
+    android:paddingEnd="@dimen/mmex_padding"
+    android:paddingRight="@dimen/mmex_padding"
     android:layout_height="@dimen/mmex_listitem_height"
     android:gravity="center_vertical">
 

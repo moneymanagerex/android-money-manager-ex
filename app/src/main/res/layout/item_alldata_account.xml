@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/money_margin"
+    android:layout_margin="@dimen/mmex_margin"
     android:orientation="vertical" >
 
     <com.money.manager.ex.view.RobotoTextView
@@ -34,7 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/money_margin"
+        android:layout_margin="@dimen/mmex_margin"
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
@@ -82,8 +82,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/money_margin"
-            android:layout_marginRight="@dimen/money_margin"
+            android:layout_marginLeft="@dimen/mmex_margin"
+            android:layout_marginRight="@dimen/mmex_margin"
             android:layout_weight="1"
             android:orientation="vertical" >
 

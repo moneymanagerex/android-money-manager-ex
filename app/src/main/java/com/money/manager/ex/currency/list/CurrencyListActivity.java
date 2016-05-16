@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.ActivityUtils;
@@ -47,18 +48,10 @@ public class CurrencyListActivity
 
         CurrencyListFragment fragment = new CurrencyListFragment();
 
-        // take intent
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            // Store the requested action.
-            String action = intent.getAction();
-            if (action.equals(Intent.ACTION_MAIN)) {
-                action = Intent.ACTION_EDIT;
-            }
-            //fragment.mAction = action; <- this is now done from within the fragment.
-
             // restore previous device orientation if it was modified.
-            if(fragment.mPreviousOrientation != -1) {
+            if(fragment.mPreviousOrientation != Constants.NOT_SET) {
                 int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
                 if(currentOrientation != fragment.mPreviousOrientation) {
                     ActivityUtils.restoreOrientation(this, fragment.mPreviousOrientation);

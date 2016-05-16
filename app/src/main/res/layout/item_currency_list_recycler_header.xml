@@ -21,10 +21,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingRight" >
+    android:paddingStart="@dimen/mmex_listitem_padding_side"
+    android:paddingLeft="@dimen/mmex_listitem_padding_side"
+    android:paddingRight="@dimen/mmex_listitem_padding_side"
+    android:paddingEnd="@dimen/mmex_listitem_padding_side" >
 
     <com.money.manager.ex.view.RobotoTextViewFontIcon
         android:id="@+id/name"

@@ -81,7 +81,7 @@
                         android:id="@+id/defaultAccountText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/money_margin"
+                        android:layout_marginLeft="@dimen/mmex_margin"
                         android:text="@string/default_account" />
                 </LinearLayout>
                 <!-- favourite -->
@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/money_margin"
+                        android:layout_marginLeft="@dimen/mmex_margin"
                         android:text="@string/favourite_account" />
                 </LinearLayout>
             </LinearLayout>
@@ -266,7 +266,7 @@
                     android:id="@+id/editTextNotes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/money_padding"
+                    android:drawablePadding="@dimen/mmex_padding"
                     android:gravity="top|start"
                     android:hint="@string/notes"
                     android:inputType="textMultiLine"

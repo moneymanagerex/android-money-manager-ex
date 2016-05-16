@@ -14,18 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency.list;
 
+package com.money.manager.ex.currency.recycler;
+
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
 /**
- * View holder for the currency list item views.
+ * View holder for the currency list implemented with recycler view.
  */
-public class CurrencyListViewHolder {
-    public CurrencyListViewHolder(View view) {
+public class CurrencyListItemViewHolder
+    extends RecyclerView.ViewHolder {
+
+    public CurrencyListItemViewHolder(View view) {
+        super(view);
+
+        // Setup view holder.
         name = (TextView) view.findViewById(R.id.name);
         rate = (TextView) view.findViewById(R.id.rate);
     }
