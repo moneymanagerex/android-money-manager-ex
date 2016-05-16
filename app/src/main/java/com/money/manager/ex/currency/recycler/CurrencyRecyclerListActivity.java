@@ -25,6 +25,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.view.DividerItemDecoration;
 
 import java.util.List;
 
@@ -52,9 +53,9 @@ public class CurrencyRecyclerListActivity
 
         // load data
         CurrencyService service = new CurrencyService(this);
-        List<Currency> used = service.getUsedCurrencies();
-        List<Currency> unused = service.getUnusedCurrencies();
+        adapter.usedCurrencies = service.getUsedCurrencies();
+        adapter.unusedCurrencies = service.getUnusedCurrencies();
 
-        // todo add data
+        list.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 }

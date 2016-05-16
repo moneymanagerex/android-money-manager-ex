@@ -42,16 +42,11 @@ public class CurrencyListAdapter
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View view = inflater.inflate(R.layout.item_currency, parent, false);
 
         // holder
-        CurrencyListViewHolder holder = new CurrencyListViewHolder();
-
-        holder.nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-        holder.rateTextView = (TextView) view.findViewById(R.id.rateTextView);
-
-        // set holder to view
+        CurrencyListViewHolder holder = new CurrencyListViewHolder(view);
+        // add holder to the view.
         view.setTag(holder);
 
         return view;
@@ -63,10 +58,10 @@ public class CurrencyListAdapter
 
         // name
         String name = cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME));
-        holder.nameTextView.setText(name);
+        holder.name.setText(name);
 
         // price
         String rate = cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE));
-        holder.rateTextView.setText(rate);
+        holder.rate.setText(rate);
     }
 }

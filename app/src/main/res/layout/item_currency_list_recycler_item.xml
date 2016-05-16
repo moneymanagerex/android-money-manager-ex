@@ -17,11 +17,13 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/md_listitem_height"
+    android:gravity="center_vertical">
 
     <com.money.manager.ex.view.RobotoTextViewFontIcon
-        android:id="@+id/item"
+        android:id="@+id/name"
         android:text="Test Item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

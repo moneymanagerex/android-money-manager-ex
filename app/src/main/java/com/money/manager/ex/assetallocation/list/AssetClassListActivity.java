@@ -26,7 +26,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -36,6 +35,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.AssetClass;
+import com.money.manager.ex.view.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

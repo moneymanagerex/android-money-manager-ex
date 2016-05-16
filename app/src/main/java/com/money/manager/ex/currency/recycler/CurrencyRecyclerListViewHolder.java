@@ -20,16 +20,22 @@ package com.money.manager.ex.currency.recycler;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.money.manager.ex.R;
+import com.money.manager.ex.view.RobotoTextViewFontIcon;
+
 /**
  * View holder for the currency list implemented with recycler view.
  */
 public class CurrencyRecyclerListViewHolder
     extends RecyclerView.ViewHolder {
 
-    public CurrencyRecyclerListViewHolder(View itemView) {
-        super(itemView);
+    public CurrencyRecyclerListViewHolder(View view) {
+        super(view);
         // Setup view holder.
         // You'd want some views to be optional, e.g. for header vs. normal.
+
+        nameView = (RobotoTextViewFontIcon) view.findViewById(R.id.name);
     }
 
+    public RobotoTextViewFontIcon nameView;
 }

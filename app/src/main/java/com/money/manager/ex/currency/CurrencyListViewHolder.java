@@ -16,13 +16,20 @@
  */
 package com.money.manager.ex.currency;
 
+import android.view.View;
 import android.widget.TextView;
 
+import com.money.manager.ex.R;
+
 /**
- * Holder for the currency list item views.
- * Created by Alen Siljak on 13/07/2015.
+ * View holder for the currency list item views.
  */
 public class CurrencyListViewHolder {
-    TextView nameTextView;
-    TextView rateTextView;
+    public CurrencyListViewHolder(View view) {
+        name = (TextView) view.findViewById(R.id.name);
+        rate = (TextView) view.findViewById(R.id.rate);
+    }
+
+    public TextView name;
+    public TextView rate;
 }
