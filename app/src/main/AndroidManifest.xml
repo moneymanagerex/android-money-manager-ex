@@ -15,6 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.money.manager.ex">
 
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
@@ -44,6 +45,7 @@
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
+        tools:replace="android:label"
         android:theme="@style/Theme.Splash">
         <meta-data
             android:name="com.google.android.backup.api_key"

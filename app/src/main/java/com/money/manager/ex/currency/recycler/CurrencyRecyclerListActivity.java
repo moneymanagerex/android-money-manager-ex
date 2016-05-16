@@ -26,6 +26,8 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+
 public class CurrencyRecyclerListActivity
     extends BaseFragmentActivity {
 
@@ -45,14 +47,20 @@ public class CurrencyRecyclerListActivity
         list.setLayoutManager(new LinearLayoutManager(this));
 
         // Adapter
-        CurrencyRecyclerListAdapter adapter = new CurrencyRecyclerListAdapter();
-        list.setAdapter(adapter);
-
+//        CurrencyRecyclerListAdapter adapter = new CurrencyRecyclerListAdapter();
+        SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
         // load data
         CurrencyService service = new CurrencyService(this);
-        adapter.usedCurrencies = service.getUsedCurrencies();
-        adapter.unusedCurrencies = service.getUnusedCurrencies();
 
+        adapter.addSection(new CurrencySection(getString(R.string.active_currencies), service.getUsedCurrencies()));
+        adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), service.getUnusedCurrencies()));
+
+        //adapter.usedCurrencies = service.getUsedCurrencies();
+        //adapter.unusedCurrencies = service.getUnusedCurrencies();
+
+        list.setAdapter(adapter);
+
+        // Separator
         list.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 }
