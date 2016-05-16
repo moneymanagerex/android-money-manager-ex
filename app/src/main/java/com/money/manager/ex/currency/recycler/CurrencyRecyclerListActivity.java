@@ -18,49 +18,42 @@
 package com.money.manager.ex.currency.recycler;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class CurrencyRecyclerListActivity
     extends BaseFragmentActivity {
 
+    private static final String FRAGMENTTAG = "Currency_List_Fragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currency_recycler_list);
+//        setContentView(R.layout.activity_currency_recycler_list);
+        setContentView(R.layout.base_toolbar_activity);
 
-        initializeList();
+        // change home icon to 'back'.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CurrencyRecyclerListFragment fragment = CurrencyRecyclerListFragment.createInstance();
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.findFragmentById(R.id.content) == null) {
+            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
+        }
+
+//        initializeList();
     }
 
-    private void initializeList() {
-        RecyclerView list = (RecyclerView) findViewById(R.id.list);
-        if (list == null) return;
-
-        // Layout manager
-        list.setLayoutManager(new LinearLayoutManager(this));
-
-        // Adapter
-//        CurrencyRecyclerListAdapter adapter = new CurrencyRecyclerListAdapter();
-        SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
-        // load data
-        CurrencyService service = new CurrencyService(this);
-
-        adapter.addSection(new CurrencySection(getString(R.string.active_currencies), service.getUsedCurrencies()));
-        adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), service.getUnusedCurrencies()));
-
-        //adapter.usedCurrencies = service.getUsedCurrencies();
-        //adapter.unusedCurrencies = service.getUnusedCurrencies();
-
-        list.setAdapter(adapter);
-
-        // Separator
-        list.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-    }
 }
