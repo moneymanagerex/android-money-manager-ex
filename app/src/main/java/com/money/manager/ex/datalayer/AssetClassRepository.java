@@ -70,7 +70,10 @@ public class AssetClassRepository
 
         String[] fields = new String[] { AssetClass.ID };
 
-        List<AssetClass> children = query(AssetClass.class, fields, where.getWhere(), null, null);
+        Query query = new Query()
+                .select(fields)
+                .where(where.getWhere(), null);
+        List<AssetClass> children = query(AssetClass.class, query);
 
         List<Integer> result = new ArrayList<>();
         for (AssetClass item : children) {

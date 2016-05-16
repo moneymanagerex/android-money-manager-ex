@@ -30,7 +30,7 @@ import java.net.URL;
  * See http://stackoverflow.com/questions/18953632/how-to-set-image-from-url-for-imageview
  */
 public class ImageLoadTask
-        extends AsyncTask<Void, Void, Bitmap> {
+    extends AsyncTask<Void, Void, Bitmap> {
 
     private String url;
     private ImageView imageView;

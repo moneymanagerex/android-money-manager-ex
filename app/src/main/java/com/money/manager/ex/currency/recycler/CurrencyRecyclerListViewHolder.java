@@ -15,17 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.datalayer;
+package com.money.manager.ex.currency.recycler;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 /**
- * Repository interface
+ * View holder for the currency list implemented with recycler view.
  */
-public interface IRepository {
-//    Query selectAll();
-//    Query select();
+public class CurrencyRecyclerListViewHolder
+    extends RecyclerView.ViewHolder {
 
-    //<T extends EntityBase> boolean insert(Class<T> entity);
-//    boolean insert(EntityBase entity);
-//    int insert(T entity);
-    boolean delete(IEntity entity);
+    public CurrencyRecyclerListViewHolder(View itemView) {
+        super(itemView);
+        // Setup view holder.
+        // You'd want some views to be optional, e.g. for header vs. normal.
+    }
+
 }

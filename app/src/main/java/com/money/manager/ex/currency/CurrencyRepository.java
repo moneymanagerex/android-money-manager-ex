@@ -38,6 +38,7 @@ public class CurrencyRepository
     public CurrencyRepository(Context context) {
         super(context, "currencyformats_v1", DatasetType.TABLE, "currencyformats");
 
+        //this.TABLENAME = "currencyformats_v1";
     }
 
     @Override
@@ -74,6 +75,10 @@ public class CurrencyRepository
         int result = delete(Currency.CURRENCYID + "=?", new String[]{Integer.toString(id)});
         return result > 0;
     }
+
+//    public boolean delete(Currency currency) {
+//        delete(currency);
+//    }
 
     public Currency loadCurrency(int currencyId) {
         return loadCurrency(

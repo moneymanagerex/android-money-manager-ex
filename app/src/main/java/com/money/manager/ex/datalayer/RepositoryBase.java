@@ -119,9 +119,9 @@ public abstract class RepositoryBase<T extends EntityBase>
         return entity;
     }
 
-    public List<T> query(Class<T> resultType, String[] projection, String selection, String[] args,
-                         String sort) {
-        Cursor c = openCursor(projection, selection, args, sort);
+    public List<T> query(Class<T> resultType, Query query) {
+        // String[] projection, String selection, String[] args, String sort
+        Cursor c = openCursor(query.projection, query.selection, query.selectionArgs, query.sort);
         if (c == null) return null;
 
         List<T> results = new ArrayList<>();
@@ -165,7 +165,8 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected List<T> query(Class<T> resultType, String selection) {
-        return query(resultType, null, selection, null, null);
+        Query query = new Query().where(selection, null);
+        return query(resultType, query);
     }
 
     /**
