@@ -23,7 +23,7 @@
     android:paddingStart="@dimen/money_padding"
     android:paddingEnd="@dimen/money_padding"
     android:paddingRight="@dimen/money_padding"
-    android:layout_height="@dimen/md_listitem_height"
+    android:layout_height="@dimen/mmex_listitem_height"
     android:gravity="center_vertical">
 
     <com.money.manager.ex.view.RobotoTextViewFontIcon

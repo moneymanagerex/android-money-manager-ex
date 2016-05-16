@@ -75,10 +75,10 @@ public class CurrencyListFragment
 
     private static final int ID_LOADER_CURRENCY = 0;
 
-    public String mAction = Intent.ACTION_EDIT;
     // Store previous device orientation when showing other screens (chart, etc.)
     public int mPreviousOrientation = -1;
 
+    private String mAction = Intent.ACTION_EDIT;
     private String mCurFilter;
     private CurrencyService mCurrencyService;
     private boolean mShowOnlyUsedCurrencies;
@@ -86,6 +86,8 @@ public class CurrencyListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAction = getActivity().getIntent().getAction();
 
         // Filter currencies only if in the standalone Currencies list. Do not filter in pickers.
         mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);
@@ -162,7 +164,7 @@ public class CurrencyListFragment
         int selectedItem = item.getItemId();
         switch (selectedItem) {
             case 0: //EDIT
-                startCurrencyFormatActivity(currencyId);
+                startCurrencyEditActivity(currencyId);
                 break;
 
             case 1: // Chart
@@ -340,7 +342,7 @@ public class CurrencyListFragment
         return super.onOptionsItemSelected(item);
     }
 
-    // End menu.
+    // Search
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -380,7 +382,7 @@ public class CurrencyListFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        startCurrencyFormatActivity(null);
+        startCurrencyEditActivity(null);
     }
 
     @Override
@@ -413,6 +415,8 @@ public class CurrencyListFragment
         onPriceDownloaded(event.symbol, event.price, event.date);
     }
 
+    // Private methods.
+
     private void onPriceDownloaded(String symbol, Money price, DateTime date) {
         // extract destination currency
         String baseCurrencyCode = getCurrencyUtils().getBaseCurrencyCode();
@@ -435,8 +439,6 @@ public class CurrencyListFragment
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
     }
-
-    // Private methods.
 
     private boolean saveExchangeRate(String symbol, Money rate) {
         CurrencyRepository repo = new CurrencyRepository(getActivity());
@@ -480,7 +482,7 @@ public class CurrencyListFragment
         alertDialog.create().show();
     }
 
-    private void startCurrencyFormatActivity(Integer currencyId) {
+    private void startCurrencyEditActivity(Integer currencyId) {
         // create intent, set Account ID
         Intent intent = new Intent(getActivity(), CurrencyEditActivity.class);
         // check transId not null
@@ -545,12 +547,12 @@ public class CurrencyListFragment
     /**
      * Import all currencies from Android System
      */
-    public void importAllCurrencies() {
+    private void importAllCurrencies() {
         AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getActivity());
         asyncTask.execute();
     }
 
-    public void updateExchangeRates() {
+    private void updateExchangeRates() {
         // Update only the visible currencies.
         List<Currency> currencies = getVisibleCurrencies();
 
@@ -578,7 +580,7 @@ public class CurrencyListFragment
 
     private CurrencyService getCurrencyUtils() {
         if(mCurrencyService == null) {
-            mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
+            mCurrencyService = new CurrencyService(getActivity());
         }
         return mCurrencyService;
     }

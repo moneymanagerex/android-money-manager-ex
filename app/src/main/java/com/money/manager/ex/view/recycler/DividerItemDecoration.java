@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.money.manager.ex.view;
+package com.money.manager.ex.view.recycler;
 
 import android.content.Context;
 import android.content.res.TypedArray;

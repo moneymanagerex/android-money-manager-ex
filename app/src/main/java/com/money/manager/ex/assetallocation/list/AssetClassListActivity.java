@@ -35,7 +35,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.view.DividerItemDecoration;
+import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

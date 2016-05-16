@@ -24,10 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.view.DividerItemDecoration;
-
-import java.util.List;
+import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 public class CurrencyRecyclerListActivity
     extends BaseFragmentActivity {

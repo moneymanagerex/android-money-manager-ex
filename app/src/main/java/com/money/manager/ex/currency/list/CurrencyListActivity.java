@@ -46,7 +46,6 @@ public class CurrencyListActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         CurrencyListFragment fragment = new CurrencyListFragment();
-//        CurrencyRecyclerListFragment fragment = new CurrencyRecyclerListFragment();
 
         // take intent
         Intent intent = getIntent();
@@ -56,7 +55,8 @@ public class CurrencyListActivity
             if (action.equals(Intent.ACTION_MAIN)) {
                 action = Intent.ACTION_EDIT;
             }
-            fragment.mAction = action;
+            //fragment.mAction = action; <- this is now done from within the fragment.
+
             // restore previous device orientation if it was modified.
             if(fragment.mPreviousOrientation != -1) {
                 int currentOrientation = ActivityUtils.forceCurrentOrientation(this);

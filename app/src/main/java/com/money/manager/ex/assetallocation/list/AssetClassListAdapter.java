@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.AssetClass;
-import com.money.manager.ex.view.CursorRecyclerViewAdapter;
+import com.money.manager.ex.view.recycler.CursorRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
