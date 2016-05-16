@@ -34,6 +34,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.AssetClass;
 
 import org.greenrobot.eventbus.EventBus;
@@ -114,10 +115,11 @@ public class AssetClassListActivity
                 // todo Do not offer any children of the selected asset class!
                 // todo Load only groups and empty asset classes, not those linked to any stocks!
 
-                return new MmexCursorLoader(context, repo.getUri(), repo.getAllColumns(),
-                        where.getWhere(),
-                        null,
-                        null);
+                Query query = new Query()
+                    .select(repo.getAllColumns())
+                    .where(where.getWhere());
+
+                return new MmexCursorLoader(context, repo.getUri(), query);
             }
 
             @Override

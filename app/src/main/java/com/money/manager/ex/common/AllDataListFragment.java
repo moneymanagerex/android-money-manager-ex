@@ -55,6 +55,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -246,11 +247,12 @@ public class AllDataListFragment
                 }
                 // create loader
                 QueryAllData allData = new QueryAllData(getActivity());
-                return new MmexCursorLoader(getActivity(), allData.getUri(),
-                        allData.getAllColumns(),
-                        selection,
-                        null,
-                        sort);
+                Query query = new Query()
+                        .select(allData.getAllColumns())
+                        .where(selection, null)
+                        .orderBy(sort);
+
+                return new MmexCursorLoader(getActivity(), allData.getUri(), query);
         }
         return null;
     }

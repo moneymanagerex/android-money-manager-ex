@@ -52,6 +52,7 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
@@ -155,26 +156,35 @@ public class DashboardFragment
             // add view
             linearScreens[id].addView(progressBar);
         }
+
+        Query query = new Query();
+
         // start loader
         switch (id) {
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                return new MmexCursorLoader(getActivity(), report.getUri(), report.getAllColumns(),
-                    IncomeVsExpenseReportEntity.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
-                    " AND " +
-                    IncomeVsExpenseReportEntity.YEAR + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)),
-                    null, null);
+                query.select(report.getAllColumns())
+                    .where(IncomeVsExpenseReportEntity.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
+                            " AND " +
+                            IncomeVsExpenseReportEntity.YEAR + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+
+                return new MmexCursorLoader(getActivity(), report.getUri(), query);
+
             case ID_LOADER_SCREEN2:
-                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), null,
-                        prepareQueryTopWithdrawals(), null, null);
+                query.where(prepareQueryTopWithdrawals());
+                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
+
             case ID_LOADER_SCREEN3:
-                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), null,
-                        prepareQueryTopPayees(), null, null);
+                query.where(prepareQueryTopPayees());
+                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
+
             case ID_LOADER_SCREEN4:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                return new MmexCursorLoader(getActivity(), billDeposits.getUri(),
-                        billDeposits.getAllColumns(),
-                        QueryBillDeposits.DAYSLEFT + "<=10", null, QueryBillDeposits.DAYSLEFT);
+                query.select(billDeposits.getAllColumns())
+                    .where(QueryBillDeposits.DAYSLEFT + "<=10")
+                    .orderBy(QueryBillDeposits.DAYSLEFT);
+
+                return new MmexCursorLoader(getActivity(), billDeposits.getUri(), query);
         }
         return null;
     }

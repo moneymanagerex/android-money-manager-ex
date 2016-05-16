@@ -43,6 +43,7 @@ import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -291,12 +292,12 @@ public class WatchlistItemsFragment
                     sort = args.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
                 }
 
-                result = new MmexCursorLoader(mContext,
-                        mStockRepository.getUri(),
-                        mStockRepository.getAllColumns(),
-                        selection,
-                        null,
-                        sort);
+                Query query = new Query()
+                        .select(mStockRepository.getAllColumns())
+                        .where(selection)
+                        .orderBy(sort);
+
+                result = new MmexCursorLoader(mContext, mStockRepository.getUri(), query);
                 break;
             default:
                 result = null;

@@ -46,6 +46,7 @@ import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -332,12 +333,13 @@ public class AccountTransactionListFragment
         switch (id) {
             case ID_LOADER_SUMMARY:
                 // Account summary (balances).
+                Query query = new Query()
+                    .where(QueryAccountBills.ACCOUNTID + "=?",
+                            new String[] { Integer.toString(mAccountId) });
+
                 return new MmexCursorLoader(getActivity(),
                     new QueryAccountBills(getActivity()).getUri(),
-                    null,
-                    QueryAccountBills.ACCOUNTID + "=?",
-                    new String[] { Integer.toString(mAccountId) },
-                    null);
+                    query);
         }
         return null;
     }

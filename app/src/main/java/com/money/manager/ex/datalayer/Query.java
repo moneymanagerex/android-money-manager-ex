@@ -42,6 +42,11 @@ public class Query {
         return this;
     }
 
+    public Query where(String selection) {
+        this.selection = selection;
+        return this;
+    }
+
     public Query where(String selection, String[] args) {
         // append condition
         this.selection = selection;

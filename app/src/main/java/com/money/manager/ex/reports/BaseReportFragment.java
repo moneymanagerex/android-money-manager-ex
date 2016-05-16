@@ -35,6 +35,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -104,14 +105,13 @@ public abstract class BaseReportFragment
                 if (args != null && args.containsKey(KEY_WHERE_CLAUSE)) {
                     setWhereClause(args.getString(KEY_WHERE_CLAUSE));
                 }
-                String query = prepareQuery(getWhereClause());
+                String where = prepareQuery(getWhereClause());
+                Query query = new Query()
+                        .where(where);
 
                 result = new MmexCursorLoader(getActivity(),  // context
                         new SQLDataSet().getUri(),          // uri
-                        null,                               // projection
-                        query,                              // selection
-                        null,                               // selection args
-                        null);                              // sort
+                        query);
                 break;
         }
         return result;

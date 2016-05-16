@@ -41,6 +41,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -251,12 +252,12 @@ public class CurrencyListFragment
                 selectionArgs = arguments.toArray(selectionArgs);
 
                 CurrencyRepository repo = new CurrencyRepository(getActivity());
+                Query query = new Query()
+                        .select(repo.getAllColumns())
+                        .where(whereClause, selectionArgs)
+                        .orderBy("upper(" + Currency.CURRENCYNAME + ")");
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(),
-                        repo.getAllColumns(),
-                        whereClause,
-                        selectionArgs,
-                        "upper(" + Currency.CURRENCYNAME + ")");
+                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;

@@ -39,6 +39,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -155,11 +156,12 @@ public class AccountListFragment
                 }
 
                 AccountRepository repo = new AccountRepository(getActivity());
+                Query query = new Query()
+                        .select(repo.getAllColumns())
+                        .where(whereClause, selectionArgs)
+                        .orderBy("upper(" + Account.ACCOUNTNAME + ")");
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(),
-                    repo.getAllColumns(),
-                    whereClause, selectionArgs,
-                    "upper(" + Account.ACCOUNTNAME + ")");
+                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;

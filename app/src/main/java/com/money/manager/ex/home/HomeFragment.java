@@ -57,6 +57,7 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -214,13 +215,14 @@ public class HomeFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         MmexCursorLoader result;
+        Query query = new Query();
 
         switch (id) {
             case LOADER_USER_NAME:
                 InfoRepository repo = new InfoRepository(getActivity());
-                result = new MmexCursorLoader(getActivity(), repo.getUri(),
-                        new String[]{ Info.INFONAME, Info.INFOVALUE },
-                        null, null, null);
+                query.select(new String[]{ Info.INFONAME, Info.INFOVALUE });
+
+                result = new MmexCursorLoader(getActivity(), repo.getUri(), query);
                 break;
 
             case LOADER_ACCOUNT_BILLS:
@@ -239,11 +241,11 @@ public class HomeFragment
                 }
 
                 QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
+                query.select(queryAccountBills.getAllColumns())
+                    .where(where)
+                    .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
 
-                result = new MmexCursorLoader(getActivity(), queryAccountBills.getUri(),
-                        queryAccountBills.getAllColumns(),
-                        where, null,
-                        QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
+                result = new MmexCursorLoader(getActivity(), queryAccountBills.getUri(), query);
                 break;
 
             case LOADER_INCOME_EXPENSES:
@@ -260,12 +262,9 @@ public class HomeFragment
                             Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-
-                result = new MmexCursorLoader(getActivity(), report.getUri(),
-                        report.getAllColumns(),
-                        whereStatement,
-                        null,
-                        null);
+                query.select(report.getAllColumns())
+                        .where(whereStatement);
+                result = new MmexCursorLoader(getActivity(), report.getUri(), query);
                 break;
 
             default:
