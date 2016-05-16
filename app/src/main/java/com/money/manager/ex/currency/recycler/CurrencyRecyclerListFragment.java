@@ -24,12 +24,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,6 +74,29 @@ public class CurrencyRecyclerListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // todo setShowMenuItemSearch(true);
+        // Focus on search menu if set in preferences.
+        AppSettings settings = new AppSettings(getActivity());
+        boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
+        // todo setMenuItemSearchIconified(!focusOnSearch);
+
+        // todo setEmptyText(getActivity().getResources().getString(R.string.currencies_empty));
+
+        setHasOptionsMenu(true);
+
+//        // create and link the adapter
+//        CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
+//        setListAdapter(adapter);
+
+//        registerForContextMenu(getListView());
+//        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+//        setListShown(false);
+//        loadData();
+
+        // todo setFloatingActionButtonVisible(true);
+        // todo setFloatingActionButtonAttachListView(true);
+
         initializeList();
     }
 
@@ -92,6 +119,30 @@ public class CurrencyRecyclerListFragment
     @Subscribe
     public void onEvent(PriceDownloadedEvent event) {
 //        onPriceDownloaded(event.symbol, event.price, event.date);
+    }
+
+    // Menu.
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
+
+        menu.findItem(R.id.menu_show_used).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_import_all_currencies:
+                // todo showDialogImportAllCurrencies();
+                return true;
+
+            case R.id.menu_update_exchange_rate:
+                // todo showDialogUpdateExchangeRateCurrencies();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Private

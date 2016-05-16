@@ -42,7 +42,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 /**
  */
 public abstract class BaseListFragment
-        extends AbsListFragment {
+    extends AbsListFragment {
 
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 
