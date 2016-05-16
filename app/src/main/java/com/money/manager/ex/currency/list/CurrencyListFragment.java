@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency;
+package com.money.manager.ex.currency.list;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -41,6 +41,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.currency.CurrencyChartActivity;
+import com.money.manager.ex.currency.CurrencyEditActivity;
+import com.money.manager.ex.currency.CurrencyRepository;
+import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.currency.ImportAllCurrenciesTask;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;

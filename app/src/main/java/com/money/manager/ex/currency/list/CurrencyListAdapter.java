@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency;
+package com.money.manager.ex.currency.list;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.CursorAdapter;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.Currency;

@@ -720,4 +720,7 @@
     <string name="currencies_empty">No currencies have been found. To create one, tap the green plus button.</string>
     <string name="active_currencies">Active Currencies</string>
     <string name="inactive_currencies">Inactive Currencies</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency;
+package com.money.manager.ex.currency.list;
 
 import android.view.View;
 import android.widget.TextView;

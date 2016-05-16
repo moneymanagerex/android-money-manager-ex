@@ -185,7 +185,7 @@ dependencies {
             // sql-cipher database encyrption (optional)
             //"com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
 //            ,'org.joda:joda-money:0.11'
-            ,'com.afollestad:sectioned-recyclerview:0.2.2'
+            , 'com.afollestad:sectioned-recyclerview:0.2.2'
     )
     //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
     // Robolectric, unit testing
@@ -237,8 +237,9 @@ dependencies {
     )
     //    // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile project(path: ':money')
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
 }
 
 configurations {

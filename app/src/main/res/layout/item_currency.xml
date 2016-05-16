@@ -21,47 +21,39 @@
     android:layout_margin="@dimen/money_margin"
     android:baselineAligned="false"
     android:orientation="horizontal"
+    android:layout_gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingRight" >
+    android:paddingStart="@dimen/money_padding"
+    android:paddingLeft="@dimen/money_padding"
+    android:paddingRight="@dimen/money_padding"
+    android:paddingEnd="@dimen/money_padding" >
+    <!--?android:attr/listPreferredItemPaddingLeft-->
+    <!--?android:attr/listPreferredItemPaddingRight-->
 
     <!-- name -->
-    <LinearLayout
+        <!--android:layout_marginLeft="@dimen/money_margin"-->
+        <!--android:layout_marginRight="@dimen/money_margin"-->
+    <com.money.manager.ex.view.RobotoTextViewFontIcon
+        android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/money_margin"
-        android:layout_marginRight="@dimen/money_margin"
         android:layout_weight="1"
-        android:orientation="vertical" >
-
-        <com.money.manager.ex.view.RobotoTextViewFontIcon
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
-
-    </LinearLayout>
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/money_margin"
+        android:layout_marginEnd="@dimen/money_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
     <!-- rate -->
-    <LinearLayout
+    <com.money.manager.ex.view.RobotoTextViewFontIcon
+        android:id="@+id/rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical" >
+        android:layout_weight="0"
+        android:layout_gravity="center_vertical|end"
+        android:gravity="end"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
-        <com.money.manager.ex.view.RobotoTextViewFontIcon
-            android:id="@+id/rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:gravity="end"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
-
-    </LinearLayout>
 </LinearLayout>

@@ -244,7 +244,7 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".currency.CurrencyListActivity">
+        <activity android:name=".currency.list.CurrencyListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -424,7 +424,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
-        <activity android:name=".currency.recycler.CurrencyRecyclerListActivity"></activity>
     </application>
 
 </manifest>

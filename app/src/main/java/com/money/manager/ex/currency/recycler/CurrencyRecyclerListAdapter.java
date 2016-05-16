@@ -18,7 +18,6 @@
 package com.money.manager.ex.currency.recycler;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +74,7 @@ public class CurrencyRecyclerListAdapter
                 text = getContext().getString(R.string.inactive_currencies);
                 break;
         }
-        holder.nameView.setText(text);
+        holder.name.setText(text);
     }
 
     @Override
@@ -100,7 +99,7 @@ public class CurrencyRecyclerListAdapter
 
         Currency currency = list.get(relativePosition);
 
-        holder.nameView.setText(currency.getName());
+        holder.name.setText(currency.getName());
     }
 
     @Override

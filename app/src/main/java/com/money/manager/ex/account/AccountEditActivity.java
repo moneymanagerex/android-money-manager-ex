@@ -37,7 +37,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.currency.CurrencyListActivity;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
