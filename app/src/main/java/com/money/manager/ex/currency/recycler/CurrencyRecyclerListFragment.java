@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
@@ -41,6 +42,7 @@ import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
 import java.util.List;
 
@@ -140,6 +142,12 @@ public class CurrencyRecyclerListFragment
         }
 
         getService().updateExchangeRates(currencies);
+    }
+
+    @Subscribe
+    public void onEvent(SubscriberExceptionEvent exceptionEvent) {
+        ExceptionHandler handler = new ExceptionHandler(getContext());
+        handler.handle(exceptionEvent.throwable, "events");
     }
 
     // Menu.

@@ -132,7 +132,7 @@ public class YahooCsvQuoteDownloaderRetrofit
     }
 
     private void showProgressDialog(Integer max) {
-        Context context = mContext;
+        Context context = getContext();
 
         mDialog = new ProgressDialog(context);
 
