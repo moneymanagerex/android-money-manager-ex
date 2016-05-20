@@ -32,12 +32,17 @@ import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.currency.CurrencyUIFeatures;
+import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
+import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -54,6 +59,8 @@ public class CurrencyRecyclerListFragment
 
         return fragment;
     }
+
+    private CurrencyService mCurrencyService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,6 +128,20 @@ public class CurrencyRecyclerListFragment
 //        onPriceDownloaded(event.symbol, event.price, event.date);
     }
 
+    @Subscribe
+    public void onEvent(ExchangeRateUpdateConfirmedEvent event) {
+        // proceed with rate update
+
+        List<Currency> currencies = getService().getUsedCurrencies();
+
+        if (event.updateAll) {
+            // add unused currencies.
+            currencies.addAll(getService().getUnusedCurrencies());
+        }
+
+        getService().updateExchangeRates(currencies);
+    }
+
     // Menu.
 
     @Override
@@ -133,19 +154,28 @@ public class CurrencyRecyclerListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+
         switch (item.getItemId()) {
             case R.id.menu_import_all_currencies:
-                // todo showDialogImportAllCurrencies();
+                ui.showDialogImportAllCurrencies();
                 return true;
 
             case R.id.menu_update_exchange_rate:
-                // todo showDialogUpdateExchangeRateCurrencies();
+                ui.showActiveInactiveSelectorForUpdate();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     // Private
+
+    private CurrencyService getService() {
+        if(mCurrencyService == null) {
+            mCurrencyService = new CurrencyService(getActivity());
+        }
+        return mCurrencyService;
+    }
 
     private void initializeList() {
         Context context = getActivity();

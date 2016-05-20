@@ -15,25 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.notifications;
-
-import android.app.IntentService;
-import android.content.Intent;
+package com.money.manager.ex.currency.events;
 
 /**
- * Background service that triggers notifications about recurring transactions.
+ * Raised after confirmation of the currency exchange rates update.
  */
-public class RecurringTransactionIntentService
-	extends IntentService {
+public class ExchangeRateUpdateConfirmedEvent {
+    public ExchangeRateUpdateConfirmedEvent(boolean updateAll) {
+        this.updateAll = updateAll;
+    }
 
-	public RecurringTransactionIntentService() {
-		super("com.money.manager.ex.notifications.RecurringTransactionIntentService");
-	}
-
-	@Override
-	protected void onHandleIntent(Intent intent) {
-		// start repeating transaction
-		RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
-		notifications.notifyRepeatingTransaction();
-	}
+    /**
+     * Indicates whether the user requested to update all currencies or not. The negative
+     * option means that only active currencies should be updated.
+     */
+    public boolean updateAll;
 }

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v7.util.SortedList;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -318,6 +321,14 @@ public class CurrencyService
         return mRepository;
     }
 
+    /**
+     * Import all currencies from Android System
+     */
+    public void importAllCurrencies() {
+        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getContext());
+        asyncTask.execute();
+    }
+
     public boolean importCurrenciesFromAvailableLocales() {
         Locale[] locales = Locale.getAvailableLocales();
         // get map codes and symbols
@@ -432,6 +443,40 @@ public class CurrencyService
 
         return result;
     }
+
+    public boolean saveExchangeRate(String symbol, Money rate) {
+        CurrencyRepository repo = getRepository();
+
+        Currency currency = repo.loadCurrency(symbol);
+        int currencyId = currency.getCurrencyId();
+
+        // update value on database
+        int updateResult = repo.saveExchangeRate(currencyId, rate);
+
+        return updateResult > 0;
+    }
+
+    public void updateExchangeRates(List<Currency> currencies){
+        if (currencies == null || currencies.size() <= 0) return;
+
+        ArrayList<String> currencySymbols = new ArrayList<>();
+        String symbol;
+        String baseCurrencySymbol = getBaseCurrencyCode();
+
+        for (Currency currency : currencies) {
+            symbol = currency.getCode();
+            if (symbol == null) continue;
+            if (symbol.equals(baseCurrencySymbol)) continue;
+
+            currencySymbols.add(symbol + baseCurrencySymbol + "=X");
+        }
+
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getContext());
+        updater.downloadPrices(currencySymbols);
+        // result received via event
+    }
+
+    // Private
 
     /**
      * @return a hash map of currency code / currency symbol

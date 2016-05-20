@@ -85,8 +85,6 @@
     <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Account Balance</string>
     <string name="account_reconciled_balance">Reconciled Balance</string>
-    <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-    <!--<string name="select_to_account">Select To Acct</string>-->
     <string name="delete_account">Delete Account</string>
     <string name="account_name">Account name</string>
     <string name="account_type">Account type</string>
@@ -142,6 +140,7 @@
     <string name="scale">Scale</string>
     <string name="conversion_to_base_rate">Conversion</string>
     <string name="currency_name_empty">Currency name is required</string>
+    <string name="new_edit_currency">New/Edit Currency</string>
 
     <!-- transaction -->
     <string name="amount">Amount</string>
@@ -195,7 +194,6 @@
     <string name="initial_balance">Initial balance</string>
     <string name="notes">Notes</string>
     <string name="closed">Closed</string>
-    <string name="new_edit_currency">New/Edit Currency</string>
     <string name="theme_application">Theme</string>
     <string name="theme_holo">Material Dark</string>
     <string name="theme_light">Material Light</string>
@@ -720,7 +718,6 @@
     <string name="currencies_empty">No currencies have been found. To create one, tap the green plus button.</string>
     <string name="active_currencies">Active Currencies</string>
     <string name="inactive_currencies">Inactive Currencies</string>
+    <string name="all_currencies">All Currencies</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
