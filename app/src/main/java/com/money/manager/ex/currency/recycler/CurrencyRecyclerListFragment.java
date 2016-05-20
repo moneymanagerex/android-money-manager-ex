@@ -17,28 +17,41 @@
 
 package com.money.manager.ex.currency.recycler;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
+import com.money.manager.ex.currency.list.CurrencyListAdapter;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,6 +59,7 @@ import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
 import java.util.List;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
@@ -80,6 +94,12 @@ public class CurrencyRecyclerListFragment
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        RecyclerView list = (RecyclerView) getActivity().findViewById(R.id.list);
+        registerForContextMenu(list);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -107,6 +127,86 @@ public class CurrencyRecyclerListFragment
         // todo setFloatingActionButtonAttachListView(true);
 
         initializeList();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        // take cursor and move into position
+//        Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
+//        cursor.moveToPosition(info.position);
+        // set currency name
+//        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME)));
+        // todo: get currency name here
+
+        // compose context menu
+        String[] menuItems = getResources().getStringArray(R.array.context_menu_currencies);
+        for (int i = 0; i < menuItems.length; i++) {
+            menu.add(Menu.NONE, i, i, menuItems[i]);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // take cursor and move to position
+//        Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
+//        cursor.moveToPosition(info.position);
+//        int currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+        // todo: get selected currency here
+
+        // check item selected
+        int selectedItem = item.getItemId();
+        switch (selectedItem) {
+            case 0: //EDIT
+                // todo: startCurrencyEditActivity(currencyId);
+                break;
+
+            case 1: // Chart
+                // remember the device orientation and return to it after the chart.
+                // todo: this.mPreviousOrientation = ActivityUtils.forceCurrentOrientation(getActivity());
+
+                // add the currency information.
+                // todo: String symbol = cursor.getString(cursor.getColumnIndex(Currency.CURRENCY_SYMBOL));
+                CurrencyService currencyService = this.getService();
+                String baseCurrencyCode = currencyService.getBaseCurrencyCode();
+
+                Intent intent = new Intent(getActivity(), CurrencyChartActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                // todo: intent.putExtra(Currency.CURRENCY_SYMBOL, symbol);
+                intent.putExtra(CurrencyChartActivity.BASE_CURRENCY_SYMBOL, baseCurrencyCode);
+
+                startActivity(intent);
+                break;
+
+            case 2: // Update exchange rate
+                // todo: updateSingleCurrencyExchangeRate(currencyId);
+                break;
+
+            case 3: //DELETE
+                // todo:
+//                CurrencyService service = new CurrencyService(getActivity());
+//                boolean used = service.isCurrencyUsed(currencyId);
+//                if (used) {
+//                    new AlertDialogWrapper.Builder(getContext())
+//                            .setTitle(R.string.attention)
+//                            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+//                            .setMessage(R.string.currency_can_not_deleted)
+//                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            })
+//                            .create().show();
+//                } else {
+//                    ContentValues contentValues = new ContentValues();
+//                    contentValues.put(Account.CURRENCYID, currencyId);
+//                    showDialogDeleteCurrency(currencyId);
+//                }
+                break;
+        }
+        return false;
     }
 
     // Events
@@ -148,6 +248,13 @@ public class CurrencyRecyclerListFragment
     public void onEvent(SubscriberExceptionEvent exceptionEvent) {
         ExceptionHandler handler = new ExceptionHandler(getContext());
         handler.handle(exceptionEvent.throwable, "events");
+    }
+
+    @Subscribe
+    public void onEvent(ListItemClickedEvent event) {
+        // item selected. Show context menu.
+        // todo: complete
+        getActivity().openContextMenu(event.view);
     }
 
     // Menu.
@@ -195,21 +302,30 @@ public class CurrencyRecyclerListFragment
         list.setLayoutManager(new LinearLayoutManager(context));
 
         // Adapter
-//        CurrencyRecyclerListAdapter adapter = new CurrencyRecyclerListAdapter();
-        SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
+        final SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
         // load data
         CurrencyService service = new CurrencyService(context);
 
         adapter.addSection(new CurrencySection(getString(R.string.active_currencies), service.getUsedCurrencies()));
         adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), service.getUnusedCurrencies()));
 
-        //adapter.usedCurrencies = service.getUsedCurrencies();
-        //adapter.unusedCurrencies = service.getUnusedCurrencies();
-
         list.setAdapter(adapter);
 
         // Separator
         list.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+
+        // behaviours
+        list.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                int sectionPosition = adapter.getSectionPosition(position);
+                CurrencySection section = (CurrencySection) adapter.getSectionForPosition(position);
+                Currency currency = section.currencies.get(sectionPosition);
+                int id = currency.getCurrencyId();
+                String name = currency.getName();
+                EventBus.getDefault().post(new ListItemClickedEvent(id, name, view));
+            }
+        }));
     }
 
 }

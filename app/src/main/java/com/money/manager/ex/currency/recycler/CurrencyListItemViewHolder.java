@@ -19,6 +19,7 @@ package com.money.manager.ex.currency.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
@@ -33,10 +34,12 @@ public class CurrencyListItemViewHolder
         super(view);
 
         // Setup view holder.
+        row = (LinearLayout) view.findViewById(R.id.row);
         name = (TextView) view.findViewById(R.id.name);
         rate = (TextView) view.findViewById(R.id.rate);
     }
 
+    public LinearLayout row;
     public TextView name;
     public TextView rate;
 }

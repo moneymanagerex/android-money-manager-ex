@@ -15,17 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.assetallocation.list;
+package com.money.manager.ex.common.events;
+
+import android.view.View;
 
 /**
  * Event for clicking the list items in recycler view.
  */
 public class ListItemClickedEvent {
-    public ListItemClickedEvent(int id, String name) {
+    public ListItemClickedEvent(int id, String name, View view) {
         this.id = id;
         this.name = name;
+        this.view = view;
     }
 
     public int id;
     public String name;
+    /**
+     * Clicked view.
+     */
+    public View view;
 }

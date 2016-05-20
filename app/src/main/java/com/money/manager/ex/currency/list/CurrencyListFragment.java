@@ -127,7 +127,6 @@ public class CurrencyListFragment
         CurrencyListAdapter adapter = new CurrencyListAdapter(getActivity(), null);
         setListAdapter(adapter);
 
-        registerForContextMenu(getListView());
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         setListShown(false);
@@ -136,6 +135,13 @@ public class CurrencyListFragment
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        registerForContextMenu(getListView());
+    }
+
+    // Context menu
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

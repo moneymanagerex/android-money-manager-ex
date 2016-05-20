@@ -31,6 +31,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.datalayer.Query;

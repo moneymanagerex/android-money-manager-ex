@@ -19,9 +19,13 @@ package com.money.manager.ex.currency.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.domainmodel.Currency;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;

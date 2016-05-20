@@ -46,6 +46,9 @@ public class CurrencyUIFeatures {
     }
 
     public CurrencyService getService() {
+        if (currencyService == null) {
+            currencyService = new CurrencyService(getContext());
+        }
         return currencyService;
     }
 

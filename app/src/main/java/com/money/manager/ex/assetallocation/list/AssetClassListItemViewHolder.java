@@ -21,9 +21,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.view.RobotoTextView;
+import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
-import com.shamanland.fonticon.FontIconTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,7 +44,7 @@ public class AssetClassListItemViewHolder
             @Override
             public void onClick(View v) {
                 RobotoTextViewFontIcon textView = (RobotoTextViewFontIcon) v;
-                EventBus.getDefault().post(new ListItemClickedEvent(id, textView.getText().toString()));
+                EventBus.getDefault().post(new ListItemClickedEvent(id, textView.getText().toString(), v));
             }
         });
     }
