@@ -25,11 +25,15 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
+import org.joda.time.DateTime;
+
+import info.javaperformance.money.Money;
 
 /**
  * Currency UI-related code, shared across Currency fragments.
@@ -66,6 +70,34 @@ public class CurrencyUIFeatures {
                     }
                 })
                 .create().show();
+    }
+
+    /**
+     *
+     * @return Indicator whether the rate was successfully updated.
+     */
+    public boolean onPriceDownloaded(String symbol, Money price, DateTime date) {
+        // extract destination currency
+        String baseCurrencyCode = getService().getBaseCurrencyCode();
+        String destinationCurrency = symbol.replace(baseCurrencyCode, "");
+        destinationCurrency = destinationCurrency.replace("=X", "");
+        boolean success = false;
+
+        try {
+            // update exchange rate.
+            success = getService().saveExchangeRate(destinationCurrency, price);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(ex, "saving exchange rate");
+        }
+
+        if (!success) {
+            String message = getContext().getString(R.string.error_update_currency_exchange_rate);
+            message += " " + destinationCurrency;
+
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
+        return success;
     }
 
     public void showDialogDeleteCurrency(final int currencyId, final int itemPosition) {

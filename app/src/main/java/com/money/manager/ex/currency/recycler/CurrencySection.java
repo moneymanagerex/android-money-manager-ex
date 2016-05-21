@@ -28,6 +28,8 @@ import com.money.manager.ex.domainmodel.Currency;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
@@ -38,7 +40,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class CurrencySection
     extends StatelessSection {
 
-    public CurrencySection(String title, List<Currency> data) {
+    public CurrencySection(String title, LinkedHashMap<String, Currency> data) {
         super(R.layout.item_currency_list_recycler_header, R.layout.item_currency);
 
         this.title = title;
@@ -46,11 +48,11 @@ public class CurrencySection
         if (data != null) {
             this.currencies = data;
         } else {
-            this.currencies = new ArrayList<>();
+            this.currencies = new LinkedHashMap<>();
         }
     }
 
-    public List<Currency> currencies;
+    public LinkedHashMap<String, Currency> currencies;
     public String title;
 
     @Override
@@ -67,7 +69,8 @@ public class CurrencySection
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         CurrencyListItemViewHolder viewHolder = (CurrencyListItemViewHolder) holder;
 
-        Currency currency = currencies.get(position);
+//        Currency currency = currencies.get(position);
+        Currency currency = getItemAtPosition(position);
 
         viewHolder.name.setText(currency.getName());
 
@@ -85,5 +88,9 @@ public class CurrencySection
         CurrencyListItemViewHolder viewHolder = (CurrencyListItemViewHolder) holder;
 
         viewHolder.name.setText(title);
+    }
+
+    public Currency getItemAtPosition(int position) {
+        return (new ArrayList<>(currencies.values())).get(position);
     }
 }

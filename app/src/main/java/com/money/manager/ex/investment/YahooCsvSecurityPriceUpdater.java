@@ -18,6 +18,10 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -80,10 +84,10 @@ public class YahooCsvSecurityPriceUpdater
     @Override
     public void onContentDownloaded(String content) {
         PriceCsvParser parser = new PriceCsvParser(getContext());
-        parser.parse(content);
+        PriceDownloadedEvent event = parser.parse(content);
 
-//        // Notify the caller by invoking the interface method.
-//        EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));
+        // Notify the caller by invoking the interface method.
+        EventBus.getDefault().post(event);
     }
 
     private Context getContext() {

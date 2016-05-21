@@ -22,7 +22,10 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -126,7 +129,10 @@ public class YahooCsvQuoteDownloaderRetrofit
         }
 
         PriceCsvParser parser = new PriceCsvParser(getContext());
-        parser.parse(content);
+        PriceDownloadedEvent event = parser.parse(content);
+
+        // Notify the caller by invoking the interface method.
+        EventBus.getDefault().post(event);
 
         finishIfAllDone();
     }

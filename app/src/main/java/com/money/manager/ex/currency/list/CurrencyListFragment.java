@@ -415,7 +415,8 @@ public class CurrencyListFragment
 
     @Subscribe
     public void onEvent(PriceDownloadedEvent event) {
-        onPriceDownloaded(event.symbol, event.price, event.date);
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getContext());
+        ui.onPriceDownloaded(event.symbol, event.price, event.date);
     }
 
     @Subscribe
@@ -440,29 +441,6 @@ public class CurrencyListFragment
     }
 
     // Private methods.
-
-    private void onPriceDownloaded(String symbol, Money price, DateTime date) {
-        // extract destination currency
-        String baseCurrencyCode = getService().getBaseCurrencyCode();
-        String destinationCurrency = symbol.replace(baseCurrencyCode, "");
-        destinationCurrency = destinationCurrency.replace("=X", "");
-        boolean success = false;
-
-        try {
-            // update exchange rate.
-            success = getService().saveExchangeRate(destinationCurrency, price);
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(ex, "saving exchange rate");
-        }
-
-        if (!success) {
-            String message = getString(R.string.error_update_currency_exchange_rate);
-            message += " " + destinationCurrency;
-
-            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void startCurrencyEditActivity(Integer currencyId) {
         // create intent, set Account ID

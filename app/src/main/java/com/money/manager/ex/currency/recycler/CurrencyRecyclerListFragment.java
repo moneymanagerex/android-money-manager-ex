@@ -62,6 +62,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
@@ -206,7 +208,23 @@ public class CurrencyRecyclerListFragment
 
     @Subscribe
     public void onEvent(PriceDownloadedEvent event) {
-//        onPriceDownloaded(event.symbol, event.price, event.date);
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getContext());
+        boolean updated = ui.onPriceDownloaded(event.symbol, event.price, event.date);
+        if (updated) {
+            // update data
+//            LinkedHashMap<String, Section> sectionMap = getAdapter().getSectionsMap();
+//            for(Section section : sectionMap.values()){
+//                CurrencySection currencySection = (CurrencySection) section;
+//                if (currencySection.currencies.containsKey(event.symbol)) {
+//                    currencySection.currencies.get(event.symbol).setConversionRate(event.price.toDouble());
+//                }
+//            }
+            loadData(getAdapter());
+
+            // update ui.
+//            getAdapter().notifyItemChanged(event.itemPosition);
+            getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
+        }
     }
 
     @Subscribe
@@ -242,10 +260,17 @@ public class CurrencyRecyclerListFragment
         boolean success = repo.delete(event.currencyId);
         if (success) {
             Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
+
+            // remove from data.
+            LinkedHashMap<String, Section> sectionMap = getAdapter().getSectionsMap();
+            for(Section section : sectionMap.values()){
+                CurrencySection currencySection = (CurrencySection) section;
+                currencySection.currencies.remove(event.currencyId);
+            }
+
+            // update ui.
+            getAdapter().notifyItemRemoved(event.itemPosition);
         }
-        // refresh data
-//        getAdapter().notifyDataSetChanged();
-        getAdapter().notifyItemRemoved(event.itemPosition);
     }
 
     // Menu.
@@ -283,7 +308,9 @@ public class CurrencyRecyclerListFragment
     private Currency getCurrencyAtPosition(int position) {
         int sectionPosition = getAdapter().getSectionPosition(position);
         CurrencySection section = (CurrencySection) getAdapter().getSectionForPosition(position);
-        Currency currency = section.currencies.get(sectionPosition);
+        //Currency currency = section.currencies.get(sectionPosition);
+        Currency currency = section.getItemAtPosition(sectionPosition);
+
         return currency;
     }
 
@@ -310,10 +337,7 @@ public class CurrencyRecyclerListFragment
         // Adapter
         final SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
         // load data
-        CurrencyService service = new CurrencyService(context);
-
-        adapter.addSection(new CurrencySection(getString(R.string.active_currencies), service.getUsedCurrencies()));
-        adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), service.getUnusedCurrencies()));
+        loadData(adapter);
 
         list.setAdapter(adapter);
 
@@ -330,5 +354,20 @@ public class CurrencyRecyclerListFragment
                 EventBus.getDefault().post(new ListItemClickedEvent(id, name, view));
             }
         }));
+    }
+
+    private void loadData(SectionedRecyclerViewAdapter adapter) {
+        CurrencyService service = new CurrencyService(getActivity());
+
+        adapter.removeAllSections();
+
+        LinkedHashMap<String, Currency> currencies = new LinkedHashMap<>();
+        for (Currency currency : service.getUsedCurrencies()) currencies.put(currency.getCode(), currency);
+        adapter.addSection(new CurrencySection(getString(R.string.active_currencies), currencies));
+
+        currencies = new LinkedHashMap<>();
+        for (Currency currency : service.getUnusedCurrencies()) currencies.put(currency.getCode(), currency);
+        adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), currencies));
+
     }
 }
