@@ -57,7 +57,7 @@ public class AssetClassListActivity
         mAdapter = new AssetClassListAdapter(null);
         initRecyclerView(mAdapter);
 
-        LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = initLoader();
+        LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = initLoaderCallbacks();
 
         // get target asset class id, to exclude from the offered list
         Bundle loaderArgs = null;
@@ -96,7 +96,7 @@ public class AssetClassListActivity
 
     // Private
 
-    private LoaderManager.LoaderCallbacks<Cursor> initLoader() {
+    private LoaderManager.LoaderCallbacks<Cursor> initLoaderCallbacks() {
         LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {

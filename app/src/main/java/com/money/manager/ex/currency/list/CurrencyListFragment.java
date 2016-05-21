@@ -88,7 +88,6 @@ public class CurrencyListFragment
 
         mAction = getActivity().getIntent().getAction();
         if (mAction.equals(Intent.ACTION_MAIN)) {
-            // todo: check if this adjustment is still needed.
             mAction = Intent.ACTION_EDIT;
         }
 
@@ -166,14 +165,15 @@ public class CurrencyListFragment
         // take cursor and move to position
         Cursor cursor = ((CurrencyListAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
-
         int currencyId = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
         // check item selected
         int selectedItem = item.getItemId();
         switch (selectedItem) {
             case 0: //EDIT
-                startCurrencyEditActivity(currencyId);
+                ui.startCurrencyEditActivity(currencyId);
                 break;
 
             case 1: // Chart
@@ -200,7 +200,6 @@ public class CurrencyListFragment
             case 3: //DELETE
                 CurrencyService service = new CurrencyService(getActivity());
                 boolean used = service.isCurrencyUsed(currencyId);
-                CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
                 if (used) {
                     ui.notifyCurrencyCanNotBeDeleted();
@@ -385,7 +384,8 @@ public class CurrencyListFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        startCurrencyEditActivity(null);
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+        ui.startCurrencyEditActivity(null);
     }
 
     @Override
@@ -441,20 +441,6 @@ public class CurrencyListFragment
     }
 
     // Private methods.
-
-    private void startCurrencyEditActivity(Integer currencyId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CurrencyEditActivity.class);
-        // check transId not null
-        if (currencyId != null) {
-            intent.putExtra(CurrencyEditActivity.KEY_CURRENCY_ID, currencyId);
-            intent.setAction(Intent.ACTION_EDIT);
-        } else {
-            intent.setAction(Intent.ACTION_INSERT);
-        }
-        // launch activity
-        startActivity(intent);
-    }
 
     private List<Currency> getVisibleCurrencies() {
         CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();

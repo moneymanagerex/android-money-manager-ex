@@ -19,6 +19,7 @@ package com.money.manager.ex.currency;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -193,4 +194,19 @@ public class CurrencyUIFeatures {
                 .positiveText(android.R.string.ok)
                 .show();
     }
+
+    public void startCurrencyEditActivity(Integer currencyId) {
+        // create intent, set Account ID
+        Intent intent = new Intent(getContext(), CurrencyEditActivity.class);
+        // check transId not null
+        if (currencyId != null) {
+            intent.putExtra(CurrencyEditActivity.KEY_CURRENCY_ID, currencyId);
+            intent.setAction(Intent.ACTION_EDIT);
+        } else {
+            intent.setAction(Intent.ACTION_INSERT);
+        }
+        // launch activity
+        getContext().startActivity(intent);
+    }
+
 }

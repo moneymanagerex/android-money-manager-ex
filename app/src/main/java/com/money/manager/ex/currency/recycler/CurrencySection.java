@@ -40,7 +40,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class CurrencySection
     extends StatelessSection {
 
-    public CurrencySection(String title, LinkedHashMap<String, Currency> data) {
+    public CurrencySection(String title, List<Currency> data) {
         super(R.layout.item_currency_list_recycler_header, R.layout.item_currency);
 
         this.title = title;
@@ -48,11 +48,11 @@ public class CurrencySection
         if (data != null) {
             this.currencies = data;
         } else {
-            this.currencies = new LinkedHashMap<>();
+            this.currencies = new ArrayList<>();
         }
     }
 
-    public LinkedHashMap<String, Currency> currencies;
+    public List<Currency> currencies;
     public String title;
 
     @Override
@@ -91,6 +91,7 @@ public class CurrencySection
     }
 
     public Currency getItemAtPosition(int position) {
-        return (new ArrayList<>(currencies.values())).get(position);
+        //return (new ArrayList<>(currencies.values())).get(position);
+        return currencies.get(position);
     }
 }

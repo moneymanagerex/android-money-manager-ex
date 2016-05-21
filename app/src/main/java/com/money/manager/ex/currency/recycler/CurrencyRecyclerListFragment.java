@@ -50,6 +50,7 @@ import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
 import com.money.manager.ex.currency.list.CurrencyListAdapter;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
@@ -62,6 +63,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -70,7 +72,11 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
- * Recycler list fragment
+ * Recycler list fragment.
+ * Missing pieces:
+ * - search
+ * - back button
+ * - context menu
  */
 public class CurrencyRecyclerListFragment
     extends Fragment {
@@ -145,11 +151,13 @@ public class CurrencyRecyclerListFragment
         Currency currency = getCurrencyAtPosition(info.position);
         int currencyId = currency.getCurrencyId();
 
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+
         // check item selected
         int selectedItem = item.getItemId();
         switch (selectedItem) {
             case 0: //EDIT
-                //startCurrencyEditActivity(currencyId);
+                ui.startCurrencyEditActivity(currencyId);
                 break;
 
             case 1: // Chart
@@ -176,7 +184,6 @@ public class CurrencyRecyclerListFragment
             case 3: //DELETE
                 CurrencyService service = new CurrencyService(getActivity());
                 boolean used = service.isCurrencyUsed(currencyId);
-                CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 
                 if (used) {
                     ui.notifyCurrencyCanNotBeDeleted();
@@ -210,21 +217,16 @@ public class CurrencyRecyclerListFragment
     public void onEvent(PriceDownloadedEvent event) {
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getContext());
         boolean updated = ui.onPriceDownloaded(event.symbol, event.price, event.date);
-        if (updated) {
-            // update data
-//            LinkedHashMap<String, Section> sectionMap = getAdapter().getSectionsMap();
-//            for(Section section : sectionMap.values()){
-//                CurrencySection currencySection = (CurrencySection) section;
-//                if (currencySection.currencies.containsKey(event.symbol)) {
-//                    currencySection.currencies.get(event.symbol).setConversionRate(event.price.toDouble());
-//                }
-//            }
-            //loadData(getAdapter());
-
-            // update ui.
-//            getAdapter().notifyItemChanged(event.itemPosition);
-//            getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
+        if (!updated) {
+            //todo: show error msg
         }
+    }
+
+    @Subscribe
+    public void onEvent(AllPricesDownloadedEvent event) {
+        loadData(getAdapter());
+        // update ui.
+        getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
     }
 
     @Subscribe
@@ -265,7 +267,7 @@ public class CurrencyRecyclerListFragment
             LinkedHashMap<String, Section> sectionMap = getAdapter().getSectionsMap();
             for(Section section : sectionMap.values()){
                 CurrencySection currencySection = (CurrencySection) section;
-                currencySection.currencies.remove(event.currencyId);
+                currencySection.currencies.remove(event.itemPosition);
             }
 
             // update ui.
@@ -298,6 +300,12 @@ public class CurrencyRecyclerListFragment
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public void onFloatingActionButtonClickListener() {
+//        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+//        ui.startCurrencyEditActivity(null);
+//    }
 
     // Private
 
@@ -361,13 +369,13 @@ public class CurrencyRecyclerListFragment
 
         adapter.removeAllSections();
 
-        LinkedHashMap<String, Currency> currencies = new LinkedHashMap<>();
-        for (Currency currency : service.getUsedCurrencies()) currencies.put(currency.getCode(), currency);
-        adapter.addSection(new CurrencySection(getString(R.string.active_currencies), currencies));
+//        List<Currency> currencies = new ArrayList<>();
+        //for (Currency currency : service.getUsedCurrencies()) currencies.put(currency.getCode(), currency);
+        adapter.addSection(new CurrencySection(getString(R.string.active_currencies), service.getUsedCurrencies()));
 
-        currencies = new LinkedHashMap<>();
-        for (Currency currency : service.getUnusedCurrencies()) currencies.put(currency.getCode(), currency);
-        adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), currencies));
+//        currencies = new ArrayList<>();
+//        for (Currency currency : service.getUnusedCurrencies()) currencies.put(currency.getCode(), currency);
+        adapter.addSection(new CurrencySection(getString(R.string.inactive_currencies), service.getUnusedCurrencies()));
 
     }
 }

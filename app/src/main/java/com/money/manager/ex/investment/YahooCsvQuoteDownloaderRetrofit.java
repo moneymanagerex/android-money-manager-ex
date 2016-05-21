@@ -22,6 +22,7 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
 
@@ -105,7 +106,8 @@ public class YahooCsvQuoteDownloaderRetrofit
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
         handler.showMessage(mContext.getString(R.string.download_complete));
 
-        // todo: fire an event so that the data can be reloaded.
+        // fire an event so that the data can be reloaded.
+        EventBus.getDefault().post(new AllPricesDownloadedEvent());
     }
 
     private Context getContext() {
