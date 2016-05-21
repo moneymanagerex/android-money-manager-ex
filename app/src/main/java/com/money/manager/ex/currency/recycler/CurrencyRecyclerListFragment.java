@@ -219,11 +219,11 @@ public class CurrencyRecyclerListFragment
 //                    currencySection.currencies.get(event.symbol).setConversionRate(event.price.toDouble());
 //                }
 //            }
-            loadData(getAdapter());
+            //loadData(getAdapter());
 
             // update ui.
 //            getAdapter().notifyItemChanged(event.itemPosition);
-            getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
+//            getAdapter().notifyItemRangeChanged(0, getAdapter().getItemCount());
         }
     }
 

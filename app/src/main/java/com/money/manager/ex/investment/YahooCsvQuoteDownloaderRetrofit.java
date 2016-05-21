@@ -104,6 +104,8 @@ public class YahooCsvQuoteDownloaderRetrofit
         // Notify user that all the prices have been downloaded.
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
         handler.showMessage(mContext.getString(R.string.download_complete));
+
+        // todo: fire an event so that the data can be reloaded.
     }
 
     private Context getContext() {
