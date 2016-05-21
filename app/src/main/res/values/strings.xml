@@ -345,7 +345,7 @@
     <string name="descending">Descending</string>
     <string name="sorting_month">Sorting Months</string>
     <!-- 20130305 -->
-    <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Mobile is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
+    <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
     <string name="dropbox_select_file">Select a file from Dropbox</string>
     <string name="last_modified">Last modified</string>
     <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
