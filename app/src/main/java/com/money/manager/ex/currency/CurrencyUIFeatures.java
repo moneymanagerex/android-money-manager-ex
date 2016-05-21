@@ -20,10 +20,12 @@ package com.money.manager.ex.currency;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -50,6 +52,45 @@ public class CurrencyUIFeatures {
             currencyService = new CurrencyService(getContext());
         }
         return currencyService;
+    }
+
+    public void notifyCurrencyCanNotBeDeleted() {
+        new AlertDialogWrapper.Builder(getContext())
+                .setTitle(R.string.attention)
+                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+                .setMessage(R.string.currency_can_not_deleted)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
+
+    public void showDialogDeleteCurrency(final int currencyId, final int itemPosition) {
+        // config alert dialog
+        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+                .setTitle(R.string.delete_currency)
+                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+                .setMessage(R.string.confirmDelete);
+        // set listener on positive button
+        alertDialog.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EventBus.getDefault().post(new CurrencyDeletionConfirmedEvent(currencyId, itemPosition));
+                    }
+                });
+        // set listener on negative button
+        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        // create dialog and show
+        alertDialog.create().show();
     }
 
     public void showDialogImportAllCurrencies() {

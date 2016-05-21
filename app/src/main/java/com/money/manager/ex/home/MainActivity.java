@@ -493,8 +493,8 @@ public class MainActivity
                 break;
             case R.id.menu_currency:
                 // Show Currency list.
-                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
-//                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
+//                intent = new Intent(MainActivity.this, CurrencyListActivity.class);
+                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
                 break;

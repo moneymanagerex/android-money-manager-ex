@@ -25,7 +25,7 @@
     tools:context="com.money.manager.ex.currency.recycler.CurrencyRecyclerListActivity">
     <!--android:paddingTop="@dimen/mmex_list_padding_top"-->
 
-    <android.support.v7.widget.RecyclerView
+    <com.money.manager.ex.view.recycler.ContextMenuRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

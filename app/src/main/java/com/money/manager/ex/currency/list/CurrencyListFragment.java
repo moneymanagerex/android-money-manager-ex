@@ -45,6 +45,7 @@ import com.money.manager.ex.currency.CurrencyEditActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
+import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Account;
@@ -193,28 +194,20 @@ public class CurrencyListFragment
                 break;
 
             case 2: // Update exchange rate
-                updateSingleCurrencyExchangeRate(currencyId);
+                getService().updateExchangeRate(currencyId);
                 break;
 
             case 3: //DELETE
                 CurrencyService service = new CurrencyService(getActivity());
                 boolean used = service.isCurrencyUsed(currencyId);
+                CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+
                 if (used) {
-                    new AlertDialogWrapper.Builder(getContext())
-                        .setTitle(R.string.attention)
-                        .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-                        .setMessage(R.string.currency_can_not_deleted)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
+                    ui.notifyCurrencyCanNotBeDeleted();
                 } else {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(Account.CURRENCYID, currencyId);
-                    showDialogDeleteCurrency(currencyId);
+                    ui.showDialogDeleteCurrency(currencyId, info.position);
                 }
                 break;
         }
@@ -435,6 +428,17 @@ public class CurrencyListFragment
         getService().updateExchangeRates(currencies);
     }
 
+    @Subscribe
+    public void onEvent(CurrencyDeletionConfirmedEvent event) {
+        CurrencyRepository repo = new CurrencyRepository(getContext());
+        boolean success = repo.delete(event.currencyId);
+        if (success) {
+            Toast.makeText(getContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
+        }
+        // restart loader
+        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, CurrencyListFragment.this);
+    }
+
     // Private methods.
 
     private void onPriceDownloaded(String symbol, Money price, DateTime date) {
@@ -458,37 +462,6 @@ public class CurrencyListFragment
 
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void showDialogDeleteCurrency(final int currencyId) {
-        // config alert dialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.delete_currency)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.confirmDelete);
-        // set listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        CurrencyRepository repo = new CurrencyRepository(getActivity());
-                        boolean success = repo.delete(currencyId);
-                        if (success) {
-                            Toast.makeText(getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
-                        }
-                        // restart loader
-                        getLoaderManager().restartLoader(ID_LOADER_CURRENCY, null, CurrencyListFragment.this);
-                    }
-                });
-        // set listener on negative button
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        // create dialog and show
-        alertDialog.create().show();
     }
 
     private void startCurrencyEditActivity(Integer currencyId) {
@@ -528,24 +501,6 @@ public class CurrencyListFragment
             mCurrencyService = new CurrencyService(getActivity());
         }
         return mCurrencyService;
-    }
-
-    /**
-     * Update rate for the currently selected currency.
-     */
-    private void updateSingleCurrencyExchangeRate(final int currencyId) {
-        updateCurrency(currencyId);
-    }
-
-    private boolean updateCurrency(int toCurrencyId) {
-        CurrencyService utils = getService();
-
-        List<Currency> currencies = new ArrayList<>();
-        currencies.add(utils.getCurrency(toCurrencyId));
-
-        utils.updateExchangeRates(currencies);
-
-        return true;
     }
 
     private void loadData() {

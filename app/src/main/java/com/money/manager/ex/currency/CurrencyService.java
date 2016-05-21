@@ -456,6 +456,13 @@ public class CurrencyService
         return updateResult > 0;
     }
 
+    public void updateExchangeRate(int currencyId) {
+        List<Currency> currencies = new ArrayList<>();
+        currencies.add(getCurrency(currencyId));
+
+        updateExchangeRates(currencies);
+    }
+
     public void updateExchangeRates(List<Currency> currencies){
         if (currencies == null || currencies.size() <= 0) return;
 
