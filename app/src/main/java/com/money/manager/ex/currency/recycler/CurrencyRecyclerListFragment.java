@@ -90,11 +90,15 @@ public class CurrencyRecyclerListFragment
     }
 
     private CurrencyService mCurrencyService;
+//    private CurrencyContentObserver mObserver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // create content observer
+        // todo: create handler
+//        mObserver = new CurrencyContentObserver(null);
     }
 
     @Override
@@ -130,6 +134,19 @@ public class CurrencyRecyclerListFragment
         // todo setFloatingActionButtonAttachListView(true);
 
         initializeList();
+    }
+
+    @Override
+    public void onPause() {
+        // todo register content observer
+        //CurrencyRepository repo = new CurrencyRepository(getActivity());
+        //getActivity().getContentResolver().registerContentObserver(repo.getUri(), true, );
+    }
+
+    @Override
+    public void onResume() {
+        // todo: unregister content observer
+        //getActivity().getContentResolver().unregisterContentObserver();
     }
 
     @Override
