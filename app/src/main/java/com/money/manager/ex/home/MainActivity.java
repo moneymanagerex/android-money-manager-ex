@@ -66,8 +66,10 @@ import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
+import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
@@ -575,6 +577,11 @@ public class MainActivity
     }
 
     @Subscribe
+    public void onEvent(RequestPortfolioFragmentEvent event) {
+        showPortfolioFragment(event.accountId);
+    }
+
+    @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
         openDatabasePicker();
     }
@@ -846,24 +853,29 @@ public class MainActivity
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = AccountTransactionListFragment.newInstance(accountId);
         }
-        // show fragment
+        showFragment(fragment, tag);
+    }
+
+    public void showPortfolioFragment(int accountId) {
+        String tag = PortfolioFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment == null) {
+            fragment = PortfolioFragment.newInstance(accountId);
+        }
         showFragment(fragment, tag);
     }
 
     public void showWatchlistFragment(int accountId) {
-        String tagFragment = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager()
-                .findFragmentByTag(tagFragment);
+        String tag = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = WatchlistFragment.newInstance(accountId);
         }
-        // show fragment
-        showFragment(fragment, tagFragment);
+        showFragment(fragment, tag);
     }
 
     /**
      * Show tutorial on first run.
-     *
      * @return boolean indicator whether the tutorial was displayed or not
      */
     public boolean showTutorial() {

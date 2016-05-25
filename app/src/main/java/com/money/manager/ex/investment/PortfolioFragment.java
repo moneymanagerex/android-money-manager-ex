@@ -31,7 +31,9 @@ import com.money.manager.ex.R;
  * Use the {@link PortfolioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PortfolioFragment extends Fragment {
+public class PortfolioFragment
+    extends Fragment {
+
     private static final String ARG_ACCOUNT_ID = "accountId";
 
     private Integer mAccountId;

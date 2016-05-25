@@ -23,13 +23,10 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSpinner;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,8 +36,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -54,7 +49,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.datalayer.Query;
@@ -62,15 +57,14 @@ import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.settings.GeneralSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -103,11 +97,11 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * The fragment that contains the accounts groups with accounts and their balances.
+ * The starting fragment that contains the accounts groups with accounts and their balances.
  */
 public class HomeFragment
-        extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends Fragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
@@ -453,9 +447,9 @@ public class HomeFragment
         }
 
         // Investment menu items.
-//        if (accountType.equals(AccountTypes.INVESTMENT.toString())) {
-//            menu.add(R.string.watchlist);
-//        }
+        if (accountType.equals(AccountTypes.INVESTMENT.toString())) {
+            menu.add(Menu.NONE, ContextMenuIds.Portfolio.getId(), 0, getString(R.string.portfolio));
+        }
     }
 
     @Override
@@ -481,6 +475,9 @@ public class HomeFragment
         }
         if (menuItemTitle.equalsIgnoreCase(getString(R.string.balance_account))) {
             startBalanceAccount(account);
+        }
+        if (menuItemTitle.equalsIgnoreCase(getString(R.string.portfolio))) {
+            EventBus.getDefault().post(new RequestPortfolioFragmentEvent(accountId));
         }
 
         return result;

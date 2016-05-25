@@ -672,7 +672,6 @@
     <string name="records">records</string>
     <!-- db password entry -->
     <string name="enter_password">Enter password</string>
-    <string name="title_activity_portfolio">PortfolioActivity</string>
 
     <string name="success">Operation successful</string>
     <string name="overview">Overview</string>
@@ -720,4 +719,5 @@
     <string name="inactive_currencies">Inactive Currencies</string>
     <string name="all_currencies">All Currencies</string>
 
+    <string name="portfolio">Portfolio</string>
 </resources>
