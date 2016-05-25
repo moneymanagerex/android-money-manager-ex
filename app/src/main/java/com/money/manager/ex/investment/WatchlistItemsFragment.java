@@ -307,7 +307,6 @@ public class WatchlistItemsFragment
             case ID_LOADER:
                 // send the data to the view adapter.
                 StocksCursorAdapter adapter = (StocksCursorAdapter) getListAdapter();
-//                adapter.swapCursor(data);
                 adapter.changeCursor(data);
 
                 if (isResumed()) {

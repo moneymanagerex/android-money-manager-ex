@@ -31,6 +31,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.domainmodel.Stock;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,8 +39,7 @@ import com.money.manager.ex.datalayer.StockRepository;
  * create an instance of this fragment.
  */
 public class PortfolioFragment
-    extends BaseListFragment
-    implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseListFragment {
 
     private static final String ARG_ACCOUNT_ID = "accountId";
     public static final int ID_LOADER = 1;
@@ -100,6 +100,14 @@ public class PortfolioFragment
         setEmptyText(getString(R.string.no_stock_data));
         setListShown(false);
 
+        // create adapter
+        StocksCursorAdapter adapter = new StocksCursorAdapter(getActivity(), null);
+
+        // set adapter
+        setListAdapter(adapter);
+
+        initializeLoader();
+
         // hide the title
         // todo: uncomment this after setting the correct fragment type.
 //        ActionBar actionBar = getActionBar();
@@ -124,33 +132,47 @@ public class PortfolioFragment
         saveInstanceState.putInt(ARG_ACCOUNT_ID, mAccountId);
     }
 
-    // Loader
+    // Private
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        MmexCursorLoader result;
+    private void initializeLoader() {
+        // initialize loader
+        getLoaderManager().initLoader(ID_LOADER, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                //animation
+                setListShown(false);
 
-        //animation
-        setListShown(false);
+                StockRepository repo = new StockRepository(getActivity());
+                Query query = new Query()
+                    .select(repo.getAllColumns())
+                    .where(Stock.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID));
+                //.orderBy(sort);
 
-        StockRepository repo = new StockRepository(getActivity());
-        Query query = new Query()
-            .select(repo.getAllColumns());
-            //.where(selection)
-            //.orderBy(sort);
+                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
+            }
 
-        result = new MmexCursorLoader(getActivity(), repo.getUri(), query);
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                CursorAdapter adapter = (CursorAdapter) getListAdapter();
+                adapter.changeCursor(data);
 
-        return result;
-    }
+                if (isResumed()) {
+                    setListShown(true);
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                    if (getFloatingActionButton() != null) {
+                        getFloatingActionButton().show(true);
+                    }
+                } else {
+                    setListShownNoAnimation(true);
+                }
+                // update the header
+//   todo     displayHeaderData();
+            }
 
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        ((CursorAdapter) getListAdapter()).changeCursor(null);
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                ((CursorAdapter) getListAdapter()).changeCursor(null);
+            }
+        });
     }
 }
