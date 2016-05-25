@@ -121,7 +121,8 @@ public abstract class BaseReportFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case ID_LOADER:
-                ((CursorAdapter) getListAdapter()).swapCursor(null);
+//                ((CursorAdapter) getListAdapter()).swapCursor(null);
+                ((CursorAdapter) getListAdapter()).changeCursor(null);
         }
     }
 
@@ -129,7 +130,8 @@ public abstract class BaseReportFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER:
-                ((CursorAdapter) getListAdapter()).swapCursor(data);
+//                ((CursorAdapter) getListAdapter()).swapCursor(data);
+                ((CursorAdapter) getListAdapter()).changeCursor(data);
                 if (isResumed()) {
                     setListShown(true);
                 } else {

@@ -275,7 +275,8 @@ public class CurrencyListFragment
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
                 CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
-                adapter.swapCursor(null);
+//                adapter.swapCursor(null);
+                adapter.changeCursor(null);
                 break;
         }
     }
@@ -285,7 +286,8 @@ public class CurrencyListFragment
         switch (loader.getId()) {
             case ID_LOADER_CURRENCY:
                 CurrencyListAdapter adapter = (CurrencyListAdapter) getListAdapter();
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                adapter.changeCursor(data);
 
                 if (isResumed()) {
                     setListShown(true);

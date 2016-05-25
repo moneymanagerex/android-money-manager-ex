@@ -34,7 +34,7 @@ import java.util.HashMap;
  * Cursor adapter for stock list (watchlist).
  */
 public class StocksCursorAdapter
-        extends CursorAdapter {
+    extends CursorAdapter {
 
     public StocksCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor, -1);

@@ -283,7 +283,8 @@ public class AssetAllocationFragment
         Cursor matrixCursor = createMatrixCursor(assetAllocation);
 
         AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
-        adapter.swapCursor(matrixCursor);
+//        adapter.swapCursor(matrixCursor);
+        adapter.changeCursor(matrixCursor);
 
         // refresh footer/totals
         renderFooter(assetAllocation);

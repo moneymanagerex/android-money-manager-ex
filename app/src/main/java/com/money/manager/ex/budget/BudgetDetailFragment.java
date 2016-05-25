@@ -153,7 +153,8 @@ public class BudgetDetailFragment
                 switch (loader.getId()) {
                     case LOADER_BUDGET:
                         BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
-                        adapter.swapCursor(data);
+//                        adapter.swapCursor(data);
+                        adapter.changeCursor(data);
 
                         if (isResumed()) {
                             setListShown(true);
@@ -169,7 +170,8 @@ public class BudgetDetailFragment
                 switch (loader.getId()) {
                     case LOADER_BUDGET:
                         BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
-                        adapter.swapCursor(null);
+//                        adapter.swapCursor(null);
+                        adapter.changeCursor(null);
                         break;
                 }
             }

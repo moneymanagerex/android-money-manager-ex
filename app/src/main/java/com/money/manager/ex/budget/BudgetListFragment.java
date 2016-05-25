@@ -163,7 +163,8 @@ public class BudgetListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_BUDGETS:
-                mAdapter.swapCursor(data);
+//                mAdapter.swapCursor(data);
+                mAdapter.changeCursor(data);
 
                 if (isResumed()) {
                     setListShown(true);
@@ -178,7 +179,8 @@ public class BudgetListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case LOADER_BUDGETS:
-                mAdapter.swapCursor(null);
+//                mAdapter.swapCursor(null);
+                mAdapter.changeCursor(null);
                 break;
         }
     }

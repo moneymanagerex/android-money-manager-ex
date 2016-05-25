@@ -262,7 +262,8 @@ public class AllDataListFragment
         LoaderManager.LoaderCallbacks<Cursor> parent = getSearchResultFragmentLoaderCallbacks();
         if (parent != null) parent.onLoaderReset(loader);
 
-        ((CursorAdapter) getListAdapter()).swapCursor(null);
+        //((CursorAdapter) getListAdapter()).swapCursor(null);
+        ((CursorAdapter) getListAdapter()).changeCursor(null);
     }
 
     @Override
@@ -274,7 +275,8 @@ public class AllDataListFragment
             case ID_LOADER_ALL_DATA_DETAIL:
                 // Transactions list loaded.
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                adapter.changeCursor(data);
                 if (isResumed()) {
                     setListShown(true);
                     if (data != null && data.getCount() <= 0 && getFloatingActionButton() != null)

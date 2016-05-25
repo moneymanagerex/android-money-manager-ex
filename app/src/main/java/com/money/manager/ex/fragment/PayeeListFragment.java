@@ -263,7 +263,8 @@ public class PayeeListFragment
         switch (loader.getId()) {
             case ID_LOADER_PAYEE:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.swapCursor(null);
+//                adapter.swapCursor(null);
+                adapter.changeCursor(null);
         }
     }
 
@@ -278,7 +279,9 @@ public class PayeeListFragment
                         ? mCurFilter.replace("%", "")
                         : "";
                 adapter.setHighlightFilter(highlightFilter);
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                adapter.changeCursor(data);
+
                 if (isResumed()) {
                     setListShown(true);
                     if (data.getCount() <= 0 && getFloatingActionButton() != null) {

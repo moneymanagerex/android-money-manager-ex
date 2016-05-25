@@ -16,15 +16,21 @@
  */
 package com.money.manager.ex.investment;
 
-import android.app.ActionBar;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.StockRepository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,15 +38,11 @@ import com.money.manager.ex.R;
  * create an instance of this fragment.
  */
 public class PortfolioFragment
-    extends Fragment {
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String ARG_ACCOUNT_ID = "accountId";
-
-    private Integer mAccountId;
-
-    public PortfolioFragment() {
-        // Required empty public constructor
-    }
+    public static final int ID_LOADER = 1;
 
     /**
      * Use this factory method to create a new instance of
@@ -58,26 +60,35 @@ public class PortfolioFragment
         return fragment;
     }
 
+    public PortfolioFragment() {
+        // Required empty public constructor
+    }
+
+    private Integer mAccountId;
+
+    @Override
+    public String getSubTitle() {
+        return null;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(ARG_ACCOUNT_ID)) {
+            // get data from saved instance state
+            mAccountId = savedInstanceState.getInt(ARG_ACCOUNT_ID);
+        } else {
+            //if (getArguments() != null) {
             mAccountId = getArguments().getInt(ARG_ACCOUNT_ID);
         }
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) return null;
-        View view = inflater.inflate(R.layout.fragment_account_transactions, container, false);
 
-//        TextView textView = new TextView(getActivity());
-//        textView.setText(R.string.hello_blank_fragment);
-//        return textView;
+        View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
 
         return view;
     }
@@ -86,11 +97,60 @@ public class PortfolioFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setEmptyText(getString(R.string.no_stock_data));
+        setListShown(false);
+
         // hide the title
         // todo: uncomment this after setting the correct fragment type.
 //        ActionBar actionBar = getActionBar();
 //        if (actionBar != null) {
 //            actionBar.setDisplayShowTitleEnabled(false);
 //        }
+
+        setFloatingActionButtonVisible(true);
+        setFloatingActionButtonAttachListView(true);
+
+    }
+
+    @Override
+    public void onFloatingActionButtonClickListener() {
+        // todo: openEditInvestmentActivity();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle saveInstanceState) {
+        super.onSaveInstanceState(saveInstanceState);
+
+        saveInstanceState.putInt(ARG_ACCOUNT_ID, mAccountId);
+    }
+
+    // Loader
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        MmexCursorLoader result;
+
+        //animation
+        setListShown(false);
+
+        StockRepository repo = new StockRepository(getActivity());
+        Query query = new Query()
+            .select(repo.getAllColumns());
+            //.where(selection)
+            //.orderBy(sort);
+
+        result = new MmexCursorLoader(getActivity(), repo.getUri(), query);
+
+        return result;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        ((CursorAdapter) getListAdapter()).changeCursor(null);
     }
 }

@@ -149,14 +149,17 @@ public class IncomeVsExpensesListFragment
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(null);
+//        ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(null);
+        ((IncomeVsExpensesAdapter) getListAdapter()).changeCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_REPORT:
-                ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(data);
+//                ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(data);
+                ((IncomeVsExpensesAdapter) getListAdapter()).changeCursor(data);
+
                 if (isResumed()) {
                     setListShown(true);
                 } else {

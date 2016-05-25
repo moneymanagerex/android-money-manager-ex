@@ -172,7 +172,8 @@ public class AccountListFragment
         switch (loader.getId()) {
             case LOADER_ACCOUNT:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.swapCursor(null);
+//                adapter.swapCursor(null);
+                adapter.changeCursor(null);
         }
     }
 
@@ -182,7 +183,8 @@ public class AccountListFragment
             case LOADER_ACCOUNT:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
                 adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                adapter.changeCursor(data);
 
                 if (isResumed()) {
                     setListShown(true);
