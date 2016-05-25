@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.investment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
@@ -103,6 +105,8 @@ public class PortfolioFragment
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(getActivity(), null);
 
+        initializeList();
+
         // set adapter
         setListAdapter(adapter);
 
@@ -117,12 +121,11 @@ public class PortfolioFragment
 
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
-
     }
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        // todo: openEditInvestmentActivity();
+        openEditInvestmentActivity(null);
     }
 
     @Override
@@ -133,6 +136,24 @@ public class PortfolioFragment
     }
 
     // Private
+
+    private void initializeList() {
+        // handle list item click.
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Ignore the header row.
+                if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
+
+                if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                    Cursor cursor = (Cursor) getListAdapter().getItem(position);
+                    Stock stock = Stock.fromCursor(cursor);
+                    openEditInvestmentActivity(stock.getId());
+                }
+            }
+        });
+
+    }
 
     private void initializeLoader() {
         // initialize loader
@@ -175,4 +196,13 @@ public class PortfolioFragment
             }
         });
     }
+
+    private void openEditInvestmentActivity(Integer stockId) {
+        Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
+        intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, mAccountId);
+        intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);
+        intent.setAction(Intent.ACTION_INSERT);
+        startActivity(intent);
+    }
+
 }

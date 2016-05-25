@@ -439,7 +439,7 @@ public class WatchlistItemsFragment
 
     private void openEditInvestmentActivity() {
         Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
-        intent.putExtra(InvestmentTransactionEditActivity.EXTRA_ACCOUNT_ID, this.accountId);
+        intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, this.accountId);
         intent.setAction(Intent.ACTION_INSERT);
         startActivity(intent);
     }

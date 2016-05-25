@@ -18,6 +18,7 @@ package com.money.manager.ex.investment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +56,8 @@ import info.javaperformance.money.MoneyFactory;
 public class InvestmentTransactionEditActivity
     extends BaseFragmentActivity {
 
-    public static final String EXTRA_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
+    public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
+    public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
     public static final String DATEPICKER_TAG = "datepicker";
     public static final int ID_NUM_SHARES = 1;
     public static final int ID_PURCHASE_PRICE = 2;
@@ -70,20 +72,33 @@ public class InvestmentTransactionEditActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_investment_transaction_edit);
-
-        //todo mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
+//        setContentView(R.layout.activity_investment_transaction_edit);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
         showStandardToolbarActions();
 
-        // todo: receive the account id (and read currency)
-        // todo: change this initialization after adding editing feature.
+        // load account & currency
+        Intent intent = getIntent();
+        if (intent != null) {
+            int accountId = intent.getIntExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
+            if (accountId != Constants.NOT_SET) {
+                AccountRepository repository = new AccountRepository(this);
+                mAccount = repository.load(accountId);
+            }
 
-        mStock = Stock.create();
-        //todo mBinding.setStock(mStock);
+            int stockId = intent.getIntExtra(ARG_STOCK_ID, Constants.NOT_SET);
+            if (stockId != Constants.NOT_SET) {
+                StockRepository repo = new StockRepository(this);
+                mStock = repo.load(stockId);
+            } else {
+                mStock = Stock.create();
+            }
+        }
 
         initializeForm();
+
+        mBinding.setStock(mStock);
     }
 
     @Override
@@ -147,16 +162,6 @@ public class InvestmentTransactionEditActivity
     }
 
     private void initializeForm() {
-        // load account & currency
-        Intent intent = getIntent();
-        if (intent != null) {
-            int accountId = intent.getIntExtra(EXTRA_ACCOUNT_ID, Constants.NOT_SET);
-            if (accountId != Constants.NOT_SET) {
-                AccountRepository repository = new AccountRepository(getApplicationContext());
-                mAccount = repository.load(accountId);
-            }
-        }
-
         // Purchase Date
 
         final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
@@ -276,7 +281,10 @@ public class InvestmentTransactionEditActivity
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
+
         RobotoTextViewFontIcon numSharesView = (RobotoTextViewFontIcon) this.findViewById(R.id.numSharesView);
+        if (numSharesView == null) return;
+
         numSharesView.setOnClickListener(onAmountClick);
         // todo: format the number of shares based on selected locale.
         showNumberOfShares();
@@ -300,6 +308,8 @@ public class InvestmentTransactionEditActivity
 
     private void showCommission() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.commissionView);
+        if (view == null) return;
+
         view.setText(mStock.getCommission().toString());
     }
 
