@@ -17,12 +17,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="stock"
-            type="com.money.manager.ex.domainmodel.Stock" />
-    </data>
+    <!--<data>-->
+        <!--<variable-->
+            <!--name="stock"-->
+            <!--type="com.money.manager.ex.domainmodel.Stock" />-->
+    <!--</data>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,6 +42,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -68,6 +68,29 @@
                     android:hint="@string/purchase_date"
                     android:textStyle="bold"
                     app:iconLeft="@xml/ic_calendar_small" />
+
+                <!-- Account -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/accountLabel"
+                        style="@style/Money.TextView.Header.Caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="@string/account" />
+
+                    <Spinner
+                        android:id="@+id/spinnerAccount"
+                        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
 
                 <!-- Stock Name -->
                 <android.support.design.widget.TextInputLayout

@@ -199,7 +199,7 @@ public class WatchlistItemsFragment
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
-        Stock stock = Stock.fromCursor(cursor);
+        Stock stock = Stock.from(cursor);
         String symbol = stock.getSymbol();
 
         boolean result = false;

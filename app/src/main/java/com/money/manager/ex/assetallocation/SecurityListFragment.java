@@ -183,7 +183,7 @@ public class SecurityListFragment
         if (this.action.equals(Intent.ACTION_PICK)) {
             // select the current item and return.
             Cursor c = (Cursor) l.getItemAtPosition(position);
-            Stock stock = Stock.fromCursor(c);
+            Stock stock = Stock.from(c);
             selectedStockSymbol = stock.getSymbol();
 
             setResultAndFinish();

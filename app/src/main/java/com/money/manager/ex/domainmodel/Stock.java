@@ -47,7 +47,7 @@ public class Stock
     public static final String VALUE = "VALUE";
     public static final String COMMISSION = "COMMISSION";
 
-    public static Stock fromCursor(Cursor c) {
+    public static Stock from(Cursor c) {
         Stock stock = new Stock();
         stock.loadFromCursor(c);
         return stock;
@@ -114,10 +114,6 @@ public class Stock
         return MoneyFactory.fromString(currentPrice);
     }
 
-//    public MonetaryAmount getCurrentPrice(String currencyCode) {
-//        return getMoneta(CURRENTPRICE, currencyCode);
-//    }
-
     public void setCurrentPrice(Money currentPrice) {
         contentValues.put(CURRENTPRICE, currentPrice.toString());
     }
@@ -168,7 +164,7 @@ public class Stock
         setMoney(PURCHASEPRICE, value);
     }
 
-    public String getStockName() {
+    public String getName() {
         return getString(STOCKNAME);
     }
 

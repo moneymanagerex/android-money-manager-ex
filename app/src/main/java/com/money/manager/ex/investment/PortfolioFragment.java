@@ -147,7 +147,7 @@ public class PortfolioFragment
 
                 if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
                     Cursor cursor = (Cursor) getListAdapter().getItem(position);
-                    Stock stock = Stock.fromCursor(cursor);
+                    Stock stock = Stock.from(cursor);
                     openEditInvestmentActivity(stock.getId());
                 }
             }
