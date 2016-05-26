@@ -36,7 +36,6 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
 
 /**
- * A simple {@link Fragment} subclass.
  * Use the {@link PortfolioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -70,7 +69,7 @@ public class PortfolioFragment
 
     @Override
     public String getSubTitle() {
-        return null;
+        return getString(R.string.portfolio);
     }
 
     @Override
