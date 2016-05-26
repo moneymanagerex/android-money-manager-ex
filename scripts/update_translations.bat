@@ -109,6 +109,12 @@ set locale=RU
 call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
 call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
 
+:: Slovak
+set lang=sk
+set locale=SK
+call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+
 :: Spanish
 set lang=es
 set locale=ES
@@ -120,6 +126,12 @@ set lang=tr
 set locale=TR
 call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
 ::call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+
+:: Ukrainian
+set lang=uk
+set locale=UA
+call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
 
 :: Vietnamese
 set lang=vi
