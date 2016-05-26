@@ -136,7 +136,9 @@ public class YahooCsvQuoteDownloaderRetrofit
         PriceDownloadedEvent event = parser.parse(content);
 
         // Notify the caller by invoking the interface method.
-        EventBus.getDefault().post(event);
+        if (event != null) {
+            EventBus.getDefault().post(event);
+        }
 
         finishIfAllDone();
     }
