@@ -2,8 +2,6 @@
 :: Set the correct location to the root of the unzipped translations file from Crowdin.
 @echo off
 
-::set src_root=d:\temp
-::set dest_root=d:\dev\android-money-manager-ex\res
 set src_root=d:\temp
 set dest_root=d:\src\android-money-manager-ex\app\src\main\res
 

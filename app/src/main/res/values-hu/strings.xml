@@ -77,8 +77,6 @@
   <string name="account_empty_list">Nincsenek számlák. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
   <string name="account_balance">Számla egyenleg</string>
   <string name="account_reconciled_balance">Egyeztetett egyenleg</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Számla törlése</string>
   <string name="account_name">Számla neve</string>
   <string name="account_type">Számla típusa</string>
@@ -131,6 +129,7 @@
   <string name="scale">Skála</string>
   <string name="conversion_to_base_rate">Átváltás</string>
   <string name="currency_name_empty">Pénznem nevének megadása kötelező</string>
+  <string name="new_edit_currency">Új pénznem/szerkesztés</string>
   <!-- transaction -->
   <string name="amount">Összeg</string>
   <string name="total_amount">Teljes összeg</string>
@@ -181,7 +180,6 @@
   <string name="initial_balance">Kezdő egyenleg</string>
   <string name="notes">Jegyzetek</string>
   <string name="closed">Zárt</string>
-  <string name="new_edit_currency">Új pénznem/szerkesztés</string>
   <string name="theme_application">Téma</string>
   <string name="theme_holo">Material Dark</string>
   <string name="theme_light">Material Light</string>
@@ -323,7 +321,6 @@
   <string name="descending">Csökkenő</string>
   <string name="sorting_month">Hónapok rendezése</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">A Dropbox/Apps/Money Manager Ex Mobile mappa üres. Ha már használja a MoneyManagerEx programot, másolja az adatbázisát ebbe a mappába, majd nyomja meg a frissítés gombot.</string>
   <string name="dropbox_select_file">Válasszon egy Dropbox állományt</string>
   <string name="last_modified">Utoljára módosítva</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -405,21 +402,11 @@
   <string name="delete_one_selected_transaction">Biztosan törölni szeretné a kiválasztott tranzakciót?</string>
   <string name="delete_others_selected_transaction">Biztosan törölni szeretné a kiválasztott %d tranzakciót?</string>
   <string name="categories">Kategóriák</string>
-  <string name="currencies">Pénznemek</string>
-  <string name="currencies_used">Pénznemek, használt</string>
-  <string name="open_currencies">Pénznemek megnyitása</string>
   <string name="payees">Partnerek</string>
   <string name="repeating_transactions">Ismétlődő Tranzakciók</string>
   <string name="theme_holo_light">Holo világos</string>
   <string name="new_account">Új számla</string>
   <string name="create_new_account">Új számla felvitele</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">Pénznemek importálása</string>
-  <string name="import_currencies_in_progress">Pénznemek importálása. Kérem várjon&#8230;</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Nagyobb, vagy egyenlő</string>
   <string name="amount_from">Összeg innen</string>
   <string name="amount_less_or_equal">Kisebb, vagy egyenlő</string>
@@ -438,7 +425,6 @@
   <string name="never">Soha</string>
   <string name="path_database_not_exists">Adatbázis elérési út nem létezik</string>
   <string name="database_can_not_open_write">Az adatbázis nem nyitható meg szerkesztésre</string>
-  <string name="question_import_currencies">Szeretné importálni a pénznemeket?</string>
   <string name="time_frame">Idő keret</string>
   <string name="show_chart">Diagram mutatása</string>
   <string name="add_transaction">Új tranzakció</string>
@@ -450,12 +436,6 @@
   <string name="search_text_contain_title">Keresés a szöveg tartalmában</string>
   <string name="search_text_contain_summary">Partner, kategória, pénznem, stb&#8230; keresése tartalom, és nem kezdő karakter alapján is</string>
   <string name="rate_application">Alkalmazás értékelése</string>
-  <string name="start_currency_exchange_rates">Pénznemek árfolyamának frissítése. Kérem várjon&#8230;</string>
-  <string name="update_currency_exchange_rates">Árfolyam frissítés:\n%1$s</string>
-  <string name="success_currency_exchange_rates">Minden pénznem árfolyamának frissítése sikeresen megtörtént</string>
-  <string name="update_menu_currency_exchange_rates">Árfolyam frissítés</string>
-  <string name="question_update_currency_exchange_rates">Szeretné frissíteni az árfolyamokat?</string>
-  <string name="error_update_currency_exchange_rate">Hiba történt az árfolyamok frissítése közben</string>
   <string name="withdrawal_from">Kiadás innen %1$s</string>
   <string name="deposit_to">Betét ide %1$s</string>
   <string name="mmex_website">MoneyManagerEx honlap</string>
@@ -577,7 +557,6 @@
   <string name="frequency">Gyakoriság</string>
   <string name="update_available">Frissítés elérhető</string>
   <string name="update_on_dropbox">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
-  <string name="currencies_empty">A pénznemek nem találhatók. Új létrehozásához érintse meg a zöld plusz gombot.</string>
   <string name="currency_not_found">Nem található pénznem</string>
   <string name="homepage">Honlapunk http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuális adatbázis</string>
@@ -630,7 +609,6 @@
   <string name="records">bejegyzések</string>
   <!-- db password entry -->
   <string name="enter_password">Jelszó megadása</string>
-  <string name="title_activity_portfolio">PortfolioActivity</string>
   <string name="success">Sikeres művelet</string>
   <string name="overview">Áttekintés</string>
   <string name="title_activity_asset_allocation_overview">Vagyon elosztás áttekintése</string>
@@ -638,4 +616,18 @@
   <string name="asset_allocation_diff_threshold_summary">A küszöbérték, ami aktiválja a különböző értékek szinezését.</string>
   <string name="error_saving_record">Hiba a rekord mentésekor</string>
   <!-- budgets -->
+  <!-- Currencies -->
+  <string name="currencies">Pénznemek</string>
+  <string name="currencies_used">Pénznemek, használt</string>
+  <string name="open_currencies">Pénznemek megnyitása</string>
+  <string name="import_all_currencies">Pénznemek importálása</string>
+  <string name="import_currencies_in_progress">Pénznemek importálása. Kérem várjon&#8230;</string>
+  <string name="question_import_currencies">Szeretné importálni a pénznemeket?</string>
+  <string name="start_currency_exchange_rates">Pénznemek árfolyamának frissítése. Kérem várjon&#8230;</string>
+  <string name="update_currency_exchange_rates">Árfolyam frissítés:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Minden pénznem árfolyamának frissítése sikeresen megtörtént</string>
+  <string name="update_menu_currency_exchange_rates">Árfolyam frissítés</string>
+  <string name="question_update_currency_exchange_rates">Szeretné frissíteni az árfolyamokat?</string>
+  <string name="error_update_currency_exchange_rate">Hiba történt az árfolyamok frissítése közben</string>
+  <string name="currencies_empty">A pénznemek nem találhatók. Új létrehozásához érintse meg a zöld plusz gombot.</string>
 </resources>

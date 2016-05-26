@@ -69,8 +69,6 @@
   <string name="account_empty_list">לא נמצאו חשבונות. כדי ליצור חשבון, הקש על לחצן סימן החיבור הירוק.</string>
   <string name="account_balance">יתרת חשבון</string>
   <string name="account_reconciled_balance">יתרה מותאמת</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">מחק חשבון</string>
   <string name="account_name">שם חשבון</string>
   <string name="account_type">סוג חשבון</string>
@@ -121,6 +119,7 @@
   <string name="scale">סולם</string>
   <string name="conversion_to_base_rate">המרה</string>
   <string name="currency_name_empty">נדרש שם מטבע</string>
+  <string name="new_edit_currency">חדש/עריכת מטבע</string>
   <!-- transaction -->
   <string name="amount">סכום</string>
   <string name="total_amount">סך הכל</string>
@@ -170,7 +169,6 @@
   <string name="initial_balance">יתרת פתיחה</string>
   <string name="notes">הערות</string>
   <string name="closed">סגור</string>
-  <string name="new_edit_currency">חדש/עריכת מטבע</string>
   <string name="theme_application">ערכת נושא</string>
   <string name="theme_holo">גשמי כהה</string>
   <string name="theme_light">גשמי בהיר</string>
@@ -293,7 +291,6 @@
   <string name="descending">סדר יורד</string>
   <string name="sorting_month">מיון חודשים</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">התיקיה ב\"Dropbox/Apps/Money Manager Ex\" ריקה. אם אתה כבר משתמש MoneyManagerEx העתק את  מסד הנתונים שלך לתיקיה זו במחשב שלך, לאחר מכן בצע רענון.</string>
   <string name="dropbox_select_file">בחר קובץ מ- Dropbox</string>
   <string name="last_modified">עודכן לאחרונה</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -373,18 +370,10 @@
   <string name="delete_one_selected_transaction">האם אתה בטוח שברצונך למחוק את התנועה שנבחרה?</string>
   <string name="delete_others_selected_transaction">האם אתה בטוח שברצונך למחוק את %d התנועות שנבחרו?</string>
   <string name="categories">קטגוריות</string>
-  <string name="currencies">מטבעות</string>
   <string name="payees">מוטב</string>
   <string name="repeating_transactions">תנועות מחזוריות</string>
   <string name="theme_holo_light">אור ההולוגרפי</string>
   <string name="new_account">חשבון חדש</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">ייבוא סוגי מטבע</string>
-  <string name="import_currencies_in_progress">מייבוא סוגי מטבע. המתן &#8230;בבקשה...</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">סכום גדול או שווה</string>
   <string name="amount_less_or_equal">סכום קטן או שווה</string>
   <string name="result_search">תוצאת החיפוש</string>
@@ -400,7 +389,6 @@
   <string name="never">אף פעם</string>
   <string name="path_database_not_exists">נתיב מסד הנתונים לא קיים</string>
   <string name="database_can_not_open_write">לא ניתן לפתוח את מסד הנתונים לכתיבה</string>
-  <string name="question_import_currencies">האם  לייבא מטבע?</string>
   <string name="time_frame">מסגרת הזמן</string>
   <string name="show_chart">הצג תרשים</string>
   <string name="add_transaction">הוסף תנועה</string>
@@ -411,11 +399,6 @@
   <string name="search_text_contain_title">חיפוש לפי תוכן הטקסט ולא לפי האות בה מתחיל הטקסט</string>
   <string name="search_text_contain_summary">חפש מוטבים, קטגוריות, מטבעות, וכו \'... לפי תוכן ולא לפי תחיליות - האות בה מתחיל הטקסט</string>
   <string name="rate_application">דרג את היישום</string>
-  <string name="start_currency_exchange_rates">מעדכון שערי חליפין למטבעות. המתן בבקשה...</string>
-  <string name="update_currency_exchange_rates">מעדכן שער חליפין :\n%1$s</string>
-  <string name="success_currency_exchange_rates">כל שערי החליפין של המטבעות עודכנו בהצלחה</string>
-  <string name="update_menu_currency_exchange_rates">עדכן שער חליפין</string>
-  <string name="question_update_currency_exchange_rates">האם ברצונך לעדכן את שער החליפין?</string>
   <string name="withdrawal_from">משיכה מ  %1$s</string>
   <string name="deposit_to">הפקדה ל %1$s</string>
   <string name="mmex_website">אתר MoneyManagerEx</string>
@@ -467,4 +450,14 @@
   <!-- asset allocation -->
   <!-- db password entry -->
   <!-- budgets -->
+  <!-- Currencies -->
+  <string name="currencies">מטבעות</string>
+  <string name="import_all_currencies">ייבוא סוגי מטבע</string>
+  <string name="import_currencies_in_progress">מייבוא סוגי מטבע. המתן &#8230;בבקשה...</string>
+  <string name="question_import_currencies">האם  לייבא מטבע?</string>
+  <string name="start_currency_exchange_rates">מעדכון שערי חליפין למטבעות. המתן בבקשה...</string>
+  <string name="update_currency_exchange_rates">מעדכן שער חליפין :\n%1$s</string>
+  <string name="success_currency_exchange_rates">כל שערי החליפין של המטבעות עודכנו בהצלחה</string>
+  <string name="update_menu_currency_exchange_rates">עדכן שער חליפין</string>
+  <string name="question_update_currency_exchange_rates">האם ברצונך לעדכן את שער החליפין?</string>
 </resources>

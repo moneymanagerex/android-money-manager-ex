@@ -78,8 +78,6 @@
   <string name="account_empty_list">Не найдено ни одной учетной записи. Чтобы создать её, нажмите на зеленый плюс.</string>
   <string name="account_balance">Баланс счета</string>
   <string name="account_reconciled_balance">Выверенный баланс</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Удалить счет</string>
   <string name="account_name">Название счета</string>
   <string name="account_type">Тип счета</string>
@@ -132,6 +130,7 @@
   <string name="scale">Дробных</string>
   <string name="conversion_to_base_rate">Обменный курс</string>
   <string name="currency_name_empty">Требуется указать название валюты</string>
+  <string name="new_edit_currency">Создать/Редактировать валюту</string>
   <!-- transaction -->
   <string name="amount">Сумма</string>
   <string name="total_amount">Итоговая сумма</string>
@@ -183,7 +182,6 @@
   <string name="initial_balance">Начальный баланс</string>
   <string name="notes">Заметки</string>
   <string name="closed">Закрыт</string>
-  <string name="new_edit_currency">Создать/Редактировать валюту</string>
   <string name="theme_application">Тема оформления</string>
   <string name="theme_holo">Материальный темный</string>
   <string name="theme_light">Материальный светлый</string>
@@ -326,7 +324,6 @@
   <string name="descending">По убыванию</string>
   <string name="sorting_month">Сортировка по месяцам</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере после чего обновите состояние папки в Dropbox.</string>
   <string name="dropbox_select_file">Выберите файл из Dropbox</string>
   <string name="last_modified">Последнее изменение</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -409,21 +406,11 @@
   <string name="delete_one_selected_transaction">Вы уверены, что хотите удалить выбранную проводку ?</string>
   <string name="delete_others_selected_transaction">Вы уверены, что хотите удалить %d выбранных проводок ?</string>
   <string name="categories">Категории</string>
-  <string name="currencies">Валюты</string>
-  <string name="currencies_used">Валюты, использовано</string>
-  <string name="open_currencies">Открыть валюты</string>
   <string name="payees">Контрагенты</string>
   <string name="repeating_transactions">Повторяющиеся транзакции</string>
   <string name="theme_holo_light">Holo светлая</string>
   <string name="new_account">Новый счет</string>
   <string name="create_new_account">Создать новый счёт</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">Импорт валют</string>
-  <string name="import_currencies_in_progress">Импортируем валюты. Пожалуйста подождите&#8230;</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Сумма больше или равно</string>
   <string name="amount_from">Сумма от</string>
   <string name="amount_less_or_equal">Сумма меньше или равно</string>
@@ -442,7 +429,6 @@
   <string name="never">Никогда не</string>
   <string name="path_database_not_exists">Путь к базе данных не существует</string>
   <string name="database_can_not_open_write">База данных не может быть открыта для записи</string>
-  <string name="question_import_currencies">Вы хотите импортировать валюту?</string>
   <string name="time_frame">Период времени</string>
   <string name="show_chart">Показать диаграмму</string>
   <string name="add_transaction">Добавить транзакцию</string>
@@ -454,12 +440,6 @@
   <string name="search_text_contain_title">Поиск внутри строк</string>
   <string name="search_text_contain_summary">Искать по всему тексту, а не только с начала строки (контрагенты, категории&#8230;)</string>
   <string name="rate_application">Оценить приложение</string>
-  <string name="start_currency_exchange_rates">Обновление курсов валют. Пожалуйста подождите&#8230;</string>
-  <string name="update_currency_exchange_rates">Обновляем обменный курс:\n%1$s</string>
-  <string name="success_currency_exchange_rates">Все обменные курсы были успешно обновлены</string>
-  <string name="update_menu_currency_exchange_rates">Обновить курс валюты</string>
-  <string name="question_update_currency_exchange_rates">Вы хотите обновить обменый курс ?</string>
-  <string name="error_update_currency_exchange_rate">Ошибка обновления курса валюты</string>
   <string name="withdrawal_from">Снятие со счета  %1$s</string>
   <string name="deposit_to">Пополнение счета %1$s</string>
   <string name="mmex_website">Сайт MoneyManagerEX</string>
@@ -583,7 +563,6 @@
   <string name="frequency">Частота</string>
   <string name="update_available">Имеется обновление</string>
   <string name="update_on_dropbox">Обновленная база данных доступна в Dropbox. Желаете обновить?</string>
-  <string name="currencies_empty">Валюты не найдены. Чтобы создать валюту, нажмите на кнопку с зеленым плюсом.</string>
   <string name="currency_not_found">Валюта не найдена</string>
   <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Текущая база данных</string>
@@ -656,4 +635,18 @@
   <string name="quote_provider">Поставщик цен</string>
   <string name="copy">Копировать</string>
   <string name="app_restart">Для принятия изменений программу необходимо перезапустить.</string>
+  <!-- Currencies -->
+  <string name="currencies">Валюты</string>
+  <string name="currencies_used">Валюты, использовано</string>
+  <string name="open_currencies">Открыть валюты</string>
+  <string name="import_all_currencies">Импорт валют</string>
+  <string name="import_currencies_in_progress">Импортируем валюты. Пожалуйста подождите&#8230;</string>
+  <string name="question_import_currencies">Вы хотите импортировать валюту?</string>
+  <string name="start_currency_exchange_rates">Обновление курсов валют. Пожалуйста подождите&#8230;</string>
+  <string name="update_currency_exchange_rates">Обновляем обменный курс:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Все обменные курсы были успешно обновлены</string>
+  <string name="update_menu_currency_exchange_rates">Обновить курс валюты</string>
+  <string name="question_update_currency_exchange_rates">Вы хотите обновить обменый курс ?</string>
+  <string name="error_update_currency_exchange_rate">Ошибка обновления курса валюты</string>
+  <string name="currencies_empty">Валюты не найдены. Чтобы создать валюту, нажмите на кнопку с зеленым плюсом.</string>
 </resources>

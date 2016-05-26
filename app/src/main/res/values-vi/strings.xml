@@ -77,8 +77,6 @@
   <string name="account_empty_list">Không tìm thấy tài khoản nào. Để tạo 1 tài khoản, chạm vào nút \"+\" màu xanh.</string>
   <string name="account_balance">Số dư tài khoản</string>
   <string name="account_reconciled_balance">Số dư đối chiếu</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Xoá tài khoản</string>
   <string name="account_name">Tên tài khoản</string>
   <string name="account_type">Loại tài khoản</string>
@@ -131,6 +129,7 @@
   <string name="scale">Tỷ lệ</string>
   <string name="conversion_to_base_rate">Chuyển đổi</string>
   <string name="currency_name_empty">Tên tiền tệ là cần thiết</string>
+  <string name="new_edit_currency">Mới/Sửa tiền tệ</string>
   <!-- transaction -->
   <string name="amount">Số lượng</string>
   <string name="total_amount">Tổng số tiền</string>
@@ -181,7 +180,6 @@
   <string name="initial_balance">Số dư ban đầu</string>
   <string name="notes">Ghi chú</string>
   <string name="closed">Đã đóng</string>
-  <string name="new_edit_currency">Mới/Sửa tiền tệ</string>
   <string name="theme_application">Chủ đề</string>
   <string name="theme_holo">Material Tối</string>
   <string name="theme_light">Material Sáng</string>
@@ -323,7 +321,6 @@
   <string name="descending">Giảm dần</string>
   <string name="sorting_month">Xếp theo Tháng</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Thư mục trong Dropbox/Ứng dụng/Money Manager Ex Di Động đang trống. Nếu bạn đã dùng Money Manager Ex sao chép cơ sở dữ liệu vào thư mục này của bạn trong máy tính của bạn, và sau đó bạn thực hiện làm mới.</string>
   <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
   <string name="last_modified">Sửa đổi cuối</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -405,21 +402,11 @@
   <string name="delete_one_selected_transaction">Bạn có chắc bạn muốn xóa giao dịch đã chọn không?</string>
   <string name="delete_others_selected_transaction">Bạn có chắc bạn muốn xóa %d giao dịch đã chọn?</string>
   <string name="categories">Danh mục</string>
-  <string name="currencies">Tiền tệ</string>
-  <string name="currencies_used">Các loại tiền tệ, được sử dụng</string>
-  <string name="open_currencies">Mở các loại tiền tệ</string>
   <string name="payees">Người nhận thanh toán</string>
   <string name="repeating_transactions">Giao dịch định kỳ</string>
   <string name="theme_holo_light">Holo Sáng</string>
   <string name="new_account">Tài khoản mới</string>
   <string name="create_new_account">Tạo tài khoản mới</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">Nhập tiền tệ</string>
-  <string name="import_currencies_in_progress">Đang nhập tiền tệ. Vui lòng chờ&#8230;</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Số tiền lớn hơn hoặc bằng</string>
   <string name="amount_from">Số tiền từ</string>
   <string name="amount_less_or_equal">Số tiền ít hơn hoặc bằng</string>
@@ -438,7 +425,6 @@
   <string name="never">Không bao giờ</string>
   <string name="path_database_not_exists">Con đường cơ sở dữ liệu không tồn tại</string>
   <string name="database_can_not_open_write">Cơ sở dữ liệu không thể được mở cho việc ghi</string>
-  <string name="question_import_currencies">Bạn có muốn nhập tiền tệ?</string>
   <string name="time_frame">Khung thời gian</string>
   <string name="show_chart">Hiển thị biểu đồ</string>
   <string name="add_transaction">Thêm giao dịch</string>
@@ -450,12 +436,6 @@
   <string name="search_text_contain_title">Tìm kiếm bằng nội dung văn bản và không phải bằng văn bản bắt đầu với</string>
   <string name="search_text_contain_summary">Tìm kiếm người nhận thanh toán, danh mục, loại tiền tệ, v.v... theo nội dung và không theo bắt đầu các kí tự</string>
   <string name="rate_application">Đánh giá Ứng dụng</string>
-  <string name="start_currency_exchange_rates">Đang cập nhật tỷ giá hối đoái của tiền tệ. Vui lòng chờ...</string>
-  <string name="update_currency_exchange_rates">Đang cập nhậy tỉ giá hối đoái:\n%1$s</string>
-  <string name="success_currency_exchange_rates">Tất cả tỷ giá hối đoái của tiền tệ đã được cập nhật thành công</string>
-  <string name="update_menu_currency_exchange_rates">Cập Nhật Tỷ giá hối đoái</string>
-  <string name="question_update_currency_exchange_rates">Bạn có muốn cập nhật tỷ giá hối đoái?</string>
-  <string name="error_update_currency_exchange_rate">Đã có 1 lỗi khi cập nhật tỉ giá</string>
   <string name="withdrawal_from">Rút khỏi từ %1$s</string>
   <string name="deposit_to">Khoản tiền gửi tới %1$s</string>
   <string name="mmex_website">Trang web MoneyManagerEx</string>
@@ -577,7 +557,6 @@
   <string name="frequency">Tần suất</string>
   <string name="update_available">Cập nhật sẵn có</string>
   <string name="update_on_dropbox">Có một tập tin cơ sở dữ liệu được cập nhật có sẵn trên Dropbox. Bạn có muốn cập nhật?</string>
-  <string name="currencies_empty">Không có tiền tệ được tìm thấy. Để tạo một tiền tệ, bấm vào nút cộng màu xanh.</string>
   <string name="currency_not_found">Tiền tệ không tìm thấy</string>
   <string name="homepage">Trang chủ của chúng tôi là http://android.moneymanagerex.org/</string>
   <string name="current_database">Cơ sở dữ liệu hiện thời</string>
@@ -592,4 +571,18 @@
   <string name="all_accounts">Tất cả tài khoản</string>
   <!-- db password entry -->
   <!-- budgets -->
+  <!-- Currencies -->
+  <string name="currencies">Tiền tệ</string>
+  <string name="currencies_used">Các loại tiền tệ, được sử dụng</string>
+  <string name="open_currencies">Mở các loại tiền tệ</string>
+  <string name="import_all_currencies">Nhập tiền tệ</string>
+  <string name="import_currencies_in_progress">Đang nhập tiền tệ. Vui lòng chờ&#8230;</string>
+  <string name="question_import_currencies">Bạn có muốn nhập tiền tệ?</string>
+  <string name="start_currency_exchange_rates">Đang cập nhật tỷ giá hối đoái của tiền tệ. Vui lòng chờ...</string>
+  <string name="update_currency_exchange_rates">Đang cập nhậy tỉ giá hối đoái:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Tất cả tỷ giá hối đoái của tiền tệ đã được cập nhật thành công</string>
+  <string name="update_menu_currency_exchange_rates">Cập Nhật Tỷ giá hối đoái</string>
+  <string name="question_update_currency_exchange_rates">Bạn có muốn cập nhật tỷ giá hối đoái?</string>
+  <string name="error_update_currency_exchange_rate">Đã có 1 lỗi khi cập nhật tỉ giá</string>
+  <string name="currencies_empty">Không có tiền tệ được tìm thấy. Để tạo một tiền tệ, bấm vào nút cộng màu xanh.</string>
 </resources>

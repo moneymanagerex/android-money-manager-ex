@@ -77,8 +77,6 @@
   <string name="account_empty_list">Aucun compte n\'a été trouvé. Pour en créer un, appuyez sur le bouton plus vert.</string>
   <string name="account_balance">Balance du compte</string>
   <string name="account_reconciled_balance">Balance réconciliée</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Supprimer le compte</string>
   <string name="account_name">Nom du Compte</string>
   <string name="account_type">Type de compte</string>
@@ -131,6 +129,7 @@
   <string name="scale">Echelle</string>
   <string name="conversion_to_base_rate">Taux de conversion de base</string>
   <string name="currency_name_empty">Le nom de la monnaie est obligatoire</string>
+  <string name="new_edit_currency">Créer/Editer une devise</string>
   <!-- transaction -->
   <string name="amount">Montant</string>
   <string name="total_amount">Montant total</string>
@@ -181,7 +180,6 @@
   <string name="initial_balance">Solde initial</string>
   <string name="notes">Notes</string>
   <string name="closed">Clôturé</string>
-  <string name="new_edit_currency">Créer/Editer une devise</string>
   <string name="theme_application">Thème</string>
   <string name="theme_holo">Matériel sombre</string>
   <string name="theme_light">Matériel clair</string>
@@ -319,7 +317,6 @@
   <string name="descending">Décroissant</string>
   <string name="sorting_month">Tri par mois</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Le dossier Dropbox/Apps/Money Manager Ex Mobile est vide. SI vous utilisez déjà MoneyManagerEx, copiez les données dans ce dossier de votre ordinateur et ensuite actualisez.</string>
   <string name="dropbox_select_file">Sélectionner un fichier depuis Dropbox</string>
   <string name="last_modified">Dernière modification</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -401,20 +398,11 @@
   <string name="delete_one_selected_transaction">Êtes-vous sûr de vouloir effacer l\'opération sélectionnée ?</string>
   <string name="delete_others_selected_transaction">Êtes-vous sûr de vouloir effacer les %d opérations sélectionnées ?</string>
   <string name="categories">Catégories</string>
-  <string name="currencies">Devises</string>
-  <string name="currencies_used">Monnaies, utilisées</string>
   <string name="payees">Bénéficiaires</string>
   <string name="repeating_transactions">Opérations périodiques</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Nouveau compte</string>
   <string name="create_new_account">Créer nouveau compte</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">Importer des devises</string>
-  <string name="import_currencies_in_progress">Importation de devises. Veuillez patienter ...</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Montant supérieur ou égal</string>
   <string name="amount_from">Montant depuis</string>
   <string name="amount_less_or_equal">Montant inférieur ou égal</string>
@@ -433,7 +421,6 @@
   <string name="never">Jamais</string>
   <string name="path_database_not_exists">Le chemin de la base de données n\'existe pas</string>
   <string name="database_can_not_open_write">La base de données ne peut pas être ouvert en écriture</string>
-  <string name="question_import_currencies">Vous voulez importer des devises ?</string>
   <string name="time_frame">Délai</string>
   <string name="show_chart">Afficher le graphique</string>
   <string name="add_transaction">Ajouter une opération</string>
@@ -445,12 +432,6 @@
   <string name="search_text_contain_title">Rechercher dans le contenu du texte et non pas en de début de mot</string>
   <string name="search_text_contain_summary">Rechercher des bénéficiaires, devises, etc ... par contenu et non par les caractères du début</string>
   <string name="rate_application">Noter l\'application</string>
-  <string name="start_currency_exchange_rates">Mise à jour des taux de change des devises. Veuillez patienter...</string>
-  <string name="update_currency_exchange_rates">Mise à jour du taux de change:\n%1$s</string>
-  <string name="success_currency_exchange_rates">Tous les taux de change des monnaies ont été mis à jour avec succès</string>
-  <string name="update_menu_currency_exchange_rates">Mise à jour des taux de change</string>
-  <string name="question_update_currency_exchange_rates">Vous voulez mettre à jour les taux de change ?</string>
-  <string name="error_update_currency_exchange_rate">Il y a eu une erreur de mise à jour du taux</string>
   <string name="withdrawal_from">Retrait de %1$s</string>
   <string name="deposit_to">Dépôt de %1$s</string>
   <string name="mmex_website">Site Web MoneyManagerEx</string>
@@ -571,7 +552,6 @@
   <string name="frequency">Fréquence</string>
   <string name="update_available">Mise à jour disponible</string>
   <string name="update_on_dropbox">Une base de données mise à jour est disponible sur Dropbox. Voulez-vous mettre à jour ?</string>
-  <string name="currencies_empty">Aucune monnaies n\'ont été trouvés. Pour créer une, appuyez sur le bouton vert.</string>
   <string name="currency_not_found">Monnaie non trouvé</string>
   <string name="homepage">Notre site Internet est http://android.moneymanagerex.org/</string>
   <string name="current_database">Base de données active</string>
@@ -619,4 +599,17 @@
   <string name="enter_password">Saisissez le mot de passe</string>
   <string name="success">Opération terminée</string>
   <!-- budgets -->
+  <!-- Currencies -->
+  <string name="currencies">Devises</string>
+  <string name="currencies_used">Monnaies, utilisées</string>
+  <string name="import_all_currencies">Importer des devises</string>
+  <string name="import_currencies_in_progress">Importation de devises. Veuillez patienter ...</string>
+  <string name="question_import_currencies">Vous voulez importer des devises ?</string>
+  <string name="start_currency_exchange_rates">Mise à jour des taux de change des devises. Veuillez patienter...</string>
+  <string name="update_currency_exchange_rates">Mise à jour du taux de change:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Tous les taux de change des monnaies ont été mis à jour avec succès</string>
+  <string name="update_menu_currency_exchange_rates">Mise à jour des taux de change</string>
+  <string name="question_update_currency_exchange_rates">Vous voulez mettre à jour les taux de change ?</string>
+  <string name="error_update_currency_exchange_rate">Il y a eu une erreur de mise à jour du taux</string>
+  <string name="currencies_empty">Aucune monnaies n\'ont été trouvés. Pour créer une, appuyez sur le bouton vert.</string>
 </resources>
