@@ -372,26 +372,23 @@ public class MoneyManagerApplication
 
     // Private
 
-    private void initTrackers() {
-        //AnalyticsTrackers.initialize(this);
-
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-        mTracker = analytics.newTracker(R.xml.app_tracker);
-
-        Core core = new Core(this);
-        mTracker.setAppVersion(core.getAppVersionName());
-
-        // Enable reporting uncaught exceptions.
-        mTracker.enableExceptionReporting(true);
-    }
-
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
      * @return tracker
      */
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
-            initTrackers();
+            //initTrackers();
+            //AnalyticsTrackers.initialize(this);
+
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            mTracker = analytics.newTracker(R.xml.app_tracker);
+
+            Core core = new Core(this);
+            mTracker.setAppVersion(core.getAppVersionName());
+
+            // Enable reporting uncaught exceptions.
+            mTracker.enableExceptionReporting(true);
         }
 
         return mTracker;

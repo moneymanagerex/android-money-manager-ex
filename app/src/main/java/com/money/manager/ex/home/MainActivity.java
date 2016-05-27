@@ -59,7 +59,6 @@ import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.currency.recycler.CurrencyRecyclerListActivity;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
@@ -1301,9 +1300,14 @@ public class MainActivity
     private void pingStats() {
         MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
         Tracker t = app.getDefaultTracker();
-        t.setScreenName("~MainActivity");
-        t.send(new HitBuilders.EventBuilder().build());
-        //t.send(new HitBuilders.ScreenViewBuilder().build());
+
+        t.setScreenName("Screen~MainActivity");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        // to send an event:
+//        t.send(new HitBuilders.EventBuilder()
+//                .setCategory("Category")
+//                .setAction("Action")
+//                .build());
     }
 
     /**

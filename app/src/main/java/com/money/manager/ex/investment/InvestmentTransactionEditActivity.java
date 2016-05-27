@@ -20,13 +20,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
@@ -37,17 +35,13 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.databinding.ActivityInvestmentTransactionEditBinding;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.utils.SpinnerHelper;
-import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
@@ -56,11 +50,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -338,9 +329,7 @@ public class InvestmentTransactionEditActivity
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_CURRENT_PRICE,
-                        mStock.getCurrentPrice(),
-                        mAccount.getCurrencyId());
-                dialog.roundToCurrencyDecimals = false;
+                        mStock.getCurrentPrice(), mAccount.getCurrencyId(), false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -372,14 +361,12 @@ public class InvestmentTransactionEditActivity
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_PURCHASE_PRICE,
-                        mStock.getPurchasePrice(), mAccount.getCurrencyId());
-                dialog.roundToCurrencyDecimals = false;
+                        mStock.getPurchasePrice(), mAccount.getCurrencyId(), false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.purchasePriceView);
         view.setOnClickListener(onAmountClick);
-//        showPurchasePrice();
     }
 
     private void showCommission() {
@@ -413,6 +400,7 @@ public class InvestmentTransactionEditActivity
 
     private void showValue() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.valueView);
+        //mViewHolder.
         view.setText(mStock.getValue().toString());
     }
 
