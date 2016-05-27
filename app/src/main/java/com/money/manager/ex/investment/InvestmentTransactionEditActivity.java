@@ -321,7 +321,6 @@ public class InvestmentTransactionEditActivity
         };
         RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.commissionView);
         purchasePriceView.setOnClickListener(onAmountClick);
-//        showCommission();
     }
 
     private void initCurrentPrice() {
@@ -329,23 +328,20 @@ public class InvestmentTransactionEditActivity
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_CURRENT_PRICE,
-                        mStock.getCurrentPrice(), mAccount.getCurrencyId(), false);
+                    mStock.getCurrentPrice(), mAccount.getCurrencyId(), false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
         RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.currentPriceView);
         purchasePriceView.setOnClickListener(onAmountClick);
-//        showCurrentPrice();
     }
 
     private void initNumberOfShares(InvestmentTransactionViewHolder viewHolder) {
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: use currency
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_NUM_SHARES,
-                        MoneyFactory.fromDouble(mStock.getNumberOfShares()));
-                dialog.roundToCurrencyDecimals = false;
+                    MoneyFactory.fromDouble(mStock.getNumberOfShares()), null, false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
@@ -353,7 +349,6 @@ public class InvestmentTransactionEditActivity
         if (viewHolder.numSharesView == null) return;
 
         viewHolder.numSharesView.setOnClickListener(onAmountClick);
-//        showNumberOfShares();
     }
 
     private void initPurchasePrice() {
