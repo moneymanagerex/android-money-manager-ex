@@ -16,15 +16,6 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <!--<style name="Theme.Money.Manager.Startup" parent="@android:style/Theme.Holo.NoActionBar">-->
-        <!--<item name="android:windowBackground">@color/money_manager_ex_sign_bg</item>-->
-        <!--<item name="android:windowNoTitle">true</item>-->
-        <!--<item name="windowActionBar">false</item>-->
-    <!--</style>-->
-    <!-- This theme is not yet used. The purpose is to speed up rendering. Test. -->
-    <!--<style name="Theme.NoBackground" parent="android:Theme">-->
-        <!--<item name="android:windowBackground">@null</item>-->
-    <!--</style>-->
     <!-- theme used for decor view (the initial screen simulating a splash screen) -->
     <!-- It is assigned to the application in the manifest, application block. -->
     <style name="Theme.Splash" parent="android:Theme">
@@ -38,11 +29,6 @@
     <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
-        <!-- ** Do not overwrite these colors ** >
-        <item name="android:textColorPrimary">@color/md_primary_text</item>
-        <item name="android:textColorSecondary">@color/md_secondary_text</item>
-        <item name="android:textColor">@color/md_primary_text</item>
-     -->
         <item name="android:icon">@color/md_icons</item>
         <item name="android:divider">@color/md_divider</item>
         <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>

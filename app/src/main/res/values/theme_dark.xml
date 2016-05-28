@@ -18,32 +18,20 @@
 <resources>
     <!-- Dark Theme -->
 
-    <!-- Theme Base Application -->
-    <style name="_App" parent="@style/Theme.AppCompat.NoActionBar">
-        <!-- ** Do not overwrite these colors ** >
-        <item name="android:textColorPrimary">@color/material_grey_50</item>
-        <item name="android:textColorSecondary">@color/md_secondary_text</item>
-        <item name="android:textColor">@color/material_grey_50</item>
-     -->
+    <style name="Theme.Money.Manager.Dark" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="actionModeBackground">@color/md_primary_dark</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="md_dark_theme">true</item>
-    </style>
 
-
-    <!-- Application Theme, Material Dark -->
-    <style name="Theme.Money.Manager.Dark" parent="@style/_App">
         <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <!-- Toolbar -->
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat</item>
 
         <!-- Colors -->
-        <!--<item name="android:textAppearance"-->
-        <!--<item name="android:textColorPrimary">@color/material_amber_50</item>-->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">#202020</item>
         <item name="cardViewBackgroundColor">@color/money_background_dark</item>
@@ -133,5 +121,4 @@
         <!--<item name="android:spinnerDropDownItemStyle">@style/Money.Spinner.Style</item>-->
         <item name="holoSpinnerStyle">@android:style/Widget.Holo.Spinner</item>
     </style>
-
 </resources>

@@ -59,6 +59,22 @@ public class LookFeelPreferenceFragment
 
         final LookAndFeelSettings settings = new AppSettings(mContext).getLookAndFeelSettings();
 
+        // Theme
+
+        final ListPreference lstTheme = (ListPreference) findPreference(getString(R.string.pref_theme));
+        if (lstTheme != null) {
+            lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (BuildConfig.DEBUG) Log.d(LOGCAT, newValue.toString());
+
+//                    MainActivity.setRestartActivity(true);
+                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+                    return true;
+                }
+            });
+        }
+
         // Show Open accounts
 
         final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
@@ -164,6 +180,7 @@ public class LookFeelPreferenceFragment
         }
 
         //font size
+
         final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE));
         if (lstFontSize != null) {
             lstFontSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -177,22 +194,5 @@ public class LookFeelPreferenceFragment
                 }
             });
         }
-
-        //theme
-        final ListPreference lstTheme = (ListPreference) findPreference(getString(PreferenceConstants.PREF_THEME));
-        if (lstTheme != null) {
-            lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (BuildConfig.DEBUG) Log.d(LOGCAT, newValue.toString());
-
-//                    MainActivity.setRestartActivity(true);
-                    EventBus.getDefault().post(new AppRestartRequiredEvent());
-                    return true;
-                }
-            });
-        }
     }
-
 }

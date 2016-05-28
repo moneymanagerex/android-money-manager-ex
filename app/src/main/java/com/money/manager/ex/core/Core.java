@@ -283,7 +283,7 @@ public class Core {
             String darkTheme = Constants.THEME_DARK;
             String lightTheme = Constants.THEME_LIGHT;
 
-            String key = mContext.getString(PreferenceConstants.PREF_THEME);
+            String key = mContext.getString(R.string.pref_theme);
             String currentTheme = PreferenceManager.getDefaultSharedPreferences(getContext())
                     .getString(key, lightTheme);
 
