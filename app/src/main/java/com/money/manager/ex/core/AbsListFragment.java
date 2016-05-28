@@ -60,9 +60,6 @@ public class AbsListFragment
     CharSequence mEmptyText;
     boolean mListShown;
 
-    public AbsListFragment() {
-    }
-
     /**
      * Provide default implementation to return a simple list view.  Subclasses
      * can override to replace with their own layout.  If doing so, the

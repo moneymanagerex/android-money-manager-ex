@@ -77,6 +77,8 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  * - search
  * - back button
  * - context menu
+ * - update data after currency edit/insert
+ * - update list after currency exchange rate update.
  */
 public class CurrencyRecyclerListFragment
     extends Fragment {
@@ -90,15 +92,14 @@ public class CurrencyRecyclerListFragment
     }
 
     private CurrencyService mCurrencyService;
-//    private CurrencyContentObserver mObserver;
+    private CurrencyContentObserver mObserver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // create content observer
-        // todo: create handler
-//        mObserver = new CurrencyContentObserver(null);
+        mObserver = new CurrencyContentObserver(null);
     }
 
     @Override
@@ -138,15 +139,15 @@ public class CurrencyRecyclerListFragment
 
     @Override
     public void onPause() {
-        // todo register content observer
-        //CurrencyRepository repo = new CurrencyRepository(getActivity());
-        //getActivity().getContentResolver().registerContentObserver(repo.getUri(), true, );
+        // register content observer
+        CurrencyRepository repo = new CurrencyRepository(getActivity());
+        getActivity().getContentResolver().registerContentObserver(repo.getUri(), true, mObserver);
     }
 
     @Override
     public void onResume() {
-        // todo: unregister content observer
-        //getActivity().getContentResolver().unregisterContentObserver();
+        // unregister content observer
+        getActivity().getContentResolver().unregisterContentObserver(mObserver);
     }
 
     @Override
