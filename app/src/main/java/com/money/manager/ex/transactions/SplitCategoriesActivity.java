@@ -83,7 +83,7 @@ public class SplitCategoriesActivity
         // load intent
         handleIntent();
 
-        // load deleted item
+        // restore collections
         if (savedInstanceState != null) {
             mAdapter.splitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
             mSplitDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
@@ -123,7 +123,6 @@ public class SplitCategoriesActivity
                     mAdapter.notifyItemChanged(location);
                 }
         }
-
     }
 
     @Override

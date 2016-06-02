@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_dialog_linear_button_height"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/money_margin_bottom_top">
+                android:layout_marginTop="@dimen/mmex_margin_bottom_top">
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonKeyNum7"
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_dialog_linear_button_height"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/money_margin_bottom_top" >
+                android:layout_marginTop="@dimen/mmex_margin_bottom_top" >
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonKeyNum4"
@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_dialog_linear_button_height"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/money_margin_bottom_top">
+                android:layout_marginTop="@dimen/mmex_margin_bottom_top">
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonKeyNum1"
@@ -170,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_dialog_linear_button_height"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/money_margin_bottom_top">
+                android:layout_marginTop="@dimen/mmex_margin_bottom_top">
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonKeyNumDecimal"

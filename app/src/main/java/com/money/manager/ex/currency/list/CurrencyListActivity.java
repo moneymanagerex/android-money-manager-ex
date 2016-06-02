@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency;
+package com.money.manager.ex.currency.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.ActivityUtils;
@@ -45,29 +46,22 @@ public class CurrencyListActivity
         // change home icon to 'back'.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CurrencyListFragment listFragment = new CurrencyListFragment();
+        CurrencyListFragment fragment = new CurrencyListFragment();
 
-        // take intent
         Intent intent = getIntent();
         if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
-            // Store the requested action.
-            String action = intent.getAction();
-            if (action.equals(Intent.ACTION_MAIN)) {
-                action = Intent.ACTION_EDIT;
-            }
-            listFragment.mAction = action;
             // restore previous device orientation if it was modified.
-            if(listFragment.mPreviousOrientation != -1) {
+            if(fragment.mPreviousOrientation != Constants.NOT_SET) {
                 int currentOrientation = ActivityUtils.forceCurrentOrientation(this);
-                if(currentOrientation != listFragment.mPreviousOrientation) {
-                    ActivityUtils.restoreOrientation(this, listFragment.mPreviousOrientation);
+                if(currentOrientation != fragment.mPreviousOrientation) {
+                    ActivityUtils.restoreOrientation(this, fragment.mPreviousOrientation);
                 }
             }
         }
 
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentById(R.id.content) == null) {
-            fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
+            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
         }
     }
 

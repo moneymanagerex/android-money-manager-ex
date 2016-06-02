@@ -23,11 +23,11 @@ public class InfoRepository
     }
 
     public List<Info> loadAll(String infoName) {
-        List<Info> results = this.query(Info.class,
-            getAllColumns(),
-            Info.INFONAME + "=?",
-            new String[] { infoName },
-            null);
+        Query query = new Query()
+                .select(getAllColumns())
+                .where(Info.INFONAME + "=?", new String[] { infoName });
+
+        List<Info> results = this.query(Info.class, query);
 
         return results;
     }

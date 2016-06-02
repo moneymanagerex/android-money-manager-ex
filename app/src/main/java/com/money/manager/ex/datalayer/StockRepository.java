@@ -189,7 +189,7 @@ public class StockRepository
     private List<Stock> getEntities(Cursor c) {
         List<Stock> result = new ArrayList<>();
         while (c.moveToNext()) {
-            result.add(Stock.fromCursor(c));
+            result.add(Stock.from(c));
         }
         c.close();
 

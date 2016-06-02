@@ -19,12 +19,12 @@ package com.money.manager.ex.notifications;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.preference.PreferenceManager;
 
-import com.money.manager.ex.settings.PreferenceConstants;
-
+/**
+ * Background service that triggers notifications about recurring transactions.
+ */
 public class RecurringTransactionIntentService
-		extends IntentService {
+	extends IntentService {
 
 	public RecurringTransactionIntentService() {
 		super("com.money.manager.ex.notifications.RecurringTransactionIntentService");

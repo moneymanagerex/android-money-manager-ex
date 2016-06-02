@@ -207,9 +207,12 @@ public class YqlSecurityPriceUpdaterRetrofit
         LSE stocks are expressed in GBp (pence), not Pounds.
         From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
          */
-        String currency = quote.get("Currency").getAsString();
-        if (currency.equals("GBp")) {
-            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
+        JsonElement currencyElement = quote.get("Currency");
+        if (currencyElement != null) {
+            String currency = currencyElement.getAsString();
+            if (currency.equals("GBp")) {
+                price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
+            }
         }
         priceModel.price = price;
 

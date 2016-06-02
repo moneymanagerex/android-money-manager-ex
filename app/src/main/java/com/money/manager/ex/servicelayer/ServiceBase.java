@@ -8,7 +8,8 @@ import android.content.Context;
 public abstract class ServiceBase {
 
     public ServiceBase(Context context) {
-        mContext = context.getApplicationContext();
+//        mContext = context.getApplicationContext();
+        mContext = context;
     }
 
     private Context mContext;

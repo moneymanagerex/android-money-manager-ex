@@ -34,6 +34,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -165,10 +166,12 @@ public class RecurringTransactionListFragment
                 if (!TextUtils.isEmpty(mCurFilter)) {
                     select = Account.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
                 }
-                return new MmexCursorLoader(getActivity(), mBillDeposits.getUri(),
-                    mBillDeposits.getAllColumns(),
-                    select, null,
-                    QueryBillDeposits.NEXTOCCURRENCEDATE);
+                Query query = new Query()
+                        .select(mBillDeposits.getAllColumns())
+                        .where(select)
+                        .orderBy(QueryBillDeposits.NEXTOCCURRENCEDATE);
+
+                return new MmexCursorLoader(getActivity(), mBillDeposits.getUri(), query);
         }
 
         return null;
@@ -180,7 +183,8 @@ public class RecurringTransactionListFragment
             case ID_LOADER_REPEATING:
                 AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
                 if (adapter != null) {
-                    adapter.swapCursor(null);
+//                    adapter.swapCursor(null);
+                    adapter.changeCursor(null);
                 }
         }
     }

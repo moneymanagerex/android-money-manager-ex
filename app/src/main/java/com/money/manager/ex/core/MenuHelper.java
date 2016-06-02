@@ -20,6 +20,7 @@ package com.money.manager.ex.core;
 import android.content.Context;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.money.manager.ex.R;
 
@@ -42,12 +43,12 @@ public class MenuHelper {
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getContext().getString(R.string.delete));
     }
 
-    public void addItemToContextMenu(ContextMenuIds itemId, ContextMenu menu) {
-        menu.add(Menu.NONE, itemId.getId(), Menu.NONE, getItemText(itemId));
+    public MenuItem addToContextMenu(ContextMenuIds itemId, ContextMenu menu) {
+        return menu.add(Menu.NONE, itemId.getId(), Menu.NONE, getItemText(itemId));
     }
 
     private String getItemText(ContextMenuIds menuId) {
-        //todo add remaining items
+        // todo add remaining items
         switch (menuId) {
             case DELETE:
                 return getContext().getString(R.string.delete);
@@ -57,8 +58,12 @@ public class MenuHelper {
                 return getContext().getString(R.string.edit);
             case EditPrice:
                 return getContext().getString(R.string.edit_price);
+            case Print:
+                return getContext().getString(R.string.print);
+            case SaveAsHtml:
+                return getContext().getString(R.string.save_as_html);
             default:
-                return null;
+                return "N/A";
         }
     }
 

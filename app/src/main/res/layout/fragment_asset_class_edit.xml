@@ -56,22 +56,26 @@
                 android:textCursorDrawable="@null" />
 
             <!-- Stock Name -->
-            <com.money.manager.ex.view.RobotoTextView
-                style="@style/Money.TextView.Header.Caption"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/name"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <!--<com.money.manager.ex.view.RobotoTextView-->
+                <!--style="@style/Money.TextView.Header.Caption"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/name"/>-->
             <com.money.manager.ex.view.RobotoEditTextFontIcon
                 android:id="@+id/nameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/money_padding"
+                android:drawablePadding="@dimen/mmex_padding"
                 android:gravity="top|start"
                 android:hint="@string/asset_class_name"
                 android:inputType="text"
                 android:maxLength="1000"
                 android:scrollHorizontally="false"
                 android:textCursorDrawable="@null" />
+            </android.support.design.widget.TextInputLayout>
 
             <!-- Allocation -->
             <com.money.manager.ex.view.RobotoTextView

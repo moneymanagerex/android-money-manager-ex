@@ -42,6 +42,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
@@ -263,11 +264,12 @@ public class CategoryListFragment
                             + QueryCategorySubCategory.SUBCATEGNAME + " LIKE ?";
                     selectionArgs = new String[]{mCurFilter + "%", mCurFilter + "%"};
                 }
-                return new MmexCursorLoader(getActivity(), mQuery.getUri(),
-                        mQuery.getAllColumns(),
-                        whereClause,
-                        selectionArgs,
-                        QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
+                Query query = new Query()
+                    .select(mQuery.getAllColumns())
+                    .where(whereClause, selectionArgs)
+                    .orderBy(QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
+
+                return new MmexCursorLoader(getActivity(), mQuery.getUri(), query);
         }
         return null;
     }

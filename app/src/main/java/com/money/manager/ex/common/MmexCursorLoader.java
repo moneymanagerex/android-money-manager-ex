@@ -25,10 +25,10 @@ import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.datalayer.Query;
 
 /**
- * The cursor loader with exception handling. It should be used instead of ordinary
- * CursorLoader.
+ * The cursor loader with exception handling. It should be used instead of ordinary CursorLoader.
  */
 public class MmexCursorLoader
     extends CursorLoader {
@@ -37,9 +37,9 @@ public class MmexCursorLoader
         super(context);
     }
 
-    public MmexCursorLoader(Context context, Uri uri, String[] projection, String selection,
-                        String[] selectionArgs, String sortOrder) {
-        super(context, uri, projection, selection, selectionArgs, sortOrder);
+    public MmexCursorLoader(Context context, Uri uri, Query query) {
+        // String[] projection, String selection, String[] selectionArgs, String sortOrder
+        super(context, uri, query.projection, query.selection, query.selectionArgs, query.sort);
 
     }
 

@@ -17,11 +17,16 @@
 package com.money.manager.ex.investment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
+import android.widget.SpinnerAdapter;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
@@ -30,13 +35,13 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.databinding.ActivityInvestmentTransactionEditBinding;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.utils.MyDateTimeUtils;
-import com.money.manager.ex.view.RobotoEditTextFontIcon;
+import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
@@ -55,7 +60,8 @@ import info.javaperformance.money.MoneyFactory;
 public class InvestmentTransactionEditActivity
     extends BaseFragmentActivity {
 
-    public static final String EXTRA_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
+    public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
+    public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
     public static final String DATEPICKER_TAG = "datepicker";
     public static final int ID_NUM_SHARES = 1;
     public static final int ID_PURCHASE_PRICE = 2;
@@ -65,25 +71,40 @@ public class InvestmentTransactionEditActivity
     private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
-    private ActivityInvestmentTransactionEditBinding mBinding;
+//    private ActivityInvestmentTransactionEditBinding mBinding;
+    private InvestmentTransactionViewHolder mViewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
-
-        //todo mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
+//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
         showStandardToolbarActions();
 
-        // todo: receive the account id (and read currency)
-        // todo: change this initialization after adding editing feature.
+        // load account & currency
+        Intent intent = getIntent();
+        if (intent != null) {
+            int accountId = intent.getIntExtra(ARG_ACCOUNT_ID, Constants.NOT_SET);
+            if (accountId != Constants.NOT_SET) {
+                AccountRepository repository = new AccountRepository(this);
+                mAccount = repository.load(accountId);
+            }
 
-        mStock = Stock.create();
-        //todo mBinding.setStock(mStock);
+            int stockId = intent.getIntExtra(ARG_STOCK_ID, Constants.NOT_SET);
+            if (stockId != Constants.NOT_SET) {
+                StockRepository repo = new StockRepository(this);
+                mStock = repo.load(stockId);
+            } else {
+                mStock = Stock.create();
+                mStock.setHeldAt(mAccount.getId());
+            }
+        }
 
         initializeForm();
+
+//        mBinding.setStock(mStock);
     }
 
     @Override
@@ -146,29 +167,22 @@ public class InvestmentTransactionEditActivity
         }
     }
 
+    // Private
+
     private void initializeForm() {
-        // load account & currency
-        Intent intent = getIntent();
-        if (intent != null) {
-            int accountId = intent.getIntExtra(EXTRA_ACCOUNT_ID, Constants.NOT_SET);
-            if (accountId != Constants.NOT_SET) {
-                AccountRepository repository = new AccountRepository(getApplicationContext());
-                mAccount = repository.load(accountId);
-            }
-        }
+        View rootView = this.findViewById(R.id.content);
+        mViewHolder = new InvestmentTransactionViewHolder(rootView);
 
         // Purchase Date
 
-        final RobotoTextViewFontIcon dateView = (RobotoTextViewFontIcon) this.findViewById(R.id.textViewDate);
-        dateView.setText(mStock.getPurchaseDate().toString(Constants.LONG_DATE_PATTERN));
-        dateView.setOnClickListener(new View.OnClickListener() {
+        mViewHolder.dateView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+                    mViewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 }
             };
 
@@ -185,11 +199,13 @@ public class InvestmentTransactionEditActivity
             }
         });
 
-        initNumberOfShares();
+        initAccountSelectors(mViewHolder);
+        initNumberOfShares(mViewHolder);
         initPurchasePrice();
         initCommission();
         initCurrentPrice();
-        showValue();
+
+        displayStock(mStock, mViewHolder);
     }
 
     public void setDirty(boolean dirty) {
@@ -232,6 +248,67 @@ public class InvestmentTransactionEditActivity
         }
     }
 
+    // Private
+
+    private void displayStock(Stock stock, InvestmentTransactionViewHolder viewHolder) {
+        // Date
+        viewHolder.dateView.setText(stock.getPurchaseDate().toString(Constants.LONG_DATE_PATTERN));
+
+        // Account.
+        Cursor cursor = ((CursorAdapter) viewHolder.accountSpinner.getAdapter()).getCursor();
+        int accountIndex = SpinnerHelper.getPosition(mAccount.getName(), Account.ACCOUNTNAME, cursor);
+        if (accountIndex >= 0) {
+            viewHolder.accountSpinner.setSelection(accountIndex, true);
+        }
+
+        viewHolder.stockNameEdit.setText(stock.getName());
+        viewHolder.symbolEdit.setText(stock.getSymbol());
+
+        showNumberOfShares();
+        showPurchasePrice();
+        viewHolder.notesEdit.setText(stock.getNotes());
+        showCommission();
+        showCurrentPrice();
+        showValue();
+    }
+
+    /**
+     * Initialize account selectors.
+     */
+    private void initAccountSelectors(final InvestmentTransactionViewHolder viewHolder) {
+        Context context = this;
+
+        // Account list as the data source to populate the drop-downs.
+
+        AccountService accountService = new AccountService(context);
+        accountService.loadInvestmentAccountsToSpinner(viewHolder.accountSpinner, false);
+
+//        AccountRepository accountRepository = new AccountRepository(context);
+        final Integer accountId = mStock.getHeldAt();
+//        if (accountId != null) {
+//            addMissingAccountToSelectors(accountRepository, accountId);
+//        }
+
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SpinnerAdapter adapter = viewHolder.accountSpinner.getAdapter();
+                Cursor cursor = (Cursor) adapter.getItem(position);
+                Account account = Account.from(cursor);
+
+                if (!account.getId().equals(accountId)) {
+                    setDirty(true);
+                    mStock.setHeldAt(account.getId());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        viewHolder.accountSpinner.setOnItemSelectedListener(listener);
+    }
+
     private void initCommission() {
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
@@ -244,8 +321,6 @@ public class InvestmentTransactionEditActivity
         };
         RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.commissionView);
         purchasePriceView.setOnClickListener(onAmountClick);
-        // todo: format the number of shares based on selected locale.
-        showCommission();
     }
 
     private void initCurrentPrice() {
@@ -253,33 +328,27 @@ public class InvestmentTransactionEditActivity
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_CURRENT_PRICE,
-                        mStock.getCurrentPrice(),
-                        mAccount.getCurrencyId());
-                dialog.roundToCurrencyDecimals = false;
+                    mStock.getCurrentPrice(), mAccount.getCurrencyId(), false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
         RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.currentPriceView);
         purchasePriceView.setOnClickListener(onAmountClick);
-        // todo: format the number of shares based on selected locale.
-        showCurrentPrice();
     }
 
-    private void initNumberOfShares() {
+    private void initNumberOfShares(InvestmentTransactionViewHolder viewHolder) {
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo: use currency
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_NUM_SHARES,
-                        MoneyFactory.fromDouble(mStock.getNumberOfShares()));
-                dialog.roundToCurrencyDecimals = false;
+                    MoneyFactory.fromDouble(mStock.getNumberOfShares()), null, false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
-        RobotoTextViewFontIcon numSharesView = (RobotoTextViewFontIcon) this.findViewById(R.id.numSharesView);
-        numSharesView.setOnClickListener(onAmountClick);
-        // todo: format the number of shares based on selected locale.
-        showNumberOfShares();
+
+        if (viewHolder.numSharesView == null) return;
+
+        viewHolder.numSharesView.setOnClickListener(onAmountClick);
     }
 
     private void initPurchasePrice() {
@@ -287,39 +356,46 @@ public class InvestmentTransactionEditActivity
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_PURCHASE_PRICE,
-                        mStock.getPurchasePrice(), mAccount.getCurrencyId());
-                dialog.roundToCurrencyDecimals = false;
+                        mStock.getPurchasePrice(), mAccount.getCurrencyId(), false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         };
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.purchasePriceView);
         view.setOnClickListener(onAmountClick);
-        // todo: format the number of shares based on selected locale.
-        showPurchasePrice();
     }
 
     private void showCommission() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.commissionView);
+        if (view == null) return;
+
+        // todo: format the number of shares based on selected locale.
         view.setText(mStock.getCommission().toString());
     }
 
     private void showCurrentPrice() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.currentPriceView);
+        // todo: format the number of shares based on selected locale.
         view.setText(mStock.getCurrentPrice().toString());
     }
 
     private void showNumberOfShares() {
         RobotoTextViewFontIcon view = (RobotoTextViewFontIcon) this.findViewById(R.id.numSharesView);
+        if (view == null) return;
+
+        // todo: format the number of shares based on selected locale?
+
         view.setText(mStock.getNumberOfShares().toString());
     }
 
     private void showPurchasePrice() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.purchasePriceView);
+        // todo: format the number of shares based on selected locale.
         view.setText(mStock.getPurchasePrice().toString());
     }
 
     private void showValue() {
         RobotoTextView view = (RobotoTextView) this.findViewById(R.id.valueView);
+        //mViewHolder.
         view.setText(mStock.getValue().toString());
     }
 
@@ -328,8 +404,6 @@ public class InvestmentTransactionEditActivity
 
         if (!validate()) return false;
 
-        boolean result;
-
         // save
         StockRepository repository = new StockRepository(getApplicationContext());
         if (mStock.getId() != null) {
@@ -337,26 +411,18 @@ public class InvestmentTransactionEditActivity
         } else {
             repository.insert(mStock);
         }
-        result = true;
 
-        return result;
+        return true;
     }
 
     private void collectData() {
-        // add missing fields (text) and sanitize text values.
-
-        mStock.setHeldAt(mAccount.getId());
-
-        RobotoEditTextFontIcon nameText = (RobotoEditTextFontIcon) findViewById(R.id.stockNameEdit);
-        String stockName = nameText.getText().toString().trim();
+        String stockName = mViewHolder.stockNameEdit.getText().toString().trim();
         mStock.setName(stockName);
 
-        RobotoEditTextFontIcon symbolText = (RobotoEditTextFontIcon) findViewById(R.id.symbolEdit);
-        String symbol = symbolText.getText().toString().trim().replace(" ", "");
+        String symbol = mViewHolder.symbolEdit.getText().toString().trim().replace(" ", "");
         mStock.setSymbol(symbol);
 
-        RobotoEditTextFontIcon notesText = (RobotoEditTextFontIcon) findViewById(R.id.notesEdit);
-        mStock.setNotes(notesText.getText().toString());
+        mStock.setNotes(mViewHolder.notesEdit.getText().toString());
     }
 
     private boolean validate() {

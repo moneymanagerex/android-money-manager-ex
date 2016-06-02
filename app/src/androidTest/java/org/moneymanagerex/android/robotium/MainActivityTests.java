@@ -25,7 +25,7 @@ import android.view.View;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
-import com.money.manager.ex.currency.CurrencyListActivity;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 

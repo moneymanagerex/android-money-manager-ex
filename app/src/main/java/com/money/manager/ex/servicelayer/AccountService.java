@@ -191,6 +191,46 @@ public class AccountService
         return currencyService.getCurrency(currencyId).getCode();
     }
 
+    public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
+        try {
+            return getCursorInternal(open, favorite, accountTypes);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(ex, "getting cursor in account repository");
+        }
+        return null;
+    }
+
+    public List<String> getTransactionAccountTypeNames() {
+        List<String> accountTypeNames = new ArrayList<>();
+        List<AccountTypes> accountTypes = getTransactionAccountTypes();
+
+        for (AccountTypes type : accountTypes) {
+            accountTypeNames.add(type.toString());
+        }
+
+        return accountTypeNames;
+    }
+
+    public List<AccountTypes> getTransactionAccountTypes() {
+        List<AccountTypes> list = new ArrayList<>();
+
+        list.add(AccountTypes.CASH);
+        list.add(AccountTypes.CHECKING);
+        list.add(AccountTypes.TERM);
+        list.add(AccountTypes.CREDIT_CARD);
+
+        return list;
+    }
+
+    public List<Account> getTransactionAccounts(boolean openOnly, boolean favoriteOnly) {
+        List<String> accountTypeNames = getTransactionAccountTypeNames();
+
+        List<Account> result = loadAccounts(openOnly, favoriteOnly, accountTypeNames);
+
+        return result;
+    }
+
     /**
      * Check if the account is used in any of the transactions.
      * @param accountId id of the account
@@ -240,27 +280,29 @@ public class AccountService
         spinner.setAdapter(cursorAdapter);
     }
 
-    public void loadInvestmentAccountsToSpinner(Spinner spinner) {
+    public void loadInvestmentAccountsToSpinner(Spinner spinner, boolean showAllAccountsItem) {
         if (spinner == null) return;
 
         AccountRepository repo = new AccountRepository(getContext());
         Cursor cursor = repo.getInvestmentAccountsCursor(true);
+        Cursor finalCursor = cursor;
 
-        // append All Accounts item
-        MatrixCursor extras = new MatrixCursor(new String[] { "_id", Account.ACCOUNTID,
-            Account.ACCOUNTNAME, Account.INITIALBAL });
-        String title = getContext().getString(R.string.all_accounts);
-        extras.addRow(new String[] { Integer.toString(Constants.NOT_SET),
-            Integer.toString(Constants.NOT_SET), title, "0.0" });
-        Cursor[] cursors = { extras, cursor };
-        Cursor extendedCursor = new MergeCursor(cursors);
-
+        if (showAllAccountsItem) {
+            // append All Accounts item
+            MatrixCursor extras = new MatrixCursor(new String[]{"_id", Account.ACCOUNTID,
+                    Account.ACCOUNTNAME, Account.INITIALBAL});
+            String title = getContext().getString(R.string.all_accounts);
+            extras.addRow(new String[]{Integer.toString(Constants.NOT_SET),
+                    Integer.toString(Constants.NOT_SET), title, "0.0"});
+            Cursor[] cursors = {extras, cursor};
+            finalCursor = new MergeCursor(cursors);
+        }
 
         int[] adapterRowViews = new int[] { android.R.id.text1 };
 
         ToolbarSpinnerAdapter cursorAdapter = new ToolbarSpinnerAdapter(getContext(),
             android.R.layout.simple_spinner_item,
-            extendedCursor,
+                finalCursor,
             new String[] { Account.ACCOUNTNAME, Account.ACCOUNTID },
             adapterRowViews,
             SimpleCursorAdapter.NO_SELECTION);
@@ -320,46 +362,6 @@ public class AccountService
         cursor.close();
 
         return curTotal;
-    }
-
-    public Cursor getCursor(boolean open, boolean favorite, List<String> accountTypes) {
-        try {
-            return getCursorInternal(open, favorite, accountTypes);
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "getting cursor in account repository");
-        }
-        return null;
-    }
-
-    public List<String> getTransactionAccountTypeNames() {
-        List<String> accountTypeNames = new ArrayList<>();
-        List<AccountTypes> accountTypes = getTransactionAccountTypes();
-
-        for (AccountTypes type : accountTypes) {
-            accountTypeNames.add(type.toString());
-        }
-
-        return accountTypeNames;
-    }
-
-    public List<AccountTypes> getTransactionAccountTypes() {
-        List<AccountTypes> list = new ArrayList<>();
-
-        list.add(AccountTypes.CASH);
-        list.add(AccountTypes.CHECKING);
-        list.add(AccountTypes.TERM);
-        list.add(AccountTypes.CREDIT_CARD);
-
-        return list;
-    }
-
-    public List<Account> getTransactionAccounts(boolean openOnly, boolean favoriteOnly) {
-        List<String> accountTypeNames = getTransactionAccountTypeNames();
-
-        List<Account> result = loadAccounts(openOnly, favoriteOnly, accountTypeNames);
-
-        return result;
     }
 
     // Private

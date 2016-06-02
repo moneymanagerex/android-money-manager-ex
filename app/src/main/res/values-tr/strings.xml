@@ -76,8 +76,6 @@
   <string name="account_empty_list">Hiçbir hesap bulunamadı. Yeni bir hesap oluşturmak için yeşil artı butonuna dokun.</string>
   <string name="account_balance">Hesap bakiyesi</string>
   <string name="account_reconciled_balance">Onaylanmış Bakiye</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Hesabı Sil</string>
   <string name="account_name">Hesap ismi</string>
   <string name="account_type">Hesap tipi</string>
@@ -129,6 +127,7 @@
   <string name="scale">Aralık</string>
   <string name="conversion_to_base_rate">Dönüşüm</string>
   <string name="currency_name_empty">Para birimi adı gereklidir</string>
+  <string name="new_edit_currency">Para birimi ekle/düzenle</string>
   <!-- transaction -->
   <string name="amount">Tutar</string>
   <string name="total_amount">Toplam tutar</string>
@@ -178,7 +177,6 @@
   <string name="initial_balance">Başlangıç bakiyesi</string>
   <string name="notes">Açıklama</string>
   <string name="closed">Kapalı</string>
-  <string name="new_edit_currency">Para birimi ekle/düzenle</string>
   <string name="theme_application">Tema</string>
   <string name="theme_holo">Koyu Tema</string>
   <string name="theme_light">Açık Tema</string>
@@ -313,7 +311,6 @@
   <string name="descending">Artan</string>
   <string name="sorting_month">Ayları sıralama</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Mobile klasörü boş. Eğer MoneyManagerEx\'i halihazırda zaten kullanıyorsanız, kullandığınız cihazdan veritabanını bu klasöre kopyalayın ve bu ekranı yenileyin.</string>
   <string name="dropbox_select_file">Dropbox\'tan bir dosya seç</string>
   <string name="last_modified">Son düzenlenen</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -395,18 +392,10 @@
   <string name="delete_one_selected_transaction">Seçilen işlemi silmek istediğinizden emin misiniz?</string>
   <string name="delete_others_selected_transaction">%d seçilen işlemleri silmek istediğinizden emin misiniz?</string>
   <string name="categories">Kategoriler</string>
-  <string name="currencies">Para birimleri</string>
   <string name="payees">Alacaklılar</string>
   <string name="repeating_transactions">Tekrar Eden İşlemler</string>
   <string name="theme_holo_light">Holo Açık</string>
   <string name="new_account">Yeni Hesap</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">Para Birimleri İçe Aktar</string>
-  <string name="import_currencies_in_progress">Para birimleri alınıyor. Lütfen bekleyin&#8230;</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <string name="amount_greater_or_equal">Miktar büyük veya eşit</string>
   <string name="amount_from">Hesaptan alınan miktar</string>
   <string name="amount_less_or_equal">Miktar daha az veya eşit</string>
@@ -425,7 +414,6 @@
   <string name="never">Hiç bir zaman</string>
   <string name="path_database_not_exists">Veritabanı yolu bulunamıyor</string>
   <string name="database_can_not_open_write">Veritabanı yazma için açılamıyor</string>
-  <string name="question_import_currencies">Para birimini içe aktarmak istiyor musunuz?</string>
   <string name="time_frame">Zaman Periyodu</string>
   <string name="show_chart">Grafiği Göster</string>
   <string name="add_transaction">İşlem Ekle</string>
@@ -433,9 +421,6 @@
   <string name="configure_dropbox">Dropbox Yapılandır</string>
   <!-- 20140115 -->
   <string name="rate_application">Uygulamayı Puanla</string>
-  <string name="update_menu_currency_exchange_rates">Döviz Kuru Güncelleştirme</string>
-  <string name="question_update_currency_exchange_rates">Döviz kurunu güncelleştirmek istiyor musunuz?</string>
-  <string name="error_update_currency_exchange_rate">Oranlar güncelleştirilirken bir hata oluştu</string>
   <string name="withdrawal_from">Para çekilen hesap %1$s</string>
   <string name="deposit_to">Para yatırılan hesap %1$s</string>
   <string name="mmex_website">MoneyManagerEx Web sitesi</string>
@@ -546,7 +531,6 @@
   <string name="frequency">Sıklık</string>
   <string name="update_available">Göncelleme mevcut</string>
   <string name="update_on_dropbox">Dropbox\'da güncelleştirilmiş bir veritabanı dosyası mevcut. Veritabanınızı güncelleştirmek istiyor musunuz?</string>
-  <string name="currencies_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı düğmesine dokunun.</string>
   <string name="current_database">Geçerli veritabanı</string>
   <string name="transaction_type_filter">İşlem Türüne Göre Filtrele</string>
   <!-- Password entry activity -->
@@ -577,4 +561,13 @@
   <string name="records">kayıtlar</string>
   <!-- db password entry -->
   <!-- budgets -->
+  <!-- Currencies -->
+  <string name="currencies">Para birimleri</string>
+  <string name="import_all_currencies">Para Birimleri İçe Aktar</string>
+  <string name="import_currencies_in_progress">Para birimleri alınıyor. Lütfen bekleyin&#8230;</string>
+  <string name="question_import_currencies">Para birimini içe aktarmak istiyor musunuz?</string>
+  <string name="update_menu_currency_exchange_rates">Döviz Kuru Güncelleştirme</string>
+  <string name="question_update_currency_exchange_rates">Döviz kurunu güncelleştirmek istiyor musunuz?</string>
+  <string name="error_update_currency_exchange_rate">Oranlar güncelleştirilirken bir hata oluştu</string>
+  <string name="currencies_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı düğmesine dokunun.</string>
 </resources>

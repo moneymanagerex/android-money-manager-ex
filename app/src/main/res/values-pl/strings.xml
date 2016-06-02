@@ -51,11 +51,14 @@
   <string name="dropbox_downloadProgress">Pobieranie pliku z Dropboxa. Proszę czekać&#8230;</string>
   <string name="dropbox_uploadProgress">Przesyłanie pliku do Dropboxa. Proszę czekać&#8230;</string>
   <string name="dropbox_linkedFile">Plik Dropboksa</string>
+  <string name="dropbox_file_summary_all">Plik gdziekolwiek w Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Ogólne</string>
   <string name="preferences_dispaly">Wygląd</string>
   <string name="preferences_behaviour">Zachowanie</string>
   <string name="base_currency">Podstawowa waluta</string>
+  <string name="base_currency_changed">Zmieniono podstawową walutę</string>
+  <string name="base_currency_change_notification">Podstawowa waluta została zmieniona. Proszę zaktualizować kursy wymiany walut, aby uzyskać prawidłowe kwoty w nowej walucie.</string>
   <string name="view_accounts_opened">Pokazuj otwarte konta</string>
   <string name="if_not_selected_willShowAllAccounts">Jeśli niezaznaczone, pokazuje wszystkie konta</string>
   <string name="view_accounts_favorites">Pokazuj ulubione konta</string>
@@ -65,6 +68,8 @@
   <string name="database_version">Wersja bazy danych</string>
   <string name="title_show_tutorial">Włącz samouczek</string>
   <string name="summary_show_tutorial">Włączyć samouczek przy następnym uruchomieniu aplikacji?</string>
+  <string name="preferences_behaviour_focus_filter_title">Filtr w selektorach</string>
+  <string name="preferences_behaviour_focus_filter_summary">Wybór filtra w selektorach. W innym przypadku przeglądanie.</string>
   <string name="pref_auto_sync_via_wifi">Autosynchronizacja tylko na WiFi</string>
   <string name="pref_auto_sync_via_wifi_summary">Autosynchronizacja tylko na połączeniu z WiFi.</string>
   <!-- account -->
@@ -73,8 +78,6 @@
   <string name="account_empty_list">Konta nie zostały odnalezione. Aby utworzyć, wybierz zielony przycisk.</string>
   <string name="account_balance">Saldo konta</string>
   <string name="account_reconciled_balance">Uzgodnione saldo</string>
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <string name="delete_account">Usuń konto</string>
   <string name="account_name">Nazwa konta</string>
   <string name="account_type">Typ konta</string>
@@ -127,6 +130,7 @@
   <string name="scale">Skala</string>
   <string name="conversion_to_base_rate">Kurs wymiany</string>
   <string name="currency_name_empty">Nazwa waluty jest wymagana</string>
+  <string name="new_edit_currency">Tworzenie/edycja waluty</string>
   <!-- transaction -->
   <string name="amount">Kwota</string>
   <string name="total_amount">Łączna kwota</string>
@@ -134,6 +138,7 @@
   <string name="status">Status</string>
   <string name="status_reconciled">Uzgodniona</string>
   <string name="status_void">Nieważna</string>
+  <string name="status_follow_up">Kontynuacja</string>
   <string name="status_duplicate">Zduplikowana</string>
   <string name="status_none">Brak</string>
   <string name="transfer">Przelew</string>
@@ -152,6 +157,7 @@
   <!-- application string -->
   <string name="about">O aplikacji</string>
   <string name="add">Dodaj</string>
+  <string name="confirmDelete">Na pewno chcesz usunąć ten zapis?</string>
   <string name="date">Data</string>
   <string name="delete">Usuń</string>
   <string name="download">Pobierz</string>
@@ -176,7 +182,6 @@
   <string name="initial_balance">Saldo początkowe</string>
   <string name="notes">Notatki</string>
   <string name="closed">Zamknięty</string>
-  <string name="new_edit_currency">Tworzenie/edycja waluty</string>
   <string name="theme_application">Motyw</string>
   <string name="theme_holo">Material Dark</string>
   <string name="theme_light">Material Light</string>
@@ -196,10 +201,12 @@
   <string name="last15days">Z ostatnich 2 tygodni</string>
   <string name="current_month">Bieżący miesiąc</string>
   <string name="current_year">Bieżący rok</string>
+  <string name="future_transactions">Przyszłe transkrypcje</string>
   <string name="show_transaction">Pokazuj transakcje</string>
   <string name="changelog">Lista zmian</string>
   <string name="transaction_number">Numer transakcji</string>
   <string name="widget_summary">Podsumowanie</string>
+  <string name="widget_all_accounts">Wszystkie konta</string>
   <string name="widget_add_transaction">Dodaj transakcję</string>
   <!-- Recurring Transactions -->
   <string name="none">Brak</string>
@@ -224,9 +231,14 @@
   <string name="days_overdue">dni opóźnienia!</string>
   <string name="days_remaining">dni pozostało</string>
   <string name="new_edit_repeating_transaction">Tworzenie/edycja cyklicznej transakcji</string>
+  <string name="due_date">Termin zapłaty</string>
   <string name="next_occurrence">Najbliższe wystąpienie</string>
+  <string name="payment_date">Data płatności</string>
   <string name="repeats">Powtarzaj</string>
   <string name="occurs">Występuje</string>
+  <string name="payments_left">Pozostało do zapłaty</string>
+  <string name="payments_left_required">Wartość pozostało do zapłaty jest wymagana</string>
+  <string name="due_date_required">Termin zapłaty jest wymagany</string>
   <string name="error_next_occurrence_not_populate">Następne wystąpienie jest wymagane</string>
   <string name="enter_next_occurrence">Wprowadź najbliższe wystąpienie</string>
   <string name="skip_next_occurrence">Pomiń najbliższe wystąpienie</string>
@@ -255,6 +267,7 @@
   <string name="income">Przychód</string>
   <string name="expenses">Wydatki</string>
   <string name="difference">Różnica</string>
+  <string name="no_data">Nie znaleziono zapisów. Spróbuj dostosować widoczny okres lub stuknij zielony znak plus, aby utworzyć zapis. </string>
   <string name="no_stock_data">Brak  dostępnych danych o akcjach dla tego konta.</string>
   <string name="month">Miesiąc</string>
   <string name="year">Bieżący rok</string>
@@ -284,6 +297,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Podziel</string>
   <string name="error_split_transaction_empty">Wymagany jest przynajmniej jeden element podzielonej transakcji</string>
+  <string name="swipe_to_dismiss">Przesuń elementy, aby usunąć.</string>
   <string name="export_data_to_csv">Eksportuj dane do pliku CSV</string>
   <string name="export_data_in_progress">Eksportowanie danych.  Prosze czekać&#8230;</string>
   <string name="export_file_complete">Dane zostały pomyślnie wyeksportowane do pliku %1$s</string>
@@ -302,6 +316,7 @@
   <string name="donate_bitcoin">Teraz akceptujemy również darowizny w bitcoinach.</string>
   <string name="donate_license">Ze względu na zasady Google, nie możemy umieścić linku do strony pozwalającej nas wesprzeć bezpośrednio w aplikacji.</string>
   <string name="donate_button_text">Wesprzyj</string>
+  <string name="homepage_button">Otwórz stronę główną</string>
   <!-- 20130225 -->
   <string name="android_sqlite_vesion">Wersja SQLite</string>
   <!-- 20130301 -->
@@ -310,7 +325,6 @@
   <string name="descending">Malejąco</string>
   <string name="sorting_month">Sortowanie miesięcy</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Katalog Dropbox/Apps/Money Manager Ex Mobile jest pusty. Jeśli wcześniej używałeś MoneyManagerEx, skopiuj bazę danych do tego katalogu, a następnie odśwież.</string>
   <string name="dropbox_select_file">Wybierz plik z Dropboksa</string>
   <string name="last_modified">Ostatnia modyfikacja</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -355,6 +369,7 @@
   <string name="menu_report_where_money_goes">Cele wydatków</string>
   <string name="menu_report_where_money_comes_from">Źródła przychodów</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Czas powiadomienia</string>
   <string name="summary_check_repeating_transaction">O której godzinie sprawdzać, czy są zaległe cykliczne transakcje? (domyślnie 8:00)</string>
   <!-- 20130730 -->
   <string name="credits">Twórcy</string>
@@ -392,21 +407,16 @@
   <string name="delete_one_selected_transaction">Czy na pewno chcesz usunąć wybraną transakcję?</string>
   <string name="delete_others_selected_transaction">Czy na pewno chcesz usunąć %d wybranych transakcji?</string>
   <string name="categories">Kategorie</string>
-  <string name="currencies">Waluty</string>
   <string name="payees">Podmioty</string>
   <string name="repeating_transactions">Cykliczne transakcje</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Tworzenie konta</string>
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <string name="import_all_currencies">Importuj waluty</string>
-  <string name="import_currencies_in_progress">Importowanie walut. Proszę czekać&#8230;</string>
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
+  <string name="create_new_account">Utwórz nowe konto</string>
   <string name="amount_greater_or_equal">Kwota większa lub równa</string>
+  <string name="amount_from">Kwota od</string>
   <string name="amount_less_or_equal">Kwota mniejsza lub równa</string>
   <string name="amount_to">Kwota do</string>
+  <string name="reset">Zresetuj</string>
   <string name="result_search">Rezultat wyszukiwania</string>
   <string name="new_repeating_transaction">Utwórz cykliczną transakcję</string>
   <string name="edit_repeating_transaction">Edytuj cykliczną transakcję</string>
@@ -420,23 +430,17 @@
   <string name="never">Nigdy</string>
   <string name="path_database_not_exists">Ścieżka do bazy danych nie istnieje</string>
   <string name="database_can_not_open_write">Nie można otworzyć bazy danych do zapisu</string>
-  <string name="question_import_currencies">Czy chcesz zaimportować walutę?</string>
   <string name="time_frame">Przedział czasowy</string>
   <string name="show_chart">Pokaż wykres</string>
   <string name="add_transaction">Dodaj transakcję</string>
   <string name="welcome_header">Witaj w Money Manager Ex!</string>
+  <string name="welcome_body">Wszystkie transakcje w MoneyManagerEx należą do kont.\n\nObecnie nie posiadasz widocznych kont. Dostosuj filtr dla widocznych kont i ustawieniach lub wybierz jedną z opcji poniżej.</string>
   <string name="welcome_body_dropbox">Jeśli używasz już aplikacji Moneye Manager Ex dla systemu Windows, Linux lub Mac OS, połącz tę aplikację z Dropboxem, aby sychronizować swoją bazę danych</string>
   <string name="configure_dropbox">Skonfiguruj Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Wyszukiwanie w zawartości tekstów, a nie w ich początkach</string>
   <string name="search_text_contain_summary">Wyszukuj w całych nazwach płatników, kategorii, walut itd., a nie tylko w ich początkach</string>
   <string name="rate_application">Oceń aplikację</string>
-  <string name="start_currency_exchange_rates">Aktualizowanie kursów wymiany walut. Proszę czekać&#8230;</string>
-  <string name="update_currency_exchange_rates">Aktualizowanie kursu wymiany waluty:\n%1$s</string>
-  <string name="success_currency_exchange_rates">Wszystkie kursy wymiany walut zostały pomyślnie zaktualizowane</string>
-  <string name="update_menu_currency_exchange_rates">Zaktualizuj kurs wymiany</string>
-  <string name="question_update_currency_exchange_rates">Czy chcesz zaktualizować kursy wymiany walut?</string>
-  <string name="error_update_currency_exchange_rate">Wystąpił błąd podczas aktualizowania kursu</string>
   <string name="withdrawal_from">Wypłata z %1$s</string>
   <string name="deposit_to">Wpłata na %1$s</string>
   <string name="mmex_website">Strona internetowa MoneyManagerEx</string>
@@ -447,15 +451,18 @@
   <string name="title_notifications_repeating_transaction">Powiadomienie o zaległych cyklicznych transakcjach </string>
   <string name="summary_notifications_repeating_transaction">Pokazuj powiadomienie o zaległych cyklicznych transakcjach</string>
   <string name="tools">Narzędzia</string>
+  <string name="entities">Osoby</string>
   <string name="loading">Ładowanie&#8230;</string>
   <string name="grand_total">Łącznie</string>
   <string name="change_status">Zmień status</string>
   <string name="duplicate_selected_transactions">Powielenie zaznaczonych tranzakcji</string>
   <string name="sort">Sortowanie</string>
+  <string name="sort_order">Kolejność sortowania</string>
   <string name="sort_by_name">Sortuj według nazwy</string>
   <string name="sort_by_usage">Sortuj według użycia</string>
   <string name="choose_sorting">Wybierz sortowanie</string>
   <string name="credit_card">Karta kredytowa</string>
+  <string name="cash_accounts">Rachunki</string>
   <string name="bank_accounts">Konta bankowe</string>
   <string name="term_accounts">Lokata terminowa</string>
   <string name="credit_card_accounts">Konta kart kredytowych</string>
@@ -463,6 +470,7 @@
   <string name="montly_last_bussines_day">Miesięczne (ostatni dzień roboczy)</string>
   <!-- languages -->
   <string name="locale_application">Język aplikacji</string>
+  <string name="transaction_cancel_confirm">Na pewno chcesz odrzucić zmiany?</string>
   <string name="keep_editing">Kontynuuj edycję</string>
   <string name="discard">Odrzuć</string>
   <string name="invalid_expression">Nieprawidłowe wyrażenie</string>
@@ -498,8 +506,11 @@
   <string name="qif_export">Qif eksport</string>
   <string name="update_prices">Zaktualizuj ceny</string>
   <string name="update_price">Zaktualizuj cenę</string>
+  <string name="download_price">Pobierz cenę</string>
+  <string name="edit_price">Edytuj cenę</string>
   <string name="price_updated">Cena zaktualizowana</string>
   <string name="all_prices_updated">Wszystkie ceny zostały zaktualizowane.</string>
+  <string name="download_complete">Zakończono pobieranie.</string>
   <string name="confirm_price_download">Czy chcesz zaktualizować ceny bezpieczeństwa online?</string>
   <string name="starting_price_update">Pobieranie cen, proszę czekać&#8230;</string>
   <string name="database_migrate_14_to_20">Migracja bazy danych z v1.4</string>
@@ -508,6 +519,7 @@
   <string name="database_migrate_14_to_20_success">Migracja bazy danych przebiegła pomyślnie.</string>
   <string name="database_migrate_14_to_20_complete">Migracja zakończona. Zamknij ustawienia aby rozpocząć korzystanie z tej bazy danych.</string>
   <string name="database_migrate_14_to_20_intro">Bazy danych została wykryta w starszej lokalizacji. Naciśnij przycisk poniżej, aby dokonać migracji do karty SD i używać.</string>
+  <string name="clear_recent_files_list">Wyczyść ostatnie pliki</string>
   <string name="export_prices">Ceny eksportowe</string>
   <string name="purge_history">Wyczyść historię ceny</string>
   <string name="purge_history_confirmation">Czy chcesz usunąć pełną historię cen dla wszystkich kont?</string>
@@ -528,6 +540,7 @@
   <string name="db_check_schema_summary">Sprawdź, czy wszystkie tabele są obecne w bazie danych.</string>
   <string name="db_check_schema_success">Wszystkie wymagane tabele znajdują się w bazie danych.</string>
   <string name="db_check_schema_error">Błąd: brakuje tabel w bazie danych!</string>
+  <string name="db_fix_duplicates">Napraw zduplikowane zapisy</string>
   <string name="split_amount_negative">Całkowita kwota nie może być ujemna.</string>
   <string name="select_all">Wybierz wszystkie</string>
   <string name="db_not_dropbox">Twoja bieżąca baza danych nie jest zsynchronizowana. Ustaw synchronizację z Dropbox-em.</string>
@@ -535,21 +548,33 @@
   <string name="choose_type">Wybierz typ</string>
   <string name="default_account">Domyślne konto</string>
   <string name="default_account_summary">Domyślne konto podczas wprowadzania nowych transakcji.</string>
+  <string name="default_account_not_set">Domyślnie konto nie zostało ustawione.</string>
   <string name="balance_account">Saldo konta</string>
   <string name="balance_adjustment">Dopasowanie Balansu</string>
   <string name="cash">Gotówka</string>
   <string name="select_account">Wybierz konto</string>
   <string name="invalid_transaction_number">Nieprawidłowy numer transakcji</string>
   <string name="budgets">Budżety</string>
+  <string name="budget_list">Budżet</string>
+  <string name="actual">Rzeczywisty</string>
   <string name="base_currency_not_set">Waluta bazowa nie została ustawiona</string>
   <string name="error">Błąd</string>
   <string name="unhandled_crash">Nieoczekiwany błąd. Proszę prześlij do nas informację z logiem błędu.</string>
   <string name="title_activity_currency_rates_report">Kursy walut</string>
   <string name="frequency">Częstotliwość</string>
+  <string name="update_available">Dostępna aktualizacja</string>
+  <string name="update_on_dropbox">W Dropbox znajduje się zaktualizowany plik bazy danych. Chcesz zaktualizować?</string>
+  <string name="currency_not_found">Nie znaleziono walut</string>
+  <string name="homepage">Nasza strona to http://android.moneymanagerex.org/</string>
   <string name="current_database">Bieżąca baza danych</string>
+  <string name="about_logcat_header">Możesz wysłać nam dziennik aplikacji, klikając przycisk poniżej.</string>
+  <string name="transaction_type_filter">Filtruj według typu transakcji</string>
+  <string name="status_filter">Filtruj według statusu</string>
+  <string name="filter_options_info">Opcje filtra i informacje</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Wprowadź hasło bazy danych</string>
   <string name="income_expense_period">Okres przychodu/wydatku</string>
+  <string name="income_expense_period_summary">Okres dla podglądu przychodów/wydatków w stopce ekranu głównego.</string>
   <string name="appwidget_text">PRZYKŁAD</string>
   <string name="configure">Konfiguruj</string>
   <string name="add_widget">Dodaj Widżet</string>
@@ -562,11 +587,70 @@
   <string name="number_of_shares">Liczba akcji</string>
   <string name="purchase_price">Cena zakupu</string>
   <string name="current_price">Aktualna Cena</string>
+  <string name="price_date">Data ceny</string>
   <string name="commission">Prowizja</string>
   <string name="value">Wartość</string>
   <string name="view_transactions">Zobacz transakcje</string>
   <string name="error_downloading_symbol">Błąd pobierania cena symbolu</string>
+  <string name="error_updating_rates">Błąd aktualizacji kursów</string>
+  <string name="error_no_price_found_for_symbol">Nie znaleziono ceny dla symbolu</string>
+  <string name="other">Inne</string>
+  <string name="cleared">Wyczyszczone</string>
+  <string name="delete_success">Usunięto element</string>
   <!-- asset allocation -->
+  <string name="asset_allocation">Przydział aktywów</string>
+  <string name="asset_classes_empty">Nie zdefiniowano klas aktywów. Aby utworzyć jedną, stuknij zielony znak plus.</string>
+  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
+  <string name="asset_class_name">Nazwa klasy aktywów</string>
+  <string name="allocation">Przydział</string>
+  <string name="current_allocation">Bieżący przydział</string>
+  <string name="move_up">Przesuń w górę</string>
+  <string name="move_down">Przesuń w dół</string>
+  <string name="securities">Zabezpieczenia</string>
+  <string name="title_activity_security_list">SecurityListActivity</string>
+  <string name="no_records_found_create">Nie znaleziono zapisów. Aby utworzyć jeden, stuknij zielony znak plus.</string>
+  <string name="current_value">Bieżąca wartość</string>
+  <string name="current">Bieżący</string>
+  <string name="parent">Nadrzędny</string>
+  <string name="name">Nazwa</string>
+  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
+  <string name="stock">Magazyn</string>
+  <string name="all_accounts">Wszystkie konta</string>
+  <string name="records">zapisy</string>
   <!-- db password entry -->
+  <string name="enter_password">Wpisz hasło</string>
+  <string name="success">Operacja powiodła się</string>
+  <string name="overview">Przegląd</string>
+  <string name="title_activity_asset_allocation_overview">Przegląd przydziału aktywów</string>
+  <string name="asset_allocation_diff_threshold">Próg różnicy przydziału aktywów</string>
+  <string name="asset_allocation_diff_threshold_summary">Próg, który uruchomi kolorowanie różnych wartości.</string>
+  <string name="error_saving_record">Błąd zapisu rekordu</string>
+  <string name="error_loading_currency">Błąd wczytywania waluty</string>
+  <string name="symbol_required">Symbol jest wymagany</string>
+  <string name="recurrence_type_not_set">Typ powtarzania nie jest ustawiony</string>
+  <string name="invalid_recurrence_type">Nieprawidłowy typ powtarzania</string>
+  <string name="account_not_found">Nie znaleziono konta</string>
+  <string name="favourite">Ulubiony</string>
   <!-- budgets -->
+  <string name="add_budget">Dodaj budżet</string>
+  <string name="budget_name">Nazwa budżetu</string>
+  <string name="budget_year">Rok budżetu</string>
+  <string name="budget_month">Miesiąc budżetu</string>
+  <string name="quote_provider">Dostawca oferty</string>
+  <string name="copy">Kopiuj</string>
+  <string name="app_restart">Aplikacja zostanie zamknięta w celu zastosowania zmian. Proszę uruchomić ją ponownie.</string>
+  <!-- Currencies -->
+  <string name="currencies">Waluty</string>
+  <string name="currencies_used">Używane waluty</string>
+  <string name="open_currencies">Otwórz waluty</string>
+  <string name="import_all_currencies">Importuj waluty</string>
+  <string name="import_currencies_in_progress">Importowanie walut. Proszę czekać&#8230;</string>
+  <string name="question_import_currencies">Czy chcesz zaimportować walutę?</string>
+  <string name="start_currency_exchange_rates">Aktualizowanie kursów wymiany walut. Proszę czekać&#8230;</string>
+  <string name="update_currency_exchange_rates">Aktualizowanie kursu wymiany waluty:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Wszystkie kursy wymiany walut zostały pomyślnie zaktualizowane</string>
+  <string name="update_menu_currency_exchange_rates">Zaktualizuj kurs wymiany</string>
+  <string name="question_update_currency_exchange_rates">Czy chcesz zaktualizować kursy wymiany walut?</string>
+  <string name="error_update_currency_exchange_rate">Wystąpił błąd podczas aktualizowania kursu</string>
+  <string name="currencies_empty">Nie znaleziono żadnych walut. Aby utworzyć jedną, stuknij zielony znak plus.</string>
 </resources>

@@ -29,9 +29,9 @@
         android:layout_weight="1"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
-        android:padding="@dimen/money_padding" 
-        android:layout_marginLeft="@dimen/money_margin_bottom_top"
-        android:layout_marginRight="@dimen/money_margin_bottom_top">
+        android:padding="@dimen/mmex_padding"
+        android:layout_marginLeft="@dimen/mmex_margin_bottom_top"
+        android:layout_marginRight="@dimen/mmex_margin_bottom_top">
     </LinearLayout>
 
     <LinearLayout
@@ -41,9 +41,9 @@
         android:layout_weight="1"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
-        android:padding="@dimen/money_padding" 
-        android:layout_marginLeft="@dimen/money_margin_bottom_top"
-        android:layout_marginRight="@dimen/money_margin_bottom_top" >
+        android:padding="@dimen/mmex_padding"
+        android:layout_marginLeft="@dimen/mmex_margin_bottom_top"
+        android:layout_marginRight="@dimen/mmex_margin_bottom_top" >
     </LinearLayout>
 
     <LinearLayout
@@ -53,9 +53,9 @@
         android:layout_weight="1"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
-        android:padding="@dimen/money_padding" 
-        android:layout_marginLeft="@dimen/money_margin_bottom_top"
-        android:layout_marginRight="@dimen/money_margin_bottom_top" >
+        android:padding="@dimen/mmex_padding"
+        android:layout_marginLeft="@dimen/mmex_margin_bottom_top"
+        android:layout_marginRight="@dimen/mmex_margin_bottom_top" >
     </LinearLayout>
 
     <LinearLayout
@@ -64,9 +64,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical"
-        android:padding="@dimen/money_padding" 
-        android:layout_marginLeft="@dimen/money_margin_bottom_top"
-        android:layout_marginRight="@dimen/money_margin_bottom_top" >
+        android:padding="@dimen/mmex_padding"
+        android:layout_marginLeft="@dimen/mmex_margin_bottom_top"
+        android:layout_marginRight="@dimen/mmex_margin_bottom_top" >
     </LinearLayout>
 
 </LinearLayout>

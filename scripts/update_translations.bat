@@ -2,8 +2,6 @@
 :: Set the correct location to the root of the unzipped translations file from Crowdin.
 @echo off
 
-::set src_root=d:\temp
-::set dest_root=d:\dev\android-money-manager-ex\res
 set src_root=d:\temp
 set dest_root=d:\src\android-money-manager-ex\app\src\main\res
 
@@ -109,6 +107,12 @@ set locale=RU
 call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
 call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
 
+:: Slovak
+set lang=sk
+set locale=SK
+call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+
 :: Spanish
 set lang=es
 set locale=ES
@@ -120,6 +124,12 @@ set lang=tr
 set locale=TR
 call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
 ::call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+
+:: Ukrainian
+set lang=uk
+set locale=UA
+call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
 
 :: Vietnamese
 set lang=vi

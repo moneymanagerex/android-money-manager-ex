@@ -195,10 +195,10 @@ public class AssetAllocationService
     }
 
     /**
-     * Move the asset class up in the sort order.
+     * Move the asset class down in the sort order.
      * Increase sort order for this item. Finds the next in order and decrease it's sort order.
      */
-    public void moveClassUp(int id) {
+    public void moveClassDown(int id) {
         // todo: this is incomplete. Need to set the default value on creation and handle
         // deletions. Also pay attention if the order will be ascending or descending and adjust.
 
@@ -227,7 +227,10 @@ public class AssetAllocationService
         repository.update(up);
     }
 
-    public void moveClassDown(int id) {
+    /**
+     * Increase the ranking value, effectively moving the item down in the list.
+     */
+    public void moveClassUp(int id) {
         AssetClass assetClass = repository.load(id);
         Integer currentPosition = assetClass.getSortOrder();
         if (currentPosition == null) currentPosition = 0;

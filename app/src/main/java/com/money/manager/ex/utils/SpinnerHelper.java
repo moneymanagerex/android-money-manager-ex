@@ -14,15 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency;
 
-import android.widget.TextView;
+package com.money.manager.ex.utils;
+
+import android.database.Cursor;
 
 /**
- * Holder for the currency list item views.
- * Created by Alen Siljak on 13/07/2015.
+ * Useful functions for working with Spinners (dropdown lists).
  */
-public class CurrencyListViewHolder {
-    TextView nameTextView;
-    TextView rateTextView;
+public class SpinnerHelper {
+    public static int getPosition(String displayText, String fieldName, Cursor cursor) {
+        int position = -1;
+        cursor.moveToFirst();
+
+        while(cursor.moveToNext()) {
+            String text = cursor.getString(cursor.getColumnIndex(fieldName));
+            if (text.equals(displayText)) {
+                position = cursor.getPosition();
+                break;
+            }
+        }
+
+        return position;
+    }
 }

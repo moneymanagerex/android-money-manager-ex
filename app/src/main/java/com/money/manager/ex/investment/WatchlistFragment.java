@@ -464,7 +464,7 @@ public class WatchlistFragment
 
         // Load accounts into the spinner.
         AccountService accountService = new AccountService(getActivity());
-        accountService.loadInvestmentAccountsToSpinner(spinner);
+        accountService.loadInvestmentAccountsToSpinner(spinner, true);
 
         // handle account switching.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -22,7 +22,11 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -101,6 +105,9 @@ public class YahooCsvQuoteDownloaderRetrofit
         // Notify user that all the prices have been downloaded.
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
         handler.showMessage(mContext.getString(R.string.download_complete));
+
+        // fire an event so that the data can be reloaded.
+        EventBus.getDefault().post(new AllPricesDownloadedEvent());
     }
 
     private Context getContext() {
@@ -126,13 +133,18 @@ public class YahooCsvQuoteDownloaderRetrofit
         }
 
         PriceCsvParser parser = new PriceCsvParser(getContext());
-        parser.parse(content);
+        PriceDownloadedEvent event = parser.parse(content);
+
+        // Notify the caller by invoking the interface method.
+        if (event != null) {
+            EventBus.getDefault().post(event);
+        }
 
         finishIfAllDone();
     }
 
     private void showProgressDialog(Integer max) {
-        Context context = mContext;
+        Context context = getContext();
 
         mDialog = new ProgressDialog(context);
 

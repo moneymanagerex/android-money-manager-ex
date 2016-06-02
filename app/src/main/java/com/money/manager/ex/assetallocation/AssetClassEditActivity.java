@@ -60,20 +60,6 @@ public class AssetClassEditActivity
         return true;
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (resultCode != Activity.RESULT_OK) return;
-//
-//        switch (requestCode) {
-//            case REQUEST_STOCK_ID:
-//                String stockSymbol = data.getStringExtra(INTENT_RESULT_STOCK_SYMBOL);
-//                assignStockToAssetClass(stockSymbol);
-//                break;
-//        }
-//    }
-
     @Override
     public boolean onActionDoneClick() {
         if (save()) {
@@ -122,15 +108,8 @@ public class AssetClassEditActivity
     }
 
     private AssetClassEditFragment getFragment() {
-//        String tag = AssetClassEditFragment.class.getSimpleName();
-
-        //        AssetClassEditFragment fragment = new AssetClassEditFragment();
         FragmentManager fm = getSupportFragmentManager();
-//        if (fm.findFragmentById(R.id.content) == null) {
-//            fm.beginTransaction().add(R.id.content, fragment, FRAGMENTTAG).commit();
-//        }
 
-//        Fragment fragment = fm.findFragmentByTag(tag);
         Fragment fragment = fm.findFragmentById(R.id.fragment);
         if (fragment == null) return null;
 

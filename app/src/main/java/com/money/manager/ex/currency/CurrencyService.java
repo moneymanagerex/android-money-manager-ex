@@ -20,6 +20,8 @@ import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
+import android.support.v7.util.SortedList;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +31,9 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -39,6 +44,8 @@ import com.money.manager.ex.servicelayer.ServiceBase;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -51,16 +58,7 @@ import info.javaperformance.money.MoneyFactory;
  * This class implements all the methods of utility for the management of currencies.
  */
 public class CurrencyService
-        extends ServiceBase {
-
-    private Integer mBaseCurrencyId = null;
-    // hash map of all currencies
-    private Map<Integer, Currency> mCurrencies;
-
-    /**
-     * a fast lookup for symbol -> id. i.e. EUR->2.
-     */
-    private HashMap<String, Integer> mCurrencyCodes;
+    extends ServiceBase {
 
     public CurrencyService(Context context) {
         super(context);
@@ -68,6 +66,15 @@ public class CurrencyService
         mCurrencyCodes = new HashMap<>();
         mCurrencies = new HashMap<>();
     }
+
+    private CurrencyRepository mRepository;
+    private Integer mBaseCurrencyId = null;
+    // hash map of all currencies
+    private Map<Integer, Currency> mCurrencies;
+    /**
+     * a fast lookup for symbol -> id. i.e. EUR->2.
+     */
+    private HashMap<String, Integer> mCurrencyCodes;
 
     /**
      * @param currencyId of the currency to be get
@@ -80,7 +87,7 @@ public class CurrencyService
             return mCurrencies.get(currencyId);
         }
 
-        CurrencyRepository repository = new CurrencyRepository(getContext());
+        CurrencyRepository repository = getRepository();
         Currency currency = repository.loadCurrency(currencyId);
 
         mCurrencies.put(currencyId, currency);
@@ -116,7 +123,7 @@ public class CurrencyService
             return mCurrencyCodes.get(code);
         }
 
-        CurrencyRepository repo = new CurrencyRepository(getContext());
+        CurrencyRepository repo = getRepository();
         Currency currency = repo.loadCurrency(code);
 
         mCurrencyCodes.put(code, currency.getCurrencyId());
@@ -141,7 +148,34 @@ public class CurrencyService
             }
         }
 
+        // order by name?
+        Collections.sort(currencies, new Comparator<Currency>() {
+            @Override
+            public int compare(Currency lhs, Currency rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+
         return currencies;
+    }
+
+    public List<Currency> getUnusedCurrencies() {
+        List<Currency> usedCurrencies = getUsedCurrencies();
+        String usedList = "";
+        for (Currency currency : usedCurrencies) {
+            usedList += currency.getCurrencyId();
+            usedList += ", ";
+        }
+        // old trick. Now remove the last separator.
+        usedList = usedList.substring(0, usedList.length() - 2);
+
+        Query query = new Query();
+        query.select(getRepository().getAllColumns())
+            .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")", null)
+            .orderBy(Currency.CURRENCYNAME);
+
+        List<Currency> unusedCurrencies = getRepository().query(Currency.class, query);
+        return unusedCurrencies;
     }
 
     public Money doCurrencyExchange(Integer toCurrencyId, Money amount, Integer fromCurrencyId) {
@@ -198,7 +232,7 @@ public class CurrencyService
                     Log.w("CurrencyService", "system default currency is null!");
                     result = 2;
                 } else {
-                    CurrencyRepository repo = new CurrencyRepository(getContext());
+                    CurrencyRepository repo = getRepository();
                     Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
 
                     if (defaultCurrency != null) {
@@ -280,13 +314,28 @@ public class CurrencyService
         return result;
     }
 
+    public CurrencyRepository getRepository() {
+        if (mRepository == null) {
+            mRepository = new CurrencyRepository(getContext());
+        }
+        return mRepository;
+    }
+
+    /**
+     * Import all currencies from Android System
+     */
+    public void importAllCurrencies() {
+        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getContext());
+        asyncTask.execute();
+    }
+
     public boolean importCurrenciesFromAvailableLocales() {
         Locale[] locales = Locale.getAvailableLocales();
         // get map codes and symbols
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
         java.util.Currency localeCurrency;
         Currency newCurrency;
-        CurrencyRepository repo = new CurrencyRepository(getContext());
+        CurrencyRepository repo = getRepository();
         Currency existingCurrency;
 
         for (Locale locale : locales) {
@@ -377,7 +426,7 @@ public class CurrencyService
     public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;
 
-        CurrencyRepository repo = new CurrencyRepository(getContext());
+        CurrencyRepository repo = getRepository();
 
         Cursor cursor = db.query(repo.getSource(),
                 new String[]{Currency.CURRENCYID},
@@ -394,6 +443,47 @@ public class CurrencyService
 
         return result;
     }
+
+    public boolean saveExchangeRate(String symbol, Money rate) {
+        CurrencyRepository repo = getRepository();
+
+        Currency currency = repo.loadCurrency(symbol);
+        int currencyId = currency.getCurrencyId();
+
+        // update value on database
+        int updateResult = repo.saveExchangeRate(currencyId, rate);
+
+        return updateResult > 0;
+    }
+
+    public void updateExchangeRate(int currencyId) {
+        List<Currency> currencies = new ArrayList<>();
+        currencies.add(getCurrency(currencyId));
+
+        updateExchangeRates(currencies);
+    }
+
+    public void updateExchangeRates(List<Currency> currencies){
+        if (currencies == null || currencies.size() <= 0) return;
+
+        ArrayList<String> currencySymbols = new ArrayList<>();
+        String symbol;
+        String baseCurrencySymbol = getBaseCurrencyCode();
+
+        for (Currency currency : currencies) {
+            symbol = currency.getCode();
+            if (symbol == null) continue;
+            if (symbol.equals(baseCurrencySymbol)) continue;
+
+            currencySymbols.add(symbol + baseCurrencySymbol + "=X");
+        }
+
+        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getContext());
+        updater.downloadPrices(currencySymbols);
+        // result received via event
+    }
+
+    // Private
 
     /**
      * @return a hash map of currency code / currency symbol

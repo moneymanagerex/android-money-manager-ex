@@ -39,12 +39,10 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.currency.CurrencyListActivity;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 

@@ -43,6 +43,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Budget;
 
 import org.greenrobot.eventbus.EventBus;
@@ -148,12 +149,11 @@ public class BudgetListFragment
         switch (id) {
             case LOADER_BUDGETS:
                 BudgetRepository repo = new BudgetRepository(getActivity());
-                result = new MmexCursorLoader(getActivity(),
-                        repo.getUri(),
-                        repo.getAllColumns(),
-                        null, null,
-                        Budget.BUDGETYEARNAME
-                );
+                Query query = new Query()
+                    .select(repo.getAllColumns())
+                    .orderBy(Budget.BUDGETYEARNAME);
+
+                result = new MmexCursorLoader(getActivity(), repo.getUri(), query);
                 break;
         }
         return result;
@@ -163,7 +163,8 @@ public class BudgetListFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_BUDGETS:
-                mAdapter.swapCursor(data);
+//                mAdapter.swapCursor(data);
+                mAdapter.changeCursor(data);
 
                 if (isResumed()) {
                     setListShown(true);
@@ -178,7 +179,8 @@ public class BudgetListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case LOADER_BUDGETS:
-                mAdapter.swapCursor(null);
+//                mAdapter.swapCursor(null);
+                mAdapter.changeCursor(null);
                 break;
         }
     }

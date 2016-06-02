@@ -54,7 +54,7 @@ public class PriceCsvParser {
      * Parses CSV content and fires an PriceDownloadedEvent.
      * @param content CSV content to parse into price information.
      */
-    public void parse(String content) {
+    public PriceDownloadedEvent parse(String content) {
         // cleanup
         content = content.trim();
 
@@ -71,7 +71,7 @@ public class PriceCsvParser {
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "parsing downloaded CSV contents");
-            return;
+            return null;
         }
 
         // convert csv values to their original type.
@@ -80,7 +80,7 @@ public class PriceCsvParser {
 
         // price
         String priceString = values[1];
-        if (!NumericHelper.isNumeric(priceString)) return;
+        if (!NumericHelper.isNumeric(priceString)) return null;
         Money price = MoneyFactory.fromString(priceString);
         // LSE stocks are expressed in GBp (pence), not Pounds.
         // From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
@@ -93,7 +93,8 @@ public class PriceCsvParser {
         DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
         DateTime date = format.parseDateTime(values[2]);
 
-        // Notify the caller by invoking the interface method.
-        EventBus.getDefault().post(new PriceDownloadedEvent(symbol, price, date));
+        // Note: For currencies, the symbol is i.e. AUDEUR=X
+
+        return new PriceDownloadedEvent(symbol, price, date);
     }
 }

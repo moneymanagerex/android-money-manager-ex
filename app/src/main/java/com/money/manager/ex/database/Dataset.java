@@ -77,22 +77,23 @@ public abstract class Dataset
 	 * @return the Uri for the content provider
 	 */
 	public Uri getUri() {
-		String parse = "content://" + MmexContentProvider.getAuthority() + "/";
+		String baseUri = "content://" + MmexContentProvider.getAuthority() + "/";
 
 		if (!TextUtils.isEmpty(this.basepath)) {
 //			switch (this.type) {
 //                case TABLE:
 //                    // todo: inspect what was the intention here. The result of the operation is ignored.
-////                    parse.concat("tables/");
+////                    baseUri.concat("tables/");
 //                    break;
 //                case QUERY:
 //                    // todo: inspect what was the intention here. The result of the operation is ignored.
-////                    parse.concat("queries/");
+////                    baseUri.concat("queries/");
 //                    break;
 //                default:
 //                    break;
 //			}
-			return Uri.parse(parse.concat(this.basepath));
+			String fullUri = baseUri.concat(this.basepath);
+			return Uri.parse(fullUri);
 		} else {
 			throw new AssertionError("Internal Error. BasePath is not defined for the dataset");
 		}

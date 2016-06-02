@@ -42,7 +42,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 /**
  */
 public abstract class BaseListFragment
-        extends AbsListFragment {
+    extends AbsListFragment {
 
     private static final String KEY_SHOWN_TIPS_WILDCARD = "BaseListFragment:isShowTipsWildcard";
 
@@ -133,7 +133,7 @@ public abstract class BaseListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
-            final MenuItem itemSearch = menu.add(0, R.id.menu_query_mode, 1000, R.string.search);
+            final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             SearchView searchView = new SearchView(getActivity());

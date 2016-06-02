@@ -23,6 +23,7 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.utils.MmexFileUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,10 +42,18 @@ public class TextFileExport {
     protected final String LOGCAT = this.getClass().getSimpleName();
     protected Context mContext;
 
-    public boolean export(String fileName, String contents)
-            throws IOException {
+    /**
+     * Export text contents as a file.
+     * @param fileName The name of the file only (i.e. name + extension).
+     * @param contents Text contents to save into the file.
+     * @param dialogTitle The title to use for the export dialog.
+     * @return Indicator whether the operation was successful.
+     * @throws IOException
+     */
+    public boolean export(String fileName, String contents, String dialogTitle) throws IOException {
         // clear previously exported files.
         this.clearCache();
+
         // save into temp file.
         File file = createExportFile(fileName);
         if (file == null) {
@@ -57,17 +66,23 @@ public class TextFileExport {
             return false;
         }
 
+        return export(file, dialogTitle);
+    }
+
+    /**
+     * Export an existing file.
+     */
+    public boolean export(File file, String dialogTitle) {
         // share file
-        offerFile(file);
+        offerFile(file, dialogTitle);
 
         return true;
     }
 
     /**
      * Delete all existing files in export directory.
-     * @throws Exception
      */
-    private void clearCache() throws IOException {
+    public void clearCache() throws IOException {
         // delete all cached files.
         File path = getExportDirectory();
         File[] files = path.listFiles();
@@ -77,7 +92,7 @@ public class TextFileExport {
         }
     }
 
-    private File createExportFile(String fileName) throws IOException {
+    public File createExportFile(String fileName) throws IOException {
         File path = getExportDirectory();
 
 //        tempFile = File.createTempFile(filePath, ".qif", path);
@@ -88,7 +103,7 @@ public class TextFileExport {
             throw new IOException("Could not create export file!");
         }
 
-        file.deleteOnExit();
+        // this is never called in Android: file.deleteOnExit();
 
         return file;
     }
@@ -106,6 +121,10 @@ public class TextFileExport {
         return true;
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     /**
      * Generates the name of the export directory. Creates the directory if it does not exist.
      * @return A directory into which to temporarily export .qif file.
@@ -113,7 +132,7 @@ public class TextFileExport {
      */
     private File getExportDirectory() throws IOException {
 
-        File path = new File(mContext.getFilesDir(), ExportDirectory);
+        File path = new File(getContext().getFilesDir(), ExportDirectory);
 //        File path = new File(this.context.getExternalFilesDir(null), ExportDirectory);
 //        File path = this.context.getExternalFilesDir(null);
 //        File path = new File(this.context.getCacheDir(), ExportDirectory);
@@ -129,17 +148,15 @@ public class TextFileExport {
         return path;
     }
 
-    private void offerFile(File file) {
+    private void offerFile(File file, String title) {
         //protected static final String ProviderAuthority = mContext.getApplicationContext().getPackageName() + "com.money.manager.ex.fileprovider";
-        String authority = mContext.getApplicationContext().getPackageName() + ".fileprovider";
+        String authority = getContext().getApplicationContext().getPackageName() + ".fileprovider";
 
-        Uri contentUri = FileProvider.getUriForFile(mContext, authority, file);
-        offerFile(contentUri);
+        Uri contentUri = FileProvider.getUriForFile(getContext(), authority, file);
+        offerFile(contentUri, title);
     }
 
-    private void offerFile(Uri fileUri) {
-        String title = mContext.getString(R.string.qif_export);
-
+    private void offerFile(Uri fileUri, String title) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -147,7 +164,7 @@ public class TextFileExport {
         intent.putExtra(Intent.EXTRA_STREAM, fileUri);
 
         Intent chooser = Intent.createChooser(intent, title);
-        mContext.startActivity(chooser);
+        getContext().startActivity(chooser);
     }
 
 }

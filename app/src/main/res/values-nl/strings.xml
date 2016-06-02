@@ -38,8 +38,6 @@
   <!-- dropbox -->
   <!-- preferences -->
   <!-- account -->
-  <!--<string name="account_balance_reconciled" formatted="false">Account Balance: %s Reconciled Balance: %s</string>-->
-  <!--<string name="select_to_account">Select To Acct</string>-->
   <!-- payee -->
   <!-- category / subcategory -->
   <!-- currency -->
@@ -85,11 +83,6 @@
   <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
   <!--<string name="term_accounts_total">Term Accounts Total</string>-->
   <!-- 20131104 -->
-  <!--<string name="edit_account">Edit Account</string>-->
-  <!--<string name="new_currency">New Currency</string>-->
-  <!--<string name="edit_currency">Edit Currency</string>-->
-  <!--<string name="from_date">From the date</string>-->
-  <!--<string name="at_the_date">At the date</string>-->
   <!-- 20140115 -->
   <!-- languages -->
   <!-- Password entry activity -->
@@ -97,4 +90,5 @@
   <!-- asset allocation -->
   <!-- db password entry -->
   <!-- budgets -->
+  <!-- Currencies -->
 </resources>

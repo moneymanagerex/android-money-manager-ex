@@ -19,12 +19,10 @@ package com.money.manager.ex.investment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyListActivity;
 import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.utils.DialogUtils;
 

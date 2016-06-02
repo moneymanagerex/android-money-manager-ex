@@ -40,10 +40,10 @@
             android:id="@+id/fragmentChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/money_margin"
+            android:layout_margin="@dimen/mmex_margin"
             android:background="?attr/shape_background_shadow"
             android:orientation="vertical"
-            android:padding="@dimen/money_padding"/>
+            android:padding="@dimen/mmex_padding"/>
 
     </LinearLayout>
 </LinearLayout>

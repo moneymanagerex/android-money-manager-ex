@@ -47,6 +47,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.CalendarUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
@@ -116,6 +117,8 @@ public class IncomeVsExpensesListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String selection = null;
+        Query query = new Query();
+
         switch (id) {
             case ID_LOADER_REPORT:
                 if (args != null && args.containsKey(KEY_BUNDLE_YEAR) && args.getString(KEY_BUNDLE_YEAR) != null) {
@@ -129,35 +132,34 @@ public class IncomeVsExpensesListFragment
                     selection = "1=2";
                 }
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
+                query.select(report.getAllColumns())
+                    .where(selection)
+                    .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
 
-                return new MmexCursorLoader(getActivity(), report.getUri(),
-                    report.getAllColumns(),
-                    selection, null,
-                    IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
+                return new MmexCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_YEARS:
                 ViewMobileData mobileData = new ViewMobileData(getContext());
                 selection = "SELECT DISTINCT Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
-                return new MmexCursorLoader(getActivity(),
-                        new SQLDataSet().getUri(),
-                        null,
-                        selection,
-                        null,
-                        null);
+                query.where(selection);
+                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
         }
         return null;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(null);
+//        ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(null);
+        ((IncomeVsExpensesAdapter) getListAdapter()).changeCursor(null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case ID_LOADER_REPORT:
-                ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(data);
+//                ((IncomeVsExpensesAdapter) getListAdapter()).swapCursor(data);
+                ((IncomeVsExpensesAdapter) getListAdapter()).changeCursor(data);
+
                 if (isResumed()) {
                     setListShown(true);
                 } else {

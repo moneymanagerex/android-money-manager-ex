@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -39,10 +38,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,13 +65,15 @@ import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
+import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.currency.CurrencyListActivity;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
@@ -111,7 +110,7 @@ import java.util.ArrayList;
  * Main activity of the application.
  */
 public class MainActivity
-        extends BaseFragmentActivity {
+    extends BaseFragmentActivity {
 
     public static final int REQUEST_PICKFILE_CODE = 1;
     public static final int REQUEST_PASSCODE = 2;
@@ -496,6 +495,7 @@ public class MainActivity
             case R.id.menu_currency:
                 // Show Currency list.
                 intent = new Intent(MainActivity.this, CurrencyListActivity.class);
+//                intent = new Intent(MainActivity.this, CurrencyRecyclerListActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
                 break;
@@ -573,6 +573,11 @@ public class MainActivity
     @Subscribe
     public void onEvent(RequestWatchlistFragmentEvent event) {
         showWatchlistFragment(event.accountId);
+    }
+
+    @Subscribe
+    public void onEvent(RequestPortfolioFragmentEvent event) {
+        showPortfolioFragment(event.accountId);
     }
 
     @Subscribe
@@ -847,24 +852,29 @@ public class MainActivity
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = AccountTransactionListFragment.newInstance(accountId);
         }
-        // show fragment
+        showFragment(fragment, tag);
+    }
+
+    public void showPortfolioFragment(int accountId) {
+        String tag = PortfolioFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        PortfolioFragment fragment = (PortfolioFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment == null) {
+            fragment = PortfolioFragment.newInstance(accountId);
+        }
         showFragment(fragment, tag);
     }
 
     public void showWatchlistFragment(int accountId) {
-        String tagFragment = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
-        WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager()
-                .findFragmentByTag(tagFragment);
+        String tag = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
+        WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
             fragment = WatchlistFragment.newInstance(accountId);
         }
-        // show fragment
-        showFragment(fragment, tagFragment);
+        showFragment(fragment, tag);
     }
 
     /**
      * Show tutorial on first run.
-     *
      * @return boolean indicator whether the tutorial was displayed or not
      */
     public boolean showTutorial() {
@@ -1290,9 +1300,14 @@ public class MainActivity
     private void pingStats() {
         MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
         Tracker t = app.getDefaultTracker();
-        t.setScreenName("~MainActivity");
-        t.send(new HitBuilders.EventBuilder().build());
-        //t.send(new HitBuilders.ScreenViewBuilder().build());
+
+        t.setScreenName("Screen~MainActivity");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        // to send an event:
+//        t.send(new HitBuilders.EventBuilder()
+//                .setCategory("Category")
+//                .setAction("Action")
+//                .build());
     }
 
     /**

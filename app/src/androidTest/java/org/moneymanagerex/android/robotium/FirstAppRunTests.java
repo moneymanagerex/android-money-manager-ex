@@ -19,7 +19,7 @@ package org.moneymanagerex.android.robotium;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.money.manager.ex.currency.CurrencyListActivity;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.robotium.solo.Solo;
 

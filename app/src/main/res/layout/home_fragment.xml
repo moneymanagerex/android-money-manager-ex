@@ -39,12 +39,12 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="@dimen/money_margin"
+                android:layout_margin="@dimen/mmex_margin"
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
                 app:cardBackgroundColor="?attr/cardViewBackgroundColor"
                 android:orientation="vertical"
-                android:padding="@dimen/money_padding">
+                android:padding="@dimen/mmex_padding">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -118,11 +118,11 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/money_margin"
+                android:layout_marginBottom="@dimen/mmex_margin"
                 app:cardBackgroundColor="?attr/cardViewBackgroundColor"
-                android:layout_marginLeft="@dimen/money_margin"
-                android:layout_marginRight="@dimen/money_margin"
-                android:padding="@dimen/money_padding"
+                android:layout_marginLeft="@dimen/mmex_margin"
+                android:layout_marginRight="@dimen/mmex_margin"
+                android:padding="@dimen/mmex_padding"
                 android:onClick="onClickCardViewIncomesVsExpenses">
 
             <LinearLayout

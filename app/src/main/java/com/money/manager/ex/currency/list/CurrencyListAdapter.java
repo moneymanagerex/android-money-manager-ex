@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.currency;
+package com.money.manager.ex.currency.list;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -22,9 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.CursorAdapter;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.currency.recycler.CurrencyListItemViewHolder;
 import com.money.manager.ex.domainmodel.Currency;
 
 /**
@@ -42,16 +42,11 @@ public class CurrencyListAdapter
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View view = inflater.inflate(R.layout.item_currency, parent, false);
 
         // holder
-        CurrencyListViewHolder holder = new CurrencyListViewHolder();
-
-        holder.nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-        holder.rateTextView = (TextView) view.findViewById(R.id.rateTextView);
-
-        // set holder to view
+        CurrencyListItemViewHolder holder = new CurrencyListItemViewHolder(view);
+        // add holder to the view.
         view.setTag(holder);
 
         return view;
@@ -59,14 +54,14 @@ public class CurrencyListAdapter
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        CurrencyListViewHolder holder = (CurrencyListViewHolder) view.getTag();
+        CurrencyListItemViewHolder holder = (CurrencyListItemViewHolder) view.getTag();
 
         // name
         String name = cursor.getString(cursor.getColumnIndex(Currency.CURRENCYNAME));
-        holder.nameTextView.setText(name);
+        holder.name.setText(name);
 
-        // price
+        // exchange rate
         String rate = cursor.getString(cursor.getColumnIndex(Currency.BASECONVRATE));
-        holder.rateTextView.setText(rate);
+        holder.rate.setText(rate);
     }
 }

@@ -32,6 +32,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
@@ -125,11 +126,12 @@ public class SecurityListFragment
                 }
 
                 StockRepository repo = new StockRepository(getActivity());
+                Query query = new Query()
+                    .select(new String[] { "STOCKID AS _id", Stock.STOCKID, Stock.SYMBOL })
+                    .where(whereClause, selectionArgs)
+                    .orderBy("upper(" + Stock.SYMBOL + ")");
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(),
-                    new String[] { "STOCKID AS _id", Stock.STOCKID, Stock.SYMBOL },
-                    whereClause, selectionArgs,
-                    "upper(" + Stock.SYMBOL + ")");
+                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;
@@ -141,7 +143,8 @@ public class SecurityListFragment
             case LOADER_SYMBOLS:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
                 adapter.setHighlightFilter(mCurFilter != null ? mCurFilter.replace("%", "") : "");
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                adapter.changeCursor(data);
 
                 if (isResumed()) {
                     setListShown(true);
@@ -159,7 +162,8 @@ public class SecurityListFragment
         switch (loader.getId()) {
             case LOADER_SYMBOLS:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.swapCursor(null);
+//                adapter.swapCursor(null);
+                adapter.changeCursor(null);
         }
     }
 
@@ -179,7 +183,7 @@ public class SecurityListFragment
         if (this.action.equals(Intent.ACTION_PICK)) {
             // select the current item and return.
             Cursor c = (Cursor) l.getItemAtPosition(position);
-            Stock stock = Stock.fromCursor(c);
+            Stock stock = Stock.from(c);
             selectedStockSymbol = stock.getSymbol();
 
             setResultAndFinish();

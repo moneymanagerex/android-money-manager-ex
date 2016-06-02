@@ -43,6 +43,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.datalayer.PayeeRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -246,10 +247,12 @@ public class PayeeListFragment
                     selectionArgs = new String[]{mCurFilter + '%'};
                 }
                 PayeeRepository repo = new PayeeRepository(getActivity());
-                return new MmexCursorLoader(getActivity(), repo.getUri(),
-                        repo.getAllColumns(),
-                        whereClause, selectionArgs,
-                        mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+                Query query = new Query()
+                        .select(repo.getAllColumns())
+                        .where(whereClause, selectionArgs)
+                        .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
+
+                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;
@@ -260,7 +263,8 @@ public class PayeeListFragment
         switch (loader.getId()) {
             case ID_LOADER_PAYEE:
                 MoneySimpleCursorAdapter adapter = (MoneySimpleCursorAdapter) getListAdapter();
-                adapter.swapCursor(null);
+//                adapter.swapCursor(null);
+                adapter.changeCursor(null);
         }
     }
 
@@ -275,7 +279,9 @@ public class PayeeListFragment
                         ? mCurFilter.replace("%", "")
                         : "";
                 adapter.setHighlightFilter(highlightFilter);
-                adapter.swapCursor(data);
+//                adapter.swapCursor(data);
+                adapter.changeCursor(data);
+
                 if (isResumed()) {
                     setListShown(true);
                     if (data.getCount() <= 0 && getFloatingActionButton() != null) {
