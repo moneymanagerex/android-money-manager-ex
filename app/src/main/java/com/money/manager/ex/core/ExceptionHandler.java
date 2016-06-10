@@ -37,7 +37,7 @@ import java.io.StringWriter;
  * Standard exception handler.
  */
 public class ExceptionHandler
-        implements Thread.UncaughtExceptionHandler {
+    implements Thread.UncaughtExceptionHandler {
 
     public ExceptionHandler(Context context) {
         mContext = context;
@@ -130,6 +130,17 @@ public class ExceptionHandler
         errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
 
+        errorReport.append("\n************ FIRMWARE ************\n");
+        errorReport.append("SDK: ");
+        errorReport.append(Build.VERSION.SDK);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Release: ");
+        errorReport.append(Build.VERSION.RELEASE);
+        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Incremental: ");
+        errorReport.append(Build.VERSION.INCREMENTAL);
+        errorReport.append(LINE_SEPARATOR);
+
         errorReport.append("************ CAUSE OF ERROR ************\n\n");
         errorReport.append(stackTrace.toString());
 
@@ -148,17 +159,6 @@ public class ExceptionHandler
         errorReport.append(LINE_SEPARATOR);
         errorReport.append("Product: ");
         errorReport.append(Build.PRODUCT);
-        errorReport.append(LINE_SEPARATOR);
-
-        errorReport.append("\n************ FIRMWARE ************\n");
-        errorReport.append("SDK: ");
-        errorReport.append(Build.VERSION.SDK);
-        errorReport.append(LINE_SEPARATOR);
-        errorReport.append("Release: ");
-        errorReport.append(Build.VERSION.RELEASE);
-        errorReport.append(LINE_SEPARATOR);
-        errorReport.append("Incremental: ");
-        errorReport.append(Build.VERSION.INCREMENTAL);
         errorReport.append(LINE_SEPARATOR);
 
 //        Intent intent = new Intent(context, ExceptionHandlerActivity.class);
