@@ -2,7 +2,7 @@
 :: The destination is the %locale parameter!
 :: Called from update_translations.bat.
 
-@echo off 
+::@echo off 
 
 set src=%~1
 set dest_root=%~2
@@ -31,14 +31,12 @@ if [%locale%] == [] (
 :: Destination directory.
 if exist %dest_root%\values-%locale% (
 	set dest=%dest_root%\values-%locale%
-	@echo destination: %dest%
 )
 if exist %dest_root%\values-%locale%-r%country% (
 	set dest=%dest_root%\values-%locale%-r%country%
-	@echo destination: %dest%
 )
 
-
-echo %src%\%src_lang%\res\values-%locale%-r%country%\*.* --- %dest%
+::@echo destination: %dest%
+::echo %src%\%src_lang%\res\values-%locale%-r%country%\*.* --- %dest%
 
 copy %src%\%src_lang%\res\values-%locale%-r%country%\*.* %dest%

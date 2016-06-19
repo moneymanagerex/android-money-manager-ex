@@ -72,7 +72,7 @@ set lang=id
 set locale=in
 set country=ID
 call copy_translation_to_locale.cmd %src_root% %dest_root% %lang% %country% %locale%
-::call copy_dropbox.cmd %src_root% %dest_root% %lang% %country% %locale%
+call copy_dropbox_to_locale.cmd %src_root% %dest_root% %lang% %country% %locale%
 
 :: Italian
 set lang=it
