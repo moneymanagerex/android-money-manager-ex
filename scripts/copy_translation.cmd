@@ -1,6 +1,8 @@
 :: Copy translations for a single locale.
 :: Called from update_translations.bat.
 
+@echo off 
+
 set src=%~1
 set dest_root=%~2
 
@@ -19,7 +21,8 @@ if exist %src%\%lang%-%locale% (
 	echo %lang%-%locale%
 )
 
-:: source, values directory. Hebrew is specific (he, iw-IL). This is mostly to accommodate that case.
+:: source, values directory. 
+:: Hebrew is specific (he, iw-IL). This is to accommodate cases with different codes.
 if [%locale_spec%] == [] (
 	set locale_spec=%lang%
 )
@@ -27,12 +30,14 @@ if [%locale_spec%] == [] (
 :: Destination directory.
 if exist %dest_root%\values-%lang% (
 	set dest=%dest_root%\values-%lang%
+	@echo destination: %dest%
 )
 if exist %dest_root%\values-%lang%-r%locale% (
 	set dest=%dest_root%\values-%lang%-r%locale%
+	@echo destination: %dest%
 )
 
 
-::echo %src%\%src_locale%\res\values-%locale_spec%-r%locale%\*.* %dest%
+echo %src%\%src_locale%\res\values-%locale_spec%-r%locale%\*.* --- %dest%
 
 copy %src%\%src_locale%\res\values-%locale_spec%-r%locale%\*.* %dest%

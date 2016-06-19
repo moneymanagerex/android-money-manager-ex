@@ -1,38 +1,41 @@
 :: copy translation of the dropbox manual.
 :: Called from update_translations.
 
+@echo off 
+
 set src=%~1
 set dest_root=%~2
 
 :: set VAR="%~1"
 set lang=%~3
-set locale=%~4
-set locale_spec=%~5
+set country=%~4
+set country_spec=%~5
 
 :: source directory
 if exist %src%\%lang% (
-	set src_locale=%lang%
-	echo %lang%
+	set src_country=%lang%
+	@echo %lang%
 ) 
-if exist %src%\%lang%-%locale% (
-	set src_locale=%lang%-%locale%
-	echo %lang%-%locale%
+if exist %src%\%lang%-%country% (
+	set src_country=%lang%-%country%
+	@echo %lang%-%country%
 )
 
-:: source, values directory. Hebrew is specific (he, iw-IL). This is mostly to accommodate that case.
-if [%locale_spec%] == [] (
-	set locale_spec=%lang%
+:: source, values directory. 
+::Hebrew is specific (he, iw-IL). This is to accommodate case with different codes.
+if [%country_spec%] == [] (
+	set country_spec=%lang%
 )
 
 :: Destination directory.
 if exist %dest_root%\raw-%lang% (
 	set dest=%dest_root%\raw-%lang%
 )
-if exist %dest_root%\raw-%lang%-r%locale% (
-	set dest=%dest_root%\raw-%lang%-r%locale%
+if exist %dest_root%\raw-%lang%-r%country% (
+	set dest=%dest_root%\raw-%lang%-r%country%
 )
 
 
-::echo %src%\%src_locale%\res\values-%locale_spec%-r%locale%\*.* %dest%
+::echo %src%\%src_country%\res\values-%country_spec%-r%country%\*.* %dest%
 
-copy %src%\%src_locale%\help\help_dropbox.html %dest%
+copy %src%\%src_country%\help\help_dropbox.html %dest%

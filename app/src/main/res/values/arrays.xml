@@ -265,6 +265,7 @@
         <item>@string/locale_fr</item>
         <item>@string/locale_he</item>
         <item>@string/locale_hu</item>
+        <item>@string/locale_id</item>
         <item>@string/locale_it</item>
         <item>@string/locale_ja</item>
         <item>@string/locale_nl</item>
@@ -291,6 +292,7 @@
         <item>fr</item>
         <item>he</item>
         <item>hu</item>
+        <item>in</item>
         <item>it</item>
         <item>ja</item>
         <item>nl</item>

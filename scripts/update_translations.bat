@@ -7,134 +7,143 @@ set dest_root=d:\src\android-money-manager-ex\app\src\main\res
 
 :: Bosnian
 set lang=bs
-set locale=BA
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=BA
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Chinese, modern
 set lang=zh
-set locale=CN
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+set country=CN
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
 
 :: Chinese, traditional
 set lang=zh
-set locale=TW
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=TW
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Czech
 set lang=cs
-set locale=CZ
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+set country=CZ
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
 
 :: Dutch
 set lang=nl
-set locale=NL
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+set country=NL
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
 
 :: Finnish
 set lang=fi
-set locale=FI
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+set country=FI
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
 
 :: French
 set lang=fr
-set locale=FR
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+set country=FR
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
 
 :: German
 set lang=de
-set locale=DE
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=DE
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Greek
 set lang=el
-set locale=GR
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=GR
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
-:: Hebrew, he iw-IL
+:: Hebrew, he iw-IL -> he
 set lang=he
-set locale=IL
-set locale_spec=iw
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale% %locale_spec%
+set locale=iw
+set country=IL
+call copy_translation.cmd %src_root% %dest_root% %lang% %country% %locale%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country% %locale%
 
 :: Hungarian
 set lang=hu
-set locale=HU
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
+set country=HU
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+
+:: Indonesian, id in-ID -> in
+:: special case
+set lang=id
+set locale=in
+set country=ID
+call copy_translation_to_locale.cmd %src_root% %dest_root% %lang% %country% %locale%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country% %locale%
 
 :: Italian
 set lang=it
-set locale=IT
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=IT
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Japanese
 set lang=ja
-set locale=JP
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=JP
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Polish
 set lang=pl
-set locale=PL
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-::call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=PL
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+::call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Portugese, Brasilian
 set lang=pt
-set locale=BR
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=BR
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Portugese
 set lang=pt
-set locale=PT
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=PT
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Romanian
 set lang=ro
-set locale=RO
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=RO
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Russian
 set lang=ru
-set locale=RU
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=RU
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Slovak
 set lang=sk
-set locale=SK
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=SK
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Spanish
 set lang=es
-set locale=ES
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=ES
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Turkish
 set lang=tr
-set locale=TR
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-::call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=TR
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+::call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Ukrainian
 set lang=uk
-set locale=UA
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=UA
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 :: Vietnamese
 set lang=vi
-set locale=VN
-call copy_translation.cmd %src_root% %dest_root% %lang% %locale%
-call copy_dropbox.cmd %src_root% %dest_root% %lang% %locale%
+set country=VN
+call copy_translation.cmd %src_root% %dest_root% %lang% %country%
+call copy_dropbox.cmd %src_root% %dest_root% %lang% %country%
 
 pause
