@@ -325,6 +325,7 @@
   <string name="descending">Decrescente</string>
   <string name="sorting_month">Ordinamento per mese</string>
   <!-- 20130305 -->
+  <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
   <string name="dropbox_select_file">Selezionare un file da Dropbox</string>
   <string name="last_modified">Ultima modifica</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -639,6 +640,9 @@
   <string name="quote_provider">Fornitore Quote</string>
   <string name="copy">Copia</string>
   <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
+  <string name="print">Stampa</string>
+  <string name="min_19">Per poter stampare il documento è necessario almeno Android 4.4.</string>
+  <string name="save_as_html">Salva come HTML</string>
   <!-- Currencies -->
   <string name="currencies">Valute</string>
   <string name="currencies_used">Valute, usate</string>
@@ -653,4 +657,8 @@
   <string name="question_update_currency_exchange_rates">Si desidera aggiornare il tasso di cambio?</string>
   <string name="error_update_currency_exchange_rate">C\'è stato un errore durante l\'aggiornamento del tasso</string>
   <string name="currencies_empty">Non sono state trovate valute. Per crearne una, toccare il pulsante più verde.</string>
+  <string name="active_currencies">Valute attive</string>
+  <string name="inactive_currencies">Valute inattive</string>
+  <string name="all_currencies">Tutte le valute</string>
+  <string name="portfolio">Portafoglio</string>
 </resources>

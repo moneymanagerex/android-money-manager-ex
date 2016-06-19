@@ -297,6 +297,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Делить</string>
   <string name="error_split_transaction_empty">Составная транзакция должна содержать хотя бы одну операцию</string>
+  <string name="swipe_to_dismiss">Смахните элементы для удаления.</string>
   <string name="export_data_to_csv">Экспорт данных в CSV файл</string>
   <string name="export_data_in_progress">Экспорт данных. Пожалуйста подождите&#8230;</string>
   <string name="export_file_complete">Данные были успешно выгружены в файл %1$s</string>
@@ -324,6 +325,7 @@
   <string name="descending">По убыванию</string>
   <string name="sorting_month">Сортировка по месяцам</string>
   <!-- 20130305 -->
+  <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
   <string name="dropbox_select_file">Выберите файл из Dropbox</string>
   <string name="last_modified">Последнее изменение</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -622,6 +624,7 @@
   <string name="asset_allocation_diff_threshold">Порог разницы распределения активов</string>
   <string name="asset_allocation_diff_threshold_summary">Порог, вызывающий смену окраски различных значений.</string>
   <string name="error_saving_record">Ошибка при сохранении записи</string>
+  <string name="error_loading_currency">Ошибка загрузки Валюты</string>
   <string name="symbol_required">Требуется Символ</string>
   <string name="recurrence_type_not_set">Не задан тип повторения</string>
   <string name="invalid_recurrence_type">Недопустимый тип повторения</string>
@@ -635,6 +638,9 @@
   <string name="quote_provider">Поставщик цен</string>
   <string name="copy">Копировать</string>
   <string name="app_restart">Для принятия изменений программу необходимо перезапустить.</string>
+  <string name="print">Печать</string>
+  <string name="min_19">Вам нужно по крайней мере Android 4.4, чтобы иметь возможность распечатать документ.</string>
+  <string name="save_as_html">Сохранить как HTML</string>
   <!-- Currencies -->
   <string name="currencies">Валюты</string>
   <string name="currencies_used">Валюты, использовано</string>
@@ -649,4 +655,8 @@
   <string name="question_update_currency_exchange_rates">Вы хотите обновить обменый курс ?</string>
   <string name="error_update_currency_exchange_rate">Ошибка обновления курса валюты</string>
   <string name="currencies_empty">Валюты не найдены. Чтобы создать валюту, нажмите на кнопку с зеленым плюсом.</string>
+  <string name="active_currencies">Активные валюты</string>
+  <string name="inactive_currencies">Неактивные валюты</string>
+  <string name="all_currencies">Все Валюты</string>
+  <string name="portfolio">Портфолио</string>
 </resources>

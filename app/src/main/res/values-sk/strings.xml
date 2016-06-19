@@ -56,6 +56,8 @@
   <string name="preferences_dispaly">Vzhľad</string>
   <string name="preferences_behaviour">Chovanie</string>
   <string name="base_currency">Základná mena</string>
+  <string name="base_currency_changed">Základná mena zmenená</string>
+  <string name="base_currency_change_notification">Základná mena sa zmenila. Prosím aktualizujte výmenné kurzy, aby ste získali správne hodnoty v novej základnej mene.</string>
   <string name="view_accounts_opened">Zobraziť otvorené účty</string>
   <string name="if_not_selected_willShowAllAccounts">Ak nie je vybraté zobraziť všetky účty</string>
   <string name="view_accounts_favorites">Zobraziť obľúbené účty</string>
@@ -153,6 +155,7 @@
   <!-- application string -->
   <string name="about">O aplikácií</string>
   <string name="add">Pridať</string>
+  <string name="confirmDelete">Ste si istí, že chcete odstrániť tento záznam?</string>
   <string name="date">Dátum</string>
   <string name="delete">Odstrániť</string>
   <string name="download">Stiahnuť</string>
@@ -319,6 +322,7 @@
   <string name="descending">Zostupne</string>
   <string name="sorting_month">Radenie mesiacov</string>
   <!-- 20130305 -->
+  <string name="dropbox_empty_folder">Adresár Dropbox/Apps/Money Manager Ex Mobile je prázdny. Ak už používate MoneyManagerEx, tak skopírujte databázu do tohto adresára na vašom počítači a potom vykonajte aktualizáciu.</string>
   <string name="dropbox_select_file">Vyberte súbor z Dropboxu</string>
   <string name="last_modified">Naposledy zmenené</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -539,6 +543,7 @@
   <string name="choose_type">Vyberte typ</string>
   <string name="default_account">Predvolený účet</string>
   <string name="default_account_summary">Účet, ktorý chcete použiť pri zadávaní novej transakcie.</string>
+  <string name="default_account_not_set">Predvolené konto nie je nastavené.</string>
   <string name="balance_account">Zostatok účtu</string>
   <string name="balance_adjustment">Úprava zostatku</string>
   <string name="cash">Hotovosť</string>
@@ -608,7 +613,13 @@
   <string name="enter_password">Zadajte heslo</string>
   <string name="success">Operácia bola úspešná</string>
   <string name="overview">Prehľad</string>
+  <string name="asset_allocation_diff_threshold">Rozdiel prahovej hodnoty pridelenia majetku</string>
+  <string name="asset_allocation_diff_threshold_summary">Prahová hodnota, ktorá vyvolá sfarbenie rozdielnych hodnôt.</string>
   <string name="error_saving_record">Chyba pri ukladaní záznamu</string>
+  <string name="error_loading_currency">Chyba načítania meny</string>
+  <string name="symbol_required">Symbol je potrebný</string>
+  <string name="recurrence_type_not_set">Typ opakovania nie je nastavený</string>
+  <string name="invalid_recurrence_type">Typ opakovania neplatný</string>
   <string name="account_not_found">Účet nenájdený</string>
   <string name="favourite">Obľúbené</string>
   <!-- budgets -->
@@ -617,9 +628,14 @@
   <string name="budget_year">Rok rozpočtu</string>
   <string name="budget_month">Mesiac rozpočtu</string>
   <string name="copy">Kopírovať</string>
+  <string name="app_restart">Aplikácie sa teraz zavrie, aby sa načítali zmeny. Prosím, reštartujte.</string>
+  <string name="print">Vytlačiť</string>
+  <string name="min_19">Budete potrebovať aspoň Android 4.4, aby ste mohli vytlačiť dokument.</string>
+  <string name="save_as_html">Uložiť ako HTML</string>
   <!-- Currencies -->
   <string name="currencies">Meny</string>
   <string name="currencies_used">Meny, použité</string>
+  <string name="open_currencies">Otvoriť meny</string>
   <string name="import_all_currencies">Importovať meny</string>
   <string name="import_currencies_in_progress">Importujú sa meny. Počkajte prosím&#8230;</string>
   <string name="question_import_currencies">Chcete importovať menu?</string>
@@ -630,4 +646,8 @@
   <string name="question_update_currency_exchange_rates">Chcete aktualizovať výmenný kurz?</string>
   <string name="error_update_currency_exchange_rate">Počas aktualizácie kurzu došlo k chybe</string>
   <string name="currencies_empty">Nebola nájdená žiadna mena. Pre vytvorenie meny klepnite na zelené tlačidlo so symbolom plus.</string>
+  <string name="active_currencies">Aktívne meny</string>
+  <string name="inactive_currencies">Neaktívne meny</string>
+  <string name="all_currencies">Všetky meny</string>
+  <string name="portfolio">Portfólio</string>
 </resources>

@@ -635,6 +635,9 @@
   <string name="quote_provider">引用提供程序</string>
   <string name="copy">复制</string>
   <string name="app_restart">此应用将关闭以应用您所做的更改。请稍后重新启动。</string>
+  <string name="print">打印</string>
+  <string name="min_19">打印功能需要 Android 4.4 以上版本的支持</string>
+  <string name="save_as_html">另存为 HTML</string>
   <!-- Currencies -->
   <string name="currencies">货币</string>
   <string name="currencies_used">使用的货币</string>
@@ -649,4 +652,6 @@
   <string name="question_update_currency_exchange_rates">确定要更新汇率？</string>
   <string name="error_update_currency_exchange_rate">更新汇率时出错</string>
   <string name="currencies_empty">没有找到可用的币种。轻触绿色加号按钮可添加一个币种。</string>
+  <string name="all_currencies">所有货币</string>
+  <string name="portfolio">组合</string>
 </resources>
