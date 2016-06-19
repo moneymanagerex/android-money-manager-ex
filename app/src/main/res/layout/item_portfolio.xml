@@ -17,75 +17,41 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/mmex_listitem_height_small"
+    android:paddingLeft="@dimen/mmex_listitem_padding_side"
+    android:paddingRight="@dimen/mmex_listitem_padding_side"
     android:layout_margin="@dimen/mmex_margin"
-    android:orientation="vertical" >
-
-    <com.money.manager.ex.view.RobotoTextView
-        android:id="@+id/textViewAccountName"
-        style="?attr/headerTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mmex_margin"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+    android:gravity="center_vertical" >
 
         <!-- symbol -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent">
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/symbolTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true" />
-
-        </LinearLayout>
-
-        <!-- name -->
-        <LinearLayout
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/symbolTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/mmex_margin"
-            android:layout_marginRight="@dimen/mmex_margin"
             android:layout_weight="1"
-            android:orientation="vertical" >
+            android:ellipsize="end"
+            android:singleLine="true" />
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/nameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true" />
-
-        </LinearLayout>
-
-        <!-- price -->
-        <LinearLayout
+        <!-- number of shares -->
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/numSharesView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical" >
+            android:layout_marginLeft="@dimen/mmex_margin"
+            android:layout_marginRight="@dimen/mmex_margin"
+            android:gravity="end"
+            android:ellipsize="end"
+            android:singleLine="true" />
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/priceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="right"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-    </LinearLayout>
+        <!-- price -->
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/priceTextView"
+            android:layout_width="wrap_content"
+            android:minWidth="40sp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textStyle="bold" />
 
 </LinearLayout>

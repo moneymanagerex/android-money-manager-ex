@@ -19,7 +19,6 @@ package com.money.manager.ex.investment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
@@ -52,7 +51,6 @@ public class PortfolioFragment
      * @param accountId Investment account Id
      * @return A new instance of fragment PortfolioFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static PortfolioFragment newInstance(Integer accountId) {
         PortfolioFragment fragment = new PortfolioFragment();
         Bundle args = new Bundle();
@@ -102,9 +100,12 @@ public class PortfolioFragment
         setListShown(false);
 
         // create adapter
-        StocksCursorAdapter adapter = new StocksCursorAdapter(getActivity(), null);
+        PortfolioCursorAdapter adapter = new PortfolioCursorAdapter(getActivity(), null);
 
         initializeList();
+
+        // test only
+//        Money money = Money.of(150, Monetary.getCurrency("EUR"));
 
         // set adapter
         setListAdapter(adapter);
@@ -144,7 +145,7 @@ public class PortfolioFragment
                 // Ignore the header row.
                 if (getListView().getHeaderViewsCount() > 0 && position == 0) return;
 
-                if (getListAdapter() != null && getListAdapter() instanceof StocksCursorAdapter) {
+                if (getListAdapter() != null && getListAdapter() instanceof PortfolioCursorAdapter) {
                     Cursor cursor = (Cursor) getListAdapter().getItem(position);
                     Stock stock = Stock.from(cursor);
                     openEditInvestmentActivity(stock.getId());

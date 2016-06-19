@@ -31,7 +31,7 @@ import com.money.manager.ex.domainmodel.Stock;
 import java.util.HashMap;
 
 /**
- * Cursor adapter for stock list (watchlist).
+ * Cursor adapter for stock list (portfolio).
  */
 public class PortfolioCursorAdapter
     extends CursorAdapter {
@@ -54,10 +54,10 @@ public class PortfolioCursorAdapter
         View view = mInflater.inflate(R.layout.item_portfolio, parent, false);
 
         // holder
-        StocksDataViewHolder holder = new StocksDataViewHolder();
+        PortfolioItemDataViewHolder holder = new PortfolioItemDataViewHolder();
 
         holder.symbolTextView = (TextView) view.findViewById(R.id.symbolTextView);
-        holder.nameTextView = (TextView) view.findViewById(R.id.nameTextView);
+        holder.numSharesView = (TextView) view.findViewById(R.id.numSharesView);
         holder.priceTextView = (TextView) view.findViewById(R.id.priceTextView);
 
         // set holder to view
@@ -69,7 +69,7 @@ public class PortfolioCursorAdapter
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // take a holder
-        StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
+        PortfolioItemDataViewHolder holder = (PortfolioItemDataViewHolder) view.getTag();
 
         // header index
         int accountId = cursor.getInt(cursor.getColumnIndex(Stock.HELDAT));
@@ -81,9 +81,9 @@ public class PortfolioCursorAdapter
         String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
         holder.symbolTextView.setText(symbol);
 
-        // name
-        String name = cursor.getString(cursor.getColumnIndex(Stock.STOCKNAME));
-        holder.nameTextView.setText(name);
+        // number of shares
+        String numberOfShares = cursor.getString(cursor.getColumnIndex(Stock.NUMSHARES));
+        holder.numSharesView.setText(numberOfShares);
 
         // price
         String price = cursor.getString(cursor.getColumnIndex(Stock.CURRENTPRICE));

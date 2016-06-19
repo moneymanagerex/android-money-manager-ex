@@ -22,6 +22,6 @@ import android.widget.TextView;
  */
 public class PortfolioItemDataViewHolder {
     TextView symbolTextView;
-    TextView nameTextView;
+    TextView numSharesView;
     TextView priceTextView;
 }
