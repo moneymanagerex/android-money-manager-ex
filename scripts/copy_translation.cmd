@@ -15,11 +15,11 @@ set dest_lang=%~5
 :: Source directory
 set source=%src_root%\%src_lang%
 
-:: Destination directory.
-::set destination=%dest_root%\values-%dest_lang%
+::echo %source% ---} %dest_root% - %dest_lang%
+echo %src_lang% 
 
-::echo %src%\%src_lang%\res\values-%locale%-r%country%\*.* --- %dest%
+:: Categories and Strings 
 copy %source%\res\values-%src_locale%\*.* %dest_root%\values-%dest_lang%
 
 :: Dropbox
-copy %source%\%src_lang%\help\help_dropbox.html %dest_root%\raw-%dest_lang%
+copy %source%\help\*.* %dest_root%\raw-%dest_lang%

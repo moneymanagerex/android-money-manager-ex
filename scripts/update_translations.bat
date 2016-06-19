@@ -36,10 +36,10 @@ set dest_lang=%src_lang%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Finnish
-set src_lang=fi
-set src_locale=%src_lang%-rFI
-set dest_lang=%src_lang%
-call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+REM set src_lang=fi
+REM set src_locale=%src_lang%-rFI
+REM set dest_lang=%src_lang%
+REM call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: French
 set src_lang=fr
@@ -96,15 +96,15 @@ set dest_lang=%src_lang%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Portugese, Brasilian
-set src_lang=pt
-set src_locale=%src_lang%-rBR
-set dest_lang=%src_lang%
+set src_lang=pt-BR
+set src_locale=pt-rBR
+set dest_lang=%src_locale%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Portugese
-set src_lang=pt
-set src_locale=%src_lang%-rPT
-set dest_lang=%src_lang%
+set src_lang=pt-PT
+set src_locale=pt-rPT
+set dest_lang=pt
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Romanian
@@ -126,9 +126,9 @@ set dest_lang=%src_lang%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Spanish
-set src_lang=es
-set src_locale=%src_lang%-rES
-set dest_lang=%src_lang%
+set src_lang=es-ES
+set src_locale=es-rES
+set dest_lang=es
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
 :: Turkish
