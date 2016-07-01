@@ -22,7 +22,8 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.auth.DbxUserAuthRequests;
 
 /**
- * Dropbox Helper for API v2
+ * Dropbox Helper for API v2.
+ * Not used yet. Trying out CloudRail.
  */
 public class DropboxHelper2 {
     public DropboxHelper2() {
