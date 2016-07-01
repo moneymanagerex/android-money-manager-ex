@@ -30,7 +30,7 @@
         android:summary="%s"
         android:entries="@array/cloud_provider_names"
         android:entryValues="@array/cloud_provider_values"
-        android:defaultValue="0" />
+        android:defaultValue="1" />
 
     <!-- todo: remote path -->
     <!-- todo: synchronization interval -->

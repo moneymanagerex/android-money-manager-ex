@@ -17,6 +17,18 @@
 
 package com.money.manager.ex.sync;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
+
+import com.cloudrail.si.interfaces.CloudStorage;
+import com.cloudrail.si.services.Box;
+import com.cloudrail.si.services.Dropbox;
+import com.cloudrail.si.services.GoogleDrive;
+import com.cloudrail.si.services.OneDrive;
+import com.money.manager.ex.R;
+import com.money.manager.ex.settings.SettingsActivity;
+
 /**
  * Class used to manage the database synchronization process.
  * Currently forwards the calls to the Dropbox Helper.
@@ -68,6 +80,61 @@ public class SyncManager {
         // todo: replace this method
 //        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
 //        dropbox.openDownloadedDatabase();
+    }
 
+    /**
+     * Instance methods
+     */
+
+    public SyncManager(Context context) {
+        mContext = context;
+
+        readConfig();
+    }
+
+    private CloudStorage mStorage;
+    private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void login() {
+        new Thread() {
+            @Override
+            public void run() {
+                mStorage.login();
+            }
+        }.start();
+    }
+
+    private void readConfig() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String providerKey = sharedPref.getString(getContext().getString(R.string.pref_sync_provider), "1");
+
+        String packageName = getContext().getApplicationInfo().packageName;
+
+        // Sync provider mapping
+        switch (providerKey) {
+            case "1":
+                // Dropbox
+                mStorage = new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l");
+                break;
+            case "2":
+                // OneDrive
+                mStorage = new OneDrive(getContext(), "", "");
+                break;
+            case "3":
+                // Google Drive
+                mStorage = new GoogleDrive(getContext(), "", "");
+                break;
+            case "4":
+                // Box
+                mStorage = new Box(getContext(), "", "");
+                break;
+            default:
+                // ?
+                break;
+        }
     }
 }

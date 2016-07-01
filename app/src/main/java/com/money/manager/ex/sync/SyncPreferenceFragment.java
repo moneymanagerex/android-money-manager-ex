@@ -53,7 +53,6 @@ public class SyncPreferenceFragment
     public void onResume() {
         super.onResume();
 
-//        displayValues();
     }
 
     private void addHandlers() {
@@ -67,6 +66,15 @@ public class SyncPreferenceFragment
                 }
             });
         }
+
+        mViewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                // try to log in?
+                new SyncManager(getActivity()).login();
+                return true;
+            }
+        });
     }
 
     private void initializeControls() {
@@ -84,8 +92,4 @@ public class SyncPreferenceFragment
         mViewHolder.providerList.setEnabled(enabled);
     }
 
-    private void displayValues() {
-        mViewHolder.providerList.setSummary(mViewHolder.providerList.getEntry());
-
-    }
 }
