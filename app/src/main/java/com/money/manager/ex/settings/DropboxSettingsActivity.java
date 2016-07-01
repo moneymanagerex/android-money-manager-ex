@@ -18,6 +18,8 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
+import com.money.manager.ex.sync.SyncPreferenceFragment;
+
 public class DropboxSettingsActivity
     extends BaseSettingsFragmentActivity {
 
@@ -25,5 +27,6 @@ public class DropboxSettingsActivity
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         // todo: setSettingFragment(new DropboxSettingsFragment());
+        setSettingFragment(new SyncPreferenceFragment());
     }
 }
