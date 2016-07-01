@@ -45,8 +45,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -179,7 +177,7 @@ public class MainActivity
 
         createLayout();
 
-        pingStats();
+//        pingStats();
 
         if (!tutorialShown) {
             // Skipped tutorial because it was seen in the past.
@@ -1288,21 +1286,21 @@ public class MainActivity
         requestDatabaseChange(recentDb.filePath);
     }
 
-    /**
-     * Ref: https://developers.google.com/analytics/devguides/collection/android/v4/events
-     */
-    private void pingStats() {
-        MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
-        Tracker t = app.getDefaultTracker();
-
-        t.setScreenName("Screen~MainActivity");
-        t.send(new HitBuilders.ScreenViewBuilder().build());
-        // to send an event:
-//        t.send(new HitBuilders.EventBuilder()
-//                .setCategory("Category")
-//                .setAction("Action")
-//                .build());
-    }
+//    /**
+//     * Ref: https://developers.google.com/analytics/devguides/collection/android/v4/events
+//     */
+//    private void pingStats() {
+//        MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
+//        Tracker t = app.getDefaultTracker();
+//
+//        t.setScreenName("Screen~MainActivity");
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        // to send an event:
+////        t.send(new HitBuilders.EventBuilder()
+////                .setCategory("Category")
+////                .setAction("Action")
+////                .build());
+//    }
 
     /**
      * Change the database.

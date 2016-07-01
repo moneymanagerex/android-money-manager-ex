@@ -28,8 +28,6 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -76,7 +74,7 @@ public class MoneyManagerApplication
     private static float mTextSize;
     // user name application
     private static String userName = "";
-    private static Tracker mTracker;
+//    private static Tracker mTracker;
 
     public static MoneyManagerApplication getInstanceApp() {
         return myInstance;
@@ -372,26 +370,26 @@ public class MoneyManagerApplication
 
     // Private
 
-    /**
-     * Gets the default {@link Tracker} for this {@link Application}.
-     * @return tracker
-     */
-    synchronized public Tracker getDefaultTracker() {
-        if (mTracker == null) {
-            //initTrackers();
-            //AnalyticsTrackers.initialize(this);
-
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            mTracker = analytics.newTracker(R.xml.app_tracker);
-
-            Core core = new Core(this);
-            mTracker.setAppVersion(core.getAppVersionName());
-
-            // Enable reporting uncaught exceptions.
-            mTracker.enableExceptionReporting(true);
-        }
-
-        return mTracker;
-    }
+//    /**
+//     * Gets the default {@link Tracker} for this {@link Application}.
+//     * @return tracker
+//     */
+//    synchronized public Tracker getDefaultTracker() {
+//        if (mTracker == null) {
+//            //initTrackers();
+//            //AnalyticsTrackers.initialize(this);
+//
+//            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+//            mTracker = analytics.newTracker(R.xml.app_tracker);
+//
+//            Core core = new Core(this);
+//            mTracker.setAppVersion(core.getAppVersionName());
+//
+//            // Enable reporting uncaught exceptions.
+//            mTracker.enableExceptionReporting(true);
+//        }
+//
+//        return mTracker;
+//    }
 
 }
