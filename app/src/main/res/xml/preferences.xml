@@ -140,51 +140,51 @@
             android:key="@string/pref_database_backup"
             android:title="@string/menu_move_database_to_external_storage" />
     </PreferenceScreen>
-    <PreferenceScreen
-        android:key="@string/pref_dropbox_how_it_works"
-        android:title="@string/dropbox">
-        <Preference
-            android:key="@string/pref_dropbox_link"
-            android:title="@string/dropbox_link" />
-        <Preference
-            android:dependency="@string/pref_dropbox_unlink"
-            android:key="@string/pref_dropbox_linked_file"
-            android:title="@string/dropbox_linkedFile" />
+    <!--<PreferenceScreen-->
+        <!--android:key="@string/pref_dropbox_how_it_works"-->
+        <!--android:title="@string/dropbox">-->
+        <!--<Preference-->
+            <!--android:key="@string/pref_dropbox_link"-->
+            <!--android:title="@string/dropbox_link" />-->
+        <!--<Preference-->
+            <!--android:dependency="@string/pref_dropbox_unlink"-->
+            <!--android:key="@string/pref_dropbox_linked_file"-->
+            <!--android:title="@string/dropbox_linkedFile" />-->
 
-        <ListPreference
-            android:defaultValue="30"
-            android:dependency="@string/pref_dropbox_unlink"
-            android:entries="@array/timeout_synchronize_items"
-            android:entryValues="@array/timeout_synchronize_values"
-            android:key="@string/pref_dropbox_times_repeat_service"
-            android:summary="@string/summary_synchronization_interval"
-            android:title="@string/synchronization_interval" />
+        <!--<ListPreference-->
+            <!--android:defaultValue="30"-->
+            <!--android:dependency="@string/pref_dropbox_unlink"-->
+            <!--android:entries="@array/timeout_synchronize_items"-->
+            <!--android:entryValues="@array/timeout_synchronize_values"-->
+            <!--android:key="@string/pref_dropbox_times_repeat_service"-->
+            <!--android:summary="@string/summary_synchronization_interval"-->
+            <!--android:title="@string/synchronization_interval" />-->
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:dependency="@string/pref_dropbox_unlink"
-            android:key="@string/pref_dropbox_upload_immediate"
-            android:summary="@string/summary_dropbox_upload_immediate"
-            android:title="@string/title_dropbox_upload_immediate" />
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:dependency="@string/pref_dropbox_unlink"-->
+            <!--android:key="@string/pref_dropbox_upload_immediate"-->
+            <!--android:summary="@string/summary_dropbox_upload_immediate"-->
+            <!--android:title="@string/title_dropbox_upload_immediate" />-->
 
-        <PreferenceScreen
-            android:dependency="@string/pref_dropbox_unlink"
-            android:key="@string/pref_dropbox_download"
-            android:summary="@string/summary_download_from_drobpox"
-            android:title="@string/download_from_drobpox" />
-        <PreferenceScreen
-            android:dependency="@string/pref_dropbox_unlink"
-            android:key="@string/pref_dropbox_upload"
-            android:summary="@string/summary_upload_to_drobpox"
-            android:title="@string/upload_to_drobpox" />
+        <!--<PreferenceScreen-->
+            <!--android:dependency="@string/pref_dropbox_unlink"-->
+            <!--android:key="@string/pref_dropbox_download"-->
+            <!--android:summary="@string/summary_download_from_drobpox"-->
+            <!--android:title="@string/download_from_drobpox" />-->
+        <!--<PreferenceScreen-->
+            <!--android:dependency="@string/pref_dropbox_unlink"-->
+            <!--android:key="@string/pref_dropbox_upload"-->
+            <!--android:summary="@string/summary_upload_to_drobpox"-->
+            <!--android:title="@string/upload_to_drobpox" />-->
 
-        <Preference
-            android:key="@string/pref_dropbox_unlink"
-            android:title="@string/dropbox_unlink" />
-        <Preference
-            android:key="@string/pref_dropbox_wiki"
-            android:title="@string/help" />
-    </PreferenceScreen>
+        <!--<Preference-->
+            <!--android:key="@string/pref_dropbox_unlink"-->
+            <!--android:title="@string/dropbox_unlink" />-->
+        <!--<Preference-->
+            <!--android:key="@string/pref_dropbox_wiki"-->
+            <!--android:title="@string/help" />-->
+    <!--</PreferenceScreen>-->
     <PreferenceScreen
         android:key="@string/pref_donate"
         android:title="@string/donate" />

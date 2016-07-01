@@ -65,6 +65,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.settings.SyncSettingsActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -77,7 +78,6 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.DropboxSettingsActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.IntentDataParameters;
@@ -88,7 +88,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -643,7 +642,7 @@ public class HomeFragment
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), DropboxSettingsActivity.class);
+                    Intent intent = new Intent(getActivity(), SyncSettingsActivity.class);
                     //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
                     startActivity(intent);
                 }

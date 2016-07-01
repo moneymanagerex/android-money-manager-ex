@@ -118,8 +118,7 @@ public class ExceptionHandler
 
         StringBuilder errorReport = new StringBuilder();
         errorReport.append("************ FEEDBACK ************\n\n");
-        errorReport.append("Please tell us what happened. Thank you!");
-        errorReport.append(LINE_SEPARATOR);
+        errorReport.append("Please tell us what happened in the space below. Thank you!");
         errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
@@ -127,7 +126,6 @@ public class ExceptionHandler
         errorReport.append("************ APP DETAILS ************\n\n");
         String version = getAppVersionInformation();
         errorReport.append(version);
-        errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
 
         errorReport.append("\n************ FIRMWARE ************\n");
@@ -139,6 +137,7 @@ public class ExceptionHandler
         errorReport.append(LINE_SEPARATOR);
         errorReport.append("Incremental: ");
         errorReport.append(Build.VERSION.INCREMENTAL);
+        errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
 
         errorReport.append("************ CAUSE OF ERROR ************\n\n");

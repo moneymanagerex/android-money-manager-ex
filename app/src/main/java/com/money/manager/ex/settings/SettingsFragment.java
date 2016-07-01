@@ -23,7 +23,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
@@ -108,12 +107,12 @@ public class SettingsFragment
             });
         }
 
-        final Preference dropboxPreference = findPreference(getString(PreferenceConstants.PREF_DROPBOX_HOWITWORKS));
+        final Preference dropboxPreference = findPreference(getString(R.string.pref_dropbox_how_it_works));
         if (dropboxPreference != null) {
             dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), DropboxSettingsActivity.class));
+                    startActivity(new Intent(getActivity(), SyncSettingsActivity.class));
                     return true;
                 }
             });

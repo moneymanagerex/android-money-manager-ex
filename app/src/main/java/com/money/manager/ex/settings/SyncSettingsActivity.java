@@ -20,13 +20,13 @@ import android.os.Bundle;
 
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
-public class DropboxSettingsActivity
+public class SyncSettingsActivity
     extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        // todo: setSettingFragment(new DropboxSettingsFragment());
+        // setSettingFragment(new DropboxSettingsFragment());
         setSettingFragment(new SyncPreferenceFragment());
     }
 }

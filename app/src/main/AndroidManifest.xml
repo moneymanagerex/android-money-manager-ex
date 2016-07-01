@@ -294,7 +294,7 @@
             android:name=".settings.DatabaseSettingsActivity"
             android:label="@string/database" />
         <activity
-            android:name=".settings.DropboxSettingsActivity"
+            android:name=".settings.SyncSettingsActivity"
             android:label="@string/dropbox" />
         <activity android:name=".PasscodeActivity" >
             <intent-filter>

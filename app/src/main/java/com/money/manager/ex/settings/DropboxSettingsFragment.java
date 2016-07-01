@@ -407,7 +407,7 @@
 //
 //    private void downloadFileFromDropbox() {
 //        // must send the parent activity here in order to display the progress dialog.
-//        DropboxSettingsActivity parent = (DropboxSettingsActivity) getActivity();
+//        SyncSettingsActivity parent = (SyncSettingsActivity) getActivity();
 //        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper);
 //        dropbox.downloadFromDropbox();
 //    }
