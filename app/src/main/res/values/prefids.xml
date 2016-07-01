@@ -52,10 +52,6 @@
     <string name="pref_edit_passcode">editpasscode</string>
     <string name="pref_disable_passcode">disablepasscode</string>
     <string name="pref_active_passcode">activepasscode</string>
-    <string name="pref_dropbox_link">dropbox2link</string>
-    <string name="pref_dropbox_unlink">dropbox2unlink</string>
-    <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
-    <string name="pref_dropbox_linked_file_all">dropbox2fileAll</string>
     <string name="pref_donate">donate</string>
     <string name="pref_version_name">versionname</string>
     <string name="pref_version_code">versioncode</string>
@@ -93,6 +89,10 @@
     <string name="pref_investment">pref_investment</string>
     <string name="pref_quote_provider">pref_quote_provider</string>
     <!-- synchronization -->
+    <string name="pref_dropbox_link">dropbox2link</string>
+    <string name="pref_dropbox_unlink">dropbox2unlink</string>
+    <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
+    <!--<string name="pref_dropbox_linked_file_all">dropbox2fileAll</string>-->
     <string name="pref_sync_enabled">pref_sync_enabled</string>
     <string name="pref_sync_provider">pref_sync_provider</string>
 </resources>

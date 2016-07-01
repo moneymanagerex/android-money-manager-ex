@@ -52,18 +52,18 @@ public class PreferenceConstants {
     public static final Integer PREF_EDIT_PASSCODE = R.string.pref_edit_passcode;
     public static final Integer PREF_DISABLE_PASSCODE = R.string.pref_disable_passcode;
     public static final Integer PREF_ACTIVE_PASSCODE = R.string.pref_active_passcode;
-    public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
-    public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
-    public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
+//    public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
+//    public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
+//    public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
     // Preference button for file anywhere in Drobpox
-    public static final Integer PREF_DROPBOX_LINKED_FILE_ALL = R.string.pref_dropbox_linked_file_all;
+//    public static final Integer PREF_DROPBOX_LINKED_FILE_ALL = R.string.pref_dropbox_linked_file_all;
     public static final Integer PREF_DONATE = R.string.pref_donate;
     public static final Integer PREF_VERSION_NAME = R.string.pref_version_name;
 
 
     public static final Integer PREF_SQLITE_VERSION = R.string.pref_sqlite_version;
-    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
-    public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
+//    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
+//    public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
 //    public static final Integer PREF_DROPBOX_HOWITWORKS = R.string.pref_dropbox_how_it_works;
     public static final Integer PREF_DROPBOX_TIMES_REPEAT = R.string.pref_dropbox_times_repeat_service;
 //    public static final Integer PREF_DROPBOX_UPLOAD_IMMEDIATE = R.string.pref_dropbox_upload_immediate;
@@ -78,17 +78,17 @@ public class PreferenceConstants {
 
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
-    public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
-    public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
-    public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
-    public static final String PREF_DROPBOX_OAUTH2_TOKEN = "PREF_DROPBOX_OAUTH2_TOKEN";
+//    public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
+//    public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
+//    public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
+//    public static final String PREF_DROPBOX_OAUTH2_TOKEN = "PREF_DROPBOX_OAUTH2_TOKEN";
 
     // check repeating transacion
     public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;
     public static final Integer PREF_REPEATING_TRANSACTION_CHECK = R.string.pref_repeating_transaction_check_time;
 
     // Wiki dropbox
-    public static final Integer PREF_DROPBOX_WIKI = R.string.pref_dropbox_wiki;
+//    public static final Integer PREF_DROPBOX_WIKI = R.string.pref_dropbox_wiki;
 
 //    public static final Integer PREF_SHOW_TUTORIAL = R.string.pref_show_tutorial;
     public static final Integer PREF_DASHBOARD_GROUP_VISIBLE = R.string.pref_dashboard_group_visibility;

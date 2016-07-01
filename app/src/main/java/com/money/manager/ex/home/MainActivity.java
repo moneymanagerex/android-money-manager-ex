@@ -409,7 +409,7 @@ public class MainActivity
         File db = new File(currentDbPath);
         String dbName = db.getName();
 
-        String remoteDb = SyncManager.getRemotePath();
+        String remoteDb = new SyncManager(this).getRemotePath();
         if (StringUtils.isEmpty(remoteDb)) return;
 
         File dropboxDb = new File(remoteDb);

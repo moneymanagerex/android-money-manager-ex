@@ -20,14 +20,24 @@ package com.money.manager.ex.sync;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
 import com.cloudrail.si.services.Dropbox;
 import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
+import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.settings.SettingsActivity;
+
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Class used to manage the database synchronization process.
@@ -67,11 +77,6 @@ public class SyncManager {
         return false;
     }
 
-    public static String getRemotePath() {
-        // todo:  mDropboxHelper.getLinkedRemoteFile();
-        return "";
-    }
-
     public static void setRemotePath(String filePath) {
         // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
     }
@@ -99,6 +104,11 @@ public class SyncManager {
         return mContext;
     }
 
+    public String getRemotePath() {
+        // todo:  mDropboxHelper.getLinkedRemoteFile();
+        return "";
+    }
+
     public void login() {
         new Thread() {
             @Override
@@ -108,11 +118,49 @@ public class SyncManager {
         }.start();
     }
 
+//    public List<CloudMetaData> getFolderContents(final String folder) {
+//        List<CloudMetaData> items = null;
+//
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        Callable<List<CloudMetaData>> callable = new Callable<List<CloudMetaData>>() {
+//            @Override
+//            public List<CloudMetaData> call() {
+//                return mStorage.getChildren(folder);
+//            }
+//        };
+//        Future<List<CloudMetaData>> future = executor.submit(callable);
+//
+//        try {
+//            // future.get() returns 2 or raises an exception if the thread dies, so safer
+//            items = future.get();
+//        } catch (Exception ex) {
+//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+//            handler.handle(ex, "fetching remote contents");
+//        }
+//
+//        executor.shutdown();
+//
+//        return items;
+//    }
+
+    public List<CloudMetaData> getFolderContents(final String folder) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<CloudMetaData> items = mStorage.getChildren(folder);
+                
+            }
+        }).start();
+        return null;
+    }
+
+    // private
+
     private void readConfig() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String providerKey = sharedPref.getString(getContext().getString(R.string.pref_sync_provider), "1");
 
-        String packageName = getContext().getApplicationInfo().packageName;
+//        String packageName = getContext().getApplicationInfo().packageName;
 
         // Sync provider mapping
         switch (providerKey) {

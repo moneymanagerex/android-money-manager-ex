@@ -18,6 +18,7 @@
 package com.money.manager.ex.sync;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.ListPreference;
@@ -45,51 +46,20 @@ public class SyncPreferenceFragment
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.settings_sync);
 
-        initializeControls();
-        addHandlers();
-    }
+        mViewHolder = new SyncPreferencesViewHolder(this);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    private void addHandlers() {
-        if (mViewHolder.syncEnabled != null) {
-            mViewHolder.syncEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    // enable other values
-                    togglePreferences((Boolean) o);
-                    return true;
-                }
-            });
-        }
-
-        mViewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        mViewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                // try to log in?
-                new SyncManager(getActivity()).login();
-                return true;
+            public boolean onPreferenceClick(Preference preference) {
+                // show the file browser/picker.
+                Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
+                //intent.putExtra(CloudFilePickerActivity.INTENT_DROBPOXFILE_PATH, mDropboxHelper.getLinkedRemoteFile());
+                //todo startActivityForResult(intent, REQUEST_DROPBOX_FILE);
+                startActivity(intent);
+
+                return false;
             }
         });
-    }
-
-    private void initializeControls() {
-        mViewHolder = new SyncPreferencesViewHolder(this);
-        boolean enabled = mViewHolder.syncEnabled.isChecked();
-
-        // provider list
-        if (mViewHolder.providerList != null) {
-            mViewHolder.providerList.setEnabled(enabled);
-            // show current provider
-        }
-    }
-
-    private void togglePreferences(boolean enabled) {
-        mViewHolder.providerList.setEnabled(enabled);
     }
 
 }

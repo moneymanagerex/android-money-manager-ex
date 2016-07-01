@@ -26,6 +26,7 @@
     <!-- cloud storage provider -->
     <ListPreference
         android:key="@string/pref_sync_provider"
+        android:dependency="@string/pref_sync_enabled"
         android:title="@string/sync_provider"
         android:summary="%s"
         android:entries="@array/cloud_provider_names"
@@ -33,6 +34,12 @@
         android:defaultValue="1" />
 
     <!-- todo: remote path -->
+    <Preference
+        android:icon="@null"
+        android:dependency="@string/pref_sync_enabled"
+        android:key="@string/pref_dropbox_linked_file"
+        android:title="@string/remote_file" />
+
     <!-- todo: synchronization interval -->
     <!-- todo: sync only on wi-fi -->
     <!-- todo: upload immediately -->

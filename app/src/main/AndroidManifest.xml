@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -17,7 +16,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.money.manager.ex" >
+    package="com.money.manager.ex">
 
     <!-- xmlns:tools="http://schemas.android.com/tools" -->
 
@@ -35,6 +34,7 @@
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
     <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
@@ -46,14 +46,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/Theme.Splash"
-        tools:replace="android:label" >
+        tools:replace="android:label">
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
 
         <receiver
             android:name=".widget.ButtonAddTransactionWidgetProvider"
-            android:label="@string/widget_add_transaction" >
+            android:label="@string/widget_add_transaction">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -64,7 +64,7 @@
         </receiver>
         <receiver
             android:name=".widget.SummaryWidgetProvider"
-            android:label="@string/widget_summary" >
+            android:label="@string/widget_summary">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -75,7 +75,7 @@
         </receiver>
         <receiver
             android:name=".widget.AccountBillsWidgetProvider"
-            android:label="@string/widget_all_accounts" >
+            android:label="@string/widget_all_accounts">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -84,7 +84,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_account_bills" />
         </receiver>
-        <receiver android:name=".dropbox.SyncSchedulerBroadcastReceiver" >
+        <receiver android:name=".dropbox.SyncSchedulerBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="${applicationId}.custom.intent.action.START_SERVICE_DROPBOX" />
@@ -92,7 +92,7 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".dropbox.DropboxStartServiceReceiver" />
-        <receiver android:name=".core.MoneyManagerBootReceiver" >
+        <receiver android:name=".core.MoneyManagerBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -103,7 +103,7 @@
         <service
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service android:name=".dropbox.DropboxServiceIntent" >
+        <service android:name=".dropbox.DropboxServiceIntent">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.DROPBOX_SYNC" />
                 <action android:name="${applicationId}.custom.intent.action.DROPBOX_DOWNLOAD" />
@@ -120,7 +120,7 @@
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
@@ -130,7 +130,7 @@
             android:name=".widget.SummaryDashExtension"
             android:icon="@drawable/ic_stat_notification"
             android:label="@string/widget_summary"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" >
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
             <intent-filter>
                 <action android:name="com.google.android.apps.dashclock.Extension" />
             </intent-filter>
@@ -149,7 +149,7 @@
             android:name=".widget.AccountBillsDashExtension"
             android:icon="@drawable/ic_stat_notification"
             android:label="@string/widget_all_accounts"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" >
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
             <intent-filter>
                 <action android:name="com.google.android.apps.dashclock.Extension" />
             </intent-filter>
@@ -167,7 +167,7 @@
 
         <activity
             android:name=".home.MainActivity"
-            android:label="@string/application_name" >
+            android:label="@string/application_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -175,7 +175,7 @@
                 <!-- Samsung MultiWindow Function -->
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
-            <intent-filter android:label="@string/application_name" >
+            <intent-filter android:label="@string/application_name">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -206,24 +206,27 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name="com.dropbox.client2.android.AuthActivity"-->
-            <!--android:configChanges="orientation|keyboard|screenSize"-->
-            <!--android:launchMode="singleTask" >-->
-            <!--<intent-filter>-->
+        <!-- <activity -->
+        <!-- android:name="com.dropbox.client2.android.AuthActivity" -->
+        <!-- android:configChanges="orientation|keyboard|screenSize" -->
+        <!-- android:launchMode="singleTask" > -->
+        <!-- <intent-filter> -->
 
-                <!--&lt;!&ndash; Change this to be db- followed by your app key &ndash;&gt;-->
-                <!--<data android:scheme="db-i6trbis92p3zh5w" />-->
 
-                <!--<action android:name="android.intent.action.VIEW" />-->
+        <!-- &lt;!&ndash; Change this to be db- followed by your app key &ndash;&gt; -->
+        <!-- <data android:scheme="db-i6trbis92p3zh5w" /> -->
 
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+
+        <!-- <action android:name="android.intent.action.VIEW" /> -->
+
+
+        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".transactions.CheckingTransactionEditActivity"
-            android:label="@string/new_edit_transaction" >
+            android:label="@string/new_edit_transaction">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
 
@@ -234,19 +237,19 @@
         </activity>
         <activity
             android:name=".PayeeActivity"
-            android:label="@string/payee" >
+            android:label="@string/payee">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".account.AccountListActivity" >
+        <activity android:name=".account.AccountListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".common.CategoryListActivity" >
+        <activity android:name=".common.CategoryListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".currency.list.CurrencyListActivity" >
+        <activity android:name=".currency.list.CurrencyListActivity">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
@@ -255,20 +258,20 @@
             android:label="@string/about" />
         <activity
             android:name=".currency.CurrencyEditActivity"
-            android:label="@string/new_edit_currency" >
+            android:label="@string/new_edit_currency">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity
             android:name=".account.AccountEditActivity"
-            android:label="@string/account_list" >
+            android:label="@string/account_list">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
         <activity
             android:name=".recurring.transactions.RecurringTransactionEditActivity"
-            android:label="@string/new_edit_repeating_transaction" >
+            android:label="@string/new_edit_repeating_transaction">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
@@ -296,7 +299,7 @@
         <activity
             android:name=".settings.SyncSettingsActivity"
             android:label="@string/dropbox" />
-        <activity android:name=".PasscodeActivity" >
+        <activity android:name=".PasscodeActivity">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>
@@ -324,7 +327,7 @@
             android:label="@string/dropbox_select_file" />
         <activity
             android:name=".HelpActivity"
-            android:label="@string/help" >
+            android:label="@string/help">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_RAW_FILE" />
                 <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_URL" />
@@ -376,7 +379,7 @@
 
         <receiver
             android:name=".widget.SingleAccountWidget"
-            android:label="@string/single_account" >
+            android:label="@string/single_account">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -386,7 +389,7 @@
                 android:resource="@xml/widget_info_single_account" />
         </receiver>
 
-        <activity android:name=".widget.SingleAccountWidgetConfigureActivity" >
+        <activity android:name=".widget.SingleAccountWidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -421,12 +424,13 @@
             android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.gms.version" -->
+        <!-- android:value="@integer/google_play_services_version" /> -->
 
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
+        <activity android:name=".sync.CloudFilePickerActivity"></activity>
     </application>
 
 </manifest>

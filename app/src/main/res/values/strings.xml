@@ -727,4 +727,5 @@
     <!-- Synchronization -->
     <string name="sync_enabled">Sync enabled</string>
     <string name="sync_provider">Provider</string>
+    <string name="remote_file">Remote file</string>
 </resources>
