@@ -48,10 +48,10 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
-import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.sync.SyncManager;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -354,7 +354,7 @@ public class WatchlistFragment
                 mDataFragment.reloadData();
 
                 // notify about db file change.
-                DropboxHelper.notifyDataChanged();
+                SyncManager.dataChanged();
             }
         });
     }
@@ -550,7 +550,7 @@ public class WatchlistFragment
                     int deleted = history.deleteAllPriceHistory();
 
                     if (deleted > 0) {
-                        DropboxHelper.notifyDataChanged();
+                        SyncManager.dataChanged();
                         Toast.makeText(getActivity(),
                             getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
                             .show();

@@ -24,8 +24,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.sync.SyncService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -49,7 +49,7 @@ public class CheckDropboxForUpdatesTask
 
             // todo: check this
             //return mDropboxHelper.checkIfFileIsSync();
-            SyncManager.isInSync();
+            SyncManager.isFileInSync();
             return null;
         } catch (Exception e) {
             throw new RuntimeException("Error in checkDropboxForUpdates", e);
@@ -64,7 +64,7 @@ public class CheckDropboxForUpdatesTask
     @Override
     protected void onPostExecute(Integer ret) {
         try {
-            if (DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD.equals(ret)) {
+            if (ret.equals(SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD)) {
 //            showNotificationSnackbar();
                 showNotificationDialog();
             }

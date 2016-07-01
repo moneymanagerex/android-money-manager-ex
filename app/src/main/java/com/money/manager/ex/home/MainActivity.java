@@ -74,12 +74,9 @@ import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.core.MoneyManagerBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.dropbox.DropboxServiceIntent;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
@@ -93,6 +90,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
@@ -125,8 +123,6 @@ public class MainActivity
     public static boolean isRestartActivitySet() {
         return mRestartActivity;
     }
-
-    public DropboxHelper mDropboxHelper;
 
     // private
 
@@ -176,10 +172,10 @@ public class MainActivity
 
         // Close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
+        //todo: notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
 
         // Create a connection to Dropbox.
-        this.mDropboxHelper = DropboxHelper.getInstance(this);
+        // todo: this.mDropboxHelper = DropboxHelper.getInstance(this);
 
         createLayout();
 
@@ -405,7 +401,7 @@ public class MainActivity
     // Custom methods
 
     public void checkDropboxForUpdates() {
-        if (mDropboxHelper == null || !mDropboxHelper.isLinked()) {
+        if (SyncManager.isActive()) {
             return;
         }
 
@@ -415,7 +411,7 @@ public class MainActivity
         File db = new File(currentDbPath);
         String dbName = db.getName();
 
-        String remoteDb = mDropboxHelper.getLinkedRemoteFile();
+        String remoteDb = SyncManager.getRemotePath();
         if (StringUtils.isEmpty(remoteDb)) return;
 
         File dropboxDb = new File(remoteDb);
@@ -480,8 +476,7 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync_dropbox:
-                DropboxManager dropbox = new DropboxManager(MainActivity.this, mDropboxHelper);
-                dropbox.synchronizeDropbox();
+                SyncManager.synchronize();
                 break;
             case R.id.menu_open_database:
                 openDatabasePicker();
@@ -607,8 +602,7 @@ public class MainActivity
     @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
         // open the new database.
-        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
-        dropbox.openDownloadedDatabase();
+        SyncManager.openDatabase();
     }
 
     // Private.
@@ -950,7 +944,7 @@ public class MainActivity
         childItems.add(childDatabases);
 
         // Dropbox
-        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
+        if (SyncManager.isActive()) {
             childItems.add(null);
         }
 
@@ -1162,7 +1156,7 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
 
         // Dropbox synchronize
-        if (mDropboxHelper != null && mDropboxHelper.isLinked()) {
+        if (SyncManager.isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
                     .withText(getString(R.string.synchronize))
                     .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
@@ -1289,7 +1283,7 @@ public class MainActivity
         String dropboxPath = recentDb.linkedToDropbox
                 ? recentDb.dropboxFileName
                 : "";
-        mDropboxHelper.setLinkedRemoteFile(dropboxPath);
+        SyncManager.setRemotePath(dropboxPath);
 
         requestDatabaseChange(recentDb.filePath);
     }

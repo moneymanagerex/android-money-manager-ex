@@ -38,11 +38,36 @@ public class SyncManager {
         // todo:
 //        DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper);
 //        dropbox.synchronizeDropbox();
-
     }
 
-    public static boolean isInSync() {
+    public static boolean isFileInSync() {
         // todo: return mDropboxHelper.checkIfFileIsSync();
         return false;
+    }
+
+    /**
+     * Indicates whether cloud sync is in use. Replaces isLinked() call.
+     * @return A boolean
+     */
+    public static boolean isActive() {
+        // todo: check preferences and authentication?
+        // mDropboxHelper.isLinked()
+        return false;
+    }
+
+    public static String getRemotePath() {
+        // todo:  mDropboxHelper.getLinkedRemoteFile();
+        return "";
+    }
+
+    public static void setRemotePath(String filePath) {
+        // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
+    }
+
+    public static void openDatabase() {
+        // todo: replace this method
+//        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
+//        dropbox.openDownloadedDatabase();
+
     }
 }

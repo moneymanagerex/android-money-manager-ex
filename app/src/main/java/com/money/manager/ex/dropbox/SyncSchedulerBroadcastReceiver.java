@@ -29,6 +29,8 @@ import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.sync.SyncBroadcastReceiver;
+import com.money.manager.ex.sync.SyncManager;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -39,13 +41,13 @@ import java.util.Calendar;
  * Schedules the periodic synchronization.
  * Run from the settings, when the synchronization interval changes.
  */
-public class DropboxScheduler
-        extends BroadcastReceiver {
+public class SyncSchedulerBroadcastReceiver
+    extends BroadcastReceiver {
 
     // action intents
     public static final String ACTION_START = "com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX";
     public static final String ACTION_CANCEL = "com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX";
-    private static final String LOGCAT = DropboxScheduler.class.getSimpleName();
+    private static final String LOGCAT = SyncSchedulerBroadcastReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -57,7 +59,7 @@ public class DropboxScheduler
         }
 
         // compose intent
-        Intent i = new Intent(context, DropboxStartServiceReceiver.class);
+        Intent i = new Intent(context, SyncBroadcastReceiver.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -68,8 +70,9 @@ public class DropboxScheduler
         }
 
         // check if connect
-        DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
-        if (dropboxHelper == null || !dropboxHelper.isLinked()) return;
+        //DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
+        //if (dropboxHelper == null || !dropboxHelper.isLinked()) return;
+        if (!SyncManager.isActive()) return;
 
         // take repeat time
         SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(context);

@@ -40,11 +40,12 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.antlr.v4.codegen.model.Sync;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -206,7 +207,7 @@ public class EditPriceDialog
                             Toast.LENGTH_SHORT).show();
                 }
 
-                DropboxHelper.notifyDataChanged();
+                SyncManager.dataChanged();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

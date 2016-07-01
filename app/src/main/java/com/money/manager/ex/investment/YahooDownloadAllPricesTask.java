@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class YahooDownloadAllPricesTask
     protected void onPreExecute() {
         super.onPreExecute();
 
-        DropboxHelper.setAutoUploadDisabled(true);
+        SyncManager.disableAutoUpload();
 
         // Check if the context still exists to avoid exceptions.
         showProgressDialog();
@@ -96,8 +96,8 @@ public class YahooDownloadAllPricesTask
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
         }
 
-        DropboxHelper.setAutoUploadDisabled(false);
-        DropboxHelper.notifyDataChanged();
+        SyncManager.enableAutoUpload();
+        SyncManager.dataChanged();
 
         super.onPostExecute(result);
     }

@@ -14,16 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.settings;
 
-import android.os.Bundle;
+package com.money.manager.ex.sync;
 
-public class DropboxSettingsActivity
-    extends BaseSettingsFragmentActivity {
+/**
+ * The background service that synchronizes the database file.
+ */
+public class SyncService {
+    public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.dropbox.DropboxServiceIntent.MESSENGER";
+    public static final Integer INTENT_EXTRA_MESSENGER_NOT_CHANGE = 0x000;
+    public static final Integer INTENT_EXTRA_MESSENGER_DOWNLOAD = 0x000A;
+    public static final Integer INTENT_EXTRA_MESSENGER_UPLOAD = 0x000B;
+    public static final Integer INTENT_EXTRA_MESSENGER_START_DOWNLOAD = 0x000C;
+    public static final Integer INTENT_EXTRA_MESSENGER_START_UPLOAD = 0x000D;
+    public static final Integer INTENT_EXTRA_MESSENGER_NOT_ON_WIFI = 0x000E;
 
-    @Override
-    protected void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-        // todo: setSettingFragment(new DropboxSettingsFragment());
-    }
 }

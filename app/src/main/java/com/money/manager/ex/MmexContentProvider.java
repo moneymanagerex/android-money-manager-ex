@@ -56,8 +56,8 @@ import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
-import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.sync.SyncManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -189,7 +189,7 @@ public class MmexContentProvider
             getContext().getContentResolver().notifyChange(uri, null);
 
             // notify dropbox of the data changes
-            DropboxHelper.notifyDataChanged();
+            SyncManager.dataChanged();
         }
 
         // return Uri with the primary key of the inserted record.
@@ -231,7 +231,7 @@ public class MmexContentProvider
             // notify update
             getContext().getContentResolver().notifyChange(uri, null);
             // notify dropbox data changed
-            DropboxHelper.notifyDataChanged();
+            SyncManager.dataChanged();
         }
 
         // return rows modified
@@ -280,7 +280,7 @@ public class MmexContentProvider
         // delete notify
         getContext().getContentResolver().notifyChange(uri, null);
         // notify dropbox data changed
-        DropboxHelper.notifyDataChanged();
+        SyncManager.dataChanged();
 
         return rowsDelete;
     }

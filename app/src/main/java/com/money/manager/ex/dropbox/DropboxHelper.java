@@ -433,7 +433,7 @@
 //     * Send a broadcast intent for start service scheduled
 //     */
 //    public void sendBroadcastStartServiceScheduled(String action) {
-//        Intent intent = new Intent(mContext, DropboxScheduler.class);
+//        Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
 //        intent.setAction(action);
 //        mContext.sendBroadcast(intent);
 //    }

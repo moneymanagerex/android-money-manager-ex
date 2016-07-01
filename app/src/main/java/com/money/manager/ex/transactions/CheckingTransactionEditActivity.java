@@ -46,7 +46,6 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.dropbox.DropboxHelper;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -79,7 +78,7 @@ public class CheckingTransactionEditActivity
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
         // Create Dropbox helper if not yet created. i.e. when started from a widget.
-        DropboxHelper.getInstance(this);
+        // todo: DropboxHelper.getInstance(this);
 
         showStandardToolbarActions();
 
