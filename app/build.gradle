@@ -136,6 +136,7 @@ dependencies {
             'com.google.android.apps.dashclock:dashclock-api:2.0.0',
             // Dropbox
             'com.googlecode.json-simple:json-simple:1.1.1',
+            'com.dropbox.core:dropbox-core-sdk:2.0.6',
             // Google
             'com.google.android.gms:play-services-analytics:9.0.0',
             'com.android.support:support-v4:23.4.0',

@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
-import com.dropbox.client2.DropboxAPI;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 
@@ -141,6 +140,11 @@ public class DropboxBrowserFragment
                 setListShown(false);
                 mAdapter.clear();
                 mAdapter.setNotifyOnChange(true);
+            }
+
+            @Override
+            public void onFinished(List<Entry> result) {
+
             }
 
             public void onFinished(List<DropboxAPI.Entry> result) {
