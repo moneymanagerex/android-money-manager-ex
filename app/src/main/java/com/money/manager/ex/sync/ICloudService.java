@@ -15,33 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.dropbox;
-
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.auth.DbxUserAuthRequests;
+package com.money.manager.ex.sync;
 
 /**
- * Dropbox Helper for API v2.
- * Not used yet. Trying out CloudRail.
+ * Interface for cloud service used for synchronization.
  */
-public class DropboxHelper2 {
-    public DropboxHelper2() {
-        //DbxRequestConfig config = new DbxRequestConfig("");
-        //DbxClientV2 client = new DbxClientV2(config, );
-    }
-
-    private DbxClientV2 mClient;
-
-    public void authenticate() {
-        DbxUserAuthRequests requests = mClient.auth();
-    }
-
-    public void upload() {
-
-    }
-
-    public void download() {
-
-    }
+public interface ICloudService {
+    void upload();
+    void download();
 }

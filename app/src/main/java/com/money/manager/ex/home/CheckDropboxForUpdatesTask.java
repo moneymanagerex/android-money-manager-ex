@@ -24,9 +24,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.dropbox.DropboxHelper;
-import com.money.manager.ex.dropbox.DropboxManager;
 import com.money.manager.ex.dropbox.DropboxServiceIntent;
+import com.money.manager.ex.sync.SyncManager;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -35,20 +34,23 @@ import com.shamanland.fonticon.FontIconDrawable;
 public class CheckDropboxForUpdatesTask
     extends AsyncTask<Void, Integer, Integer> {
 
-    public CheckDropboxForUpdatesTask(Context context, DropboxHelper helper) {
+    public CheckDropboxForUpdatesTask(Context context) {
         mContext = context;
-        mDropboxHelper = helper;
+//        mDropboxHelper = helper;
     }
 
     private Context mContext;
-    private DropboxHelper mDropboxHelper;
+//    private DropboxHelper mDropboxHelper;
 
     @Override
     protected Integer doInBackground(Void... voids) {
         try {
             publishProgress(1);
 
-            return mDropboxHelper.checkIfFileIsSync();
+            // todo: check this
+            //return mDropboxHelper.checkIfFileIsSync();
+            SyncManager.isInSync();
+            return null;
         } catch (Exception e) {
             throw new RuntimeException("Error in checkDropboxForUpdates", e);
         }
@@ -106,8 +108,8 @@ public class CheckDropboxForUpdatesTask
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper);
-                    dropbox.synchronizeDropbox();
+                    SyncManager.synchronize();
+
                     dialog.dismiss();
                 }
             })

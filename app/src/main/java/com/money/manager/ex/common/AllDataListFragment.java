@@ -59,7 +59,7 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
-import com.money.manager.ex.dropbox.DropboxHelper;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.servicelayer.qif.QifExport;
@@ -688,7 +688,7 @@ public class AllDataListFragment
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
 
         // Pause Dropbox notification while bulk processing.
-        DropboxHelper.setAutoUploadDisabled(true);
+        SyncManager.disableAutoUpload();
 
         for (int id : transId) {
             // content value for updates
@@ -706,22 +706,22 @@ public class AllDataListFragment
             if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
 
-                DropboxHelper.setAutoUploadDisabled(false);
-                DropboxHelper.notifyDataChanged();
+                SyncManager.enableAutoUpload();
+                SyncManager.dataChanged();
 
                 return false;
             }
         }
 
         // Now notify Dropbox about modifications.
-        DropboxHelper.setAutoUploadDisabled(false);
-        DropboxHelper.notifyDataChanged();
+        SyncManager.enableAutoUpload();
+        SyncManager.dataChanged();
 
         return true;
     }
 
     /**
-     * @param transactionIds primary key of transation
+     * @param transactionIds primary key of transaction
      */
     private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
         // create alert dialog and set title and message
@@ -737,7 +737,7 @@ public class AllDataListFragment
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Pause sync notification while bulk processing.
-                DropboxHelper.setAutoUploadDisabled(true);
+                SyncManager.disableAutoUpload();
 
                 for (int transactionId : transactionIds) {
                     // First delete any splits. See if there are any split records.
@@ -756,8 +756,8 @@ public class AllDataListFragment
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                             // Now notify Dropbox about modifications.
-                            DropboxHelper.setAutoUploadDisabled(false);
-                            DropboxHelper.notifyDataChanged();
+                            SyncManager.enableAutoUpload();
+                            SyncManager.dataChanged();
 
                             return;
                         }
@@ -774,16 +774,16 @@ public class AllDataListFragment
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                         // Now notify Dropbox about modifications.
-                        DropboxHelper.setAutoUploadDisabled(false);
-                        DropboxHelper.notifyDataChanged();
+                        SyncManager.enableAutoUpload();
+                        SyncManager.dataChanged();
 
                         return;
                     }
                 }
 
                 // Now notify Dropbox about modifications.
-                DropboxHelper.setAutoUploadDisabled(false);
-                DropboxHelper.notifyDataChanged();
+                SyncManager.enableAutoUpload();
+                SyncManager.dataChanged();
 
                 // restart loader
                 loadData();

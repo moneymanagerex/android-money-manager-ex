@@ -424,7 +424,7 @@ public class MainActivity
         boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
         if (!shouldCheckDbUpdates) return;
 
-        AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this, mDropboxHelper);
+        AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this);
         asyncTask.execute();
     }
 
