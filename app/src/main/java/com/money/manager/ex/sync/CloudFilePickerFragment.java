@@ -107,9 +107,9 @@ public class CloudFilePickerFragment
             @Override
             public int compare(CloudMetaData lhs, CloudMetaData rhs) {
                 // folders before files
-                if (lhs.getFolder() && !rhs.getFolder()) return 1;
+                if (lhs.getFolder() && !rhs.getFolder()) return -1;
                 //if (lhs.getFolder() && rhs.getFolder()) return 0;
-                if (!lhs.getFolder() && rhs.getFolder()) return -1;
+                if (!lhs.getFolder() && rhs.getFolder()) return 1;
 
                 return 0;
             }
