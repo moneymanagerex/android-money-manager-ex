@@ -730,4 +730,6 @@
     <string name="remote_file">Remote file</string>
     <string name="please_wait">Please wait</string>
     <string name="invalid_database">This extension is not recognised as a valid database.</string>
+    <string name="reset_preferences">Reset preferences</string>
+    <string name="preferences_reset">Synchronization preferences have been reset.</string>
 </resources>

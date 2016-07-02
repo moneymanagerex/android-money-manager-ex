@@ -28,6 +28,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
@@ -69,6 +70,15 @@ public class SyncPreferenceFragment
                 return false;
             }
         });
+
+        viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                getSyncManager().resetPreferences();
+                Core.alertDialog(getActivity(), R.string.preferences_reset);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -80,6 +90,13 @@ public class SyncPreferenceFragment
                 handleFileSelection(resultCode, data);
                 break;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        getSyncManager().storePersistent();
     }
 
     private void handleFileSelection(int resultCode, Intent data) {

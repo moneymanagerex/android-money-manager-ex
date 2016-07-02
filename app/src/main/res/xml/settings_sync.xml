@@ -46,6 +46,11 @@
     <!-- todo: download -->
     <!-- todo: upload -->
     <!-- todo: log out -->
+
+    <Preference
+        android:key="@string/pref_reset_preferences"
+        android:title="@string/reset_preferences" />
+
     <!-- todo: help -->
 
 </PreferenceScreen>
