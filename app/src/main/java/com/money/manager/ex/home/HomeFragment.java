@@ -65,7 +65,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.settings.SyncSettingsActivity;
+import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -642,7 +642,7 @@ public class HomeFragment
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), SyncSettingsActivity.class);
+                    Intent intent = new Intent(getActivity(), SyncPreferencesActivity.class);
                     //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
                     startActivity(intent);
                 }

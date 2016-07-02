@@ -95,4 +95,5 @@ public class PreferenceConstants {
 
     // Recent files preferences
     public static final String RECENT_DB_PREFERENCES = "com.money.manager.ex.recent_db";
+    public static final String SYNC_PREFERENCES = "com.money.manager.ex.sync_preferences";
 }

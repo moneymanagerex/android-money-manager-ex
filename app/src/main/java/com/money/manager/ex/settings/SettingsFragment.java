@@ -112,7 +112,7 @@ public class SettingsFragment
             dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), SyncSettingsActivity.class));
+                    startActivity(new Intent(getActivity(), SyncPreferencesActivity.class));
                     return true;
                 }
             });

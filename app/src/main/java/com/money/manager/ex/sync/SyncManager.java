@@ -20,15 +20,19 @@ package com.money.manager.ex.sync;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 
+import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
 import com.cloudrail.si.services.Dropbox;
 import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 
 import org.apache.commons.lang3.StringUtils;
@@ -72,6 +76,7 @@ public class SyncManager {
      * @return A boolean
      */
     public static boolean isActive() {
+        //AppSettings settings = new AppSettings()
         // todo: check preferences and authentication?
         // mDropboxHelper.isLinked()
         return false;
@@ -90,9 +95,7 @@ public class SyncManager {
     public SyncManager(Context context) {
         mContext = context;
 
-        mSettings = new AppSettings(getContext());
-
-        readConfig(mSettings);
+        init();
     }
 
     private final AtomicReference<CloudStorage> dropbox = new AtomicReference<>();
@@ -100,59 +103,33 @@ public class SyncManager {
     private final AtomicReference<CloudStorage> googledrive = new AtomicReference<>();
     private final AtomicReference<CloudStorage> onedrive = new AtomicReference<>();
 
-    private AppSettings mSettings;
-    private CloudStorage mStorage;
     private Context mContext;
     private String mRemoteFile;
+    private AtomicReference<CloudStorage> currentProvider;
 
     public Context getContext() {
         return mContext;
     }
 
-    public String getRemotePath() {
-        // todo:  mDropboxHelper.getLinkedRemoteFile();
-        return "";
+    public CloudStorage getProvider() {
+//        AtomicReference<CloudStorage> result = new AtomicReference<>();
+        return currentProvider.get();
     }
 
-    public void login() {
-        new Thread() {
-            @Override
-            public void run() {
-                mStorage.login();
-            }
-        }.start();
-    }
-
-//    public List<CloudMetaData> getFolderContents(final String folder) {
-//        List<CloudMetaData> items = null;
-//
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        Callable<List<CloudMetaData>> callable = new Callable<List<CloudMetaData>>() {
+//    public void login() {
+//        new Thread() {
 //            @Override
-//            public List<CloudMetaData> call() {
-//                return mStorage.getChildren(folder);
+//            public void run() {
+//                mStorage.login();
 //            }
-//        };
-//        Future<List<CloudMetaData>> future = executor.submit(callable);
-//
-//        try {
-//            // future.get() returns 2 or raises an exception if the thread dies, so safer
-//            items = future.get();
-//        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(ex, "fetching remote contents");
-//        }
-//
-//        executor.shutdown();
-//
-//        return items;
+//        }.start();
 //    }
 
     public void getFolderContentsAsync(final String folder) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<CloudMetaData> items = mStorage.getChildren(folder);
+                List<CloudMetaData> items = getProvider().getChildren(folder);
                 EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
             }
         }).start();
@@ -160,42 +137,62 @@ public class SyncManager {
 
     public String getRemoteFile() {
         if (StringUtils.isEmpty(mRemoteFile)) {
-            mRemoteFile = mSettings.get(R.string.pref_remote_file, "");
+            mRemoteFile = loadPreference(R.string.pref_remote_file, "");
         }
+        // todo:  mDropboxHelper.getLinkedRemoteFile();
 
         return mRemoteFile;
     }
 
     // private
 
-    private void readConfig(AppSettings settings) {
-        String provider = settings.get(R.string.pref_sync_provider, "1");
+    private void init() {
+        String providerCode = loadPreference(R.string.pref_sync_provider, "1");
 
 //        String packageName = getContext().getApplicationInfo().packageName;
 
-        // todo: read from persistence
-
         // Sync provider mapping
-        switch (provider) {
+        switch (providerCode) {
             case "1":
                 // Dropbox
-                mStorage = new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l");
+                dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
+                currentProvider = dropbox;
                 break;
             case "2":
                 // OneDrive
-                mStorage = new OneDrive(getContext(), "", "");
+                onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
+                currentProvider = onedrive;
                 break;
             case "3":
                 // Google Drive
-                mStorage = new GoogleDrive(getContext(), "", "");
+                googledrive.set(new GoogleDrive(getContext(), "", ""));
+                currentProvider = googledrive;
                 break;
             case "4":
                 // Box
-                mStorage = new Box(getContext(), "", "");
+                box.set(new Box(getContext(), "", ""));
+                currentProvider = box;
                 break;
             default:
-                // ?
+                // todo: ?
                 break;
+        }
+
+        // read from persistence
+        try {
+            String persistent = loadPreference(R.string.pref_dropbox_persistent, null);
+            if (persistent != null) dropbox.get().loadAsString(persistent);
+
+            persistent = loadPreference(R.string.pref_box_persistent, null);
+            if (persistent != null) box.get().loadAsString(persistent);
+
+            persistent = loadPreference(R.string.pref_gdrive_persistent, null);
+            if (persistent != null) googledrive.get().loadAsString(persistent);
+
+            persistent = loadPreference(R.string.pref_onedrive_persistent, null);
+            if (persistent != null) onedrive.get().loadAsString(persistent);
+        } catch (ParseException e) {
+            if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
         }
 
         //todo save credentials
@@ -204,22 +201,34 @@ public class SyncManager {
     public void setRemoteFile(String value) {
         mRemoteFile = value;
 
-        mSettings.set(R.string.pref_remote_file, value);
+        savePreference(R.string.pref_remote_file, value);
 
         // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
     }
 
     public void storePersistent() {
-//        SharedPreferences sharedPreferences = getContext().getP.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        savePreference(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
+        savePreference(R.string.pref_onedrive_persistent, box.get().saveAsString());
+        savePreference(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
+        savePreference(R.string.pref_box_persistent, onedrive.get().saveAsString());
+    }
 
-        editor.putString("dropboxPersistent", dropbox.get().saveAsString());
-        editor.putString("boxPersistent", box.get().saveAsString());
-        editor.putString("googledrivePersistent", googledrive.get().saveAsString());
-        editor.putString("onedrivePersistent", onedrive.get().saveAsString());
+    private String loadPreference(Integer key, String defaultValue) {
+        String realKey = getContext().getString(key);
 
-//        editor.commit();
-        editor.apply();
+        return getSyncPreferences().getString(realKey, defaultValue);
+    }
+
+    private void savePreference(Integer key, String value) {
+        String realKey = getContext().getString(key);
+
+        getSyncPreferences()
+            .edit()
+            .putString(realKey, value)
+            .apply();
+    }
+
+    private SharedPreferences getSyncPreferences() {
+        return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
     }
 }

@@ -19,13 +19,16 @@ package com.money.manager.ex.sync;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +48,11 @@ public class SyncPreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+        // Use own preference file.
+        PreferenceManager prefMgr = getPreferenceManager();
+        prefMgr.setSharedPreferencesName(PreferenceConstants.SYNC_PREFERENCES);
+        prefMgr.setSharedPreferencesMode(Context.MODE_PRIVATE); // MODE_WORLD_READABLE
+
         addPreferencesFromResource(R.xml.settings_sync);
 
         viewHolder = new SyncPreferencesViewHolder(this);
@@ -94,6 +102,8 @@ public class SyncPreferenceFragment
 //            downloadFileFromDropbox();
 //        }
         // open db file
+
+        getSyncManager().storePersistent();
     }
 
     private SyncManager getSyncManager() {
