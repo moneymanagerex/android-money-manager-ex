@@ -22,15 +22,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.ListItemClickedEvent;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
+import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +51,8 @@ public class CloudFilePickerFragment
     }
 
     private RecyclerView mRecyclerView;
+    private CloudDataAdapter mAdapter;
+    private MaterialDialog progressDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -59,19 +69,99 @@ public class CloudFilePickerFragment
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Separator
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
         // get data
         getFolderContents("/");
 
-        mRecyclerView.setAdapter(new CloudDataAdapter());
-
         return view;
     }
 
-    private void getFolderContents(String folder) {
-        SyncManager manager = new SyncManager(getActivity());
-        manager.getFolderContents(folder);
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        Log.d("items", "items");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onFolderContentsRetrieved(final RemoteFolderContentsRetrievedEvent event) {
+        // sort the retrieved items: folders first, order by name.
+        Comparator<CloudMetaData> nameComparator = new Comparator<CloudMetaData>() {
+            @Override
+            public int compare(CloudMetaData lhs, CloudMetaData rhs) {
+                // order by name
+                return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+            }
+        };
+        Collections.sort(event.items, nameComparator);
+        Comparator<CloudMetaData> folderComparator = new Comparator<CloudMetaData>() {
+            @Override
+            public int compare(CloudMetaData lhs, CloudMetaData rhs) {
+                // folders before files
+                if (lhs.getFolder() && !rhs.getFolder()) return 1;
+                //if (lhs.getFolder() && rhs.getFolder()) return 0;
+                if (!lhs.getFolder() && rhs.getFolder()) return -1;
+
+                return 0;
+            }
+        };
+        Collections.sort(event.items, folderComparator);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // hide the progress dialog
+                progressDialog.hide();
+
+                // fill the list
+                mAdapter = new CloudDataAdapter(getActivity(), event.items);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
+    }
+
+    @Subscribe
+    public void onListItemClicked(ListItemClickedEvent event) {
+        // get item
+        CloudMetaData item = mAdapter.mData.get(event.id);
+        if (item.getFolder()) {
+            // open folder
+            String folder = item.getPath();
+            getFolderContents(folder);
+        } else {
+            // check if the file is a valid database?
+            if (isValidDatabase(item)) {
+                // todo select file (?)
+            } else {
+                // show notification
+                Core.alertDialog(getActivity(), R.string.invalid_database);
+            }
+        }
+    }
+
+    private void getFolderContents(String folder) {
+        // show progress bar
+        progressDialog = new MaterialDialog.Builder(getActivity())
+                .title(R.string.loading)
+                .content(R.string.please_wait)
+                .progress(true, 0)
+                .canceledOnTouchOutside(false)
+                .show();
+
+        SyncManager manager = new SyncManager(getActivity());
+        manager.getFolderContentsAsync(folder);
+    }
+
+    private boolean isValidDatabase(CloudMetaData item) {
+        return item.getName().endsWith(".mmb");
     }
 }

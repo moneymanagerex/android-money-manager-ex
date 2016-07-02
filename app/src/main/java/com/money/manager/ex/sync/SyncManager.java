@@ -20,7 +20,6 @@ package com.money.manager.ex.sync;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -29,21 +28,20 @@ import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class used to manage the database synchronization process.
  * Currently forwards the calls to the Dropbox Helper.
  */
 public class SyncManager {
+//    private static SyncManager ourInstance = new SyncManager();
+
     public static void disableAutoUpload() {
         // todo: DropboxHelper.setAutoUploadDisabled(false);
     }
@@ -97,6 +95,11 @@ public class SyncManager {
         readConfig();
     }
 
+    private final AtomicReference<CloudStorage> dropbox = new AtomicReference<>();
+    private final AtomicReference<CloudStorage> box = new AtomicReference<>();
+    private final AtomicReference<CloudStorage> googledrive = new AtomicReference<>();
+    private final AtomicReference<CloudStorage> onedrive = new AtomicReference<>();
+
     private CloudStorage mStorage;
     private Context mContext;
 
@@ -143,15 +146,17 @@ public class SyncManager {
 //        return items;
 //    }
 
-    public List<CloudMetaData> getFolderContents(final String folder) {
+    public void getFolderContentsAsync(final String folder) {
+        //todo: show progress
+        //MaterialProgressBar progressBar = new MaterialProgressBar(getContext());
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 List<CloudMetaData> items = mStorage.getChildren(folder);
-                
+                EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
             }
         }).start();
-        return null;
     }
 
     // private
@@ -161,6 +166,8 @@ public class SyncManager {
         String providerKey = sharedPref.getString(getContext().getString(R.string.pref_sync_provider), "1");
 
 //        String packageName = getContext().getApplicationInfo().packageName;
+
+        // todo: read from persistence
 
         // Sync provider mapping
         switch (providerKey) {
@@ -184,5 +191,21 @@ public class SyncManager {
                 // ?
                 break;
         }
+
+        //todo save credentials
+    }
+
+    public void storePersistent() {
+//        SharedPreferences sharedPreferences = getContext().getP.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("dropboxPersistent", dropbox.get().saveAsString());
+        editor.putString("boxPersistent", box.get().saveAsString());
+        editor.putString("googledrivePersistent", googledrive.get().saveAsString());
+        editor.putString("onedrivePersistent", onedrive.get().saveAsString());
+
+//        editor.commit();
+        editor.apply();
     }
 }

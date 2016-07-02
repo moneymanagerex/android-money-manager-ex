@@ -20,6 +20,13 @@ package com.money.manager.ex.sync;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.money.manager.ex.R;
+import com.money.manager.ex.common.events.ListItemClickedEvent;
+import com.money.manager.ex.currency.recycler.RecyclerItemClickListener;
+import com.money.manager.ex.view.RobotoTextViewFontIcon;
+
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * View holder for the cloud items (folder, file).
  */
@@ -29,5 +36,23 @@ public class CloudItemViewHolder
     public CloudItemViewHolder(View itemView) {
         super(itemView);
 
+        initialize(itemView);
+    }
+
+    public int itemPosition;
+    public String itemPath;
+    // view elements
+    public RobotoTextViewFontIcon nameTextView;
+
+    private void initialize(View view) {
+        // handle clicks on the parent element
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new ListItemClickedEvent(itemPosition, itemPath, v));
+            }
+        });
+
+        nameTextView = (RobotoTextViewFontIcon) view.findViewById(R.id.nameTextView);
     }
 }
