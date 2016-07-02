@@ -93,7 +93,7 @@ public class AssetAllocationLoader
         // Begin monitoring the underlying data source.
         if (mObserver == null) {
             mObserver = new AssetAllocationContentObserver(null, this);
-            // TODO: register the observer
+            // register the observer
             registerObserver();
         }
 
@@ -130,7 +130,7 @@ public class AssetAllocationLoader
 
         // The Loader is being reset, so we should stop monitoring for changes.
         if (mObserver != null) {
-            // TODO: unregister the observer
+            // unregister the observer
             unregisterObserver();
 
             mObserver = null;

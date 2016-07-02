@@ -702,6 +702,7 @@
     <string name="print">Print</string>
     <string name="min_19">You need at least Android 4.4 to be able to print the document.</string>
     <string name="save_as_html">Save as HTML</string>
+    <string name="no_network">There is no network available.</string>
 
     <!-- Currencies -->
     <string name="currencies">Currencies</string>

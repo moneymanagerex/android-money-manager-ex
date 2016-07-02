@@ -36,16 +36,6 @@ import com.money.manager.ex.utils.NetworkUtilities;
 public class WebChangelogFragment
     extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
     public WebChangelogFragment() {
         // Required empty public constructor
     }
@@ -56,7 +46,6 @@ public class WebChangelogFragment
      *
      * @return A new instance of fragment WebChangelogFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static WebChangelogFragment newInstance() {
         WebChangelogFragment fragment = new WebChangelogFragment();
         Bundle args = new Bundle();
@@ -91,7 +80,7 @@ public class WebChangelogFragment
         // check if there is network access
         NetworkUtilities utils = new NetworkUtilities(getActivity());
         if (!utils.isOnline()) {
-            // todo: display no-network notice
+            Core.alertDialog(getActivity(), R.string.no_network);
             return;
         }
 

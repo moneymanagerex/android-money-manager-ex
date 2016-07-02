@@ -46,8 +46,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * Currently forwards the calls to the Dropbox Helper.
  */
 public class SyncManager {
-//    private static SyncManager ourInstance = new SyncManager();
-
     public static void disableAutoUpload() {
         // todo: DropboxHelper.setAutoUploadDisabled(false);
     }

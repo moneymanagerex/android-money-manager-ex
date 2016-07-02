@@ -104,7 +104,7 @@ public class EditTransactionCommonFunctions {
     }
 
     // Model
-    public ITransactionEntity transactionEntity; // todo: replace all fields with this entity object.
+    public ITransactionEntity transactionEntity;
 
     public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public String payeeName;
