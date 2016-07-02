@@ -354,24 +354,24 @@ public class CurrencyRecyclerListFragment
     private void initializeList() {
         Context context = getActivity();
 
-        RecyclerView list = getRecyclerView();
-        if (list == null) return;
+        RecyclerView recyclerView = getRecyclerView();
+        if (recyclerView == null) return;
 
         // Layout manager
-        list.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         // Adapter
         final SectionedRecyclerViewAdapter adapter = new SectionedRecyclerViewAdapter();
         // load data
         loadData(adapter);
 
-        list.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         // Separator
-        list.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
 
         // Behaviours. List click listener.
-        list.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Currency currency = getCurrencyAtPosition(position);

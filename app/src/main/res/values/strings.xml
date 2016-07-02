@@ -728,4 +728,6 @@
     <string name="sync_enabled">Sync enabled</string>
     <string name="sync_provider">Provider</string>
     <string name="remote_file">Remote file</string>
+    <string name="please_wait">Please wait</string>
+    <string name="invalid_database">This extension is not recognised as a valid database.</string>
 </resources>

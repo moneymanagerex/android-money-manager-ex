@@ -20,7 +20,7 @@ package com.money.manager.ex.common.events;
 import android.view.View;
 
 /**
- * Event for clicking the list items in recycler view.
+ * Event for clicking the items in recycler view.
  */
 public class ListItemClickedEvent {
     public ListItemClickedEvent(int id, String name, View view) {
