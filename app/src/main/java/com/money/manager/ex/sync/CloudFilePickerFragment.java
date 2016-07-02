@@ -18,6 +18,8 @@
 package com.money.manager.ex.sync;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +41,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,15 +53,10 @@ public class CloudFilePickerFragment
         // Required empty public constructor
     }
 
+    private SyncManager syncManager;
     private RecyclerView mRecyclerView;
     private CloudDataAdapter mAdapter;
     private MaterialDialog progressDialog;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,28 +91,8 @@ public class CloudFilePickerFragment
     }
 
     @Subscribe
-    public void onFolderContentsRetrieved(final RemoteFolderContentsRetrievedEvent event) {
-        // sort the retrieved items: folders first, order by name.
-        Comparator<CloudMetaData> nameComparator = new Comparator<CloudMetaData>() {
-            @Override
-            public int compare(CloudMetaData lhs, CloudMetaData rhs) {
-                // order by name
-                return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
-            }
-        };
-        Collections.sort(event.items, nameComparator);
-        Comparator<CloudMetaData> folderComparator = new Comparator<CloudMetaData>() {
-            @Override
-            public int compare(CloudMetaData lhs, CloudMetaData rhs) {
-                // folders before files
-                if (lhs.getFolder() && !rhs.getFolder()) return -1;
-                //if (lhs.getFolder() && rhs.getFolder()) return 0;
-                if (!lhs.getFolder() && rhs.getFolder()) return 1;
-
-                return 0;
-            }
-        };
-        Collections.sort(event.items, folderComparator);
+    public void onEvent(final RemoteFolderContentsRetrievedEvent event) {
+        event.items = sortRemoteItems(event.items);
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -130,7 +108,7 @@ public class CloudFilePickerFragment
     }
 
     @Subscribe
-    public void onListItemClicked(ListItemClickedEvent event) {
+    public void onEvent(ListItemClickedEvent event) {
         // get item
         CloudMetaData item = mAdapter.mData.get(event.id);
         if (item.getFolder()) {
@@ -139,12 +117,17 @@ public class CloudFilePickerFragment
             getFolderContents(folder);
         } else {
             // check if the file is a valid database?
-            if (isValidDatabase(item)) {
-                // todo select file (?)
-            } else {
+            if (!isValidDatabase(item)) {
                 // show notification
                 Core.alertDialog(getActivity(), R.string.invalid_database);
             }
+
+            // select file.
+            Intent data = new Intent();
+            data.putExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE, item.getPath());
+
+            getActivity().setResult(Activity.RESULT_OK, data);
+            getActivity().finish();
         }
     }
 
@@ -157,11 +140,43 @@ public class CloudFilePickerFragment
                 .canceledOnTouchOutside(false)
                 .show();
 
-        SyncManager manager = new SyncManager(getActivity());
-        manager.getFolderContentsAsync(folder);
+        getSyncManager().getFolderContentsAsync(folder);
     }
 
     private boolean isValidDatabase(CloudMetaData item) {
         return item.getName().endsWith(".mmb");
+    }
+
+    private SyncManager getSyncManager() {
+        if (syncManager == null) {
+            syncManager = new SyncManager(getActivity());
+        }
+        return syncManager;
+    }
+
+    private List<CloudMetaData> sortRemoteItems(List<CloudMetaData> items) {
+        // sort the retrieved items: folders first, order by name.
+        Comparator<CloudMetaData> nameComparator = new Comparator<CloudMetaData>() {
+            @Override
+            public int compare(CloudMetaData lhs, CloudMetaData rhs) {
+                // order by name
+                return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+            }
+        };
+        Collections.sort(items, nameComparator);
+        Comparator<CloudMetaData> folderComparator = new Comparator<CloudMetaData>() {
+            @Override
+            public int compare(CloudMetaData lhs, CloudMetaData rhs) {
+                // folders before files
+                if (lhs.getFolder() && !rhs.getFolder()) return -1;
+                //if (lhs.getFolder() && rhs.getFolder()) return 0;
+                if (!lhs.getFolder() && rhs.getFolder()) return 1;
+
+                return 0;
+            }
+        };
+        Collections.sort(items, folderComparator);
+
+        return items;
     }
 }

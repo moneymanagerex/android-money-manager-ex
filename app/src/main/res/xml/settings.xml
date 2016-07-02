@@ -36,6 +36,10 @@
         android:title="@string/preferences_behaviour" />
     <Preference
         android:icon="@null"
+        android:key="@string/pref_dropbox_how_it_works"
+        android:title="@string/synchronization" />
+    <Preference
+        android:icon="@null"
         android:key="pref_investment"
         android:title="@string/investment" />
     <Preference
@@ -46,10 +50,6 @@
         android:icon="@null"
         android:key="@string/pref_database"
         android:title="@string/database" />
-    <Preference
-        android:icon="@null"
-        android:key="@string/pref_dropbox_how_it_works"
-        android:title="@string/dropbox" />
     <Preference
         android:icon="@null"
         android:key="@string/pref_donate"

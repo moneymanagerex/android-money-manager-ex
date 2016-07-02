@@ -82,7 +82,7 @@ public abstract class SettingsBase {
 
     // String
 
-    protected String get(Integer settingKey, String defaultValue) {
+    public String get(Integer settingKey, String defaultValue) {
         String key = getSettingsKey(settingKey);
         return get(key, defaultValue);
     }
@@ -108,7 +108,7 @@ public abstract class SettingsBase {
         return save();
     }
 
-    protected boolean set(Integer settingsKey, String value) {
+    public boolean set(Integer settingsKey, String value) {
         getEditor().putString(getSettingsKey(settingsKey), value);
         return save();
     }

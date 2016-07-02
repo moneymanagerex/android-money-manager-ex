@@ -18,15 +18,12 @@
 package com.money.manager.ex.sync;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.money.manager.ex.R;
 
@@ -36,30 +33,73 @@ import com.money.manager.ex.R;
 public class SyncPreferenceFragment
     extends PreferenceFragmentCompat {
 
+    public static final int REQUEST_REMOTE_FILE = 1;
+    public static final String EXTRA_REMOTE_FILE = "remote_file";
+
     public SyncPreferenceFragment() {
         // Required empty public constructor
     }
 
-    private SyncPreferencesViewHolder mViewHolder;
+    private SyncPreferencesViewHolder viewHolder;
+    private SyncManager mSyncManager;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.settings_sync);
 
-        mViewHolder = new SyncPreferencesViewHolder(this);
+        viewHolder = new SyncPreferencesViewHolder(this);
 
-        mViewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        viewHolder.remoteFile.setSummary(getSyncManager().getRemoteFile());
+
+        viewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // show the file browser/picker.
                 Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
-                //intent.putExtra(CloudFilePickerActivity.INTENT_DROBPOXFILE_PATH, mDropboxHelper.getLinkedRemoteFile());
-                //todo startActivityForResult(intent, REQUEST_DROPBOX_FILE);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_REMOTE_FILE);
 
                 return false;
             }
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_REMOTE_FILE:
+                handleFileSelection(resultCode, data);
+                break;
+        }
+    }
+
+    private void handleFileSelection(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null) return;
+
+        // get value
+        String remoteFile = data.getStringExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE);
+
+        // save selection into preferences
+        getSyncManager().setRemoteFile(remoteFile);
+
+        // show selected value
+        viewHolder.remoteFile.setSummary(remoteFile);
+
+        // todo:
+        // add history record (recent files)
+        // download db from the cloud storage
+//        if (!oldFile.equals(newFile)) {
+//            // force download file
+//            downloadFileFromDropbox();
+//        }
+        // open db file
+    }
+
+    private SyncManager getSyncManager() {
+        if (mSyncManager == null) {
+            mSyncManager = new SyncManager(getActivity());
+        }
+        return mSyncManager;
+    }
 }

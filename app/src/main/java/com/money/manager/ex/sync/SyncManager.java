@@ -28,8 +28,10 @@ import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -75,10 +77,6 @@ public class SyncManager {
         return false;
     }
 
-    public static void setRemotePath(String filePath) {
-        // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
-    }
-
     public static void openDatabase() {
         // todo: replace this method
 //        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
@@ -92,7 +90,9 @@ public class SyncManager {
     public SyncManager(Context context) {
         mContext = context;
 
-        readConfig();
+        mSettings = new AppSettings(getContext());
+
+        readConfig(mSettings);
     }
 
     private final AtomicReference<CloudStorage> dropbox = new AtomicReference<>();
@@ -100,8 +100,10 @@ public class SyncManager {
     private final AtomicReference<CloudStorage> googledrive = new AtomicReference<>();
     private final AtomicReference<CloudStorage> onedrive = new AtomicReference<>();
 
+    private AppSettings mSettings;
     private CloudStorage mStorage;
     private Context mContext;
+    private String mRemoteFile;
 
     public Context getContext() {
         return mContext;
@@ -147,9 +149,6 @@ public class SyncManager {
 //    }
 
     public void getFolderContentsAsync(final String folder) {
-        //todo: show progress
-        //MaterialProgressBar progressBar = new MaterialProgressBar(getContext());
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -159,18 +158,25 @@ public class SyncManager {
         }).start();
     }
 
+    public String getRemoteFile() {
+        if (StringUtils.isEmpty(mRemoteFile)) {
+            mRemoteFile = mSettings.get(R.string.pref_remote_file, "");
+        }
+
+        return mRemoteFile;
+    }
+
     // private
 
-    private void readConfig() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String providerKey = sharedPref.getString(getContext().getString(R.string.pref_sync_provider), "1");
+    private void readConfig(AppSettings settings) {
+        String provider = settings.get(R.string.pref_sync_provider, "1");
 
 //        String packageName = getContext().getApplicationInfo().packageName;
 
         // todo: read from persistence
 
         // Sync provider mapping
-        switch (providerKey) {
+        switch (provider) {
             case "1":
                 // Dropbox
                 mStorage = new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l");
@@ -193,6 +199,14 @@ public class SyncManager {
         }
 
         //todo save credentials
+    }
+
+    public void setRemoteFile(String value) {
+        mRemoteFile = value;
+
+        mSettings.set(R.string.pref_remote_file, value);
+
+        // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
     }
 
     public void storePersistent() {

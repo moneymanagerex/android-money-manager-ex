@@ -1281,7 +1281,7 @@ public class MainActivity
         String dropboxPath = recentDb.linkedToDropbox
                 ? recentDb.dropboxFileName
                 : "";
-        SyncManager.setRemotePath(dropboxPath);
+        new SyncManager(this).setRemoteFile(dropboxPath);
 
         requestDatabaseChange(recentDb.filePath);
     }
