@@ -275,7 +275,7 @@
 //                    if (TextUtils.isEmpty(dropboxFile)) {
 //                        dropboxFile = "/" + new File(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext())).getName();
 //                    }
-//                    uploadFileFromDropbox(dropboxFile);
+//                    uploadFileToDropbox(dropboxFile);
 //
 //                    return false;
 //                }
@@ -394,7 +394,7 @@
 //        alertDialog.create().show();
 //    }
 //
-//    private void uploadFileFromDropbox(String dropboxFile) {
+//    private void uploadFileToDropbox(String dropboxFile) {
 //        // compose intent to launch service for download
 //        Intent service = new Intent(getActivity().getApplicationContext(), DropboxService.class);
 //        service.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
