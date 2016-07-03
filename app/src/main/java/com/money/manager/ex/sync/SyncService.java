@@ -31,12 +31,15 @@ import android.util.Log;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.dropbox.SyncCommon;
 import com.money.manager.ex.dropbox.SyncNotificationFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NetworkUtilities;
+
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,11 +121,13 @@ public class SyncService
             triggerUpload(localFile, remoteFile);
         } else {
             // Synchronization
-//            todo syncFile(localFile, remoteFile);
+//            triggerSync(localFile, remoteFile);
         }
     }
 
-    public void triggerDownload(final File localFile, String remoteFilename) {
+    // private
+
+    private void triggerDownload(final File localFile, String remoteFilename) {
         SyncManager sync = new SyncManager(getBaseContext());
 
         final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
@@ -190,7 +195,7 @@ public class SyncService
         sendMessenger(messageComplete);
     }
 
-    public void triggerUpload(final File localFile, CloudMetaData remoteFile) {
+    private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
         final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
                 .getNotificationBuilderUpload();
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -260,4 +265,34 @@ public class SyncService
         return true;
     }
 
+//    public void triggerSync(final File localFile, CloudMetaData remoteFile) {
+//        DateTime localLastModified = null;
+//        DateTime remoteLastModified;
+//        try {
+//            localLastModified = mDropboxHelper.getDateLastModified(remoteFile.fileName());
+//        } catch (Exception e) {
+//            Log.e(LOGCAT, e.getMessage());
+//        }
+//        if (localLastModified == null) localLastModified = new DateTime(localFile.lastModified());
+//        remoteLastModified = mDropboxHelper.getLastModifiedEntry(remoteFile);
+//
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified local file: " + localLastModified.toString(Constants.ISO_DATE_FORMAT));
+//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified remote file: " + remoteLastModified.toString(Constants.ISO_DATE_FORMAT));
+//
+//        // check date
+//        if (remoteLastModified.isAfter(localLastModified)) {
+//            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download " + remoteFile.path + " from the cloud storage.");
+//            // download file
+//            triggerDownload(localFile, remoteFile);
+//        } else if (remoteLastModified.isBefore(localLastModified)) {
+//            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
+//            // upload file
+//            triggerUpload(localFile, remoteFile);
+//        } else {
+//            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same");
+//            Message message = new Message();
+//            message.what = SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            sendMessenger(message);
+//        }
+//    }
 }

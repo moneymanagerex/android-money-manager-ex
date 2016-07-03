@@ -111,11 +111,11 @@
 //            triggerUpload(localFile, remoteFile);
 //        } else {
 //            // Synchronization
-//            syncFile(localFile, remoteFile);
+//            triggerSync(localFile, remoteFile);
 //        }
 //    }
 //
-//    public void syncFile(final File localFile, final Entry remoteFile) {
+//    public void triggerSync(final File localFile, final Entry remoteFile) {
 //        Date localLastModified = null;
 //        Date remoteLastModified;
 //        try {
