@@ -149,7 +149,7 @@ dependencies {
 //        'com.nispok:snackbar:2.10.10',
             'com.opencsv:opencsv:3.7',
             'net.objecthunter:exp4j:0.4.7',
-//            'com.github.gabrielemariotti.changeloglib:changelog:2.0.0',
+            'com.github.gabrielemariotti.changeloglib:changelog:2.1.0',
             'commons-io:commons-io:2.5',
             'org.apache.commons:commons-lang3:3.4',
             'com.afollestad.material-dialogs:core:0.8.5.9',

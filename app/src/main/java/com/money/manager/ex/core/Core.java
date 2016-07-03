@@ -534,20 +534,20 @@ public class Core {
         // create layout
         View view = LayoutInflater.from(mContext).inflate(R.layout.changelog_layout, null);
         //create dialog
-        AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(mContext)
+        new AlertDialogWrapper.Builder(mContext)
             .setCancelable(false)
             .setTitle(R.string.changelog)
-            .setView(view);
-        showDialog.setNeutralButton(android.R.string.ok,
+            .setView(view)
+            .setNeutralButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 }
-        );
-        // show dialog
-        showDialog.create().show();
+            )
+            // show dialog
+            .create().show();
         return true;
     }
 
