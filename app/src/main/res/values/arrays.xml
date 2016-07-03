@@ -377,9 +377,9 @@
     </string-array>
     <string-array name="cloud_provider_values">
         <!--<item>0</item>-->
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+        <item>DROPBOX</item>
+        <item>ONEDRIVE</item>
+        <item>GOOGLEDRIVE</item>
+        <item>BOX</item>
     </string-array>
 </resources>

@@ -116,9 +116,12 @@ public class SyncPreferenceFragment
         viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
+                SyncManager sync = getSyncManager();
+                // set the new provider
+                sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
                 // log in to the provider immediately and save to persistence.
-                getSyncManager().login();
-                getSyncManager().storePersistent();
+                sync.login();
+                sync.storePersistent();
 
                 return true;
             }

@@ -19,7 +19,6 @@ package com.money.manager.ex.sync;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cloudrail.si.exceptions.ParseException;
@@ -31,7 +30,6 @@ import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 
@@ -155,40 +153,58 @@ public class SyncManager {
         getSyncPreferences().edit().clear().apply();
     }
 
-    // private
-
-    private void init() {
-        String providerCode = loadPreference(R.string.pref_sync_provider, "1");
-
-//        String packageName = getContext().getApplicationInfo().packageName;
-
-        dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
-        onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
-        googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
-        box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
-
+    public void setProvider(CloudStorageProviderEnum provider) {
         // Sync provider mapping
-        switch (providerCode) {
-            case "1":
-                // Dropbox
+        switch (provider) {
+            case DROPBOX:
                 currentProvider = dropbox;
                 break;
-            case "2":
+            case ONEDRIVE:
                 // OneDrive
                 currentProvider = onedrive;
                 break;
-            case "3":
+            case GOOGLEDRIVE:
                 // Google Drive
                 currentProvider = googledrive;
                 break;
-            case "4":
+            case BOX:
                 // Box
                 currentProvider = box;
                 break;
             default:
-                // todo: ?
+                // default provider
+                currentProvider = dropbox;
                 break;
         }
+
+    }
+
+    public void setRemoteFile(String value) {
+        mRemoteFile = value;
+
+        savePreference(R.string.pref_remote_file, value);
+
+        // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
+    }
+
+    public void storePersistent() {
+        savePreference(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
+        savePreference(R.string.pref_onedrive_persistent, box.get().saveAsString());
+        savePreference(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
+        savePreference(R.string.pref_box_persistent, onedrive.get().saveAsString());
+    }
+
+    // private
+
+    private SharedPreferences getSyncPreferences() {
+        return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
+    }
+
+    private void init() {
+        dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
+        onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
+        googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
+        box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
 
         // read from persistence
         try {
@@ -207,22 +223,13 @@ public class SyncManager {
             if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
         }
 
-        //todo save credentials
-    }
-
-    public void setRemoteFile(String value) {
-        mRemoteFile = value;
-
-        savePreference(R.string.pref_remote_file, value);
-
-        // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
-    }
-
-    public void storePersistent() {
-        savePreference(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
-        savePreference(R.string.pref_onedrive_persistent, box.get().saveAsString());
-        savePreference(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
-        savePreference(R.string.pref_box_persistent, onedrive.get().saveAsString());
+        // Use current provider.
+        String providerCode = loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
+        CloudStorageProviderEnum provider = CloudStorageProviderEnum.DROPBOX;
+        if (CloudStorageProviderEnum.contains(providerCode)) {
+            provider = CloudStorageProviderEnum.valueOf(providerCode);
+        }
+        setProvider(provider);
     }
 
     private String loadPreference(Integer key, String defaultValue) {
@@ -238,9 +245,5 @@ public class SyncManager {
             .edit()
             .putString(realKey, value)
             .apply();
-    }
-
-    private SharedPreferences getSyncPreferences() {
-        return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
     }
 }
