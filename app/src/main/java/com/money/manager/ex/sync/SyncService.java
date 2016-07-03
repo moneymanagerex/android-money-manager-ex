@@ -22,6 +22,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.NotificationCompat;
@@ -114,7 +115,7 @@ public class SyncService
         if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
             triggerDownload(localFile, remoteFilename);
         } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-//            todo uploadFile(localFile, remoteFile);
+            triggerUpload(localFile, remoteFile);
         } else {
             // Synchronization
 //            todo syncFile(localFile, remoteFile);
@@ -186,6 +187,64 @@ public class SyncService
         //send message to the database download complete
         Message messageComplete = new Message();
         messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+        sendMessenger(messageComplete);
+    }
+
+    public void triggerUpload(final File localFile, CloudMetaData remoteFile) {
+        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+                .getNotificationBuilderUpload();
+        final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        IOnDownloadUploadEntry onDownloadUpload = new IOnDownloadUploadEntry() {
+            @Override
+            public void onPreExecute() {
+                if (notification != null && notificationManager != null) {
+                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+                }
+            }
+
+            @Override
+            public void onPostExecute(boolean result) {
+                if (notification != null && notificationManager != null) {
+                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
+                    if (result) {
+                        // create notification for open file
+                        // pending intent
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setData(Uri.fromFile(localFile));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+                        // notification
+                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+                                .getNotificationBuilderUploadComplete(pendingIntent);
+                        // notify
+                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
+                    }
+                }
+            }
+        };
+
+        if (BuildConfig.DEBUG) {
+            Log.d(LOGCAT, "Uploading db. Local file: " +
+                    localFile.getPath() + "; Remote file: " + remoteFile.getPath());
+        }
+
+        //start
+        onDownloadUpload.onPreExecute();
+        //send message to the database upload staring
+        Message messageStart = new Message();
+        messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_UPLOAD;
+        sendMessenger(messageStart);
+
+        //execute
+        SyncManager sync = new SyncManager(getBaseContext());
+        boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
+
+        //complete
+        onDownloadUpload.onPostExecute(result);
+        ///send message to the database upload complete
+        Message messageComplete = new Message();
+        messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_UPLOAD;
         sendMessenger(messageComplete);
     }
 

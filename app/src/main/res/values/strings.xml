@@ -48,15 +48,6 @@
     <!--<string name="import_export_success">Import / Export completed successfully</string>-->
     <!--<string name="import_export_failed">Import / Export failed</string>-->
 
-    <!-- dropbox -->
-    <string name="dropbox_link">Link to Dropbox</string>
-    <string name="dropbox_unlink">Unlink from Dropbox</string>
-    <string name="dropbox_syncProgress">Synchronizing file. Please wait…</string>
-    <string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>
-    <string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>
-    <string name="dropbox_linkedFile">Dropbox File</string>
-    <string name="dropbox_file_summary_all">File anywhere in Dropbox</string>
-
     <!-- preferences -->
     <string name="preferences_general">General</string>
     <string name="preferences_dispaly">Look &#38; Feel</string>
@@ -349,15 +340,6 @@
     <string name="dropbox_select_file">Select a file from Dropbox</string>
     <string name="last_modified">Last modified</string>
     <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-    <string name="dropbox">Dropbox</string>
-    <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
-    <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
-    <string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>
-    <string name="download_from_drobpox">Download from Dropbox</string>
-    <string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>
-    <string name="upload_to_drobpox">Upload to Dropbox</string>
-    <string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>
-    <string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>
     <string name="dont_show_again">Don\'t show again</string>
     <string name="open_database">Open Database</string>
     <string name="synchronization_interval">Synchronization Interval</string>
@@ -710,6 +692,24 @@
 
     <string name="portfolio">Portfolio</string>
 
+    <!-- deprecated / Dropbox -->
+    <string name="dropbox">Dropbox</string>
+    <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
+    <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
+    <string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>
+    <string name="download_from_drobpox">Download from Dropbox</string>
+    <string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>
+    <string name="upload_to_drobpox">Upload to Dropbox</string>
+    <string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>
+    <string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>
+    <string name="dropbox_link">Link to Dropbox</string>
+    <string name="dropbox_unlink">Unlink from Dropbox</string>
+    <string name="dropbox_syncProgress">Synchronizing file. Please wait…</string>
+    <string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>
+    <string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>
+    <string name="dropbox_linkedFile">Dropbox File</string>
+    <string name="dropbox_file_summary_all">File anywhere in Dropbox</string>
+
     <!-- Synchronization -->
     <string name="synchronization">Synchronization</string>
     <string name="sync_enabled">Sync enabled</string>
@@ -720,11 +720,12 @@
     <string name="reset_preferences">Reset preferences</string>
     <string name="preferences_reset">Synchronization preferences have been reset.</string>
     <string name="cloud_download">Download database file from the cloud storage.</string>
+    <string name="cloud_upload">Upload database file to the cloud storage.</string>
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
-    <string name="dropbox_download_is_starting">Downloading database. Please wait…</string>
-    <string name="dropbox_upload_is_starting">Uploading database. Please wait…</string>
+    <string name="sync_downloading">Downloading database. Please wait…</string>
+    <string name="sync_uploading">Uploading database. Please wait…</string>
     <string name="database_is_synchronized">The database is up to date</string>
-    <string name="upload_file_to_dropbox_complete">Your database has been successfully uploaded</string>
+    <string name="upload_file_complete">Your database has been successfully uploaded</string>
     <string name="every_5_minutes">Every 5 minutes</string>
     <string name="every_10_minutes">Every 10 minutes</string>
     <string name="every_15_minutes">Every 15 minutes</string>

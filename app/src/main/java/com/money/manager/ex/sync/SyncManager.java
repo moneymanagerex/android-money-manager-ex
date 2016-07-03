@@ -53,6 +53,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -291,6 +293,36 @@ public class SyncManager {
         mPreferences.set(R.string.pref_onedrive_persistent, box.get().saveAsString());
         mPreferences.set(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
         mPreferences.set(R.string.pref_box_persistent, onedrive.get().saveAsString());
+    }
+
+    /**
+     * Upload the file to cloud storage.
+     * @param localPath The path to the file to upload.
+     * @param remoteFile The remote path.
+     */
+    public boolean upload(String localPath, String remoteFile) {
+        File localFile = new File(localPath);
+        if (!localFile.exists()) return false;
+
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(localFile);
+        } catch (FileNotFoundException e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "opening local file for upload");
+            return false;
+        }
+
+        getProvider().upload(remoteFile, input, localFile.length(), true);
+
+        try {
+            input.close();
+        } catch (IOException e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "closing input stream after upload");
+        }
+
+        return true;
     }
 
     // private

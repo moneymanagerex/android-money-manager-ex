@@ -36,6 +36,7 @@ public class SyncPreferencesViewHolder {
     public ListPreference syncInterval;
     public Preference resetPreferences;
     public PreferenceScreen download;
+    public PreferenceScreen upload;
 
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
 
@@ -45,6 +46,7 @@ public class SyncPreferencesViewHolder {
         syncInterval = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_interval));
         resetPreferences = view.findPreference(view.getString(R.string.pref_reset_preferences));
         download = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_download));
+        upload = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_upload));
     }
 
 }

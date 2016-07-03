@@ -108,7 +108,7 @@
 //        if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
 //            triggerDownload(localFile, remoteFile);
 //        } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-//            uploadFile(localFile, remoteFile);
+//            triggerUpload(localFile, remoteFile);
 //        } else {
 //            // Synchronization
 //            syncFile(localFile, remoteFile);
@@ -137,7 +137,7 @@
 //        } else if (remoteLastModified.before(localLastModified)) {
 //            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
 //            // upload file
-//            uploadFile(localFile, remoteFile);
+//            triggerUpload(localFile, remoteFile);
 //        } else {
 //            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same");
 //            Message message = new Message();
@@ -219,7 +219,7 @@
 //        sendMessenger(messageComplete);
 //    }
 //
-//    public void uploadFile(final File localFile, final Entry remoteFile) {
+//    public void triggerUpload(final File localFile, final Entry remoteFile) {
 //        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
 //                .getNotificationBuilderUpload();
 //        // get instance notification manager

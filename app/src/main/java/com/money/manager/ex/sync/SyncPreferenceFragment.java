@@ -30,7 +30,9 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -178,13 +180,23 @@ public class SyncPreferenceFragment
             }
         });
 
-        // download
+        // Download.
 
         viewHolder.download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 forceDownload();
                 return true;
+            }
+        });
+
+        // Upload.
+
+        viewHolder.upload.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                forceUpload();
+                return false;
             }
         });
 
@@ -204,7 +216,7 @@ public class SyncPreferenceFragment
         });
     }
 
-    public void forceDownload() {
+    private void forceDownload() {
         SyncManager sync = getSyncManager();
         Context context = getActivity();
 
@@ -229,7 +241,7 @@ public class SyncPreferenceFragment
             //progress dialog
             progressDialog = new ProgressDialog(context);
             progressDialog.setCancelable(false);
-            progressDialog.setMessage(context.getString(R.string.dropbox_syncProgress));
+            progressDialog.setMessage(context.getString(R.string.sync_downloading));
             progressDialog.setIndeterminate(true);
             progressDialog.show();
 
@@ -237,7 +249,7 @@ public class SyncPreferenceFragment
             service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ex, "displaying dropbox progress dialog");
+            handler.handle(ex, "displaying download progress dialog");
         }
 
         // start service
@@ -245,5 +257,20 @@ public class SyncPreferenceFragment
 
         // once done, the message is sent out via messenger. See Messenger definition below.
         // INTENT_EXTRA_MESSENGER_DOWNLOAD
+    }
+
+    private void forceUpload() {
+        String localFile = MoneyManagerApplication.getDatabasePath(getActivity());
+        String remoteFile = getSyncManager().getRemotePath();
+
+        // trigger upload
+        Intent service = new Intent(getActivity().getApplicationContext(), SyncService.class);
+        service.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
+        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+        // toast to show
+        Toast.makeText(getActivity().getApplicationContext(), R.string.sync_uploading, Toast.LENGTH_LONG).show();
+        // start service
+        getActivity().startService(service);
     }
 }

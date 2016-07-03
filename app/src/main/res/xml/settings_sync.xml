@@ -62,16 +62,21 @@
         android:title="@string/pref_auto_sync_via_wifi"
         android:summary="@string/pref_auto_sync_via_wifi_summary" />
 
-    <!-- todo: download -->
+    <!-- download -->
     <PreferenceScreen
         android:dependency="@string/pref_remote_file"
         android:key="@string/pref_sync_download"
         android:summary="@string/cloud_download"
         android:title="@string/download" />
+    <!-- upload -->
+    <PreferenceScreen
+        android:icon="@null"
+        android:dependency="@string/pref_remote_file"
+        android:key="@string/pref_sync_upload"
+        android:summary="@string/cloud_upload"
+        android:title="@string/upload" />
 
-    <!-- todo: upload -->
-    <!-- todo: log out -->
-
+    <!-- log out -->
     <Preference
         android:key="@string/pref_reset_preferences"
         android:title="@string/reset_preferences" />
