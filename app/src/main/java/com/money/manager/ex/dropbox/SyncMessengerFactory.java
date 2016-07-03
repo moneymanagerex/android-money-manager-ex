@@ -64,7 +64,7 @@ public class SyncMessengerFactory {
                     showMessage(R.string.database_is_synchronized, Toast.LENGTH_LONG);
 
                 } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
-                    showMessage(R.string.dropbox_download_is_starting, Toast.LENGTH_LONG);
+                    showMessage(R.string.sync_downloading, Toast.LENGTH_LONG);
 
                 } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
                     // Download from Dropbox completed.
@@ -75,12 +75,12 @@ public class SyncMessengerFactory {
                     EventBus.getDefault().post(new DbFileDownloadedEvent());
 
                 } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
-                    showMessage(R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG);
+                    showMessage(R.string.sync_uploading, Toast.LENGTH_LONG);
 
                 } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_UPLOAD) {
                     // close dialog
                     closeDialog(progressDialog);
-                    showMessage(R.string.upload_file_to_dropbox_complete, Toast.LENGTH_LONG);
+                    showMessage(R.string.upload_file_complete, Toast.LENGTH_LONG);
                 }
             }
         });

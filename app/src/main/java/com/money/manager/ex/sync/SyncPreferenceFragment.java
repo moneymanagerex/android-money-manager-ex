@@ -255,7 +255,7 @@ public class SyncPreferenceFragment
         // start service
         context.startService(service);
 
-        // once done, the message is sent out via messenger. See Messenger definition below.
+        // once done, the message is sent out via messenger. See Messenger definition in factory.
         // INTENT_EXTRA_MESSENGER_DOWNLOAD
     }
 

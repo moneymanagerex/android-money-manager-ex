@@ -96,7 +96,7 @@ public class SyncService
         if (remoteFile == null) {
             if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
                 Log.w(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent forcing creation of the remote file.");
-                // todo: redo this
+                // todo: redo this. Create a new entry in the root?
 //            remoteFile = new Entry();
 //            remoteFile.path = remote;
             } else {
