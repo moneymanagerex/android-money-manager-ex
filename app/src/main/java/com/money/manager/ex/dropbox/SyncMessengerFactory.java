@@ -61,7 +61,7 @@ public class SyncMessengerFactory {
                 } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
                     // close dialog
                     closeDialog(progressDialog);
-                    showMessage(R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG);
+                    showMessage(R.string.database_is_synchronized, Toast.LENGTH_LONG);
 
                 } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
                     showMessage(R.string.dropbox_download_is_starting, Toast.LENGTH_LONG);

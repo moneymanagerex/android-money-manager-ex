@@ -48,12 +48,19 @@ import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.DialogUtils;
 import com.money.manager.ex.utils.NetworkUtilities;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -152,8 +159,13 @@ public class SyncManager {
      */
     public boolean download(String remoteFile, File localFile) {
         try {
-            FileOutputStream fos = new FileOutputStream(localFile);
-            //todo: mDropboxApi.getFile(remoteFile.path, null, fos, progressListener);
+            InputStream inputStream = getProvider().download(remoteFile);
+            OutputStream outputStream = new FileOutputStream(localFile, false);
+
+            IOUtils.copy(inputStream, outputStream);
+
+            inputStream.close();
+            outputStream.close();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "downloading from dropbox");

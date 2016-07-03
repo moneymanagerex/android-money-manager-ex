@@ -115,18 +115,18 @@ public class SyncService
         if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
             downloadFile(localFile, remoteFilename);
         } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-//            uploadFile(localFile, remoteFile);
+//            todo uploadFile(localFile, remoteFile);
         } else {
             // Synchronization
-//            syncFile(localFile, remoteFile);
+//            todo syncFile(localFile, remoteFile);
         }
     }
 
     public void downloadFile(final File localFile, String remoteFilename) {
         SyncManager sync = new SyncManager(getBaseContext());
-        InputStream inputStream = sync.getProvider().download(remoteFilename);
 
-        final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext()).getNotificationBuilderForDownload();
+        final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+                .getNotificationBuilderForDownload();
 
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);

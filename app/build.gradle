@@ -181,6 +181,8 @@ dependencies {
             // sql-cipher database encyrption (optional)
 //            ,'org.joda:joda-money:0.11'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
+            // file helpers
+//            ,'com.google.guava:guava:19.0'
     )
     //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
     // Robolectric, unit testing

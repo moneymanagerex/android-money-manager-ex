@@ -47,7 +47,7 @@ public class SyncNotificationFactory {
      */
     public NotificationCompat.Builder getNotificationBuilderForDownload() {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
-                .setContentTitle(getContext().getString(R.string.application_name_dropbox))
+                .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
                 .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
                 .setContentText(getContext().getString(R.string.dropbox_downloadProgress))
@@ -73,19 +73,17 @@ public class SyncNotificationFactory {
         inboxStyle.addLine(getContext().getString(R.string.dropbox_file_ready_for_use));
         inboxStyle.addLine(getContext().getString(R.string.dropbox_open_database_downloaded));
 
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
+        return new NotificationCompat.Builder(getContext())
                 .addAction(R.drawable.ic_action_folder_open_dark, getContext().getString(R.string.open_database), pendingIntent)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setContentTitle(getContext().getString(R.string.application_name_dropbox))
+                .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setContentText(getContext().getString(R.string.dropbox_open_database_downloaded))
                 ////.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setTicker(getContext().getString(R.string.dropbox_file_ready_for_use))
                 .setStyle(inboxStyle)
                 .setColor(getContext().getResources().getColor(R.color.md_primary));
-
-        return notification;
     }
 
     /**
