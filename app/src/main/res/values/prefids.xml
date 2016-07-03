@@ -57,11 +57,6 @@
     <string name="pref_version_code">versioncode</string>
     <string name="pref_version_date">versiondate</string>
     <string name="pref_sqlite_version">sqliteversion</string>
-    <string name="pref_dropbox_download">dropbox2download</string>
-    <string name="pref_dropbox_upload">dropbox2upload</string>
-    <string name="pref_dropbox_how_it_works">dropbox2howitworks</string>
-    <string name="pref_dropbox_times_repeat_service">dropbox2servicetimesrepeat</string>
-    <string name="pref_dropbox_upload_immediate">dropbox2uploadimmediate</string>
     <string name="pref_transaction_shown_balance">transactionshownbalance</string>
     <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
     <string name="pref_application_font">prefapplicationfont</string>
@@ -81,7 +76,6 @@
     <string name="pref_behaviour_focus_filter">prefbehaviour_focus_filter</string>
     <string name="pref_show_introduction">prefshowintroduction</string>
     <string name="pref_repeating_transaction_notifications">prefrepeatingtransactionnotifications</string>
-    <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
     <string name="pref_income_expense_footer_period">pref_income_expense_footer_period</string>
     <string name="pref_asset_allocation_threshold">pref_asset_allocation_threshold</string>
     <string name="pref_repeating_transaction_check_time">prefrepeatingtransactionchecktime</string>
@@ -89,14 +83,22 @@
     <string name="pref_investment">pref_investment</string>
     <string name="pref_quote_provider">pref_quote_provider</string>
 
+    <!-- dropbox / deprecated -->
+    <string name="pref_dropbox_download">dropbox2download</string>
+    <string name="pref_dropbox_upload">dropbox2upload</string>
+    <string name="pref_dropbox_how_it_works">dropbox2howitworks</string>
+    <string name="pref_dropbox_upload_immediate">dropbox2uploadimmediate</string>
+    <string name="pref_dropbox_times_repeat_service">dropbox2servicetimesrepeat</string>
+
     <!-- synchronization -->
     <string name="pref_dropbox_link">dropbox2link</string>
     <string name="pref_dropbox_unlink">dropbox2unlink</string>
     <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
-    <!--<string name="pref_dropbox_linked_file_all">dropbox2fileAll</string>-->
     <string name="pref_sync_enabled">pref_sync_enabled</string>
     <string name="pref_sync_provider">pref_sync_provider</string>
+    <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
     <string name="pref_remote_file">pref_remote_file</string>
+    <string name="pref_sync_interval">pref_sync_interval</string>
     <string name="pref_dropbox_persistent">pref_dropbox_persistent</string>
     <string name="pref_gdrive_persistent">pref_gdrive_persistent</string>
     <string name="pref_onedrive_persistent">pref_onedrive_persistent</string>

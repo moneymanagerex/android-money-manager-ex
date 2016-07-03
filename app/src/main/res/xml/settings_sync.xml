@@ -41,8 +41,26 @@
         android:title="@string/remote_file" />
 
     <!-- todo: synchronization interval -->
-    <!-- todo: sync only on wi-fi -->
+    <ListPreference
+        android:icon="@null"
+        android:defaultValue="30"
+        android:dependency="@string/pref_sync_enabled"
+        android:entries="@array/timeout_synchronize_items"
+        android:entryValues="@array/timeout_synchronize_values"
+        android:key="@string/pref_sync_interval"
+        android:summary="@string/summary_synchronization_interval"
+        android:title="@string/synchronization_interval" />
+
     <!-- todo: upload immediately -->
+
+    <!-- sync only on wi-fi -->
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="false"
+        android:dependency="@string/pref_sync_enabled"
+        android:key="@string/pref_sync_via_wifi"
+        android:title="@string/pref_auto_sync_via_wifi"
+        android:summary="@string/pref_auto_sync_via_wifi_summary" />
 
     <!-- todo: download -->
     <PreferenceScreen

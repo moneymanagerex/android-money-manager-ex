@@ -20,6 +20,8 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.money.manager.ex.R;
+
 /**
  * Handles sync-related preferences.
  */
@@ -45,6 +47,16 @@ public class SyncPreferences {
         return mContext;
     }
 
+    public boolean isSyncEnabled() {
+        return get(R.string.pref_sync_enabled, false);
+    }
+
+    public String loadPreference(Integer key, String defaultValue) {
+        String realKey = getContext().getString(key);
+
+        return getSyncPreferences().getString(realKey, defaultValue);
+    }
+
     public void savePreference(Integer key, String value) {
         String realKey = getContext().getString(key);
 
@@ -54,10 +66,8 @@ public class SyncPreferences {
                 .apply();
     }
 
-    public String loadPreference(Integer key, String defaultValue) {
-        String realKey = getContext().getString(key);
-
-        return getSyncPreferences().getString(realKey, defaultValue);
+    public boolean shouldSyncOnlyOnWifi() {
+        return get(R.string.pref_sync_via_wifi, false);
     }
 
     // private

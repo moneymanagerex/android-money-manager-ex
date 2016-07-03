@@ -18,6 +18,7 @@
 package com.money.manager.ex.sync;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -30,10 +31,11 @@ import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.dropbox.SyncSchedulerBroadcastReceiver;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
+import com.money.manager.ex.utils.NetworkUtilities;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -104,6 +106,31 @@ public class SyncManager {
         return currentProvider.get();
     }
 
+    /**
+     * Performs checks if automatic synchronization should be performed.
+     * @return boolean indicating if auto sync should be done.
+     */
+    public boolean canAutoSync() {
+        // check if enabled.
+        if (!isActive()) return false;
+
+        // should we sync only on wifi?
+        if (mPreferences.shouldSyncOnlyOnWifi()) {
+            if (BuildConfig.DEBUG) {
+                Log.i(this.getClass().getSimpleName(), "Preferences set to sync on WiFi only.");
+            }
+
+            // check if we are on WiFi connection.
+            NetworkUtilities network = new NetworkUtilities(mContext);
+            if (!network.isOnWiFi()) {
+                Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void download() {
         // todo: We need a value in the remote file name settings.
 
@@ -115,12 +142,9 @@ public class SyncManager {
      */
     public boolean isActive() {
         // check preferences and authentication?
-        SyncPreferences preferences = new SyncPreferences(getContext());
-        boolean isEnabled = preferences.get(R.string.pref_sync_enabled, false);
+        return mPreferences.isSyncEnabled();
 
         // check if a provider is selected?
-
-        return isEnabled;
     }
 
     public void login() {
@@ -155,8 +179,6 @@ public class SyncManager {
         if (StringUtils.isEmpty(mRemoteFile)) {
             mRemoteFile = mPreferences.loadPreference(R.string.pref_remote_file, "");
         }
-        // todo:  mDropboxHelper.getLinkedRemoteFile();
-
         return mRemoteFile;
     }
 
@@ -194,8 +216,22 @@ public class SyncManager {
         mRemoteFile = value;
 
         mPreferences.savePreference(R.string.pref_remote_file, value);
+    }
 
-        // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
+    public void startSyncService() {
+        if (!canAutoSync()) return;
+
+        // start synchronization service.
+        Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
+        intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
+        getContext().sendBroadcast(intent);
+
+//		Intent service = new Intent(getContext(), SyncService.class);
+//		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
+//		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getContext()));
+//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemoteFile());
+//		//start service
+//		getContext().startService(service);
     }
 
     public void storePersistent() {

@@ -40,14 +40,14 @@ import java.util.Calendar;
 /**
  * Schedules the periodic synchronization.
  * Run from the settings, when the synchronization interval changes.
+ * Also receives a notification on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
     extends BroadcastReceiver {
 
     // action intents
-    public static final String ACTION_START = "com.money.manager.ex.custom.intent.action.START_SERVICE_DROPBOX";
-    public static final String ACTION_CANCEL = "com.money.manager.ex.custom.intent.action.CANCEL_SERVICE_DROPBOX";
-    private static final String LOGCAT = SyncSchedulerBroadcastReceiver.class.getSimpleName();
+    public static final String ACTION_START = "com.money.manager.ex.custom.intent.action.START_SYNC_SERVICE";
+    public static final String ACTION_CANCEL = "com.money.manager.ex.custom.intent.action.STOP_SYNC_SERVICE";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -55,44 +55,48 @@ public class SyncSchedulerBroadcastReceiver
         //Log actions
         if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
             action = intent.getAction();
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Action request: " + action);
+            if (BuildConfig.DEBUG) Log.d(this.getClass().getSimpleName(), "Action request: " + action);
         }
 
         // compose intent
-        Intent i = new Intent(context, SyncBroadcastReceiver.class);
-        PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if (ACTION_CANCEL.equals(action)) {
-            alarmManager.cancel(pending);
+        if (action.equals(ACTION_CANCEL)) {
+            alarmManager.cancel(pendingIntent);
             return;
         }
 
-        // check if connect
-        //DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
-        //if (dropboxHelper == null || !dropboxHelper.isLinked()) return;
+        // by default, the action is ACTION_START. This is assumed on device boot.
+        startHeartbeat(context, alarmManager, pendingIntent);
+    }
+
+    private void startHeartbeat(Context context, AlarmManager alarmManager, PendingIntent pendingIntent) {
         SyncManager sync = new SyncManager(context);
         if (!sync.isActive()) return;
 
-        // take repeat time
+        // get repeat time.
         SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(context);
-        // get minute
-        if (preferenceManager != null) {
-            String preferenceMinute = preferenceManager.getString(context.getString(PreferenceConstants.PREF_DROPBOX_TIMES_REPEAT), "30");
-            if (NumberUtils.isNumber(preferenceMinute)) {
-                int minute = Integer.parseInt(preferenceMinute);
-                if (minute > 0) {
-                    Calendar cal = Calendar.getInstance();
+        if (preferenceManager == null) return;
 
-                    if (BuildConfig.DEBUG) {
-                        Log.d(LOGCAT, "Start at: " + new SimpleDateFormat().format(cal.getTime())
-                                + " and repeats every: " + preferenceMinute + " minutes");
-                    }
-                    // start service
-                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), minute * 60 * 1000, pending);
-                }
-            }
+        // get minute
+        String preferenceMinute = preferenceManager.getString(context.getString(PreferenceConstants.PREF_DROPBOX_TIMES_REPEAT), "30");
+        if (!NumberUtils.isNumber(preferenceMinute)) return;
+
+        int minute = Integer.parseInt(preferenceMinute);
+        if (minute <= 0) return;
+
+        Calendar cal = Calendar.getInstance();
+
+        if (BuildConfig.DEBUG) {
+            Log.d(this.getClass().getSimpleName(),
+                    "Start at: " + new SimpleDateFormat().format(cal.getTime())
+                            + " and repeats every: " + preferenceMinute + " minutes");
         }
+
+        // Schedule alarm for synchronization
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), minute * 60 * 1000, pendingIntent);
     }
 }

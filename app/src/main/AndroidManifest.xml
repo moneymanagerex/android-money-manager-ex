@@ -87,11 +87,11 @@
         <receiver android:name=".dropbox.SyncSchedulerBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="${applicationId}.custom.intent.action.START_SERVICE_DROPBOX" />
-                <action android:name="${applicationId}.custom.intent.action.CANCEL_SERVICE_DROPBOX" />
+                <action android:name="${applicationId}.custom.intent.action.START_SYNC_SERVICE" />
+                <action android:name="${applicationId}.custom.intent.action.STOP_SYNC_SERVICE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".dropbox.DropboxStartServiceReceiver" />
+        <!--<receiver android:name=".dropbox.SyncStartServiceReceiver" />-->
         <receiver android:name=".core.MoneyManagerBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

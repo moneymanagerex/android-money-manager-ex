@@ -44,7 +44,6 @@ public class AppSettings
     private BehaviourSettings mBehaviour;
     private InvestmentSettings mInvestment;
     private DatabaseSettings mDatabase;
-    private DropboxSettings mDropbox;
 
     public DatabaseSettings getDatabaseSettings() {
         if (mDatabase == null) {
@@ -78,13 +77,6 @@ public class AppSettings
             mInvestment = new InvestmentSettings(getContext());
         }
         return mInvestment;
-    }
-
-    public DropboxSettings getDropboxSettings() {
-        if (mDropbox == null) {
-            mDropbox = new DropboxSettings(getContext());
-        }
-        return mDropbox;
     }
 
     // Individual settings.

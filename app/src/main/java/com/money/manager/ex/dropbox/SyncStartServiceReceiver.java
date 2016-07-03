@@ -19,31 +19,29 @@
 //import android.content.BroadcastReceiver;
 //import android.content.Context;
 //import android.content.Intent;
-//import android.util.Log;
 //
-//import com.money.manager.ex.BuildConfig;
 //import com.money.manager.ex.MoneyManagerApplication;
-//import com.money.manager.ex.settings.AppSettings;
-//import com.money.manager.ex.utils.NetworkUtilities;
+//import com.money.manager.ex.sync.SyncConstants;
+//import com.money.manager.ex.sync.SyncManager;
+//import com.money.manager.ex.sync.SyncService;
 //
 ///**
 // * Receiver that gets the scheduled notification to run the synchronization task.
 // */
-//public class DropboxStartServiceReceiver
-//		extends BroadcastReceiver {
+//public class SyncStartServiceReceiver
+//    extends BroadcastReceiver {
 //
 //	@Override
 //	public void onReceive(Context context, Intent intent) {
+//		SyncManager sync = new SyncManager(context);
 //
-//        DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
-//
-//        if (!dropboxHelper.shouldAutoSynchronize()) return;
+//        if (!sync.canAutoSync()) return;
 //
 //		//create intent to launch sync
-//		Intent service = new Intent(context, DropboxService.class);
-//		service.setAction(DropboxService.INTENT_ACTION_SYNC);
-//		service.putExtra(DropboxService.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
-//		service.putExtra(DropboxService.INTENT_EXTRA_REMOTE_FILE, dropboxHelper.getLinkedRemoteFile());
+//		Intent service = new Intent(context, SyncService.class);
+//		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
+//		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
+//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemoteFile());
 //		//start service
 //		context.startService(service);
 //	}
