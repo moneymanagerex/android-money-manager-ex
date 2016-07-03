@@ -120,6 +120,21 @@ public class SyncPreferenceFragment
     private void initializePreferences() {
         viewHolder = new SyncPreferencesViewHolder(this);
 
+        viewHolder.syncEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                // switch the sync heartbeat
+                Boolean enabled = (Boolean) o;
+                getSyncManager().setEnabled(enabled);
+                if (enabled) {
+                    getSyncManager().startSyncService();
+                } else {
+                    getSyncManager().stopSyncService();
+                }
+                return true;
+            }
+        });
+
         viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {

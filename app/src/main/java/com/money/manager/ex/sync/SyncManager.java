@@ -229,6 +229,10 @@ public class SyncManager {
         mPreferences.clear();
     }
 
+    public void setEnabled(boolean enabled) {
+        mPreferences.setSyncEnabled(enabled);
+    }
+
     public void setProvider(CloudStorageProviderEnum provider) {
         // Sync provider mapping
         switch (provider) {

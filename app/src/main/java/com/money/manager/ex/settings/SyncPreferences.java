@@ -66,6 +66,10 @@ public class SyncPreferences {
                 .apply();
     }
 
+    public void setSyncEnabled(boolean value) {
+        set(R.string.pref_sync_enabled, value);
+    }
+
     public boolean shouldSyncOnlyOnWifi() {
         return get(R.string.pref_sync_via_wifi, false);
     }
@@ -78,5 +82,11 @@ public class SyncPreferences {
 
     private SharedPreferences getSyncPreferences() {
         return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
+    }
+
+    private void set(Integer key, boolean value) {
+        getSyncPreferences().edit()
+                .putBoolean(getContext().getString(key), value)
+                .apply();
     }
 }
