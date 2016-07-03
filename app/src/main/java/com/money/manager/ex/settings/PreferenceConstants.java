@@ -52,8 +52,8 @@ public class PreferenceConstants {
     public static final Integer PREF_EDIT_PASSCODE = R.string.pref_edit_passcode;
     public static final Integer PREF_DISABLE_PASSCODE = R.string.pref_disable_passcode;
     public static final Integer PREF_ACTIVE_PASSCODE = R.string.pref_active_passcode;
-//    public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
-//    public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
+    public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
+    public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
 //    public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
     // Preference button for file anywhere in Drobpox
 //    public static final Integer PREF_DROPBOX_LINKED_FILE_ALL = R.string.pref_dropbox_linked_file_all;
@@ -62,8 +62,8 @@ public class PreferenceConstants {
 
 
     public static final Integer PREF_SQLITE_VERSION = R.string.pref_sqlite_version;
-//    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
-//    public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
+    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
+    public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
 //    public static final Integer PREF_DROPBOX_HOWITWORKS = R.string.pref_dropbox_how_it_works;
     public static final Integer PREF_DROPBOX_TIMES_REPEAT = R.string.pref_dropbox_times_repeat_service;
 //    public static final Integer PREF_DROPBOX_UPLOAD_IMMEDIATE = R.string.pref_dropbox_upload_immediate;

@@ -56,7 +56,73 @@ public class SyncPreferenceFragment
 
         addPreferencesFromResource(R.xml.settings_sync);
 
+        initializePreferences();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_REMOTE_FILE:
+                handleFileSelection(resultCode, data);
+                break;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // this is probably redundant now.
+        getSyncManager().storePersistent();
+    }
+
+    private void handleFileSelection(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null) return;
+
+        // get value
+        String remoteFile = data.getStringExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE);
+
+        // save selection into preferences
+        getSyncManager().setRemoteFile(remoteFile);
+
+        // show selected value
+        viewHolder.remoteFile.setSummary(remoteFile);
+
+        // todo download db from the cloud storage
+//        if (!oldFile.equals(newFile)) {
+//            // force download file
+//            downloadFileFromDropbox();
+//        }
+        // todo start sync service
+//        mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_START);
+
+        // todo open db file?
+        // todo add history record (recent files)?
+
+//        getSyncManager().storePersistent();
+    }
+
+    private SyncManager getSyncManager() {
+        if (mSyncManager == null) {
+            mSyncManager = new SyncManager(getActivity());
+        }
+        return mSyncManager;
+    }
+
+    private void initializePreferences() {
         viewHolder = new SyncPreferencesViewHolder(this);
+
+        viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                // log in to the provider immediately and save to persistence.
+                getSyncManager().login();
+                getSyncManager().storePersistent();
+
+                return true;
+            }
+        });
 
         viewHolder.remoteFile.setSummary(getSyncManager().getRemoteFile());
 
@@ -75,58 +141,11 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 getSyncManager().resetPreferences();
+                //todo: stop sync
+                // mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_CANCEL);
                 Core.alertDialog(getActivity(), R.string.preferences_reset);
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case REQUEST_REMOTE_FILE:
-                handleFileSelection(resultCode, data);
-                break;
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        getSyncManager().storePersistent();
-    }
-
-    private void handleFileSelection(int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) return;
-
-        // get value
-        String remoteFile = data.getStringExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE);
-
-        // save selection into preferences
-        getSyncManager().setRemoteFile(remoteFile);
-
-        // show selected value
-        viewHolder.remoteFile.setSummary(remoteFile);
-
-        // todo:
-        // add history record (recent files)
-        // download db from the cloud storage
-//        if (!oldFile.equals(newFile)) {
-//            // force download file
-//            downloadFileFromDropbox();
-//        }
-        // open db file
-
-        getSyncManager().storePersistent();
-    }
-
-    private SyncManager getSyncManager() {
-        if (mSyncManager == null) {
-            mSyncManager = new SyncManager(getActivity());
-        }
-        return mSyncManager;
     }
 }
