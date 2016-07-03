@@ -210,7 +210,7 @@ public class Core {
         File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
         if (!database.exists()) return null;
         //create folder to copy database
-        File folderOutput = getExternalStorageDirectoryApplication();
+        File folderOutput = getExternalStorageDirectory();
         //take a folder of database
         ArrayList<File> filesFromCopy = new ArrayList<>();
         //add current database
@@ -343,7 +343,7 @@ public class Core {
      *
      * @return the default directory where to store the database
      */
-    public File getExternalStorageDirectoryApplication() {
+    public File getExternalStorageDirectory() {
         //get external storage
         File externalStorage;
         externalStorage = Environment.getExternalStorageDirectory();
@@ -363,27 +363,6 @@ public class Core {
             return folderOutput;
         } else {
             return getContext().getFilesDir();
-        }
-    }
-
-    /**
-     * Get dropbox application directory on external storage.
-     *
-     * @return directory created if not exists
-     */
-    public File getExternalStorageDirectoryDropboxApplication() {
-        File folder = getExternalStorageDirectoryApplication();
-        // manage folder
-        if (folder != null && folder.exists() && folder.isDirectory() && folder.canWrite()) {
-            // create a folder for dropbox
-            File folderDropbox = new File(folder + "/dropbox");
-            // check if folder exists otherwise create
-            if (!folderDropbox.exists()) {
-                if (!folderDropbox.mkdirs()) return mContext.getFilesDir();
-            }
-            return folderDropbox;
-        } else {
-            return mContext.getFilesDir();
         }
     }
 

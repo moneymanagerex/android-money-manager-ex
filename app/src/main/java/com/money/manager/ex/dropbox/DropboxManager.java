@@ -34,6 +34,7 @@
 //import com.money.manager.ex.home.RecentDatabaseEntry;
 //import com.money.manager.ex.home.RecentDatabasesProvider;
 //import com.money.manager.ex.sync.SyncConstants;
+//import com.money.manager.ex.sync.SyncManager;
 //import com.money.manager.ex.sync.SyncService;
 //import com.money.manager.ex.utils.DialogUtils;
 //
@@ -86,25 +87,19 @@
 //        runDropbox(SyncConstants.INTENT_ACTION_DOWNLOAD);
 //    }
 //
-//    public String getDropboxFilePath() {
-//        return mDropboxHelper.getLinkedRemoteFile();
-//    }
-//
 //    /**
 //     * Provides the path to the local file which is currently linked to Dropbox.
 //     * @return path to the local database.
 //     */
-//    public String getLocalDatabasePath() {
-//        String dropboxFile = getDropboxFilePath();
-//        Core core = new Core(mContext.getApplicationContext());
-//
-//        String localFile = core.getExternalStorageDirectoryDropboxApplication().getPath() + dropboxFile;
+//    public String getLocalPath() {
+//        String dropboxFile = mDropboxHelper.getLinkedRemoteFile();
+//        String localFile = getExternalStorageDirectoryDropbox().getPath() + dropboxFile;
 //
 //        return localFile;
 //    }
 //
 //    public void openDownloadedDatabase() {
-//        File downloadedDb = new File(this.getLocalDatabasePath());
+//        File downloadedDb = new File(this.getLocalPath());
 //        DropboxService dropboxService = new DropboxService();
 //
 //        Intent intent = dropboxService.getIntentForOpenDatabase(mContext, downloadedDb);
@@ -114,15 +109,37 @@
 //
 //    // Private area
 //
+//    /**
+//     * Get dropbox application directory on external storage. The directory is created if it does
+//     * not exist.
+//     * @return Location for Dropbox files.
+//     */
+//    private File getExternalStorageDirectoryDropbox() {
+//        Core core = new Core(mContext.getApplicationContext());
+//        File folder = core.getExternalStorageDirectory();
+//        // manage folder
+//        if (folder != null && folder.exists() && folder.isDirectory() && folder.canWrite()) {
+//            // create a folder for dropbox
+//            File folderDropbox = new File(folder + "/dropbox");
+//            // check if folder exists otherwise create
+//            if (!folderDropbox.exists()) {
+//                if (!folderDropbox.mkdirs()) return mContext.getFilesDir();
+//            }
+//            return folderDropbox;
+//        } else {
+//            return mContext.getFilesDir();
+//        }
+//    }
+//
 //    private void runDropbox(String intentAction) {
 //        // Validation.
 //        // We need a value in dropbox file name settings.
-//        String dropboxFile = getDropboxFilePath();
+//        String dropboxFile = mDropboxHelper.getLinkedRemoteFile();
 //        if (TextUtils.isEmpty(dropboxFile)) return;
 //
 //        // Action
 //
-//        String localFile = getLocalDatabasePath();
+//        String localFile = getLocalPath();
 //
 //        Intent service = new Intent(mContext.getApplicationContext(), DropboxService.class);
 //
@@ -140,7 +157,8 @@
 //            progressDialog.setIndeterminate(true);
 //            progressDialog.show();
 //
-//            Messenger messenger = createMessenger(progressDialog);
+//            SyncManager sync = new SyncManager(mContext);
+//            Messenger messenger = sync.createMessenger(progressDialog, mDropboxHelper.getLinkedRemoteFile());
 //            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
 //            ExceptionHandler handler = new ExceptionHandler(mContext, this);
@@ -152,67 +170,5 @@
 //
 //        // once done, the message is sent out via messenger. See Messenger definition below.
 //        // INTENT_EXTRA_MESSENGER_DOWNLOAD
-//    }
-//
-//    private Messenger createMessenger(final ProgressDialog progressDialog) {
-//        // Messenger handles received messages from the Dropbox service.
-//        Messenger messenger = new Messenger(new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_NOT_ON_WIFI) {
-//                    //showMessage();
-//                    closeDialog(progressDialog);
-//
-//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
-//                    // close dialog
-//                    closeDialog(progressDialog);
-//                    showMessage(R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG);
-//
-//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
-//                    showMessage(R.string.dropbox_download_is_starting, Toast.LENGTH_LONG);
-//
-//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
-//                    // Download from Dropbox completed.
-//                    storeRecentDb();
-//                    // close dialog
-//                    closeDialog(progressDialog);
-//                    // Notify whoever is interested.
-//                    EventBus.getDefault().post(new DbFileDownloadedEvent());
-//
-//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
-//                    showMessage(R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG);
-//
-//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_UPLOAD) {
-//                    // close dialog
-//                    closeDialog(progressDialog);
-//                    showMessage(R.string.upload_file_to_dropbox_complete, Toast.LENGTH_LONG);
-//                }
-//            }
-//        });
-//        return messenger;
-//    }
-//
-//    private void showMessage(final int message, final int length) {
-//        final Activity parent = (Activity) mContext;
-//
-//        parent.runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Toast.makeText(mContext, message, length).show();
-//            }
-//        });
-//    }
-//
-//    private void closeDialog(ProgressDialog progressDialog) {
-//        if (progressDialog != null && progressDialog.isShowing()) {
-//            DialogUtils.closeProgressDialog(progressDialog);
-//        }
-//    }
-//
-//    private void storeRecentDb() {
-//        RecentDatabasesProvider recents = new RecentDatabasesProvider(mContext);
-//        RecentDatabaseEntry entry = RecentDatabaseEntry.getInstance(getLocalDatabasePath(), true,
-//                getDropboxFilePath());
-//        recents.add(entry);
 //    }
 //}

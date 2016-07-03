@@ -18,19 +18,33 @@
 package com.money.manager.ex.sync;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 import android.os.Messenger;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
+import com.money.manager.ex.dropbox.SyncCommon;
+import com.money.manager.ex.dropbox.SyncNotificationFactory;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NetworkUtilities;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * The background service that synchronizes the database file.
+ * It is being invoked by the timer (is it?).
+ * It displays the sync notification and invokes the cloud api.
  */
 public class SyncService
     extends IntentService {
@@ -69,39 +83,123 @@ public class SyncService
 
         SyncManager sync = new SyncManager(getBaseContext());
 
-        String local = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
-        String remote = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
+        String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
+        String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
         // check if file is correct
-        if (TextUtils.isEmpty(local) || TextUtils.isEmpty(remote)) return;
+        if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
         // take a file and entries
-        File localFile = new File(local);
+        File localFile = new File(localFilename);
 //        Entry remoteFile = mDropboxHelper.getEntry(remote);
-        CloudMetaData remoteMetaData = sync.getProvider().getMetadata(remote);
+        CloudMetaData remoteFile = sync.getProvider().getMetadata(remoteFilename);
         // check if local file or remote file is null, then exit
-//        if (remoteFile == null && SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-//            Log.w(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent forcing creation of the remote file.");
+        if (remoteFile == null) {
+            if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+                Log.w(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent forcing creation of the remote file.");
+                // todo: redo this
 //            remoteFile = new Entry();
 //            remoteFile.path = remote;
-//        } else if (remoteFile == null) {
-//            Log.e(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent premature exit.");
-//            return;
-//        }
-//
-//        // check if name is same
-//        if (!localFile.getName().toUpperCase().equals(remoteFile.fileName().toUpperCase())) {
-//            Log.w(LOGCAT, "Local filename different from the remote!");
-//            return;
-//        }
-//
-//        // Execute action.
-//        if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
-//            downloadFile(localFile, remoteFile);
-//        } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+            } else {
+                Log.e(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent premature exit.");
+                return;
+            }
+        }
+
+        // check if name is same
+        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
+            Log.w(LOGCAT, "Local filename different from the remote!");
+            return;
+        }
+
+        // Execute action.
+        if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
+            downloadFile(localFile, remoteFilename);
+        } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
 //            uploadFile(localFile, remoteFile);
-//        } else {
-//            // Synchronization
+        } else {
+            // Synchronization
 //            syncFile(localFile, remoteFile);
-//        }
+        }
     }
+
+    public void downloadFile(final File localFile, String remoteFilename) {
+        SyncManager sync = new SyncManager(getBaseContext());
+        InputStream inputStream = sync.getProvider().download(remoteFilename);
+
+        final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext()).getNotificationBuilderForDownload();
+
+        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        final File tempFile = new File(localFile.toString() + "-download");
+
+        IOnDownloadUploadEntry onDownloadUpload = new IOnDownloadUploadEntry() {
+            @Override
+            public void onPreExecute() {
+                if (notification != null && notificationManager != null) {
+                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+                }
+            }
+
+            @Override
+            public void onPostExecute(boolean result) {
+                if (notification != null && notificationManager != null) {
+                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
+                    if (result) {
+                        // copy file
+                        Core core = new Core(getApplicationContext());
+                        try {
+                            core.copy(tempFile, localFile);
+                            tempFile.delete();
+                        } catch (IOException e) {
+                            Log.e(LOGCAT, e.getMessage());
+                            return;
+                        }
+                        // create notification for open file
+                        // intent is passed to the notification and called if clicked on.
+                        Intent intent = new SyncCommon().getIntentForOpenDatabase(getBaseContext(), localFile);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                                MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+                        // create builder
+                        final NotificationCompat.Builder notification =
+                                new SyncNotificationFactory(getBaseContext())
+                                        .getNotificationBuilderDownloadComplete(pendingIntent);
+                        // notify
+                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
+                    }
+                }
+            }
+        };
+        if (BuildConfig.DEBUG) {
+            Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFilename);
+        }
+
+        //start
+        onDownloadUpload.onPreExecute();
+        //send message to the database download staring
+        Message messageStart = new Message();
+        messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD;
+        sendMessenger(messageStart);
+        //execute
+        boolean ret = sync.download(remoteFilename, tempFile);
+        //complete
+        onDownloadUpload.onPostExecute(ret);
+
+        //send message to the database download complete
+        Message messageComplete = new Message();
+        messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+        sendMessenger(messageComplete);
+    }
+
+    private boolean sendMessenger(Message msg) {
+        if (mOutMessenger != null) {
+            try {
+                mOutMessenger.send(msg);
+            } catch (Exception e) {
+                Log.e(LOGCAT, e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

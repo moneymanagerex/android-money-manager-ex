@@ -34,7 +34,6 @@
 //import com.money.manager.ex.BuildConfig;
 //import com.money.manager.ex.home.MainActivity;
 //import com.money.manager.ex.core.Core;
-//import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
 //import com.money.manager.ex.sync.SyncConstants;
 //import com.money.manager.ex.sync.SyncService;
 //import com.money.manager.ex.utils.NetworkUtilities;
@@ -148,13 +147,13 @@
 //    }
 //
 //    public void downloadFile(final File localFile, final Entry remoteFile) {
-//        final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderDownload();
+//        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext()).getNotificationBuilderForDownload();
 //
 //        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
 //                .getSystemService(Context.NOTIFICATION_SERVICE);
 //        final File tempFile = new File(localFile.toString() + "-download");
 //
-//        OnDownloadUploadEntry onDownloadUpload = new OnDownloadUploadEntry() {
+//        IOnDownloadUploadEntry onDownloadUpload = new IOnDownloadUploadEntry() {
 //            @Override
 //            public void onPreExecute() {
 //                if (notification != null && notificationManager != null) {
@@ -178,12 +177,12 @@
 //                        }
 //                        // create notification for open file
 //                        // intent is passed to the notification and called if clicked on.
-//                        Intent intent = getIntentForOpenDatabase(getBaseContext(), localFile);
+//                        Intent intent = new SyncCommon().getIntentForOpenDatabase(getBaseContext(), localFile);
 //                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
 //                                MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
 //                        // create builder
-//                        final NotificationCompat.Builder notification =
-//                                mDropboxHelper.getNotificationBuilderDownloadComplete(pendingIntent);
+//                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+//                                .getNotificationBuilderDownloadComplete(pendingIntent);
 //                        // notify
 //                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
 //                    }
@@ -195,7 +194,8 @@
 //            @Override
 //            public void onProgress(long bytes, long total) {
 //                notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS,
-//                        mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
+//                        new SyncNotificationFactory(getBaseContext())
+//                                .getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
 //            }
 //        };
 //        if (BuildConfig.DEBUG) {
@@ -220,11 +220,12 @@
 //    }
 //
 //    public void uploadFile(final File localFile, final Entry remoteFile) {
-//        final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderUpload();
+//        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+//                .getNotificationBuilderUpload();
 //        // get instance notification manager
 //        final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 //        // create interface
-//        OnDownloadUploadEntry onDownloadUpload = new OnDownloadUploadEntry() {
+//        IOnDownloadUploadEntry onDownloadUpload = new IOnDownloadUploadEntry() {
 //            @Override
 //            public void onPreExecute() {
 //                if (notification != null && notificationManager != null) {
@@ -244,7 +245,8 @@
 //                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
 //                        // notification
-//                        final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderUploadComplete(pendingIntent);
+//                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+//                                .getNotificationBuilderUploadComplete(pendingIntent);
 //                        // notify
 //                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
 //                    }
@@ -256,7 +258,8 @@
 //            @Override
 //            public void onProgress(long bytes, long total) {
 //                notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS,
-//                        mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
+//                        new SyncNotificationFactory(getBaseContext())
+//                                .getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
 //            }
 //        };
 //
@@ -290,11 +293,4 @@
 //        return true;
 //    }
 //
-//    public Intent getIntentForOpenDatabase(Context context, File database) {
-//        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-//        intent.setData(Uri.fromFile(database));
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//        return intent;
-//    }
 //}

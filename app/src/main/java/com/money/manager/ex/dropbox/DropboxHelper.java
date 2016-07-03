@@ -149,7 +149,7 @@
 //                        Log.d(LOGCAT, "Starting delayed upload");
 //                    }
 //
-//                    mHelper.sendBroadcastStartService(DropboxService.INTENT_ACTION_UPLOAD);
+//                    mHelper.sendBroadcastStartService(SyncConstants.INTENT_ACTION_UPLOAD);
 //                    abortScheduledUpload();
 //                }
 //            };
@@ -464,115 +464,6 @@
 //    }
 //
 //    /**
-//     * Get the builder of a notification for download
-//     *
-//     * @return notification
-//     */
-//    public NotificationCompat.Builder getNotificationBuilderDownload() {
-//        NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
-//                .setContentTitle(mContext.getString(R.string.application_name_dropbox))
-//                .setAutoCancel(false)
-//                .setDefaults(Notification.FLAG_FOREGROUND_SERVICE)
-//                .setContentText(mContext.getString(R.string.dropbox_downloadProgress))
-//                        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
-//                .setSmallIcon(R.drawable.ic_stat_notification)
-//                .setColor(mContext.getResources().getColor(R.color.md_primary));
-//        // only for previous version!
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-//            Intent intent = new Intent(mContext, MainActivity.class);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
-//            notification.setContentIntent(pendingIntent);
-//        }
-//        return notification;
-//    }
-//
-//    /**
-//     * Get notification builder for download complete
-//     */
-//    public NotificationCompat.Builder getNotificationBuilderDownloadComplete(PendingIntent pendingIntent) {
-//        // compose notification big view
-//        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-//        inboxStyle.setBigContentTitle(mContext.getString(R.string.application_name_dropbox));
-//        inboxStyle.addLine(mContext.getString(R.string.dropbox_file_ready_for_use));
-//        inboxStyle.addLine(mContext.getString(R.string.dropbox_open_database_downloaded));
-//
-//        NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
-//                .addAction(R.drawable.ic_action_folder_open_dark, mContext.getString(R.string.open_database), pendingIntent)
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent)
-//                .setContentTitle(mContext.getString(R.string.application_name_dropbox))
-//                .setContentText(mContext.getString(R.string.dropbox_open_database_downloaded))
-//                        ////.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
-//                .setSmallIcon(R.drawable.ic_stat_notification)
-//                .setTicker(mContext.getString(R.string.dropbox_file_ready_for_use))
-//                .setStyle(inboxStyle)
-//                .setColor(mContext.getResources().getColor(R.color.md_primary));
-//
-//        return notification;
-//    }
-//
-//    /**
-//     * Get the builder of a notification for upload
-//     */
-//    public NotificationCompat.Builder getNotificationBuilderUpload() {
-//        NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
-//                .setContentTitle(mContext.getString(R.string.application_name_dropbox))
-//                .setContentInfo(mContext.getString(R.string.upload_file_to_dropbox_complete))
-//                .setAutoCancel(false)
-//                .setContentText(mContext.getString(R.string.dropbox_uploadProgress))
-//                        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
-//                .setSmallIcon(R.drawable.ic_stat_notification)
-//                .setColor(mContext.getResources().getColor(R.color.md_primary));
-//
-//        // only for previous version!
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-//            Intent intent = new Intent(mContext, MainActivity.class);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
-//            notification.setContentIntent(pendingIntent);
-//        }
-//        return notification;
-//    }
-//
-//    /**
-//     * Get notification builder for upload complete
-//     */
-//    public NotificationCompat.Builder getNotificationBuilderUploadComplete(PendingIntent pendingIntent) {
-//        // compose notification big view
-//        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-//        inboxStyle.setBigContentTitle(mContext.getString(R.string.application_name_dropbox));
-//        inboxStyle.addLine(mContext.getString(R.string.upload_file_to_dropbox_complete));
-//        // compose builder
-//        NotificationCompat.Builder notification = new NotificationCompat.Builder(mContext)
-//                //.addAction(R.drawable.ic_action_folder_open_dark, context.getString(R.string.open_database), pendingIntent)
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent)
-//                .setContentTitle(mContext.getString(R.string.application_name_dropbox))
-//                .setContentText(mContext.getString(R.string.upload_file_to_dropbox_complete))
-//                        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
-//                .setSmallIcon(R.drawable.ic_stat_notification)
-//                .setStyle(inboxStyle)
-//                .setTicker(mContext.getString(R.string.upload_file_to_dropbox_complete))
-//                .setColor(mContext.getResources().getColor(R.color.md_primary));
-//
-//        return notification;
-//    }
-//
-//    /**
-//     * Get a notification builder with progress bar
-//     *
-//     * @param notification existing builder
-//     * @param totalBytes   total bytes to transfer
-//     * @param bytes        bytes transfer
-//     * @return
-//     */
-//    public NotificationCompat.Builder getNotificationBuilderProgress(NotificationCompat.Builder notification, int totalBytes, int bytes) {
-//        notification.setProgress(totalBytes, bytes, false);
-//        notification.setContentInfo(String.format("%1dKB/%2dKB", bytes / 1024, totalBytes / 1024));
-//
-//        return notification;
-//    }
-//
-//    /**
 //     * Get a first entry from dropbox
 //     *
 //     * @param entry path dropbox entry
@@ -631,29 +522,6 @@
 //        asyncTask.execute(folder);
 //    }
 //
-//    /**
-//     * Downloads the file from Dropbox service.
-//     * @param dropboxFile Dropbox file entry
-//     * @param localFile Local file reference
-//     * @param progressListener Listener for the progress update messages.
-//     * @return Indicator whether the download was successful.
-//     */
-//    public boolean download(final Entry dropboxFile, final File localFile, final ProgressListener progressListener) {
-//        try {
-//            FileOutputStream fos = new FileOutputStream(localFile);
-//            mDropboxApi.getFile(dropboxFile.path, null, fos, progressListener);
-//        } catch (Exception e) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(e, "downloading from dropbox");
-//            return false;
-//        }
-//
-//        setDateLastModified(dropboxFile.fileName(), RESTUtility.parseDate(dropboxFile.modified));
-//
-//        DropboxHelper.abortScheduledUpload();
-//
-//        return true;
-//    }
 //
 //    public boolean upload(final String dropboxFile, final File localFile, final ProgressListener progressListener) {
 //        try {
@@ -687,7 +555,7 @@
 //     * @param localFile Path to local database file.
 //     */
 //    public void downloadFileAsync(final Entry dropboxFile, final File localFile,
-//                                  final OnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
+//                                  final IOnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
 //        AsyncTask<Void, Long, Boolean> asyncTask = new AsyncTask<Void, Long, Boolean>() {
 //            private FileOutputStream mFileOutputStream;
 //
@@ -725,7 +593,7 @@
 //        asyncTask.execute();
 //    }
 //
-//    public void uploadFileAsync(final String dropboxFile, final File localFile, final OnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
+//    public void uploadFileAsync(final String dropboxFile, final File localFile, final IOnDownloadUploadEntry onDownloadUpload, final ProgressListener progressListener) {
 //        AsyncTask<Void, Long, Boolean> asyncTask = new AsyncTask<Void, Long, Boolean>() {
 //            private FileInputStream mFileInputStream;
 //            private Entry mEntryDropboxFile;
@@ -776,17 +644,17 @@
 //     */
 //    public int checkIfFileIsSync() {
 //        if (!isLinked()) {
-//            return DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        }
 //
 //        String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
 //        String remotePath = getLinkedRemoteFile();
 //        // check if file is correct
 //        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath))
-//            return DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        // check if remoteFile path is contain into localFile
 //        if (!localPath.toLowerCase().contains(remotePath.toLowerCase()))
-//            return DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        // get File and Entry
 //        File localFile = new File(localPath);
 //        Entry remoteFile = getEntry(remotePath);
@@ -819,11 +687,5 @@
 //        void onStarting();
 //
 //        void onFinished(List<Entry> result);
-//    }
-//
-//    public interface OnDownloadUploadEntry {
-//        void onPreExecute();
-//
-//        void onPostExecute(boolean result);
 //    }
 //}

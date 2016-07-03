@@ -186,7 +186,7 @@
 //            @Override
 //            public boolean onPreferenceClick(Preference preference) {
 //                mDropboxHelper.logOut();
-//                mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_CANCEL);
+//                mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_STOP);
 //
 //                // refresh ui
 //                onResume();
@@ -289,7 +289,7 @@
 //
 //                @Override
 //                public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                    mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_CANCEL);
+//                    mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_STOP);
 //                    mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_START);
 //                    return true;
 //                }

@@ -38,16 +38,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Schedules the periodic synchronization.
- * Run from the settings, when the synchronization interval changes.
- * Also receives a notification on BOOT_COMPLETED.
+ * Schedules the periodic alarm/heartbeat that triggers synchronization.
+ * Run from the settings, when the synchronization interval changes and on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
     extends BroadcastReceiver {
 
     // action intents
-    public static final String ACTION_START = "com.money.manager.ex.custom.intent.action.START_SYNC_SERVICE";
-    public static final String ACTION_CANCEL = "com.money.manager.ex.custom.intent.action.STOP_SYNC_SERVICE";
+    public static final String ACTION_START = "com.money.manager.ex.intent.action.START_SYNC_SERVICE";
+    public static final String ACTION_STOP = "com.money.manager.ex.intent.action.STOP_SYNC_SERVICE";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -58,13 +57,13 @@ public class SyncSchedulerBroadcastReceiver
             if (BuildConfig.DEBUG) Log.d(this.getClass().getSimpleName(), "Action request: " + action);
         }
 
-        // compose intent
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if (action.equals(ACTION_CANCEL)) {
+        // Cancel existing heartbeat.
+        if (action.equals(ACTION_STOP)) {
             alarmManager.cancel(pendingIntent);
             return;
         }

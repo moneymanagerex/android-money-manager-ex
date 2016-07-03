@@ -65,7 +65,7 @@
     <!-- todo: download -->
     <PreferenceScreen
         android:dependency="@string/pref_remote_file"
-        android:key="@string/pref_dropbox_download"
+        android:key="@string/pref_sync_download"
         android:summary="@string/cloud_download"
         android:title="@string/download" />
 

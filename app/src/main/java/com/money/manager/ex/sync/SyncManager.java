@@ -17,10 +17,16 @@
 
 package com.money.manager.ex.sync;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
@@ -31,15 +37,22 @@ import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.SyncSchedulerBroadcastReceiver;
-import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
+import com.money.manager.ex.utils.DialogUtils;
 import com.money.manager.ex.utils.NetworkUtilities;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -131,9 +144,27 @@ public class SyncManager {
         return true;
     }
 
-    public void download() {
-        // todo: We need a value in the remote file name settings.
+    /**
+     * Downloads the file from Dropbox service.
+     * @param remoteFile Remote file entry
+     * @param localFile Local file reference
+     * @return Indicator whether the download was successful.
+     */
+    public boolean download(String remoteFile, File localFile) {
+        try {
+            FileOutputStream fos = new FileOutputStream(localFile);
+            //todo: mDropboxApi.getFile(remoteFile.path, null, fos, progressListener);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(e, "downloading from dropbox");
+            return false;
+        }
 
+        // todo: setDateLastModified(remoteFile.fileName(), RESTUtility.parseDate(remoteFile.modified));
+
+        // todo: DropboxHelper.abortScheduledUpload();
+
+        return true;
     }
 
     /**
@@ -175,7 +206,7 @@ public class SyncManager {
         }).start();
     }
 
-    public String getRemoteFile() {
+    public String getRemotePath() {
         if (StringUtils.isEmpty(mRemoteFile)) {
             mRemoteFile = mPreferences.loadPreference(R.string.pref_remote_file, "");
         }
@@ -221,7 +252,6 @@ public class SyncManager {
     public void startSyncService() {
         if (!canAutoSync()) return;
 
-        // start synchronization service.
         Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
@@ -229,9 +259,15 @@ public class SyncManager {
 //		Intent service = new Intent(getContext(), SyncService.class);
 //		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
 //		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getContext()));
-//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemoteFile());
+//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
 //		//start service
 //		getContext().startService(service);
+    }
+
+    public void stopSyncService() {
+        Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
+        intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
+        getContext().sendBroadcast(intent);
     }
 
     public void storePersistent() {
@@ -275,5 +311,40 @@ public class SyncManager {
             provider = CloudStorageProviderEnum.valueOf(providerCode);
         }
         setProvider(provider);
+    }
+
+    /**
+     *
+     * @return The path of the local cached copy of the remote database.
+     */
+    public String getLocalPath() {
+        String remoteFile = getRemotePath();
+        // now get only the file name
+        String remoteFileName = new File(remoteFile).getName();
+
+        String localPath = getExternalStorageDirectoryForSync().getPath();
+        if (!localPath.endsWith(File.separator)) {
+            localPath += File.separator;
+        }
+        String localFile = localPath + remoteFileName;
+
+        return localFile;
+    }
+
+    private File getExternalStorageDirectoryForSync() {
+        Core core = new Core(mContext.getApplicationContext());
+        File folder = core.getExternalStorageDirectory();
+        // manage folder
+        if (folder != null && folder.exists() && folder.isDirectory() && folder.canWrite()) {
+            // create a folder for remote files
+            File folderSync = new File(folder + "/sync");
+            // check if folder exists otherwise create
+            if (!folderSync.exists()) {
+                if (!folderSync.mkdirs()) return mContext.getFilesDir();
+            }
+            return folderSync;
+        } else {
+            return mContext.getFilesDir();
+        }
     }
 }

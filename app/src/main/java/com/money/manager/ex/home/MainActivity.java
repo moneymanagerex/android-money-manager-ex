@@ -72,7 +72,7 @@ import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.core.MoneyManagerBootReceiver;
+import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.account.AccountListFragment;
@@ -408,7 +408,7 @@ public class MainActivity
         File db = new File(currentDbPath);
         String dbName = db.getName();
 
-        String remoteDb = new SyncManager(this).getRemoteFile();
+        String remoteDb = new SyncManager(this).getRemotePath();
         if (StringUtils.isEmpty(remoteDb)) return;
 
         File dropboxDb = new File(remoteDb);
@@ -644,7 +644,7 @@ public class MainActivity
         }
 
         // notification send broadcast
-        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), MoneyManagerBootReceiver.class);
+        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
         if (!this.hasStarted) {

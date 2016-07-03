@@ -19,17 +19,22 @@ package com.money.manager.ex.sync;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Messenger;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
+import android.text.TextUtils;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.dropbox.SyncMessengerFactory;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 /**
@@ -95,8 +100,9 @@ public class SyncPreferenceFragment
 //            // force download file
 //            downloadFileFromDropbox();
 //        }
-        // todo start sync service
-//        mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_START);
+
+        // start sync service
+        getSyncManager().startSyncService();
 
         // todo open db file?
         // todo add history record (recent files)?
@@ -128,8 +134,8 @@ public class SyncPreferenceFragment
             }
         });
 
-        viewHolder.remoteFile.setSummary(getSyncManager().getRemoteFile());
-
+        // remote file
+        viewHolder.remoteFile.setSummary(getSyncManager().getRemotePath());
         viewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -141,25 +147,82 @@ public class SyncPreferenceFragment
             }
         });
 
-        // download
-        PreferenceScreen downloadLink = (PreferenceScreen) findPreference(getString(R.string.pref_dropbox_download));
-        downloadLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        // synchronization interval
+        viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                getSyncManager().download();
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                // reset timer.
+                // todo: check if this uses the correct (new) values.
+                getSyncManager().stopSyncService();
+                getSyncManager().startSyncService();
                 return true;
             }
         });
 
+        // download
+        viewHolder.download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                forceDownload();
+                return true;
+            }
+        });
+
+        // reset preferences
         viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                getSyncManager().resetPreferences();
-                //todo: stop sync
-                // mDropboxHelper.sendBroadcastStartServiceScheduled(SyncSchedulerBroadcastReceiver.ACTION_CANCEL);
+                SyncManager sync = getSyncManager();
+                sync.resetPreferences();
+                sync.stopSyncService();
+                sync.logout();
+
                 Core.alertDialog(getActivity(), R.string.preferences_reset);
                 return false;
             }
         });
+    }
+
+    public void forceDownload() {
+        SyncManager sync = getSyncManager();
+        Context context = getActivity();
+
+        // Validation.
+        String remoteFile = sync.getRemotePath();
+        // We need a value in remote file name settings.
+        if (TextUtils.isEmpty(remoteFile)) return;
+
+        // Action
+
+        String localFile = sync.getLocalPath();
+
+        Intent service = new Intent(context, SyncService.class);
+
+        service.setAction(SyncConstants.INTENT_ACTION_DOWNLOAD);
+
+        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+
+        ProgressDialog progressDialog;
+        try {
+            //progress dialog
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(context.getString(R.string.dropbox_syncProgress));
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+
+            Messenger messenger = new SyncMessengerFactory(context).createMessenger(progressDialog, sync.getRemotePath());
+            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(context, this);
+            handler.handle(ex, "displaying dropbox progress dialog");
+        }
+
+        // start service
+        context.startService(service);
+
+        // once done, the message is sent out via messenger. See Messenger definition below.
+        // INTENT_EXTRA_MESSENGER_DOWNLOAD
     }
 }

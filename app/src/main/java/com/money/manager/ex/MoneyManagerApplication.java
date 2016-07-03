@@ -89,7 +89,7 @@ public class MoneyManagerApplication
      */
     public static String getDatabaseDirectory(Context context) {
         Core core = new Core(context);
-        File defaultFolder = core.getExternalStorageDirectoryApplication();
+        File defaultFolder = core.getExternalStorageDirectory();
         String databasePath;
 
         if (defaultFolder.getAbsoluteFile().exists()) {
@@ -205,7 +205,7 @@ public class MoneyManagerApplication
 
         // create the default folder for the database.
         Core core = new Core(getApplicationContext());
-        core.getExternalStorageDirectoryApplication();
+        core.getExternalStorageDirectory();
 
         // set default text size.
         setTextSize(new TextView(getApplicationContext()).getTextSize());

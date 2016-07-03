@@ -19,7 +19,6 @@ package com.money.manager.ex.database;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;
@@ -84,7 +83,7 @@ public class DatabaseMigrator14To20 {
 
     public String getV20Path() {
         Core core = new Core(mContext);
-        File newPath = core.getExternalStorageDirectoryApplication();
+        File newPath = core.getExternalStorageDirectory();
 //        String dbPath = newPath.toString() + "/data.mmb";
         String dbPath = newPath.toString();
         return dbPath;

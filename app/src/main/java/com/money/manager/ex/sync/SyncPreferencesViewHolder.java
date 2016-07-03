@@ -21,6 +21,7 @@ import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 
 import com.money.manager.ex.R;
 
@@ -32,14 +33,18 @@ public class SyncPreferencesViewHolder {
     public CheckBoxPreference syncEnabled;
     public ListPreference providerList;
     public Preference remoteFile;
+    public ListPreference syncInterval;
     public Preference resetPreferences;
+    public PreferenceScreen download;
 
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
 
         syncEnabled = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_enabled));
         providerList = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_provider));
         remoteFile = view.findPreference(view.getString(R.string.pref_remote_file));
+        syncInterval = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_interval));
         resetPreferences = view.findPreference(view.getString(R.string.pref_reset_preferences));
+        download = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_download));
     }
 
 }

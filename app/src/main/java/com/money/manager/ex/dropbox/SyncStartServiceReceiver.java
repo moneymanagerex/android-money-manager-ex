@@ -41,7 +41,7 @@
 //		Intent service = new Intent(context, SyncService.class);
 //		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
 //		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
-//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemoteFile());
+//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 //		//start service
 //		context.startService(service);
 //	}

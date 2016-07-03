@@ -54,7 +54,6 @@ public class PreferenceConstants {
     public static final Integer PREF_ACTIVE_PASSCODE = R.string.pref_active_passcode;
     public static final Integer PREF_DROPBOX_LINK = R.string.pref_dropbox_link;
     public static final Integer PREF_DROPBOX_UNLINK = R.string.pref_dropbox_unlink;
-//    public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
     // Preference button for file anywhere in Drobpox
 //    public static final Integer PREF_DROPBOX_LINKED_FILE_ALL = R.string.pref_dropbox_linked_file_all;
     public static final Integer PREF_DONATE = R.string.pref_donate;
@@ -78,10 +77,16 @@ public class PreferenceConstants {
 
     // others preference setting don't display
     public static final String PREF_DROPBOX_ACCOUNT_PREFS_NAME = "com.money.manager.ex_dropbox_preferences";
-//    public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
-//    public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
-//    public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
-//    public static final String PREF_DROPBOX_OAUTH2_TOKEN = "PREF_DROPBOX_OAUTH2_TOKEN";
+
+    /*
+     * Deprecated
+     */
+    // todo: remove these keys when Dropbox libs are deprecated.
+    public static final String PREF_DROPBOX_ACCESS_KEY_NAME = "ACCESS_KEY";
+    public static final String PREF_DROPBOX_ACCESS_SECRET_NAME = "ACCESS_SECRET";
+    public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
+    public static final String PREF_DROPBOX_OAUTH2_TOKEN = "PREF_DROPBOX_OAUTH2_TOKEN";
+    public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
 
     // check repeating transacion
     public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;

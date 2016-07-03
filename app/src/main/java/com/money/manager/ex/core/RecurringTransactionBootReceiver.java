@@ -22,27 +22,28 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.money.manager.ex.notifications.RepeatingTransactionReceiver;
 import com.money.manager.ex.settings.BehaviourSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.util.Calendar;
 
-public class MoneyManagerBootReceiver
+/**
+ * This class handles BOOT_RECEIVED event.
+ */
+public class RecurringTransactionBootReceiver
     extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
+            // Start heartbeat for Recurring Transaction check.
             setAlarm(context);
         } catch (Exception e) {
 //            ExceptionHandler handler = new ExceptionHandler(context, this);
 //            handler.handle(e, "checking for due recurring transactions");
-            Log.e(MoneyManagerBootReceiver.class.getSimpleName(), e.getMessage());
+            Log.e(RecurringTransactionBootReceiver.class.getSimpleName(), e.getMessage());
         }
     }
 
@@ -53,8 +54,8 @@ public class MoneyManagerBootReceiver
         if (!notify) return;
 
         // compose intent
-        Intent i = new Intent(context, RepeatingTransactionReceiver.class);
-        PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent receiverIntent = new Intent(context, RepeatingTransactionReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // take hour to start
         String hour = settings.getNotificationTime();
@@ -78,9 +79,9 @@ public class MoneyManagerBootReceiver
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // cancel old pending intent
-        alarmManager.cancel(pending);
+        alarmManager.cancel(pendingIntent);
         // start alarm manager
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-            AlarmManager.INTERVAL_DAY, pending);
+            AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }
