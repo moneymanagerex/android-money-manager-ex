@@ -72,7 +72,8 @@ public class SyncSchedulerBroadcastReceiver
         // check if connect
         //DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
         //if (dropboxHelper == null || !dropboxHelper.isLinked()) return;
-        if (!SyncManager.isActive()) return;
+        SyncManager sync = new SyncManager(context);
+        if (!sync.isActive()) return;
 
         // take repeat time
         SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(context);

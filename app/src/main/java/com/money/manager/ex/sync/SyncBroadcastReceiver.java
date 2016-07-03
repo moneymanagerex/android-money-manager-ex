@@ -36,10 +36,10 @@ public class SyncBroadcastReceiver
 //        if (!dropboxHelper.shouldAutoSynchronize()) return;
 //
 //		//create intent to launch sync
-//		Intent service = new Intent(context, DropboxServiceIntent.class);
-//		service.setAction(DropboxServiceIntent.INTENT_ACTION_SYNC);
-//		service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
-//		service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxHelper.getLinkedRemoteFile());
+//		Intent service = new Intent(context, DropboxService.class);
+//		service.setAction(DropboxService.INTENT_ACTION_SYNC);
+//		service.putExtra(DropboxService.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
+//		service.putExtra(DropboxService.INTENT_EXTRA_REMOTE_FILE, dropboxHelper.getLinkedRemoteFile());
 //		//start service
 //		context.startService(service);
 	}

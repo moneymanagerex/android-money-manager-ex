@@ -119,7 +119,7 @@ public abstract class SettingsBase {
         return getSharedPreferences().getBoolean(key, defaultValue);
     }
 
-    protected boolean get(Integer settingKey, boolean defaultValue) {
+    public boolean get(Integer settingKey, boolean defaultValue) {
         String key = getSettingsKey(settingKey);
         return getBooleanSetting(key, defaultValue);
     }

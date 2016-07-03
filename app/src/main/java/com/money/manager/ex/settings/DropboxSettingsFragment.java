@@ -47,6 +47,7 @@
 //import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 //import com.money.manager.ex.fragment.TipsDialogFragment;
 //import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+//import com.money.manager.ex.sync.SyncConstants;
 //import com.money.manager.ex.utils.MmexFileUtils;
 //
 //import org.greenrobot.eventbus.EventBus;
@@ -395,10 +396,10 @@
 //
 //    private void uploadFileFromDropbox(String dropboxFile) {
 //        // compose intent to launch service for download
-//        Intent service = new Intent(getActivity().getApplicationContext(), DropboxServiceIntent.class);
-//        service.setAction(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
+//        Intent service = new Intent(getActivity().getApplicationContext(), DropboxService.class);
+//        service.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
+//        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+//        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
 //        // toast to show
 //        Toast.makeText(getActivity().getApplicationContext(), R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG).show();
 //        // start service

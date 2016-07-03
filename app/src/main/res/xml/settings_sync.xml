@@ -37,13 +37,20 @@
     <Preference
         android:icon="@null"
         android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_dropbox_linked_file"
+        android:key="@string/pref_remote_file"
         android:title="@string/remote_file" />
 
     <!-- todo: synchronization interval -->
     <!-- todo: sync only on wi-fi -->
     <!-- todo: upload immediately -->
+
     <!-- todo: download -->
+    <PreferenceScreen
+        android:dependency="@string/pref_remote_file"
+        android:key="@string/pref_dropbox_download"
+        android:summary="@string/cloud_download"
+        android:title="@string/download" />
+
     <!-- todo: upload -->
     <!-- todo: log out -->
 

@@ -50,6 +50,8 @@
 //import com.money.manager.ex.settings.AppSettings;
 //import com.money.manager.ex.settings.DropboxSettings;
 //import com.money.manager.ex.settings.PreferenceConstants;
+//import com.money.manager.ex.sync.SyncConstants;
+//import com.money.manager.ex.sync.SyncService;
 //import com.money.manager.ex.utils.NetworkUtilities;
 //
 //import org.apache.commons.lang3.StringUtils;
@@ -147,7 +149,7 @@
 //                        Log.d(LOGCAT, "Starting delayed upload");
 //                    }
 //
-//                    mHelper.sendBroadcastStartService(DropboxServiceIntent.INTENT_ACTION_UPLOAD);
+//                    mHelper.sendBroadcastStartService(DropboxService.INTENT_ACTION_UPLOAD);
 //                    abortScheduledUpload();
 //                }
 //            };
@@ -443,10 +445,10 @@
 //     */
 //    public void sendBroadcastStartService(String action) {
 //        //create intent to launch sync
-//        Intent service = new Intent(mContext, DropboxServiceIntent.class);
+//        Intent service = new Intent(mContext, DropboxService.class);
 //        service.setAction(action);
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(mContext));
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, this.getLinkedRemoteFile());
+//        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(mContext));
+//        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, this.getLinkedRemoteFile());
 //        //start service
 //        mContext.startService(service);
 //    }
@@ -774,17 +776,17 @@
 //     */
 //    public int checkIfFileIsSync() {
 //        if (!isLinked()) {
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        }
 //
 //        String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
 //        String remotePath = getLinkedRemoteFile();
 //        // check if file is correct
 //        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath))
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        // check if remoteFile path is contain into localFile
 //        if (!localPath.toLowerCase().contains(remotePath.toLowerCase()))
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        // get File and Entry
 //        File localFile = new File(localPath);
 //        Entry remoteFile = getEntry(remotePath);
@@ -800,15 +802,15 @@
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
 //            handler.handle(e, "retrieving the last modified date in checkIfFileIsSync");
 //
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        }
 //
 //        if (remoteLastModified.after(localLastModified)) {
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+//            return SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
 //        } else if (remoteLastModified.before(localLastModified)) {
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD;
+//            return SyncService.INTENT_EXTRA_MESSENGER_UPLOAD;
 //        } else {
-//            return DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        }
 //    }
 //

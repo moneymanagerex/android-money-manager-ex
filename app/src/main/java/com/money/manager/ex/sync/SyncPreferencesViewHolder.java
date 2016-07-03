@@ -38,7 +38,7 @@ public class SyncPreferencesViewHolder {
 
         syncEnabled = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_enabled));
         providerList = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_provider));
-        remoteFile = view.findPreference(view.getString(R.string.pref_dropbox_linked_file));
+        remoteFile = view.findPreference(view.getString(R.string.pref_remote_file));
         resetPreferences = view.findPreference(view.getString(R.string.pref_reset_preferences));
     }
 

@@ -117,13 +117,13 @@ public class ExceptionHandler
         throwable.printStackTrace(new PrintWriter(stackTrace));
 
         StringBuilder errorReport = new StringBuilder();
-        errorReport.append("************ FEEDBACK ************\n\n");
+        errorReport.append("************ FEEDBACK ************\n");
         errorReport.append("Please tell us what happened in the space below. Thank you!");
         errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
 
-        errorReport.append("************ APP DETAILS ************\n\n");
+        errorReport.append("************ APP DETAILS ************\n");
         String version = getAppVersionInformation();
         errorReport.append(version);
         errorReport.append(LINE_SEPARATOR);
@@ -140,7 +140,7 @@ public class ExceptionHandler
         errorReport.append(LINE_SEPARATOR);
         errorReport.append(LINE_SEPARATOR);
 
-        errorReport.append("************ CAUSE OF ERROR ************\n\n");
+        errorReport.append("************ CAUSE OF ERROR ************\n");
         errorReport.append(stackTrace.toString());
 
         errorReport.append("\n************ DEVICE INFORMATION ***********\n");

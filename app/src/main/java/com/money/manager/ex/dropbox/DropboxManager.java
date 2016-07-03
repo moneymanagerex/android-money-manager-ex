@@ -33,6 +33,8 @@
 //import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 //import com.money.manager.ex.home.RecentDatabaseEntry;
 //import com.money.manager.ex.home.RecentDatabasesProvider;
+//import com.money.manager.ex.sync.SyncConstants;
+//import com.money.manager.ex.sync.SyncService;
 //import com.money.manager.ex.utils.DialogUtils;
 //
 //import org.greenrobot.eventbus.EventBus;
@@ -74,14 +76,14 @@
 //            return;
 //        }
 //
-//        runDropbox(DropboxServiceIntent.INTENT_ACTION_SYNC);
+//        runDropbox(DropboxService.INTENT_ACTION_SYNC);
 //    }
 //
 //    public void downloadFromDropbox() {
 //        // toast to show
 ////        Toast.makeText(context.getApplicationContext(), R.string.dropbox_download_is_starting, Toast.LENGTH_LONG).show();
 //
-//        runDropbox(DropboxServiceIntent.INTENT_ACTION_DOWNLOAD);
+//        runDropbox(SyncConstants.INTENT_ACTION_DOWNLOAD);
 //    }
 //
 //    public String getDropboxFilePath() {
@@ -103,7 +105,7 @@
 //
 //    public void openDownloadedDatabase() {
 //        File downloadedDb = new File(this.getLocalDatabasePath());
-//        DropboxServiceIntent dropboxService = new DropboxServiceIntent();
+//        DropboxService dropboxService = new DropboxService();
 //
 //        Intent intent = dropboxService.getIntentForOpenDatabase(mContext, downloadedDb);
 //
@@ -122,12 +124,12 @@
 //
 //        String localFile = getLocalDatabasePath();
 //
-//        Intent service = new Intent(mContext.getApplicationContext(), DropboxServiceIntent.class);
+//        Intent service = new Intent(mContext.getApplicationContext(), DropboxService.class);
 //
 //        service.setAction(intentAction);
 //
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_LOCAL_FILE, localFile);
-//        service.putExtra(DropboxServiceIntent.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
+//        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+//        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, dropboxFile);
 //
 //        ProgressDialog progressDialog;
 //        try {
@@ -139,7 +141,7 @@
 //            progressDialog.show();
 //
 //            Messenger messenger = createMessenger(progressDialog);
-//            service.putExtra(DropboxServiceIntent.INTENT_EXTRA_MESSENGER, messenger);
+//            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
 //            ExceptionHandler handler = new ExceptionHandler(mContext, this);
 //            handler.handle(ex, "displaying dropbox progress dialog");
@@ -157,19 +159,19 @@
 //        Messenger messenger = new Messenger(new Handler() {
 //            @Override
 //            public void handleMessage(Message msg) {
-//                if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_ON_WIFI) {
+//                if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_NOT_ON_WIFI) {
 //                    //showMessage();
 //                    closeDialog(progressDialog);
 //
-//                } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
+//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
 //                    // close dialog
 //                    closeDialog(progressDialog);
 //                    showMessage(R.string.dropbox_database_is_synchronized, Toast.LENGTH_LONG);
 //
-//                } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
+//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
 //                    showMessage(R.string.dropbox_download_is_starting, Toast.LENGTH_LONG);
 //
-//                } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
+//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
 //                    // Download from Dropbox completed.
 //                    storeRecentDb();
 //                    // close dialog
@@ -177,10 +179,10 @@
 //                    // Notify whoever is interested.
 //                    EventBus.getDefault().post(new DbFileDownloadedEvent());
 //
-//                } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
+//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
 //                    showMessage(R.string.dropbox_upload_is_starting, Toast.LENGTH_LONG);
 //
-//                } else if (msg.what == DropboxServiceIntent.INTENT_EXTRA_MESSENGER_UPLOAD) {
+//                } else if (msg.what == DropboxService.INTENT_EXTRA_MESSENGER_UPLOAD) {
 //                    // close dialog
 //                    closeDialog(progressDialog);
 //                    showMessage(R.string.upload_file_to_dropbox_complete, Toast.LENGTH_LONG);

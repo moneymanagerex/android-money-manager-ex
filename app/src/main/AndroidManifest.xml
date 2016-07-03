@@ -103,11 +103,18 @@
         <service
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service android:name=".dropbox.DropboxServiceIntent">
+        <!--<service android:name=".dropbox.DropboxService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="${applicationId}.sync.action.SYNC" />-->
+                <!--<action android:name="${applicationId}.sync.action.DOWNLOAD" />-->
+                <!--<action android:name="${applicationId}.sync.action.UPLOAD" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
+        <service android:name=".sync.SyncService">
             <intent-filter>
-                <action android:name="${applicationId}.custom.intent.action.DROPBOX_SYNC" />
-                <action android:name="${applicationId}.custom.intent.action.DROPBOX_DOWNLOAD" />
-                <action android:name="${applicationId}.custom.intent.action.DROPBOX_UPLOAD" />
+                <action android:name="${applicationId}.sync.action.SYNC" />
+                <action android:name="${applicationId}.sync.action.DOWNLOAD" />
+                <action android:name="${applicationId}.sync.action.UPLOAD" />
             </intent-filter>
         </service>
 

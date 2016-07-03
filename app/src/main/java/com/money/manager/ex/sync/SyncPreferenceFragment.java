@@ -26,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -137,6 +138,16 @@ public class SyncPreferenceFragment
                 startActivityForResult(intent, REQUEST_REMOTE_FILE);
 
                 return false;
+            }
+        });
+
+        // download
+        PreferenceScreen downloadLink = (PreferenceScreen) findPreference(getString(R.string.pref_dropbox_download));
+        downloadLink.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                getSyncManager().download();
+                return true;
             }
         });
 

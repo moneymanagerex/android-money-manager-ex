@@ -35,6 +35,7 @@
 //import com.money.manager.ex.home.MainActivity;
 //import com.money.manager.ex.core.Core;
 //import com.money.manager.ex.dropbox.DropboxHelper.OnDownloadUploadEntry;
+//import com.money.manager.ex.sync.SyncConstants;
 //import com.money.manager.ex.sync.SyncService;
 //import com.money.manager.ex.utils.NetworkUtilities;
 //
@@ -46,27 +47,17 @@
 ///**
 // * Database synchronization service. Run on schedule or invoked manually.
 // */
-//public class DropboxServiceIntent
+//public class DropboxService
 //    extends IntentService {
 //
-//    private static final String LOGCAT = DropboxServiceIntent.class.getSimpleName();
-//    // intent action
-//    public static final String INTENT_ACTION_SYNC = "com.money.manager.ex.custom.intent.action.DROPBOX_SYNC";
-//    public static final String INTENT_ACTION_DOWNLOAD = "com.money.manager.ex.custom.intent.action.DROPBOX_DOWNLOAD";
-//    public static final String INTENT_ACTION_UPLOAD = "com.money.manager.ex.custom.intent.action.DROPBOX_UPLOAD";
-//    // intent extra
-//    public static final String INTENT_EXTRA_LOCAL_FILE = "DropboxServiceIntent:LocalFile";
-//    public static final String INTENT_EXTRA_REMOTE_FILE = "DropboxServiceIntent:RemoteFile";
-//    // id notification
-//    public static final int NOTIFICATION_DROPBOX_PROGRESS = 0xCCCC;
-//    public static final int NOTIFICATION_DROPBOX_OPEN_FILE = 0xDDDD;
-//    // instance dropbox
+//    private static final String LOGCAT = DropboxService.class.getSimpleName();
+//
 //    private DropboxHelper mDropboxHelper;
 //    // messenger
 //    private Messenger mOutMessenger;
 //
-//    public DropboxServiceIntent() {
-//        super("com.money.manager.ex.dropbox.DropboxServiceIntent");
+//    public DropboxService() {
+//        super("com.money.manager.ex.dropbox.DropboxService");
 //    }
 //
 //    @Override
@@ -90,8 +81,8 @@
 //        // check if connect to dropbox
 //        mDropboxHelper.isLinked();
 //        // take local and remote files
-//        String local = intent.getStringExtra(INTENT_EXTRA_LOCAL_FILE);
-//        String remote = intent.getStringExtra(INTENT_EXTRA_REMOTE_FILE);
+//        String local = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
+//        String remote = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
 //        // check if file is correct
 //        if (TextUtils.isEmpty(local) || TextUtils.isEmpty(remote)) return;
 //
@@ -99,12 +90,12 @@
 //        File localFile = new File(local);
 //        Entry remoteFile = mDropboxHelper.getEntry(remote);
 //        // check if local file or remote file is null, then exit
-//        if (remoteFile == null && INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-//            Log.w(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent forcing creation of the remote file.");
+//        if (remoteFile == null && SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+//            Log.w(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent forcing creation of the remote file.");
 //            remoteFile = new Entry();
 //            remoteFile.path = remote;
 //        } else if (remoteFile == null) {
-//            Log.e(LOGCAT, "remoteFile is null. DropboxServiceIntent.onHandleIntent premature exit.");
+//            Log.e(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent premature exit.");
 //            return;
 //        }
 //
@@ -115,9 +106,9 @@
 //        }
 //
 //        // Execute action.
-//        if (INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
+//        if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
 //            downloadFile(localFile, remoteFile);
-//        } else if (INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+//        } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
 //            uploadFile(localFile, remoteFile);
 //        } else {
 //            // Synchronization
@@ -167,14 +158,14 @@
 //            @Override
 //            public void onPreExecute() {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+//                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
 //                }
 //            }
 //
 //            @Override
 //            public void onPostExecute(boolean result) {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.cancel(NOTIFICATION_DROPBOX_PROGRESS);
+//                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
 //                    if (result) {
 //                        // copy file
 //                        Core core = new Core(getApplicationContext());
@@ -194,7 +185,7 @@
 //                        final NotificationCompat.Builder notification =
 //                                mDropboxHelper.getNotificationBuilderDownloadComplete(pendingIntent);
 //                        // notify
-//                        notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
+//                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
 //                    }
 //                }
 //            }
@@ -203,7 +194,7 @@
 //        ProgressListener listener = new ProgressListener() {
 //            @Override
 //            public void onProgress(long bytes, long total) {
-//                notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS,
+//                notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS,
 //                        mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
 //            }
 //        };
@@ -237,14 +228,14 @@
 //            @Override
 //            public void onPreExecute() {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+//                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
 //                }
 //            }
 //
 //            @Override
 //            public void onPostExecute(boolean result) {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.cancel(NOTIFICATION_DROPBOX_PROGRESS);
+//                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
 //                    if (result) {
 //                        // create notification for open file
 //                        // pending intent
@@ -255,7 +246,7 @@
 //                        // notification
 //                        final NotificationCompat.Builder notification = mDropboxHelper.getNotificationBuilderUploadComplete(pendingIntent);
 //                        // notify
-//                        notificationManager.notify(NOTIFICATION_DROPBOX_OPEN_FILE, notification.build());
+//                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
 //                    }
 //                }
 //            }
@@ -264,7 +255,7 @@
 //        ProgressListener listener = new ProgressListener() {
 //            @Override
 //            public void onProgress(long bytes, long total) {
-//                notificationManager.notify(NOTIFICATION_DROPBOX_PROGRESS,
+//                notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS,
 //                        mDropboxHelper.getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
 //            }
 //        };

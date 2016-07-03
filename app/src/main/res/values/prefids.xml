@@ -88,6 +88,7 @@
     <!-- investment -->
     <string name="pref_investment">pref_investment</string>
     <string name="pref_quote_provider">pref_quote_provider</string>
+
     <!-- synchronization -->
     <string name="pref_dropbox_link">dropbox2link</string>
     <string name="pref_dropbox_unlink">dropbox2unlink</string>

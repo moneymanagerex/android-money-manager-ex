@@ -62,7 +62,7 @@ public class PreferenceConstants {
 
 
     public static final Integer PREF_SQLITE_VERSION = R.string.pref_sqlite_version;
-    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
+//    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
     public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
 //    public static final Integer PREF_DROPBOX_HOWITWORKS = R.string.pref_dropbox_how_it_works;
     public static final Integer PREF_DROPBOX_TIMES_REPEAT = R.string.pref_dropbox_times_repeat_service;

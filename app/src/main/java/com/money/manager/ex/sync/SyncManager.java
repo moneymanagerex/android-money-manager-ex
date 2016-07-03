@@ -30,7 +30,9 @@ import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 
 import org.apache.commons.lang3.StringUtils;
@@ -67,17 +69,6 @@ public class SyncManager {
         return false;
     }
 
-    /**
-     * Indicates whether cloud sync is in use. Replaces isLinked() call.
-     * @return A boolean
-     */
-    public static boolean isActive() {
-        //AppSettings settings = new AppSettings()
-        // todo: check preferences and authentication?
-        // mDropboxHelper.isLinked()
-        return false;
-    }
-
     public static void openDatabase() {
         // todo: replace this method
 //        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
@@ -102,6 +93,7 @@ public class SyncManager {
     private Context mContext;
     private String mRemoteFile;
     private AtomicReference<CloudStorage> currentProvider;
+    private SyncPreferences mPreferences;
 
     public Context getContext() {
         return mContext;
@@ -110,6 +102,25 @@ public class SyncManager {
     public CloudStorage getProvider() {
 //        AtomicReference<CloudStorage> result = new AtomicReference<>();
         return currentProvider.get();
+    }
+
+    public void download() {
+        // todo: We need a value in the remote file name settings.
+
+    }
+
+    /**
+     * Indicates whether cloud sync is in use.
+     * @return A boolean
+     */
+    public boolean isActive() {
+        // check preferences and authentication?
+        SyncPreferences preferences = new SyncPreferences(getContext());
+        boolean isEnabled = preferences.get(R.string.pref_sync_enabled, false);
+
+        // check if a provider is selected?
+
+        return isEnabled;
     }
 
     public void login() {
@@ -142,7 +153,7 @@ public class SyncManager {
 
     public String getRemoteFile() {
         if (StringUtils.isEmpty(mRemoteFile)) {
-            mRemoteFile = loadPreference(R.string.pref_remote_file, "");
+            mRemoteFile = mPreferences.loadPreference(R.string.pref_remote_file, "");
         }
         // todo:  mDropboxHelper.getLinkedRemoteFile();
 
@@ -150,7 +161,7 @@ public class SyncManager {
     }
 
     public void resetPreferences() {
-        getSyncPreferences().edit().clear().apply();
+        mPreferences.clear();
     }
 
     public void setProvider(CloudStorageProviderEnum provider) {
@@ -182,25 +193,23 @@ public class SyncManager {
     public void setRemoteFile(String value) {
         mRemoteFile = value;
 
-        savePreference(R.string.pref_remote_file, value);
+        mPreferences.savePreference(R.string.pref_remote_file, value);
 
         // todo: mDropboxHelper.setLinkedRemoteFile(dropboxPath);
     }
 
     public void storePersistent() {
-        savePreference(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
-        savePreference(R.string.pref_onedrive_persistent, box.get().saveAsString());
-        savePreference(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
-        savePreference(R.string.pref_box_persistent, onedrive.get().saveAsString());
+        mPreferences.savePreference(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
+        mPreferences.savePreference(R.string.pref_onedrive_persistent, box.get().saveAsString());
+        mPreferences.savePreference(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
+        mPreferences.savePreference(R.string.pref_box_persistent, onedrive.get().saveAsString());
     }
 
     // private
 
-    private SharedPreferences getSyncPreferences() {
-        return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
-    }
-
     private void init() {
+        mPreferences = new SyncPreferences(getContext());
+
         dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
         onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
         googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
@@ -208,42 +217,27 @@ public class SyncManager {
 
         // read from persistence
         try {
-            String persistent = loadPreference(R.string.pref_dropbox_persistent, null);
+            String persistent = mPreferences.loadPreference(R.string.pref_dropbox_persistent, null);
             if (persistent != null) dropbox.get().loadAsString(persistent);
 
-            persistent = loadPreference(R.string.pref_box_persistent, null);
+            persistent = mPreferences.loadPreference(R.string.pref_box_persistent, null);
             if (persistent != null) box.get().loadAsString(persistent);
 
-            persistent = loadPreference(R.string.pref_gdrive_persistent, null);
+            persistent = mPreferences.loadPreference(R.string.pref_gdrive_persistent, null);
             if (persistent != null) googledrive.get().loadAsString(persistent);
 
-            persistent = loadPreference(R.string.pref_onedrive_persistent, null);
+            persistent = mPreferences.loadPreference(R.string.pref_onedrive_persistent, null);
             if (persistent != null) onedrive.get().loadAsString(persistent);
         } catch (ParseException e) {
             if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
         }
 
         // Use current provider.
-        String providerCode = loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
+        String providerCode = mPreferences.loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
         CloudStorageProviderEnum provider = CloudStorageProviderEnum.DROPBOX;
         if (CloudStorageProviderEnum.contains(providerCode)) {
             provider = CloudStorageProviderEnum.valueOf(providerCode);
         }
         setProvider(provider);
-    }
-
-    private String loadPreference(Integer key, String defaultValue) {
-        String realKey = getContext().getString(key);
-
-        return getSyncPreferences().getString(realKey, defaultValue);
-    }
-
-    private void savePreference(Integer key, String value) {
-        String realKey = getContext().getString(key);
-
-        getSyncPreferences()
-            .edit()
-            .putString(realKey, value)
-            .apply();
     }
 }

@@ -88,6 +88,7 @@ import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MyDatabaseUtils;
@@ -170,10 +171,7 @@ public class MainActivity
 
         // Close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        //todo: notificationManager.cancel(DropboxServiceIntent.NOTIFICATION_DROPBOX_OPEN_FILE);
-
-        // Create a connection to Dropbox.
-        // todo: this.mDropboxHelper = DropboxHelper.getInstance(this);
+        notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
         createLayout();
 
@@ -399,7 +397,8 @@ public class MainActivity
     // Custom methods
 
     public void checkDropboxForUpdates() {
-        if (SyncManager.isActive()) {
+        SyncManager sync = new SyncManager(this);
+        if (sync.isActive()) {
             return;
         }
 
@@ -942,7 +941,7 @@ public class MainActivity
         childItems.add(childDatabases);
 
         // Dropbox
-        if (SyncManager.isActive()) {
+        if (new SyncManager(this).isActive()) {
             childItems.add(null);
         }
 
@@ -1154,7 +1153,7 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
 
         // Dropbox synchronize
-        if (SyncManager.isActive()) {
+        if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
                     .withText(getString(R.string.synchronize))
                     .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
