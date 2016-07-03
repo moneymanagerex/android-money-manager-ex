@@ -55,6 +55,10 @@
 //    private Context mContext;
 //    private DropboxHelper mDropboxHelper;
 //
+//    public Context getContext() {
+//        return mContext;
+//    }
+//
 //    public void synchronizeDropbox() {
 //        if (mDropboxHelper == null || !mDropboxHelper.isLinked())  return;
 //
@@ -157,8 +161,8 @@
 //            progressDialog.setIndeterminate(true);
 //            progressDialog.show();
 //
-//            SyncManager sync = new SyncManager(mContext);
-//            Messenger messenger = sync.createMessenger(progressDialog, mDropboxHelper.getLinkedRemoteFile());
+//            Messenger messenger = new SyncMessengerFactory(getContext())
+//                    .createMessenger(progressDialog, mDropboxHelper.getLinkedRemoteFile());
 //            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
 //            ExceptionHandler handler = new ExceptionHandler(mContext, this);

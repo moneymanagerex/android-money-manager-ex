@@ -106,7 +106,7 @@
 //
 //        // Execute action.
 //        if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
-//            downloadFile(localFile, remoteFile);
+//            triggerDownload(localFile, remoteFile);
 //        } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
 //            uploadFile(localFile, remoteFile);
 //        } else {
@@ -133,7 +133,7 @@
 //        if (remoteLastModified.after(localLastModified)) {
 //            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download " + remoteFile.path + " from Dropox");
 //            // download file
-//            downloadFile(localFile, remoteFile);
+//            triggerDownload(localFile, remoteFile);
 //        } else if (remoteLastModified.before(localLastModified)) {
 //            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
 //            // upload file
@@ -146,7 +146,7 @@
 //        }
 //    }
 //
-//    public void downloadFile(final File localFile, final Entry remoteFile) {
+//    public void triggerDownload(final File localFile, final Entry remoteFile) {
 //        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext()).getNotificationBuilderForDownload();
 //
 //        final NotificationManager notificationManager = (NotificationManager) getApplicationContext()

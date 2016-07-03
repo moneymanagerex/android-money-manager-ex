@@ -39,7 +39,6 @@ import com.money.manager.ex.utils.NetworkUtilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * The background service that synchronizes the database file.
@@ -113,7 +112,7 @@ public class SyncService
 
         // Execute action.
         if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
-            downloadFile(localFile, remoteFilename);
+            triggerDownload(localFile, remoteFilename);
         } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
 //            todo uploadFile(localFile, remoteFile);
         } else {
@@ -122,7 +121,7 @@ public class SyncService
         }
     }
 
-    public void downloadFile(final File localFile, String remoteFilename) {
+    public void triggerDownload(final File localFile, String remoteFilename) {
         SyncManager sync = new SyncManager(getBaseContext());
 
         final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())

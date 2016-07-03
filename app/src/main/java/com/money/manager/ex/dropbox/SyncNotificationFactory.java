@@ -69,7 +69,7 @@ public class SyncNotificationFactory {
     public NotificationCompat.Builder getNotificationBuilderDownloadComplete(PendingIntent pendingIntent) {
         // compose notification big view
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-        inboxStyle.setBigContentTitle(getContext().getString(R.string.application_name_dropbox));
+        inboxStyle.setBigContentTitle(getContext().getString(R.string.sync_notification_title));
         inboxStyle.addLine(getContext().getString(R.string.dropbox_file_ready_for_use));
         inboxStyle.addLine(getContext().getString(R.string.dropbox_open_database_downloaded));
 
