@@ -17,6 +17,8 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
 
@@ -31,19 +33,18 @@ public class DropboxSettings
 
     }
 
+    @Override
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
+    }
+
     public boolean getShouldSyncOnWifi() {
-        boolean result = getSharedPreferences().getBoolean(
-                getContext().getString(R.string.pref_sync_via_wifi), false);
+        boolean result = get(R.string.pref_sync_via_wifi, false);
         return result;
     }
 
     public boolean getImmediatelyUploadChanges() {
-        boolean result = getSharedPreferences().getBoolean(
-                getContext().getString(R.string.pref_dropbox_upload_immediate), true);
+        boolean result = get(R.string.pref_dropbox_upload_immediate, true);
         return result;
     }
-
-//    public void setOauth2Token(String value) {
-//        set(PreferenceConstants.PREF_DROPBOX_OAUTH2_TOKEN, value);
-//    }
 }

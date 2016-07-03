@@ -28,11 +28,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncBroadcastReceiver;
 import com.money.manager.ex.sync.SyncManager;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -76,26 +79,21 @@ public class SyncSchedulerBroadcastReceiver
         SyncManager sync = new SyncManager(context);
         if (!sync.isActive()) return;
 
-        // get repeat time.
-        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferenceManager == null) return;
-
-        // get minute
-        String preferenceMinute = preferenceManager.getString(context.getString(PreferenceConstants.PREF_DROPBOX_TIMES_REPEAT), "30");
-        if (!NumberUtils.isNumber(preferenceMinute)) return;
-
-        int minute = Integer.parseInt(preferenceMinute);
+        // get frequency in minutes.
+        SyncPreferences preferences = new SyncPreferences(context);
+        int minute = preferences.getSyncInterval();
         if (minute <= 0) return;
 
-        Calendar cal = Calendar.getInstance();
+        DateTime now = DateTime.now();
 
         if (BuildConfig.DEBUG) {
             Log.d(this.getClass().getSimpleName(),
-                    "Start at: " + new SimpleDateFormat().format(cal.getTime())
-                            + " and repeats every: " + preferenceMinute + " minutes");
+                    "Start at: " + now.toString(Constants.ISO_DATE_FORMAT)
+                            + " and repeats every: " + minute + " minutes");
         }
 
         // Schedule alarm for synchronization
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), minute * 60 * 1000, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, now.toDateTime().getMillis(),
+                minute * 60 * 1000, pendingIntent);
     }
 }

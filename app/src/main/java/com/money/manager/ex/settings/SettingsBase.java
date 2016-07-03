@@ -46,13 +46,16 @@ public abstract class SettingsBase {
         return mContext;
     }
 
-    protected SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(mContext);
-    }
+    /**
+     * Override to set the preferences to use. For shared, use
+     * PreferenceManager.getDefaultSharedPreferences(mContext);
+     * @return preferences (either shared or private).
+     */
+    protected abstract SharedPreferences getPreferences();
 
     protected String getSettingsKey(Integer settingKeyConstant) {
         try {
-            return mContext.getString(settingKeyConstant, "");
+            return getContext().getString(settingKeyConstant, "");
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "error getting string for resource " +
@@ -63,7 +66,7 @@ public abstract class SettingsBase {
 
     public SharedPreferences.Editor getEditor() {
         if (mEditor == null) {
-            mEditor = getSharedPreferences().edit();
+            mEditor = getPreferences().edit();
         }
         return mEditor;
     }
@@ -76,7 +79,9 @@ public abstract class SettingsBase {
 //    }
 
     private boolean save() {
-        boolean result = getEditor().commit();
+        boolean result = getEditor()
+//                .apply();
+                .commit();
         return result;
     }
 
@@ -89,7 +94,7 @@ public abstract class SettingsBase {
 
     public String get(String key, String defaultValue) {
         try {
-            return getSharedPreferences().getString(key, defaultValue);
+            return getPreferences().getString(key, defaultValue);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "reading string preference: " + key);
@@ -116,7 +121,7 @@ public abstract class SettingsBase {
     // Boolean
 
     public boolean get(String key, boolean defaultValue) {
-        return getSharedPreferences().getBoolean(key, defaultValue);
+        return getPreferences().getBoolean(key, defaultValue);
     }
 
     public boolean get(Integer settingKey, boolean defaultValue) {
@@ -130,7 +135,7 @@ public abstract class SettingsBase {
 
     protected boolean getBooleanSetting(String settingKey, boolean defaultValue) {
         // This is the main method that actually fetches the value.
-        return getSharedPreferences().getBoolean(settingKey, defaultValue);
+        return getPreferences().getBoolean(settingKey, defaultValue);
     }
 
     public boolean set(String key, boolean value) {
@@ -146,7 +151,7 @@ public abstract class SettingsBase {
     // Integer
 
     public int get(String key, int defaultValue) {
-        return getSharedPreferences().getInt(key, defaultValue);
+        return getPreferences().getInt(key, defaultValue);
     }
 
     /**
@@ -162,7 +167,7 @@ public abstract class SettingsBase {
 
     protected int getIntSetting(String settingKey, int defaultValue) {
         // This is the main method that actually fetches the value.
-        return getSharedPreferences().getInt(settingKey, defaultValue);
+        return getPreferences().getInt(settingKey, defaultValue);
     }
 
     protected boolean set(String key, int value) {

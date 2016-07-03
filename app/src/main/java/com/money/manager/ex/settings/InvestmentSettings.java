@@ -18,6 +18,8 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.InfoKeys;
@@ -38,6 +40,11 @@ public class InvestmentSettings
     public InvestmentSettings(Context context) {
         super(context);
 
+    }
+
+    @Override
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     /**

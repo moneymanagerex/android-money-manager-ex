@@ -18,6 +18,7 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
 
@@ -35,11 +36,13 @@ public class BehaviourSettings
 
     }
 
+    @Override
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
+    }
+
     public boolean getNotificationRecurringTransaction() {
-        SharedPreferences preferences = getSharedPreferences();
-        String key = getContext().getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS);
-        boolean notify = preferences.getBoolean(key, true);
-        return notify;
+        return get(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS, true);
     }
 
     public String getNotificationTime() {
@@ -51,9 +54,7 @@ public class BehaviourSettings
     }
 
     public boolean getFilterInSelectors() {
-        boolean result = getSharedPreferences().getBoolean(
-                getContext().getString(R.string.pref_behaviour_focus_filter), true);
-        return result;
+        return get(R.string.pref_behaviour_focus_filter, true);
     }
 
     /**
@@ -61,11 +62,9 @@ public class BehaviourSettings
      * @return
      */
     public String getIncomeExpensePeriod() {
-        String result = getSharedPreferences().getString(
-                getContext().getString(R.string.pref_income_expense_footer_period),
+        return get(R.string.pref_income_expense_footer_period,
                 getContext().getString(R.string.last_month)
         );
-        return result;
     }
 
     public Boolean getShowTutorial() {

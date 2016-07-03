@@ -23,25 +23,27 @@ import android.content.Intent;
 import com.money.manager.ex.MoneyManagerApplication;
 
 /**
- * Receiver that gets the scheduled notification to run the synchronization task.
+ * Receiver that is triggered by the alarm to run synchronization.
+ * Triggered by the timer/heartbeat. Set up in SyncSchedulerBroadcastReceiver.
  */
 public class SyncBroadcastReceiver
 	extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// todo: enable/redo this
-//        DropboxHelper dropboxHelper = DropboxHelper.getInstance(context);
+		SyncManager sync = new SyncManager(context);
 
-//        if (!dropboxHelper.shouldAutoSynchronize()) return;
-//
-//		//create intent to launch sync
-//		Intent service = new Intent(context, DropboxService.class);
-//		service.setAction(DropboxService.INTENT_ACTION_SYNC);
-//		service.putExtra(DropboxService.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
-//		service.putExtra(DropboxService.INTENT_EXTRA_REMOTE_FILE, dropboxHelper.getLinkedRemoteFile());
-//		//start service
-//		context.startService(service);
+        if (!sync.canAutoSync()) return;
+
+		// Trigger synchronization
+
+		Intent service = new Intent(context, SyncService.class);
+		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
+
+		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
+		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
+
+		context.startService(service);
 	}
 
 }

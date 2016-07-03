@@ -64,7 +64,6 @@ public class PreferenceConstants {
 //    public static final Integer PREF_DROPBOX_DOWNLOAD = R.string.pref_dropbox_download;
     public static final Integer PREF_DROPBOX_UPLOAD = R.string.pref_dropbox_upload;
 //    public static final Integer PREF_DROPBOX_HOWITWORKS = R.string.pref_dropbox_how_it_works;
-    public static final Integer PREF_DROPBOX_TIMES_REPEAT = R.string.pref_dropbox_times_repeat_service;
 //    public static final Integer PREF_DROPBOX_UPLOAD_IMMEDIATE = R.string.pref_dropbox_upload_immediate;
     public static final Integer PREF_TRANSACTION_SHOWN_BALANCE = R.string.pref_transaction_shown_balance;
     public static final Integer PREF_DATABASE_BACKUP = R.string.pref_database_backup;
@@ -87,6 +86,7 @@ public class PreferenceConstants {
     public static final String PREF_DROPBOX_REMOTE_FILE = "DROPBOX_REMOTE_FILE";
     public static final String PREF_DROPBOX_OAUTH2_TOKEN = "PREF_DROPBOX_OAUTH2_TOKEN";
     public static final Integer PREF_DROPBOX_LINKED_FILE = R.string.pref_dropbox_linked_file;
+    public static final Integer PREF_DROPBOX_TIMES_REPEAT = R.string.pref_dropbox_times_repeat_service;
 
     // check repeating transacion
     public static final Integer PREF_REPEATING_TRANSACTION_NOTIFICATIONS = R.string.pref_repeating_transaction_notifications;

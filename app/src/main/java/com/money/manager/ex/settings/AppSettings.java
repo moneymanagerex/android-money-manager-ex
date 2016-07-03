@@ -17,6 +17,7 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
@@ -28,13 +29,14 @@ import com.money.manager.ex.R;
 public class AppSettings
     extends SettingsBase {
 
-    // the easiest way to read a preference is:
-//    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//    String syncConnPref = sharedPref.getString(SettingsActivity.KEY_PREF_SYNC_CONN, "");
-
     public AppSettings(Context context) {
         super(context);
 
+    }
+
+    @Override
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     // setting groups

@@ -120,6 +120,7 @@ public class SyncPreferenceFragment
     private void initializePreferences() {
         viewHolder = new SyncPreferencesViewHolder(this);
 
+        // enable/disable sync.
         viewHolder.syncEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -135,6 +136,7 @@ public class SyncPreferenceFragment
             }
         });
 
+        // provider
         viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -167,14 +169,17 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 // reset timer.
-                // todo: check if this uses the correct (new) values.
-                getSyncManager().stopSyncService();
-                getSyncManager().startSyncService();
+                SyncManager sync = getSyncManager();
+                sync.setSyncInterval(Integer.parseInt(o.toString()));
+
+                sync.stopSyncService();
+                sync.startSyncService();
                 return true;
             }
         });
 
         // download
+
         viewHolder.download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -184,6 +189,7 @@ public class SyncPreferenceFragment
         });
 
         // reset preferences
+
         viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

@@ -145,6 +145,7 @@
     <string-array name="timeout_synchronize_values">
         <item>0</item>
         <item>5</item>
+        <item>10</item>
         <item>15</item>
         <item>30</item>
         <item>60</item>
@@ -158,6 +159,7 @@
     <string-array name="timeout_synchronize_items">
         <item>@string/never</item>
         <item>@string/every_5_minutes</item>
+        <item>@string/every_10_minutes</item>
         <item>@string/every_15_minutes</item>
         <item>@string/every_30_minutes</item>
         <item>@string/every_hour</item>

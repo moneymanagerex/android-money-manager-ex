@@ -22,11 +22,17 @@ import android.content.SharedPreferences;
 
 import com.money.manager.ex.R;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 /**
  * Handles sync-related preferences.
  */
-public class SyncPreferences {
+public class SyncPreferences
+    extends SettingsBase {
+
     public SyncPreferences(Context context) {
+        super(context);
+
         mContext = context;
     }
 
@@ -36,38 +42,54 @@ public class SyncPreferences {
      * Delete all preferences.
      */
     public void clear() {
-        getSyncPreferences().edit().clear().apply();
+        getPreferences().edit().clear().apply();
     }
 
     public boolean get(Integer key, boolean defaultValue) {
-        return getSyncPreferences().getBoolean(getKey(key), defaultValue);
+        return getPreferences().getBoolean(getKey(key), defaultValue);
+    }
+
+    public String get(Integer key, String defaultValue) {
+        return getPreferences().getString(getKey(key), defaultValue);
     }
 
     public Context getContext() {
         return mContext;
     }
 
+    @Override
+    protected SharedPreferences getPreferences() {
+        return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
+    }
+
     public boolean isSyncEnabled() {
         return get(R.string.pref_sync_enabled, false);
+    }
+
+    public int getSyncInterval() {
+        int defaultSchedule = 30;   // time in minutes
+        String setSchedule = get(R.string.pref_sync_interval, Integer.toString(defaultSchedule));
+        if (!NumberUtils.isNumber(setSchedule)) return defaultSchedule;
+
+        return Integer.parseInt(setSchedule);
     }
 
     public String loadPreference(Integer key, String defaultValue) {
         String realKey = getContext().getString(key);
 
-        return getSyncPreferences().getString(realKey, defaultValue);
-    }
-
-    public void savePreference(Integer key, String value) {
-        String realKey = getContext().getString(key);
-
-        getSyncPreferences()
-                .edit()
-                .putString(realKey, value)
-                .apply();
+        return getPreferences().getString(realKey, defaultValue);
     }
 
     public void setSyncEnabled(boolean value) {
         set(R.string.pref_sync_enabled, value);
+    }
+
+    /**
+     * Set synchronization period.
+     * @param value Sync frequency in minutes.
+     */
+    public void setSyncInterval(int value) {
+        set(R.string.pref_sync_interval, Integer.toString(value));
     }
 
     public boolean shouldSyncOnlyOnWifi() {
@@ -80,13 +102,14 @@ public class SyncPreferences {
         return getContext().getString(resourceId);
     }
 
-    private SharedPreferences getSyncPreferences() {
-        return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
-    }
-
-    private void set(Integer key, boolean value) {
-        getSyncPreferences().edit()
-                .putBoolean(getContext().getString(key), value)
-                .apply();
-    }
+//    private void set(Integer key, boolean value) {
+//        getSyncPreferences().edit()
+//                .putBoolean(getContext().getString(key), value)
+//                .apply();
+//    }
+//    private void set(Integer key, String value) {
+//        getSyncPreferences().edit()
+//                .putString(getContext().getString(key), value)
+//                .apply();
+//    }
 }

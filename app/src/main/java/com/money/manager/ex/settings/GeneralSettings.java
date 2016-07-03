@@ -19,6 +19,7 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -37,6 +38,11 @@ public class GeneralSettings
     public GeneralSettings(Context context) {
         super(context);
 
+    }
+
+    @Override
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     public String getApplicationLanguage() {

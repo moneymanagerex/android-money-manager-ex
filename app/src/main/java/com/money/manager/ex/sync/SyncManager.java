@@ -134,6 +134,9 @@ public class SyncManager {
         // check if enabled.
         if (!isActive()) return false;
 
+        // check sync interval
+        if (mPreferences.getSyncInterval() == 0) return false;
+
         // should we sync only on wifi?
         if (mPreferences.shouldSyncOnlyOnWifi()) {
             if (BuildConfig.DEBUG) {
@@ -262,22 +265,19 @@ public class SyncManager {
     public void setRemoteFile(String value) {
         mRemoteFile = value;
 
-        mPreferences.savePreference(R.string.pref_remote_file, value);
+        mPreferences.set(R.string.pref_remote_file, value);
+    }
+
+    public void setSyncInterval(int minutes) {
+        mPreferences.setSyncInterval(minutes);
     }
 
     public void startSyncService() {
         if (!canAutoSync()) return;
 
-        Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
+        Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
-
-//		Intent service = new Intent(getContext(), SyncService.class);
-//		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
-//		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(getContext()));
-//		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
-//		//start service
-//		getContext().startService(service);
     }
 
     public void stopSyncService() {
@@ -287,10 +287,10 @@ public class SyncManager {
     }
 
     public void storePersistent() {
-        mPreferences.savePreference(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
-        mPreferences.savePreference(R.string.pref_onedrive_persistent, box.get().saveAsString());
-        mPreferences.savePreference(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
-        mPreferences.savePreference(R.string.pref_box_persistent, onedrive.get().saveAsString());
+        mPreferences.set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
+        mPreferences.set(R.string.pref_onedrive_persistent, box.get().saveAsString());
+        mPreferences.set(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
+        mPreferences.set(R.string.pref_box_persistent, onedrive.get().saveAsString());
     }
 
     // private

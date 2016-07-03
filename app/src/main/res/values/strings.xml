@@ -435,14 +435,6 @@
     <string name="result_search">Result of your search</string>
     <string name="new_repeating_transaction">New Recurring Transaction</string>
     <string name="edit_repeating_transaction">Edit Recurring Transaction</string>
-    <string name="every_5_minutes">Every 5 minutes</string>
-    <string name="every_15_minutes">Every 15 minutes</string>
-    <string name="every_30_minutes">Every 30 minutes</string>
-    <string name="every_hour">Every hour</string>
-    <string name="every_2_hours">Every 2 hours</string>
-    <string name="every_6_hours">Every 6 hours</string>
-    <string name="every_12_hours">Every 12 hours</string>
-    <string name="never">Never</string>
     <string name="path_database_not_exists">Database path not exists</string>
     <string name="database_can_not_open_write">The database can not be opened for writing</string>
     <string name="time_frame">Time Frame</string>
@@ -733,4 +725,13 @@
     <string name="dropbox_upload_is_starting">Uploading database. Please wait…</string>
     <string name="database_is_synchronized">The database is up to date</string>
     <string name="upload_file_to_dropbox_complete">Your database has been successfully uploaded</string>
+    <string name="every_5_minutes">Every 5 minutes</string>
+    <string name="every_10_minutes">Every 10 minutes</string>
+    <string name="every_15_minutes">Every 15 minutes</string>
+    <string name="every_30_minutes">Every 30 minutes</string>
+    <string name="every_hour">Every hour</string>
+    <string name="every_2_hours">Every 2 hours</string>
+    <string name="every_6_hours">Every 6 hours</string>
+    <string name="every_12_hours">Every 12 hours</string>
+    <string name="never">Never</string>
 </resources>

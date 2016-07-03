@@ -18,6 +18,8 @@
 package com.money.manager.ex.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
@@ -38,6 +40,11 @@ public class LookAndFeelSettings
     public LookAndFeelSettings(Context context) {
         super(context);
 
+    }
+
+    @Override
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     public boolean getHideReconciledAmounts() {
