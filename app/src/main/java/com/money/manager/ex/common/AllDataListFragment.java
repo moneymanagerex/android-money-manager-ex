@@ -687,8 +687,9 @@ public class AllDataListFragment
         // check if status = "U" convert to empty string
         if (TextUtils.isEmpty(status) || "U".equalsIgnoreCase(status)) status = "";
 
-        // Pause Dropbox notification while bulk processing.
-        SyncManager.disableAutoUpload();
+        SyncManager sync = new SyncManager(getActivity());
+        // Pause synchronization while bulk processing.
+        sync.disableAutoUpload();
 
         for (int id : transId) {
             // content value for updates
@@ -706,16 +707,16 @@ public class AllDataListFragment
             if (updateResult <= 0) {
                 Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_LONG).show();
 
-                SyncManager.enableAutoUpload();
-                SyncManager.dataChanged();
+                sync.enableAutoUpload();
+                sync.dataChanged();
 
                 return false;
             }
         }
 
         // Now notify Dropbox about modifications.
-        SyncManager.enableAutoUpload();
-        SyncManager.dataChanged();
+        sync.enableAutoUpload();
+        sync.dataChanged();
 
         return true;
     }
@@ -736,8 +737,10 @@ public class AllDataListFragment
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                SyncManager sync = new SyncManager(getActivity());
+
                 // Pause sync notification while bulk processing.
-                SyncManager.disableAutoUpload();
+                sync.disableAutoUpload();
 
                 for (int transactionId : transactionIds) {
                     // First delete any splits. See if there are any split records.
@@ -756,8 +759,8 @@ public class AllDataListFragment
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                             // Now notify Dropbox about modifications.
-                            SyncManager.enableAutoUpload();
-                            SyncManager.dataChanged();
+                            sync.enableAutoUpload();
+                            sync.dataChanged();
 
                             return;
                         }
@@ -774,16 +777,16 @@ public class AllDataListFragment
                         Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
 
                         // Now notify Dropbox about modifications.
-                        SyncManager.enableAutoUpload();
-                        SyncManager.dataChanged();
+                        sync.enableAutoUpload();
+                        sync.dataChanged();
 
                         return;
                     }
                 }
 
                 // Now notify Dropbox about modifications.
-                SyncManager.enableAutoUpload();
-                SyncManager.dataChanged();
+                sync.enableAutoUpload();
+                sync.dataChanged();
 
                 // restart loader
                 loadData();

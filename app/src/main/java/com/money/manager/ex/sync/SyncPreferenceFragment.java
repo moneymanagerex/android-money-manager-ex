@@ -185,7 +185,8 @@ public class SyncPreferenceFragment
         viewHolder.download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                forceDownload();
+                SyncManager sync = getSyncManager();
+                sync.triggerDownload();
                 return true;
             }
         });
@@ -216,48 +217,7 @@ public class SyncPreferenceFragment
         });
     }
 
-    private void forceDownload() {
-        SyncManager sync = getSyncManager();
-        Context context = getActivity();
 
-        // Validation.
-        String remoteFile = sync.getRemotePath();
-        // We need a value in remote file name settings.
-        if (TextUtils.isEmpty(remoteFile)) return;
-
-        // Action
-
-        String localFile = sync.getLocalPath();
-
-        Intent service = new Intent(context, SyncService.class);
-
-        service.setAction(SyncConstants.INTENT_ACTION_DOWNLOAD);
-
-        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
-        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
-
-        ProgressDialog progressDialog;
-        try {
-            //progress dialog
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(context.getString(R.string.sync_downloading));
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-
-            Messenger messenger = new SyncMessengerFactory(context).createMessenger(progressDialog, sync.getRemotePath());
-            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ex, "displaying download progress dialog");
-        }
-
-        // start service
-        context.startService(service);
-
-        // once done, the message is sent out via messenger. See Messenger definition in factory.
-        // INTENT_EXTRA_MESSENGER_DOWNLOAD
-    }
 
     private void forceUpload() {
         String localFile = MoneyManagerApplication.getDatabasePath(getActivity());

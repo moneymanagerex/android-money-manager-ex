@@ -17,12 +17,9 @@
 
 package com.money.manager.ex.sync;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,17 +33,14 @@ import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.dropbox.SyncMessengerFactory;
 import com.money.manager.ex.dropbox.SyncSchedulerBroadcastReceiver;
-import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
-import com.money.manager.ex.home.RecentDatabaseEntry;
-import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
-import com.money.manager.ex.utils.DialogUtils;
 import com.money.manager.ex.utils.NetworkUtilities;
 
 import org.apache.commons.io.IOUtils;
@@ -61,10 +55,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -72,38 +63,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * Currently forwards the calls to the Dropbox Helper.
  */
 public class SyncManager {
-    public static void disableAutoUpload() {
-        // todo: DropboxHelper.setAutoUploadDisabled(false);
-    }
-
-    public static void enableAutoUpload() {
-        // todo: DropboxHelper.setAutoUploadDisabled(true);
-    }
-
-    public static void dataChanged() {
-        // todo: DropboxHelper.notifyDataChanged();
-    }
-
-    public static void synchronize() {
-        // todo:
-//        DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper);
-//        dropbox.synchronizeDropbox();
-    }
-
-    public static boolean isFileInSync() {
-        // todo: return mDropboxHelper.checkIfFileIsSync();
-        return false;
-    }
-
     public static void openDatabase() {
         // todo: replace this method
 //        DropboxManager dropbox = new DropboxManager(this, mDropboxHelper);
 //        dropbox.openDownloadedDatabase();
     }
-
-    /**
-     * Instance methods
-     */
 
     public SyncManager(Context context) {
         mContext = context;
@@ -120,6 +84,10 @@ public class SyncManager {
     private String mRemoteFile;
     private AtomicReference<CloudStorage> currentProvider;
     private SyncPreferences mPreferences;
+    /**
+     * Used to temporarily disable auto-upload while performing batch updates.
+     */
+    private boolean mAutoUploadDisabled = false;
 
     public Context getContext() {
         return mContext;
@@ -159,6 +127,61 @@ public class SyncManager {
     }
 
     /**
+     * This function returns if the file is synchronized or not
+     * @return int
+     */
+    public int compareFilesForSync() {
+        if (!isActive()) {
+            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
+
+        String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
+        String remotePath = getRemotePath();
+        // check if file is correct
+        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) {
+            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
+        // check if remoteFile path is contain into localFile
+        if (!localPath.toLowerCase().contains(remotePath.toLowerCase())) {
+            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
+
+        // get local and remote file info.
+        File localFile = new File(localPath);
+//        Entry remoteFile = getEntry(remotePath);
+        CloudMetaData remoteFile = getProvider().getMetadata(remotePath);
+
+        // date last Modified
+        DateTime localLastModified;
+        DateTime remoteLastModified;
+        try {
+            localLastModified = getLastModifiedDate(remoteFile.getPath());
+            if (localLastModified == null) {
+                localLastModified = new DateTime(localFile.lastModified());
+            }
+            remoteLastModified = new DateTime(remoteFile.getModifiedAt());
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(e, "retrieving the last modified date in compareFilesForSync");
+
+            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
+
+        if (remoteLastModified.isAfter(localLastModified)) {
+            return SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+        } else if (remoteLastModified.isBefore(localLastModified)) {
+            return SyncService.INTENT_EXTRA_MESSENGER_UPLOAD;
+        } else {
+            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        }
+    }
+
+    public void disableAutoUpload() {
+        // DropboxHelper.setAutoUploadDisabled(false);
+        mAutoUploadDisabled = true;
+    }
+
+    /**
      * Downloads the file from Dropbox service.
      * @param remoteFile Remote file entry
      * @param localFile Local file reference
@@ -186,6 +209,38 @@ public class SyncManager {
         // todo: DropboxHelper.abortScheduledUpload();
 
         return true;
+    }
+
+    /**
+     * Called whenever the database has changed and should be uploaded.
+     * (Re-)Sets the timer for delayed sync of the database.
+     */
+    public void dataChanged() {
+        if (!isActive()) return;
+
+        // save the last modified date so that we can correctly synchronize later.
+        File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
+        setLastModifiedDate(database.getName(), new DateTime());
+
+        // Should we upload automatically?
+        if (mAutoUploadDisabled) return;
+        if (!canAutoSync()) {
+            Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
+            return;
+        }
+
+        // Should we schedule an upload?
+        SyncPreferences preferences = new SyncPreferences(getContext());
+        // todo: complete
+//        if (preferences.getImmediatelyUploadChanges()) {
+//            abortScheduledUpload();
+//            scheduleUpload();
+//        }
+    }
+
+    public void enableAutoUpload() {
+        // DropboxHelper.setAutoUploadDisabled(true);
+        mAutoUploadDisabled = false;
     }
 
     /**
@@ -217,7 +272,7 @@ public class SyncManager {
         }.start();
     }
 
-    public void getFolderContentsAsync(final String folder) {
+    public void getRemoteFolderContentsAsync(final String folder) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -331,6 +386,38 @@ public class SyncManager {
         mPreferences.set(R.string.pref_box_persistent, onedrive.get().saveAsString());
     }
 
+    public void triggerSynchronization() {
+//        DropboxManager dropbox = new DropboxManager(mContext, mDropboxHelper);
+//        dropbox.synchronizeDropbox();
+
+        if (!isActive())  return;
+
+        // Make sure that the current database is also the one linked to Dropbox.
+        String currentDatabasePath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
+        if (TextUtils.isEmpty(currentDatabasePath)) {
+            return;
+        }
+
+        String remotePath = getRemotePath();
+        if (TextUtils.isEmpty(remotePath)) {
+            Toast.makeText(mContext, R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // easy comparison
+        if (!currentDatabasePath.contains(remotePath)) {
+            // The current file was probably opened through Open Database.
+            Toast.makeText(mContext, R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
+    }
+
+    public void triggerDownload() {
+        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+    }
+
     /**
      * Upload the file to cloud storage.
      * @param localPath The path to the file to upload.
@@ -430,5 +517,50 @@ public class SyncManager {
         } else {
             return mContext.getFilesDir();
         }
+    }
+
+    private void invokeSyncService(String action) {
+//        SyncManager sync = getSyncManager();
+        SyncManager sync = this;
+//        Context context = getActivity();
+
+        // Validation.
+        String remoteFile = sync.getRemotePath();
+        // We need a value in remote file name settings.
+        if (TextUtils.isEmpty(remoteFile)) return;
+
+        // Action
+
+        String localFile = sync.getLocalPath();
+
+        Intent service = new Intent(getContext(), SyncService.class);
+
+        service.setAction(action);
+
+        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+
+        ProgressDialog progressDialog;
+        try {
+            //progress dialog
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+
+            Messenger messenger = new SyncMessengerFactory(getContext())
+                    .createMessenger(progressDialog, sync.getRemotePath());
+            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(ex, "displaying download progress dialog");
+        }
+
+        // start service
+        getContext().startService(service);
+
+        // once done, the message is sent out via messenger. See Messenger definition in factory.
+        // INTENT_EXTRA_MESSENGER_DOWNLOAD
     }
 }

@@ -207,7 +207,7 @@ public class EditPriceDialog
                             Toast.LENGTH_SHORT).show();
                 }
 
-                SyncManager.dataChanged();
+                new SyncManager(getContext()).dataChanged();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

@@ -140,7 +140,7 @@ public class CloudFilePickerFragment
                 .canceledOnTouchOutside(false)
                 .show();
 
-        getSyncManager().getFolderContentsAsync(folder);
+        getSyncManager().getRemoteFolderContentsAsync(folder);
     }
 
     private boolean isValidDatabase(CloudMetaData item) {

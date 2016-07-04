@@ -354,7 +354,7 @@ public class WatchlistFragment
                 mDataFragment.reloadData();
 
                 // notify about db file change.
-                SyncManager.dataChanged();
+                new SyncManager(getActivity()).dataChanged();
             }
         });
     }
@@ -550,7 +550,7 @@ public class WatchlistFragment
                     int deleted = history.deleteAllPriceHistory();
 
                     if (deleted > 0) {
-                        SyncManager.dataChanged();
+                        new SyncManager(getActivity()).dataChanged();
                         Toast.makeText(getActivity(),
                             getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
                             .show();

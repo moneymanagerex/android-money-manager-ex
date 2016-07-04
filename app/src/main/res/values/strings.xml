@@ -561,8 +561,6 @@
     <string name="db_fix_duplicates">Fix duplicate records</string>
     <string name="split_amount_negative">The total amount can not be negative.</string>
     <string name="select_all">Select all</string>
-    <string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>
-    <string name="checking_dropbox_for_changes">Checking Dropbox for database modifications.</string>
     <string name="choose_type">Choose a type</string>
     <string name="default_account">Default account</string>
     <string name="default_account_summary">The account to use when entering a new transaction.</string>
@@ -704,11 +702,11 @@
     <string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>
     <string name="dropbox_link">Link to Dropbox</string>
     <string name="dropbox_unlink">Unlink from Dropbox</string>
-    <string name="dropbox_syncProgress">Synchronizing file. Please wait…</string>
     <string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>
     <string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>
     <string name="dropbox_linkedFile">Dropbox File</string>
     <string name="dropbox_file_summary_all">File anywhere in Dropbox</string>
+    <string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>
 
     <!-- Synchronization -->
     <string name="synchronization">Synchronization</string>
@@ -724,6 +722,7 @@
     <string name="sync_notification_title">Money Manager Ex - Sync</string>
     <string name="sync_downloading">Downloading database. Please wait…</string>
     <string name="sync_uploading">Uploading database. Please wait…</string>
+    <string name="syncProgress">Synchronizing file. Please wait…</string>
     <string name="database_is_synchronized">The database is up to date</string>
     <string name="upload_file_complete">Your database has been successfully uploaded</string>
     <string name="every_5_minutes">Every 5 minutes</string>
@@ -735,4 +734,5 @@
     <string name="every_6_hours">Every 6 hours</string>
     <string name="every_12_hours">Every 12 hours</string>
     <string name="never">Never</string>
+    <string name="checking_remote_for_changes">Checking remote storage for database modifications.</string>
 </resources>

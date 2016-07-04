@@ -37,18 +37,20 @@ public class YahooDownloadAllPricesTask
     public YahooDownloadAllPricesTask(Context context, IDownloadAsyncTaskFeedback feedback) {
         mFeedback = feedback;
         mContext = context;
+        mSyncManager = new SyncManager(context);
     }
 
     private Context mContext;
     private ProgressDialog mDialog = null;
     private IDownloadAsyncTaskFeedback mFeedback;
     private int mProgressCount = 0;
+    private SyncManager mSyncManager;
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        SyncManager.disableAutoUpload();
+        mSyncManager.disableAutoUpload();
 
         // Check if the context still exists to avoid exceptions.
         showProgressDialog();
@@ -96,8 +98,8 @@ public class YahooDownloadAllPricesTask
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
         }
 
-        SyncManager.enableAutoUpload();
-        SyncManager.dataChanged();
+        mSyncManager.enableAutoUpload();
+        mSyncManager.dataChanged();
 
         super.onPostExecute(result);
     }

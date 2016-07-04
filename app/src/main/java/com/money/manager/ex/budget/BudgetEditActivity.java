@@ -166,8 +166,6 @@ public class BudgetEditActivity
         mModel.saveTo(budget);
 
         BudgetRepository repo = new BudgetRepository(this);
-        boolean result = repo.save(budget);
-
-        return result;
+        return repo.save(budget);
     }
 }

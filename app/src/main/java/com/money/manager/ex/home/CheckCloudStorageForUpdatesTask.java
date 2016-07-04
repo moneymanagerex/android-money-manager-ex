@@ -29,36 +29,33 @@ import com.money.manager.ex.sync.SyncService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
- * Check for updates to the database on Dropbox. Ran on start of the main activity.
+ * Check for updates to the database in the cloud.
+ * Ran on start of the main activity.
  */
-public class CheckDropboxForUpdatesTask
+public class CheckCloudStorageForUpdatesTask
     extends AsyncTask<Void, Integer, Integer> {
 
-    public CheckDropboxForUpdatesTask(Context context) {
+    public CheckCloudStorageForUpdatesTask(Context context) {
         mContext = context;
-//        mDropboxHelper = helper;
     }
 
     private Context mContext;
-//    private DropboxHelper mDropboxHelper;
 
     @Override
     protected Integer doInBackground(Void... voids) {
         try {
             publishProgress(1);
 
-            // todo: check this
-            //return mDropboxHelper.checkIfFileIsSync();
-            SyncManager.isFileInSync();
-            return null;
+            //return mDropboxHelper.compareFilesForSync();
+            return new SyncManager(getContext()).compareFilesForSync();
         } catch (Exception e) {
-            throw new RuntimeException("Error in checkDropboxForUpdates", e);
+            throw new RuntimeException("Error in check Cloud ForUpdates", e);
         }
     }
 
     @Override
     protected void onProgressUpdate(Integer... params) {
-        Toast.makeText(mContext, R.string.checking_dropbox_for_changes, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.checking_remote_for_changes, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -70,7 +67,7 @@ public class CheckDropboxForUpdatesTask
             }
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "showing dropbox update notification dialog");
+            handler.handle(ex, "showing update notification dialog");
         }
     }
 
@@ -93,6 +90,10 @@ public class CheckDropboxForUpdatesTask
 //            .show(mainActivity);
 //    }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     private void showNotificationDialog() {
         new AlertDialogWrapper.Builder(mContext)
             // setting alert dialog
@@ -108,7 +109,7 @@ public class CheckDropboxForUpdatesTask
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    SyncManager.synchronize();
+                    new SyncManager(getContext()).triggerSynchronization();
 
                     dialog.dismiss();
                 }

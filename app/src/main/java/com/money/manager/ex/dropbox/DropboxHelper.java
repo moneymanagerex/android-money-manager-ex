@@ -112,7 +112,7 @@
 //        // Should we upload automatically?
 //        if (getAutoUploadDisabled()) return;
 //        DropboxHelper helper = new DropboxHelper(mContext);
-//        if (!helper.shouldAutoSynchronize()) {
+//        if (!helper.canAutoSync()) {
 //            Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
 //            return;
 //        }
@@ -166,7 +166,7 @@
 //
 //    // Public methods.
 //
-//    public boolean shouldAutoSynchronize() {
+//    public boolean canAutoSync() {
 //        // Check WiFi settings.
 //        // should we sync only on wifi?
 //        AppSettings settings = new AppSettings(mContext);
@@ -642,7 +642,7 @@
 //     * This function returns if the file is synchronized or not
 //     * @return int
 //     */
-//    public int checkIfFileIsSync() {
+//    public int compareFilesForSync() {
 //        if (!isLinked()) {
 //            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        }
@@ -668,7 +668,7 @@
 //            remoteLastModified = getLastModifiedEntry(remoteFile);
 //        } catch (Exception e) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(e, "retrieving the last modified date in checkIfFileIsSync");
+//            handler.handle(e, "retrieving the last modified date in compareFilesForSync");
 //
 //            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
 //        }

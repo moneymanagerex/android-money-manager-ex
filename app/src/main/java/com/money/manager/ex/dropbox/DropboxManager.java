@@ -157,7 +157,7 @@
 //            //progress dialog
 //            progressDialog = new ProgressDialog(mContext);
 //            progressDialog.setCancelable(false);
-//            progressDialog.setMessage(mContext.getString(R.string.dropbox_syncProgress));
+//            progressDialog.setMessage(mContext.getString(R.string.syncProgress));
 //            progressDialog.setIndeterminate(true);
 //            progressDialog.show();
 //

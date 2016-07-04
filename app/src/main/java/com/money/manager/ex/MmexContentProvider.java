@@ -189,7 +189,7 @@ public class MmexContentProvider
             getContext().getContentResolver().notifyChange(uri, null);
 
             // notify dropbox of the data changes
-            SyncManager.dataChanged();
+            new SyncManager(getContext()).dataChanged();
         }
 
         // return Uri with the primary key of the inserted record.
@@ -231,7 +231,7 @@ public class MmexContentProvider
             // notify update
             getContext().getContentResolver().notifyChange(uri, null);
             // notify dropbox data changed
-            SyncManager.dataChanged();
+            new SyncManager(getContext()).dataChanged();
         }
 
         // return rows modified
@@ -280,7 +280,7 @@ public class MmexContentProvider
         // delete notify
         getContext().getContentResolver().notifyChange(uri, null);
         // notify dropbox data changed
-        SyncManager.dataChanged();
+        new SyncManager(getContext()).dataChanged();
 
         return rowsDelete;
     }

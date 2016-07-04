@@ -396,7 +396,7 @@ public class MainActivity
 
     // Custom methods
 
-    public void checkDropboxForUpdates() {
+    public void checkCloudForDbUpdates() {
         SyncManager sync = new SyncManager(this);
         if (sync.isActive()) {
             return;
@@ -417,7 +417,7 @@ public class MainActivity
         boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
         if (!shouldCheckDbUpdates) return;
 
-        AsyncTask<Void, Integer, Integer> asyncTask = new CheckDropboxForUpdatesTask(this);
+        AsyncTask<Void, Integer, Integer> asyncTask = new CheckCloudStorageForUpdatesTask(this);
         asyncTask.execute();
     }
 
@@ -473,7 +473,7 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync_dropbox:
-                SyncManager.synchronize();
+                new SyncManager(this).triggerSynchronization();
                 break;
             case R.id.menu_open_database:
                 openDatabasePicker();
@@ -649,7 +649,7 @@ public class MainActivity
 
         if (!this.hasStarted) {
             // This is to avoid checking Dropbox on every device rotation.
-            checkDropboxForUpdates();
+            checkCloudForDbUpdates();
             this.hasStarted = true;
         }
 
@@ -940,7 +940,7 @@ public class MainActivity
         ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
         childItems.add(childDatabases);
 
-        // Dropbox
+        // Synchronization
         if (new SyncManager(this).isActive()) {
             childItems.add(null);
         }
@@ -1071,33 +1071,33 @@ public class MainActivity
         }
     }
 
-    private void displayDefaultFragment() {
-        // show main navigation fragment
-        final String homeFragmentTag = HomeFragment.class.getSimpleName();
-        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager()
-                .findFragmentByTag(homeFragmentTag);
-
-        if (homeFragment == null) {
-            // fragment create
-            homeFragment = new HomeFragment();
-        }
-
-        final HomeFragment finalFragment = homeFragment;
-        // ref: http://stackoverflow.com/a/14178962/202166
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
-                            .commit();
-                } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
-                    handler.handle(e, "showing initial fragments");
-                }
-            }
-        });
-    }
+//    private void displayDefaultFragment() {
+//        // show main navigation fragment
+//        final String homeFragmentTag = HomeFragment.class.getSimpleName();
+//        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager()
+//                .findFragmentByTag(homeFragmentTag);
+//
+//        if (homeFragment == null) {
+//            // fragment create
+//            homeFragment = new HomeFragment();
+//        }
+//
+//        final HomeFragment finalFragment = homeFragment;
+//        // ref: http://stackoverflow.com/a/14178962/202166
+//        new Handler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
+//                            .commit();
+//                } catch (Exception e) {
+//                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
+//                    handler.handle(e, "showing initial fragments");
+//                }
+//            }
+//        });
+//    }
 
     private void originalShowFragment(Bundle savedInstanceState) {
         Core core = new Core(this);
