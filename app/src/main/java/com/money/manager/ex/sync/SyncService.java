@@ -116,18 +116,17 @@ public class SyncService
 
         // Execute action.
         if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
-            triggerDownload(localFile, remoteFilename);
+            triggerDownload(localFile, remoteFile);
         } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
             triggerUpload(localFile, remoteFile);
         } else {
-            // Synchronization
             triggerSync(localFile, remoteFile);
         }
     }
 
     // private
 
-    private void triggerDownload(final File localFile, String remoteFilename) {
+    private void triggerDownload(final File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getBaseContext());
 
         final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
@@ -175,7 +174,7 @@ public class SyncService
             }
         };
         if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFilename);
+            Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.getPath());
         }
 
         //start
@@ -185,7 +184,7 @@ public class SyncService
         messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD;
         sendMessenger(messageStart);
         //execute
-        boolean ret = sync.download(remoteFilename, tempFile);
+        boolean ret = sync.download(remoteFile, tempFile);
         //complete
         onDownloadUpload.onPostExecute(ret);
 
@@ -266,28 +265,21 @@ public class SyncService
     }
 
     public void triggerSync(final File localFile, CloudMetaData remoteFile) {
-        DateTime localLastModified = null;
-        DateTime remoteLastModified = null;
-        try {
-//            localLastModified = mDropboxHelper.getDateLastModified(remoteFile.fileName());
-            // todo: local
-        } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
-        }
+        SyncManager sync = new SyncManager(getBaseContext());
+
+        DateTime localLastModified = sync.getLastModifiedDate(remoteFile.getName());
         if (localLastModified == null) localLastModified = new DateTime(localFile.lastModified());
 
-        //todo remoteLastModified = mDropboxHelper.getLastModifiedEntry(remoteFile);
-        //remoteLastModified = remoteFile.
-        long whatIsThis = remoteFile.getModifiedAt();
+        DateTime remoteLastModified = new DateTime(remoteFile.getModifiedAt());
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified local file: " + localLastModified.toString(Constants.ISO_DATE_FORMAT));
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified remote file: " + remoteLastModified.toString(Constants.ISO_DATE_FORMAT));
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified local file: " + localLastModified.toString());
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified remote file: " + remoteLastModified.toString());
 
         // check date
         if (remoteLastModified.isAfter(localLastModified)) {
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download " + remoteFile.getPath() + " from the cloud storage.");
             // download file
-            triggerDownload(localFile, remoteFile.getPath());
+            triggerDownload(localFile, remoteFile);
         } else if (remoteLastModified.isBefore(localLastModified)) {
             if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
             // upload file

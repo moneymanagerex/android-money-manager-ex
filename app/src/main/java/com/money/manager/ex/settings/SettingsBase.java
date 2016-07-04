@@ -108,7 +108,7 @@ public abstract class SettingsBase {
      * @param key
      * @param value
      */
-    protected boolean set(String key, String value) {
+    public boolean set(String key, String value) {
         getEditor().putString(key, value);
         return save();
     }

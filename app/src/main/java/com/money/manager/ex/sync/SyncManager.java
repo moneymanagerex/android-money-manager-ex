@@ -36,6 +36,7 @@ import com.cloudrail.si.services.GoogleDrive;
 import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -51,6 +52,7 @@ import com.money.manager.ex.utils.NetworkUtilities;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -162,9 +164,9 @@ public class SyncManager {
      * @param localFile Local file reference
      * @return Indicator whether the download was successful.
      */
-    public boolean download(String remoteFile, File localFile) {
+    public boolean download(CloudMetaData remoteFile, File localFile) {
         try {
-            InputStream inputStream = getProvider().download(remoteFile);
+            InputStream inputStream = getProvider().download(remoteFile.getPath());
             OutputStream outputStream = new FileOutputStream(localFile, false);
 
             IOUtils.copy(inputStream, outputStream);
@@ -177,7 +179,9 @@ public class SyncManager {
             return false;
         }
 
-        // todo: setDateLastModified(remoteFile.fileName(), RESTUtility.parseDate(remoteFile.modified));
+        // setDateLastModified(remoteFile.fileName(), RESTUtility.parseDate(remoteFile.modified));
+        DateTime lastModified = new DateTime(remoteFile.getModifiedAt());
+        setLastModifiedDate(remoteFile.getPath(), lastModified);
 
         // todo: DropboxHelper.abortScheduledUpload();
 
@@ -223,6 +227,18 @@ public class SyncManager {
         }).start();
     }
 
+    /**
+     * Gets last modified datetime of the database file from the preferences.
+     * @param file file name
+     * @return date of last modification
+     */
+    public DateTime getLastModifiedDate(String file) {
+        String dateString = mPreferences.get(file, null);
+        if (TextUtils.isEmpty(dateString)) return null;
+
+        return new DateTime(dateString);
+    }
+
     public String getRemotePath() {
         if (StringUtils.isEmpty(mRemoteFile)) {
             mRemoteFile = mPreferences.loadPreference(R.string.pref_remote_file, "");
@@ -236,6 +252,26 @@ public class SyncManager {
 
     public void setEnabled(boolean enabled) {
         mPreferences.setSyncEnabled(enabled);
+    }
+
+    /**
+     * Save the last modified datetime of the remote file into Settings for comparison during
+     * the synchronization.
+     * @param file file name
+     * @param date date of last modification
+     */
+    public void setLastModifiedDate(String file, DateTime date) {
+        if (BuildConfig.DEBUG) {
+            Log.d(this.getClass().getSimpleName(),
+                    "Set Dropbox file: " + file + " last modification date " + date.toString());
+        }
+
+        SyncPreferences prefs = new SyncPreferences(getContext());
+        boolean saved = prefs.set(file, date.toString());
+
+        if (!saved) {
+            Log.e(this.getClass().getSimpleName(), "Could not store last modified date!");
+        }
     }
 
     public void setProvider(CloudStorageProviderEnum provider) {
