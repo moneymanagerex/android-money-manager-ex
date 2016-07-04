@@ -342,7 +342,6 @@ public class SyncManager {
                     }
 
                     invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
-                    abortScheduledUpload();
                 }
             };
         }
@@ -372,8 +371,7 @@ public class SyncManager {
                     "Set remote file: " + file + " last modification date " + date.toString());
         }
 
-        SyncPreferences prefs = new SyncPreferences(getContext());
-        boolean saved = prefs.set(file, date.toString());
+        boolean saved = mPreferences.set(file, date.toString());
 
         if (!saved) {
             Log.e(this.getClass().getSimpleName(), "Could not store last modified date!");
@@ -589,7 +587,6 @@ public class SyncManager {
         // Action
 
         String localFile = getLocalPath();
-//        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
         Intent service = new Intent(getContext(), SyncService.class);
 
@@ -605,8 +602,10 @@ public class SyncManager {
         // start service
         getContext().startService(service);
 
+        // Reset any other scheduled uploads as the current operation will modify the files.
+        abortScheduledUpload();
+
         // once done, the message is sent out via messenger. See Messenger definition in factory.
-        // INTENT_EXTRA_MESSENGER_DOWNLOAD
     }
 
     private void invokeSyncService(String action) {

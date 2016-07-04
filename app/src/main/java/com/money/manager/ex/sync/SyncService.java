@@ -93,9 +93,8 @@ public class SyncService
 
         // take a file and entries
         File localFile = new File(localFilename);
-//        Entry remoteFile = mDropboxHelper.getEntry(remote);
         CloudMetaData remoteFile = sync.getProvider().getMetadata(remoteFilename);
-        // check if local file or remote file is null, then exit
+
         if (remoteFile == null) {
             if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
                 Log.w(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent forcing creation of the remote file.");
@@ -103,7 +102,7 @@ public class SyncService
 //            remoteFile = new Entry();
 //            remoteFile.path = remote;
             } else {
-                Log.e(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent premature exit.");
+                Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
                 return;
             }
         }
@@ -115,9 +114,10 @@ public class SyncService
         }
 
         // Execute action.
-        if (SyncConstants.INTENT_ACTION_DOWNLOAD.equals(intent.getAction())) {
+        String action = intent.getAction();
+        if (action.equals(SyncConstants.INTENT_ACTION_DOWNLOAD)) {
             triggerDownload(localFile, remoteFile);
-        } else if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+        } else if (action.equals(SyncConstants.INTENT_ACTION_UPLOAD)) {
             triggerUpload(localFile, remoteFile);
         } else {
             triggerSync(localFile, remoteFile);
