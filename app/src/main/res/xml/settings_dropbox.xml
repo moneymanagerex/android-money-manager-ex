@@ -57,8 +57,8 @@
         android:defaultValue="true"
         android:dependency="@string/pref_dropbox_unlink"
         android:key="@string/pref_dropbox_upload_immediate"
-        android:summary="@string/summary_dropbox_upload_immediate"
-        android:title="@string/title_dropbox_upload_immediate" />
+        android:summary="@string/summary_sync_upload_immediate"
+        android:title="@string/title_sync_upload_immediate" />
 
     <PreferenceScreen
         android:icon="@null"

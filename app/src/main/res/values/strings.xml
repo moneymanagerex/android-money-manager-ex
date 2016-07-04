@@ -336,8 +336,6 @@
     <string name="descending">Descending</string>
     <string name="sorting_month">Sorting Months</string>
     <!-- 20130305 -->
-    <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
-    <string name="dropbox_select_file">Select a file from Dropbox</string>
     <string name="last_modified">Last modified</string>
     <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
     <string name="dont_show_again">Don\'t show again</string>
@@ -346,8 +344,6 @@
     <string name="summary_synchronization_interval">How often should synchronize?</string>
     <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
     <string name="tips_new_version_dropbox">As of version 1.2.0, Money Manager Ex for Android has changed the Dropbox synchronization engine. The users who are already using the Dropbox sync need to update the configuration.\nThe authentication and the selection of the database is located in the Settings.\nAs of version 1.2.0, Money Manager Ex for Android can automatically synchronize the database.</string>
-    <string name="title_dropbox_upload_immediate">Upload the database immediately after change</string>
-    <string name="summary_dropbox_upload_immediate">This option allows to automatically upload as soon as you change the database</string>
     <!-- 20130426 -->
     <string name="title_transaction_shown_balance">Shows the balance for each transaction</string>
     <string name="summary_transaction_shown_balance">Shows the balance for each transaction. The display of balance could make the application slower</string>
@@ -735,4 +731,8 @@
     <string name="every_12_hours">Every 12 hours</string>
     <string name="never">Never</string>
     <string name="checking_remote_for_changes">Checking remote storage for database modifications.</string>
+    <string name="title_sync_upload_immediate">Upload the database immediately after change</string>
+    <string name="summary_sync_upload_immediate">This option allows to automatically upload as soon as you change the database</string>
+    <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
+    <string name="dropbox_select_file">Select a file from Dropbox</string>
 </resources>

@@ -51,7 +51,14 @@
         android:summary="@string/summary_synchronization_interval"
         android:title="@string/synchronization_interval" />
 
-    <!-- todo: upload immediately -->
+    <!-- upload immediately -->
+    <CheckBoxPreference
+        android:icon="@null"
+        android:defaultValue="true"
+        android:dependency="@string/pref_sync_enabled"
+        android:key="@string/pref_upload_immediately"
+        android:summary="@string/summary_sync_upload_immediate"
+        android:title="@string/title_sync_upload_immediate" />
 
     <!-- sync only on wi-fi -->
     <CheckBoxPreference

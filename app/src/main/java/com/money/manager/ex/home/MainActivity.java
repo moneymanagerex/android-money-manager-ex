@@ -398,24 +398,9 @@ public class MainActivity
 
     public void checkCloudForDbUpdates() {
         SyncManager sync = new SyncManager(this);
-        if (sync.isActive()) {
+        if (!sync.isActive()) {
             return;
         }
-
-        String currentDbPath = MoneyManagerApplication.getDatabasePath(getApplicationContext());
-        if (StringUtils.isEmpty(currentDbPath)) return;
-
-        File db = new File(currentDbPath);
-        String dbName = db.getName();
-
-        String remoteDb = new SyncManager(this).getRemotePath();
-        if (StringUtils.isEmpty(remoteDb)) return;
-
-        File dropboxDb = new File(remoteDb);
-        String remoteDbName = dropboxDb.getName();
-
-        boolean shouldCheckDbUpdates = dbName.equalsIgnoreCase(remoteDbName);
-        if (!shouldCheckDbUpdates) return;
 
         AsyncTask<Void, Integer, Integer> asyncTask = new CheckCloudStorageForUpdatesTask(this);
         asyncTask.execute();
@@ -594,12 +579,12 @@ public class MainActivity
     }
 
     /**
-     * Dropbox just downloaded the database. Reload fragments.
+     * A newer database file has just been downloaded. Reload.
      */
     @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
         // open the new database.
-        SyncManager.openDatabase();
+        new SyncManager(this).openDatabase();
     }
 
     // Private.

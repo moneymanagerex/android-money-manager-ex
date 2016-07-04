@@ -74,6 +74,10 @@ public class SyncPreferences
         return Integer.parseInt(setSchedule);
     }
 
+    public boolean getUploadImmediately() {
+        return get(R.string.pref_upload_immediately, true);
+    }
+
     public String loadPreference(Integer key, String defaultValue) {
         String realKey = getContext().getString(key);
 
@@ -101,15 +105,4 @@ public class SyncPreferences
     private String getKey(Integer resourceId) {
         return getContext().getString(resourceId);
     }
-
-//    private void set(Integer key, boolean value) {
-//        getSyncPreferences().edit()
-//                .putBoolean(getContext().getString(key), value)
-//                .apply();
-//    }
-//    private void set(Integer key, String value) {
-//        getSyncPreferences().edit()
-//                .putString(getContext().getString(key), value)
-//                .apply();
-//    }
 }

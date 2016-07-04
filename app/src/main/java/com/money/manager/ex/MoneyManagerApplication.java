@@ -127,7 +127,7 @@ public class MoneyManagerApplication
             // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
-                return databaseFile.toString();
+                return databaseFile.getPath(); // .toString()
             }
         }
 

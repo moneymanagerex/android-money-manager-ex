@@ -104,9 +104,8 @@
 //
 //    public void openDownloadedDatabase() {
 //        File downloadedDb = new File(this.getLocalPath());
-//        DropboxService dropboxService = new DropboxService();
-//
-//        Intent intent = dropboxService.getIntentForOpenDatabase(mContext, downloadedDb);
+//        SyncCommon common = new SyncCommon();
+//        Intent intent = common.getIntentForOpenDatabase(mContext, downloadedDb);
 //
 //        mContext.startActivity(intent);
 //    }

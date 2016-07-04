@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.settings.SyncPreferences;
 
 /**
  * Receiver that is triggered by the alarm to run synchronization.
@@ -34,6 +35,9 @@ public class SyncBroadcastReceiver
 		SyncManager sync = new SyncManager(context);
 
         if (!sync.canAutoSync()) return;
+
+		// check sync interval.
+		if (new SyncPreferences(context).getSyncInterval() == 0) return;
 
 		// Trigger synchronization
 

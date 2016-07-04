@@ -46,7 +46,6 @@ public class CheckCloudStorageForUpdatesTask
         try {
             publishProgress(1);
 
-            //return mDropboxHelper.compareFilesForSync();
             return new SyncManager(getContext()).compareFilesForSync();
         } catch (Exception e) {
             throw new RuntimeException("Error in check Cloud ForUpdates", e);
