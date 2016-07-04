@@ -267,7 +267,7 @@ public class SyncService
     public void triggerSync(final File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getBaseContext());
 
-        DateTime localLastModified = sync.getLastModifiedDate(localFile.getPath());
+        DateTime localLastModified = sync.getLastModifiedDate(remoteFile);
         if (localLastModified == null) localLastModified = new DateTime(localFile.lastModified());
 
         DateTime remoteLastModified = new DateTime(remoteFile.getModifiedAt());

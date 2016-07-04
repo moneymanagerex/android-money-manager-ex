@@ -159,7 +159,7 @@ public class SyncManager {
         DateTime localLastModified;
         DateTime remoteLastModified;
         try {
-            localLastModified = getLastModifiedDate(remoteFile.getPath());
+            localLastModified = getLastModifiedDate(remoteFile);
             if (localLastModified == null) {
                 localLastModified = new DateTime(localFile.lastModified());
             }
@@ -205,9 +205,7 @@ public class SyncManager {
             return false;
         }
 
-        // setDateLastModified(remoteFile.fileName(), RESTUtility.parseDate(remoteFile.modified));
-        DateTime lastModified = new DateTime(remoteFile.getModifiedAt());
-        setLastModifiedDate(remoteFile.getPath(), lastModified);
+        saveLastModifiedDate(remoteFile);
 
         abortScheduledUpload();
 
@@ -223,7 +221,13 @@ public class SyncManager {
 
         // save the last modified date so that we can correctly synchronize later.
         String remotePath = getRemotePath();
-        setLastModifiedDate(remotePath, new DateTime());
+
+        // fake metadata
+        CloudMetaData metaData = new CloudMetaData();
+        metaData.setPath(remotePath);
+        metaData.setModifiedAt(DateTime.now().getMillis());
+
+        saveLastModifiedDate(metaData);
 
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
@@ -275,8 +279,8 @@ public class SyncManager {
      * @param file file name
      * @return date of last modification
      */
-    public DateTime getLastModifiedDate(String file) {
-        String dateString = mPreferences.get(file, null);
+    public DateTime getLastModifiedDate(CloudMetaData file) {
+        String dateString = mPreferences.get(file.getPath(), null);
         if (TextUtils.isEmpty(dateString)) return null;
 
         return new DateTime(dateString);
@@ -363,15 +367,16 @@ public class SyncManager {
      * Save the last modified datetime of the remote file into Settings for comparison during
      * the synchronization.
      * @param file file name
-     * @param date date of last modification
      */
-    public void setLastModifiedDate(String file, DateTime date) {
+    public void saveLastModifiedDate(CloudMetaData file) {
+        DateTime date = new DateTime(file.getModifiedAt());
+
         if (BuildConfig.DEBUG) {
             Log.d(this.getClass().getSimpleName(),
                     "Set remote file: " + file + " last modification date " + date.toString());
         }
 
-        boolean saved = mPreferences.set(file, date.toString());
+        boolean saved = mPreferences.set(file.getPath(), date.toString());
 
         if (!saved) {
             Log.e(this.getClass().getSimpleName(), "Could not store last modified date!");
