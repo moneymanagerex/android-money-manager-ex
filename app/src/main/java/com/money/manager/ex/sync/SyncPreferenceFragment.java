@@ -31,7 +31,12 @@ import android.widget.Toast;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +82,19 @@ public class SyncPreferenceFragment
         super.onStop();
         // this is probably redundant now.
         getSyncManager().storePersistent();
+    }
+
+    /**
+     * Called when file is downloaded from the cloud storage.
+     */
+    @Subscribe
+    public void onEvent(DbFileDownloadedEvent event) {
+        // set main activity to reload.
+//        MainActivity.setRestartActivity(true);
+        EventBus.getDefault().post(new AppRestartRequiredEvent());
+
+        // open the new database.
+        getSyncManager().openDatabase();
     }
 
     private void handleFileSelection(int resultCode, Intent data) {
@@ -210,8 +228,6 @@ public class SyncPreferenceFragment
             }
         });
     }
-
-
 
     private void forceUpload() {
         String localFile = MoneyManagerApplication.getDatabasePath(getActivity());

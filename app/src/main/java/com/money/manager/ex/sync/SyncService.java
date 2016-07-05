@@ -94,7 +94,6 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        // take a file and entries
         File localFile = new File(localFilename);
         CloudMetaData remoteFile = null;
         try {
@@ -105,11 +104,15 @@ public class SyncService
         }
 
         if (remoteFile == null) {
+            // file not found on remote server.
             if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
-                Log.w(LOGCAT, "remoteFile is null. DropboxService.onHandleIntent forcing creation of the remote file.");
-                // todo: redo this. Create a new entry in the root?
+                // Create a new entry in the root?
+                Log.w(LOGCAT, "remoteFile is null. SyncService forcing creation of the new remote file.");
 //            remoteFile = new Entry();
 //            remoteFile.path = remote;
+                remoteFile = new CloudMetaData();
+//                String newRemoteFile = "/" + localFile.getName();
+                remoteFile.setPath(remoteFilename);
             } else {
                 Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
                 return;
@@ -124,12 +127,17 @@ public class SyncService
 
         // Execute action.
         String action = intent.getAction();
-        if (action.equals(SyncConstants.INTENT_ACTION_DOWNLOAD)) {
-            triggerDownload(localFile, remoteFile);
-        } else if (action.equals(SyncConstants.INTENT_ACTION_UPLOAD)) {
-            triggerUpload(localFile, remoteFile);
-        } else {
-            triggerSync(localFile, remoteFile);
+        switch (action) {
+            case SyncConstants.INTENT_ACTION_DOWNLOAD:
+                triggerDownload(localFile, remoteFile);
+                break;
+            case SyncConstants.INTENT_ACTION_UPLOAD:
+                triggerUpload(localFile, remoteFile);
+                break;
+            case SyncConstants.INTENT_ACTION_SYNC:
+            default:
+                triggerSync(localFile, remoteFile);
+                break;
         }
     }
 
