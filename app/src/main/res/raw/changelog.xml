@@ -17,11 +17,12 @@
   -->
 <changelog bulletedList="true">
     <changelogversion versionName="2016.07.03.001">
-        <changelogtext>BIG changes.
+        <changelogtext>Note: There are BIG changes in this release!
             This release includes support for four major cloud storage providers:
             Dropbox, Google Drive, OneDrive, and Box.
             Dropbox synchronization now can use a file anywhere in the file tree and is not limited to the app folder.
             Dropbox is deprecating API v1 and therefore you will need to reinitialize synchronization.
+            Please test out and report any feedback either via email or on GitHub.
         </changelogtext>
     </changelogversion>
 </changelog>
