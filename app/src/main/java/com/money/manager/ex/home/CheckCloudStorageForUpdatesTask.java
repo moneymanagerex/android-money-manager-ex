@@ -25,7 +25,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.sync.SyncService;
+import com.money.manager.ex.sync.SyncMessages;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -65,7 +65,7 @@ public class CheckCloudStorageForUpdatesTask
     @Override
     protected void onPostExecute(Integer ret) {
         try {
-            if (ret.equals(SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD)) {
+            if (ret.equals(SyncMessages.DOWNLOAD_COMPLETE)) {
 //            showNotificationSnackbar();
                 showNotificationDialog();
             }

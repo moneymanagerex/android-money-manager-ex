@@ -172,6 +172,6 @@
 //        mContext.startService(service);
 //
 //        // once done, the message is sent out via messenger. See Messenger definition below.
-//        // INTENT_EXTRA_MESSENGER_DOWNLOAD
+//        // DOWNLOAD_COMPLETE
 //    }
 //}

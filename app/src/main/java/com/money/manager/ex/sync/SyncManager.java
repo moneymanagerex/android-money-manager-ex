@@ -139,7 +139,7 @@ public class SyncManager {
      */
     public int compareFilesForSync() {
         if (!isActive()) {
-            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            return SyncMessages.FILE_NOT_CHANGED;
         }
 
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
@@ -147,9 +147,9 @@ public class SyncManager {
 
         // check if we have the file names.
         if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) {
-            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            return SyncMessages.FILE_NOT_CHANGED;
         }
-        if (!areFileNamesSame(localPath, remotePath)) return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+        if (!areFileNamesSame(localPath, remotePath)) return SyncMessages.FILE_NOT_CHANGED;
 
         // get local and remote file info.
         File localFile = new File(localPath);
@@ -168,15 +168,15 @@ public class SyncManager {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "retrieving the last modified date in compareFilesForSync");
 
-            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            return SyncMessages.FILE_NOT_CHANGED;
         }
 
         if (remoteLastModified.isAfter(localLastModified)) {
-            return SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+            return SyncMessages.DOWNLOAD_COMPLETE;
         } else if (remoteLastModified.isBefore(localLastModified)) {
-            return SyncService.INTENT_EXTRA_MESSENGER_UPLOAD;
+            return SyncMessages.UPLOAD_COMPLETE;
         } else {
-            return SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+            return SyncMessages.FILE_NOT_CHANGED;
         }
     }
 

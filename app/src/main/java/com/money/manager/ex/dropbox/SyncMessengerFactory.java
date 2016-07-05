@@ -30,7 +30,7 @@ import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.sync.SyncService;
+import com.money.manager.ex.sync.SyncMessages;
 import com.money.manager.ex.utils.DialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,19 +54,19 @@ public class SyncMessengerFactory {
         Messenger messenger = new Messenger(new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_NOT_ON_WIFI) {
+                if (msg.what == SyncMessages.NOT_ON_WIFI) {
                     //showMessage();
                     closeDialog(progressDialog);
 
-                } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE) {
+                } else if (msg.what == SyncMessages.FILE_NOT_CHANGED) {
                     // close dialog
                     closeDialog(progressDialog);
                     showMessage(R.string.database_is_synchronized, Toast.LENGTH_LONG);
 
-                } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD) {
+                } else if (msg.what == SyncMessages.STARTING_DOWNLOAD) {
                     showMessage(R.string.sync_downloading, Toast.LENGTH_LONG);
 
-                } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD) {
+                } else if (msg.what == SyncMessages.DOWNLOAD_COMPLETE) {
                     // Download from Dropbox completed.
                     storeRecentDb(remoteFile);
                     // close dialog
@@ -74,13 +74,16 @@ public class SyncMessengerFactory {
                     // Notify whoever is interested.
                     EventBus.getDefault().post(new DbFileDownloadedEvent());
 
-                } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_START_UPLOAD) {
+                } else if (msg.what == SyncMessages.STARTING_UPLOAD) {
                     showMessage(R.string.sync_uploading, Toast.LENGTH_LONG);
 
-                } else if (msg.what == SyncService.INTENT_EXTRA_MESSENGER_UPLOAD) {
+                } else if (msg.what == SyncMessages.UPLOAD_COMPLETE) {
                     // close dialog
                     closeDialog(progressDialog);
                     showMessage(R.string.upload_file_complete, Toast.LENGTH_LONG);
+                } else if (msg.what == SyncMessages.ERROR) {
+                    closeDialog(progressDialog);
+                    showMessage(R.string.error, Toast.LENGTH_SHORT);
                 }
             }
         });

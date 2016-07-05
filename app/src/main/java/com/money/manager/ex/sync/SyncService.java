@@ -31,7 +31,6 @@ import android.util.Log;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
@@ -45,24 +44,15 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 
-import javax.net.ssl.SSLProtocolException;
-
 /**
  * The background service that synchronizes the database file.
- * It is being invoked by the timer (is it?).
+ * It is being invoked by the timer.
  * It displays the sync notification and invokes the cloud api.
  */
 public class SyncService
     extends IntentService {
 
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
-    public static final Integer INTENT_EXTRA_MESSENGER_NOT_CHANGE = 0x000;
-    public static final Integer INTENT_EXTRA_MESSENGER_DOWNLOAD = 0x000A;
-    public static final Integer INTENT_EXTRA_MESSENGER_UPLOAD = 0x000B;
-    public static final Integer INTENT_EXTRA_MESSENGER_START_DOWNLOAD = 0x000C;
-    public static final Integer INTENT_EXTRA_MESSENGER_START_UPLOAD = 0x000D;
-    public static final Integer INTENT_EXTRA_MESSENGER_NOT_ON_WIFI = 0x000E;
-
     private static final String LOGCAT = SyncService.class.getSimpleName();
 
     public SyncService() {
@@ -84,6 +74,7 @@ public class SyncService
         NetworkUtilities network = new NetworkUtilities(getApplicationContext());
         if (!network.isOnline()) {
             if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
+            sendMessage(SyncMessages.NOT_ON_WIFI);
             return;
         }
 
@@ -95,26 +86,26 @@ public class SyncService
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
         File localFile = new File(localFilename);
-        CloudMetaData remoteFile = null;
+        CloudMetaData remoteFile;
         try {
             remoteFile = sync.getProvider().getMetadata(remoteFilename);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getBaseContext());
             handler.handle(e, "fetching remote metadata");
+            sendMessage(SyncMessages.ERROR);
+            return;
         }
 
         if (remoteFile == null) {
             // file not found on remote server.
-            if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {
+            if (intent.getAction().equals(SyncConstants.INTENT_ACTION_UPLOAD)) {
                 // Create a new entry in the root?
                 Log.w(LOGCAT, "remoteFile is null. SyncService forcing creation of the new remote file.");
-//            remoteFile = new Entry();
-//            remoteFile.path = remote;
                 remoteFile = new CloudMetaData();
-//                String newRemoteFile = "/" + localFile.getName();
                 remoteFile.setPath(remoteFilename);
             } else {
                 Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
+                sendMessage(SyncMessages.ERROR);
                 return;
             }
         }
@@ -122,6 +113,7 @@ public class SyncService
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
             Log.w(LOGCAT, "Local filename different from the remote!");
+            sendMessage(SyncMessages.ERROR);
             return;
         }
 
@@ -197,18 +189,14 @@ public class SyncService
         //start
         onDownloadUpload.onPreExecute();
         //send message to the database download staring
-        Message messageStart = new Message();
-        messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD;
-        sendMessenger(messageStart);
-        //execute
+        sendMessage(SyncMessages.STARTING_DOWNLOAD);
+
         boolean ret = sync.download(remoteFile, tempFile);
-        //complete
+
         onDownloadUpload.onPostExecute(ret);
 
         //send message to the database download complete
-        Message messageComplete = new Message();
-        messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
-        sendMessenger(messageComplete);
+        sendMessage(SyncMessages.DOWNLOAD_COMPLETE);
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
@@ -253,9 +241,7 @@ public class SyncService
         //start
         onDownloadUpload.onPreExecute();
         //send message to the database upload staring
-        Message messageStart = new Message();
-        messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_UPLOAD;
-        sendMessenger(messageStart);
+        sendMessage(SyncMessages.STARTING_UPLOAD);
 
         //execute
         SyncManager sync = new SyncManager(getBaseContext());
@@ -264,24 +250,10 @@ public class SyncService
         //complete
         onDownloadUpload.onPostExecute(result);
         ///send message to the database upload complete
-        Message messageComplete = new Message();
-        messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_UPLOAD;
-        sendMessenger(messageComplete);
+        sendMessage(SyncMessages.UPLOAD_COMPLETE);
     }
 
-    private boolean sendMessenger(Message msg) {
-        if (mOutMessenger != null) {
-            try {
-                mOutMessenger.send(msg);
-            } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public void triggerSync(final File localFile, CloudMetaData remoteFile) {
+    private void triggerSync(final File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getBaseContext());
 
         DateTime localLastModified = sync.getLastModifiedDate(remoteFile);
@@ -298,14 +270,28 @@ public class SyncService
             // download file
             triggerDownload(localFile, remoteFile);
         } else if (remoteLastModified.isBefore(localLastModified)) {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to Dropox");
+            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to the cloud storage.");
             // upload file
             triggerUpload(localFile, remoteFile);
         } else {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same");
-            Message message = new Message();
-            message.what = SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
-            sendMessenger(message);
+            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same.");
+
+            sendMessage(SyncMessages.FILE_NOT_CHANGED);
         }
+    }
+
+    private boolean sendMessage(Integer message) {
+        if (mOutMessenger == null) return true;
+
+        Message msg = new Message();
+        msg.what = message;
+
+        try {
+            mOutMessenger.send(msg);
+        } catch (Exception e) {
+            Log.e(LOGCAT, e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

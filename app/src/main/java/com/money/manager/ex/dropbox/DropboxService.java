@@ -141,7 +141,7 @@
 //        } else {
 //            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same");
 //            Message message = new Message();
-//            message.what = SyncService.INTENT_EXTRA_MESSENGER_NOT_CHANGE;
+//            message.what = SyncService.FILE_NOT_CHANGED;
 //            sendMessenger(message);
 //        }
 //    }
@@ -206,7 +206,7 @@
 //        onDownloadUpload.onPreExecute();
 //        //send message to the database download staring
 //        Message messageStart = new Message();
-//        messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_DOWNLOAD;
+//        messageStart.what = SyncService.STARTING_DOWNLOAD;
 //        sendMessenger(messageStart);
 //        //execute
 //        boolean ret = mDropboxHelper.download(remoteFile, tempFile, listener);
@@ -215,7 +215,7 @@
 //
 //        //send message to the database download complete
 //        Message messageComplete = new Message();
-//        messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_DOWNLOAD;
+//        messageComplete.what = SyncService.DOWNLOAD_COMPLETE;
 //        sendMessenger(messageComplete);
 //    }
 //
@@ -269,7 +269,7 @@
 //        onDownloadUpload.onPreExecute();
 //        //send message to the database upload staring
 //        Message messageStart = new Message();
-//        messageStart.what = SyncService.INTENT_EXTRA_MESSENGER_START_UPLOAD;
+//        messageStart.what = SyncService.STARTING_UPLOAD;
 //        sendMessenger(messageStart);
 //        //execute
 //        boolean ret = mDropboxHelper.upload(remoteFile.path, localFile, listener);
@@ -277,7 +277,7 @@
 //        onDownloadUpload.onPostExecute(ret);
 //        ///send message to the database upload complete
 //        Message messageComplete = new Message();
-//        messageComplete.what = SyncService.INTENT_EXTRA_MESSENGER_UPLOAD;
+//        messageComplete.what = SyncService.UPLOAD_COMPLETE;
 //        sendMessenger(messageComplete);
 //    }
 //
