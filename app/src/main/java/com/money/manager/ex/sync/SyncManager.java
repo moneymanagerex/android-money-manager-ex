@@ -509,7 +509,13 @@ public class SyncManager {
             return false;
         }
 
-        getProvider().upload(remoteFile, input, localFile.length(), true);
+        try {
+            getProvider().upload(remoteFile, input, localFile.length(), true);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "uploading database file");
+            return false;
+        }
 
         try {
             input.close();
