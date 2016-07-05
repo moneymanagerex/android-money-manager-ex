@@ -78,10 +78,20 @@ public class SyncPreferenceFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // register as event bus listener
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         // this is probably redundant now.
         getSyncManager().storePersistent();
+
+        EventBus.getDefault().unregister(this);
     }
 
     /**
