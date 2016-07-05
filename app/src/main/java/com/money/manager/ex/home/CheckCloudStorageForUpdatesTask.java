@@ -43,13 +43,18 @@ public class CheckCloudStorageForUpdatesTask
 
     @Override
     protected Integer doInBackground(Void... voids) {
+        Integer result = null;
+
         try {
             publishProgress(1);
 
-            return new SyncManager(getContext()).compareFilesForSync();
+            result = new SyncManager(getContext()).compareFilesForSync();
         } catch (Exception e) {
-            throw new RuntimeException("Error in check Cloud ForUpdates", e);
+            //throw new RuntimeException("Error in check Cloud ForUpdates", e);
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "comparing files for sync");
         }
+        return result;
     }
 
     @Override

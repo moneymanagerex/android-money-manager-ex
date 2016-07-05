@@ -33,6 +33,7 @@ import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.dropbox.SyncCommon;
 import com.money.manager.ex.dropbox.SyncNotificationFactory;
@@ -43,6 +44,8 @@ import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.net.ssl.SSLProtocolException;
 
 /**
  * The background service that synchronizes the database file.
@@ -93,7 +96,13 @@ public class SyncService
 
         // take a file and entries
         File localFile = new File(localFilename);
-        CloudMetaData remoteFile = sync.getProvider().getMetadata(remoteFilename);
+        CloudMetaData remoteFile = null;
+        try {
+            remoteFile = sync.getProvider().getMetadata(remoteFilename);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getBaseContext());
+            handler.handle(e, "fetching remote metadata");
+        }
 
         if (remoteFile == null) {
             if (SyncConstants.INTENT_ACTION_UPLOAD.equals(intent.getAction())) {

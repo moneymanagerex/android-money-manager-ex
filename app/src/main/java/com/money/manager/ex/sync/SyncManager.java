@@ -268,7 +268,15 @@ public class SyncManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<CloudMetaData> items = getProvider().getChildren(folder);
+                List<CloudMetaData> items = null;
+
+                try {
+                    items = getProvider().getChildren(folder);
+                } catch (RuntimeException ex) {
+                    ExceptionHandler handler = new ExceptionHandler(getContext());
+                    handler.handle(ex, "retrieving the remote folder contents");
+                }
+
                 EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
             }
         }).start();
