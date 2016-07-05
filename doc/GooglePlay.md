@@ -2,7 +2,7 @@
 Money Manager Ex for Android
 
 [Short Description]
-Manage your income and expenses on mobile device, synchronize via Dropbox
+Manage your income and expenses on mobile device, synchronize to cloud
 
 [Full Description]
 <b>Money Manager Ex</b> is a free, Open Source, cross-platform, easy-to-use personal finance software. It primarily helps organize one's finances and keeps track of where, when and how the money flows. It is a great tool to get a bird's eye view of your financial worth.
@@ -38,8 +38,8 @@ Set up a budget for a year and/or a month. Then compare money spent versus actua
 ☆ <b>CROSS PLATFORM</b>
 We provide builds for the most common operating systems: Windows, MacOS and Linux Ubuntu. It's possible to use it also on other OS building it directly from source code.
 
-☆ <b>DROPBOX SYNCHRONIZATION</b>
-With Dropbox synchronization can keep updated your expenses and incomes on your PCs, notebooks and on all of your Android devices. With the Dropbox synchronization can share your data with other components family.
+☆ <b>CLOUD SYNCHRONIZATION</b>
+With cloud synchronization you can keep your expenses and income up-to-date on your PCs, notebooks, and all of your Android devices. Using common cloud storage providers, you can share your data with other family members.
 
 ☆ <b>MULTI-LANGUAGE</b>
 If you want to join our translation team: https://crowdin.net/project/android-money-manager-ex and sign in.
