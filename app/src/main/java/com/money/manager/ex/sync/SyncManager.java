@@ -409,7 +409,7 @@ public class SyncManager {
 
     }
 
-    public void setRemoteFile(String value) {
+    public void setRemotePath(String value) {
         mRemoteFile = value;
 
         mPreferences.set(R.string.pref_remote_file, value);
@@ -508,6 +508,15 @@ public class SyncManager {
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
             handler.handle(e, "closing input stream after upload");
+        }
+
+        // set last modified date
+        CloudMetaData remoteFileMetadata = getProvider().getMetadata(remoteFile);
+        saveLastModifiedDate(remoteFileMetadata);
+
+        // set remote file, if not set (setLinkedRemoteFile)
+        if (TextUtils.isEmpty(getRemotePath())) {
+            setRemotePath(remoteFile);
         }
 
         return true;
