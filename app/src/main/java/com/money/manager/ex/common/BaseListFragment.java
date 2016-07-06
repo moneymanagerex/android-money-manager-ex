@@ -119,11 +119,11 @@ public abstract class BaseListFragment
 
         if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
-            TipsDialogFragment tipsDropbox = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
-            if (tipsDropbox != null) {
-                tipsDropbox.setTips(getString(R.string.lookups_wildcard));
-                // tipsDropbox.setCheckDontShowAgain(true);
-                tipsDropbox.show(getActivity().getSupportFragmentManager(), "lookupswildcard");
+            TipsDialogFragment tipsSync = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
+            if (tipsSync != null) {
+                tipsSync.setTips(getString(R.string.lookups_wildcard));
+                // tipsSync.setCheckDontShowAgain(true);
+                tipsSync.show(getActivity().getSupportFragmentManager(), "lookupswildcard");
                 isShowTipsWildcard = true; // set shown
             }
         }

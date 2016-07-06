@@ -562,7 +562,7 @@
   <string name="title_activity_currency_rates_report">货币汇率</string>
   <string name="frequency">频率</string>
   <string name="update_available">更新可用</string>
-  <string name="update_on_dropbox">Dropbox 上存在一个已更新的数据库文件可以使用。是否需要更新？</string>
+  <string name="update_available_online">Dropbox 上存在一个已更新的数据库文件可以使用。是否需要更新？</string>
   <string name="currency_not_found">未找到货币</string>
   <string name="homepage">我们的主页是 http://android.moneymanagerex.org/</string>
   <string name="current_database">当前数据库</string>

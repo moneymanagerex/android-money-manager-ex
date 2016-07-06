@@ -530,7 +530,7 @@
   <string name="title_activity_currency_rates_report">Kur Oranları</string>
   <string name="frequency">Sıklık</string>
   <string name="update_available">Göncelleme mevcut</string>
-  <string name="update_on_dropbox">Dropbox\'da güncelleştirilmiş bir veritabanı dosyası mevcut. Veritabanınızı güncelleştirmek istiyor musunuz?</string>
+  <string name="update_available_online">Dropbox\'da güncelleştirilmiş bir veritabanı dosyası mevcut. Veritabanınızı güncelleştirmek istiyor musunuz?</string>
   <string name="current_database">Geçerli veritabanı</string>
   <string name="transaction_type_filter">İşlem Türüne Göre Filtrele</string>
   <!-- Password entry activity -->

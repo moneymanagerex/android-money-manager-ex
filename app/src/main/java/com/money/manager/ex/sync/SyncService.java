@@ -34,8 +34,6 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
-import com.money.manager.ex.dropbox.SyncCommon;
-import com.money.manager.ex.dropbox.SyncNotificationFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NetworkUtilities;
 

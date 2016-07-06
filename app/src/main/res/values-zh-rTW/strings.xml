@@ -553,7 +553,7 @@
   <string name="title_activity_currency_rates_report">貨幣匯率</string>
   <string name="frequency">頻率</string>
   <string name="update_available">有可用更新</string>
-  <string name="update_on_dropbox">Dropbox 上有已更新的資料庫檔案可以使用。是否需要更新？</string>
+  <string name="update_available_online">Dropbox 上有已更新的資料庫檔案可以使用。是否需要更新？</string>
   <string name="currency_not_found">無法找到該貨幣</string>
   <string name="homepage">我們的網站首頁是 http://android.moneymanagerex.org/</string>
   <string name="current_database">當前資料庫</string>

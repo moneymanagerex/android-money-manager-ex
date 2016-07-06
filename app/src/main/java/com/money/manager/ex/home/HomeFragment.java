@@ -635,10 +635,10 @@ public class HomeFragment
             });
         }
 
-        // link to Dropbox
-        Button btnLinkDropbox = (Button) view.findViewById(R.id.buttonLinkDropbox);
-        if (btnLinkDropbox != null) {
-            btnLinkDropbox.setOnClickListener(new OnClickListener() {
+        // Setup Synchronization
+        Button btnSetupSync = (Button) view.findViewById(R.id.buttonSetupSync);
+        if (btnSetupSync != null) {
+            btnSetupSync.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {

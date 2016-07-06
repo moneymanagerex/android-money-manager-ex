@@ -575,7 +575,7 @@
     <string name="title_activity_currency_rates_report">Currency Rates</string>
     <string name="frequency">Frequency</string>
     <string name="update_available">Update available</string>
-    <string name="update_on_dropbox">There is an updated database file available on Dropbox. Would you like to update?</string>
+    <string name="update_available_online">There is an updated database file available online. Would you like to update?</string>
     <string name="currency_not_found">Currency not found</string>
     <string name="homepage">Our homepage is http://android.moneymanagerex.org/</string>
     <string name="current_database">Current database</string>

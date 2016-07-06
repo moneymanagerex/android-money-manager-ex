@@ -59,7 +59,7 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
-import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
+import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
@@ -457,7 +457,7 @@ public class MainActivity
             case R.id.menu_home:
                 showFragment(HomeFragment.class);
                 break;
-            case R.id.menu_sync_dropbox:
+            case R.id.menu_sync:
                 new SyncManager(this).triggerSynchronization();
                 break;
             case R.id.menu_open_database:
@@ -1139,7 +1139,7 @@ public class MainActivity
 
         // Dropbox synchronize
         if (new SyncManager(this).isActive()) {
-            menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync_dropbox)
+            menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                     .withText(getString(R.string.synchronize))
                     .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
         }

@@ -564,7 +564,7 @@
   <string name="title_activity_currency_rates_report">Курсы валют</string>
   <string name="frequency">Частота</string>
   <string name="update_available">Имеется обновление</string>
-  <string name="update_on_dropbox">Обновленная база данных доступна в Dropbox. Желаете обновить?</string>
+  <string name="update_available_online">Обновленная база данных доступна в Dropbox. Желаете обновить?</string>
   <string name="currency_not_found">Валюта не найдена</string>
   <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Текущая база данных</string>

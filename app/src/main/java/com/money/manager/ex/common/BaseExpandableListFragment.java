@@ -93,6 +93,7 @@ public abstract class BaseExpandableListFragment
     @Override
     public void onStart() {
         super.onStart();
+
         // check search type
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);

@@ -534,7 +534,7 @@
   <string name="title_activity_currency_rates_report">Kurzy měn</string>
   <string name="frequency">Frekvence</string>
   <string name="update_available">Je k dispozici aktualizace</string>
-  <string name="update_on_dropbox">Na Dropboxu je k dispozici aktualizovaný databázový soubor. Chcete aktualizovat?</string>
+  <string name="update_available_online">Na Dropboxu je k dispozici aktualizovaný databázový soubor. Chcete aktualizovat?</string>
   <string name="currency_not_found">Měna nebyla nalezena</string>
   <string name="homepage">Náš web je http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuální databáze</string>

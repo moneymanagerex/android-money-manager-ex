@@ -564,7 +564,7 @@
   <string name="title_activity_currency_rates_report">為替レート</string>
   <string name="frequency">頻度</string>
   <string name="update_available">利用可能な更新</string>
-  <string name="update_on_dropbox">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
+  <string name="update_available_online">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
   <string name="currency_not_found">通貨が見つかりません</string>
   <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
   <string name="current_database">現在のデータベース</string>

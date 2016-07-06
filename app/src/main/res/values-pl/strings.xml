@@ -563,7 +563,7 @@
   <string name="title_activity_currency_rates_report">Kursy walut</string>
   <string name="frequency">Częstotliwość</string>
   <string name="update_available">Dostępna aktualizacja</string>
-  <string name="update_on_dropbox">W Dropbox znajduje się zaktualizowany plik bazy danych. Chcesz zaktualizować?</string>
+  <string name="update_available_online">W Dropbox znajduje się zaktualizowany plik bazy danych. Chcesz zaktualizować?</string>
   <string name="currency_not_found">Nie znaleziono walut</string>
   <string name="homepage">Nasza strona to http://android.moneymanagerex.org/</string>
   <string name="current_database">Bieżąca baza danych</string>

@@ -556,7 +556,7 @@
   <string name="title_activity_currency_rates_report">Tỷ giá tiền tệ</string>
   <string name="frequency">Tần suất</string>
   <string name="update_available">Cập nhật sẵn có</string>
-  <string name="update_on_dropbox">Có một tập tin cơ sở dữ liệu được cập nhật có sẵn trên Dropbox. Bạn có muốn cập nhật?</string>
+  <string name="update_available_online">Có một tập tin cơ sở dữ liệu được cập nhật có sẵn trên Dropbox. Bạn có muốn cập nhật?</string>
   <string name="currency_not_found">Tiền tệ không tìm thấy</string>
   <string name="homepage">Trang chủ của chúng tôi là http://android.moneymanagerex.org/</string>
   <string name="current_database">Cơ sở dữ liệu hiện thời</string>

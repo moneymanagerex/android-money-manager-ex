@@ -257,14 +257,14 @@ public class AccountTransactionListFragment
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             MainActivity activity = (MainActivity) getActivity();
             if (!activity.isDualPanel()) {
-                //hide dropbox toolbar
-                MenuItem itemDropbox = menu.findItem(R.id.menu_sync_dropbox);
-                if (itemDropbox != null) itemDropbox.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                //hide sync toolbar
+                MenuItem itemSync = menu.findItem(R.id.menu_sync);
+                if (itemSync != null) itemSync.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
                     //itemOpenDatabase.setVisible(isShownOpenDatabaseItemMenu());
-                    itemOpenDatabase.setShowAsAction(!itemDropbox.isVisible()
+                    itemOpenDatabase.setShowAsAction(!itemSync.isVisible()
                         ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
                 }
 

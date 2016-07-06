@@ -556,7 +556,7 @@
   <string name="title_activity_currency_rates_report">Árfolyamok</string>
   <string name="frequency">Gyakoriság</string>
   <string name="update_available">Frissítés elérhető</string>
-  <string name="update_on_dropbox">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
+  <string name="update_available_online">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
   <string name="currency_not_found">Nem található pénznem</string>
   <string name="homepage">Honlapunk http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuális adatbázis</string>

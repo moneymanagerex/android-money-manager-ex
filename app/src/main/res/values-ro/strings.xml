@@ -556,7 +556,7 @@
   <string name="title_activity_currency_rates_report">Ratele de schimb valutar</string>
   <string name="frequency">Frecvența</string>
   <string name="update_available">Actualizare disponibilă</string>
-  <string name="update_on_dropbox">Există un fișier actualizat disponibil în Dropbpx. Vrei să faci actualizarea?</string>
+  <string name="update_available_online">Există un fișier actualizat disponibil în Dropbpx. Vrei să faci actualizarea?</string>
   <string name="currency_not_found">Moneda nu a fost găsită</string>
   <string name="homepage">Pagina noastră web este http://android.moneymanagerex.org/</string>
   <string name="current_database">Baza de date curentă</string>

@@ -15,26 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.dropbox;
-
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-
-import com.money.manager.ex.home.MainActivity;
-
-import java.io.File;
+package com.money.manager.ex.sync.events;
 
 /**
- * Common code for Dropbox- and CloudRail-based synchronization
+ * Database file has been downloaded from a cloud service.
  */
-public class SyncCommon {
-    public Intent getIntentForOpenDatabase(Context context, File database) {
-        Intent intent = new Intent(context.getApplicationContext(), MainActivity.class);
-        intent.setData(Uri.fromFile(database));
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        return intent;
-    }
+public class DbFileDownloadedEvent {
 
 }

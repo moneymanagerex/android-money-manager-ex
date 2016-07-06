@@ -560,7 +560,7 @@
   <string name="title_activity_currency_rates_report">Wisselkoersen</string>
   <string name="frequency">Frequentie</string>
   <string name="update_available">Update beschikbaar</string>
-  <string name="update_on_dropbox">Er is een nieuwer databasebestand in Dropbox. Wilt u updaten?</string>
+  <string name="update_available_online">Er is een nieuwer databasebestand in Dropbox. Wilt u updaten?</string>
   <string name="currency_not_found">Valuta niet gevonden</string>
   <string name="homepage">Onze website is http://android.moneymanagerex.org/</string>
   <string name="current_database">Huidige databank</string>

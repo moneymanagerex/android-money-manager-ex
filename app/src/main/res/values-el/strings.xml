@@ -557,7 +557,7 @@
   <string name="title_activity_currency_rates_report">Ισοτιμίες συναλλάγματος</string>
   <string name="frequency">Συχνότητα</string>
   <string name="update_available">Διαθέσιμη ενημέρωση</string>
-  <string name="update_on_dropbox">Υπάρχει μια ενημερωμένη βάση δεδομένων διαθέσιμη στο Dropbox. Θα θέλατε να ενημερώσετε;</string>
+  <string name="update_available_online">Υπάρχει μια ενημερωμένη βάση δεδομένων διαθέσιμη στο Dropbox. Θα θέλατε να ενημερώσετε;</string>
   <string name="currency_not_found">Νόμισμα δεν βρέθηκε</string>
   <string name="homepage">Η ιστοσελίδα μας είναι http://android.moneymanagerex.org/</string>
   <string name="current_database">Τρέχουσα βάση δεδομένων</string>

@@ -21,7 +21,7 @@ package com.money.manager.ex.dropbox;
 /**
  * Constants used for Dropbox integration.
  */
-public class DropboxConstants {
-    public static final String APP_KEY = "i6trbis92p3zh5w";
-    public static final String APP_KEY_BETA = "276plbbbd1y5c38";
-}
+//public class DropboxConstants {
+//    public static final String APP_KEY = "i6trbis92p3zh5w";
+//    public static final String APP_KEY_BETA = "276plbbbd1y5c38";
+//}

@@ -563,7 +563,7 @@
   <string name="title_activity_currency_rates_report">Taxas de câmbio</string>
   <string name="frequency">Frequência</string>
   <string name="update_available">Atualização disponível</string>
-  <string name="update_on_dropbox">Há um arquivo de banco de dados atualizado disponível na Dropbox. Você deseja atualizar?</string>
+  <string name="update_available_online">Há um arquivo de banco de dados atualizado disponível na Dropbox. Você deseja atualizar?</string>
   <string name="currency_not_found">A moeda não foi encontrada</string>
   <string name="homepage">O nosso sítio web é http://android.moneymanagerex.org/</string>
   <string name="current_database">Banco de dados atual</string>

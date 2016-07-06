@@ -34,7 +34,7 @@
         android:visible="false"
         app:showAsAction="ifRoom|withText"/>
     <item
-        android:id="@+id/menu_sync_dropbox"
+        android:id="@+id/menu_sync"
         android:icon="@drawable/ic_action_dropbox_dark"
         android:orderInCategory="1002"
         android:title="@string/synchronize"

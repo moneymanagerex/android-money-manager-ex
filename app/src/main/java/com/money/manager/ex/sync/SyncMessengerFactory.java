@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.dropbox;
+package com.money.manager.ex.sync;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -26,7 +26,7 @@ import android.os.Messenger;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
+import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.SyncManager;

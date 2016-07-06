@@ -30,7 +30,7 @@
 //import com.money.manager.ex.R;
 //import com.money.manager.ex.core.Core;
 //import com.money.manager.ex.core.ExceptionHandler;
-//import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
+//import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 //import com.money.manager.ex.home.RecentDatabaseEntry;
 //import com.money.manager.ex.home.RecentDatabasesProvider;
 //import com.money.manager.ex.sync.SyncConstants;

@@ -40,11 +40,11 @@
 //
 //import com.afollestad.materialdialogs.AlertDialogWrapper;
 //import com.money.manager.ex.HelpActivity;
-//import com.money.manager.ex.dropbox.SyncSchedulerBroadcastReceiver;
+//import com.money.manager.ex.sync.SyncSchedulerBroadcastReceiver;
 //import com.money.manager.ex.MoneyManagerApplication;
 //import com.money.manager.ex.R;
 //import com.money.manager.ex.dropbox.DropboxBrowserActivity;
-//import com.money.manager.ex.dropbox.events.DbFileDownloadedEvent;
+//import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 //import com.money.manager.ex.fragment.TipsDialogFragment;
 //import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 //import com.money.manager.ex.sync.SyncConstants;

@@ -83,7 +83,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_account_bills" />
         </receiver>
-        <receiver android:name=".dropbox.SyncSchedulerBroadcastReceiver">
+        <receiver android:name=".sync.SyncSchedulerBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="${applicationId}.intent.action.START_SYNC_SERVICE" />

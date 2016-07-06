@@ -564,7 +564,7 @@
   <string name="title_activity_currency_rates_report">Tečajevi valuta</string>
   <string name="frequency">Frekvencija</string>
   <string name="update_available">Noviji podaci dostupni</string>
-  <string name="update_on_dropbox">Novija verzija datoteke baze podataka je pronađena na Dropbox-u. Želite li ažurirati?</string>
+  <string name="update_available_online">Novija verzija datoteke baze podataka je pronađena na Dropbox-u. Želite li ažurirati?</string>
   <string name="currency_not_found">Valuta nije pronađena</string>
   <string name="homepage">Naša početna stranica je http://android.moneymanagerex.org/</string>
   <string name="current_database">Trenutna baza podataka</string>

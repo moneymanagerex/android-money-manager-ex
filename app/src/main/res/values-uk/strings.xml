@@ -556,7 +556,7 @@
   <string name="title_activity_currency_rates_report">Курси валют</string>
   <string name="frequency">Періодичність</string>
   <string name="update_available">Знайдено оновлення</string>
-  <string name="update_on_dropbox">Існує файл оновлення бази на Dropbox. Ви хочете оновити?</string>
+  <string name="update_available_online">Існує файл оновлення бази на Dropbox. Ви хочете оновити?</string>
   <string name="currency_not_found">Валюти не знайдено</string>
   <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Поточна база даних</string>

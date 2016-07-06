@@ -103,7 +103,7 @@ public class CheckCloudStorageForUpdatesTask
             // setting alert dialog
             .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
             .setTitle(R.string.update_available)
-            .setMessage(R.string.update_on_dropbox)
+            .setMessage(R.string.update_available_online)
             .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
