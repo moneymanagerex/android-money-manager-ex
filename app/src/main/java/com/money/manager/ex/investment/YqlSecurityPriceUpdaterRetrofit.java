@@ -209,7 +209,13 @@ public class YqlSecurityPriceUpdaterRetrofit
          */
         JsonElement currencyElement = quote.get("Currency");
         if (currencyElement != null) {
-            String currency = currencyElement.getAsString();
+            String currency;
+            try {
+                currency = currencyElement.getAsString();
+            } catch (UnsupportedOperationException ex) {
+                handler.handle(ex, "reading currency from downloaded price");
+                currency = "";
+            }
             if (currency.equals("GBp")) {
                 price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
             }

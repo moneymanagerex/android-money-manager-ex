@@ -256,7 +256,7 @@ public class AssetAllocationActivity
 
     private void showAssetClass(AssetClass assetClass) {
         if (assetClass == null) return;
-        
+
         // Round to decimals from the base currency.
         CurrencyService currencyService = new CurrencyService(this);
         int scale = currencyService.getBaseCurrency().getScale();

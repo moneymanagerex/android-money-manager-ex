@@ -82,6 +82,7 @@ public class SyncSchedulerBroadcastReceiver
         // get frequency in minutes.
         SyncPreferences preferences = new SyncPreferences(context);
         int minute = preferences.getSyncInterval();
+        // If the period is 0, do not schedule sync.
         if (minute <= 0) return;
 
         DateTime now = DateTime.now();
