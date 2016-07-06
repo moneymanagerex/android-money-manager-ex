@@ -469,23 +469,7 @@ public class SyncManager {
     }
 
     public void triggerDownload() {
-        ProgressDialog progressDialog = null;
-        try {
-            //progress dialog shown only when downloading an updated db file.
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "displaying download progress dialog");
-        }
-
-        Messenger messenger = new SyncMessengerFactory(getContext())
-                .createMessenger(progressDialog, getRemotePath());
-
-        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD, messenger);
+        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
     }
 
     /**
@@ -603,7 +587,7 @@ public class SyncManager {
         }
     }
 
-    private void invokeSyncService(String action, Messenger messenger) {
+    private void invokeSyncService(String action) {
         // Validation.
         String remoteFile = getRemotePath();
         // We need a value in remote file name settings.
@@ -611,6 +595,7 @@ public class SyncManager {
 
         // Action
 
+        Messenger messenger = createProgressDialog();
         String localFile = getLocalPath();
 
         Intent service = new Intent(getContext(), SyncService.class);
@@ -633,7 +618,23 @@ public class SyncManager {
         // once done, the message is sent out via messenger. See Messenger definition in factory.
     }
 
-    private void invokeSyncService(String action) {
-        invokeSyncService(action, null);
+    private Messenger createProgressDialog() {
+        ProgressDialog progressDialog = null;
+        try {
+            //progress dialog shown only when downloading an updated db file.
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(ex, "displaying download progress dialog");
+        }
+
+        Messenger messenger = new SyncMessengerFactory(getContext())
+                .createMessenger(progressDialog, getRemotePath());
+
+        return messenger;
     }
 }
