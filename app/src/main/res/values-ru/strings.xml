@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Соединиться с Dropbox</string>
-  <string name="dropbox_unlink">Отсоединиться от Dropbox</string>
-  <string name="dropbox_syncProgress">Синхронизирую файл. Пожалуйста подождите&#8230;</string>
-  <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите&#8230;</string>
-  <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Подождите, пожалуйста&#8230;</string>
-  <string name="dropbox_linkedFile">Файл Dropbox</string>
-  <string name="dropbox_file_summary_all">Файл в любом месте в Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Основные</string>
   <string name="preferences_dispaly">Внешний вид</string>
@@ -325,29 +317,14 @@
   <string name="descending">По убыванию</string>
   <string name="sorting_month">Сортировка по месяцам</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
-  <string name="dropbox_select_file">Выберите файл из Dropbox</string>
   <string name="last_modified">Последнее изменение</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
-  <string name="dropbox_open_database_downloaded">Для работы с загруженной базой нажмите Открыть Базу</string>
-  <string name="click_to_select_file_dropbox">Нажмите для выбора файла из Dropbox</string>
-  <string name="download_from_drobpox">Загрузка из Dropbox</string>
-  <string name="summary_download_from_drobpox">Нажмите для принудительной загрузки связанного файла из Dropbox</string>
-  <string name="upload_to_drobpox">Загрузка в Dropbox</string>
-  <string name="summary_upload_to_drobpox">Нажмите для принудительной загрузки файла в папку Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Ваша база данных была успешно загружена</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Как Dropbox работает с Money Manager Ex\?</string>
   <string name="dont_show_again">Больше не показывать</string>
   <string name="open_database">Открыть БД</string>
   <string name="synchronization_interval">Интервал синхронизации</string>
   <string name="summary_synchronization_interval">Как часто требуется синхронизация?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">В версии 1.2.0 Money Manager Ex для Android изменено управление синхронизацией с Dropbox. Пользователи, которые уже используют синхронизацию с Dropbox, должны переконфигурировать Dropbox. Конфигурация Dropbox, выбор файла БД Dropbox, расположен в настройках.\nВ версии 1.2.0  Money Manager Ex для Android может автоматически синхронизировать БД с Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Загрузка сразу после изменений</string>
-  <string name="summary_dropbox_upload_immediate">Эта опция позволяет автоматически загружать БД вскоре после ваших изменений</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Баланс для каждой транзакции</string>
   <string name="summary_transaction_shown_balance">Показывать баланс для каждой транзакции. Это может замедлить работу приложения</string>
@@ -363,9 +340,6 @@
   <string name="Default">По умолчанию</string>
   <string name="medium">Средний</string>
   <string name="large">Большой</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Загружаем из Dropbox. Пожалуйста подождите&#8230;</string>
-  <string name="dropbox_upload_is_starting">Загружаем в Dropbox. Пожалуйста подождите&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Куда расходуются деньги</string>
   <string name="menu_report_where_money_comes_from">Откуда приходят деньги</string>
@@ -383,7 +357,6 @@
   <string name="quantity">Количество</string>
   <string name="dashboard">Панель управления</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">База данных уже обновлена</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Последние 3 месяца</string>
   <string name="last6months">Последние 6 месяцев</string>
@@ -421,14 +394,6 @@
   <string name="result_search">Результат вашего поиска</string>
   <string name="new_repeating_transaction">Новые повторяющиеся транзакции</string>
   <string name="edit_repeating_transaction">Изменить повторяющуюся транзакцию</string>
-  <string name="every_5_minutes">Каждые 5 минут</string>
-  <string name="every_15_minutes">Каждые 15 минут</string>
-  <string name="every_30_minutes">Каждые 30 минут</string>
-  <string name="every_hour">Каждый час</string>
-  <string name="every_2_hours">Каждые 2 часа</string>
-  <string name="every_6_hours">Каждые 6 часов</string>
-  <string name="every_12_hours">Каждые 12 часов</string>
-  <string name="never">Никогда не</string>
   <string name="path_database_not_exists">Путь к базе данных не существует</string>
   <string name="database_can_not_open_write">База данных не может быть открыта для записи</string>
   <string name="time_frame">Период времени</string>
@@ -487,7 +452,6 @@
   <string name="tutorial_overview_1">Обзорная панель, бюджеты, настраиваемые отчеты.</string>
   <string name="global">Глобальная</string>
   <string name="tutorial_global_1">Нескольких языков и валют. Открытый исходный код. Присоединяйтесь к нашей команде перевода.</string>
-  <string name="synchronization">Синхронизация</string>
   <string name="tutorial_sync_1">Поддержка нескольких платформ. Синхронизация через Dropbox. Импорт и экспорт данных в другие приложения.</string>
   <string name="transactions">Транзакции</string>
   <string name="tutorial_transactions_1">Пополнения, снятия, переводы. Повторяющиеся транзакции с напоминаниями.</string>
@@ -544,8 +508,6 @@
   <string name="db_fix_duplicates">Исправить дублирующиеся записи</string>
   <string name="split_amount_negative">Общая сумма не может быть отрицательной.</string>
   <string name="select_all">Выбрать всё</string>
-  <string name="db_not_dropbox">Ваша текущая БД не синхронизирована. Пожалуйста, настройте Dropbox синхронизацию.</string>
-  <string name="checking_dropbox_for_changes">Проверяем Dropbox на изменения в БД.</string>
   <string name="choose_type">Выберите тип</string>
   <string name="default_account">Счет по умолчанию</string>
   <string name="default_account_summary">Счет для использования при вводе новой проводки.</string>
@@ -564,7 +526,6 @@
   <string name="title_activity_currency_rates_report">Курсы валют</string>
   <string name="frequency">Частота</string>
   <string name="update_available">Имеется обновление</string>
-  <string name="update_available_online">Обновленная база данных доступна в Dropbox. Желаете обновить?</string>
   <string name="currency_not_found">Валюта не найдена</string>
   <string name="homepage">Наш сайт http://android.moneymanagerex.org/</string>
   <string name="current_database">Текущая база данных</string>
@@ -659,4 +620,33 @@
   <string name="inactive_currencies">Неактивные валюты</string>
   <string name="all_currencies">Все Валюты</string>
   <string name="portfolio">Портфолио</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
+  <string name="dropbox_open_database_downloaded">Для работы с загруженной базой нажмите Открыть Базу</string>
+  <string name="click_to_select_file_dropbox">Нажмите для выбора файла из Dropbox</string>
+  <string name="download_from_drobpox">Загрузка из Dropbox</string>
+  <string name="summary_download_from_drobpox">Нажмите для принудительной загрузки связанного файла из Dropbox</string>
+  <string name="upload_to_drobpox">Загрузка в Dropbox</string>
+  <string name="summary_upload_to_drobpox">Нажмите для принудительной загрузки файла в папку Dropbox</string>
+  <string name="dropbox_how_it_works">Как Dropbox работает с Money Manager Ex\?</string>
+  <string name="dropbox_link">Соединиться с Dropbox</string>
+  <string name="dropbox_unlink">Отсоединиться от Dropbox</string>
+  <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите&#8230;</string>
+  <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Подождите, пожалуйста&#8230;</string>
+  <string name="dropbox_linkedFile">Файл Dropbox</string>
+  <string name="dropbox_file_summary_all">Файл в любом месте в Dropbox</string>
+  <string name="db_not_dropbox">Ваша текущая БД не синхронизирована. Пожалуйста, настройте Dropbox синхронизацию.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Синхронизация</string>
+  <string name="every_5_minutes">Каждые 5 минут</string>
+  <string name="every_15_minutes">Каждые 15 минут</string>
+  <string name="every_30_minutes">Каждые 30 минут</string>
+  <string name="every_hour">Каждый час</string>
+  <string name="every_2_hours">Каждые 2 часа</string>
+  <string name="every_6_hours">Каждые 6 часов</string>
+  <string name="every_12_hours">Каждые 12 часов</string>
+  <string name="never">Никогда не</string>
+  <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
+  <string name="dropbox_select_file">Выберите файл из Dropbox</string>
 </resources>

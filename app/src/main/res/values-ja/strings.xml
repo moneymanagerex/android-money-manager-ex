@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Dropbox にリンク</string>
-  <string name="dropbox_unlink">Dropbox のリンクを解除</string>
-  <string name="dropbox_syncProgress">ファイルを同期しています。しばらくお待ちください&#8230;</string>
-  <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
-  <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox のファイル</string>
-  <string name="dropbox_file_summary_all">Dropbox の任意の場所にあるファイル</string>
   <!-- preferences -->
   <string name="preferences_general">全般</string>
   <string name="preferences_dispaly">ルック &amp; フィール</string>
@@ -325,29 +317,14 @@
   <string name="descending">降順</string>
   <string name="sorting_month">月で並べ替え</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android のフォルダーは空です。既に MoneyManagerEx を使用している場合は、コンピューターでこのフォルダーにデータベースをコピーしてから、更新してください。</string>
-  <string name="dropbox_select_file">Dropbox からファイルを選択</string>
   <string name="last_modified">最終更新</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
-  <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
-  <string name="click_to_select_file_dropbox">タッチして、Dropbox から使用するファイルを選択</string>
-  <string name="download_from_drobpox">Dropbox からダウンロード</string>
-  <string name="summary_download_from_drobpox">タッチして、Dropbox フォルダーからリンクされているファイルを手動でダウンロード</string>
-  <string name="upload_to_drobpox">Dropbox にアップロード</string>
-  <string name="summary_upload_to_drobpox">タッチして、Dropbox フォルダーにリンクされたファイルを手動でアップロード</string>
-  <string name="upload_file_to_dropbox_complete">データベースが正常にアップロードされました</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Money Manager Ex で Dropbox はどのように動作しますか?</string>
   <string name="dont_show_again">次回から表示しない</string>
   <string name="open_database">データベースを開く</string>
   <string name="synchronization_interval">同期間隔</string>
   <string name="summary_synchronization_interval">同期の頻度は?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Money Manager Ex for Android のバージョン 1.2.0 から Dropbox との同期の管理が変更されました。Dropbox で既に同期を使用しているユーザーは、構成をやり直す必要があります。\nDropbox との同期の構成とデータベースの選択は設定で行います\nMoney Manager Ex for Android のバージョン 1.2.0 から Dropbox とデータベースは自動的に同期することができます。</string>
-  <string name="title_dropbox_upload_immediate">変更時にすぐにデータベースをアップロード</string>
-  <string name="summary_dropbox_upload_immediate">このオプションで、データベースを変更するとすぐに自動的にアップロードすることができます。</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">各取引の残高を表示</string>
   <string name="summary_transaction_shown_balance">各取引の残高を表示します。残高を表示するとアプリケーションの動作が遅くなります。</string>
@@ -363,9 +340,6 @@
   <string name="Default">デフォルト</string>
   <string name="medium">中</string>
   <string name="large">大</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Dropbox からダウンロードしています。しばらくお待ちください&#8230;</string>
-  <string name="dropbox_upload_is_starting">Dropbox にアップロードしています。しばらくお待ちください&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">お金の行き先</string>
   <string name="menu_report_where_money_comes_from">お金の入り元</string>
@@ -383,7 +357,6 @@
   <string name="quantity">数量</string>
   <string name="dashboard">ダッシュボード</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">データベースは最新の状態です</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">過去 3 ヶ月</string>
   <string name="last6months">過去 6 ヶ月</string>
@@ -421,14 +394,6 @@
   <string name="result_search">検索結果</string>
   <string name="new_repeating_transaction">新しい定期的な取引</string>
   <string name="edit_repeating_transaction">定期的な取引を編集</string>
-  <string name="every_5_minutes">5 分毎</string>
-  <string name="every_15_minutes">15 分毎</string>
-  <string name="every_30_minutes">30 分毎</string>
-  <string name="every_hour">1 時間毎</string>
-  <string name="every_2_hours">2 時間毎</string>
-  <string name="every_6_hours">6 時間毎</string>
-  <string name="every_12_hours">12 時間毎</string>
-  <string name="never">なし</string>
   <string name="path_database_not_exists">データベースのパスが存在しません</string>
   <string name="database_can_not_open_write">データベースは書き込み用として開くことができません</string>
   <string name="time_frame">時間枠</string>
@@ -487,7 +452,6 @@
   <string name="tutorial_overview_1">概要のダッシュ ボード、予算、カスタマイズしたレポート。</string>
   <string name="global">全般</string>
   <string name="tutorial_global_1">複数の通貨および言語。オープン ソース。私たちの翻訳チームに参加してください。</string>
-  <string name="synchronization">同期</string>
   <string name="tutorial_sync_1">マルチプラットフォームのサポート、Dropbox 経由の同期。データを他のアプリケーションにインポートおよびエクスポート。</string>
   <string name="transactions">取引</string>
   <string name="tutorial_transactions_1">預金の払出、振替。定期的な取引と通知。</string>
@@ -544,8 +508,6 @@
   <string name="db_fix_duplicates">重複レコードを修正</string>
   <string name="split_amount_negative">合計金額はマイナスにできません。</string>
   <string name="select_all">すべて選択</string>
-  <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
-  <string name="checking_dropbox_for_changes">データベースの変更を Dropbox でチェックします。</string>
   <string name="choose_type">種類を選択してください</string>
   <string name="default_account">デフォルトアカウント</string>
   <string name="default_account_summary">新しい取引を入力するときに使用するアカウント。</string>
@@ -564,7 +526,6 @@
   <string name="title_activity_currency_rates_report">為替レート</string>
   <string name="frequency">頻度</string>
   <string name="update_available">利用可能な更新</string>
-  <string name="update_available_online">Dropbox で利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
   <string name="currency_not_found">通貨が見つかりません</string>
   <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
   <string name="current_database">現在のデータベース</string>
@@ -643,6 +604,7 @@
   <string name="print">印刷</string>
   <string name="min_19">文書を印刷するには、少なくとも Android 4.4 が必要です。</string>
   <string name="save_as_html">HTML として保存</string>
+  <string name="no_network">利用可能なネットワークがありません。</string>
   <!-- Currencies -->
   <string name="currencies">通貨</string>
   <string name="currencies_used">通貨、使用</string>
@@ -661,4 +623,52 @@
   <string name="inactive_currencies">無効な通貨</string>
   <string name="all_currencies">すべての通貨</string>
   <string name="portfolio">ポートフォリオ</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
+  <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
+  <string name="click_to_select_file_dropbox">タッチして、Dropbox から使用するファイルを選択</string>
+  <string name="download_from_drobpox">Dropbox からダウンロード</string>
+  <string name="summary_download_from_drobpox">タッチして、Dropbox フォルダーからリンクされているファイルを手動でダウンロード</string>
+  <string name="upload_to_drobpox">Dropbox にアップロード</string>
+  <string name="summary_upload_to_drobpox">タッチして、Dropbox フォルダーにリンクされたファイルを手動でアップロード</string>
+  <string name="dropbox_how_it_works">Money Manager Ex で Dropbox はどのように動作しますか?</string>
+  <string name="dropbox_link">Dropbox にリンク</string>
+  <string name="dropbox_unlink">Dropbox のリンクを解除</string>
+  <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
+  <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox のファイル</string>
+  <string name="dropbox_file_summary_all">Dropbox の任意の場所にあるファイル</string>
+  <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
+  <!-- Synchronization -->
+  <string name="synchronization">同期</string>
+  <string name="sync_enabled">同期が有効です</string>
+  <string name="sync_provider">プロバイダー</string>
+  <string name="remote_file">リモート ファイル</string>
+  <string name="please_wait">しばらくお待ちください</string>
+  <string name="invalid_database">この拡張子は、有効なデータベースとして認識されません。</string>
+  <string name="reset_preferences">設定をリセット</string>
+  <string name="preferences_reset">同期設定がリセットされました。</string>
+  <string name="cloud_download">クラウド ストレージからデータベース ファイルをダウンロードします。</string>
+  <string name="cloud_upload">クラウド ストレージにデータベース ファイルをアップロードします。</string>
+  <string name="sync_notification_title">Money Manager Ex - 同期</string>
+  <string name="sync_downloading">データベースのダウンロード中。しばらくお待ちください&#8230;</string>
+  <string name="sync_uploading">データベースのアップロード中。しばらくお待ちください&#8230;</string>
+  <string name="syncProgress">ファイルを同期しています。しばらくお待ちください&#8230;</string>
+  <string name="database_is_synchronized">データベースは最新の状態です</string>
+  <string name="upload_file_complete">データベースが正常にアップロードされました</string>
+  <string name="every_5_minutes">5 分毎</string>
+  <string name="every_10_minutes">10 分毎</string>
+  <string name="every_15_minutes">15 分毎</string>
+  <string name="every_30_minutes">30 分毎</string>
+  <string name="every_hour">1 時間毎</string>
+  <string name="every_2_hours">2 時間毎</string>
+  <string name="every_6_hours">6 時間毎</string>
+  <string name="every_12_hours">12 時間毎</string>
+  <string name="never">なし</string>
+  <string name="checking_remote_for_changes">リモート ストレージのデータベースの変更を確認しています。</string>
+  <string name="title_sync_upload_immediate">変更した直後にデータベースをアップロード</string>
+  <string name="summary_sync_upload_immediate">このオプションで、データベースを変更するとすぐに自動的にアップロードすることができます。</string>
+  <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android のフォルダーは空です。既に MoneyManagerEx を使用している場合は、コンピューターでこのフォルダーにデータベースをコピーしてから、更新してください。</string>
+  <string name="dropbox_select_file">Dropbox からファイルを選択</string>
 </resources>

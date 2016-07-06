@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Poveži Dropbox</string>
-  <string name="dropbox_unlink">Prekini vezu s Dropbox-om</string>
-  <string name="dropbox_syncProgress">Sinhronizovanje datoteka. Molim pričekajte&#8230;</string>
-  <string name="dropbox_downloadProgress">Preuzimanje datoteke iz Dropbox-a. Molim pričekajte&#8230;</string>
-  <string name="dropbox_uploadProgress">Upload datoteke u Dropbox. Molim pričekajte&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox datoteka</string>
-  <string name="dropbox_file_summary_all">Datoteka bilo gdje na Dropbox-u</string>
   <!-- preferences -->
   <string name="preferences_general">Uopšteno</string>
   <string name="preferences_dispaly">Izgled</string>
@@ -325,29 +317,14 @@
   <string name="descending">Silazno</string>
   <string name="sorting_month">Sortiranje mjeseci</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Mapa Dropbox/Apps/MoneyManagerEx Android je prazan. Ako već koristite MoneyManagerEx, kopirajte svoju bazu podataka u ovu mapu i zatim osvježite.</string>
-  <string name="dropbox_select_file">Odabir datoteke iz Dropbox-a</string>
   <string name="last_modified">Posljednja izmjena</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Vaša baza podataka je preuzeta</string>
-  <string name="dropbox_open_database_downloaded">Da biste koristili preuzetu bazu podataka, dodirnite \'Otvori bazu podataka\'</string>
-  <string name="click_to_select_file_dropbox">Dodirnite da odabirete datoteku koju želite koristiti sa Dropbox-a</string>
-  <string name="download_from_drobpox">Preuzmi sa Dropbox-a</string>
-  <string name="summary_download_from_drobpox">Dodirnite da ručno preuzmete povezanu datoteku iz Dropbox mape</string>
-  <string name="upload_to_drobpox">Upload na Dropbox</string>
-  <string name="summary_upload_to_drobpox">Dodirnite da ručno pošaljete povezanu datoteku u Dropbox mapu</string>
-  <string name="upload_file_to_dropbox_complete">Vaša baza podataka je uspješno uploadovana</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Kako Dropbox radi sa Money Manager Ex\?</string>
   <string name="dont_show_again">Ne prikazuj ponovo</string>
   <string name="open_database">Otvori bazu podataka</string>
   <string name="synchronization_interval">Interval sinhronizacije</string>
   <string name="summary_synchronization_interval">Koliko često treba sinhronizovati?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Od verzije 1.2.0 Money Manager Ex za Android je promijenio upravljanje sinhronizacijom sa Dropbox-om. Korisnici koji već koriste sinhronizaciju sa Dropbox-om moraju ponovo uraditi konfiguraciju.\nKonfiguracija sinhronizacije sa Dropbox-om i odabir baze podataka se nalaze u podešavanjima\nOd verzije 1.2.0 Money Manager Ex za Android može automatski sinhronizovati bazu podataka sa Dropbox-om</string>
-  <string name="title_dropbox_upload_immediate">Pošalji bazu podataka odmah po izmjeni</string>
-  <string name="summary_dropbox_upload_immediate">Ova opcija omogućava automatsko slanje čim napravite promjenu u bazi podataka</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Pokazuje saldo za svaku transakciju</string>
   <string name="summary_transaction_shown_balance">Prikazuje saldo za svaku transakciju. Prikaz salda može usporiti rad programa</string>
@@ -363,9 +340,6 @@
   <string name="Default">Osnovna opcija</string>
   <string name="medium">Srednje</string>
   <string name="large">Veliko</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Preuzimanje sa Dropbox-a. Molim pričekajte&#8230;</string>
-  <string name="dropbox_upload_is_starting">Prenos na Dropbox. Molim pričekajte&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Gdje ide novac</string>
   <string name="menu_report_where_money_comes_from">Odakle dolazi novac</string>
@@ -383,7 +357,6 @@
   <string name="quantity">Količina</string>
   <string name="dashboard">Kontrolna tabla</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Baza podataka je aktuelna</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Posljednja 3 mjeseca</string>
   <string name="last6months">Posljednjih 6 mjeseci</string>
@@ -421,14 +394,6 @@
   <string name="result_search">Rezultat vaše pretrage</string>
   <string name="new_repeating_transaction">Nova ponavljajuća transakcija</string>
   <string name="edit_repeating_transaction">Izmjeni ponavljajuću transakciju</string>
-  <string name="every_5_minutes">Svakih 5 minuta</string>
-  <string name="every_15_minutes">Svakih 15 minuta</string>
-  <string name="every_30_minutes">Svakih 30 minuta</string>
-  <string name="every_hour">Svakih sat vremena</string>
-  <string name="every_2_hours">Svaka 2 sata</string>
-  <string name="every_6_hours">Svakih 6 sati</string>
-  <string name="every_12_hours">Svakih 12 sati</string>
-  <string name="never">Nikada</string>
   <string name="path_database_not_exists">Lokacija baze podataka ne postoji</string>
   <string name="database_can_not_open_write">Baza podataka ne može biti otvorena za pisanje</string>
   <string name="time_frame">Vremenski okvir</string>
@@ -487,7 +452,6 @@
   <string name="tutorial_overview_1">Nadzorna ploča za brzi pregled, budžeti, izvještaji sa prilagođavanjem.</string>
   <string name="global">Globalno</string>
   <string name="tutorial_global_1">Višestruke valute i jezici. Otvoreni izvorni kod. Priključite se našem prevodilačkom timu.</string>
-  <string name="synchronization">Sinhronizacija</string>
   <string name="tutorial_sync_1">Podrška za više platformi, sinhronizacija putem Dropbox-a. Uvoz i izvoz podataka s drugim aplikacijama.</string>
   <string name="transactions">Transakcije</string>
   <string name="tutorial_transactions_1">Depoziti, povlačenja, prenosi. Ponavljajuće transakcije s podsjetnicima.</string>
@@ -544,8 +508,6 @@
   <string name="db_fix_duplicates">Popraviti duple zapise</string>
   <string name="split_amount_negative">Ukupan iznos ne može biti negativan.</string>
   <string name="select_all">Označi sve</string>
-  <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
-  <string name="checking_dropbox_for_changes">Provjeravam Dropbox za promjene u bazi podataka.</string>
   <string name="choose_type">Odaberite tip</string>
   <string name="default_account">Osnovni račun</string>
   <string name="default_account_summary">Račun koji se koristi pri unosu nove transakcije.</string>
@@ -564,7 +526,7 @@
   <string name="title_activity_currency_rates_report">Tečajevi valuta</string>
   <string name="frequency">Frekvencija</string>
   <string name="update_available">Noviji podaci dostupni</string>
-  <string name="update_available_online">Novija verzija datoteke baze podataka je pronađena na Dropbox-u. Želite li ažurirati?</string>
+  <string name="update_available_online">Novija verzija baze podataka je pronađena online. Želite li ažurirati?</string>
   <string name="currency_not_found">Valuta nije pronađena</string>
   <string name="homepage">Naša početna stranica je http://android.moneymanagerex.org/</string>
   <string name="current_database">Trenutna baza podataka</string>
@@ -643,6 +605,7 @@
   <string name="print">Ispis</string>
   <string name="min_19">Trebate imati bar Android 4.4 da biste mogli printati dokument.</string>
   <string name="save_as_html">Spremi kao HTML</string>
+  <string name="no_network">Mreža nije dostupna.</string>
   <!-- Currencies -->
   <string name="currencies">Valute</string>
   <string name="currencies_used">Valute, u upotrebi</string>
@@ -661,4 +624,52 @@
   <string name="inactive_currencies">Neaktivne valute</string>
   <string name="all_currencies">Sve valute</string>
   <string name="portfolio">Portfolio</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Vaša baza podataka je preuzeta</string>
+  <string name="dropbox_open_database_downloaded">Da biste koristili preuzetu bazu podataka, dodirnite \'Otvori bazu podataka\'</string>
+  <string name="click_to_select_file_dropbox">Dodirnite da odabirete datoteku koju želite koristiti sa Dropbox-a</string>
+  <string name="download_from_drobpox">Preuzmi sa Dropbox-a</string>
+  <string name="summary_download_from_drobpox">Dodirnite da ručno preuzmete povezanu datoteku iz Dropbox mape</string>
+  <string name="upload_to_drobpox">Upload na Dropbox</string>
+  <string name="summary_upload_to_drobpox">Dodirnite da ručno pošaljete povezanu datoteku u Dropbox mapu</string>
+  <string name="dropbox_how_it_works">Kako Dropbox radi sa Money Manager Ex\?</string>
+  <string name="dropbox_link">Poveži Dropbox</string>
+  <string name="dropbox_unlink">Prekini vezu s Dropbox-om</string>
+  <string name="dropbox_downloadProgress">Preuzimanje datoteke iz Dropbox-a. Molim pričekajte&#8230;</string>
+  <string name="dropbox_uploadProgress">Upload datoteke u Dropbox. Molim pričekajte&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox datoteka</string>
+  <string name="dropbox_file_summary_all">Datoteka bilo gdje na Dropbox-u</string>
+  <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Sinhronizacija</string>
+  <string name="sync_enabled">Sinkronizacija omogućena</string>
+  <string name="sync_provider">Provajder</string>
+  <string name="remote_file">Online datoteka</string>
+  <string name="please_wait">Molimo sačekajte</string>
+  <string name="invalid_database">Ova ekstenzija nije poznata kao valjana baza podataka.</string>
+  <string name="reset_preferences">Resetovanje preferenci</string>
+  <string name="preferences_reset">Preference za sinhronizaciju su resetovane.</string>
+  <string name="cloud_download">Preuzmi bazu podataka sa Cloud Storage.</string>
+  <string name="cloud_upload">Uploaduj bazu podatak na Cloud Storage.</string>
+  <string name="sync_notification_title">Money Manager Ex - Sync</string>
+  <string name="sync_downloading">Preuzimanje baze podataka. Molim pričekajte&#8230;</string>
+  <string name="sync_uploading">Uploadujem bazu podataka. Molim pričekajte&#8230;</string>
+  <string name="syncProgress">Sinhronizujem datoteku. Molim pričekajte&#8230;</string>
+  <string name="database_is_synchronized">Baza podataka je aktuelna</string>
+  <string name="upload_file_complete">Vaša baza podataka je uspješno uploadovana</string>
+  <string name="every_5_minutes">Svakih 5 minuta</string>
+  <string name="every_10_minutes">Svakih 10 minuta</string>
+  <string name="every_15_minutes">Svakih 15 minuta</string>
+  <string name="every_30_minutes">Svakih 30 minuta</string>
+  <string name="every_hour">Svakih sat vremena</string>
+  <string name="every_2_hours">Svaka 2 sata</string>
+  <string name="every_6_hours">Svakih 6 sati</string>
+  <string name="every_12_hours">Svakih 12 sati</string>
+  <string name="never">Nikada</string>
+  <string name="checking_remote_for_changes">Provjeravam online promjene u bazi podataka.</string>
+  <string name="title_sync_upload_immediate">Pošalji bazu podataka odmah nakon promjene</string>
+  <string name="summary_sync_upload_immediate">Ova opcija omogućava automatsko slanje čim napravite promjenu u bazi podataka</string>
+  <string name="dropbox_empty_folder">Mapa Dropbox/Apps/MoneyManagerEx Android je prazan. Ako već koristite MoneyManagerEx, kopirajte svoju bazu podataka u ovu mapu i zatim osvježite.</string>
+  <string name="dropbox_select_file">Odabir datoteke iz Dropbox-a</string>
 </resources>

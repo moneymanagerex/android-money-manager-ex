@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Vincular ao Dropbox</string>
-  <string name="dropbox_unlink">Desvincular do Dropbox</string>
-  <string name="dropbox_syncProgress">Sincronizando arquivo. Por favor aguarde&#8230;</string>
-  <string name="dropbox_downloadProgress">Baixando arquivo do dropbox. Por favor aguarde&#8230;</string>
-  <string name="dropbox_uploadProgress">Enviando arquivo para o dropbox. Por favor aguarde&#8230;</string>
-  <string name="dropbox_linkedFile">Arquivo Dropbox</string>
-  <string name="dropbox_file_summary_all">Arquivo em qualquer lugar no Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Geral</string>
   <string name="preferences_dispaly">Aparência</string>
@@ -325,28 +317,14 @@
   <string name="descending">Descendente</string>
   <string name="sorting_month">Ordenar meses</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Selecione um arquivo do Dropbox</string>
   <string name="last_modified">Última modificação</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Seu banco de dados foi baixado</string>
-  <string name="dropbox_open_database_downloaded">Para usar o banco de dados baixado, toque em Abrir Banco de Dados</string>
-  <string name="click_to_select_file_dropbox">Toque para selecionar o arquivo a ser usado no Dropbox</string>
-  <string name="download_from_drobpox">Baixar do Dropbox</string>
-  <string name="summary_download_from_drobpox">Toque para baixar manualmente o arquivo da pasta Dropbox</string>
-  <string name="upload_to_drobpox">Enviar para o Dropbox</string>
-  <string name="summary_upload_to_drobpox">Toque para enviar manualmente o arquivo para a pasta Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Seu banco de dados foi carregado com sucesso</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Como funciona o Dropbox para Money Manager Ex\?</string>
   <string name="dont_show_again">Não mostrar novamente</string>
   <string name="open_database">Abrir banco de dados</string>
   <string name="synchronization_interval">Intervalo de sincronização</string>
   <string name="summary_synchronization_interval">Quantas vezes devo sincronizar?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">A partir da versão 1.2.0, o Ex Money Manager para Android mudou a gestão da sincronização com o Dropbox. Os usuários que já usam a sincronização com o Dropbox devem refazer a configuração.\nA configuração da sincronização e a seleção do banco de dados no Dropbox, que está localizado nas configurações.\nA partir da versão 1.2.0 do Money Manager Ex para Android pode sincronizar automaticamente o banco de dados com Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Carregar o banco de dados imediatamente após modificações</string>
-  <string name="summary_dropbox_upload_immediate">Esta opção permite fazer o upload automaticamente após qualquer alteração do banco de dados</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Mostra o saldo para cada transação</string>
   <string name="summary_transaction_shown_balance">Mostra o saldo para cada transação. A exibição de equilíbrio poderia tornar o aplicativo mais lento</string>
@@ -362,9 +340,6 @@
   <string name="Default">Padrão</string>
   <string name="medium">Médio</string>
   <string name="large">Grande</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Baixando do Dropbox. Por favor aguarde&#8230;</string>
-  <string name="dropbox_upload_is_starting">Enviando para o Dropbox. por favor aguarde&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Para onde vai o dinheiro</string>
   <string name="menu_report_where_money_comes_from">De onde vem o dinheiro</string>
@@ -382,7 +357,6 @@
   <string name="quantity">Quantidade</string>
   <string name="dashboard">Painel</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">O banco de dados está atualizado</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Últimos 3 meses</string>
   <string name="last6months">Últimos 6 meses</string>
@@ -420,14 +394,6 @@
   <string name="result_search">Resultado da pesquisa</string>
   <string name="new_repeating_transaction">Nova transação recorrente</string>
   <string name="edit_repeating_transaction">Editar transação recorrente</string>
-  <string name="every_5_minutes">Cada 5 minutos</string>
-  <string name="every_15_minutes">Cada 15 minutos</string>
-  <string name="every_30_minutes">Cada 30 minutos</string>
-  <string name="every_hour">Cada hora</string>
-  <string name="every_2_hours">Cada 2 horas</string>
-  <string name="every_6_hours">Cada 6 horas</string>
-  <string name="every_12_hours">Cada 12 horas</string>
-  <string name="never">Nunca</string>
   <string name="path_database_not_exists">Caminho do banco de dados não existe</string>
   <string name="database_can_not_open_write">O banco de dados não pode ser aberto para gravação</string>
   <string name="time_frame">Período de tempo</string>
@@ -486,7 +452,6 @@
   <string name="tutorial_overview_1">Painel de análise rápida, orçamentos, relatórios com personalizações.</string>
   <string name="global">Global</string>
   <string name="tutorial_global_1">Várias moedas e idiomas. Código-fonte aberto. Junte-se à nossa equipe de tradução.</string>
-  <string name="synchronization">Sincronização</string>
   <string name="tutorial_sync_1">Suporte para múltiplas plataformas, sincronização via Dropbox. Importação e exportação de dados para outros aplicativos.</string>
   <string name="transactions">Transações</string>
   <string name="tutorial_transactions_1">Depósitos, saques, transferências. Transações recorrentes com lembretes.</string>
@@ -543,8 +508,6 @@
   <string name="db_fix_duplicates">Corrigir os registros duplicados</string>
   <string name="split_amount_negative">A quantidade total não pode ser negativa.</string>
   <string name="select_all">Selecionar tudo</string>
-  <string name="db_not_dropbox">Seu banco de dados atual não está sincronizado. Por favor configure a sincronização do Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Verificando modificações do banco de dados no Dropbox.</string>
   <string name="choose_type">Escolha o tipo</string>
   <string name="default_account">Conta padrão</string>
   <string name="default_account_summary">Conta a usar quando criar uma nova transação.</string>
@@ -563,7 +526,6 @@
   <string name="title_activity_currency_rates_report">Taxas de câmbio</string>
   <string name="frequency">Frequência</string>
   <string name="update_available">Atualização disponível</string>
-  <string name="update_available_online">Há um arquivo de banco de dados atualizado disponível na Dropbox. Você deseja atualizar?</string>
   <string name="currency_not_found">A moeda não foi encontrada</string>
   <string name="homepage">O nosso sítio web é http://android.moneymanagerex.org/</string>
   <string name="current_database">Banco de dados atual</string>
@@ -638,6 +600,9 @@
   <string name="quote_provider">Provedor de cotação</string>
   <string name="copy">Copiar</string>
   <string name="app_restart">O aplicativo será fechado para aplicar todas as alterações. Por favor reinicie.</string>
+  <string name="print">Imprimir</string>
+  <string name="save_as_html">Guardar como HTML</string>
+  <string name="no_network">Não existe nenhuma rede disponível.</string>
   <!-- Currencies -->
   <string name="currencies">Moedas</string>
   <string name="currencies_used">Moedas, usadas</string>
@@ -652,4 +617,43 @@
   <string name="question_update_currency_exchange_rates">Deseja atualizar a taxa de câmbio?</string>
   <string name="error_update_currency_exchange_rate">Houve um erro ao atualizar a taxa de</string>
   <string name="currencies_empty">Nehum moeda foi encontrada. Para criar uma, toque no botão + verde.</string>
+  <string name="active_currencies">Moedas Ativas</string>
+  <string name="inactive_currencies">Moedas Inativas</string>
+  <string name="all_currencies">Todas as Moedas</string>
+  <string name="portfolio">Portfólio</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Seu banco de dados foi baixado</string>
+  <string name="dropbox_open_database_downloaded">Para usar o banco de dados baixado, toque em Abrir Banco de Dados</string>
+  <string name="click_to_select_file_dropbox">Toque para selecionar o arquivo a ser usado no Dropbox</string>
+  <string name="download_from_drobpox">Baixar do Dropbox</string>
+  <string name="summary_download_from_drobpox">Toque para baixar manualmente o arquivo da pasta Dropbox</string>
+  <string name="upload_to_drobpox">Enviar para o Dropbox</string>
+  <string name="summary_upload_to_drobpox">Toque para enviar manualmente o arquivo para a pasta Dropbox</string>
+  <string name="dropbox_how_it_works">Como funciona o Dropbox para Money Manager Ex\?</string>
+  <string name="dropbox_link">Vincular ao Dropbox</string>
+  <string name="dropbox_unlink">Desvincular do Dropbox</string>
+  <string name="dropbox_downloadProgress">Baixando arquivo do dropbox. Por favor aguarde&#8230;</string>
+  <string name="dropbox_uploadProgress">Enviando arquivo para o dropbox. Por favor aguarde&#8230;</string>
+  <string name="dropbox_linkedFile">Arquivo Dropbox</string>
+  <string name="dropbox_file_summary_all">Arquivo em qualquer lugar no Dropbox</string>
+  <string name="db_not_dropbox">Seu banco de dados atual não está sincronizado. Por favor configure a sincronização do Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Sincronização</string>
+  <string name="sync_enabled">Sincronização ativada</string>
+  <string name="sync_provider">Provedor</string>
+  <string name="remote_file">Ficheiro remoto</string>
+  <string name="please_wait">Por favor, aguarde</string>
+  <string name="invalid_database">Esta extensão não é reconhecida como uma base de dados válida.</string>
+  <string name="reset_preferences">Redefinir preferências</string>
+  <string name="preferences_reset">As preferências de sincronização foram redefinidas.</string>
+  <string name="every_5_minutes">Cada 5 minutos</string>
+  <string name="every_15_minutes">Cada 15 minutos</string>
+  <string name="every_30_minutes">Cada 30 minutos</string>
+  <string name="every_hour">Cada hora</string>
+  <string name="every_2_hours">Cada 2 horas</string>
+  <string name="every_6_hours">Cada 6 horas</string>
+  <string name="every_12_hours">Cada 12 horas</string>
+  <string name="never">Nunca</string>
+  <string name="dropbox_select_file">Selecione um arquivo do Dropbox</string>
 </resources>

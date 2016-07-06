@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Link la Dropbox</string>
-  <string name="dropbox_unlink">Dezactivează link-ul la Dropbox</string>
-  <string name="dropbox_syncProgress">Sincronizare fişier. Te rog să aştepţi&#8230;</string>
-  <string name="dropbox_downloadProgress">Se descarcă fișierul din Dropbox. Te rog să aştepţi&#8230;</string>
-  <string name="dropbox_uploadProgress">Se încarcă fișierul în Dropbox. Te rog să aştepţi&#8230;</string>
-  <string name="dropbox_linkedFile">Fişier Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Setări Generale</string>
   <string name="preferences_dispaly">Privește &amp; Simte</string>
@@ -321,28 +314,14 @@
   <string name="descending">Descrescător</string>
   <string name="sorting_month">Sortarea lunilor</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Selectează un fișier din Dropbox</string>
   <string name="last_modified">Ultima modificare</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Baza ta de date a fost descărcată</string>
-  <string name="dropbox_open_database_downloaded">Pentru a folosi baza de date descărcată, atinge Deschide Baza de date</string>
-  <string name="click_to_select_file_dropbox">Atinge pentru a selecta fișierul ce va fi folosit din Dropbox</string>
-  <string name="download_from_drobpox">Descărcă din Dropbox</string>
-  <string name="summary_download_from_drobpox">Atinge pentru a descărca manual fișierul cu link din dosarul Dropbox</string>
-  <string name="upload_to_drobpox">Încarcă pe Dropbox</string>
-  <string name="summary_upload_to_drobpox">Atinge pentru a încărca manual fișierul cu link în dosarul Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Baza ta de date a fost încărcată cu succes</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Cum funcționează Dropbox pentru Money Manager Ex\?</string>
   <string name="dont_show_again">Nu mai arăta</string>
   <string name="open_database">Deschide baza de date</string>
   <string name="synchronization_interval">Interval de sincronizare</string>
   <string name="summary_synchronization_interval">Cât de des să sincronizez?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Începând cu versiunea 1.2.0 a Money Manager Ex pentru Android s-a schimbat managementul sincronizării cu Dropbox. Utilizatorii care deja folosesc sincronizarea cu Dropbox trebuie să reconfigureze setările.\n Configurarea sincronizării cu Dropbox și selectarea bazei de date este localizată în setări.\n Începând cu versiunea 1.2.0 a Money Manager Ex pentru Android sincronizarea se poate face automat în baza de date cu Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Încarcă baza de date imediat după efectuarea schimbărilor</string>
-  <string name="summary_dropbox_upload_immediate">Această opțiune permisă să încarci baza de date automat imediat ce termini de efectuat schimbările</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Afișează soldul pentru fiecare tranzacție</string>
   <string name="summary_transaction_shown_balance">Afișează soldul pentru fiecare tranzacție. Afișarea soldului poate încetini aplicația</string>
@@ -358,9 +337,6 @@
   <string name="Default">Implicit</string>
   <string name="medium">Medie</string>
   <string name="large">Mare</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Se descarcă din Dropbox. Te rog să aştepţi&#8230;</string>
-  <string name="dropbox_upload_is_starting">Se încarcă în Dropbox. Te rog să aştepţi&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Unde merg banii</string>
   <string name="menu_report_where_money_comes_from">De unde vin banii</string>
@@ -377,7 +353,6 @@
   <string name="quantity">Cantitate</string>
   <string name="dashboard">Panou de control</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Baza de date este actualizată</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Ultimele 3 luni</string>
   <string name="last6months">Ultimele 6 luni</string>
@@ -415,14 +390,6 @@
   <string name="result_search">Rezultatul căutării tale</string>
   <string name="new_repeating_transaction">Tranzacție Recurentă Nouă</string>
   <string name="edit_repeating_transaction">Editează Tranzacție Recurentă</string>
-  <string name="every_5_minutes">La fiecare 5 minute</string>
-  <string name="every_15_minutes">La fiecare 15 minute</string>
-  <string name="every_30_minutes">La fiecare 30 minute</string>
-  <string name="every_hour">La fiecare oră</string>
-  <string name="every_2_hours">La fiecare 2 ore</string>
-  <string name="every_6_hours">La fiecare 6 ore</string>
-  <string name="every_12_hours">La fiecare 12 ore</string>
-  <string name="never">Niciodată</string>
   <string name="path_database_not_exists">Calea către baza de date nu există</string>
   <string name="database_can_not_open_write">Baza de date nu poate fi deschisă pentru scriere</string>
   <string name="time_frame">Interval de timp</string>
@@ -480,7 +447,6 @@
   <string name="tutorial_overview_1">Privire de ansamblu bord, bugete, rapoarte cu personalizări.</string>
   <string name="global">Global</string>
   <string name="tutorial_global_1">Limbi și monede multiple. Sursă deschisă. Alătură-te echipei de traducere.</string>
-  <string name="synchronization">Sincronizare</string>
   <string name="tutorial_sync_1">Asistență pentru multi-platforme, sincronizare cu Dropbox. Importă și exportă datele tale pentru alte aplicații.</string>
   <string name="transactions">Tranzacții</string>
   <string name="tutorial_transactions_1">Depozite, retrageri, transferuri. Tranzacții recurente cu memento-uri.</string>
@@ -537,8 +503,6 @@
   <string name="db_fix_duplicates">Repară înregistrările duplicate</string>
   <string name="split_amount_negative">Suma totală nu poate fi negativă.</string>
   <string name="select_all">Selectează totul</string>
-  <string name="db_not_dropbox">Baza ta de date curentă nu este sincronizată. Te rog să setezi sincronizarea cu Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Verifică Dropbox pentru notificări despre baza de date.</string>
   <string name="choose_type">Alege un tip</string>
   <string name="default_account">Cont implicit</string>
   <string name="default_account_summary">Contul care să fie folosit când introduci o nouă tranzacție.</string>
@@ -556,7 +520,6 @@
   <string name="title_activity_currency_rates_report">Ratele de schimb valutar</string>
   <string name="frequency">Frecvența</string>
   <string name="update_available">Actualizare disponibilă</string>
-  <string name="update_available_online">Există un fișier actualizat disponibil în Dropbpx. Vrei să faci actualizarea?</string>
   <string name="currency_not_found">Moneda nu a fost găsită</string>
   <string name="homepage">Pagina noastră web este http://android.moneymanagerex.org/</string>
   <string name="current_database">Baza de date curentă</string>
@@ -630,4 +593,31 @@
   <string name="question_update_currency_exchange_rates">Vrei să actualizezi rata de schimb?</string>
   <string name="error_update_currency_exchange_rate">Eroare la actualizarea ratei</string>
   <string name="currencies_empty">Nu a fost găsită nici o monedă. Pentru a crea una, apasă butonul verde plus.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Baza ta de date a fost descărcată</string>
+  <string name="dropbox_open_database_downloaded">Pentru a folosi baza de date descărcată, atinge Deschide Baza de date</string>
+  <string name="click_to_select_file_dropbox">Atinge pentru a selecta fișierul ce va fi folosit din Dropbox</string>
+  <string name="download_from_drobpox">Descărcă din Dropbox</string>
+  <string name="summary_download_from_drobpox">Atinge pentru a descărca manual fișierul cu link din dosarul Dropbox</string>
+  <string name="upload_to_drobpox">Încarcă pe Dropbox</string>
+  <string name="summary_upload_to_drobpox">Atinge pentru a încărca manual fișierul cu link în dosarul Dropbox</string>
+  <string name="dropbox_how_it_works">Cum funcționează Dropbox pentru Money Manager Ex\?</string>
+  <string name="dropbox_link">Link la Dropbox</string>
+  <string name="dropbox_unlink">Dezactivează link-ul la Dropbox</string>
+  <string name="dropbox_downloadProgress">Se descarcă fișierul din Dropbox. Te rog să aştepţi&#8230;</string>
+  <string name="dropbox_uploadProgress">Se încarcă fișierul în Dropbox. Te rog să aştepţi&#8230;</string>
+  <string name="dropbox_linkedFile">Fişier Dropbox</string>
+  <string name="db_not_dropbox">Baza ta de date curentă nu este sincronizată. Te rog să setezi sincronizarea cu Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Sincronizare</string>
+  <string name="every_5_minutes">La fiecare 5 minute</string>
+  <string name="every_15_minutes">La fiecare 15 minute</string>
+  <string name="every_30_minutes">La fiecare 30 minute</string>
+  <string name="every_hour">La fiecare oră</string>
+  <string name="every_2_hours">La fiecare 2 ore</string>
+  <string name="every_6_hours">La fiecare 6 ore</string>
+  <string name="every_12_hours">La fiecare 12 ore</string>
+  <string name="never">Niciodată</string>
+  <string name="dropbox_select_file">Selectează un fișier din Dropbox</string>
 </resources>

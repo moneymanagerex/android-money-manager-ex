@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Liên kết đến Dropbox</string>
-  <string name="dropbox_unlink">Hủy liên kết khỏi Dropbox</string>
-  <string name="dropbox_syncProgress">Đang đồng bộ tập tin. Vui lòng chờ...</string>
-  <string name="dropbox_downloadProgress">Đang tải tập tin từ Dropbox. Vui lòng chờ...</string>
-  <string name="dropbox_uploadProgress">Đang tải tập tin tới Dropbox. Vui lòng chờ...</string>
-  <string name="dropbox_linkedFile">Tập tin Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Chung</string>
   <string name="preferences_dispaly">Nhìn &amp; Cảm nhận</string>
@@ -321,28 +314,14 @@
   <string name="descending">Giảm dần</string>
   <string name="sorting_month">Xếp theo Tháng</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
   <string name="last_modified">Sửa đổi cuối</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Cơ sở dữ liệu của bạn đã được tải về</string>
-  <string name="dropbox_open_database_downloaded">Để sử dụng cơ sở dữ liệu tải về, chạm vào Mở cơ sở dữ liệu</string>
-  <string name="click_to_select_file_dropbox">Chạm để chọn tập tin để sử dụng từ Dropbox</string>
-  <string name="download_from_drobpox">Tải về từ Dropbox</string>
-  <string name="summary_download_from_drobpox">Chạm để tùy chọn tải về tập tin được liên kết từ thư mục Dropbox</string>
-  <string name="upload_to_drobpox">Tải lên Dropbox</string>
-  <string name="summary_upload_to_drobpox">Chạm để tùy chọn tải lên các tập tin được liên kết vào thư mục Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Cơ sở dữ liệu của bạn đã được tải lên thành công</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Dropbox làm việc cho Money Manager Ex như thế nào\?</string>
   <string name="dont_show_again">Không hiện lại nữa</string>
   <string name="open_database">Mở Cơ sở dữ liệu</string>
   <string name="synchronization_interval">Thời gian đồng bộ</string>
   <string name="summary_synchronization_interval">Tần suất đồng bộ là bao lâu ?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Từ phiên bản 1.2.0 của Money Manager Ex cho Android đã thay đổi quản lý đồng bộ hoá với Dropbox. Cho người dùng những người đã sử dụng đồng bộ với Dropbox, bạn phải thực hiện cấu hình lại. \nCấu hình  của đồng bộ với Dropbox và lựa chọn cơ sở dữ liệu, được nằm trong thiết đặt. \nTừ phiên bản 1.2.0 của Money Manager Ex cho Android có thể tự động đồng bộ cơ sở dữ liệu với Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Tải lên cơ sở dữ liệu ngay lập tức lúc thay đổi</string>
-  <string name="summary_dropbox_upload_immediate">Tùy chọn này cho phép tự động tải lên ngay sau khi bạn thay đổi cơ sở dữ liệu</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Hiện số dư cho mỗi giao dịch</string>
   <string name="summary_transaction_shown_balance">Hiện số dư cho cho mỗi giao dịch. Hiển thị số dư có thể làm ứng dụng chậm hơn</string>
@@ -358,9 +337,6 @@
   <string name="Default">Mặc định</string>
   <string name="medium">Vừa</string>
   <string name="large">Lớn</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Đang tải xuống từ Dropbox. Vui lòng chờ&#8230;</string>
-  <string name="dropbox_upload_is_starting">Đang tải lên Dropbox. Vui lòng chờ&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Nơi tiền Đi</string>
   <string name="menu_report_where_money_comes_from">Nơi tiền Đến</string>
@@ -377,7 +353,6 @@
   <string name="quantity">Số lượng</string>
   <string name="dashboard">Bảng điều khiển</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">CSDL đã cập nhật</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">3 tháng qua</string>
   <string name="last6months">6 tháng qua</string>
@@ -415,14 +390,6 @@
   <string name="result_search">Kết quả tìm kiếm của bạn</string>
   <string name="new_repeating_transaction">Giao dịch định kỳ mới</string>
   <string name="edit_repeating_transaction">Sửa giao dịch định kỳ</string>
-  <string name="every_5_minutes">Mỗi 5 phút</string>
-  <string name="every_15_minutes">Mỗi 15 phút</string>
-  <string name="every_30_minutes">Mỗi 30 phút</string>
-  <string name="every_hour">Mỗi giờ</string>
-  <string name="every_2_hours">Mỗi 2 giờ</string>
-  <string name="every_6_hours">Mỗi 6 giờ</string>
-  <string name="every_12_hours">Mỗi giờ 12</string>
-  <string name="never">Không bao giờ</string>
   <string name="path_database_not_exists">Con đường cơ sở dữ liệu không tồn tại</string>
   <string name="database_can_not_open_write">Cơ sở dữ liệu không thể được mở cho việc ghi</string>
   <string name="time_frame">Khung thời gian</string>
@@ -480,7 +447,6 @@
   <string name="tutorial_overview_1">Tổng quan nhanh bảng điều khiển, ngân sách, báo cáo với các tùy chỉnh.</string>
   <string name="global">Toàn cảnh</string>
   <string name="tutorial_global_1">Nhiều loại tiền tệ và ngôn ngữ. Mã nguồn mở. Tham gia đội ngũ dịch thuật.</string>
-  <string name="synchronization">Đồng bộ</string>
   <string name="tutorial_sync_1">Hỗ trợ cho nhiều nền tảng, đồng bộ thông qua Dropbox. Nhập và xuất dữ liệu của bạn sang các ứng dụng khác.</string>
   <string name="transactions">Giao dịch</string>
   <string name="tutorial_transactions_1">Tiền gửi, rút tiền, chuyển khoản. Giao dịch định kỳ với công cụ nhắc nhở.</string>
@@ -537,8 +503,6 @@
   <string name="db_fix_duplicates">Sửa các hồ sơ trùng lặp</string>
   <string name="split_amount_negative">Tổng số tiền không thể âm.</string>
   <string name="select_all">Chọn tất cả</string>
-  <string name="db_not_dropbox">Cơ sở dữ liệu hiện tại của bạn không được đồng bộ. Vui lòng thiết lập đồng bộ Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Kiểm tra Dropbox để sửa đổi cơ sở dữ liệu.</string>
   <string name="choose_type">Chọn một loại</string>
   <string name="default_account">Tài khoản mặc định</string>
   <string name="default_account_summary">Tài khoản để sử dụng khi nhập một giao dịch mới.</string>
@@ -556,7 +520,6 @@
   <string name="title_activity_currency_rates_report">Tỷ giá tiền tệ</string>
   <string name="frequency">Tần suất</string>
   <string name="update_available">Cập nhật sẵn có</string>
-  <string name="update_available_online">Có một tập tin cơ sở dữ liệu được cập nhật có sẵn trên Dropbox. Bạn có muốn cập nhật?</string>
   <string name="currency_not_found">Tiền tệ không tìm thấy</string>
   <string name="homepage">Trang chủ của chúng tôi là http://android.moneymanagerex.org/</string>
   <string name="current_database">Cơ sở dữ liệu hiện thời</string>
@@ -585,4 +548,31 @@
   <string name="question_update_currency_exchange_rates">Bạn có muốn cập nhật tỷ giá hối đoái?</string>
   <string name="error_update_currency_exchange_rate">Đã có 1 lỗi khi cập nhật tỉ giá</string>
   <string name="currencies_empty">Không có tiền tệ được tìm thấy. Để tạo một tiền tệ, bấm vào nút cộng màu xanh.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Cơ sở dữ liệu của bạn đã được tải về</string>
+  <string name="dropbox_open_database_downloaded">Để sử dụng cơ sở dữ liệu tải về, chạm vào Mở cơ sở dữ liệu</string>
+  <string name="click_to_select_file_dropbox">Chạm để chọn tập tin để sử dụng từ Dropbox</string>
+  <string name="download_from_drobpox">Tải về từ Dropbox</string>
+  <string name="summary_download_from_drobpox">Chạm để tùy chọn tải về tập tin được liên kết từ thư mục Dropbox</string>
+  <string name="upload_to_drobpox">Tải lên Dropbox</string>
+  <string name="summary_upload_to_drobpox">Chạm để tùy chọn tải lên các tập tin được liên kết vào thư mục Dropbox</string>
+  <string name="dropbox_how_it_works">Dropbox làm việc cho Money Manager Ex như thế nào\?</string>
+  <string name="dropbox_link">Liên kết đến Dropbox</string>
+  <string name="dropbox_unlink">Hủy liên kết khỏi Dropbox</string>
+  <string name="dropbox_downloadProgress">Đang tải tập tin từ Dropbox. Vui lòng chờ...</string>
+  <string name="dropbox_uploadProgress">Đang tải tập tin tới Dropbox. Vui lòng chờ...</string>
+  <string name="dropbox_linkedFile">Tập tin Dropbox</string>
+  <string name="db_not_dropbox">Cơ sở dữ liệu hiện tại của bạn không được đồng bộ. Vui lòng thiết lập đồng bộ Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Đồng bộ</string>
+  <string name="every_5_minutes">Mỗi 5 phút</string>
+  <string name="every_15_minutes">Mỗi 15 phút</string>
+  <string name="every_30_minutes">Mỗi 30 phút</string>
+  <string name="every_hour">Mỗi giờ</string>
+  <string name="every_2_hours">Mỗi 2 giờ</string>
+  <string name="every_6_hours">Mỗi 6 giờ</string>
+  <string name="every_12_hours">Mỗi giờ 12</string>
+  <string name="never">Không bao giờ</string>
+  <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
 </resources>

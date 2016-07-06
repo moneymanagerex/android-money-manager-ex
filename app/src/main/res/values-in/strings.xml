@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Hubungkan ke DropBox</string>
-  <string name="dropbox_unlink">Lepaskan Hubungan dari Dropbox</string>
-  <string name="dropbox_syncProgress">Sedang mensinkronisasikan file. Harap tunggu&#8230;</string>
-  <string name="dropbox_downloadProgress">Mengunduh berkas dari Dropbox. Harap tunggu&#8230;</string>
-  <string name="dropbox_uploadProgress">Mengunggah file Dropbox. Harap tunggu&#8230;</string>
-  <string name="dropbox_linkedFile">Berkas DropBox</string>
-  <string name="dropbox_file_summary_all">Berkas di mana saja di dalam Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Umum</string>
   <string name="preferences_dispaly">Tampilan &amp; Nuansa</string>
@@ -275,20 +267,10 @@
   <string name="descending">Menurun</string>
   <string name="sorting_month">Penyortiran bulan</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">Folder di Dropbox/Apps/Money manajer Ex Android kosong. Jika Anda sudah menggunakan MoneyManagerEx salin database Anda ke folder ini di komputer Anda, dan setelah Anda melakukan proses refresh.</string>
-  <string name="dropbox_select_file">Pilih file dari Dropbox</string>
   <string name="last_modified">Modifikasi terakhir</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Database Anda telah diunduh</string>
-  <string name="dropbox_open_database_downloaded">Untuk menggunakan database download, sentuh Buka Database</string>
-  <string name="click_to_select_file_dropbox">Sentuh untuk memilih file untuk menggunakan dari Dropbox</string>
-  <string name="download_from_drobpox">Unduh dari Dropbox</string>
-  <string name="summary_download_from_drobpox">Sentuh untuk secara manual mengunduh file terkait dari Dropbox folder</string>
-  <string name="upload_to_drobpox">Mengunggah ke Dropbox</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <!-- 20130426 -->
-  <!-- 20130528 -->
   <!-- 20130606 -->
   <!-- 20130728 -->
   <!-- 20130730 -->
@@ -321,14 +303,6 @@
   <string name="result_search">Hasil pencarian Anda</string>
   <string name="new_repeating_transaction">Transaksi berkala baru</string>
   <string name="edit_repeating_transaction">Mengubah transaksi berkala</string>
-  <string name="every_5_minutes">Setiap 5 menit</string>
-  <string name="every_15_minutes">Setiap 15 menit</string>
-  <string name="every_30_minutes">Setiap 30 menit</string>
-  <string name="every_hour">Setiap jam</string>
-  <string name="every_2_hours">Setiap 2 jam</string>
-  <string name="every_6_hours">Setiap 6 jam</string>
-  <string name="every_12_hours">Setiap 12 jam</string>
-  <string name="never">Tidak pernah</string>
   <string name="path_database_not_exists">Jalur Database tidak ada</string>
   <string name="database_can_not_open_write">Database tidak bisa dibuka untuk menulis</string>
   <string name="time_frame">Jangka waktu</string>
@@ -394,8 +368,6 @@
   <string name="db_fix_duplicates">Memperbaiki rekaman duplikat</string>
   <string name="split_amount_negative">Jumlah tidak bisa negatif.</string>
   <string name="select_all">Pilih Semua</string>
-  <string name="db_not_dropbox">Database Anda saat ini tidak disinkronisasi. Silakan mempersiapkan sinkronisasi Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Memeriksa Dropbox terhadap modifikasi database.</string>
   <string name="choose_type">Pilih jenis</string>
   <string name="default_account">Akun bawaan</string>
   <string name="default_account_summary">Account untuk digunakan ketika memasuki sebuah transaksi yang baru.</string>
@@ -415,4 +387,30 @@
   <!-- budgets -->
   <!-- Currencies -->
   <string name="portfolio">Portofolio</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Database Anda telah diunduh</string>
+  <string name="dropbox_open_database_downloaded">Untuk menggunakan database download, sentuh Buka Database</string>
+  <string name="click_to_select_file_dropbox">Sentuh untuk memilih file untuk menggunakan dari Dropbox</string>
+  <string name="download_from_drobpox">Unduh dari Dropbox</string>
+  <string name="summary_download_from_drobpox">Sentuh untuk secara manual mengunduh file terkait dari Dropbox folder</string>
+  <string name="upload_to_drobpox">Mengunggah ke Dropbox</string>
+  <string name="dropbox_link">Hubungkan ke DropBox</string>
+  <string name="dropbox_unlink">Lepaskan Hubungan dari Dropbox</string>
+  <string name="dropbox_downloadProgress">Mengunduh berkas dari Dropbox. Harap tunggu&#8230;</string>
+  <string name="dropbox_uploadProgress">Mengunggah file Dropbox. Harap tunggu&#8230;</string>
+  <string name="dropbox_linkedFile">Berkas DropBox</string>
+  <string name="dropbox_file_summary_all">Berkas di mana saja di dalam Dropbox</string>
+  <string name="db_not_dropbox">Database Anda saat ini tidak disinkronisasi. Silakan mempersiapkan sinkronisasi Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="every_5_minutes">Setiap 5 menit</string>
+  <string name="every_15_minutes">Setiap 15 menit</string>
+  <string name="every_30_minutes">Setiap 30 menit</string>
+  <string name="every_hour">Setiap jam</string>
+  <string name="every_2_hours">Setiap 2 jam</string>
+  <string name="every_6_hours">Setiap 6 jam</string>
+  <string name="every_12_hours">Setiap 12 jam</string>
+  <string name="never">Tidak pernah</string>
+  <string name="dropbox_empty_folder">Folder di Dropbox/Apps/Money manajer Ex Android kosong. Jika Anda sudah menggunakan MoneyManagerEx salin database Anda ke folder ini di komputer Anda, dan setelah Anda melakukan proses refresh.</string>
+  <string name="dropbox_select_file">Pilih file dari Dropbox</string>
 </resources>

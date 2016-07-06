@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Dropbox bağlantısı</string>
-  <string name="dropbox_unlink">Dropbox bağlantısını kaldır</string>
-  <string name="dropbox_syncProgress">Dosya eşitleniyor. Lütfen bekleyin&#8230;</string>
-  <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
-  <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox Dosyası</string>
   <!-- preferences -->
   <string name="preferences_general">Genel</string>
   <string name="preferences_dispaly">Görünüm</string>
@@ -311,28 +304,14 @@
   <string name="descending">Artan</string>
   <string name="sorting_month">Ayları sıralama</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Dropbox\'tan bir dosya seç</string>
   <string name="last_modified">Son düzenlenen</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
-  <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
-  <string name="click_to_select_file_dropbox">Kullanılacak Dropbox dosyasını seçmek için dokunun</string>
-  <string name="download_from_drobpox">Dropbox\'dan indir</string>
-  <string name="summary_download_from_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak indirmek için dokunun</string>
-  <string name="upload_to_drobpox">Dropbox\'a Yükle</string>
-  <string name="summary_upload_to_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak yüklmek için dokunun</string>
-  <string name="upload_file_to_dropbox_complete">Veritabanınız başarı ile yüklendi</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Dropbox Money Manager Ex için nasıl çalışır?</string>
   <string name="dont_show_again">Tekrar gösterme</string>
   <string name="open_database">Veritabanı Aç</string>
   <string name="synchronization_interval">Eşitleme Aralığı</string>
   <string name="summary_synchronization_interval">Ne sıklıkla eşitlenmesini istersiniz?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">1.2.0 versiyonundan itibaren Android için Money Manager Ex\'in Dropbox eşitleme yönetimi değişti. Halihazırda Dropbox ile eşitlenmiş veritabanı kullanan kullanıcıların Dropbox yapılandırmasını tekrar yapmaları gerekmektedir.\nSeçilen bir veritabanını Dropbox ile eşitlemek yapılandırma Ayarlar menüsünde yer almaktadır.\nAndroid için Money Manager Ex\'in 1.2.0 sürümünden sonraki sürümleri veritabanını Dropbox ile otomatik olarak eşitlemektedir</string>
-  <string name="title_dropbox_upload_immediate">Veritabanında her değişiklik yapıldığında eşitle</string>
-  <string name="summary_dropbox_upload_immediate">Bu seçenek veritabnının değişklik yapılır yapılmaz Dropbox ile eşitlemesini sağar</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Her işlemde bakiye görüntüle</string>
   <string name="summary_transaction_shown_balance">Her işlemde bakiyeyi gösterir. Her işlemde bakiye göstermek uygulamanın yavaş çalışmasına neden olur</string>
@@ -348,9 +327,6 @@
   <string name="Default">Varsayılan</string>
   <string name="medium">Orta</string>
   <string name="large">Büyük</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
-  <string name="dropbox_upload_is_starting">Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Para Nereye Gidiyor</string>
   <string name="menu_report_where_money_comes_from">Para Nereden Geliyor</string>
@@ -367,7 +343,6 @@
   <string name="quantity">Miktar</string>
   <string name="dashboard">Başlangıç</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Veritabanı güncel</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Son 3 ay</string>
   <string name="last6months">Son 6 ay</string>
@@ -404,14 +379,6 @@
   <string name="result_search">Aramanızın sonucu</string>
   <string name="new_repeating_transaction">Yeni Tekrar Eden İşlem</string>
   <string name="edit_repeating_transaction">Tekrar Eden İşlemi Düzenle</string>
-  <string name="every_5_minutes">Her 5 dakikada</string>
-  <string name="every_15_minutes">Her 15 dakikada</string>
-  <string name="every_30_minutes">Her 30 dakikada</string>
-  <string name="every_hour">Her saat</string>
-  <string name="every_2_hours">Her 2 saatte</string>
-  <string name="every_6_hours">Her 6 saatte</string>
-  <string name="every_12_hours">Her 12 Saatte</string>
-  <string name="never">Hiç bir zaman</string>
   <string name="path_database_not_exists">Veritabanı yolu bulunamıyor</string>
   <string name="database_can_not_open_write">Veritabanı yazma için açılamıyor</string>
   <string name="time_frame">Zaman Periyodu</string>
@@ -463,7 +430,6 @@
   <string name="tutorial_overview_1">Hızlı genel bakış denetim masası, bütçeler ve özelleştirilmiş raporlar.</string>
   <string name="global">Genel</string>
   <string name="tutorial_global_1">Çoklu para birimleri ve çoklu dil desteği. Açık kaynak kodu. Çeviri ekibimize katılın.</string>
-  <string name="synchronization">Eşitleme</string>
   <string name="tutorial_sync_1">Çoklu platform desteği, Dropbox eşitleme. Verileri diğer uygulamalardan içe ve dışa aktarma.</string>
   <string name="transactions">İşlemler</string>
   <string name="tutorial_transactions_1">Hesaba yatanlar, hesaptan çekilenler, havaleler. Hatırlatma özellikli tekrar eden işlemler.</string>
@@ -511,8 +477,6 @@
   <string name="db_check_schema_error">Hata: veritabanında tablolar eksik!</string>
   <string name="split_amount_negative">Toplam değer negatif olamaz.</string>
   <string name="select_all">Tümünü seç</string>
-  <string name="db_not_dropbox">Geçerli veritabanınız eşitlenmemiş. Lütfen Dropbox eşitlemeyi ayarlayın.</string>
-  <string name="checking_dropbox_for_changes">Dropbox veritabanı değişiklikleri için kontrol ediliyor.</string>
   <string name="choose_type">Bir tür seç</string>
   <string name="default_account">Varsayılan hesap</string>
   <string name="default_account_summary">Yeni bir işlem girerken kullanılacak varsayılan hesap.</string>
@@ -530,7 +494,6 @@
   <string name="title_activity_currency_rates_report">Kur Oranları</string>
   <string name="frequency">Sıklık</string>
   <string name="update_available">Göncelleme mevcut</string>
-  <string name="update_available_online">Dropbox\'da güncelleştirilmiş bir veritabanı dosyası mevcut. Veritabanınızı güncelleştirmek istiyor musunuz?</string>
   <string name="current_database">Geçerli veritabanı</string>
   <string name="transaction_type_filter">İşlem Türüne Göre Filtrele</string>
   <!-- Password entry activity -->
@@ -570,4 +533,31 @@
   <string name="question_update_currency_exchange_rates">Döviz kurunu güncelleştirmek istiyor musunuz?</string>
   <string name="error_update_currency_exchange_rate">Oranlar güncelleştirilirken bir hata oluştu</string>
   <string name="currencies_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı düğmesine dokunun.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
+  <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
+  <string name="click_to_select_file_dropbox">Kullanılacak Dropbox dosyasını seçmek için dokunun</string>
+  <string name="download_from_drobpox">Dropbox\'dan indir</string>
+  <string name="summary_download_from_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak indirmek için dokunun</string>
+  <string name="upload_to_drobpox">Dropbox\'a Yükle</string>
+  <string name="summary_upload_to_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak yüklmek için dokunun</string>
+  <string name="dropbox_how_it_works">Dropbox Money Manager Ex için nasıl çalışır?</string>
+  <string name="dropbox_link">Dropbox bağlantısı</string>
+  <string name="dropbox_unlink">Dropbox bağlantısını kaldır</string>
+  <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
+  <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox Dosyası</string>
+  <string name="db_not_dropbox">Geçerli veritabanınız eşitlenmemiş. Lütfen Dropbox eşitlemeyi ayarlayın.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Eşitleme</string>
+  <string name="every_5_minutes">Her 5 dakikada</string>
+  <string name="every_15_minutes">Her 15 dakikada</string>
+  <string name="every_30_minutes">Her 30 dakikada</string>
+  <string name="every_hour">Her saat</string>
+  <string name="every_2_hours">Her 2 saatte</string>
+  <string name="every_6_hours">Her 6 saatte</string>
+  <string name="every_12_hours">Her 12 Saatte</string>
+  <string name="never">Hiç bir zaman</string>
+  <string name="dropbox_select_file">Dropbox\'tan bir dosya seç</string>
 </resources>

@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Koppeling met Dropbox</string>
-  <string name="dropbox_unlink">Ontkoppel van Dropbox</string>
-  <string name="dropbox_syncProgress">Bestand wordt gesynchroniseerd. Even geduld &#8230;</string>
-  <string name="dropbox_downloadProgress">Bezig met bestand downloaden van Dropbox. Een ogenblik geduld&#8230;</string>
-  <string name="dropbox_uploadProgress">Bezig met bestand uploaden naar Dropbox. Een ogenblik geduld&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox-bestand</string>
-  <string name="dropbox_file_summary_all">Bestand in Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Algemeen</string>
   <string name="preferences_dispaly">Weergave</string>
@@ -325,28 +317,14 @@
   <string name="descending">Aflopend</string>
   <string name="sorting_month">Sorteren op maand</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Selecteer een bestand in Dropbox</string>
   <string name="last_modified">Laatst gewijzigd</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Je databank is gedownload</string>
-  <string name="dropbox_open_database_downloaded">Om de gedownloade databank te gebruiken, druk je op Open databank</string>
-  <string name="click_to_select_file_dropbox">Seleteer het bestand welke gebruikt dient te worden van Dropbox</string>
-  <string name="download_from_drobpox">Download van Dropbox</string>
-  <string name="summary_download_from_drobpox">Druk hier om handmatig het gelinkte bestand van de Dropbox folder te downloaden</string>
-  <string name="upload_to_drobpox">Upload naar Dropbox</string>
-  <string name="summary_upload_to_drobpox">klik hier om handmatig het gelinkte bestand van de Dropbox folder te uploaden</string>
-  <string name="upload_file_to_dropbox_complete">Uw database is succesvol geüpload</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Hoe werkt Dropbox met Money Manager EX?</string>
   <string name="dont_show_again">Niet opnieuw tonen</string>
   <string name="open_database">Open databank</string>
   <string name="synchronization_interval">Synchronisatie-interval</string>
   <string name="summary_synchronization_interval">Hoe vaak moet worden gesynchroniseerd ?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Vanaf versie 1.2.0 van Money Manager EX voor Android is het management van de synchronisatie met Dropbox veranderd. Gebruikers welke al gebruik maken van de synchronisatie met Dropbox zullen dit opnieuw in moeten stellen.\n De configuratie van de synchronisatie met Dropbox en de database is te vinden in de instellingen.\n Vanaf versie 1.2.0 van Money Manager EX voor Android zult u automatisch kunnen synchroniseren door middel van Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Database onmiddellijk uploaden bij elke wijziging</string>
-  <string name="summary_dropbox_upload_immediate">Met deze optie kunt automatisch uploaden zodra u een wijziging in de database heeft aangebracht</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Laat het saldo voor elke transactie zien</string>
   <string name="summary_transaction_shown_balance">Laat het saldo voor elke transactie zien. Om het rekeningssaldo te bekijken kan de app trager reageren</string>
@@ -362,9 +340,6 @@
   <string name="Default">Standaard</string>
   <string name="medium">Normaal</string>
   <string name="large">Groot</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Downloaden van Dropbox. Een ogenblik geduld...</string>
-  <string name="dropbox_upload_is_starting">Uploaden naar Dropbox. Een ogenblik geduld...</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Waar je geld naartoe gaat</string>
   <string name="menu_report_where_money_comes_from">Waar je geld vandaan komt</string>
@@ -382,7 +357,6 @@
   <string name="quantity">Hoeveelheid</string>
   <string name="dashboard">Overzicht</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">De databank is up-to-date</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Laatste 3 maanden</string>
   <string name="last6months">Laatste 6 maanden</string>
@@ -420,14 +394,6 @@
   <string name="result_search">Resultaat van uw zoekopdracht</string>
   <string name="new_repeating_transaction">Nieuwe periodieke transactie</string>
   <string name="edit_repeating_transaction">Bewerk periodieke transactie</string>
-  <string name="every_5_minutes">Elke 5 minuten</string>
-  <string name="every_15_minutes">Elke 15 minuten</string>
-  <string name="every_30_minutes">Elke 30 minuten</string>
-  <string name="every_hour">Elk uur</string>
-  <string name="every_2_hours">Elke 2 uur</string>
-  <string name="every_6_hours">Elke 6 uur</string>
-  <string name="every_12_hours">Elke 12 uur</string>
-  <string name="never">Nooit</string>
   <string name="path_database_not_exists">Pad naar databank bestaat niet</string>
   <string name="database_can_not_open_write">De databank kan niet worden geopend voor bewerkingen</string>
   <string name="time_frame">Tijdspanne</string>
@@ -486,7 +452,6 @@
   <string name="tutorial_overview_1">Snel overzicht dashboard, begrotingen, rapporten met aanpassingen.</string>
   <string name="global">Wereldwijd</string>
   <string name="tutorial_global_1">Meerdere valuta\'s en talen. Open Source. Wordt lid van ons vertalingsteam.</string>
-  <string name="synchronization">Synchronisatie</string>
   <string name="tutorial_sync_1">Ondersteuning voor meerdere platforms, synchronisatie via Dropbox. Importeren en exporteren van uw gegevens naar andere applicaties.</string>
   <string name="transactions">Transacties</string>
   <string name="tutorial_transactions_1">Stortingen, opnames, overschrijvingen. Periodieke transacties met herinneringen.</string>
@@ -540,8 +505,6 @@
   <string name="db_fix_duplicates">Dubbele recoprds herstellen</string>
   <string name="split_amount_negative">Het totaalbedrag kan niet negatief zijn.</string>
   <string name="select_all">Selecteer alles</string>
-  <string name="db_not_dropbox">Je huidige databank is niet gesynchroniseerd. Stel alsjeblieft Dropbox-synchronisatie in.</string>
-  <string name="checking_dropbox_for_changes">Contoleer Dropbox voor wijzigingen van de databank.</string>
   <string name="choose_type">Selecteer een type</string>
   <string name="default_account">Standaardrekening</string>
   <string name="default_account_summary">Welke rekening te gebruiken bij het invoeren van een nieuwe transactie.</string>
@@ -560,7 +523,6 @@
   <string name="title_activity_currency_rates_report">Wisselkoersen</string>
   <string name="frequency">Frequentie</string>
   <string name="update_available">Update beschikbaar</string>
-  <string name="update_available_online">Er is een nieuwer databasebestand in Dropbox. Wilt u updaten?</string>
   <string name="currency_not_found">Valuta niet gevonden</string>
   <string name="homepage">Onze website is http://android.moneymanagerex.org/</string>
   <string name="current_database">Huidige databank</string>
@@ -639,4 +601,32 @@
   <string name="question_update_currency_exchange_rates">Wilt u de wisselkoers bijwerken?</string>
   <string name="error_update_currency_exchange_rate">Fout opgetreden tijdens bijwerken wisselkoers</string>
   <string name="currencies_empty">Er zijn geen valuta´s gevonden. Tik op de groene + knop om er een aan te maken.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Je databank is gedownload</string>
+  <string name="dropbox_open_database_downloaded">Om de gedownloade databank te gebruiken, druk je op Open databank</string>
+  <string name="click_to_select_file_dropbox">Seleteer het bestand welke gebruikt dient te worden van Dropbox</string>
+  <string name="download_from_drobpox">Download van Dropbox</string>
+  <string name="summary_download_from_drobpox">Druk hier om handmatig het gelinkte bestand van de Dropbox folder te downloaden</string>
+  <string name="upload_to_drobpox">Upload naar Dropbox</string>
+  <string name="summary_upload_to_drobpox">klik hier om handmatig het gelinkte bestand van de Dropbox folder te uploaden</string>
+  <string name="dropbox_how_it_works">Hoe werkt Dropbox met Money Manager EX?</string>
+  <string name="dropbox_link">Koppeling met Dropbox</string>
+  <string name="dropbox_unlink">Ontkoppel van Dropbox</string>
+  <string name="dropbox_downloadProgress">Bezig met bestand downloaden van Dropbox. Een ogenblik geduld&#8230;</string>
+  <string name="dropbox_uploadProgress">Bezig met bestand uploaden naar Dropbox. Een ogenblik geduld&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox-bestand</string>
+  <string name="dropbox_file_summary_all">Bestand in Dropbox</string>
+  <string name="db_not_dropbox">Je huidige databank is niet gesynchroniseerd. Stel alsjeblieft Dropbox-synchronisatie in.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Synchronisatie</string>
+  <string name="every_5_minutes">Elke 5 minuten</string>
+  <string name="every_15_minutes">Elke 15 minuten</string>
+  <string name="every_30_minutes">Elke 30 minuten</string>
+  <string name="every_hour">Elk uur</string>
+  <string name="every_2_hours">Elke 2 uur</string>
+  <string name="every_6_hours">Elke 6 uur</string>
+  <string name="every_12_hours">Elke 12 uur</string>
+  <string name="never">Nooit</string>
+  <string name="dropbox_select_file">Selecteer een bestand in Dropbox</string>
 </resources>

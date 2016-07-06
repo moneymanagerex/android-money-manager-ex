@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">קישור ל Dropbox</string>
-  <string name="dropbox_unlink">התנתק מ- Dropbox</string>
-  <string name="dropbox_syncProgress">מסנכרן קובץ. המתן בבקשה...</string>
-  <string name="dropbox_downloadProgress">מוריד קובץ Dropbox. המתן בבקשה...</string>
-  <string name="dropbox_uploadProgress">מעלה קובץ ל Dropbox. המתן בבקשה...</string>
-  <string name="dropbox_linkedFile">קובץ Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">כללי</string>
   <string name="preferences_dispaly">נראה ומרגיש</string>
@@ -291,27 +284,14 @@
   <string name="descending">סדר יורד</string>
   <string name="sorting_month">מיון חודשים</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">בחר קובץ מ- Dropbox</string>
   <string name="last_modified">עודכן לאחרונה</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">מסד הנתונים הורד</string>
-  <string name="dropbox_open_database_downloaded">על מנת  להשתמש במסד הנתונים שהורד, גע ב \'פתח מסד נתונים\'</string>
-  <string name="click_to_select_file_dropbox">גע על מנת  לבחור את הקובץ מ Dropbox</string>
-  <string name="download_from_drobpox">מוריד מ Dropbox</string>
-  <string name="summary_download_from_drobpox">געעל מנת להוריד באופן ידני את הקובץ המקושר מתיקית Dropbox</string>
-  <string name="upload_to_drobpox">העלה ל- Dropbox</string>
-  <string name="summary_upload_to_drobpox">גע על מנת להעלות באופן ידני את הקובץ המקושר לתיקית Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">העלאת בהצלחה את מסד הנתונים שלך</string>
-  <string name="dropbox_how_it_works">כיצד פועלת Dropbox עם Money Manager Ex\?</string>
   <string name="dont_show_again">אל תציג שוב</string>
   <string name="open_database">פתח מסד נתונים</string>
   <string name="synchronization_interval">מחזור סינכרון</string>
   <string name="summary_synchronization_interval">באיזו תכיפות לסנכרן?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">מגירסה 1.2.0 Money Manager Ex עבור אנדרואיד ניהול סינכרון עם Dropbox השתנה. עבור משתמשים שכבר משתמשים בסינכרון עם Dropbox, נדרש להגדיר מחדש את התצורה. \nThe הגדרת תצורת הסינכרון עם Dropbox, בחירת מסד הנתונים, ממוקם בהגדרות. \n מגירסה  1.2.0 Money Manager Ex עבור אנדרואיד יכול לסנכרן באופן אוטומטי את מסד הנתונים עם Dropbox</string>
-  <string name="title_dropbox_upload_immediate">עדכון מיידי של מסד הנתונים עם השינוי</string>
-  <string name="summary_dropbox_upload_immediate">אפשרות זו מאפשרת להעלות באופן אוטומטי עם כל שינוי  במסד הנתונים</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">מציג יתרה  לכל תנועה</string>
   <string name="summary_transaction_shown_balance">מציג את יתרה לכל תנועה. הצגת יתרות עשויה להאט את היישום</string>
@@ -327,9 +307,6 @@
   <string name="Default">ברירת מחדל</string>
   <string name="medium">בינוני</string>
   <string name="large">גדול</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">מוריד מ- Dropbox. המתן בבקשה...</string>
-  <string name="dropbox_upload_is_starting">מעלה ל Dropbox. המתן בבקשה...</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">לאן הכסף הולך</string>
   <string name="menu_report_where_money_comes_from">מהיכן הכסף מגיע</string>
@@ -345,7 +322,6 @@
   <string name="quantity">כמות</string>
   <string name="dashboard">לוח בקרה</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">בסיס הנתונים עדכני</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">3 חודשים אחרונים</string>
   <string name="last6months">6 חודשים אחרונים</string>
@@ -379,14 +355,6 @@
   <string name="result_search">תוצאת החיפוש</string>
   <string name="new_repeating_transaction">תנועה מחזורית חדשה</string>
   <string name="edit_repeating_transaction">עריכת תנועה מחזורית</string>
-  <string name="every_5_minutes">כל 5 דקות</string>
-  <string name="every_15_minutes">כל 15 דקות</string>
-  <string name="every_30_minutes">כל 30 דקות</string>
-  <string name="every_hour">כל שעה</string>
-  <string name="every_2_hours">כל שעתיים</string>
-  <string name="every_6_hours">כל 6 שעות</string>
-  <string name="every_12_hours">כל 12 שעות</string>
-  <string name="never">אף פעם</string>
   <string name="path_database_not_exists">נתיב מסד הנתונים לא קיים</string>
   <string name="database_can_not_open_write">לא ניתן לפתוח את מסד הנתונים לכתיבה</string>
   <string name="time_frame">מסגרת הזמן</string>
@@ -432,7 +400,6 @@
   <string name="close">סגור</string>
   <string name="tutorial_accounts_2">גרור שמאלה כדי להמשיך...</string>
   <string name="global">גלובלי</string>
-  <string name="synchronization">סינכרון</string>
   <string name="transactions">תנועות</string>
   <string name="split_category">-פיצול קטגוריה-</string>
   <string name="title_activity_currency_chart">טבלת שערי חליפין</string>
@@ -460,4 +427,30 @@
   <string name="success_currency_exchange_rates">כל שערי החליפין של המטבעות עודכנו בהצלחה</string>
   <string name="update_menu_currency_exchange_rates">עדכן שער חליפין</string>
   <string name="question_update_currency_exchange_rates">האם ברצונך לעדכן את שער החליפין?</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">מסד הנתונים הורד</string>
+  <string name="dropbox_open_database_downloaded">על מנת  להשתמש במסד הנתונים שהורד, גע ב \'פתח מסד נתונים\'</string>
+  <string name="click_to_select_file_dropbox">גע על מנת  לבחור את הקובץ מ Dropbox</string>
+  <string name="download_from_drobpox">מוריד מ Dropbox</string>
+  <string name="summary_download_from_drobpox">געעל מנת להוריד באופן ידני את הקובץ המקושר מתיקית Dropbox</string>
+  <string name="upload_to_drobpox">העלה ל- Dropbox</string>
+  <string name="summary_upload_to_drobpox">גע על מנת להעלות באופן ידני את הקובץ המקושר לתיקית Dropbox</string>
+  <string name="dropbox_how_it_works">כיצד פועלת Dropbox עם Money Manager Ex\?</string>
+  <string name="dropbox_link">קישור ל Dropbox</string>
+  <string name="dropbox_unlink">התנתק מ- Dropbox</string>
+  <string name="dropbox_downloadProgress">מוריד קובץ Dropbox. המתן בבקשה...</string>
+  <string name="dropbox_uploadProgress">מעלה קובץ ל Dropbox. המתן בבקשה...</string>
+  <string name="dropbox_linkedFile">קובץ Dropbox</string>
+  <!-- Synchronization -->
+  <string name="synchronization">סינכרון</string>
+  <string name="every_5_minutes">כל 5 דקות</string>
+  <string name="every_15_minutes">כל 15 דקות</string>
+  <string name="every_30_minutes">כל 30 דקות</string>
+  <string name="every_hour">כל שעה</string>
+  <string name="every_2_hours">כל שעתיים</string>
+  <string name="every_6_hours">כל 6 שעות</string>
+  <string name="every_12_hours">כל 12 שעות</string>
+  <string name="never">אף פעם</string>
+  <string name="dropbox_select_file">בחר קובץ מ- Dropbox</string>
 </resources>

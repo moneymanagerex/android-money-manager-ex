@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Připojit k Dropboxu</string>
-  <string name="dropbox_unlink">Odpojit od Dropboxu</string>
-  <string name="dropbox_syncProgress">Synchronizuji soubor. Počkejte prosím&#8230;</string>
-  <string name="dropbox_downloadProgress">Stahuji soubor z Dropboxu. Počkejte prosím&#8230;</string>
-  <string name="dropbox_uploadProgress">Nahrávám souboru na Dropbox. Počkejte prosím&#8230;</string>
-  <string name="dropbox_linkedFile">Soubor Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Obecné</string>
   <string name="preferences_dispaly">Vzhled a chování</string>
@@ -309,28 +302,14 @@
   <string name="descending">Sestupně</string>
   <string name="sorting_month">Řazení měsíců</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Vyberte soubor z Dropboxu</string>
   <string name="last_modified">Naposledy změněno</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Databáze byla stažena</string>
-  <string name="dropbox_open_database_downloaded">Pro použití stažené databáze se dotkněte Otevřít databázi</string>
-  <string name="click_to_select_file_dropbox">Dotkněte se pro výběr souboru z Dropboxu k použití</string>
-  <string name="download_from_drobpox">Stáhnout z Dropboxu</string>
-  <string name="summary_download_from_drobpox">Dotkněte se pro ruční stažení propojeného souboru ze složky Dropboxu</string>
-  <string name="upload_to_drobpox">Nahrát na Dropbox</string>
-  <string name="summary_upload_to_drobpox">Dotkněte se pro ruční vložení propojeného souboru do složky Dropboxu</string>
-  <string name="upload_file_to_dropbox_complete">Databáze byla úspěšně odeslána</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Jak funguje Dropbox pro Money Manager Ex\?</string>
   <string name="dont_show_again">Příště nezobrazovat</string>
   <string name="open_database">Otevřít databázi</string>
   <string name="synchronization_interval">Interval synchronizace</string>
   <string name="summary_synchronization_interval">Jak často synchronizovat?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Od verze 1.2.0 Money Manager Ex pro Android se změnila správa synchronizace s Dropboxem. Uživatelé, kteří již využívají synchronizaci s Dropboxem, musí zopakovat konfiguraci. \nKonfigurace synchronizace s Dropboxem a výběr databáze se nachází v nastavení. \nOd verze 1.2.0 Money Manager Ex pro Android může automaticky synchronizovat databázi s Dropboxem</string>
-  <string name="title_dropbox_upload_immediate">Po změně okamžitě odeslat databázi</string>
-  <string name="summary_dropbox_upload_immediate">Tato možnost umožňuje automaticky odeslat databázi ihned po změně</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Zobrazí zůstatek pro každou transakci</string>
   <string name="summary_transaction_shown_balance">Zobrazí zůstatek pro každou transakci. Zobrazení zůstatku může zpomalit aplikaci</string>
@@ -346,9 +325,6 @@
   <string name="Default">Výchozí</string>
   <string name="medium">Střední</string>
   <string name="large">Velké</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Stahuji z Dropboxu. Čekejte prosím&#8230;</string>
-  <string name="dropbox_upload_is_starting">Ukládám na Dropbox. Čekejte prosím&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Peníze odchozí</string>
   <string name="menu_report_where_money_comes_from">Peníze příchozí</string>
@@ -365,7 +341,6 @@
   <string name="quantity">Množství</string>
   <string name="dashboard">Přehled</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Databáze je aktuální</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Poslední 3 měsíce</string>
   <string name="last6months">Posledních 6 měsíců</string>
@@ -402,14 +377,6 @@
   <string name="result_search">Výsledek hledání</string>
   <string name="new_repeating_transaction">Nová opakovaná transakce</string>
   <string name="edit_repeating_transaction">Upravit opakovanou transakci</string>
-  <string name="every_5_minutes">Každých 5 minut</string>
-  <string name="every_15_minutes">Každých 15 minut</string>
-  <string name="every_30_minutes">Každých 30 minut</string>
-  <string name="every_hour">Každou hodinu</string>
-  <string name="every_2_hours">Každé 2 hodiny</string>
-  <string name="every_6_hours">Každých 6 hodin</string>
-  <string name="every_12_hours">Každých 12 hodin</string>
-  <string name="never">Nikdy</string>
   <string name="path_database_not_exists">Cesta k databázi neexistuje</string>
   <string name="database_can_not_open_write">Databázi nelze otevřít pro zápis</string>
   <string name="time_frame">Časový rámec</string>
@@ -464,7 +431,6 @@
   <string name="tutorial_overview_1">Rychlý úvodní přehled, rozpočty, sestavy s vlastním nastavením.</string>
   <string name="global">Globalní</string>
   <string name="tutorial_global_1">Mnoho měn a jazyků. Open Source. Připojte se k našemu týmu překladatelů.</string>
-  <string name="synchronization">Synchronizace</string>
   <string name="tutorial_sync_1">Podpora více platforem, synchronizace prostřednictvím Dropboxu. Import a export dat do jiných aplikací.</string>
   <string name="transactions">Transakce</string>
   <string name="tutorial_transactions_1">Vklady, výběry, převody. Opakované transakce s upomínkami.</string>
@@ -516,8 +482,6 @@
   <string name="db_check_schema_error">Chyba: v databázi chybí tabulky!</string>
   <string name="split_amount_negative">Celková částka nemůže být záporná.</string>
   <string name="select_all">Vybrat vše</string>
-  <string name="db_not_dropbox">Vaše současná databáze není synchronizována. Nastavte prosím synchronizaci přes Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Kontroluji změny v databázi na Dropboxu.</string>
   <string name="choose_type">Vyberte typ</string>
   <string name="default_account">Výchozí účet</string>
   <string name="default_account_summary">Účet, který chcete použít při zadávání nové transakce.</string>
@@ -534,7 +498,6 @@
   <string name="title_activity_currency_rates_report">Kurzy měn</string>
   <string name="frequency">Frekvence</string>
   <string name="update_available">Je k dispozici aktualizace</string>
-  <string name="update_available_online">Na Dropboxu je k dispozici aktualizovaný databázový soubor. Chcete aktualizovat?</string>
   <string name="currency_not_found">Měna nebyla nalezena</string>
   <string name="homepage">Náš web je http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuální databáze</string>
@@ -583,4 +546,31 @@
   <string name="question_update_currency_exchange_rates">Chcete aktualizovat směnný kurz?</string>
   <string name="error_update_currency_exchange_rate">Během aktualizace kurzu došlo k chybě</string>
   <string name="currencies_empty">Nenalezeny žádné měny. Pro vytvoření měny klepněte na zelené tlačítko se symbolem plus.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Databáze byla stažena</string>
+  <string name="dropbox_open_database_downloaded">Pro použití stažené databáze se dotkněte Otevřít databázi</string>
+  <string name="click_to_select_file_dropbox">Dotkněte se pro výběr souboru z Dropboxu k použití</string>
+  <string name="download_from_drobpox">Stáhnout z Dropboxu</string>
+  <string name="summary_download_from_drobpox">Dotkněte se pro ruční stažení propojeného souboru ze složky Dropboxu</string>
+  <string name="upload_to_drobpox">Nahrát na Dropbox</string>
+  <string name="summary_upload_to_drobpox">Dotkněte se pro ruční vložení propojeného souboru do složky Dropboxu</string>
+  <string name="dropbox_how_it_works">Jak funguje Dropbox pro Money Manager Ex\?</string>
+  <string name="dropbox_link">Připojit k Dropboxu</string>
+  <string name="dropbox_unlink">Odpojit od Dropboxu</string>
+  <string name="dropbox_downloadProgress">Stahuji soubor z Dropboxu. Počkejte prosím&#8230;</string>
+  <string name="dropbox_uploadProgress">Nahrávám souboru na Dropbox. Počkejte prosím&#8230;</string>
+  <string name="dropbox_linkedFile">Soubor Dropbox</string>
+  <string name="db_not_dropbox">Vaše současná databáze není synchronizována. Nastavte prosím synchronizaci přes Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Synchronizace</string>
+  <string name="every_5_minutes">Každých 5 minut</string>
+  <string name="every_15_minutes">Každých 15 minut</string>
+  <string name="every_30_minutes">Každých 30 minut</string>
+  <string name="every_hour">Každou hodinu</string>
+  <string name="every_2_hours">Každé 2 hodiny</string>
+  <string name="every_6_hours">Každých 6 hodin</string>
+  <string name="every_12_hours">Každých 12 hodin</string>
+  <string name="never">Nikdy</string>
+  <string name="dropbox_select_file">Vyberte soubor z Dropboxu</string>
 </resources>

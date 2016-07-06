@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <!-- default category -->
   <string name="category_1">Účty</string>
   <string name="category_2">Jídlo</string>
   <string name="category_3">Volný čas</string>
@@ -33,6 +34,7 @@
   <string name="category_14">Jiné příjmy</string>
   <string name="category_15">Jiné výdaje</string>
   <string name="category_16">Převod</string>
+  <!-- default subcategory -->
   <string name="subcategory_1">Telefon</string>
   <string name="subcategory_2">Elektřina</string>
   <string name="subcategory_3">Plyn</string>

@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">链接到 Dropbox</string>
-  <string name="dropbox_unlink">取消与 Dropbox 的链接</string>
-  <string name="dropbox_syncProgress">正在同步 请稍候&#8230;</string>
-  <string name="dropbox_downloadProgress">正在将文件从Dropbox下载到本地 请稍候&#8230;</string>
-  <string name="dropbox_uploadProgress">正在将文件上传至Dropbox 请稍候</string>
-  <string name="dropbox_linkedFile">Dropbox 文件</string>
-  <string name="dropbox_file_summary_all">Dropbox 中任意位置的文件</string>
   <!-- preferences -->
   <string name="preferences_general">通用设置</string>
   <string name="preferences_dispaly">外观 &amp; 色调</string>
@@ -324,28 +316,14 @@
   <string name="descending">降序</string>
   <string name="sorting_month">按月排序</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">从 Dropbox 选择一个文件</string>
   <string name="last_modified">上次修改</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">您的数据库已被下载</string>
-  <string name="dropbox_open_database_downloaded">轻触以打开已下载的数据库</string>
-  <string name="click_to_select_file_dropbox">轻触屏幕选择一个需要使用的 Dropbox 文件</string>
-  <string name="download_from_drobpox">从 Dropbox 下载</string>
-  <string name="summary_download_from_drobpox">轻触以从 Dropbox 文件夹手动下载相关联的文件</string>
-  <string name="upload_to_drobpox">上传到 Dropbox</string>
-  <string name="summary_upload_to_drobpox">轻触以将文件手动上传至 Dropbox 文件夹</string>
-  <string name="upload_file_to_dropbox_complete">您的数据库已经更新</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Dropbox 是如何在 Money Manager Ex 中工作的？</string>
   <string name="dont_show_again">不再显示</string>
   <string name="open_database">打开数据库</string>
   <string name="synchronization_interval">同步时间间隔</string>
   <string name="summary_synchronization_interval">设置自动同步的时间间隔</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Money Manager Ex for Android 1.2.0版修改了同步 Dropbox 的方式，已使用同步 Dropbox 的使用者必须重新设置。\nDropbox 与数据库的設定，在设置选项中。\n自 Money Manager Ex for Android 1.2.0版开始能自动和 Dropbox 同步数据库。</string>
-  <string name="title_dropbox_upload_immediate">数据库有变动时立即上传</string>
-  <string name="summary_dropbox_upload_immediate">此选项允许数据库发生时会立即自动上传</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">显示每笔交易金额</string>
   <string name="summary_transaction_shown_balance">显示每笔交易金额，这可能导致程序运行减慢</string>
@@ -361,9 +339,6 @@
   <string name="Default">默认</string>
   <string name="medium">中</string>
   <string name="large">大</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">正在从 Dropbox 下载至本地 请稍候&#8230;</string>
-  <string name="dropbox_upload_is_starting">正在上传至 Dropbox 请稍候&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">支出</string>
   <string name="menu_report_where_money_comes_from">收入</string>
@@ -381,7 +356,6 @@
   <string name="quantity">次数</string>
   <string name="dashboard">统计面板</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">您的数据库已是最新状态</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">最近三个月</string>
   <string name="last6months">最近六个月</string>
@@ -419,14 +393,6 @@
   <string name="result_search">您搜索的结果</string>
   <string name="new_repeating_transaction">新建周期性交易</string>
   <string name="edit_repeating_transaction">编辑周期性交易</string>
-  <string name="every_5_minutes">每隔 5 分钟</string>
-  <string name="every_15_minutes">每隔 15 分钟</string>
-  <string name="every_30_minutes">每隔 30 分钟</string>
-  <string name="every_hour">每小时</string>
-  <string name="every_2_hours">每隔 2 小时</string>
-  <string name="every_6_hours">每隔 6 小时</string>
-  <string name="every_12_hours">每隔 12 小时</string>
-  <string name="never">从不</string>
   <string name="path_database_not_exists">数据库路径不存在</string>
   <string name="database_can_not_open_write">该数据库不能读写</string>
   <string name="time_frame">时间范围</string>
@@ -485,7 +451,6 @@
   <string name="tutorial_overview_1">快速浏览仪主页，预算，和自定义报告。</string>
   <string name="global">全球</string>
   <string name="tutorial_global_1">多种货币和语言。开放源码软件。加入我们的翻译团队。</string>
-  <string name="synchronization">同步</string>
   <string name="tutorial_sync_1">支持多个平台，通过 Dropbox 的同步。导入和导出到其他应用程序数据。</string>
   <string name="transactions">交易</string>
   <string name="tutorial_transactions_1">存款、 取款、 转账。带有提醒的周期性交易。</string>
@@ -542,8 +507,6 @@
   <string name="db_fix_duplicates">修复重复记录</string>
   <string name="split_amount_negative">总金额不能为负。</string>
   <string name="select_all">全选</string>
-  <string name="db_not_dropbox">您当前的数据未被同步。请设置 Dropbox 同步。</string>
-  <string name="checking_dropbox_for_changes">正在检查 Dropbox 上的数据库更新</string>
   <string name="choose_type">选择类型</string>
   <string name="default_account">默认账户</string>
   <string name="default_account_summary">请选择新建交易时的默认使用账户。</string>
@@ -562,7 +525,6 @@
   <string name="title_activity_currency_rates_report">货币汇率</string>
   <string name="frequency">频率</string>
   <string name="update_available">更新可用</string>
-  <string name="update_available_online">Dropbox 上存在一个已更新的数据库文件可以使用。是否需要更新？</string>
   <string name="currency_not_found">未找到货币</string>
   <string name="homepage">我们的主页是 http://android.moneymanagerex.org/</string>
   <string name="current_database">当前数据库</string>
@@ -654,4 +616,32 @@
   <string name="currencies_empty">没有找到可用的币种。轻触绿色加号按钮可添加一个币种。</string>
   <string name="all_currencies">所有货币</string>
   <string name="portfolio">组合</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">您的数据库已被下载</string>
+  <string name="dropbox_open_database_downloaded">轻触以打开已下载的数据库</string>
+  <string name="click_to_select_file_dropbox">轻触屏幕选择一个需要使用的 Dropbox 文件</string>
+  <string name="download_from_drobpox">从 Dropbox 下载</string>
+  <string name="summary_download_from_drobpox">轻触以从 Dropbox 文件夹手动下载相关联的文件</string>
+  <string name="upload_to_drobpox">上传到 Dropbox</string>
+  <string name="summary_upload_to_drobpox">轻触以将文件手动上传至 Dropbox 文件夹</string>
+  <string name="dropbox_how_it_works">Dropbox 是如何在 Money Manager Ex 中工作的？</string>
+  <string name="dropbox_link">链接到 Dropbox</string>
+  <string name="dropbox_unlink">取消与 Dropbox 的链接</string>
+  <string name="dropbox_downloadProgress">正在将文件从Dropbox下载到本地 请稍候&#8230;</string>
+  <string name="dropbox_uploadProgress">正在将文件上传至Dropbox 请稍候</string>
+  <string name="dropbox_linkedFile">Dropbox 文件</string>
+  <string name="dropbox_file_summary_all">Dropbox 中任意位置的文件</string>
+  <string name="db_not_dropbox">您当前的数据未被同步。请设置 Dropbox 同步。</string>
+  <!-- Synchronization -->
+  <string name="synchronization">同步</string>
+  <string name="every_5_minutes">每隔 5 分钟</string>
+  <string name="every_15_minutes">每隔 15 分钟</string>
+  <string name="every_30_minutes">每隔 30 分钟</string>
+  <string name="every_hour">每小时</string>
+  <string name="every_2_hours">每隔 2 小时</string>
+  <string name="every_6_hours">每隔 6 小时</string>
+  <string name="every_12_hours">每隔 12 小时</string>
+  <string name="never">从不</string>
+  <string name="dropbox_select_file">从 Dropbox 选择一个文件</string>
 </resources>

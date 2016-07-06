@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Σύνδεση με Dropbox</string>
-  <string name="dropbox_unlink">Αποσύνδεση από το Dropbox</string>
-  <string name="dropbox_syncProgress">Συγχρονισμός αρχείου. Παρακαλώ περιμένετε...</string>
-  <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε...</string>
-  <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε..</string>
-  <string name="dropbox_linkedFile">Αρχείο Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Γενικά</string>
   <string name="preferences_dispaly">Εμφάνιση</string>
@@ -321,28 +314,14 @@
   <string name="descending">Φθίνουσα</string>
   <string name="sorting_month">Μήνες Διαλογής</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Επιλέξτε ένα αρχείο από Dropbox</string>
   <string name="last_modified">Τελευταία τροποποίηση</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Κάδος ανακύκλωσης</string>
-  <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>
-  <string name="dropbox_open_database_downloaded">Για να χρησιμοποιήσετε τη βάση δεδομένων που κατεβαίνει, ακουμπήστε την Ανοιχτή Βάση δεδομένων</string>
-  <string name="click_to_select_file_dropbox">Αγγίξτε για να επιλέξετε το αρχείο που θα χρησιμοποιηθεί από το Dropbox</string>
-  <string name="download_from_drobpox">Κατεβάστε από το Dropbox</string>
-  <string name="summary_download_from_drobpox">Αγγίξτε για να κατεβάσετε χειροκίνητα το συνδεδεμένο αρχείο από τον φάκελο του Dropbox</string>
-  <string name="upload_to_drobpox">Ανεβάστε στο Dropbox</string>
-  <string name="summary_upload_to_drobpox">Αγγίξτε για να ανεβάσετε με μη αυτόματο τρόπο το συνδεδεμένο αρχείο στον φάκελο Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Η βάση δεδομένων έχει φορτωθεί με επιτυχία</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Πώς λειτουργεί το Dropbox για το Money Manager Ex;</string>
   <string name="dont_show_again">Να μην εμφανιστεί ξανά</string>
   <string name="open_database">Ανοίξτε τη βάση δεδομένων</string>
   <string name="synchronization_interval">Διάστημα συγχρονισμού</string>
   <string name="summary_synchronization_interval">Πόσο συχνά πρέπει να συγχρονίζει;</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Από την έκδοση 1.2.0 του Money Manager Ex  για το Android έχει αλλάξει η διαχείριση συγχρονισμού με Dropbox. Για τους χρήστες που ήδη χρησιμοποιούν τον συγχρονισμό με Dropbox, πρέπει να ξανακάνουν τη διαμόρφωση παραμέτρων. \n Ο συγχρονισμός με Dropbox και η επιλογή της βάσης δεδομένων, βρίσκεται στις ρυθμίσεις. \n Από την έκδοση 1.2.0 του Money Manager Ex για Android μπορεί αυτόματα να συγχρονίσει τη βάση δεδομένων με Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Ανεβάστε τη βάση δεδομένων αμέσως μετά από την αλλαγή</string>
-  <string name="summary_dropbox_upload_immediate">Αυτή η επιλογή επιτρέπει να φορτώσετε αυτόματα μόλις αλλάξετε τη βάση δεδομένων</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Εμφανίζει το υπόλοιπο για κάθε συναλλαγή</string>
   <string name="summary_transaction_shown_balance">Εμφανίζει το υπόλοιπο για κάθε συναλλαγή. Η επίδειξη της ισορροπίας θα μπορούσε να κάνει την εφαρμογή πιο αργή</string>
@@ -358,9 +337,6 @@
   <string name="Default">Παράλειψη</string>
   <string name="medium">Μεσαίο</string>
   <string name="large">Μεγάλο</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Κατέβασμα από Dropbox. Παρακαλώ περίμενε...</string>
-  <string name="dropbox_upload_is_starting">Ανάρτηση στο Dropbox. Παρακαλώ περίμενε...</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Που πηγαίνουν τα χρήματα</string>
   <string name="menu_report_where_money_comes_from">Από που προέρχονται τα χρήματα</string>
@@ -377,7 +353,6 @@
   <string name="quantity">Ποσότητα</string>
   <string name="dashboard">Πίνακας Ελέγχου</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Η βάση δεδομένων είναι μέχρι σήμερα</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Τελευταίους 3 μήνες</string>
   <string name="last6months">Τελευταίους 6 μήνες</string>
@@ -416,14 +391,6 @@
   <string name="result_search">Αποτέλεσμα της αναζήτησής σας</string>
   <string name="new_repeating_transaction">Νέα επαναλαμβανόμενη συναλλαγή</string>
   <string name="edit_repeating_transaction">Επεξεργαστείτε τις επαναλαμβανόμενες συναλλαγές</string>
-  <string name="every_5_minutes">Κάθε 5 λεπτά</string>
-  <string name="every_15_minutes">Κάθε 15 λεπτά</string>
-  <string name="every_30_minutes">Κάθε 30 λεπτά</string>
-  <string name="every_hour">Κάθε ώρα</string>
-  <string name="every_2_hours">Κάθε 2 ώρες</string>
-  <string name="every_6_hours">Κάθε 6 ώρες</string>
-  <string name="every_12_hours">Κάθε 12 ώρες</string>
-  <string name="never">Ποτέ</string>
   <string name="path_database_not_exists">Η διαδρομή βάσης δεδομένων δεν υπάρχει</string>
   <string name="database_can_not_open_write">Η βάση δεδομένων δεν μπορεί να ανοίξει για το γράψιμο</string>
   <string name="time_frame">Χρονικό πλαίσιο</string>
@@ -481,7 +448,6 @@
   <string name="tutorial_overview_1">Γρήγορη επισκόπηση πίνακα ελέγχου, προϋπολογισμών, εκθέσεων με τις προσαρμογές.</string>
   <string name="global">Παγκόσμιο</string>
   <string name="tutorial_global_1">Πολλαπλά νομίσματα και γλώσσες. Ανοικτού κώδικα. Ελάτε στην ομάδα μετάφρασης.</string>
-  <string name="synchronization">Συγχρονισμός</string>
   <string name="tutorial_sync_1">Υποστήριξη για πολλαπλές πλατφόρμες, συγχρονισμό μέσω του Dropbox. Εισαγωγή και εξαγωγή των δεδομένων σας σε άλλες εφαρμογές.</string>
   <string name="transactions">Συναλλαγές</string>
   <string name="tutorial_transactions_1">Καταθέσεις, αναλήψεις, μεταφορές. Επαναλαμβανόμενες συναλλαγές με υπενθυμίσεις.</string>
@@ -538,8 +504,6 @@
   <string name="db_fix_duplicates">Διορθώσετε διπλότυπες εγγραφές</string>
   <string name="split_amount_negative">Το συνολικό ποσό δεν μπορεί να είναι αρνητικό.</string>
   <string name="select_all">Επιλογή όλων</string>
-  <string name="db_not_dropbox">Η τρέχουσα βάση δεδομένων δεν έχει συγχρονιστεί. Παρακαλούμε ορίστε συγχρονισμό με το Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Έλεγχος Dropbox για τροποποιήσεις της βάσης δεδομένων.</string>
   <string name="choose_type">Επιλέξτε έναν τύπο</string>
   <string name="default_account">Προεπιλεγμένος λογαριασμός</string>
   <string name="default_account_summary">Ο λογαριασμός που θα χρησιμοποιηθεί κατά την εισαγωγή μιας νέας συναλλαγής.</string>
@@ -557,7 +521,6 @@
   <string name="title_activity_currency_rates_report">Ισοτιμίες συναλλάγματος</string>
   <string name="frequency">Συχνότητα</string>
   <string name="update_available">Διαθέσιμη ενημέρωση</string>
-  <string name="update_available_online">Υπάρχει μια ενημερωμένη βάση δεδομένων διαθέσιμη στο Dropbox. Θα θέλατε να ενημερώσετε;</string>
   <string name="currency_not_found">Νόμισμα δεν βρέθηκε</string>
   <string name="homepage">Η ιστοσελίδα μας είναι http://android.moneymanagerex.org/</string>
   <string name="current_database">Τρέχουσα βάση δεδομένων</string>
@@ -594,4 +557,31 @@
   <string name="question_update_currency_exchange_rates">Θέλετε να ενημερώσετε την συναλλαγματική ισοτιμία;</string>
   <string name="error_update_currency_exchange_rate">Υπήρχε σφάλμα κατά την ενημέρωση του ποσοστού</string>
   <string name="currencies_empty">Νομίσματα δεν έχουν βρεθεί. Για να δημιουργήσετε ένα, πατήστε το πράσινο κουμπί.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Κάδος ανακύκλωσης</string>
+  <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>
+  <string name="dropbox_open_database_downloaded">Για να χρησιμοποιήσετε τη βάση δεδομένων που κατεβαίνει, ακουμπήστε την Ανοιχτή Βάση δεδομένων</string>
+  <string name="click_to_select_file_dropbox">Αγγίξτε για να επιλέξετε το αρχείο που θα χρησιμοποιηθεί από το Dropbox</string>
+  <string name="download_from_drobpox">Κατεβάστε από το Dropbox</string>
+  <string name="summary_download_from_drobpox">Αγγίξτε για να κατεβάσετε χειροκίνητα το συνδεδεμένο αρχείο από τον φάκελο του Dropbox</string>
+  <string name="upload_to_drobpox">Ανεβάστε στο Dropbox</string>
+  <string name="summary_upload_to_drobpox">Αγγίξτε για να ανεβάσετε με μη αυτόματο τρόπο το συνδεδεμένο αρχείο στον φάκελο Dropbox</string>
+  <string name="dropbox_how_it_works">Πώς λειτουργεί το Dropbox για το Money Manager Ex;</string>
+  <string name="dropbox_link">Σύνδεση με Dropbox</string>
+  <string name="dropbox_unlink">Αποσύνδεση από το Dropbox</string>
+  <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε...</string>
+  <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε..</string>
+  <string name="dropbox_linkedFile">Αρχείο Dropbox</string>
+  <string name="db_not_dropbox">Η τρέχουσα βάση δεδομένων δεν έχει συγχρονιστεί. Παρακαλούμε ορίστε συγχρονισμό με το Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Συγχρονισμός</string>
+  <string name="every_5_minutes">Κάθε 5 λεπτά</string>
+  <string name="every_15_minutes">Κάθε 15 λεπτά</string>
+  <string name="every_30_minutes">Κάθε 30 λεπτά</string>
+  <string name="every_hour">Κάθε ώρα</string>
+  <string name="every_2_hours">Κάθε 2 ώρες</string>
+  <string name="every_6_hours">Κάθε 6 ώρες</string>
+  <string name="every_12_hours">Κάθε 12 ώρες</string>
+  <string name="never">Ποτέ</string>
+  <string name="dropbox_select_file">Επιλέξτε ένα αρχείο από Dropbox</string>
 </resources>

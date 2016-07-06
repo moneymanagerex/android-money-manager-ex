@@ -44,13 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Csatlakozás a Dropbox-hoz</string>
-  <string name="dropbox_unlink">Dropbox leválasztása</string>
-  <string name="dropbox_syncProgress">Állomány szinkronizálása. Kérem várjon&#8230;</string>
-  <string name="dropbox_downloadProgress">Állomány letöltése Dropbox-ból. Kérem várjon&#8230;</string>
-  <string name="dropbox_uploadProgress">Állomány feltöltés Dropbox-ba. Kérem várjon&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox állomány</string>
   <!-- preferences -->
   <string name="preferences_general">Általános</string>
   <string name="preferences_dispaly">Megjelenés</string>
@@ -321,28 +314,14 @@
   <string name="descending">Csökkenő</string>
   <string name="sorting_month">Hónapok rendezése</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Válasszon egy Dropbox állományt</string>
   <string name="last_modified">Utoljára módosítva</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Az adatbázis letöltése megtörtént</string>
-  <string name="dropbox_open_database_downloaded">A letöltött adatbázis használatához válassza az Adatbázis megnyitása menüt</string>
-  <string name="click_to_select_file_dropbox">Válassza ki a használni kívánt állományt a Dropbox-ból</string>
-  <string name="download_from_drobpox">Letöltés Dropbox-ból</string>
-  <string name="summary_download_from_drobpox">Érintse meg a csatolt Dropbox állomány kézi letöltéséhez</string>
-  <string name="upload_to_drobpox">Feltöltés Dropbox-ba</string>
-  <string name="summary_upload_to_drobpox">Érintse meg a csatolt Dropbox állomány kézi feltöltéséhez</string>
-  <string name="upload_file_to_dropbox_complete">Az adatbázis feltöltése sikeresen megtörtént</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Hogyan működik a Dropbox a Money Manager Ex programban\?</string>
   <string name="dont_show_again">Ne mutassa többet</string>
   <string name="open_database">Adatbázis megnyitása</string>
   <string name="synchronization_interval">Szinkronizálási időköz</string>
   <string name="summary_synchronization_interval">Milyen gyakran kell szinkronizálni?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Az 1.2.0 verziótól kezdve megváltozott a Money Manager Ex for Android alkalmazás Dropbox szinkronizáció kezelése. Azon felhasználóknak, akik már használták ezt a funkciót, újra el kell végezni a konfigurálást.\nA Dropbox szinkronizáció konfigurálása és az adatbázis kiválasztása a Beállítások menüben található.\nAz 1.2.0 verziótól kezdve a program képes az automatikus Dropbox szinkronizációra</string>
-  <string name="title_dropbox_upload_immediate">Adatbázis változás azonnali feltöltése</string>
-  <string name="summary_dropbox_upload_immediate">Ez a beállítás lehetővé teszi az automatikus feltöltést, amint változik az adatbázis</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Tranzakciónkénti egyenleg</string>
   <string name="summary_transaction_shown_balance">Mutatja az egyenleget tranzakciónként is. Ez a megjelenítés lassíthatja a program működését</string>
@@ -358,9 +337,6 @@
   <string name="Default">Alapértelmezett</string>
   <string name="medium">Közepes</string>
   <string name="large">Nagy</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Letöltés a Dropbox-ból. Kérem várjon&#8230;</string>
-  <string name="dropbox_upload_is_starting">Feltöltés a Dropbox-ba. Kérem várjon&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Kiadások</string>
   <string name="menu_report_where_money_comes_from">Bevételek</string>
@@ -377,7 +353,6 @@
   <string name="quantity">Mennyiség</string>
   <string name="dashboard">Vezérlőpult</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Az adatbázis naprakész</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Utolsó 3 hónap</string>
   <string name="last6months">Utolsó 6 hónap</string>
@@ -415,14 +390,6 @@
   <string name="result_search">A keresés eredménye</string>
   <string name="new_repeating_transaction">Új ismétlődő tranzakció</string>
   <string name="edit_repeating_transaction">Ismétlődő tranzakció szerkesztése</string>
-  <string name="every_5_minutes">5 percenként</string>
-  <string name="every_15_minutes">15 percenként</string>
-  <string name="every_30_minutes">30 percenként</string>
-  <string name="every_hour">Óránként</string>
-  <string name="every_2_hours">2 óránként</string>
-  <string name="every_6_hours">6 óránként</string>
-  <string name="every_12_hours">12 óránként</string>
-  <string name="never">Soha</string>
   <string name="path_database_not_exists">Adatbázis elérési út nem létezik</string>
   <string name="database_can_not_open_write">Az adatbázis nem nyitható meg szerkesztésre</string>
   <string name="time_frame">Idő keret</string>
@@ -480,7 +447,6 @@
   <string name="tutorial_overview_1">Gyors áttekintő oldal, költségvetések, jelentések, testreszabás.</string>
   <string name="global">Globális</string>
   <string name="tutorial_global_1">Többféle pénznem és nyelv. Nyílt forráskód. Csatlakozzon fordító csapatunkhoz.</string>
-  <string name="synchronization">Szinkronizálás</string>
   <string name="tutorial_sync_1">Multiplatform támogatás, Dropbox szinkronizáció. Import és export lehetőség, kapcsolódás egyéb alkalmazásaihoz.</string>
   <string name="transactions">Tranzakciók</string>
   <string name="tutorial_transactions_1">Bevételek, kiadások, átvezetések. Ismétlődő tranzakciók értesítésekkel.</string>
@@ -537,8 +503,6 @@
   <string name="db_fix_duplicates">Ismétlődő bejegyzések javítása</string>
   <string name="split_amount_negative">A teljes összeg nem lehet negatív.</string>
   <string name="select_all">Mind kiválasztása</string>
-  <string name="db_not_dropbox">A jelenlegi adatbázis nincs szinkronizálva. Kérjük, hogy állítsa be a Dropbox szinkronizációt.</string>
-  <string name="checking_dropbox_for_changes">Adatbázis módosulások ellenőrzése a Dropbox-ban.</string>
   <string name="choose_type">Típus választása</string>
   <string name="default_account">Alapértelmezett számla</string>
   <string name="default_account_summary">Új tranzakció esetén az alapértelmezett számla.</string>
@@ -556,7 +520,6 @@
   <string name="title_activity_currency_rates_report">Árfolyamok</string>
   <string name="frequency">Gyakoriság</string>
   <string name="update_available">Frissítés elérhető</string>
-  <string name="update_available_online">Elérhető egy frissített adatbázis a Dropbox-ban. Szeretne frissíteni?</string>
   <string name="currency_not_found">Nem található pénznem</string>
   <string name="homepage">Honlapunk http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuális adatbázis</string>
@@ -630,4 +593,31 @@
   <string name="question_update_currency_exchange_rates">Szeretné frissíteni az árfolyamokat?</string>
   <string name="error_update_currency_exchange_rate">Hiba történt az árfolyamok frissítése közben</string>
   <string name="currencies_empty">A pénznemek nem találhatók. Új létrehozásához érintse meg a zöld plusz gombot.</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Az adatbázis letöltése megtörtént</string>
+  <string name="dropbox_open_database_downloaded">A letöltött adatbázis használatához válassza az Adatbázis megnyitása menüt</string>
+  <string name="click_to_select_file_dropbox">Válassza ki a használni kívánt állományt a Dropbox-ból</string>
+  <string name="download_from_drobpox">Letöltés Dropbox-ból</string>
+  <string name="summary_download_from_drobpox">Érintse meg a csatolt Dropbox állomány kézi letöltéséhez</string>
+  <string name="upload_to_drobpox">Feltöltés Dropbox-ba</string>
+  <string name="summary_upload_to_drobpox">Érintse meg a csatolt Dropbox állomány kézi feltöltéséhez</string>
+  <string name="dropbox_how_it_works">Hogyan működik a Dropbox a Money Manager Ex programban\?</string>
+  <string name="dropbox_link">Csatlakozás a Dropbox-hoz</string>
+  <string name="dropbox_unlink">Dropbox leválasztása</string>
+  <string name="dropbox_downloadProgress">Állomány letöltése Dropbox-ból. Kérem várjon&#8230;</string>
+  <string name="dropbox_uploadProgress">Állomány feltöltés Dropbox-ba. Kérem várjon&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox állomány</string>
+  <string name="db_not_dropbox">A jelenlegi adatbázis nincs szinkronizálva. Kérjük, hogy állítsa be a Dropbox szinkronizációt.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Szinkronizálás</string>
+  <string name="every_5_minutes">5 percenként</string>
+  <string name="every_15_minutes">15 percenként</string>
+  <string name="every_30_minutes">30 percenként</string>
+  <string name="every_hour">Óránként</string>
+  <string name="every_2_hours">2 óránként</string>
+  <string name="every_6_hours">6 óránként</string>
+  <string name="every_12_hours">12 óránként</string>
+  <string name="never">Soha</string>
+  <string name="dropbox_select_file">Válasszon egy Dropbox állományt</string>
 </resources>

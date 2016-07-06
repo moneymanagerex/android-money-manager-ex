@@ -44,20 +44,12 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Associar à Dropbox</string>
-  <string name="dropbox_unlink">Desassociar da Dropbox</string>
-  <string name="dropbox_syncProgress">A sincronizar ficheiro. Aguarde...</string>
-  <string name="dropbox_downloadProgress">Transferindo ficheiros do Dropbox. Aguarde...</string>
-  <string name="dropbox_uploadProgress">Upload do ficheiro para o Dropbox. Aguarde...</string>
-  <string name="dropbox_linkedFile">Ficheiro Dropbox</string>
-  <string name="dropbox_file_summary_all">Arquivo na Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Geral</string>
-  <string name="preferences_dispaly">Look &amp; Feel</string>
+  <string name="preferences_dispaly">Apresentação e Visual</string>
   <string name="preferences_behaviour">Comportamento</string>
-  <string name="base_currency">Moeda Padrão</string>
-  <string name="base_currency_changed">Moeda-base mudada</string>
+  <string name="base_currency">Moeda Base</string>
+  <string name="base_currency_changed">Moeda base alterada</string>
   <string name="base_currency_change_notification">Moeda-base foi alterada. Por favor, atualize as taxas de câmbio para obter as quantidades corretas na nova moeda base.</string>
   <string name="view_accounts_opened">Ver contas abertas</string>
   <string name="if_not_selected_willShowAllAccounts">Se não for selecionado, irão aparecer todas as contas</string>
@@ -66,12 +58,12 @@
   <string name="build">Build</string>
   <string name="path">Caminho para a Base de Dados</string>
   <string name="database_version">Versão da Base de Dados</string>
-  <string name="title_show_tutorial">Mostrar o tutorial</string>
+  <string name="title_show_tutorial">Mostrar tutorial</string>
   <string name="summary_show_tutorial">Mostrar tutorial na próxima execução?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtrar em seletores</string>
   <string name="preferences_behaviour_focus_filter_summary">Concentre-se no filtro em seletores. Caso contrário, navegue.</string>
-  <string name="pref_auto_sync_via_wifi">Auto-sincronização somente em Wi-Fi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Sincronize automaticamente somente com conexão Wi-Fi.</string>
+  <string name="pref_auto_sync_via_wifi">Sincronização Automática apenas em Wi-Fi</string>
+  <string name="pref_auto_sync_via_wifi_summary">Sincronizar automaticamente apenas com ligação Wi-Fi.</string>
   <!-- account -->
   <string name="account">Conta</string>
   <string name="account_list">Lista de Contas</string>
@@ -81,11 +73,11 @@
   <string name="delete_account">Eliminar conta</string>
   <string name="account_name">Nome da conta</string>
   <string name="account_type">Tipo de conta</string>
-  <string name="account_number">Nº da conta</string>
+  <string name="account_number">Número de conta</string>
   <string name="account_held_at">Mantida no(a)</string>
   <string name="account_status">Estado da conta</string>
   <string name="favourite_account">Conta favorita</string>
-  <string name="select_currency">Escolher Moeda</string>
+  <string name="select_currency">Selecionar moeda</string>
   <string name="checking">Conta à Ordem</string>
   <string name="investment">Investimento</string>
   <string name="investment_accounts">Contas de investimento</string>
@@ -116,7 +108,7 @@
   <string name="add_category">Adicionar Categoria</string>
   <string name="add_subcategory">Adicionar subcategoria</string>
   <string name="edit_categoryName">Editar Categoria</string>
-  <string name="delete_category">Eliminar categoria</string>
+  <string name="delete_category">Eliminar Categoria</string>
   <!-- currency -->
   <string name="currency_name">Nome da moeda</string>
   <string name="currency_symbol">Símbolo da Moeda</string>
@@ -147,7 +139,7 @@
   <string name="withdrawal">Levantamento</string>
   <string name="db_checking_insert_failed">Inserção da transação falhou</string>
   <string name="db_checking_update_failed">Actualização da transacção falhou</string>
-  <string name="delete_transaction">Eliminar movimento</string>
+  <string name="delete_transaction">Eliminar Transação</string>
   <string name="new_transaction">Nova transacção</string>
   <string name="error_payee_not_selected">Beneficiário é necessário</string>
   <string name="error_toaccount_not_selected">Para a Conta é necessário</string>
@@ -163,7 +155,7 @@
   <string name="download">Descarregar</string>
   <string name="edit">Editar</string>
   <string name="home">Início</string>
-  <string name="logo">Logotipo</string>
+  <string name="logo">Logótipo</string>
   <string name="new_edit_transaction">Novo/Editar Movimento</string>
   <string name="refresh">Atualizar</string>
   <string name="search">Pesquisa</string>
@@ -173,7 +165,7 @@
   <string name="synchronize">Sincronizar</string>
   <string name="open">Aberta</string>
   <string name="user">Utilizador</string>
-  <string name="upload">Carregar</string>
+  <string name="upload">Enviar</string>
   <string name="username">Nome do Utilizador</string>
   <string name="to">Para</string>
   <string name="website">Site da Web</string>
@@ -199,10 +191,10 @@
   <string name="today">Hoje</string>
   <string name="last7days">Últimos 7 dias</string>
   <string name="last15days">Últimas 2 semanas</string>
-  <string name="current_month">Mês actual</string>
-  <string name="current_year">Ano actual</string>
+  <string name="current_month">Mês atual</string>
+  <string name="current_year">Ano atual</string>
   <string name="future_transactions">Transacções Futuras</string>
-  <string name="show_transaction">Mostrar movimentos</string>
+  <string name="show_transaction">Mostrar Transação</string>
   <string name="changelog">Registo de Alterações</string>
   <string name="transaction_number">Nº da Transacção</string>
   <string name="widget_summary">Resumo</string>
@@ -226,7 +218,7 @@
   <string name="every_x_days">Cada (x) Dia(s)</string>
   <string name="every_x_months">Cada (x) Mes(es)</string>
   <string name="repeating_empty_transaction">Não foram encontradas transacções recorrentes. Para criar uma, toque no botão verde, com o sinal mais.</string>
-  <string name="inactive">Desactivado</string>
+  <string name="inactive">Inativo</string>
   <string name="activates">Ativar</string>
   <string name="days_overdue">dia(s) de atraso</string>
   <string name="days_remaining">dia(s) restante(s)</string>
@@ -247,7 +239,7 @@
   <string name="notification_click_to_check_repeating_transaction">Toque para marcar a transação como atrasada</string>
   <string name="num_repeating_transaction_expired">%1$d transação recorrente em atraso</string>
   <!-- 20121121 -->
-  <string name="send_feedback">Envie Comentários</string>
+  <string name="send_feedback">Enviar Opinião</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
   <!-- 20121122 -->
   <string name="preferences_info_application">Info</string>
@@ -257,15 +249,15 @@
   <string name="reinsert_your_passcode">Re-digite a senha nova</string>
   <string name="passocde_no_macth">Senhas não correspondem</string>
   <string name="preferences_edit_passcode">Editar Código de Acesso</string>
-  <string name="preferences_disable_passcode">Desactivar Código de Acesso</string>
+  <string name="preferences_disable_passcode">Desativar Código de Acesso</string>
   <string name="enter_your_previous_passcode">Indique o Código de Acesso anterior</string>
   <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">Código de Acesso não foi actualizado</string>
   <!-- 20121217 -->
   <string name="lookups_wildcard">Quando pesquisar pode utilizar o caracter \"%\"</string>
-  <string name="income_vs_expenses_current_month">Receitas vs Despesas: Mês actual</string>
+  <string name="income_vs_expenses_current_month">Receitas vs Despesas: Mês Atual</string>
   <string name="income">Receitas</string>
-  <string name="expenses">Despesa</string>
+  <string name="expenses">Despesas</string>
   <string name="difference">Diferença</string>
   <string name="no_data">Não há registos. Tente ajustar o período visível ou crie um novo registo. </string>
   <string name="no_stock_data">Não foram encontrados dados Ações nesta conta.</string>
@@ -324,28 +316,14 @@
   <string name="descending">Descendente</string>
   <string name="sorting_month">Ordenação dos meses</string>
   <!-- 20130305 -->
-  <string name="dropbox_select_file">Selecione um ficheiro do Dropbox</string>
   <string name="last_modified">Última modificação</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">A sua base de dados foi descarregada</string>
-  <string name="dropbox_open_database_downloaded">Para usar a base de dados descarregada, toque em Abrir base de dados</string>
-  <string name="click_to_select_file_dropbox">Toque para seleccionar o ficheiro a ser usado do Dropbox</string>
-  <string name="download_from_drobpox">Download do Dropbox</string>
-  <string name="summary_download_from_drobpox">Toque para descarregar manualmente o ficheiro da pasta Dropbox</string>
-  <string name="upload_to_drobpox">Enviar para o Dropbox</string>
-  <string name="summary_upload_to_drobpox">Toque para carregar manualmente o ficheiro para a pasta Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">A sua base de dados foi enviada com sucesso</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Como funciona o Dropbox para o Money Manager Ex\?</string>
   <string name="dont_show_again">Não mostrar novamente</string>
   <string name="open_database">Abrir Base de Dados</string>
   <string name="synchronization_interval">Intervalo de Sincronização</string>
   <string name="summary_synchronization_interval">Quantas vezes deve sincronizar?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">A partir da versão 1.2.0 do Ex Money Manager para Android mudou a gestão da sincronização com a Dropbox. Para os utilizadores que já estão a usar a sincronização com a Dropbox, devem refazer a configuração. \ A configuração de sincronização e a seleção da base de dados na Dropbox, que está localizado nas configurações. \ Na versão 1.2.0 do Money Manager Ex para Android pode sincronizar automaticamente a base de dados com Dropbox</string>
-  <string name="title_dropbox_upload_immediate">Carregar a Base de dados após modificações</string>
-  <string name="summary_dropbox_upload_immediate">Esta opção permite carregar a Base de dados automaticamente logo que faça modificações de dados</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Mostrar o saldo de cada movimento</string>
   <string name="summary_transaction_shown_balance">Mostrar o saldo de cada movimento poderá tornar a aplicação mais lenta.</string>
@@ -361,9 +339,6 @@
   <string name="Default">Padrão</string>
   <string name="medium">Média</string>
   <string name="large">Grande</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Download do Dropbox. Aguarde...</string>
-  <string name="dropbox_upload_is_starting">Enviando para o Dropbox. Aguarde...</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Despesas</string>
   <string name="menu_report_where_money_comes_from">Receitas</string>
@@ -381,7 +356,6 @@
   <string name="quantity">Quantidade</string>
   <string name="dashboard">Painel de controle</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">A base de dados está actualizada</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Últimos 3 meses</string>
   <string name="last6months">Últimos 6 meses</string>
@@ -419,14 +393,6 @@
   <string name="result_search">Resultado da pesquisa</string>
   <string name="new_repeating_transaction">Nova transação recorrente</string>
   <string name="edit_repeating_transaction">Editar transação recorrente</string>
-  <string name="every_5_minutes">Cada 5 minutos</string>
-  <string name="every_15_minutes">A cada 15 minutos</string>
-  <string name="every_30_minutes">Cada 30 minutos</string>
-  <string name="every_hour">Cada hora</string>
-  <string name="every_2_hours">Cada 2 horas</string>
-  <string name="every_6_hours">Cada 6 horas</string>
-  <string name="every_12_hours">Cada 12 horas</string>
-  <string name="never">Nunca</string>
   <string name="path_database_not_exists">Caminho da base de dados não existe</string>
   <string name="database_can_not_open_write">A base de dados não pode ser aberta para gravação</string>
   <string name="time_frame">Período de tempo</string>
@@ -485,7 +451,6 @@
   <string name="tutorial_overview_1">Painel de análise rápida, orçamentos, relatórios com personalizações.</string>
   <string name="global">Global</string>
   <string name="tutorial_global_1">Várias moedas e idiomas. Código-fonte aberto. Junte-se à nossa equipa de tradução.</string>
-  <string name="synchronization">Sincronização</string>
   <string name="tutorial_sync_1">Suporte para múltiplas plataformas, sincronização via Dropbox. Importação e exportação de dados para outras aplicações.</string>
   <string name="transactions">Transacções</string>
   <string name="tutorial_transactions_1">Depósitos, levantamentos, transferências. Transacções recorrentes com lembretes.</string>
@@ -542,8 +507,6 @@
   <string name="db_fix_duplicates">Corrigir os registos duplicados</string>
   <string name="split_amount_negative">A quantia total não pode ser negativa.</string>
   <string name="select_all">Seleccionar tudo</string>
-  <string name="db_not_dropbox">A base de dados actual não está sincronizada. Por favor configure a sincronização Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Verificando alterações na base de dados para o Dropbox.</string>
   <string name="choose_type">Escolha um tipo</string>
   <string name="default_account">Conta padrão</string>
   <string name="default_account_summary">Conta a usar quando criar uma nova transacção.</string>
@@ -562,7 +525,6 @@
   <string name="title_activity_currency_rates_report">Taxas de câmbio</string>
   <string name="frequency">Frequência</string>
   <string name="update_available">Está disponível uma actualização</string>
-  <string name="update_available_online">Há um arquivo na base de dados atualizado disponível na Dropbox. Gostaria de atualizar?</string>
   <string name="currency_not_found">Moeda não encontrada</string>
   <string name="homepage">O nosso site é http://android.moneymanagerex.org/</string>
   <string name="current_database">Base de dados atual</string>
@@ -634,6 +596,9 @@
   <string name="budget_month">Orçamento mensal</string>
   <string name="copy">Cópia</string>
   <string name="app_restart">O app vai fechar para aplicar as alterações. Por favor reinicie.</string>
+  <string name="print">Imprimir</string>
+  <string name="save_as_html">Guardar como HTML</string>
+  <string name="no_network">Não existe nenhuma rede disponível.</string>
   <!-- Currencies -->
   <string name="currencies">Moedas</string>
   <string name="currencies_used">Moedas, usadas</string>
@@ -648,4 +613,43 @@
   <string name="question_update_currency_exchange_rates">Deseja actualizar a taxa de câmbio?</string>
   <string name="error_update_currency_exchange_rate">Existiu um erro ao actualizar a taxa</string>
   <string name="currencies_empty">Não foram encontradas moedas. Para criar uma, toque no botão verde.</string>
+  <string name="active_currencies">Moedas Ativas</string>
+  <string name="inactive_currencies">Moedas Inativas</string>
+  <string name="all_currencies">Todas as Moedas</string>
+  <string name="portfolio">Portfólio</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">A sua base de dados foi descarregada</string>
+  <string name="dropbox_open_database_downloaded">Para usar a base de dados descarregada, toque em Abrir base de dados</string>
+  <string name="click_to_select_file_dropbox">Toque para seleccionar o ficheiro a ser usado do Dropbox</string>
+  <string name="download_from_drobpox">Download do Dropbox</string>
+  <string name="summary_download_from_drobpox">Toque para descarregar manualmente o ficheiro da pasta Dropbox</string>
+  <string name="upload_to_drobpox">Enviar para o Dropbox</string>
+  <string name="summary_upload_to_drobpox">Toque para carregar manualmente o ficheiro para a pasta Dropbox</string>
+  <string name="dropbox_how_it_works">Como funciona o Dropbox para o Money Manager Ex\?</string>
+  <string name="dropbox_link">Associar à Dropbox</string>
+  <string name="dropbox_unlink">Desassociar da Dropbox</string>
+  <string name="dropbox_downloadProgress">Transferindo ficheiros do Dropbox. Aguarde...</string>
+  <string name="dropbox_uploadProgress">Upload do ficheiro para o Dropbox. Aguarde...</string>
+  <string name="dropbox_linkedFile">Ficheiro Dropbox</string>
+  <string name="dropbox_file_summary_all">Arquivo na Dropbox</string>
+  <string name="db_not_dropbox">A base de dados actual não está sincronizada. Por favor configure a sincronização Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Sincronização</string>
+  <string name="sync_enabled">Sincronização ativada</string>
+  <string name="sync_provider">Provedor</string>
+  <string name="remote_file">Ficheiro remoto</string>
+  <string name="please_wait">Por favor, aguarde</string>
+  <string name="invalid_database">Esta extensão não é reconhecida como uma base de dados válida.</string>
+  <string name="reset_preferences">Redefinir preferências</string>
+  <string name="preferences_reset">As preferências de sincronização foram redefinidas.</string>
+  <string name="every_5_minutes">Cada 5 minutos</string>
+  <string name="every_15_minutes">A cada 15 minutos</string>
+  <string name="every_30_minutes">Cada 30 minutos</string>
+  <string name="every_hour">Cada hora</string>
+  <string name="every_2_hours">Cada 2 horas</string>
+  <string name="every_6_hours">Cada 6 horas</string>
+  <string name="every_12_hours">Cada 12 horas</string>
+  <string name="never">Nunca</string>
+  <string name="dropbox_select_file">Selecione um ficheiro do Dropbox</string>
 </resources>

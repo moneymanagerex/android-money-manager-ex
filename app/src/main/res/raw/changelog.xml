@@ -16,7 +16,14 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.07.03.001">
+    <changelogversion versionName="2016.07.06.848">
+        <changelogtext>Thank you for the feedback. Please keep it coming.</changelogtext>
+        <changelogtext>Removing a few direct references to Dropbox.</changelogtext>
+        <changelogtext>Showing progress bar during sync.</changelogtext>
+        <changelogtext>Handling errors on opening Asset Allocation.</changelogtext>
+        <changelogtext>Handling errors during price download from YQL.</changelogtext>
+    </changelogversion>
+    <changelogversion versionName="2016.07.05.847">
         <changelogtext>Note: There are BIG changes in this release!
             This release includes support for four major cloud storage providers:
             Dropbox, Google Drive, OneDrive, and Box.

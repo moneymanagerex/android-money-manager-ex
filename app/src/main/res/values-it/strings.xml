@@ -44,14 +44,6 @@
   <!--<string name="import_export_database_progress">Database import/export in progress</string>-->
   <!--<string name="import_export_success">Import / Export completed successfully</string>-->
   <!--<string name="import_export_failed">Import / Export failed</string>-->
-  <!-- dropbox -->
-  <string name="dropbox_link">Collega con Dropbox</string>
-  <string name="dropbox_unlink">Scollega da Dropbox</string>
-  <string name="dropbox_syncProgress">Sincronizzazione file. Attendere prego&#8230;</string>
-  <string name="dropbox_downloadProgress">Download file da Dropbox. Attendere prego&#8230;</string>
-  <string name="dropbox_uploadProgress">Upload file su Dropbox. Attendere prego&#8230;</string>
-  <string name="dropbox_linkedFile">File Dropbox</string>
-  <string name="dropbox_file_summary_all">File presente in Dropbox</string>
   <!-- preferences -->
   <string name="preferences_general">Generale</string>
   <string name="preferences_dispaly">Look &amp; Feel</string>
@@ -325,29 +317,14 @@
   <string name="descending">Decrescente</string>
   <string name="sorting_month">Ordinamento per mese</string>
   <!-- 20130305 -->
-  <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
-  <string name="dropbox_select_file">Selezionare un file da Dropbox</string>
   <string name="last_modified">Ultima modifica</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
-  <string name="dropbox">Dropbox</string>
-  <string name="dropbox_file_ready_for_use">Il database è stato scaricato</string>
-  <string name="dropbox_open_database_downloaded">Per utilizzare il database scaricato, toccare Apri Database</string>
-  <string name="click_to_select_file_dropbox">Toccare per selezionare il file da utilizzare da Dropbox</string>
-  <string name="download_from_drobpox">Download da Dropbox</string>
-  <string name="summary_download_from_drobpox">Tocca per scaricare manualmente il file collegato dalla cartella Dropbox</string>
-  <string name="upload_to_drobpox">Upload su Dropbox</string>
-  <string name="summary_upload_to_drobpox">Tocca per caricare manualmente il file collegato alla cartella Dropbox</string>
-  <string name="upload_file_to_dropbox_complete">Il database è stato caricato con successo</string>
-  <string name="application_name_dropbox">Dropbox - Money Manager Ex</string>
-  <string name="dropbox_how_it_works">Come funziona Dropbox per Money Manager Ex\?</string>
   <string name="dont_show_again">Non mostrare più</string>
   <string name="open_database">Apri Database</string>
   <string name="synchronization_interval">Intervallo di sincronizzazione</string>
   <string name="summary_synchronization_interval">Con quale frequenza vuoi sincronizzare?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
   <string name="tips_new_version_dropbox">Dalla versione 1.2.0 di Money Manager Ex for Android è cambiata la gestione della sincronizzazione con Dropbox. Per gli utenti che stanno già utilizzando la sincronizzazione con Dropbox, è necessario rifare la configurazione.\nLa configurazione della sincronizzazione con Dropbox e la selezione del database, si trova nelle impostazioni.\nDalla versione 1.2.0 di Money Manager Ex for Android, l\'applicazione è in grado di sincronizzare automaticamente il database con Dropbox.</string>
-  <string name="title_dropbox_upload_immediate">Upload del database immediatamente dopo la modifica</string>
-  <string name="summary_dropbox_upload_immediate">Questa opzione consente di caricare (upload) automaticamente su Dropbox non appena si modifica il database</string>
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Mostra il saldo per ogni operazione</string>
   <string name="summary_transaction_shown_balance">Visualizza il saldo per ogni operazione. La visualizzazione del saldo per ogni transazione potrebbe rallentare l\'applicazione</string>
@@ -363,9 +340,6 @@
   <string name="Default">Default</string>
   <string name="medium">Medio</string>
   <string name="large">Grande</string>
-  <!-- 20130528 -->
-  <string name="dropbox_download_is_starting">Download da Dropbox. Attendere prego&#8230;</string>
-  <string name="dropbox_upload_is_starting">Caricamento su Dropbox. Attendere prego&#8230;</string>
   <!-- 20130606 -->
   <string name="menu_report_where_money_goes">Dove va il denaro</string>
   <string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
@@ -383,7 +357,6 @@
   <string name="quantity">Quantità</string>
   <string name="dashboard">Cruscotto</string>
   <!-- 20130808 -->
-  <string name="dropbox_database_is_synchronized">Il database è aggiornato</string>
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
   <string name="last3months">Ultimi 3 mesi</string>
   <string name="last6months">Ultimi 6 mesi</string>
@@ -421,14 +394,6 @@
   <string name="result_search">Esito della ricerca</string>
   <string name="new_repeating_transaction">Nuova operazione ricorrente</string>
   <string name="edit_repeating_transaction">Modifica operazione ricorrente</string>
-  <string name="every_5_minutes">Ogni 5 minuti</string>
-  <string name="every_15_minutes">Ogni 15 minuti</string>
-  <string name="every_30_minutes">Ogni 30 minuti</string>
-  <string name="every_hour">Ogni ora</string>
-  <string name="every_2_hours">Ogni 2 ore</string>
-  <string name="every_6_hours">Ogni 6 ore</string>
-  <string name="every_12_hours">Ogni 12 ore</string>
-  <string name="never">Mai</string>
   <string name="path_database_not_exists">Percorso del database non esiste</string>
   <string name="database_can_not_open_write">Il database non può essere aperto in scrittura</string>
   <string name="time_frame">Intervallo di tempo</string>
@@ -487,7 +452,6 @@
   <string name="tutorial_overview_1">Rapida panoramica sui bilanci, budgets e resoconti con personalizzazioni.</string>
   <string name="global">Globale</string>
   <string name="tutorial_global_1">Svariate valute e lingue. Open Source. Unisciti al nostro team di traduzione.</string>
-  <string name="synchronization">Sincronizzazione</string>
   <string name="tutorial_sync_1">Supporto per piattaforme multiple, sincronizzazione via Dropbox. Importazione ed esportazione dei dati per altre applicazioni.</string>
   <string name="transactions">Operazioni</string>
   <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Operazioni ricorrenti con promemoria.</string>
@@ -544,8 +508,6 @@
   <string name="db_fix_duplicates">Correggi record duplicati</string>
   <string name="split_amount_negative">L\'importo totale non può essere negativo.</string>
   <string name="select_all">Seleziona tutto</string>
-  <string name="db_not_dropbox">Il database corrente non è sincronizzato. Per favore imposta la sincronizzazione con Dropbox.</string>
-  <string name="checking_dropbox_for_changes">Sto controllando Dropbox per modifiche al database.</string>
   <string name="choose_type">Seleziona una tipologia</string>
   <string name="default_account">Conto predefinito</string>
   <string name="default_account_summary">Il conto da utilizzare quando si immette in una nuova operazione.</string>
@@ -564,7 +526,6 @@
   <string name="title_activity_currency_rates_report">Tassi di cambio</string>
   <string name="frequency">Frequenza</string>
   <string name="update_available">Aggiornamento disponibile</string>
-  <string name="update_available_online">C\'è un database aggiornato disponibile su Dropbox. Vuoi aggiornare?</string>
   <string name="currency_not_found">Valuta non trovata</string>
   <string name="homepage">La nostra homepage è http://android.moneymanagerex.org/</string>
   <string name="current_database">Database corrente</string>
@@ -661,4 +622,33 @@
   <string name="inactive_currencies">Valute inattive</string>
   <string name="all_currencies">Tutte le valute</string>
   <string name="portfolio">Portafoglio</string>
+  <!-- deprecated / Dropbox -->
+  <string name="dropbox">Dropbox</string>
+  <string name="dropbox_file_ready_for_use">Il database è stato scaricato</string>
+  <string name="dropbox_open_database_downloaded">Per utilizzare il database scaricato, toccare Apri Database</string>
+  <string name="click_to_select_file_dropbox">Toccare per selezionare il file da utilizzare da Dropbox</string>
+  <string name="download_from_drobpox">Download da Dropbox</string>
+  <string name="summary_download_from_drobpox">Tocca per scaricare manualmente il file collegato dalla cartella Dropbox</string>
+  <string name="upload_to_drobpox">Upload su Dropbox</string>
+  <string name="summary_upload_to_drobpox">Tocca per caricare manualmente il file collegato alla cartella Dropbox</string>
+  <string name="dropbox_how_it_works">Come funziona Dropbox per Money Manager Ex\?</string>
+  <string name="dropbox_link">Collega con Dropbox</string>
+  <string name="dropbox_unlink">Scollega da Dropbox</string>
+  <string name="dropbox_downloadProgress">Download file da Dropbox. Attendere prego&#8230;</string>
+  <string name="dropbox_uploadProgress">Upload file su Dropbox. Attendere prego&#8230;</string>
+  <string name="dropbox_linkedFile">File Dropbox</string>
+  <string name="dropbox_file_summary_all">File presente in Dropbox</string>
+  <string name="db_not_dropbox">Il database corrente non è sincronizzato. Per favore imposta la sincronizzazione con Dropbox.</string>
+  <!-- Synchronization -->
+  <string name="synchronization">Sincronizzazione</string>
+  <string name="every_5_minutes">Ogni 5 minuti</string>
+  <string name="every_15_minutes">Ogni 15 minuti</string>
+  <string name="every_30_minutes">Ogni 30 minuti</string>
+  <string name="every_hour">Ogni ora</string>
+  <string name="every_2_hours">Ogni 2 ore</string>
+  <string name="every_6_hours">Ogni 6 ore</string>
+  <string name="every_12_hours">Ogni 12 ore</string>
+  <string name="never">Mai</string>
+  <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
+  <string name="dropbox_select_file">Selezionare un file da Dropbox</string>
 </resources>
