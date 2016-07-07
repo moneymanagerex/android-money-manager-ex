@@ -422,6 +422,8 @@ public class AssetAllocationFragment
     private View mFooter;
 
     private void renderFooter(AssetClass assetClass) {
+        if (assetClass == null) return;
+
         View view = View.inflate(getActivity(), R.layout.item_asset_allocation, null);
         AssetClassViewHolder holder = AssetClassViewHolder.initialize(view);
         MatrixCursorColumns values = new MatrixCursorColumns();
