@@ -97,7 +97,10 @@ public class SyncMessengerFactory {
     }
 
     private void showMessage(final int message, final int length) {
-        final Activity parent = (Activity) getContext();
+        Context context = getContext();
+        if (!(context instanceof Activity)) return;
+
+        final Activity parent = (Activity) context;
 
         parent.runOnUiThread(new Runnable() {
             @Override

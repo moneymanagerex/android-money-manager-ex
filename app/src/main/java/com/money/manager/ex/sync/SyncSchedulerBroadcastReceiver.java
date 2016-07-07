@@ -42,12 +42,11 @@ import java.util.Calendar;
 
 /**
  * Schedules the periodic alarm/heartbeat that triggers synchronization.
- * Run from the settings, when the synchronization interval changes and on BOOT_COMPLETED.
+ * Run from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
     extends BroadcastReceiver {
 
-    // action intents
     public static final String ACTION_START = "com.money.manager.ex.intent.action.START_SYNC_SERVICE";
     public static final String ACTION_STOP = "com.money.manager.ex.intent.action.STOP_SYNC_SERVICE";
 

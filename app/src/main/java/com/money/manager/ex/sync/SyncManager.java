@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.sync;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -624,7 +625,7 @@ public class SyncManager {
 
         // Action
 
-        Messenger messenger = createProgressDialog();
+        Messenger messenger = createMessenger();
         String localFile = getLocalPath();
 
         Intent service = new Intent(getContext(), SyncService.class);
@@ -647,18 +648,21 @@ public class SyncManager {
         // once done, the message is sent out via messenger. See Messenger definition in factory.
     }
 
-    private Messenger createProgressDialog() {
+    private Messenger createMessenger() {
         ProgressDialog progressDialog = null;
-        try {
-            //progress dialog shown only when downloading an updated db file.
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "displaying download progress dialog");
+        // Create progress dialog only if called from the UI.
+        if (getContext() instanceof Activity) {
+            try {
+                //progress dialog shown only when downloading an updated db file.
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage(getContext().getString(R.string.syncProgress));
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();
+            } catch (Exception ex) {
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                handler.handle(ex, "displaying sync progress dialog");
+            }
         }
 
         Messenger messenger = new SyncMessengerFactory(getContext())
