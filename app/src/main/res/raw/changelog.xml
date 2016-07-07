@@ -16,8 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.07.849">
+        <changelogtext>Improvements and adjustments in auto-sync and progress display.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.06.848">
-        <changelogtext>Thank you for the feedback. Please keep it coming.</changelogtext>
         <changelogtext>Removing a few direct references to Dropbox.</changelogtext>
         <changelogtext>Showing progress bar during sync.</changelogtext>
         <changelogtext>Handling errors on opening Asset Allocation.</changelogtext>
