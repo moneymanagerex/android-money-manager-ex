@@ -40,6 +40,7 @@ public class CheckCloudStorageForUpdatesTask
     }
 
     private Context mContext;
+    private SyncManager mSyncManager;
 
     @Override
     protected Integer doInBackground(Void... voids) {
@@ -48,7 +49,10 @@ public class CheckCloudStorageForUpdatesTask
         try {
             publishProgress(1);
 
-            result = new SyncManager(getContext()).compareFilesForSync();
+            // Check if any sync action is required.
+            result = getSyncManager().compareFilesForSync();
+
+            // continues at PostExecute.
         } catch (Exception e) {
             //throw new RuntimeException("Error in check Cloud ForUpdates", e);
             ExceptionHandler handler = new ExceptionHandler(getContext());
@@ -65,7 +69,7 @@ public class CheckCloudStorageForUpdatesTask
     @Override
     protected void onPostExecute(Integer ret) {
         try {
-            if (ret.equals(SyncMessages.DOWNLOAD_COMPLETE)) {
+            if (ret.equals(SyncMessages.STARTING_DOWNLOAD)) {
 //            showNotificationSnackbar();
                 showNotificationDialog();
             }
@@ -73,6 +77,12 @@ public class CheckCloudStorageForUpdatesTask
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(ex, "showing update notification dialog");
         }
+
+        if (ret.equals(SyncMessages.STARTING_UPLOAD)) {
+            // upload without prompting.
+            getSyncManager().triggerSynchronization();
+        }
+
     }
 
 //    private void showNotificationSnackbar() {
@@ -98,8 +108,15 @@ public class CheckCloudStorageForUpdatesTask
         return mContext;
     }
 
+    private SyncManager getSyncManager() {
+        if (mSyncManager == null) {
+            mSyncManager = new SyncManager(getContext());
+        }
+        return mSyncManager;
+    }
+
     private void showNotificationDialog() {
-        new AlertDialogWrapper.Builder(mContext)
+        new AlertDialogWrapper.Builder(getContext())
             // setting alert dialog
             .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
             .setTitle(R.string.update_available)

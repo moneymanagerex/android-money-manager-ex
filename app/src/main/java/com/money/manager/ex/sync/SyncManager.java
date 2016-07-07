@@ -169,9 +169,9 @@ public class SyncManager {
         }
 
         if (remoteLastModified.isAfter(localLastModified)) {
-            return SyncMessages.DOWNLOAD_COMPLETE;
+            return SyncMessages.STARTING_DOWNLOAD;
         } else if (remoteLastModified.isBefore(localLastModified)) {
-            return SyncMessages.UPLOAD_COMPLETE;
+            return SyncMessages.STARTING_UPLOAD;
         } else {
             return SyncMessages.FILE_NOT_CHANGED;
         }
@@ -214,7 +214,7 @@ public class SyncManager {
      * (Re-)Sets the timer for delayed sync of the database.
      */
     public void dataChanged() {
-        if (!isActive()) return;
+//        if (!isActive()) return;
 
         // save the last modified date so that we can correctly synchronize later.
         String remotePath = getRemotePath();
@@ -449,10 +449,18 @@ public class SyncManager {
     }
 
     public void storePersistent() {
-        getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
-        mPreferences.set(R.string.pref_onedrive_persistent, box.get().saveAsString());
-        mPreferences.set(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
-        mPreferences.set(R.string.pref_box_persistent, onedrive.get().saveAsString());
+        if (dropbox.get() != null) {
+            getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
+        }
+        if (box.get() != null) {
+            getPreferences().set(R.string.pref_onedrive_persistent, box.get().saveAsString());
+        }
+        if (googledrive.get() != null) {
+            getPreferences().set(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
+        }
+        if (onedrive.get() != null) {
+            getPreferences().set(R.string.pref_box_persistent, onedrive.get().saveAsString());
+        }
     }
 
     public void triggerSynchronization() {
