@@ -114,13 +114,13 @@ public class SyncManager {
         if (!isActive()) return false;
 
         // should we sync only on wifi?
-        if (mPreferences.shouldSyncOnlyOnWifi()) {
+        if (getPreferences().shouldSyncOnlyOnWifi()) {
             if (BuildConfig.DEBUG) {
                 Log.i(this.getClass().getSimpleName(), "Preferences set to sync on WiFi only.");
             }
 
             // check if we are on WiFi connection.
-            NetworkUtilities network = new NetworkUtilities(mContext);
+            NetworkUtilities network = new NetworkUtilities(getContext());
             if (!network.isOnWiFi()) {
                 Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
                 return false;
@@ -285,7 +285,7 @@ public class SyncManager {
      * @return date of last modification
      */
     public DateTime getLastModifiedDate(CloudMetaData file) {
-        String dateString = mPreferences.get(file.getPath(), null);
+        String dateString = getPreferences().get(file.getPath(), null);
         if (TextUtils.isEmpty(dateString)) return null;
 
         return new DateTime(dateString);
@@ -293,20 +293,32 @@ public class SyncManager {
 
     public String getRemotePath() {
         if (StringUtils.isEmpty(mRemoteFile)) {
-            mRemoteFile = mPreferences.loadPreference(R.string.pref_remote_file, "");
+            mRemoteFile = getPreferences().loadPreference(R.string.pref_remote_file, "");
         }
         return mRemoteFile;
     }
 
     /**
-     * Indicates whether cloud sync is in use.
-     * @return A boolean
+     * Indicates whether synchronization can be performed, meaning all of the criteria must be
+     * true: sync enabled, respect wi-fi sync setting, provider is selected, network is online.
+     * @return A boolean indicating that sync can be performed.
      */
     public boolean isActive() {
-        // check preferences and authentication?
-        return mPreferences.isSyncEnabled();
+        // The sync needs to be enabled.
+        if (!getPreferences().isSyncEnabled()) return false;
 
-        // check if a provider is selected?
+        // network is online.
+        NetworkUtilities networkUtilities = new NetworkUtilities(getContext());
+        if (!networkUtilities.isOnline()) return false;
+
+        // wifi preferences
+        if (getPreferences().shouldSyncOnlyOnWifi()) {
+            if (!networkUtilities.isOnWiFi()) return false;
+        }
+
+        // check if a provider is selected? Default is Dropbox, so no need.
+
+        return true;
     }
 
     public void login() {
@@ -337,7 +349,7 @@ public class SyncManager {
     }
 
     public void resetPreferences() {
-        mPreferences.clear();
+        getPreferences().clear();
     }
 
     public void scheduleUpload() {
@@ -365,7 +377,7 @@ public class SyncManager {
     }
 
     public void setEnabled(boolean enabled) {
-        mPreferences.setSyncEnabled(enabled);
+        getPreferences().setSyncEnabled(enabled);
     }
 
     /**
@@ -381,7 +393,7 @@ public class SyncManager {
                     "Set remote file: " + file + " last modification date " + date.toString());
         }
 
-        boolean saved = mPreferences.set(file.getPath(), date.toString());
+        boolean saved = getPreferences().set(file.getPath(), date.toString());
 
         if (!saved) {
             Log.e(this.getClass().getSimpleName(), "Could not store last modified date!");
@@ -417,11 +429,11 @@ public class SyncManager {
     public void setRemotePath(String value) {
         mRemoteFile = value;
 
-        mPreferences.set(R.string.pref_remote_file, value);
+        getPreferences().set(R.string.pref_remote_file, value);
     }
 
     public void setSyncInterval(int minutes) {
-        mPreferences.setSyncInterval(minutes);
+        getPreferences().setSyncInterval(minutes);
     }
 
     public void startSyncService() {
@@ -437,7 +449,7 @@ public class SyncManager {
     }
 
     public void storePersistent() {
-        mPreferences.set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
+        getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
         mPreferences.set(R.string.pref_onedrive_persistent, box.get().saveAsString());
         mPreferences.set(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
         mPreferences.set(R.string.pref_box_persistent, onedrive.get().saveAsString());
@@ -454,14 +466,14 @@ public class SyncManager {
 
         String remotePath = getRemotePath();
         if (TextUtils.isEmpty(remotePath)) {
-            Toast.makeText(mContext, R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
             return;
         }
 
         // easy comparison, just by the file name.
         if (!areFileNamesSame(localPath, remotePath)) {
             // The current file was probably opened through Open Database.
-            Toast.makeText(mContext, R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -536,8 +548,17 @@ public class SyncManager {
         return localName.equalsIgnoreCase(remoteName);
     }
 
+    private SyncPreferences getPreferences() {
+        if (mPreferences == null) {
+            mPreferences = new SyncPreferences(getContext());
+        }
+        return mPreferences;
+    }
+
     private void init() {
-        mPreferences = new SyncPreferences(getContext());
+        // Do not initialize providers if the network is not present.
+        NetworkUtilities network = new NetworkUtilities(getContext());
+        if (!network.isOnline()) return;
 
         dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
         onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
@@ -546,23 +567,23 @@ public class SyncManager {
 
         // read from persistence
         try {
-            String persistent = mPreferences.loadPreference(R.string.pref_dropbox_persistent, null);
+            String persistent = getPreferences().loadPreference(R.string.pref_dropbox_persistent, null);
             if (persistent != null) dropbox.get().loadAsString(persistent);
 
-            persistent = mPreferences.loadPreference(R.string.pref_box_persistent, null);
+            persistent = getPreferences().loadPreference(R.string.pref_box_persistent, null);
             if (persistent != null) box.get().loadAsString(persistent);
 
-            persistent = mPreferences.loadPreference(R.string.pref_gdrive_persistent, null);
+            persistent = getPreferences().loadPreference(R.string.pref_gdrive_persistent, null);
             if (persistent != null) googledrive.get().loadAsString(persistent);
 
-            persistent = mPreferences.loadPreference(R.string.pref_onedrive_persistent, null);
+            persistent = getPreferences().loadPreference(R.string.pref_onedrive_persistent, null);
             if (persistent != null) onedrive.get().loadAsString(persistent);
         } catch (ParseException e) {
             if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
         }
 
         // Use current provider.
-        String providerCode = mPreferences.loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
+        String providerCode = getPreferences().loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
         CloudStorageProviderEnum provider = CloudStorageProviderEnum.DROPBOX;
         if (CloudStorageProviderEnum.contains(providerCode)) {
             provider = CloudStorageProviderEnum.valueOf(providerCode);
