@@ -98,7 +98,8 @@ public class CloudFilePickerFragment
             @Override
             public void run() {
                 // hide the progress dialog
-                progressDialog.hide();
+                //progressDialog.hide();
+                progressDialog.dismiss();
 
                 // fill the list
                 mAdapter = new CloudDataAdapter(getActivity(), event.items);

@@ -92,13 +92,18 @@ public class MorningstarPriceUpdater
 
         SymbolConverter converter = new SymbolConverter();
 
-        for (String symbol : symbols) {
+        for (int i = 0; i < symbols.size(); i++) {
+            String symbol = symbols.get(i);
+
             try {
                 String morningstarSymbol = converter.convert(symbol);
 
                 service.getPrice(morningstarSymbol).enqueue(callback);
             } catch (Exception ex) {
-                closeProgressDialog();
+                if (i == symbols.size() - 1) {
+                    // close progress dialog if this is the last (or the only) item.
+                    closeProgressDialog();
+                }
 
                 ExceptionHandler handler = new ExceptionHandler(getContext());
                 handler.handle(ex, "downloading quotes");
