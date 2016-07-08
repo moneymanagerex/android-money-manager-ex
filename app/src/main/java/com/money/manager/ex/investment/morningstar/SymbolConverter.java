@@ -38,7 +38,7 @@ public class SymbolConverter {
         String[] parts = yahooSymbol.split("\\.");
 
         // handle US exchanges
-        if (parts.length == 0) {
+        if (parts.length <= 1) {
             // U.S. Do not use an exchange prefix for now.
             return yahooSymbol;
         }
@@ -55,7 +55,7 @@ public class SymbolConverter {
     public String getYahooSymbol(String morningstarSymbol) {
         String[] parts = morningstarSymbol.split("\\:");
 
-        if (parts.length == 0) {
+        if (parts.length <= 1) {
             return morningstarSymbol;
         }
 

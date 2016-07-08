@@ -161,6 +161,11 @@ public class MorningstarPriceUpdater
         // price
         String priceString = doc.body().getElementById("last-price-value").text();
         Money price = MoneyFactory.fromString(priceString);
+        // currency
+        String currency = doc.body().getElementById("curency").text();
+        if (currency.equals("GBX")) {
+            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
+        }
 
         // date
         String dateString = doc.body().getElementById("asOfDate").text();
