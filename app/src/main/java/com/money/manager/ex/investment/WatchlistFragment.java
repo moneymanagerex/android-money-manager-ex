@@ -38,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
@@ -51,6 +52,7 @@ import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.settings.InvestmentSettings;
 import com.money.manager.ex.sync.SyncManager;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -246,6 +248,9 @@ public class WatchlistFragment
             case R.id.menu_purge_history:
                 purgePriceHistory();
                 break;
+            case R.id.menu_change_provider:
+                changePriceProvider();
+                break;
             default:
                 break;
         }
@@ -344,6 +349,29 @@ public class WatchlistFragment
     }
 
     // Private
+
+    private void changePriceProvider() {
+        // show the list with provider choices. Preselect the current one.
+        InvestmentSettings settings = new InvestmentSettings(getActivity());
+        QuoteProviders currentProvider = settings.getQuoteProvider();
+        int currentIndex = QuoteProviders.indexOf(currentProvider);
+
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.quote_provider)
+                .items(QuoteProviders.names())
+                .itemsCallbackSingleChoice(currentIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        //change provider
+                        QuoteProviders newProvider = QuoteProviders.valueOf(text.toString());
+
+                        InvestmentSettings settings = new InvestmentSettings(getActivity());
+                        settings.setQuoteProvider(newProvider);
+                        return true;
+                    }
+                })
+                .show();
+    }
 
     private void completePriceUpdate() {
         // this call is made from async task so have to get back to the main thread.

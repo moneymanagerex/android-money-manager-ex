@@ -47,6 +47,8 @@ import info.javaperformance.money.MoneyFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
@@ -83,7 +85,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
         String query = queryGenerator.getQueryFor(symbols);
 
-        IYqlService yql = SecurityPriceUpdaterFactory.getYqlService();
+        IYqlService yql = getYqlService();
 
         // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
@@ -225,4 +227,15 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         return priceModel;
     }
+
+    public IYqlService getYqlService() {
+        String BASE_URL = "https://query.yahooapis.com";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IYqlService.class);
+    }
+
 }

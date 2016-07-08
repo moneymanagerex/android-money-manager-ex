@@ -35,6 +35,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Implementation of the Yahoo CSV quote provider using Retrofit.
@@ -61,7 +63,7 @@ public class YahooCsvQuoteDownloaderRetrofit
 
         showProgressDialog(mTotalRecords);
 
-        IYahooCsvService service = SecurityPriceUpdaterFactory.getYahooCsvService();
+        IYahooCsvService service = getYahooCsvService();
 
         Callback<String> callback = new Callback<String>() {
             @Override
@@ -123,4 +125,12 @@ public class YahooCsvQuoteDownloaderRetrofit
         finishIfAllDone();
     }
 
+    public IYahooCsvService getYahooCsvService() {
+        String BASE_URL = "https://download.finance.yahoo.com";
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IYahooCsvService.class);
+    }
 }

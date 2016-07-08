@@ -684,7 +684,9 @@
     <string name="inactive_currencies">Inactive Currencies</string>
     <string name="all_currencies">All Currencies</string>
 
+    <!-- Investment -->
     <string name="portfolio">Portfolio</string>
+    <string name="change_provider">Change provider</string>
 
     <!-- deprecated / Dropbox -->
     <string name="dropbox">Dropbox</string>

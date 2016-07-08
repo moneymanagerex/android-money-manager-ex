@@ -75,5 +75,6 @@ public class SymbolConverter {
         mMap.put("DE", "XETR");
         mMap.put("L", "XLON");
         mMap.put("PA", "XPAR");
+        // mMap.put("VI", "");
     }
 }

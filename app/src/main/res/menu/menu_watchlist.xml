@@ -34,4 +34,8 @@
         android:icon="@null"
         android:title="@string/purge_history"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_change_provider"
+        android:title="@string/change_provider" />
 </menu>

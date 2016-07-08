@@ -63,34 +63,4 @@ public class SecurityPriceUpdaterFactory {
 
         return updater;
     }
-
-    public static IYqlService getYqlService() {
-        String BASE_URL = "https://query.yahooapis.com";
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build();
-        return retrofit.create(IYqlService.class);
-    }
-
-    public static IYahooCsvService getYahooCsvService() {
-        String BASE_URL = "https://download.finance.yahoo.com";
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build();
-        return retrofit.create(IYahooCsvService.class);
-    }
-
-    public static IMorningstarService getMorningstarService() {
-        String BASE_URL = "http://quotes.morningstar.com";
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build();
-        return retrofit.create(IMorningstarService.class);
-    }
-
 }

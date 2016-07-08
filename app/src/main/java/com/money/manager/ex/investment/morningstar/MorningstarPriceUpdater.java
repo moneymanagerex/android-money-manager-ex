@@ -44,6 +44,8 @@ import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Quote provider: Morningstar
@@ -70,7 +72,7 @@ public class MorningstarPriceUpdater
 
         showProgressDialog(mTotalRecords);
 
-        IMorningstarService service = SecurityPriceUpdaterFactory.getMorningstarService();
+        IMorningstarService service = getMorningstarService();
 
         Callback<String> callback = new Callback<String>() {
             @Override
@@ -166,5 +168,15 @@ public class MorningstarPriceUpdater
         // todo: should this be converted to the exchange time?
 
         return new PriceDownloadedEvent(yahooSymbol, price, date);
+    }
+
+    public IMorningstarService getMorningstarService() {
+        String BASE_URL = "http://quotes.morningstar.com";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IMorningstarService.class);
     }
 }
