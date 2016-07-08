@@ -15,24 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.morningstar;
+
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+
+import java.util.List;
 
 /**
- * List of quote providers for stock prices and currency rates.
+ * Quote provider: Morningstar
  */
-public enum QuoteProviders {
-    YahooYql,
-    YahooCsv;
-    //todo: Morningstar;
+public class MorningstarPriceUpdater
+    implements ISecurityPriceUpdater {
 
-    public static String[] names() {
-        QuoteProviders[] providers = QuoteProviders.values();
-        int count = providers.length;
-        String[] result = new String[count];
+    @Override
+    public void downloadPrices(List<String> symbols) {
 
-        for (int i = 0; i < count; i++) {
-            result[i] = providers[i].name();
-        }
-        return result;
     }
 }

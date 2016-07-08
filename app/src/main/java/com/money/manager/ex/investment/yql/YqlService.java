@@ -14,25 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.money.manager.ex.investment.yql;
 
-package com.money.manager.ex.investment;
+import com.money.manager.ex.investment.yql.IYqlService;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * List of quote providers for stock prices and currency rates.
+ * Creates a Yql service for HTTP requests with Retrofit.
  */
-public enum QuoteProviders {
-    YahooYql,
-    YahooCsv;
-    //todo: Morningstar;
+public class YqlService {
+    private static String BASE_URL = "https://query.yahooapis.com";
 
-    public static String[] names() {
-        QuoteProviders[] providers = QuoteProviders.values();
-        int count = providers.length;
-        String[] result = new String[count];
-
-        for (int i = 0; i < count; i++) {
-            result[i] = providers[i].name();
-        }
-        return result;
+    public static IYqlService getService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IYqlService.class);
     }
 }

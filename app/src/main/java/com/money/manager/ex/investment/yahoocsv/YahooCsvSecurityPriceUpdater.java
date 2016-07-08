@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.yahoocsv;
 
 import android.content.Context;
 
+import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.PriceCsvParser;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import info.javaperformance.money.Money;
-import info.javaperformance.money.MoneyFactory;
 
 /**
  * Updates security prices from Yahoo Finance.

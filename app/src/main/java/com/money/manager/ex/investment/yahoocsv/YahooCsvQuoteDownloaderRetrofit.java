@@ -15,13 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.yahoocsv;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.PriceCsvParser;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;

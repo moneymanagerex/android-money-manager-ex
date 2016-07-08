@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.yql;
 
 import android.content.Context;
 import android.net.Uri;
@@ -23,6 +23,10 @@ import android.text.TextUtils;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.SecurityPriceModel;
+import com.money.manager.ex.investment.TextDownloaderTask;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
 import org.greenrobot.eventbus.EventBus;

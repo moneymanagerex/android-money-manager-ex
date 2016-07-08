@@ -21,8 +21,8 @@ import android.content.Context;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.investment.YqlQueryGenerator;
-import com.money.manager.ex.investment.YqlSecurityPriceUpdaterRetrofit;
+import com.money.manager.ex.investment.yql.YqlQueryGenerator;
+import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
 
 import org.junit.After;
 import org.junit.Before;

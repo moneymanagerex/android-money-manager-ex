@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.yahoocsv;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
+import com.money.manager.ex.investment.TextDownloader;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.DialogUtils;
 

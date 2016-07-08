@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.yahoocsv;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

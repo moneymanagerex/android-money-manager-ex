@@ -14,22 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
+package com.money.manager.ex.investment.morningstar;
+
+import com.google.gson.JsonElement;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
- * Creates a Yql service for HTTP requests with Retrofit.
+ * Morningstar network service
  */
-public class YahooCsvService {
-    private static String BASE_URL = "https://download.finance.yahoo.com";
-
-    public static IYahooCsvService getService() {
-        Retrofit retrofit = new Retrofit.Builder()
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .baseUrl(BASE_URL)
-            .build();
-        return retrofit.create(IYahooCsvService.class);
-    }
+public interface IMorningstarService {
+    //todo: @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
+    Call<JsonElement> getPrices(@Query("q") String query);
 }
