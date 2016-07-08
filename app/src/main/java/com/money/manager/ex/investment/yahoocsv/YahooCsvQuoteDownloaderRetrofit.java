@@ -17,16 +17,16 @@
 
 package com.money.manager.ex.investment.yahoocsv;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvParser;
+import com.money.manager.ex.investment.PriceUpdaterBase;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.utils.DialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,11 +40,9 @@ import retrofit2.Response;
  * Implementation of the Yahoo CSV quote provider using Retrofit.
  */
 public class YahooCsvQuoteDownloaderRetrofit
+    extends PriceUpdaterBase
     implements ISecurityPriceUpdater {
 
-    private Context mContext;
-    private ProgressDialog mDialog = null;
-    private IYahooCsvService yahooCsvService;
     /**
      * Tracks the number of records to update. Used to close progress dialog when all done.
      */
@@ -52,18 +50,18 @@ public class YahooCsvQuoteDownloaderRetrofit
     private int mTotalRecords;
 
     public YahooCsvQuoteDownloaderRetrofit(Context context) {
-        this.mContext = context;
+        super(context);
     }
 
     @Override
     public void downloadPrices(List<String> symbols) {
-        if (symbols == null) return;
+        if (symbols == null || symbols.isEmpty()) return;
         mTotalRecords = symbols.size();
         if (mTotalRecords == 0) return;
 
         showProgressDialog(mTotalRecords);
 
-        IYahooCsvService service = getService();
+        IYahooCsvService service = SecurityPriceUpdaterFactory.getYahooCsvService();
 
         Callback<String> callback = new Callback<String>() {
             @Override
@@ -73,7 +71,9 @@ public class YahooCsvQuoteDownloaderRetrofit
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
+                closeProgressDialog();
+
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                 handler.handle(t, "fetching price");
             }
         };
@@ -88,17 +88,6 @@ public class YahooCsvQuoteDownloaderRetrofit
         }
     }
 
-    private void closeProgressDialog() {
-        try {
-            if (mDialog != null) {
-                DialogUtils.closeProgressDialog(mDialog);
-            }
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "closing dialog");
-        }
-    }
-
     private synchronized void finishIfAllDone() {
         if (mCounter != mTotalRecords) return;
 
@@ -106,26 +95,15 @@ public class YahooCsvQuoteDownloaderRetrofit
 
         // Notify user that all the prices have been downloaded.
         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-        handler.showMessage(mContext.getString(R.string.download_complete));
+        handler.showMessage(getContext().getString(R.string.download_complete));
 
         // fire an event so that the data can be reloaded.
         EventBus.getDefault().post(new AllPricesDownloadedEvent());
     }
 
-    private Context getContext() {
-        return mContext;
-    }
-
-    private IYahooCsvService getService() {
-        if (this.yahooCsvService == null) {
-            this.yahooCsvService = YahooCsvService.getService();
-        }
-        return this.yahooCsvService;
-    }
-
     private void onContentDownloaded(String content) {
         mCounter++;
-        mDialog.setProgress(mCounter);
+        setProgress(mCounter);
 
         if (content == null) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
@@ -145,19 +123,4 @@ public class YahooCsvQuoteDownloaderRetrofit
         finishIfAllDone();
     }
 
-    private void showProgressDialog(Integer max) {
-        Context context = getContext();
-
-        mDialog = new ProgressDialog(context);
-
-        mDialog.setMessage(context.getString(R.string.starting_price_update));
-        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        if (max != null) {
-            mDialog.setMax(max);
-        }
-        mDialog.setCancelable(false);
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.show();
-    }
 }

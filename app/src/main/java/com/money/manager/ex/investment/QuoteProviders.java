@@ -22,8 +22,9 @@ package com.money.manager.ex.investment;
  */
 public enum QuoteProviders {
     YahooYql,
-    YahooCsv;
-    //todo: Morningstar;
+    YahooCsv
+    ,Morningstar
+    ;
 
     public static String[] names() {
         QuoteProviders[] providers = QuoteProviders.values();

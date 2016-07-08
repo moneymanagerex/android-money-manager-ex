@@ -43,6 +43,7 @@ allprojects {
             force 'com.android.support:appcompat-v7:23.2.1'
             force 'com.android.support:design:23.2.1'
             force 'com.google.code.gson:gson:2.7'
+            force 'com.google.guava:guava:19.0'
         }
     }
 }

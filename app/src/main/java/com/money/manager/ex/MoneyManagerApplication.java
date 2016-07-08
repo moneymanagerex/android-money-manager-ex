@@ -16,13 +16,13 @@
  */
 package com.money.manager.ex;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
@@ -63,7 +63,8 @@ import info.javaperformance.money.Money;
         annotation = @Parcel(converter = MoneyParcelConverter.class))
 )
 public class MoneyManagerApplication
-    extends Application {
+    extends MultiDexApplication {
+    // Application
 
     public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
 

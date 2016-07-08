@@ -27,7 +27,9 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.SecurityPriceModel;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
@@ -50,6 +52,7 @@ import retrofit2.Response;
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
  */
 public class YqlSecurityPriceUpdaterRetrofit
+    extends PriceUpdaterBase
     implements ISecurityPriceUpdater {
 
     /**
@@ -57,12 +60,8 @@ public class YqlSecurityPriceUpdaterRetrofit
      * @param context Executing context
      */
     public YqlSecurityPriceUpdaterRetrofit(Context context) {
-        mContext = context;
+        super(context);
     }
-
-    private Context mContext;
-    private ProgressDialog mDialog = null;
-    private IYqlService yqlService;
 
     // https://query.yahooapis.com/v1/public/yql
     // ?q=... url escaped
@@ -84,7 +83,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         YqlQueryGenerator queryGenerator = new YqlQueryGenerator();
         String query = queryGenerator.getQueryFor(symbols);
 
-        IYqlService yql = getService();
+        IYqlService yql = SecurityPriceUpdaterFactory.getYqlService();
 
         // Async response handler.
         Callback<JsonElement> callback = new Callback<JsonElement>() {
@@ -139,17 +138,6 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Notify user that all the prices have been downloaded.
         handler.showMessage(R.string.download_complete);
-    }
-
-    private void closeProgressDialog() {
-        try {
-            if (mDialog != null) {
-                DialogUtils.closeProgressDialog(mDialog);
-            }
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "closing dialog");
-        }
     }
 
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
@@ -236,34 +224,5 @@ public class YqlSecurityPriceUpdaterRetrofit
         priceModel.date = date;
 
         return priceModel;
-    }
-
-    private void showProgressDialog(Integer max) {
-        mDialog = new ProgressDialog(getContext());
-
-        mDialog.setMessage(getContext().getString(R.string.starting_price_update));
-//        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        if (max != null) {
-            mDialog.setMax(max);
-        }
-        mDialog.setCancelable(false);
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.show();
-    }
-
-    public IYqlService getService() {
-        if (this.yqlService == null) {
-            this.yqlService = YqlService.getService();
-        }
-        return this.yqlService;
-    }
-
-    public void setService(IYqlService service) {
-        this.yqlService = service;
-    }
-
-    private Context getContext() {
-        return mContext;
     }
 }

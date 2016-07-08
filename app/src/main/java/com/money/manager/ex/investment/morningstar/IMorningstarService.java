@@ -25,8 +25,10 @@ import retrofit2.http.Query;
 
 /**
  * Morningstar network service
+ * http://quotes.morningstar.com
+ * t=XPAR:BNP
  */
 public interface IMorningstarService {
-    //todo: @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
-    Call<JsonElement> getPrices(@Query("q") String query);
+    @GET("/stockq/c-header")
+    Call<String> getPrice(@Query("t") String query);
 }

@@ -19,9 +19,17 @@ package com.money.manager.ex.investment;
 
 import android.content.Context;
 
+import com.money.manager.ex.investment.morningstar.IMorningstarService;
+import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
+import com.money.manager.ex.investment.yahoocsv.IYahooCsvService;
 import com.money.manager.ex.investment.yahoocsv.YahooCsvQuoteDownloaderRetrofit;
+import com.money.manager.ex.investment.yql.IYqlService;
 import com.money.manager.ex.investment.yql.YqlSecurityPriceUpdaterRetrofit;
 import com.money.manager.ex.settings.InvestmentSettings;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Factory for security price updater.
@@ -36,9 +44,9 @@ public class SecurityPriceUpdaterFactory {
         QuoteProviders provider = settings.getQuoteProvider();
 
         switch (provider) {
-            //todo: case Morningstar:
-//                updater = new MorningstarPriceUpdater;
-//                break;
+            case Morningstar:
+                updater = new MorningstarPriceUpdater(context);
+                break;
             case YahooYql:
                 //updater = new YqlSecurityPriceUpdater(context, feedback);
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
@@ -55,4 +63,34 @@ public class SecurityPriceUpdaterFactory {
 
         return updater;
     }
+
+    public static IYqlService getYqlService() {
+        String BASE_URL = "https://query.yahooapis.com";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IYqlService.class);
+    }
+
+    public static IYahooCsvService getYahooCsvService() {
+        String BASE_URL = "https://download.finance.yahoo.com";
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IYahooCsvService.class);
+    }
+
+    public static IMorningstarService getMorningstarService() {
+        String BASE_URL = "http://quotes.morningstar.com";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+        return retrofit.create(IMorningstarService.class);
+    }
+
 }
