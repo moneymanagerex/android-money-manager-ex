@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.08.850">
+        <changelogtext>Adding Morningstar as the price provider.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.07.849">
         <changelogtext>Improvements and adjustments in auto-sync and progress display.</changelogtext>
     </changelogversion>
