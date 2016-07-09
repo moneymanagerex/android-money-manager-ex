@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/configure_dropbox"
+                android:text="@string/configure_sync"
                 android:textSize="18sp"
                 app:typeface="roboto_light" />
 
