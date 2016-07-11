@@ -394,8 +394,6 @@
   <string name="show_chart">Zeige Diagramm</string>
   <string name="add_transaction">Transaktion hinzufügen</string>
   <string name="welcome_header">Willkommen bei MoneyManagerEx!</string>
-  <string name="welcome_body_dropbox">Wenn Sie MoneyManagerEx unter Windows, Linux oder Mac benutzen, verlinken Sie diese Anwendung mit Dropbox um Ihre Datenbank zu synchronisieren</string>
-  <string name="configure_dropbox">Dropbox konfigurieren</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Suche nach Textinhalten und nicht nach Text der mit anfängt</string>
   <string name="search_text_contain_summary">Suche nach Zahlungsempfänger/Zahler, Kategorien, Währungen usw...nach Inhalten und nicht nach Anfangsbuchstaben</string>
@@ -593,6 +591,7 @@
   <string name="question_update_currency_exchange_rates">Wollen Sie den Wechselkurs aktualisieren?</string>
   <string name="error_update_currency_exchange_rate">Es passierte ein Fehler beim Aktualisieren des Kurses</string>
   <string name="currencies_empty">Keine Währungen gefunden. Um eine zu erstellen, tippen Sie auf das grüne plus-Taste.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Deine Datenbank is heruntergeladen</string>

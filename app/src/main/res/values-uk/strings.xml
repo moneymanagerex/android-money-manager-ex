@@ -397,8 +397,6 @@
   <string name="add_transaction">Додати транзакцію</string>
   <string name="welcome_header">Ласкаво просимо до MoneyManagerEx!</string>
   <string name="welcome_body">Всі транзакції в MoneyManagerEx належить рахункам.\n\n У вас зараз немає видимих рахунків. Змініть фільтр у налаштуваннях для видимості рахунків або виберіть один із параметрів нижче.</string>
-  <string name="welcome_body_dropbox">Якщо ви вже використовуєте MoneyManagerEx для Windows, Linux або Mac з\'єднайте цю програму з Dropbox для синхронізації бази даних</string>
-  <string name="configure_dropbox">Налаштування Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Пошук за всім змістом тексту, а не тільки з його початком</string>
   <string name="search_text_contain_summary">Пошук контрагента, категорії, валюти, тощо..., за всім змістом, а не тільки з початкових символів</string>
@@ -593,6 +591,7 @@
   <string name="question_update_currency_exchange_rates">Оновити обмінний курс?</string>
   <string name="error_update_currency_exchange_rate">Сталася помилка оновлення курсу</string>
   <string name="currencies_empty">Валют не виявлено. Для створення натисніть зелений плюс.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">База даних була завантажена</string>

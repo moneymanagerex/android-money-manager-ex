@@ -397,8 +397,6 @@
   <string name="add_transaction">Adaugă Tranzacție</string>
   <string name="welcome_header">Bine ai venit la MoneyManagerEx!</string>
   <string name="welcome_body">Toate tranzacțiile efectuate în MoneyManagerEx aparțin unor conturi.\n\n În prezent nu ai nici un cont vizibil. Fie setezi filtrul pentru conturi vizibile în Setări, fie alegi una dintre opțiunile de mai jos.</string>
-  <string name="welcome_body_dropbox">Dacă deja folosești MoneyManagerEx pe Windows, Linux sau Mac conectează această aplicație la Dropbox pentru a sincroniza baza ta de date</string>
-  <string name="configure_dropbox">Configurează Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Caută conținutul textului și nu textul care începe cu</string>
   <string name="search_text_contain_summary">Caută beneficiari, categorii, monede, etc... după conținut și nu după caracterele inițiale</string>
@@ -593,6 +591,7 @@
   <string name="question_update_currency_exchange_rates">Vrei să actualizezi rata de schimb?</string>
   <string name="error_update_currency_exchange_rate">Eroare la actualizarea ratei</string>
   <string name="currencies_empty">Nu a fost găsită nici o monedă. Pentru a crea una, apasă butonul verde plus.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Baza ta de date a fost descărcată</string>

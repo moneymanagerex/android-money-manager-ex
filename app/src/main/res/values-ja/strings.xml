@@ -401,8 +401,6 @@
   <string name="add_transaction">取引を追加</string>
   <string name="welcome_header">MoneyManagerEx へようこそ!</string>
   <string name="welcome_body">MoneyManagerEx のすべての取引はアカウントに属します。\n\n現在、表示可能なアカウントがありません。設定で、表示するアカウントのフィルターを調整するか、次のオプションのいずれかを選択してください。</string>
-  <string name="welcome_body_dropbox">Windows、Linux または Mac で既に MoneyManagerEx を使用している場合は、Dropbox であなたのデータベースを同期するように、このアプリケーションをリンクしてください</string>
-  <string name="configure_dropbox">Dropbox を構成</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">テキストの開始文字列ではなくテキストの内容によって検索</string>
   <string name="search_text_contain_summary">開始文字ではなく含まれる文字で、支払先、カテゴリー、通貨、等&#8230; を検索します</string>
@@ -526,6 +524,7 @@
   <string name="title_activity_currency_rates_report">為替レート</string>
   <string name="frequency">頻度</string>
   <string name="update_available">利用可能な更新</string>
+  <string name="update_available_online">オンラインで利用可能な、更新されたデータベース ファイルがあります。更新しますか?</string>
   <string name="currency_not_found">通貨が見つかりません</string>
   <string name="homepage">私たちのホームページ http://android.moneymanagerex.org/</string>
   <string name="current_database">現在のデータベース</string>
@@ -622,6 +621,7 @@
   <string name="active_currencies">有効な通貨</string>
   <string name="inactive_currencies">無効な通貨</string>
   <string name="all_currencies">すべての通貨</string>
+  <!-- Investment -->
   <string name="portfolio">ポートフォリオ</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>

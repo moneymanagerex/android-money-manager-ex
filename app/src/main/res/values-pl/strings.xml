@@ -401,8 +401,6 @@
   <string name="add_transaction">Dodaj transakcję</string>
   <string name="welcome_header">Witaj w Money Manager Ex!</string>
   <string name="welcome_body">Wszystkie transakcje w MoneyManagerEx należą do kont.\n\nObecnie nie posiadasz widocznych kont. Dostosuj filtr dla widocznych kont i ustawieniach lub wybierz jedną z opcji poniżej.</string>
-  <string name="welcome_body_dropbox">Jeśli używasz już aplikacji Moneye Manager Ex dla systemu Windows, Linux lub Mac OS, połącz tę aplikację z Dropboxem, aby sychronizować swoją bazę danych</string>
-  <string name="configure_dropbox">Skonfiguruj Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Wyszukiwanie w zawartości tekstów, a nie w ich początkach</string>
   <string name="search_text_contain_summary">Wyszukuj w całych nazwach płatników, kategorii, walut itd., a nie tylko w ich początkach</string>
@@ -615,6 +613,7 @@
   <string name="question_update_currency_exchange_rates">Czy chcesz zaktualizować kursy wymiany walut?</string>
   <string name="error_update_currency_exchange_rate">Wystąpił błąd podczas aktualizowania kursu</string>
   <string name="currencies_empty">Nie znaleziono żadnych walut. Aby utworzyć jedną, stuknij zielony znak plus.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Baza danych została pobrana</string>

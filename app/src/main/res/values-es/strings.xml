@@ -400,8 +400,6 @@
   <string name="add_transaction">Agregar Transacción</string>
   <string name="welcome_header">¡Bienvenido a MoneyManagerEx!</string>
   <string name="welcome_body">Todas las transacciones en MoneyManagerEx pertenecen a cuentas.\n\nActualmente no tiene cuentas visibles. Ajuste el filtro para cuentas visibles en los Ajustes o seleccione una de las siguientes opciones.</string>
-  <string name="welcome_body_dropbox">Si ya está usando MoneyManagerEx en Windows, Linux o MacOS puede enlazar esta aplicación con Dropbox para sincronizar su base de datos</string>
-  <string name="configure_dropbox">Configurar Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Buscar por el contenido y no por el inicio del texto</string>
   <string name="search_text_contain_summary">Buscar beneficiarios, categorías, divisas,  etc... por contenido y no por los caracteres iniciales</string>
@@ -613,6 +611,7 @@
   <string name="question_update_currency_exchange_rates">¿Quieres actualizar el tipo de cambio?</string>
   <string name="error_update_currency_exchange_rate">Ocurrió un error al actualizar la tasa</string>
   <string name="currencies_empty">No se encontraron monedas. Para crear una, pulsar el botón verde con el símbolo más.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Su base de datos ha sido descargada</string>

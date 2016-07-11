@@ -401,8 +401,6 @@
   <string name="add_transaction">Voeg transactie toe</string>
   <string name="welcome_header">Welkom bij MoneyManagerEx !</string>
   <string name="welcome_body">Alle transacties in MoneyManagerEx behoren bij rekeningen.\n\nEr zijn momenteel geen zichtbare rekeningen. Pas het filter voor zichtbare rekeningen bij de instellingen aan, of selecteer een van de opties hieronder.</string>
-  <string name="welcome_body_dropbox">Als je MoneyManagerEx al gebruikt onder Windows, Linux of Mac, link dan deze app met Dropbox om uw database te synchroniseren.</string>
-  <string name="configure_dropbox">Stel Dropbox in</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Zoek naar tekstinhoud behalve tekst die begint met</string>
   <string name="search_text_contain_summary">Zoek naar ontvangers/betalers, categorieën, valuta´s, enz... op basis van inhoud, en niet op basis van de beginletters</string>
@@ -601,6 +599,7 @@
   <string name="question_update_currency_exchange_rates">Wilt u de wisselkoers bijwerken?</string>
   <string name="error_update_currency_exchange_rate">Fout opgetreden tijdens bijwerken wisselkoers</string>
   <string name="currencies_empty">Er zijn geen valuta´s gevonden. Tik op de groene + knop om er een aan te maken.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Je databank is gedownload</string>

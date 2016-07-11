@@ -397,8 +397,6 @@
   <string name="show_chart">Zobraziť graf</string>
   <string name="add_transaction">Pridať transakciu</string>
   <string name="welcome_header">Vitajte v MoneyManagerEx!</string>
-  <string name="welcome_body_dropbox">Ak už používate aplikáciu MoneyManagerEx na Windows, Mac Os nebo Linuxe, môžete využiť vzájomnú synchronizáciu databáz prostredníctvom služby Dropbox</string>
-  <string name="configure_dropbox">Nastaviť Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Hľadanie podľa obsahu nie podľa začiatku textu</string>
   <string name="search_text_contain_summary">Hľadanie príjemcov, kategórií, mien a pod. podľa obsahu a nie podľa začiatočných znakov</string>
@@ -611,6 +609,7 @@
   <string name="active_currencies">Aktívne meny</string>
   <string name="inactive_currencies">Neaktívne meny</string>
   <string name="all_currencies">Všetky meny</string>
+  <!-- Investment -->
   <string name="portfolio">Portfólio</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>

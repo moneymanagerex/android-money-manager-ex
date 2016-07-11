@@ -310,8 +310,6 @@
   <string name="add_transaction">Tambahkan transaksi</string>
   <string name="welcome_header">Selamat datang di MoneyManagerEx!</string>
   <string name="welcome_body">Semua transaksi di MoneyManagerEx milik accounts.\n\nAnda saat ini tidak punya account yang terlihat. Sesuaikan filter untuk akun terlihat dalam pengaturan atau pilih salah satu opsi di bawah.</string>
-  <string name="welcome_body_dropbox">Jika Anda sudah menggunakan MoneyManagerEx pada Windows, Linux, Mac hubungkan aplikasi ini dengan Dropbox untuk mensinkronkan database Anda</string>
-  <string name="configure_dropbox">Mengkonfigurasi Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Pencarian oleh isi teks dan bukan oleh teks yang diawali dengan</string>
   <string name="search_text_contain_summary">Cari penerima uang, kategori, mata uang, dll... oleh isi dan bukan oleh huruf-huruf awal</string>
@@ -386,6 +384,7 @@
   <!-- db password entry -->
   <!-- budgets -->
   <!-- Currencies -->
+  <!-- Investment -->
   <string name="portfolio">Portofolio</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>

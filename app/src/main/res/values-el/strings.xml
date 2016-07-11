@@ -398,8 +398,6 @@
   <string name="add_transaction">Προσθέστε συναλλαγή</string>
   <string name="welcome_header">Καλώς ήλθατε στο MoneyManagerEx!</string>
   <string name="welcome_body">Όλες τις συναλλαγές MoneyManagerEx ανήκουν σε Λογαριασμούς.\n\nΕσύ δεν έχεις επί του παρόντος ορατούς λογαριασμούς. Προσαρμόστε το φίλτρο για ορατούς λογαριασμούς στίς ρυθμίσεις, είτε επιλέξτε μία από τις παρακάτω επιλογές.</string>
-  <string name="welcome_body_dropbox">Εάν χρησιμοποιείτε ήδη το MoneyManagerEx σε Windows, Linux ή Mac σύνδεσμο αυτής της εφαρμογής με Dropbox να συγχρονίσετε τη βάση δεδομένων σας</string>
-  <string name="configure_dropbox">Ρυθμίστε το Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Αναζήτηση από το περιεχόμενο κειμένου και όχι από το κείμενο με το οποίο ξεκινά</string>
   <string name="search_text_contain_summary">Αναζήτηση δικαιούχου, κατηγοριών, νομισμάτων, κλπ..., από το περιεχόμενο και όχι από την έναρξη χαρακτήρων</string>
@@ -557,6 +555,7 @@
   <string name="question_update_currency_exchange_rates">Θέλετε να ενημερώσετε την συναλλαγματική ισοτιμία;</string>
   <string name="error_update_currency_exchange_rate">Υπήρχε σφάλμα κατά την ενημέρωση του ποσοστού</string>
   <string name="currencies_empty">Νομίσματα δεν έχουν βρεθεί. Για να δημιουργήσετε ένα, πατήστε το πράσινο κουμπί.</string>
+  <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Κάδος ανακύκλωσης</string>
   <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>

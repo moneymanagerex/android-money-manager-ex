@@ -401,8 +401,6 @@
   <string name="add_transaction">Aggiungi Transazione</string>
   <string name="welcome_header">Benevenuti in MoneyManagerEx!</string>
   <string name="welcome_body">Tutte le operazioni in MoneyManagerEx sono assegnate ad un conto.\n\nAttualmente non hai nessun conto visibile. Modificare le impostazioni dei filtri per i conti da visualizzare, oppure\n\nselezionare una delle seguenti opzioni.</string>
-  <string name="welcome_body_dropbox">Se utilizzi già MoneyManagerEx su Windows, Linux o Mac collegate questa applicazione con Dropbox per sincronizzare il database</string>
-  <string name="configure_dropbox">Configura Dropbox</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Ricerca testo per contenuto e non per l\'inizio del testo</string>
   <string name="search_text_contain_summary">Ricerca beneficiario, categorie, valute, ecc&#8230; per contenuto e non per l\'inizio del testo</string>
@@ -526,6 +524,7 @@
   <string name="title_activity_currency_rates_report">Tassi di cambio</string>
   <string name="frequency">Frequenza</string>
   <string name="update_available">Aggiornamento disponibile</string>
+  <string name="update_available_online">C\'è un file di database aggiornato disponibile online. Vuoi aggiornare?</string>
   <string name="currency_not_found">Valuta non trovata</string>
   <string name="homepage">La nostra homepage è http://android.moneymanagerex.org/</string>
   <string name="current_database">Database corrente</string>
@@ -604,6 +603,7 @@
   <string name="print">Stampa</string>
   <string name="min_19">Per poter stampare il documento è necessario almeno Android 4.4.</string>
   <string name="save_as_html">Salva come HTML</string>
+  <string name="no_network">Nessuna rete disponibile.</string>
   <!-- Currencies -->
   <string name="currencies">Valute</string>
   <string name="currencies_used">Valute, usate</string>
@@ -621,6 +621,7 @@
   <string name="active_currencies">Valute attive</string>
   <string name="inactive_currencies">Valute inattive</string>
   <string name="all_currencies">Tutte le valute</string>
+  <!-- Investment -->
   <string name="portfolio">Portafoglio</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
@@ -641,7 +642,23 @@
   <string name="db_not_dropbox">Il database corrente non è sincronizzato. Per favore imposta la sincronizzazione con Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Sincronizzazione</string>
+  <string name="sync_enabled">Sincronizzazione attivata</string>
+  <string name="sync_provider">Provider</string>
+  <string name="remote_file">File remoto</string>
+  <string name="please_wait">Attendere, prego</string>
+  <string name="invalid_database">Questa estensione non è riconosciuta come database valido.</string>
+  <string name="reset_preferences">Ripristina le preferenze</string>
+  <string name="preferences_reset">Le preferenze di sincronizzazione sono state ripristinate.</string>
+  <string name="cloud_download">Scarica il file del database dall\'archiviazione su cloud.</string>
+  <string name="cloud_upload">Carica il file del database su archiviazione cloud.</string>
+  <string name="sync_notification_title">Money Manager Ex - Sincronizzazione</string>
+  <string name="sync_downloading">Scaricamento del database in corso. Attendere, prego&#8230;</string>
+  <string name="sync_uploading">Caricamento del database in corso. Attendere, prego&#8230;</string>
+  <string name="syncProgress">Sincronizzazione files in corso. Attendere, prego&#8230;</string>
+  <string name="database_is_synchronized">Il database è aggiornato</string>
+  <string name="upload_file_complete">Il tuo database è stato caricato con successo</string>
   <string name="every_5_minutes">Ogni 5 minuti</string>
+  <string name="every_10_minutes">Ogni 10 minuti</string>
   <string name="every_15_minutes">Ogni 15 minuti</string>
   <string name="every_30_minutes">Ogni 30 minuti</string>
   <string name="every_hour">Ogni ora</string>
@@ -649,6 +666,9 @@
   <string name="every_6_hours">Ogni 6 ore</string>
   <string name="every_12_hours">Ogni 12 ore</string>
   <string name="never">Mai</string>
+  <string name="checking_remote_for_changes">Controllo dell\'archiviazione remota per modifiche al database.</string>
+  <string name="title_sync_upload_immediate">Carica immediatamente il database dopo la modifica</string>
+  <string name="summary_sync_upload_immediate">Questa opzione consente di caricare il database automaticamente non appena lo modifichi</string>
   <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
   <string name="dropbox_select_file">Selezionare un file da Dropbox</string>
 </resources>
