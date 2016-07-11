@@ -86,11 +86,14 @@ public class WebChangelogFragment
 
         // Set up the URL.
 
-        String url = "https://github.com/moneymanagerex/android-money-manager-ex/issues?q=milestone%3A";
-        Core core = new Core(getActivity());
-        String version = core.getFullAppVersion(); // "2016.01.21.763";
-        url += version;
+//        String url = "https://github.com/moneymanagerex/android-money-manager-ex/issues?q=milestone%3A";
+//        Core core = new Core(getActivity());
+//        String version = core.getFullAppVersion(); // "2016.01.21.763";
+//        url += version;
 
+        // Show all the versions
+        String url = "https://github.com/moneymanagerex/android-money-manager-ex/milestones?direction=desc&sort=due_date&state=closed";
+        
         WebView webView = (WebView) view.findViewById(R.id.webView);
         if (webView != null) {
             webView.loadUrl(url);
