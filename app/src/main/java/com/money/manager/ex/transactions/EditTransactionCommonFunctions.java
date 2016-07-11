@@ -978,15 +978,23 @@ public class EditTransactionCommonFunctions {
     public void refreshControlTitles() {
         if (viewHolder.amountHeaderTextView == null || viewHolder.amountToHeaderTextView == null) return;
 
-        if (!transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
+        boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+
+        if (!isTransfer) {
             viewHolder.amountHeaderTextView.setText(R.string.amount);
         } else {
             // Transfer. Adjust the headers on amount text boxes.
             int index = mAccountIdList.indexOf(transactionEntity.getAccountId());
             if (index >= 0) {
-                viewHolder.amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
-                        this.AccountList.get(index).getName()));
+                // the title depends on whether we are showing the destination amount.
+                if (areCurrenciesSame()) {
+                    viewHolder.amountHeaderTextView.setText(getContext().getString(R.string.transfer_amount));
+                } else {
+                    viewHolder.amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
+                            this.AccountList.get(index).getName()));
+                }
             }
+
             index = mAccountIdList.indexOf(transactionEntity.getAccountToId());
             if (index >= 0) {
                 viewHolder.amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
@@ -1250,6 +1258,20 @@ public class EditTransactionCommonFunctions {
         }
     }
 
+    private boolean areCurrenciesSame() {
+        if (transactionEntity.getAccountId() == null) return false;
+        if (transactionEntity.getAccountToId() == null) return false;
+
+        AccountRepository repo = new AccountRepository(getContext());
+        Account accountFrom = repo.load(transactionEntity.getAccountId());
+        if (accountFrom == null) return false;
+
+        Account accountTo = repo.load(transactionEntity.getAccountToId());
+        if (accountTo == null) return false;
+
+        return accountFrom.getCurrencyId().equals(accountTo.getCurrencyId());
+    }
+
     /**
      * Perform currency exchange to get the Amount From.
      */
@@ -1313,6 +1335,13 @@ public class EditTransactionCommonFunctions {
     }
 
     private void displayAmountTo() {
+        // if the currencies are the same, show only one Amount field.
+        if (areCurrenciesSame()) {
+            viewHolder.tableRowAmountTo.setVisibility(View.GONE);
+        } else {
+            viewHolder.tableRowAmountTo.setVisibility(View.VISIBLE);
+        }
+
         Money amount = transactionEntity.getAmountTo() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmountTo();
         //displayAmountTo(amount);
 
@@ -1340,9 +1369,9 @@ public class EditTransactionCommonFunctions {
 
     /**
      * The user is switching to Transfer transaction type.
-     * Check whether to delete split categories, if any.
      */
     private void onTransferSelected() {
+        // Check whether to delete split categories, if any.
         if(hasSplitCategories()) {
             // Prompt the user to confirm deleting split categories.
             // Use DialogFragment in order to redraw the dialog when switching device orientation.
@@ -1363,6 +1392,11 @@ public class EditTransactionCommonFunctions {
 
         // un-check split.
         setSplit(false);
+
+        // Set the destination account, if not already.
+        if (transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
+            transactionEntity.setAccountToId(mAccountIdList.get(0));
+        }
 
         // calculate AmountTo only if not set previously.
         if (transactionEntity.getAmountTo().isZero()) {

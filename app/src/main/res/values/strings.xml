@@ -144,6 +144,7 @@
     <string name="status_duplicate">Duplicate</string>
     <string name="status_none">None</string>
     <string name="transfer">Transfer</string>
+    <string name="transfer_amount">Transfer amount</string>
     <string name="transaction_type">Transaction Type</string>
     <string name="transaction_status">Status</string>
     <string name="withdrawal">Withdrawal</string>
