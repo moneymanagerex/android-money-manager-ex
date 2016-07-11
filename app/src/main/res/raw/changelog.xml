@@ -16,6 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.11.852">
+        <changelogtext>Fix for setting the default currency on initial start.</changelogtext>
+        <changelogtext>Fix for deleted split category.</changelogtext>
+        <changelogtext>Showing only one amount field on Transfers in the same currency.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.08.850">
         <changelogtext>Adding Morningstar as the price provider.</changelogtext>
     </changelogversion>
