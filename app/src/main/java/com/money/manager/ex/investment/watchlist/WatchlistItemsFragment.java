@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.watchlist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +53,9 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.investment.EditPriceDialog;
+import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
+import com.money.manager.ex.investment.StocksCursorAdapter;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.shamanland.fonticon.FontIconDrawable;
 

@@ -78,7 +78,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
-import com.money.manager.ex.investment.WatchlistFragment;
+import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;

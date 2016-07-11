@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.investment;
+package com.money.manager.ex.investment.watchlist;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
@@ -49,6 +51,10 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
+import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.PriceCsvExport;
+import com.money.manager.ex.investment.QuoteProviders;
+import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -95,16 +101,14 @@ public class WatchlistFragment
     }
 
     private WatchlistItemsFragment mDataFragment;
-    private String mNameFragment;
+    private String mFragmentName;
 
     private Account mAccount;
-
-    private ImageView imgAccountFav, imgGotoAccount;
-    ViewGroup mListHeader;
 
     // price update counter. Used to know when all the prices are done downloading.
     private int mUpdateCounter;
     private int mToUpdateTotal;
+    private WatchlistViewHolder viewHolder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +150,8 @@ public class WatchlistFragment
             loadAccount();
         }
 
+        this.viewHolder = new WatchlistViewHolder();
+
         initializeListHeader(inflater);
 
         // manage fragment
@@ -157,11 +163,11 @@ public class WatchlistFragment
         arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
         mDataFragment.setArguments(arguments);
 
-        mDataFragment.setListHeader(mListHeader);
+        mDataFragment.setListHeader(this.viewHolder.mListHeader);
         mDataFragment.setAutoStarLoader(false);
 
         // add fragment
-        transaction.replace(R.id.fragmentContent, mDataFragment, getNameFragment());
+        transaction.replace(R.id.fragmentContent, mDataFragment, getFragmentName());
         transaction.commit();
 
         // refresh user interface
@@ -169,6 +175,8 @@ public class WatchlistFragment
             setImageViewFavorite();
         }
         setHasOptionsMenu(true);
+
+        initializeSwipeToRefresh(view);
 
         return view;
     }
@@ -218,15 +226,6 @@ public class WatchlistFragment
 
         // call create option menu of fragment
         mDataFragment.onCreateOptionsMenu(menu, inflater);
-    }
-
-    /**
-     * Called every time the menu is displayed.
-     */
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
     }
 
     /**
@@ -325,9 +324,9 @@ public class WatchlistFragment
      */
     private void setImageViewFavorite() {
         if (mAccount.getFavorite()) {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_star);
+            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star);
         } else {
-            imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
+            this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
         }
     }
 
@@ -340,12 +339,12 @@ public class WatchlistFragment
         }
     }
 
-    public String getNameFragment() {
-        return mNameFragment;
+    public String getFragmentName() {
+        return mFragmentName;
     }
 
     public void setNameFragment(String fragmentName) {
-        this.mNameFragment = fragmentName;
+        this.mFragmentName = fragmentName;
     }
 
     // Private
@@ -478,6 +477,16 @@ public class WatchlistFragment
         return actionBar;
     }
 
+    private Spinner getAccountsSpinner() {
+        // get from custom view, not the menu.
+
+        ActionBar actionBar = getActionBar();
+        if (actionBar == null) return null;
+
+        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
+        return spinner;
+    }
+
     private void initializeAccountsSelector() {
         ActionBar actionBar = getActionBar();
         if (actionBar == null) return;
@@ -514,12 +523,12 @@ public class WatchlistFragment
     }
 
     private void initializeListHeader(LayoutInflater inflater) {
-        mListHeader = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
+        this.viewHolder.mListHeader = (ViewGroup) inflater.inflate(R.layout.fragment_watchlist_header, null, false);
 
         // favorite icon
-        imgAccountFav = (ImageView) mListHeader.findViewById(R.id.imageViewAccountFav);
+        this.viewHolder.imgAccountFav = (ImageView) this.viewHolder.mListHeader.findViewById(R.id.imageViewAccountFav);
         // set listener click on favorite icon for change image
-        imgAccountFav.setOnClickListener(new OnClickListener() {
+        this.viewHolder.imgAccountFav.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 mAccount.setFavorite(!mAccount.getFavorite());
 
@@ -537,8 +546,8 @@ public class WatchlistFragment
         });
 
         // Edit account
-        imgGotoAccount = (ImageView) mListHeader.findViewById(R.id.imageViewGotoAccount);
-        imgGotoAccount.setOnClickListener(new OnClickListener() {
+        this.viewHolder.imgGotoAccount = (ImageView) this.viewHolder.mListHeader.findViewById(R.id.imageViewGotoAccount);
+        this.viewHolder.imgGotoAccount.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AccountEditActivity.class);
@@ -549,14 +558,21 @@ public class WatchlistFragment
         });
     }
 
-    private Spinner getAccountsSpinner() {
-        // get from custom view, not the menu.
+    private void initializeSwipeToRefresh(View view) {
+        final SwipeRefreshLayout layout = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
 
-        ActionBar actionBar = getActionBar();
-        if (actionBar == null) return null;
+        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // todo: update prices
+                String[] symbols = getAllShownSymbols();
+                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                        .getUpdaterInstance(getContext());
+                updater.downloadPrices(Arrays.asList(symbols));
 
-        Spinner spinner = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner);
-        return spinner;
+                layout.setRefreshing(false);
+            }
+        });
     }
 
     private void loadAccount() {
@@ -648,13 +664,13 @@ public class WatchlistFragment
             /*
             Just hide the contents and the row will automatically shrink (but not disappear).
              */
-            mListHeader.findViewById(R.id.headerRow).setVisibility(View.GONE);
+            this.viewHolder.mListHeader.findViewById(R.id.headerRow).setVisibility(View.GONE);
         } else {
             if (mDataFragment.getListView().getHeaderViewsCount() == 0) {
-                mDataFragment.getListView().addHeaderView(mListHeader);
+                mDataFragment.getListView().addHeaderView(this.viewHolder.mListHeader);
             }
 //            mListHeader.setVisibility(View.VISIBLE);
-            mListHeader.findViewById(R.id.headerRow).setVisibility(View.VISIBLE);
+            this.viewHolder.mListHeader.findViewById(R.id.headerRow).setVisibility(View.VISIBLE);
         }
     }
 }
