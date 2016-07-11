@@ -83,6 +83,7 @@
                 <com.shamanland.fonticon.FontIconView
                     android:id="@+id/deleteButton"
                     style="@style/Money.Button.Input.Dialog.Operator"
+                    android:gravity="center"
                     android:text="@string/ic_erase"
                     android:textSize="@dimen/input_dialog_text_size" />
 
