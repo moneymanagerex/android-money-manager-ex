@@ -16,30 +16,16 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.07.11.852">
-        <changelogtext>Fix for setting the default currency on initial start.</changelogtext>
-        <changelogtext>Fix for deleted split category.</changelogtext>
-        <changelogtext>Showing only one amount field on Transfers in the same currency.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.07.08.850">
-        <changelogtext>Adding Morningstar as the price provider.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.07.07.849">
-        <changelogtext>Improvements and adjustments in auto-sync and progress display.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.07.06.848">
-        <changelogtext>Removing a few direct references to Dropbox.</changelogtext>
-        <changelogtext>Showing progress bar during sync.</changelogtext>
-        <changelogtext>Handling errors on opening Asset Allocation.</changelogtext>
-        <changelogtext>Handling errors during price download from YQL.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.07.05.847">
+    <changelogversion versionName="2016.07.11.853">
         <changelogtext>Note: There are BIG changes in this release!
             This release includes support for four major cloud storage providers:
             Dropbox, Google Drive, OneDrive, and Box.
-            Dropbox synchronization now can use a file anywhere in the file tree and is not limited to the app folder.
-            Dropbox is deprecating API v1 and therefore you will need to reinitialize synchronization.
-            Please test out and report any feedback either via email or on GitHub.
         </changelogtext>
+        <changelogtext>Dropbox synchronization now can use a file anywhere in the file tree and is not limited to the app folder.</changelogtext>
+        <changelogtext>Dropbox is deprecating API v1 and therefore you will need to reinitialize synchronization.</changelogtext>
+        <changelogtext>Fix for setting the default currency on the first run.</changelogtext>
+        <changelogtext>Fix for deleted split category.</changelogtext>
+        <changelogtext>Showing only one amount field on Transfers in the same currency.</changelogtext>
+        <changelogtext>Adding Morningstar as the security price provider.</changelogtext>
     </changelogversion>
 </changelog>
