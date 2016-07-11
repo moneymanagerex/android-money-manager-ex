@@ -183,7 +183,7 @@ public class SyncManager {
     }
 
     /**
-     * Downloads the file from Dropbox service.
+     * Downloads the file from the storage service.
      * @param remoteFile Remote file entry
      * @param localFile Local file reference
      * @return Indicator whether the download was successful.
@@ -323,21 +323,21 @@ public class SyncManager {
     }
 
     public void login() {
-        new Thread() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 getProvider().login();
             }
-        }.start();
+        }).start();
     }
 
     public void logout() {
-        new Thread() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 getProvider().logout();
             }
-        }.start();
+        }).start();
     }
 
     public void openDatabase() {
