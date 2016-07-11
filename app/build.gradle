@@ -133,11 +133,11 @@ dependencies {
             project(path: ':money'),
 //        'com.caverock:androidsvg:1.2.2-beta-1',
 //            project(':dropboxChooserSDK'),
-            'com.google.android.apps.dashclock:dashclock-api:2.0.0',
+            'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             // Dropbox
-            'com.googlecode.json-simple:json-simple:1.1.1'
+//            'com.googlecode.json-simple:json-simple:1.1.1'
 //            'com.dropbox.core:dropbox-core-sdk:2.0.6',
-            , 'com.cloudrail:cloudrail-si-android:2.4.2'
+            , 'com.cloudrail:cloudrail-si-android:2.5.2'
             // Google
 //            , 'com.google.android.gms:play-services-analytics:9.0.0',
             , 'com.android.support:support-v4:24.0.0'
