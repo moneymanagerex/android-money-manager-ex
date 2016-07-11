@@ -420,6 +420,12 @@ public class CurrencyService
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, message);
         }
+
+        // can't get the default currency?
+        if (currency == null) {
+            currency = java.util.Currency.getInstance(Locale.GERMANY);
+        }
+
         return currency;
     }
 
