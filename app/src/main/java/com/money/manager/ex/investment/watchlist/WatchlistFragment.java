@@ -564,7 +564,8 @@ public class WatchlistFragment
         layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // todo: update prices
+                // update prices
+                // todo: do not display the manual progress dialog
                 String[] symbols = getAllShownSymbols();
                 ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
                         .getUpdaterInstance(getContext());
