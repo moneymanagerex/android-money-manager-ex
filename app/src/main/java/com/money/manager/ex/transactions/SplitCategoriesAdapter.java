@@ -204,6 +204,10 @@ public class SplitCategoriesAdapter
 
     @Override
     public void onItemDismiss(int position) {
+        // add the removed item to the collection
+        ISplitTransaction tx = splitTransactions.get(position);
+        EventBus.getDefault().post(new SplitItemRemovedEvent(tx));
+
         this.splitTransactions.remove(position);
         notifyItemRemoved(position);
     }
