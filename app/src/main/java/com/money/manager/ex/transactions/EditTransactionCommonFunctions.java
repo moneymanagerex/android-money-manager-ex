@@ -1394,7 +1394,7 @@ public class EditTransactionCommonFunctions {
         setSplit(false);
 
         // Set the destination account, if not already.
-        if (transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
+        if (transactionEntity.getAccountToId() == null || transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
             transactionEntity.setAccountToId(mAccountIdList.get(0));
         }
 
