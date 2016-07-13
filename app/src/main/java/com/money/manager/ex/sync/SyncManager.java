@@ -341,6 +341,9 @@ public class SyncManager {
     }
 
     public void openDatabase() {
+        // Do this only if called from an activity.
+        if (!(getContext() instanceof Activity)) return;
+
         File downloadedDb = new File(getLocalPath());
         SyncCommon common = new SyncCommon();
 
