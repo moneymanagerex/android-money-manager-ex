@@ -152,6 +152,7 @@ public class MyDatabaseUtils {
         // check if there are duplicate records in Info Table
         InfoRepository repo = new InfoRepository(getContext());
         List<Info> results = repo.loadAll(InfoKeys.DATEFORMAT);
+        if (results == null) return false;
 
         if (results.size() > 1) {
             // delete them, leaving only the first one
