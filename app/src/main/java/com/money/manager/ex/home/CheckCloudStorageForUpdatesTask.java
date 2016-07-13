@@ -78,7 +78,7 @@ public class CheckCloudStorageForUpdatesTask
             handler.handle(ex, "showing update notification dialog");
         }
 
-        if (ret.equals(SyncMessages.STARTING_UPLOAD)) {
+        if (ret != null && ret.equals(SyncMessages.STARTING_UPLOAD)) {
             // upload without prompting.
             getSyncManager().triggerSynchronization();
         }
