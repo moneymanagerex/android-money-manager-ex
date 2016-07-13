@@ -70,7 +70,8 @@ public class ExceptionHandler
     public void handle(Throwable t, String errorMessage) {
         errorMessage = "Error " + errorMessage;
 
-        Log.e(getLogcat(), errorMessage + ": " + t.getLocalizedMessage());
+        String version = getAppVersion();
+        Log.e(getLogcat(), "version: " + version + ": " + errorMessage + ": " + t.getLocalizedMessage());
         t.printStackTrace();
         showMessage(errorMessage);
     }
@@ -198,19 +199,29 @@ public class ExceptionHandler
     }
 
     private String getAppVersionInformation() {
-        if (mContext == null) return "";
+        if (getContext() == null) return "";
 
         String result = "";
         try {
-            String version = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+            String version = getAppVersion();
             result += "Version: " + version;
             result += LINE_SEPARATOR;
 
-            String build = Integer.toString(mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode);
+            String build = Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
             result += "Build: " + build;
         } catch (Exception ex) {
             result = "Could not retrieve version information.";
         }
         return result;
+    }
+
+    private String getAppVersion() {
+        String version;
+        try {
+            version = getContext().getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            version = "can't fetch";
+        }
+        return version;
     }
 }
