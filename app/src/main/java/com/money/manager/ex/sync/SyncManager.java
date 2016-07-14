@@ -621,6 +621,15 @@ public class SyncManager {
     }
 
     private void invokeSyncService(String action) {
+        try {
+            invokeSyncServiceInternal(action);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "invoking sync service");
+        }
+    }
+
+    private void invokeSyncServiceInternal(String action) {
         // Validation.
         String remoteFile = getRemotePath();
         // We need a value in remote file name settings.
