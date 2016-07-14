@@ -79,6 +79,7 @@ public class ExceptionHandler
         showMessage(errorMessage);
 
         //Crashlytics.getInstance().crash();
+        Crashlytics.logException(t);
     }
 
     private String getLogcat() {
