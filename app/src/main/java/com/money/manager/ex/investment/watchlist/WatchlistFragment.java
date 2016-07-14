@@ -22,7 +22,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -176,7 +175,7 @@ public class WatchlistFragment
         }
         setHasOptionsMenu(true);
 
-        initializeSwipeToRefresh(view);
+//        initializeSwipeToRefresh(view);
 
         return view;
     }
@@ -558,23 +557,23 @@ public class WatchlistFragment
         });
     }
 
-    private void initializeSwipeToRefresh(View view) {
-        final SwipeRefreshLayout layout = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
-
-        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // update prices
-                // todo: do not display the manual progress dialog
-                String[] symbols = getAllShownSymbols();
-                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                        .getUpdaterInstance(getContext());
-                updater.downloadPrices(Arrays.asList(symbols));
-
-                layout.setRefreshing(false);
-            }
-        });
-    }
+//    private void initializeSwipeToRefresh(View view) {
+//        final SwipeRefreshLayout layout = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
+//
+//        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // update prices
+//                // todo: do not display the manual progress dialog
+//                String[] symbols = getAllShownSymbols();
+//                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+//                        .getUpdaterInstance(getContext());
+//                updater.downloadPrices(Arrays.asList(symbols));
+//
+//                layout.setRefreshing(false);
+//            }
+//        });
+//    }
 
     private void loadAccount() {
         if (!getArguments().containsKey(KEY_ACCOUNT_ID)) return;
