@@ -27,6 +27,7 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 
@@ -53,11 +54,13 @@ public class ExceptionHandler
     public ExceptionHandler(Context context, Object host) {
         mContext = context;
         mHost = host;
+//        this.originalHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
     private final String LINE_SEPARATOR = "\n";
     private Context mContext;
     private Object mHost;
+//    private Thread.UncaughtExceptionHandler originalHandler;
 
     public Context getContext() {
         return mContext;
@@ -74,6 +77,8 @@ public class ExceptionHandler
         Log.e(getLogcat(), "version: " + version + ": " + errorMessage + ": " + t.getLocalizedMessage());
         t.printStackTrace();
         showMessage(errorMessage);
+
+        //Crashlytics.getInstance().crash();
     }
 
     private String getLogcat() {
@@ -175,6 +180,8 @@ public class ExceptionHandler
 //        context.startActivity(intent);
 
         sendEmail(errorReport.toString());
+
+//        this.originalHandler.uncaughtException(thread, throwable);
 
 //        android.os.Process.killProcess(android.os.Process.myPid());
 //        System.exit(10);

@@ -28,6 +28,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -40,6 +41,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
+import io.fabric.sdk.android.Fabric;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -223,6 +225,14 @@ public class MoneyManagerApplication
         FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
+
+        // Setup exception reporting
+        // Set up Crashlytics, disabled for debug builds
+//        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+        // todo disable for Debug builds?
+//                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+//                .build();
+        Fabric.with(this, new Crashlytics());
     }
 
     @Override

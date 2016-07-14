@@ -18,6 +18,8 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.neenbedankt.android-apt'
+// Fabric
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 24
@@ -73,6 +75,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Disable fabric build id for debug builds
+            //todo ext.enableCrashlytics = false;
+        }
+        beta {
+            applicationIdSuffix ".beta"
+            versionNameSuffix "-beta"
+        }
         release {
             minifyEnabled false
             shrinkResources true
@@ -84,10 +94,6 @@ android {
                     output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", version + ".apk"))
                 }
             }
-        }
-        beta {
-            applicationIdSuffix ".beta"
-            versionNameSuffix "-beta"
         }
     }
 
@@ -245,9 +251,27 @@ dependencies {
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 //    compile 'com.google.android.gms:play-services-analytics:9.2.0'
 //    compile 'com.android.support:support-v4:23.4.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+        transitive = true;
+    }
 }
 
 configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
+}
+
+// Fabric
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
 }
 
