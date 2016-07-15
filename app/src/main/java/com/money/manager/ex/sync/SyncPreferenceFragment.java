@@ -234,6 +234,9 @@ public class SyncPreferenceFragment
                 sync.logout();
 
                 Core.alertDialog(getActivity(), R.string.preferences_reset);
+
+                getActivity().recreate();
+
                 return false;
             }
         });
