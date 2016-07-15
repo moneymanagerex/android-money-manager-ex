@@ -138,8 +138,7 @@ public class HomeFragment
 
         mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
 
-        AppSettings settings = new AppSettings(getActivity());
-        mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
+        refreshSettings();
 
         // The fragment is using a custom option in the actionbar menu.
         setHasOptionsMenu(true);
@@ -388,6 +387,8 @@ public class HomeFragment
     @Override
     public void onResume() {
         super.onResume();
+
+        refreshSettings();
 
         // Toolbar
         Activity parent = getActivity();
@@ -962,5 +963,14 @@ public class HomeFragment
     private ExpandableListView getExpandableListView(View view) {
         mExpandableListView = (ExpandableListView) view.findViewById(R.id.listViewAccountBills);
         return mExpandableListView;
+    }
+
+    private void refreshSettings() {
+        AppSettings settings = new AppSettings(getActivity());
+        mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
+
+        if (txtFooterSummaryReconciled != null) {
+            txtFooterSummaryReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+        }
     }
 }
