@@ -60,7 +60,7 @@ public abstract class BaseFragmentActivity
 
         super.onCreate(savedInstance);
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
 
     @Override

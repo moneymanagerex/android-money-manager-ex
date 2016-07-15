@@ -36,10 +36,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Standard exception handler.
+ * Default exception handler.
+ * Used for reporting uncaught exceptions before using Crashlytics.
  */
 public class ExceptionHandler
-    implements Thread.UncaughtExceptionHandler {
+    implements Thread.UncaughtExceptionHandler
+{
 
     public static void log(String message) {
         Log.i("manual", message);
@@ -71,7 +73,6 @@ public class ExceptionHandler
     private final String LINE_SEPARATOR = "\n";
     private Context mContext;
     private Object mHost;
-//    private Thread.UncaughtExceptionHandler originalHandler;
 
     public Context getContext() {
         return mContext;
