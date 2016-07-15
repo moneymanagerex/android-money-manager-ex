@@ -198,8 +198,8 @@ public class MoneyManagerApplication
     public void onCreate() {
         super.onCreate();
 
-        // Set custom default handler for unhandled exceptions.
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
+        // Set custom default handler for unhandled exceptions. Also set in BaseFragmentActivity.
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
 
         // save instance of application
         myInstance = this;

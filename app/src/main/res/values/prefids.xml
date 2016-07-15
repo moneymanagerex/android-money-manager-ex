@@ -61,6 +61,7 @@
     <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
     <string name="pref_application_font">prefapplicationfont</string>
     <string name="pref_application_font_size">prefapplicationfontsize</string>
+    <string name="pref_transaction_sort_by_type">pref_transaction_sort_by_type</string>
     <string name="pref_dropbox_wiki">prefdropboxwiki</string>
     <string name="pref_default_status">prefdefaultstatus</string>
     <string name="pref_default_payee">prefdefaultpayee</string>

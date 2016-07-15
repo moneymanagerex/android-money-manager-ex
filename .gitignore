@@ -32,3 +32,6 @@ scripts/deployment/node_modules
 
 # Proxy settings
 /gradle.properties
+
+# Fabric settings
+fabric.properties

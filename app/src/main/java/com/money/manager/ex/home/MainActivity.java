@@ -458,8 +458,9 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-                new SyncManager(this).triggerSynchronization();
-                break;
+                throw new RuntimeException("blah");
+//                new SyncManager(this).triggerSynchronization();
+//                break;
             case R.id.menu_open_database:
                 openDatabasePicker();
                 break;

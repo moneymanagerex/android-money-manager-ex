@@ -16,10 +16,10 @@
  */
 
 apply plugin: 'com.android.application'
-//apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.neenbedankt.android-apt'
 // Fabric
 apply plugin: 'io.fabric'
+//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 24
@@ -30,8 +30,8 @@ android {
         multiDexEnabled true
         minSdkVersion 15 // 4.0.3
         targetSdkVersion 24
-        versionCode 857
-        versionName '2016.07.14'
+        versionCode 860
+        versionName '2016.07.15'
         // 601 = 1.4.17, stable
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -143,7 +143,7 @@ dependencies {
             // Dropbox
 //            'com.googlecode.json-simple:json-simple:1.1.1'
 //            'com.dropbox.core:dropbox-core-sdk:2.0.6',
-            , 'com.cloudrail:cloudrail-si-android:2.5.2'
+            , 'com.cloudrail:cloudrail-si-android:2.5.3'
             // Google
 //            , 'com.google.android.gms:play-services-analytics:9.0.0',
             // When updating the support lib, update the overrides in the main build script.
@@ -199,6 +199,9 @@ dependencies {
             // multidex support
             , 'com.android.support:multidex:1.0.0'
     )
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+        transitive = true;
+    }
     //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
     // Robolectric, unit testing
     testCompile(
@@ -250,11 +253,11 @@ dependencies {
     )
     //    // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-//    compile 'com.google.android.gms:play-services-analytics:9.2.0'
-//    compile 'com.android.support:support-v4:23.4.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
-        transitive = true;
-    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "http://maven.cloudrail.com" }
 }
 
 configurations {
@@ -271,8 +274,3 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-

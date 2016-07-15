@@ -18,6 +18,7 @@ package com.money.manager.ex.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -35,10 +36,22 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Standard exception handler.
+ * Default exception handler.
+ * Used for reporting uncaught exceptions before using Crashlytics.
  */
 public class ExceptionHandler
-    implements Thread.UncaughtExceptionHandler {
+    implements Thread.UncaughtExceptionHandler
+{
+
+    public static void log(String message) {
+        Log.i("manual", message);
+        Crashlytics.log(message);
+    }
+
+    public static void warn(String message) {
+        Log.w("manual", message);
+        Crashlytics.log(message);
+    }
 
     public ExceptionHandler(Context context) {
         mContext = context;
@@ -60,7 +73,6 @@ public class ExceptionHandler
     private final String LINE_SEPARATOR = "\n";
     private Context mContext;
     private Object mHost;
-//    private Thread.UncaughtExceptionHandler originalHandler;
 
     public Context getContext() {
         return mContext;
@@ -73,12 +85,13 @@ public class ExceptionHandler
     public void handle(Throwable t, String errorMessage) {
         errorMessage = "Error " + errorMessage;
 
-        String version = getAppVersion();
+        String version = getAppVersion() + "." + getAppBuildNumber();
         Log.e(getLogcat(), "version: " + version + ": " + errorMessage + ": " + t.getLocalizedMessage());
         t.printStackTrace();
         showMessage(errorMessage);
 
         //Crashlytics.getInstance().crash();
+        Crashlytics.logException(t);
     }
 
     private String getLogcat() {
@@ -166,11 +179,6 @@ public class ExceptionHandler
         errorReport.append(Build.PRODUCT);
         errorReport.append(LINE_SEPARATOR);
 
-//        Intent intent = new Intent(context, ExceptionHandlerActivity.class);
-//        intent.putExtra("error", errorReport.toString());
-//        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
-//        context.startActivity(intent);
-
 //        Log.e(getLogcat(), errorReport.toString());
 //        showMessage(errorReport.toString());
 
@@ -214,7 +222,7 @@ public class ExceptionHandler
             result += "Version: " + version;
             result += LINE_SEPARATOR;
 
-            String build = Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
+            String build = getAppBuildNumber();
             result += "Build: " + build;
         } catch (Exception ex) {
             result = "Could not retrieve version information.";
@@ -230,5 +238,15 @@ public class ExceptionHandler
             version = "can't fetch";
         }
         return version;
+    }
+
+    private String getAppBuildNumber() {
+        try {
+            return Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            String message = "could not retrieve build number";
+            Crashlytics.log(message);
+            return message;
+        }
     }
 }

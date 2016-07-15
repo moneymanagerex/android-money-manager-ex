@@ -68,6 +68,13 @@ public class CheckCloudStorageForUpdatesTask
 
     @Override
     protected void onPostExecute(Integer ret) {
+        // ???
+        if (ret == null) {
+            ExceptionHandler.log(CheckCloudStorageForUpdatesTask.class.getSimpleName() +
+                    "onPostExecute ret parameter is null.");
+            return;
+        }
+
         try {
             if (ret.equals(SyncMessages.STARTING_DOWNLOAD)) {
 //            showNotificationSnackbar();
@@ -78,7 +85,7 @@ public class CheckCloudStorageForUpdatesTask
             handler.handle(ex, "showing update notification dialog");
         }
 
-        if (ret != null && ret.equals(SyncMessages.STARTING_UPLOAD)) {
+        if (ret.equals(SyncMessages.STARTING_UPLOAD)) {
             // upload without prompting.
             getSyncManager().triggerSynchronization();
         }

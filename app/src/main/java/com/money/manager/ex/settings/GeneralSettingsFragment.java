@@ -195,7 +195,14 @@ public class GeneralSettingsFragment
                     int day;
                     try {
                         day = Integer.parseInt((String) newValue);
-                        if (!(day >= 1 && day <= 31)) {
+                    } catch (NumberFormatException e) {
+                        ExceptionHandler handler = new ExceptionHandler(getActivity());
+                        handler.showMessage(R.string.error_parsing_value);
+                        return false;
+                    }
+
+                    try {
+                        if (day < 1 || day > 31) {
                             return false;
                         }
                         if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
