@@ -88,7 +88,7 @@ public class SyncService
         try {
             remoteFile = sync.getProvider().getMetadata(remoteFilename);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getBaseContext());
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext());
             handler.handle(e, "fetching remote metadata");
             sendMessage(SyncMessages.ERROR);
             return;
@@ -134,9 +134,9 @@ public class SyncService
     // private
 
     private void triggerDownload(final File localFile, CloudMetaData remoteFile) {
-        SyncManager sync = new SyncManager(getBaseContext());
+        SyncManager sync = new SyncManager(getApplicationContext());
 
-        final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+        final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationBuilderForDownload();
 
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
@@ -167,12 +167,12 @@ public class SyncService
                         }
                         // create notification for open file
                         // intent is passed to the notification and called if clicked on.
-                        Intent intent = new SyncCommon().getIntentForOpenDatabase(getBaseContext(), localFile);
+                        Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                                 MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
                         // create builder
                         final NotificationCompat.Builder notification =
-                                new SyncNotificationFactory(getBaseContext())
+                                new SyncNotificationFactory(getApplicationContext())
                                         .getNotificationBuilderDownloadComplete(pendingIntent);
                         // notify
                         notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
@@ -198,7 +198,7 @@ public class SyncService
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
-        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+        final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationBuilderUpload();
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -222,7 +222,7 @@ public class SyncService
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
                         // notification
-                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
+                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
                                 .getNotificationBuilderUploadComplete(pendingIntent);
                         // notify
                         notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
@@ -242,7 +242,7 @@ public class SyncService
         sendMessage(SyncMessages.STARTING_UPLOAD);
 
         //execute
-        SyncManager sync = new SyncManager(getBaseContext());
+        SyncManager sync = new SyncManager(getApplicationContext());
         boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
 
         //complete
@@ -252,7 +252,7 @@ public class SyncService
     }
 
     private void triggerSync(final File localFile, CloudMetaData remoteFile) {
-        SyncManager sync = new SyncManager(getBaseContext());
+        SyncManager sync = new SyncManager(getApplicationContext());
 
         DateTime localLastModified = sync.getLastModifiedDate(remoteFile);
         if (localLastModified == null) localLastModified = new DateTime(localFile.lastModified());
@@ -287,7 +287,7 @@ public class SyncService
         try {
             mOutMessenger.send(msg);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getBaseContext());
+            ExceptionHandler handler = new ExceptionHandler(getApplicationContext());
             handler.handle(e, "sending message from the sync service");
 
             return false;
