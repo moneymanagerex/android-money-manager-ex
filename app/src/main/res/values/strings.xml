@@ -516,6 +516,8 @@
     <string name="custom_dates">Custom Dates</string>
     <string name="pref_transaction_hide_reconciled_amounts_summary">Hide the reconciled amounts from the accounts on dashboard.</string>
     <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
+    <string name="pref_transaction_sort_by_type_summary">Arrange daily transactions by transaction type (deposit, transfer, withdrawal)</string>
+    <string name="pref_transaction_sort_by_type_title">Sort Transactions by Type</string>
     <string name="warning">Warning</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
     <string name="qif_export">Qif Export</string>
