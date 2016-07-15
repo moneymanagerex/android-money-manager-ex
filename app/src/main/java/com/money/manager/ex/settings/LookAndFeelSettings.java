@@ -116,4 +116,8 @@ public class LookAndFeelSettings
         infoService.setInfoValue(InfoKeys.SHOW_FAVOURITE_ACCOUNTS, value.toString());
     }
 
+    public boolean getSortTransactionsByType() {
+        String key = getSettingsKey(R.string.pref_transaction_sort_by_type);
+        return getBooleanSetting(key, true);
+    }
 }

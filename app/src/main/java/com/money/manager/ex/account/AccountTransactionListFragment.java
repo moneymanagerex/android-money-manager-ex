@@ -121,6 +121,8 @@ public class AccountTransactionListFragment
     // filter
     private TransactionFilter mFilter;
 
+    private boolean mSortTransactionsByType = true;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -204,6 +206,8 @@ public class AccountTransactionListFragment
     @Override
     public void onResume() {
         super.onResume();
+
+        refreshSettings();
 
         initializeAccountsSelector();
         selectCurrentAccount();
@@ -669,12 +673,16 @@ public class AccountTransactionListFragment
         where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());
 
         // create a bundle to returns
+
+        String sortArgument = QueryAllData.Date + " DESC, ";
+        if (mSortTransactionsByType) {
+            sortArgument += QueryAllData.TransactionType + ", ";
+        }
+        sortArgument += QueryAllData.ID + " DESC";
+
         Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where.getWhere());
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-            QueryAllData.Date + " DESC, " +
-                QueryAllData.TransactionType + ", " +
-                QueryAllData.ID + " DESC");
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, sortArgument);
 
         return args;
     }
@@ -865,4 +873,7 @@ public class AccountTransactionListFragment
         this.startCheckingAccountActivity(null);
     }
 
+    private void refreshSettings() {
+        mSortTransactionsByType = new AppSettings(getActivity()).getLookAndFeelSettings().getSortTransactionsByType();
+    }
 }
