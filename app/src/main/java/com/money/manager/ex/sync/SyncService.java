@@ -287,7 +287,9 @@ public class SyncService
         try {
             mOutMessenger.send(msg);
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(getBaseContext());
+            handler.handle(e, "sending message from the sync service");
+
             return false;
         }
         return true;
