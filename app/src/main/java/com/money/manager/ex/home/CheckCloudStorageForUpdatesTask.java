@@ -72,6 +72,7 @@ public class CheckCloudStorageForUpdatesTask
         if (ret == null) {
             ExceptionHandler.log(CheckCloudStorageForUpdatesTask.class.getSimpleName() +
                     "onPostExecute ret parameter is null.");
+            return;
         }
 
         try {
