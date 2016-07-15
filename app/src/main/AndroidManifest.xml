@@ -435,9 +435,6 @@
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
         <activity android:name=".sync.CloudFilePickerActivity"></activity>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="<fabric_api_key>" />
     </application>
 
 </manifest>
