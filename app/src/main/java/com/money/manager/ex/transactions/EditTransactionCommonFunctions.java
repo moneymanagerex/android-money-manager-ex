@@ -260,7 +260,7 @@ public class EditTransactionCommonFunctions {
         }
 
         // Handling some invalid values.
-        if (accountId == 0) accountId = Constants.NOT_SET;
+        if (accountId == null || accountId == 0) accountId = Constants.NOT_SET;
 
         return getAccountCurrencyId(accountId);
     }
@@ -284,7 +284,7 @@ public class EditTransactionCommonFunctions {
             accountId = mAccountIdList.get(0);
         }
 
-        if (accountId == 0) accountId = Constants.NOT_SET;
+        if (accountId == null || accountId == 0) accountId = Constants.NOT_SET;
 
         return getAccountCurrencyId(accountId);
     }
