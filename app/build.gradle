@@ -16,9 +16,7 @@
  */
 
 apply plugin: 'com.android.application'
-// Fabric
 apply plugin: 'io.fabric'
-//apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
@@ -30,7 +28,7 @@ android {
         multiDexEnabled true
         minSdkVersion 15 // 4.0.3
         targetSdkVersion 24
-        versionCode 860
+        versionCode 861
         versionName '2016.07.15'
         // 601 = 1.4.17, stable
 
