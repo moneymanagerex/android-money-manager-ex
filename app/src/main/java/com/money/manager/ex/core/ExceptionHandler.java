@@ -18,6 +18,7 @@ package com.money.manager.ex.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -78,7 +79,7 @@ public class ExceptionHandler
     public void handle(Throwable t, String errorMessage) {
         errorMessage = "Error " + errorMessage;
 
-        String version = getAppVersion();
+        String version = getAppVersion() + "." + getAppBuildNumber();
         Log.e(getLogcat(), "version: " + version + ": " + errorMessage + ": " + t.getLocalizedMessage());
         t.printStackTrace();
         showMessage(errorMessage);
@@ -220,7 +221,7 @@ public class ExceptionHandler
             result += "Version: " + version;
             result += LINE_SEPARATOR;
 
-            String build = Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
+            String build = getAppBuildNumber();
             result += "Build: " + build;
         } catch (Exception ex) {
             result = "Could not retrieve version information.";
@@ -236,5 +237,15 @@ public class ExceptionHandler
             version = "can't fetch";
         }
         return version;
+    }
+
+    private String getAppBuildNumber() {
+        try {
+            return Integer.toString(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            String message = "could not retrieve build number";
+            Crashlytics.log(message);
+            return message;
+        }
     }
 }
