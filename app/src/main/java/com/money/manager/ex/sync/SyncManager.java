@@ -326,7 +326,12 @@ public class SyncManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getProvider().login();
+                try {
+                    getProvider().login();
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler(getContext());
+                    handler.handle(e, "logging in to cloud provider");
+                }
             }
         }).start();
     }
