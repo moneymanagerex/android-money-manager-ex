@@ -304,6 +304,7 @@
                         style="@style/Money.Button"
                         android:layout_width="@dimen/money_button_height"
                         android:layout_height="@dimen/money_button_height"
+                        android:textAlignment="center"
                         android:text="@string/ic_erase"
                         android:textSize="@dimen/fonticon_drawer" />
                 </LinearLayout>
@@ -338,6 +339,7 @@
                     style="@style/Money.Button.Transparent"
                     android:layout_width="@dimen/money_button_height"
                     android:layout_height="@dimen/money_button_height"
+                    android:textAlignment="center"
                     android:text="@string/ic_split"
                     android:textSize="@dimen/fonticon_drawer" />
 
