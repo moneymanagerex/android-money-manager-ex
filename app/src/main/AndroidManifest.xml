@@ -437,7 +437,7 @@
         <activity android:name=".sync.CloudFilePickerActivity"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="a453d41109065421e961c0bde7fc6fd2e6dd67fb" />
+            android:value="<fabric_api_key>" />
     </application>
 
 </manifest>
