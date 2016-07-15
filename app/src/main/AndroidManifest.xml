@@ -377,9 +377,6 @@
         <activity
             android:name=".budget.BudgetsActivity"
             android:label="@string/budgets" />
-        <activity
-            android:name=".core.ExceptionHandlerActivity"
-            android:label="@string/error" />
 
         <receiver
             android:name=".widget.SingleAccountWidget"

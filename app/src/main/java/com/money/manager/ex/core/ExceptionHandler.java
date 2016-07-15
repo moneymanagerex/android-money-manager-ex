@@ -178,11 +178,6 @@ public class ExceptionHandler
         errorReport.append(Build.PRODUCT);
         errorReport.append(LINE_SEPARATOR);
 
-//        Intent intent = new Intent(context, ExceptionHandlerActivity.class);
-//        intent.putExtra("error", errorReport.toString());
-//        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
-//        context.startActivity(intent);
-
 //        Log.e(getLogcat(), errorReport.toString());
 //        showMessage(errorReport.toString());
 
