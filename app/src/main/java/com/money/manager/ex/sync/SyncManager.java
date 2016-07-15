@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cloudrail.si.exceptions.AuthenticationException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -328,6 +329,13 @@ public class SyncManager {
             public void run() {
                 try {
                     getProvider().login();
+                } catch (AuthenticationException e) {
+                    if (e.getMessage().equals("Authentication was cancelled")) {
+                        ExceptionHandler.warn("authentication cancelled");
+                    } else {
+                        ExceptionHandler handler = new ExceptionHandler(getContext());
+                        handler.handle(e, "logging in to cloud provider");
+                    }
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getContext());
                     handler.handle(e, "logging in to cloud provider");
