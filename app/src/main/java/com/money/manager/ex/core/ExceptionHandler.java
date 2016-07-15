@@ -46,6 +46,11 @@ public class ExceptionHandler
         Crashlytics.log(message);
     }
 
+    public static void warn(String message) {
+        Log.w("manual", message);
+        Crashlytics.log(message);
+    }
+
     public ExceptionHandler(Context context) {
         mContext = context;
         mHost = context;

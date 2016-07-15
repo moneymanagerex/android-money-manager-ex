@@ -67,8 +67,9 @@ public class LookAndFeelSettings
         try {
             result = DefinedDateRangeName.valueOf(value);
         } catch (IllegalArgumentException e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "parsing default date range");
+//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+//            handler.handle(e, "parsing default date range");
+            ExceptionHandler.warn("error parsing default date range");
         }
         if (result != null) {
             return result;
