@@ -464,6 +464,8 @@
   <string name="custom_dates">Настраиваемые даты</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Скрыть подтвержденные суммы со счетов на основной панели.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Скрыть подтвержденные суммы</string>
+  <string name="pref_transaction_sort_by_type_title">Сортировать транзакции по типу</string>
+  <string name="pref_transaction_sort_by_type_summary">Сортировать транзакции за день по типу (пополнение, перевод, снятие)</string>
   <string name="warning">Предупреждение</string>
   <string name="no_transfer_splits">Вы выбрали операцию перевода между счетами вместо текущей операции, но в текущей транзакции присутствуют разделенные [Split] категории. Вы хотите продолжить и удалить разделенные [Split] категории ?</string>
   <string name="qif_export">QIF экспорт</string>
