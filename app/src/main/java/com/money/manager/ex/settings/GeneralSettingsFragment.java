@@ -200,7 +200,7 @@ public class GeneralSettingsFragment
                         handler.showMessage(R.string.error_parsing_value);
                         return false;
                     }
-                    
+
                     try {
                         if (day < 1 || day > 31) {
                             return false;
