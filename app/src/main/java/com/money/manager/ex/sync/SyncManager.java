@@ -215,8 +215,6 @@ public class SyncManager {
      * (Re-)Sets the timer for delayed sync of the database.
      */
     public void dataChanged() {
-//        if (!isActive()) return;
-
         // save the last modified date so that we can correctly synchronize later.
         String remotePath = getRemotePath();
 

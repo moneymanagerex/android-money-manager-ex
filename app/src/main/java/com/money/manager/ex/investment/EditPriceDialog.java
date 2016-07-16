@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.os.ParcelableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
@@ -50,6 +52,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,25 +72,72 @@ public class EditPriceDialog
 
     public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
 
+    public static final String ARG_ACCOUNT = "EditPriceDialog:Account";
+    public static final String ARG_SYMBOL = "EditPriceDialog:Symbol";
+    public static final String ARG_PRICE = "EditPriceDialog:Price";
+    public static final String ARG_DATE = "EditPriceDialog:Date";
+
     private static final String KEY_ACCOUNT = "EditPriceDialog:Account";
-    private static final String KEY_SYMBOL = "EditPriceDialog:Symbol";
     private static final String KEY_PRICE = "EditPriceDialog:Price";
-    private static final String KEY_DATE = "EditPriceDialog:Date";
 
-    private Context mContext;
-
-    private RobotoTextView mAmountTextView;
-    private RobotoTextView mDateTextView;
-
+    private EditPriceViewHolder viewHolder;
+    private PriceDownloadedEvent mPrice;
     private int mAccountId;
-    private String mSymbol;
-    private Money mCurrentPrice;
-    private String mPriceDate;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    @NonNull
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
+        } else {
+            mAccountId = getArguments().getInt(ARG_ACCOUNT);
+            String symbol = getArguments().getString(ARG_SYMBOL);
+            Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
+            DateTime date = DateTime.parse(getArguments().getString(ARG_DATE));
+            mPrice = new PriceDownloadedEvent(symbol, price, date);
+        }
 
+        // Create dialog.
+
+        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
+                .setTitle(mPrice.symbol)
+                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_euro));
+
+        View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stock_price, null);
+        builder.setView(viewDialog);
+
+        viewHolder = new EditPriceViewHolder(viewDialog);
+        initializeControls(viewHolder);
+
+        // actions
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //save price
+                StockRepository repo = new StockRepository(getContext());
+                repo.updateCurrentPrice(mPrice.symbol, mPrice.price);
+
+                StockHistoryRepository historyRepository = new StockHistoryRepository(getContext());
+                boolean result = historyRepository.addStockHistoryRecord(mPrice);
+                if (!result) {
+                    Toast.makeText(getContext(), getContext().getString(R.string.error_update_currency_exchange_rate),
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                new SyncManager(getContext()).dataChanged();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        showDate();
+        showCurrentPrice();
+
+        return builder.create();
     }
 
     @Override
@@ -105,71 +155,67 @@ public class EditPriceDialog
     }
 
     @Override
-    @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mContext = getContext();
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(KEY_ACCOUNT, mAccountId);
+        savedInstanceState.putParcelable(KEY_PRICE, Parcels.wrap(mPrice));
+    }
 
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
+    // Events
 
-        // Create dialog.
+    @Subscribe
+    public void onEvent(AmountEnteredEvent event) {
+        mPrice.price = event.amount;
+        showCurrentPrice();
+    }
 
-        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(mSymbol)
-            .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_euro));
+    /*
+        Private
+     */
 
-        View viewDialog = LayoutInflater.from(mContext).inflate(R.layout.dialog_edit_stock_price, null);
-        builder.setView(viewDialog);
-
+    private void initializeControls(final EditPriceViewHolder viewHolder) {
         // date picker
 
-        mDateTextView = (RobotoTextView) viewDialog.findViewById(R.id.dateTextView);
         View.OnClickListener dateClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) mDateTextView.getTag());
-
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                    .setOnDateSetListener(listener)
-                    .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-                    .setThemeDark();
-                datePicker.show(((FragmentActivity)mContext).getSupportFragmentManager(), datePicker.getClass().getSimpleName());
+                        .setOnDateSetListener(listener)
+                        .setPreselectedDate(mPrice.date.getYear(), mPrice.date.getMonthOfYear() - 1, mPrice.date.getDayOfMonth())
+                        .setThemeDark();
+                datePicker.show(((FragmentActivity) getContext()).getSupportFragmentManager(), datePicker.getClass().getSimpleName());
             }
 
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    try {
-                        String enteredDate = Integer.toString(year) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(dayOfMonth);
-                        Date date = MyDateTimeUtils.from(enteredDate, Constants.ISO_DATE_FORMAT).toDate();
-                        mDateTextView.setTag(date);
-                        mDateTextView.setText(new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN,
-                            MoneyManagerApplication.getInstanceApp().getAppLocale())
-                                .format(date));
-
-                        mPriceDate = enteredDate;
-                    } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                        handler.handle(e, "setting the date");
-                    }
+                    mPrice.date = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0);
+                    showDate();
                 }
             };
         };
-        mDateTextView.setOnClickListener(dateClickListener);
+        viewHolder.dateTextView.setOnClickListener(dateClickListener);
 
-        if (StringUtils.isEmpty(mPriceDate)) {
-            mPriceDate = DateTime.now().toString(Constants.ISO_DATE_FORMAT);
-        }
-        Date latestDate = MyDateTimeUtils.from(mPriceDate, Constants.ISO_DATE_FORMAT).toDate();
-        mDateTextView.setTag(latestDate);
-        formatExtendedDate(mDateTextView);
+        showDate();
+
+        // date prev/next
+        viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPrice.date = mPrice.date.minusDays(1);
+                showDate();
+            }
+        });
+        viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPrice.date = mPrice.date.plusDays(1);
+                showDate();
+            }
+        });
 
         // price
 
-        mAmountTextView = (RobotoTextView) viewDialog.findViewById(R.id.amountTextView);
-        AccountRepository accountRepository = new AccountRepository(mContext);
+        AccountRepository accountRepository = new AccountRepository(getContext());
         Account account = accountRepository.load(mAccountId);
 
         final int currencyId = account.getCurrencyId();
@@ -177,93 +223,24 @@ public class EditPriceDialog
         View.OnClickListener onClickAmount = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Money amount = MoneyFactory.fromString(v.getTag().toString());
-
-                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", amount, currencyId, false);
+                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, currencyId, false);
                 dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
                 // getChildFragmentManager() ?
             }
         };
-        mAmountTextView.setOnClickListener(onClickAmount);
-
-        // get the current record price
-        showCurrentPrice(mCurrentPrice);
-
-        // actions
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //save price
-                Money amount = MoneyFactory.fromString(mAmountTextView.getTag().toString());
-                DateTime date = new DateTime((Date) mDateTextView.getTag());
-
-                StockRepository repo = new StockRepository(mContext);
-                repo.updateCurrentPrice(mSymbol, amount);
-
-                StockHistoryRepository historyRepository = new StockHistoryRepository(mContext);
-                boolean result = historyRepository.addStockHistoryRecord(mSymbol, amount, date);
-                if (!result) {
-                    Toast.makeText(mContext, mContext.getString(R.string.error_update_currency_exchange_rate),
-                            Toast.LENGTH_SHORT).show();
-                }
-
-                new SyncManager(getContext()).dataChanged();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        return builder.create();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt(KEY_ACCOUNT, mAccountId);
-        savedInstanceState.putString(KEY_SYMBOL, mSymbol);
-        savedInstanceState.putString(KEY_PRICE, mCurrentPrice.toString());
-        savedInstanceState.putString(KEY_DATE, mPriceDate);
-    }
-
-    // Events
-
-    @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-        // set the amount on the dialog.
-        showCurrentPrice(event.amount);
+        viewHolder.amountTextView.setOnClickListener(onClickAmount);
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         this.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT);
-        this.mSymbol = savedInstanceState.getString(KEY_SYMBOL);
-        this.mCurrentPrice = MoneyFactory.fromString(savedInstanceState.getString(KEY_PRICE));
-        this.mPriceDate = savedInstanceState.getString(KEY_DATE);
+        mPrice = Parcels.unwrap(savedInstanceState.getParcelable(KEY_PRICE));
     }
 
-    public void setParameters(int accountId, final String symbol, Money currentPrice) {
-        mAccountId = accountId;
-        mSymbol = symbol;
-        mCurrentPrice = currentPrice;
+    private void showCurrentPrice() {
+        viewHolder.amountTextView.setText(mPrice.price.toString());
     }
 
-    private void showCurrentPrice(Money currentPrice) {
-        mAmountTextView.setText(currentPrice.toString());
-        mAmountTextView.setTag(currentPrice.toString());
-
-        this.mCurrentPrice = currentPrice;
-    }
-
-    public void formatExtendedDate(TextView dateTextView) {
-        try {
-            dateTextView.setText(new SimpleDateFormat(Constants.LONG_DATE_MEDIUM_DAY_PATTERN,
-                MoneyManagerApplication.getInstanceApp().getAppLocale())
-                    .format((Date) dateTextView.getTag()));
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "formatting date");
-        }
+    private void showDate() {
+        viewHolder.dateTextView.setText(mPrice.date.toString(Constants.LONG_DATE_MEDIUM_DAY_PATTERN));
     }
 }

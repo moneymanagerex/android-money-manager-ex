@@ -60,6 +60,7 @@ import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
+import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -221,7 +222,12 @@ public class WatchlistItemsFragment
                 Money currentPrice = stock.getCurrentPrice();
 
                 EditPriceDialog dialog = new EditPriceDialog();
-                dialog.setParameters(accountId, symbol, currentPrice);
+                Bundle args = new Bundle();
+                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
+                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
+                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+                args.putString(EditPriceDialog.ARG_DATE, stock.getPurchaseDate().toString());
+                dialog.setArguments(args);
                 dialog.show(getChildFragmentManager(), "input-amount");
                 break;
 

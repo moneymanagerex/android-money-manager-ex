@@ -30,6 +30,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
+import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -72,6 +73,10 @@ public class StockHistoryRepository
                 StockHistory.HISTID, StockHistory.SYMBOL, StockHistory.DATE,
                 StockHistory.VALUE, StockHistory.UPDTYPE
         };
+    }
+
+    public boolean addStockHistoryRecord(PriceDownloadedEvent price) {
+        return addStockHistoryRecord(price.symbol, price.price, price.date);
     }
 
     public boolean addStockHistoryRecord(String symbol, Money price, DateTime date) {

@@ -69,16 +69,14 @@ public class MoneyManagerApplication
     extends MultiDexApplication {
     // Application
 
-    public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
+//    public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
 
     private static final String LOGCAT = "MoneyManagerApplication";
 
     private static MoneyManagerApplication myInstance;
     private static SharedPreferences appPreferences;
     private static float mTextSize;
-    // user name application
     private static String userName = "";
-//    private static Tracker mTracker;
 
     public static MoneyManagerApplication getInstanceApp() {
         return myInstance;
