@@ -743,4 +743,5 @@
 
     <!-- Errors -->
     <string name="error_parsing_value">Error parsing entered value</string>
+    <string name="remote_file_not_found">Remote file not found</string>
 </resources>

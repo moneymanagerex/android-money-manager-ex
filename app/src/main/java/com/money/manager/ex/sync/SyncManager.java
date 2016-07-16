@@ -28,6 +28,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudrail.si.exceptions.AuthenticationException;
+import com.cloudrail.si.exceptions.NotFoundException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -152,7 +153,10 @@ public class SyncManager {
 
         // get local and remote file info.
         File localFile = new File(localPath);
-        CloudMetaData remoteFile = getProvider().getMetadata(remotePath);
+        CloudMetaData remoteFile = loadMetadata(remotePath) ;
+        if (remoteFile == null) {
+            return SyncMessages.ERROR;
+        }
 
         // date last Modified
         DateTime localLastModified;
@@ -321,6 +325,21 @@ public class SyncManager {
         // check if a provider is selected? Default is Dropbox, so no need.
 
         return true;
+    }
+
+    public CloudMetaData loadMetadata(String remotePath) {
+        CloudMetaData result = null;
+        try {
+            result = getProvider().getMetadata(remotePath);
+        } catch (NotFoundException e) {
+            // just show a message
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.showMessage(R.string.remote_file_not_found);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "fetching remote metadata");
+        }
+        return result;
     }
 
     public void login() {
