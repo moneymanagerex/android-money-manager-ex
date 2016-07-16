@@ -516,7 +516,7 @@ public class EditTransactionCommonFunctions {
 
             @Override
             public void onClick(View v) {
-                DateTime dateTime = getDate();
+                DateTime dateTime = transactionEntity.getDate();
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
@@ -529,7 +529,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = getDate().minusDays(1);
+                DateTime dateTime = transactionEntity.getDate().minusDays(1);
                 setDate(dateTime);
             }
         });
@@ -537,7 +537,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = getDate().plusDays(1);
+                DateTime dateTime = transactionEntity.getDate().plusDays(1);
                 setDate(dateTime);
             }
         });
@@ -1436,11 +1436,6 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
-    }
-
-    private DateTime getDate() {
-        DateTime dateTime = MyDateTimeUtils.from(viewHolder.dateTextView.getTag().toString());
-        return dateTime;
     }
 
     private void setDate(DateTime dateTime) {

@@ -71,7 +71,6 @@ public class InvestmentTransactionEditActivity
     private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
-//    private ActivityInvestmentTransactionEditBinding mBinding;
     private InvestmentTransactionViewHolder mViewHolder;
 
     @Override
@@ -173,32 +172,7 @@ public class InvestmentTransactionEditActivity
         View rootView = this.findViewById(R.id.content);
         mViewHolder = new InvestmentTransactionViewHolder(rootView);
 
-        // Purchase Date
-
-        mViewHolder.dateView.setOnClickListener(new View.OnClickListener() {
-            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
-                @Override
-                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    setDirty(true);
-
-                    DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    mViewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
-                }
-            };
-
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(mStock.getPurchaseDate().toDate());
-
-                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                    .setOnDateSetListener(listener)
-                    .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-                    .setThemeDark();
-                datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
-            }
-        });
-
+        initDateControl(mViewHolder);
         initAccountSelectors(mViewHolder);
         initNumberOfShares(mViewHolder);
         initPurchasePrice();
@@ -248,7 +222,19 @@ public class InvestmentTransactionEditActivity
         }
     }
 
-    // Private
+    /*
+        Private
+     */
+
+    private void collectData() {
+        String stockName = mViewHolder.stockNameEdit.getText().toString().trim();
+        mStock.setName(stockName);
+
+        String symbol = mViewHolder.symbolEdit.getText().toString().trim().replace(" ", "");
+        mStock.setSymbol(symbol);
+
+        mStock.setNotes(mViewHolder.notesEdit.getText().toString());
+    }
 
     private void displayStock(Stock stock, InvestmentTransactionViewHolder viewHolder) {
         // Date
@@ -270,6 +256,14 @@ public class InvestmentTransactionEditActivity
         showCommission();
         showCurrentPrice();
         showValue();
+    }
+
+    private void setDate(DateTime dateTime) {
+        setDirty(true);
+
+        mStock.setPurchaseDate(dateTime);
+
+        showDate(dateTime);
     }
 
     /**
@@ -334,6 +328,49 @@ public class InvestmentTransactionEditActivity
         };
         RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.currentPriceView);
         purchasePriceView.setOnClickListener(onAmountClick);
+    }
+
+    private void initDateControl(final InvestmentTransactionViewHolder viewHolder) {
+        // Purchase Date
+
+        viewHolder.dateView.setOnClickListener(new View.OnClickListener() {
+            CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                @Override
+                public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                    setDirty(true);
+
+                    DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+                }
+            };
+
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mStock.getPurchaseDate().toDate());
+
+                CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                        .setOnDateSetListener(listener)
+                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                        .setThemeDark();
+                datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
+            }
+        });
+        // prev/next day
+        viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DateTime dateTime = mStock.getPurchaseDate().minusDays(1);
+                setDate(dateTime);
+            }
+        });
+        viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DateTime dateTime = mStock.getPurchaseDate().plusDays(1);
+                setDate(dateTime);
+            }
+        });
     }
 
     private void initNumberOfShares(InvestmentTransactionViewHolder viewHolder) {
@@ -415,14 +452,8 @@ public class InvestmentTransactionEditActivity
         return true;
     }
 
-    private void collectData() {
-        String stockName = mViewHolder.stockNameEdit.getText().toString().trim();
-        mStock.setName(stockName);
-
-        String symbol = mViewHolder.symbolEdit.getText().toString().trim().replace(" ", "");
-        mStock.setSymbol(symbol);
-
-        mStock.setNotes(mViewHolder.notesEdit.getText().toString());
+    private void showDate(DateTime date) {
+        mViewHolder.dateView.setText(date.toString(Constants.LONG_DATE_PATTERN));
     }
 
     private boolean validate() {

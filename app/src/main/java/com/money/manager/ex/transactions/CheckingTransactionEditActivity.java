@@ -77,9 +77,6 @@ public class CheckingTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        // Create Dropbox helper if not yet created. i.e. when started from a widget.
-        // todo: DropboxHelper.getInstance(this);
-
         showStandardToolbarActions();
 
         ITransactionEntity model = AccountTransaction.create();
