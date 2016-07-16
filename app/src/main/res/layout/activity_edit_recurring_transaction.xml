@@ -48,16 +48,41 @@
                 android:singleLine="true"
                 android:text="@string/due_date" />
 
-            <com.money.manager.ex.view.RobotoTextViewFontIcon
-                android:id="@+id/textViewDate"
-                style="@style/Money.TextView.Widget.EditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/mmex_padding"
-                android:hint="@string/date"
-                android:textStyle="bold"
-                app:iconLeft="@xml/ic_calendar_small"
-                app:iconStart="@xml/ic_calendar_small" />
+                android:orientation="horizontal">
+
+                <com.shamanland.fonticon.FontIconView
+                    android:id="@+id/previousDayButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/ic_chevron_left"
+                    android:textSize="@dimen/fonticon_drawer"
+                    android:background="?attr/selectableItemBackground" />
+
+                <com.money.manager.ex.view.RobotoTextViewFontIcon
+                    android:id="@+id/textViewDate"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/mmex_padding"
+                    android:hint="@string/date"
+                    android:textStyle="bold"
+                    app:iconLeft="@xml/ic_calendar_small"
+                    app:iconStart="@xml/ic_calendar_small" />
+
+                <com.shamanland.fonticon.FontIconView
+                    android:id="@+id/nextDayButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/ic_chevron_right"
+                    android:textSize="@dimen/fonticon_drawer"
+                    android:background="?attr/selectableItemBackground" />
+            </LinearLayout>
 
             <!-- Next Occurrence Date, Payment Date -->
             <com.money.manager.ex.view.RobotoTextView
@@ -67,16 +92,39 @@
                 android:singleLine="true"
                 android:text="@string/payment_date" />
 
-            <com.money.manager.ex.view.RobotoTextViewFontIcon
-                android:id="@+id/paymentDateTextView"
-                style="@style/Money.TextView.Widget.EditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/mmex_padding"
-                android:hint="@string/date"
-                android:textStyle="bold"
-                app:iconLeft="@xml/ic_calendar_small"
-                app:iconStart="@xml/ic_calendar_small" />
+                android:orientation="horizontal">
+
+                <com.shamanland.fonticon.FontIconView
+                    android:id="@+id/paymentPreviousDayButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/ic_chevron_left"
+                    android:textSize="@dimen/fonticon_drawer" />
+
+                <com.money.manager.ex.view.RobotoTextViewFontIcon
+                    android:id="@+id/paymentDateTextView"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/mmex_padding"
+                    android:hint="@string/date"
+                    android:textStyle="bold"
+                    app:iconLeft="@xml/ic_calendar_small"
+                    app:iconStart="@xml/ic_calendar_small" />
+
+                <com.shamanland.fonticon.FontIconView
+                    android:id="@+id/paymentNextDayButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/ic_chevron_right"
+                    android:textSize="@dimen/fonticon_drawer" />
+            </LinearLayout>
 
             <!-- Transaction Type & Status -->
             <LinearLayout

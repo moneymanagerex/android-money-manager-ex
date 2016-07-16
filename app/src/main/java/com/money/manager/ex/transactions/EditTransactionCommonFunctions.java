@@ -509,25 +509,36 @@ public class EditTransactionCommonFunctions {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    setDirty(true);
-
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
-                    transactionEntity.setDate(dateTime);
-
-                    String dateString = dateTime.toString(Constants.ISO_DATE_FORMAT);
-                    showDate(dateString);
+                    setDate(dateTime);
                 }
             };
 
             @Override
             public void onClick(View v) {
-                DateTime dateTime = MyDateTimeUtils.from(viewHolder.dateTextView.getTag().toString());
+                DateTime dateTime = transactionEntity.getDate();
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
                     .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
                     .setThemeDark();
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
+            }
+        });
+
+        viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DateTime dateTime = transactionEntity.getDate().minusDays(1);
+                setDate(dateTime);
+            }
+        });
+
+        viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DateTime dateTime = transactionEntity.getDate().plusDays(1);
+                setDate(dateTime);
             }
         });
     }
@@ -1425,5 +1436,14 @@ public class EditTransactionCommonFunctions {
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+    }
+
+    private void setDate(DateTime dateTime) {
+        setDirty(true);
+
+        transactionEntity.setDate(dateTime);
+
+        String dateString = dateTime.toString(Constants.ISO_DATE_FORMAT);
+        showDate(dateString);
     }
 }

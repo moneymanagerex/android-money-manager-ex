@@ -73,6 +73,7 @@ public interface ITransactionEntity {
     Money getAmountTo();
     void setAmountTo(Money value);
 
+    DateTime getDate();
     String getDateString();
     void setDate(DateTime value);
 

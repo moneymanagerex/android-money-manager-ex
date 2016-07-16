@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoEditTextFontIcon;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
+import com.shamanland.fonticon.FontIconView;
 
 /**
  * View Holder for Investment transaction editing.
@@ -35,6 +36,8 @@ public class InvestmentTransactionViewHolder {
         stockNameEdit = (RobotoEditTextFontIcon) view.findViewById(R.id.stockNameEdit);
         symbolEdit = (RobotoEditTextFontIcon) view.findViewById(R.id.symbolEdit);
         notesEdit = (RobotoEditTextFontIcon) view.findViewById(R.id.notesEdit);
+        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
+        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
     }
 
     public Spinner accountSpinner;
@@ -43,4 +46,6 @@ public class InvestmentTransactionViewHolder {
     public RobotoEditTextFontIcon stockNameEdit;
     public RobotoEditTextFontIcon symbolEdit;
     public RobotoEditTextFontIcon notesEdit;
+    public FontIconView previousDayButton;
+    public FontIconView nextDayButton;
 }

@@ -171,6 +171,14 @@ public class RecurringTransaction
         setDateTime(TRANSDATE, value);
     }
 
+    /**
+     * For recurring transaction, the date is Due Date.
+     * @return Due date of the transaction.
+     */
+    public DateTime getDate() {
+        return getDueDate();
+    }
+
     public String getDateString() {
         return getDueDateString();
     }
