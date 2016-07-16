@@ -374,15 +374,14 @@ public class AmountInputDialog
 
     private int getPrecision() {
         // if using a currency and currency precision is required, use that.
-        if (this.roundToCurrencyDecimals && this.mCurrencyId != null) {
-            Currency currency = this.mCurrencyService.getCurrency(mCurrencyId);
-            // get precision from the currency
-            NumericHelper helper = new NumericHelper(getActivity());
-            return helper.getNumberOfDecimals(currency.getScale());
-        } else {
-            // use default precision
-            return Constants.DEFAULT_PRECISION;
-        }
+        if (!this.roundToCurrencyDecimals || this.mCurrencyId == null) return Constants.DEFAULT_PRECISION;
+
+        Currency currency = this.mCurrencyService.getCurrency(mCurrencyId);
+        if (currency == null) return Constants.DEFAULT_PRECISION;
+
+        // get precision from the currency
+        NumericHelper helper = new NumericHelper(getActivity());
+        return helper.getNumberOfDecimals(currency.getScale());
     }
 
     private String deleteLastCharacterFrom(String number) {
