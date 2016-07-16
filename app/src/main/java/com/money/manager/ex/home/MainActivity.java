@@ -672,12 +672,11 @@ public class MainActivity
 
     /**
      * Pick the database file to use.
-     *
-     * @param file start folder
+     * @param startFolder start folder
      */
-    public void pickFile(File file) {
+    public void pickFile(File startFolder) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setDataAndType(Uri.fromFile(file), "vnd.android.cursor.dir/*");
+        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
         intent.setType("file/*");
 
         if (MoneyManagerApplication.getInstanceApp().isUriAvailable(getApplicationContext(), intent)) {

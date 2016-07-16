@@ -34,10 +34,10 @@
         app:showAsAction="always|withText"/>
     <item
         android:id="@+id/menu_sync"
-        android:icon="@drawable/ic_action_dropbox_dark"
         android:orderInCategory="1002"
         android:title="@string/synchronize"
-        app:showAsAction="always|withText"/>
+        app:showAsAction="always|withText" />
+    <!--android:icon="@drawable/ic_action_dropbox_dark"-->
     <item
         android:id="@+id/menu_search_transaction"
         android:icon="?attr/ic_action_search"

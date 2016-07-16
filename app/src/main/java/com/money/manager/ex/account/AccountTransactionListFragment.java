@@ -259,6 +259,7 @@ public class AccountTransactionListFragment
                 //hide sync toolbar
                 MenuItem itemSync = menu.findItem(R.id.menu_sync);
                 if (itemSync != null) itemSync.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
                 // hide menu open database
                 MenuItem itemOpenDatabase = menu.findItem(R.id.menu_open_database);
                 if (itemOpenDatabase != null) {
