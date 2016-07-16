@@ -37,6 +37,8 @@ public class EditTransactionViewHolder {
     public EditTransactionViewHolder(Activity view) {
         // Date
         dateTextView = (TextView) view.findViewById(R.id.textViewDate);
+        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
+        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
 
         // Status
         spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
@@ -73,6 +75,7 @@ public class EditTransactionViewHolder {
     }
 
     public TextView dateTextView;
+    public FontIconView previousDayButton, nextDayButton;
     public TextView categoryTextView;
     public TextView txtSelectPayee;
     public Spinner spinAccount, spinAccountTo, spinStatus;

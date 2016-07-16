@@ -47,6 +47,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.shamanland.fonticon.FontIconView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -353,13 +354,9 @@ public class RecurringTransactionEditActivity
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    mCommonFunctions.setDirty(true);
-
                     DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
 
-                    mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
-                    mRecurringTransaction.setPaymentDate(dateTime);
-                    mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+                    setPaymentDate(dateTime);
                 }
             };
 
@@ -367,11 +364,7 @@ public class RecurringTransactionEditActivity
             public void onClick(View v) {
                 // Show calendar with the current date selected.
 
-                DateTime dateTime = mRecurringTransaction.getPaymentDate();
-                if (dateTime == null) {
-                    dateTime = DateTime.now();
-                    mRecurringTransaction.setPaymentDate(dateTime);
-                }
+                DateTime dateTime = getPaymentDate();
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setOnDateSetListener(listener)
@@ -381,6 +374,21 @@ public class RecurringTransactionEditActivity
             }
         });
 
+        mViewHolder.paymentPreviousDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DateTime dateTime = getPaymentDate().minusDays(1);
+                setPaymentDate(dateTime);
+            }
+        });
+
+        mViewHolder.paymentNextDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DateTime dateTime = getPaymentDate().plusDays(1);
+                setPaymentDate(dateTime);
+            }
+        });
     }
 
     private void initializeModel() {
@@ -401,6 +409,10 @@ public class RecurringTransactionEditActivity
 
         // Payment Date, next occurrence
         mViewHolder.paymentDateTextView = (TextView) findViewById(R.id.paymentDateTextView);
+
+        // Previous/Next day adjustment buttons for the Payment Day
+        mViewHolder.paymentPreviousDayButton = (FontIconView) findViewById(R.id.paymentPreviousDayButton);
+        mViewHolder.paymentNextDayButton = (FontIconView) findViewById(R.id.paymentNextDayButton);
 
         // Recurrence label
         mViewHolder.recurrenceLabel = (TextView) findViewById(R.id.recurrenceLabel);
@@ -600,5 +612,23 @@ public class RecurringTransactionEditActivity
             }
         }
         return true;
+    }
+
+    private DateTime getPaymentDate() {
+        DateTime dateTime = mRecurringTransaction.getPaymentDate();
+        if (dateTime == null) {
+            dateTime = DateTime.now();
+            mRecurringTransaction.setPaymentDate(dateTime);
+        }
+
+        return dateTime;
+    }
+
+    private void setPaymentDate(DateTime dateTime) {
+        mCommonFunctions.setDirty(true);
+
+        mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
+        mRecurringTransaction.setPaymentDate(dateTime);
+        mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 }
