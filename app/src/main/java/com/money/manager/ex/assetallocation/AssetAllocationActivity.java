@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -83,7 +84,8 @@ public class AssetAllocationActivity
             getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
         }
 
-        Answers.getInstance().logCustom(new CustomEvent("Asset Allocation"));
+        Answers.getInstance().logContentView(new ContentViewEvent()
+            .putContentName("Asset Allocation"));
     }
 
     @Override
