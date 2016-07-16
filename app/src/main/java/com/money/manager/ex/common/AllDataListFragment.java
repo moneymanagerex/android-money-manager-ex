@@ -589,6 +589,13 @@ public class AllDataListFragment
      */
     public void setShownBalance(boolean mShownBalance) {
         this.mShowBalance = mShownBalance;
+
+        AllDataAdapter adapter = getAllDataAdapter();
+        if (adapter == null) {
+            return;
+        }
+
+        adapter.setShowBalanceAmount(mShownBalance);
     }
 
     public void showTotalsFooter() {

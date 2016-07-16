@@ -140,12 +140,7 @@ public class AccountTransactionListFragment
         this.mFilter = new TransactionFilter();
 
         // Select the default period.
-        DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
-            .getShowTransactions();
-        DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
-        DefinedDateRange range = ranges.get(rangeName);
-
-        mFilter.dateRange = MyDateTimeUtils.getDateRangeForPeriod(getActivity(), range.nameResourceId);
+        updateFilterDateRange();
 
         // Default value.
         mFilter.transactionStatus = new StatusFilter();
@@ -836,8 +831,7 @@ public class AccountTransactionListFragment
         mAllDataListFragment.getArguments().putAll(searchQuery);
 
         if (header != null) mAllDataListFragment.setListHeader(header);
-        mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
-            .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
+        updateAllDataListFragmentShowBalance();
         mAllDataListFragment.setAutoStarLoader(false);
         mAllDataListFragment.setSearResultFragmentLoaderCallbacks(this);
 
@@ -875,5 +869,28 @@ public class AccountTransactionListFragment
 
     private void refreshSettings() {
         mSortTransactionsByType = new AppSettings(getActivity()).getLookAndFeelSettings().getSortTransactionsByType();
+
+        updateFilterDateRange();
+        updateAllDataListFragmentShowBalance();
+
+        getActivity().invalidateOptionsMenu();
+    }
+
+    private void updateFilterDateRange() {
+        DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
+            .getShowTransactions();
+        DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
+        DefinedDateRange range = ranges.get(rangeName);
+
+        mFilter.dateRange = MyDateTimeUtils.getDateRangeForPeriod(getActivity(), range.nameResourceId);
+    }
+
+    private void updateAllDataListFragmentShowBalance() {
+        if (mAllDataListFragment == null) {
+            return;
+        }
+
+        mAllDataListFragment.setShownBalance(PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TRANSACTION_SHOWN_BALANCE), false));
     }
 }
