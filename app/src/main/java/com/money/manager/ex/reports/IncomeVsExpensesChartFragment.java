@@ -43,11 +43,10 @@ import com.money.manager.ex.core.UIHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IncomeVsExpensesChartFragment extends Fragment implements
-        OnChartValueSelectedListener {
-    // LOGCAT
-    @SuppressWarnings("unused")
-    private static final String LOGCAT = IncomeVsExpensesChartFragment.class.getSimpleName();
+public class IncomeVsExpensesChartFragment
+    extends Fragment
+    implements OnChartValueSelectedListener {
+
     // key arguments
     public static final String KEY_EXPENSES_VALUES = "IncomeExpensesChartFragment:ExpensesValues";
     public static final String KEY_INCOME_VALUES = "IncomeExpensesChartFragment:IncomeValues";
@@ -88,9 +87,11 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
         dataSets.add(dataSetIncomes);
         dataSets.add(dataSetExpenses);
 
-        BarData data = new BarData(xVals, dataSets);
-        if (mTextColor != -1)
+        //BarData data = new BarData(xVals, dataSets);
+        BarData data = new BarData(dataSets);
+        if (mTextColor != -1) {
             data.setValueTextColor(getResources().getColor(mTextColor));
+        }
         mChart.setData(data);
         mChart.animateXY(1500, 1500);
         mChart.invalidate();
@@ -109,8 +110,9 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
             yAxis.setTextColor(getResources().getColor(mTextColor));
         // left label
         yAxis = mChart.getAxisLeft();
-        if (yAxis != null && mTextColor != -1)
+        if (yAxis != null && mTextColor != -1) {
             yAxis.setTextColor(getResources().getColor(mTextColor));
+        }
     }
 
     @Override
@@ -208,7 +210,7 @@ public class IncomeVsExpensesChartFragment extends Fragment implements
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
 
     }
 

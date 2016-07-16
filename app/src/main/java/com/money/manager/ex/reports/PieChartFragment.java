@@ -34,11 +34,13 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.ArrayList;
@@ -82,17 +84,18 @@ public class PieChartFragment
                 return lhs.getValue() > rhs.getValue() ? -1 : lhs.getValue() == rhs.getValue() ? 0 : 1;
             }
         });
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<PieEntry> yVals1 = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>();
 
         int length = mPieCharts.size() < MAX_NUM_ITEMS ? mPieCharts.size() : MAX_NUM_ITEMS;
 
         for (int i = 0; i < length; i++) {
-            Entry e = new Entry((float) mPieCharts.get(i).getValue(), i);
+            PieEntry e = new PieEntry((float) mPieCharts.get(i).getValue(), i);
             yVals1.add(e);
             xVals.add(mPieCharts.get(i).getText());
         }
 
+        //PieDataSet dataSet = new PieDataSet(yVals1, "");
         PieDataSet dataSet = new PieDataSet(yVals1, "");
         dataSet.setSliceSpace(3f);
 
@@ -102,7 +105,8 @@ public class PieChartFragment
             colors.add(getResources().getColor(c));
 
         dataSet.setColors(colors);
-        PieData data = new PieData(xVals, dataSet);
+//        PieData data = new PieData(xVals, dataSet);
+        PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
 
         if (mTextColor != -1)
@@ -229,17 +233,17 @@ public class PieChartFragment
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+    public void onValueSelected(Entry e, Highlight h) {
+        ExceptionHandler handler = new ExceptionHandler(getActivity());
+
         String text;
         try {
-            text = mPieCharts.get(e.getXIndex()).getText().concat(": ").concat(mPieCharts.get(e.getXIndex()).getValueFormatted());
-//            Snackbar.with(getActivity().getApplicationContext()) // context
-//                    .text(text)
-//                    .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
-//                    .show(getActivity());
-            Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
-        } catch (Exception exp) {
-            Log.e(LOGCAT, exp.getMessage());
+            ValuePieEntry valuePieEntry = mPieCharts.get(h.getDataSetIndex());
+            text = valuePieEntry.getText().concat(": ").concat(valuePieEntry.getValueFormatted());
+
+            handler.showMessage(text, Toast.LENGTH_LONG);
+        } catch (Exception ex) {
+            handler.handle(ex, "clicked on pie chart");
         }
     }
 
