@@ -69,4 +69,5 @@
     <string name="ic_pencil">W</string>
     <string name="ic_cut">X</string>
     <string name="ic_print">Y</string>
+    <string name="ic_sync">Z</string>
 </resources>

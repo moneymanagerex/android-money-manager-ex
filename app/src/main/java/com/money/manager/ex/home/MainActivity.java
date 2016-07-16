@@ -1137,11 +1137,11 @@ public class MainActivity
                 .withText(getString(R.string.open_database))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
 
-        // Dropbox synchronize
+        // Cloud synchronize
         if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                     .withText(getString(R.string.synchronize))
-                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox)));
+                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_sync)));
         }
 
         // Entities
