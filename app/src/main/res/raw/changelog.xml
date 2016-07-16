@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.16.863">
+        <changelogtext>Adding previous/next date pickers.</changelogtext>
+        <changelogtext>Various stability improvements.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.16.862">
         <changelogtext>Applying transaction display preferences without app restart.</changelogtext>
         <changelogtext>Better handling for several high-frequency exceptions.</changelogtext>
