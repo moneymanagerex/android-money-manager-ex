@@ -138,12 +138,7 @@ dependencies {
 //        'com.caverock:androidsvg:1.2.2-beta-1',
 //            project(':dropboxChooserSDK'),
             'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-            // Dropbox
-//            'com.googlecode.json-simple:json-simple:1.1.1'
-//            'com.dropbox.core:dropbox-core-sdk:2.0.6',
             , 'com.cloudrail:cloudrail-si-android:2.5.3'
-            // Google
-//            , 'com.google.android.gms:play-services-analytics:9.0.0',
             // When updating the support lib, update the overrides in the main build script.
             , 'com.android.support:support-v4:24.0.0'
             , 'com.android.support:appcompat-v7:24.0.0',
@@ -156,7 +151,6 @@ dependencies {
             'net.objecthunter:exp4j:0.4.7',
             'com.github.gabrielemariotti.changeloglib:changelog:2.1.0',
             'commons-io:commons-io:2.5'
-//            'org.apache.commons:commons-collections4:4.0'
             , 'org.apache.commons:commons-lang3:3.4'
             // Limited to this version. The next one introduces a bug: https://github.com/afollestad/material-dialogs/issues/1122
             ,'com.afollestad.material-dialogs:core:0.8.6.1'
@@ -168,8 +162,8 @@ dependencies {
             // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             'me.relex:circleindicator:1.2.1',
             'com.shamanland:fonticon:0.1.9',
-            'com.code-troopers.betterpickers:library:2.5.6',
-            'com.github.PhilJay:MPAndroidChart:v2.2.5'
+            'com.code-troopers.betterpickers:library:3.0.0',
+            'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
             // google play services
             // JavaMoney
 //        'javax.money:money-api-bp:1.0',
@@ -183,15 +177,12 @@ dependencies {
             // database encryption
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'
             , 'org.greenrobot:eventbus:3.0.0'
-            , 'net.danlew:android.joda:2.9.3.1'
+            , 'net.danlew:android.joda:2.9.4'
             , 'org.parceler:parceler-api:1.1.5'
-//            ,'com.nononsenseapps:filepicker:2.5.2' // dropbox file picker
-            // sql-cipher database encyrption (optional)
 //            ,'org.joda:joda-money:0.11'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             // HTML parsing.
             , 'org.jsoup:jsoup:1.9.2'
-//            , 'net.sourceforge.collections:collections-generic:4.01'
             // collection libraries
             , 'com.google.guava:guava:19.0'
             // multidex support

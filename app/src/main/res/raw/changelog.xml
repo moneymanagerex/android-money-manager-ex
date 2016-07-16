@@ -16,6 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="">
+        <changelogtext>Applying transaction display preferences without app restart.</changelogtext>
+        <changelogtext>Better handling for several high-frequency exceptions.</changelogtext>
+        <changelogtext>Updating libraries.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.15.860">
         <changelogtext>New version of CloudRail library.</changelogtext>
         <changelogtext>Replacing the manual exception handler with an automatic one.</changelogtext>
