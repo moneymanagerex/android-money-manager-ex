@@ -38,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,25 +195,7 @@ public class YqlSecurityPriceUpdaterRetrofit
             return null;
         }
 
-        Money price = MoneyFactory.fromString(priceString);
-        /**
-        LSE stocks are expressed in GBp (pence), not Pounds.
-        From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
-         */
-        JsonElement currencyElement = quote.get("Currency");
-        if (currencyElement != null) {
-            String currency;
-            try {
-                currency = currencyElement.getAsString();
-            } catch (UnsupportedOperationException ex) {
-                handler.handle(ex, "reading currency from downloaded price");
-                currency = "";
-            }
-            if (currency.equals("GBp")) {
-                price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
-            }
-        }
-        priceModel.price = price;
+        priceModel.price = readPrice(priceString, quote);
 
         // Date
 
@@ -238,4 +221,33 @@ public class YqlSecurityPriceUpdaterRetrofit
         return retrofit.create(IYqlService.class);
     }
 
+    private Money readPrice(String priceString, JsonObject quote) {
+        ExceptionHandler handler = new ExceptionHandler(getContext());
+
+        Money price = MoneyFactory.fromString(priceString);
+
+        /**
+         LSE stocks are expressed in GBp (pence), not Pounds.
+         From stockspanel.cpp, line 785: if (StockQuoteCurrency == "GBp") dPrice = dPrice / 100;
+         */
+        JsonElement currencyElement = quote.get("Currency");
+
+        // validation
+        if (currencyElement == null || currencyElement.isJsonNull()) {
+            handler.showMessage(R.string.error_downloading_symbol);
+            return MoneyFactory.fromDouble(0);
+        }
+
+        String currency;
+        try {
+            currency = currencyElement.getAsString();
+        } catch (UnsupportedOperationException ex) {
+            handler.handle(ex, "reading currency from downloaded price");
+            currency = "";
+        }
+        if (currency.equals("GBp")) {
+            price = price.divide(100, MoneyFactory.MAX_ALLOWED_PRECISION);
+        }
+        return price;
+    }
 }
