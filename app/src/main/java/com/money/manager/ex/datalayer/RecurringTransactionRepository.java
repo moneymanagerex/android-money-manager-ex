@@ -57,6 +57,10 @@ public class RecurringTransactionRepository
                 RecurringTransaction.NUMOCCURRENCES};
     }
 
+    public int delete(int id) {
+        return super.delete(RecurringTransaction.BDID + "=?", new String[] { Integer.toString(id)});
+    }
+
     public RecurringTransaction load(int id) {
         if (id == Constants.NOT_SET) return null;
 

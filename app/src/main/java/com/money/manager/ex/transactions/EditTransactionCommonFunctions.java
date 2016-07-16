@@ -171,57 +171,6 @@ public class EditTransactionCommonFunctions {
         this.viewHolder = new EditTransactionViewHolder(view);
     }
 
-//    /**
-//     * Get content values for saving data.
-//     * @param isTransfer Indicate whether the transaction is a transfer or not. Used to calculate the values.
-//     * @return Content values for saving.
-//     */
-//    public ContentValues getContentValues(boolean isTransfer) {
-//        ContentValues values = new ContentValues();
-//
-//        // Date
-//        String transactionDate = viewHolder.dateTextView.getTag().toString();
-//        values.put(ITransactionEntity.TRANSDATE, transactionDate);
-//
-//        // Transaction Type
-//        values.put(ITransactionEntity.TRANSCODE, this.getTransactionType());
-//
-//        // Status
-//        values.put(ITransactionEntity.STATUS, this.transactionEntity.getStatus());
-//
-//        // Amount
-//        //Money amount = getAmount();
-//        values.put(ITransactionEntity.TRANSAMOUNT, transactionEntity.getAmount().toDouble());
-//
-//        // Amount To
-//        //Money amountTo = getAmountTo();
-//        values.put(ITransactionEntity.TOTRANSAMOUNT, transactionEntity.getAmountTo().toDouble());
-//
-//        // Accounts & Payee
-//        values.put(ITransactionEntity.ACCOUNTID, this.transactionEntity.getAccountId());
-//        if (isTransfer) {
-//            values.put(ITransactionEntity.TOACCOUNTID, this.transactionEntity.getAccountToId());
-//            values.put(ITransactionEntity.PAYEEID, Constants.NOT_SET);
-//        } else {
-//            values.put(ITransactionEntity.TOACCOUNTID, Constants.NOT_SET);
-//            values.put(ITransactionEntity.PAYEEID, this.transactionEntity.getPayeeId());
-//        }
-//
-//        // Category and subcategory
-//        if (isSplitSelected()) {
-//            this.transactionEntity.setCategoryId(Constants.NOT_SET);
-//            this.transactionEntity.setSubcategoryId(Constants.NOT_SET);
-//        }
-//        values.put(ITransactionEntity.CATEGID, this.transactionEntity.getCategoryId());
-//        values.put(ITransactionEntity.SUBCATEGID, this.transactionEntity.getSubcategoryId());
-//
-//        values.put(ITransactionEntity.FOLLOWUPID, Constants.NOT_SET);
-//        values.put(ITransactionEntity.TRANSACTIONNUMBER, viewHolder.edtTransNumber.getText().toString());
-//        values.put(ITransactionEntity.NOTES, viewHolder.edtNotes.getText().toString());
-//
-//        return values;
-//    }
-
     public Context getContext() {
         return mContext;
     }
@@ -497,13 +446,12 @@ public class EditTransactionCommonFunctions {
      * Due Date picker
      */
     public void initDateSelector() {
-        String dateString = this.transactionEntity.getDateString();
-        if (StringUtils.isEmpty(dateString)) {
-            DateTime dateTime = DateTime.now();
-            dateString = dateTime.toString(Constants.ISO_DATE_FORMAT);
-            transactionEntity.setDate(dateTime);
+        DateTime date = this.transactionEntity.getDate();
+        if (date == null) {
+            date = DateTime.now();
+            transactionEntity.setDate(date);
         }
-        showDate(dateString);
+        showDate(date);
 
         viewHolder.dateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -1417,11 +1365,7 @@ public class EditTransactionCommonFunctions {
         displayAmountTo();
     }
 
-    private void showDate(String dateString) {
-        viewHolder.dateTextView.setTag(dateString);
-
-        DateTime dateTime = MyDateTimeUtils.from(dateString);
-
+    private void showDate(DateTime dateTime) {
         viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 
@@ -1443,7 +1387,6 @@ public class EditTransactionCommonFunctions {
 
         transactionEntity.setDate(dateTime);
 
-        String dateString = dateTime.toString(Constants.ISO_DATE_FORMAT);
-        showDate(dateString);
+        showDate(dateTime);
     }
 }

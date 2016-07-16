@@ -348,7 +348,7 @@ public class RecurringTransactionEditActivity
 
         DateTime paymentDate = mRecurringTransaction.getPaymentDate();
         mViewHolder.paymentDateTextView.setText(paymentDate.toString(Constants.LONG_DATE_PATTERN));
-        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
+//        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -489,8 +489,8 @@ public class RecurringTransactionEditActivity
 
         // Payment Date
 
-        DateTime dateTime = MyDateTimeUtils.from(mViewHolder.paymentDateTextView.getTag().toString());
-        mRecurringTransaction.setPaymentDate(dateTime);
+//        DateTime dateTime = MyDateTimeUtils.from(mViewHolder.paymentDateTextView.getTag().toString());
+//        mRecurringTransaction.setPaymentDate(dateTime);
 
         // Payments Left
 
@@ -627,7 +627,7 @@ public class RecurringTransactionEditActivity
     private void setPaymentDate(DateTime dateTime) {
         mCommonFunctions.setDirty(true);
 
-        mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
+//        mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
         mRecurringTransaction.setPaymentDate(dateTime);
         mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }

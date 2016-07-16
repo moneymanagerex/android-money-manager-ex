@@ -17,6 +17,7 @@
 package com.money.manager.ex.utils;
 
 import android.content.Context;
+import android.support.v4.text.TextUtilsCompat;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -55,11 +56,15 @@ public class MyDateTimeUtils {
     }
 
     public static DateTime from(String isoString) {
+        if (StringUtils.isEmpty(isoString)) return null;
+
         String pattern = Constants.ISO_DATE_FORMAT;
         return from(isoString, pattern);
     }
 
     public static DateTime from(String dateString, String pattern) {
+        if (StringUtils.isEmpty(dateString)) return null;
+
         DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
 //        DateTime dateTime = format.parseDateTime(dateString);
         DateTime dateTime = format.withZoneUTC()

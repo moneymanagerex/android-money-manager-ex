@@ -155,7 +155,9 @@ public class AccountTransaction
 
     public DateTime getDate() {
         String dateString = getDateString();
-        return MyDateTimeUtils.from(dateString);
+        return dateString != null
+            ? MyDateTimeUtils.from(dateString)
+            : null;
     }
 
     public void setDate(DateTime value) {

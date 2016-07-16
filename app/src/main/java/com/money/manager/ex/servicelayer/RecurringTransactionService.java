@@ -180,7 +180,9 @@ public class RecurringTransactionService
             // periodical (monthly, weekly)
             case ONCE:
                 delete();
-                break;
+                // exit now.
+                return;
+
             case WEEKLY:
             case BIWEEKLY:
             case MONTHLY:
@@ -236,9 +238,10 @@ public class RecurringTransactionService
         if(!result) return false;
 
         // Delete recurring transactions.
-        int deleteResult = getContext().getContentResolver().delete(
-                new RecurringTransactionRepository(getContext()).getUri(),
-                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
+        RecurringTransactionRepository repo = new RecurringTransactionRepository(getContext());
+        int deleteResult = repo.delete(this.recurringTransactionId);
+//        int deleteResult = getContext().getContentResolver().delete(repo.getUri(),
+//                RecurringTransaction.BDID + "=" + this.recurringTransactionId, null);
         if (deleteResult == 0) {
             Toast.makeText(getContext(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
             Log.w(LOGCAT, "Deleting recurring transaction " +
@@ -263,7 +266,10 @@ public class RecurringTransactionService
         if (cursor == null) return false;
 
         int existingRecords = cursor.getCount();
-        if(existingRecords == 0) return true;
+        cursor.close();
+        if(existingRecords == 0) {
+            return true;
+        }
 
         // delete them
 
@@ -299,6 +305,7 @@ public class RecurringTransactionService
 
             result.add(entity);
         }
+        cursor.close();
 
         return result;
     }

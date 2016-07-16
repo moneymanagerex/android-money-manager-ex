@@ -102,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackground"
                     android:text="@string/ic_chevron_left"
                     android:textSize="@dimen/fonticon_drawer" />
 
@@ -122,6 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackground"
                     android:text="@string/ic_chevron_right"
                     android:textSize="@dimen/fonticon_drawer" />
             </LinearLayout>

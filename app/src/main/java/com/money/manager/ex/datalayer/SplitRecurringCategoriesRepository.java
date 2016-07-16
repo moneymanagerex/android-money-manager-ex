@@ -90,10 +90,15 @@ public class SplitRecurringCategoriesRepository
         return update(entity, where.getWhere());
     }
 
-    public boolean delete(ISplitTransaction entity) {
+    public boolean delete (int id) {
         int deleted = super.delete(SplitRecurringCategory.SPLITTRANSID + "=?",
-                new String[]{ Integer.toString(entity.getId()) });
+                new String[]{ Integer.toString(id) });
+
         return deleted == 1;
+    }
+
+    public boolean delete(ISplitTransaction entity) {
+        return delete(entity.getId());
     }
 
     public boolean delete(IEntity entity) {
