@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -226,13 +227,11 @@ public class MoneyManagerApplication
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
 
-        // Setup exception reporting
-        // Set up Crashlytics, disabled for debug builds
-//        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-        // todo disable for Debug builds?
-//                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-//                .build();
-        Fabric.with(this, new Crashlytics());
+        // Setup exception reporting. Disabled for debug builds
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+        Fabric.with(this, crashlyticsKit); // new Crashlytics()
     }
 
     @Override

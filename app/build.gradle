@@ -75,7 +75,7 @@ android {
     buildTypes {
         debug {
             // Disable fabric build id for debug builds
-            //todo ext.enableCrashlytics = false;
+            ext.enableCrashlytics = false;
         }
         beta {
             applicationIdSuffix ".beta"
