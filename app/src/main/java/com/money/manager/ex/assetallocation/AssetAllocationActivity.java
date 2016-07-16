@@ -28,6 +28,8 @@ import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequested;
@@ -80,6 +82,8 @@ public class AssetAllocationActivity
             mLoaderCallbacks = setUpLoaderCallbacks();
             getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
         }
+
+        Answers.getInstance().logCustom(new CustomEvent("Asset Allocation"));
     }
 
     @Override
