@@ -26,10 +26,12 @@ import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
+import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 
 import info.javaperformance.money.MoneyFactory;
@@ -93,16 +95,25 @@ public class RepeatingTransactionNotifications {
             inboxStyle.addLine(Html.fromHtml("<small>" + line + "</small>"));
         }
 
-        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
         // create pending intent
-        Intent intent = new Intent(mContext, RecurringTransactionListActivity.class);
+        Intent intent = new Intent(getContext(), RecurringTransactionListActivity.class);
         // set launch from notification // check pin code
         intent.putExtra(RecurringTransactionListActivity.INTENT_EXTRA_LAUNCH_NOTIFICATION, true);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+
+        // todo: Actions
+//        Intent skipIntent = new Intent(intent);
+//        //skipIntent.setAction(Intent.)
+//        PendingIntent skipPending = PendingIntent.getActivity(getContext(), 0, skipIntent, 0);
+//        Intent enterIntent = new Intent(getContext(), RecurringTransactionEditActivity.class);
+//        PendingIntent enterPending = PendingIntent.getActivity(getContext(), 0, enterIntent, 0);
+
         // create notification
         try {
-            Notification notification = new NotificationCompat.Builder(mContext)
+            Notification notification = new NotificationCompat.Builder(getContext())
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(mContext.getString(R.string.application_name))
@@ -114,6 +125,8 @@ public class RepeatingTransactionNotifications {
                     .setNumber(cursor.getCount())
                     .setStyle(inboxStyle)
                     .setColor(mContext.getResources().getColor(R.color.md_primary))
+//                    .addAction(R.drawable.ic_action_content_clear_dark, getContext().getString(R.string.skip), skipPending)
+//                    .addAction(R.drawable.ic_action_done_dark, getContext().getString(R.string.enter), enterPending)
                     .build();
             // notify
             notificationManager.cancel(ID_NOTIFICATION);
@@ -122,5 +135,9 @@ public class RepeatingTransactionNotifications {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "showing notification for recurring transaction");
         }
+    }
+
+    private Context getContext() {
+        return mContext;
     }
 }

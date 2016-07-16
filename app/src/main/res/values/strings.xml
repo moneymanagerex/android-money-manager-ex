@@ -253,6 +253,8 @@
     <string name="notification_repeating_transaction_expired">There are expired recurring transactions</string>
     <string name="notification_click_to_check_repeating_transaction">Touch to check the transaction overdue</string>
     <string name="num_repeating_transaction_expired">%1$d recurring transaction overdue</string>
+    <string name="skip">Skip</string>
+    <string name="enter">Enter</string>
 
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>
