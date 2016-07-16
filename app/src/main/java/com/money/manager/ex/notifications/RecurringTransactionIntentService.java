@@ -33,7 +33,7 @@ public class RecurringTransactionIntentService
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// start repeating transaction
-		RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(getApplicationContext());
+		RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(getApplicationContext());
 		notifications.notifyRepeatingTransaction();
 	}
 }

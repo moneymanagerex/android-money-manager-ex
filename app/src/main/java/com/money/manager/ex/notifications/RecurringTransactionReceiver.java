@@ -24,8 +24,8 @@ import android.preference.PreferenceManager;
 
 import com.money.manager.ex.settings.PreferenceConstants;
 
-public class RepeatingTransactionReceiver
-        extends BroadcastReceiver {
+public class RecurringTransactionReceiver
+	extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

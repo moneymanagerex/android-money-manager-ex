@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.money.manager.ex.notifications.RepeatingTransactionReceiver;
+import com.money.manager.ex.notifications.RecurringTransactionReceiver;
 import com.money.manager.ex.settings.BehaviourSettings;
 
 import java.util.Calendar;
@@ -54,7 +54,7 @@ public class RecurringTransactionBootReceiver
         if (!notify) return;
 
         // compose intent
-        Intent receiverIntent = new Intent(context, RepeatingTransactionReceiver.class);
+        Intent receiverIntent = new Intent(context, RecurringTransactionReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // take hour to start

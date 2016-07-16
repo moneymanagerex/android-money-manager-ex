@@ -79,7 +79,7 @@ import com.money.manager.ex.account.AccountListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.investment.watchlist.WatchlistFragment;
-import com.money.manager.ex.notifications.RepeatingTransactionNotifications;
+import com.money.manager.ex.notifications.RecurringTransactionNotifications;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
@@ -622,7 +622,7 @@ public class MainActivity
             AppSettings settings = new AppSettings(this);
             boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
             if (showNotification) {
-                RepeatingTransactionNotifications notifications = new RepeatingTransactionNotifications(this);
+                RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
                 notifications.notifyRepeatingTransaction();
                 isRecurringTransactionStarted = true;
             }

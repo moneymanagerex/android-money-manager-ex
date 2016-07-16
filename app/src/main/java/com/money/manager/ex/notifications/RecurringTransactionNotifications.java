@@ -36,11 +36,11 @@ import com.money.manager.ex.recurring.transactions.RecurringTransactionListActiv
 
 import info.javaperformance.money.MoneyFactory;
 
-public class RepeatingTransactionNotifications {
+public class RecurringTransactionNotifications {
 
     private static final int ID_NOTIFICATION = 0x000A;
 
-    public RepeatingTransactionNotifications(Context context) {
+    public RecurringTransactionNotifications(Context context) {
         super();
         mContext = context.getApplicationContext();
     }
