@@ -102,11 +102,6 @@ public class SyncManager {
         return mContext;
     }
 
-    public CloudStorage getProvider() {
-//        AtomicReference<CloudStorage> result = new AtomicReference<>();
-        return currentProvider.get();
-    }
-
     /**
      * Performs checks if automatic synchronization should be performed.
      * Used also on immediate upload after file changed.
@@ -655,6 +650,10 @@ public class SyncManager {
         } else {
             return mContext.getFilesDir();
         }
+    }
+
+    private CloudStorage getProvider() {
+        return currentProvider.get();
     }
 
     private void invokeSyncService(String action) {

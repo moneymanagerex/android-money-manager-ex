@@ -84,29 +84,26 @@ public class SyncService
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
         File localFile = new File(localFilename);
-        CloudMetaData remoteFile;
-        try {
-            remoteFile = sync.getProvider().getMetadata(remoteFilename);
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext());
-            handler.handle(e, "fetching remote metadata");
+        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
+        if (remoteFile == null) {
             sendMessage(SyncMessages.ERROR);
             return;
         }
 
-        if (remoteFile == null) {
-            // file not found on remote server.
-            if (intent.getAction().equals(SyncConstants.INTENT_ACTION_UPLOAD)) {
-                // Create a new entry in the root?
-                Log.w(LOGCAT, "remoteFile is null. SyncService forcing creation of the new remote file.");
-                remoteFile = new CloudMetaData();
-                remoteFile.setPath(remoteFilename);
-            } else {
-                Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
-                sendMessage(SyncMessages.ERROR);
-                return;
-            }
-        }
+        // todo: modify this part after db initial upload has been implemented.
+//        if (remoteFile == null) {
+//            // file not found on remote server.
+//            if (intent.getAction().equals(SyncConstants.INTENT_ACTION_UPLOAD)) {
+//                // Create a new entry in the root?
+//                Log.w(LOGCAT, "remoteFile is null. SyncService forcing creation of the new remote file.");
+//                remoteFile = new CloudMetaData();
+//                remoteFile.setPath(remoteFilename);
+//            } else {
+//                Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
+//                sendMessage(SyncMessages.ERROR);
+//                return;
+//            }
+//        }
 
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
