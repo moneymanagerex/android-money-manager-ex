@@ -17,6 +17,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
@@ -103,9 +104,9 @@ public class SplitCategoriesAdapter
     }
 
     private void bindCategory(Context context, SplitItemViewHolder holder, ISplitTransaction split) {
-        Core core = new Core(context.getApplicationContext());
+        CategoryService service = new CategoryService(context);
 
-        String buttonText = core.getCategSubName(split.getCategoryId(), split.getSubcategoryId());
+        String buttonText = service.getCategorySubcategoryName(split.getCategoryId(), split.getSubcategoryId());
         holder.txtSelectCategory.setText(buttonText);
     }
 

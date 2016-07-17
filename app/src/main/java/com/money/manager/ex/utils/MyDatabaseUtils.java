@@ -223,7 +223,7 @@ public class MyDatabaseUtils {
 
     private ArrayList<String> getAllTableNamesFromGenerationScript()
             throws IOException {
-        InputStream inputStream = mContext.getResources().openRawResource(R.raw.database_create);
+        InputStream inputStream = mContext.getResources().openRawResource(R.raw.tables_v1);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = reader.readLine();
         String textToMatch = "create table";

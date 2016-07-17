@@ -120,7 +120,7 @@ public class MmexOpenHelper
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
 
-        executeRawSql(db, R.raw.database_create);
+        executeRawSql(db, R.raw.tables_v1);
 
 //        if (BuildConfig.DEBUG) Log.d(LOGCAT, "db version after creation of tables: " + db.getVersion());
         // Execute update scripts?
@@ -382,7 +382,7 @@ public class MmexOpenHelper
     }
 
     /**
-     * The creation of the record is done in database_create.sql initialization script.
+     * The creation of the record is done in tables_v1.sql initialization script.
      * Here we only update the record to the current system's date format.
      * @param database Database being initialized.
      */
@@ -393,13 +393,7 @@ public class MmexOpenHelper
             if (pattern == null) return;
 
             InfoService infoService = new InfoService(getContext());
-
-//            if (!pattern.equalsIgnoreCase(existingValue)) {
-//                // check if pattern exists
-//                infoService.insertRaw(database, InfoService.DATEFORMAT, pattern);
-//            } else {
-                infoService.updateRaw(database, InfoKeys.DATEFORMAT, pattern);
-//            }
+            infoService.updateRaw(database, InfoKeys.DATEFORMAT, pattern);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "init database, date format");

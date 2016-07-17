@@ -24,6 +24,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
+import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import org.joda.time.DateTime;
@@ -49,6 +50,10 @@ public class QifRecord {
     }
 
     private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
 
     /**
      * Parses the data and generates a QIF record for transaction.
@@ -159,14 +164,14 @@ public class QifRecord {
         final String lineSeparator = System.getProperty("line.separator");
 
         StringBuilder builder = new StringBuilder();
-        Core core = new Core(mContext);
 
         // S = category in split
         // $ = amount in split
         // E = memo in split
 
         // category
-        String category = core.getCategSubName(split.getCategoryId(), split.getSubcategoryId());
+        CategoryService service = new CategoryService(getContext());
+        String category = service.getCategorySubcategoryName(split.getCategoryId(), split.getSubcategoryId());
         builder.append("S");
         builder.append(category);
         builder.append(lineSeparator);
