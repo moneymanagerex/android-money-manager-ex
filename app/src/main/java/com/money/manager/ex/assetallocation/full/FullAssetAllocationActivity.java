@@ -17,37 +17,42 @@
 
 package com.money.manager.ex.assetallocation.full;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.AssetAllocationActivity;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FullAssetAllocationActivity
-    extends Activity {
+    extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Theme
+        Core core = new Core(this);
+        this.setTheme(core.getThemeId());
+
         setContentView(R.layout.activity_full_asset_allocation);
+
+        // Toolbar
+        setUpToolbar();
+
+        // List
 
         AssetAllocationService service = new AssetAllocationService(this);
         AssetClass assetAllocation = service.loadAssetAllocation();
-        // see if we have the allocation.
-//        Parcelable parcel = getIntent().getParcelableExtra(AssetAllocationActivity.KEY_ASSET_ALLOCATION);
-//        if (parcel != null) {
-//            assetAllocation = Parcels.unwrap(parcel);
-//        }
 
         List<AssetClassViewModel> model = createViewModel(assetAllocation);
 
@@ -55,6 +60,26 @@ public class FullAssetAllocationActivity
         FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // home click is handled in the manifest by setting up the parent activity.
+            case android.R.id.home:
+                finish();
+                return true;
+
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private List<AssetClassViewModel> createViewModel(AssetClass assetAllocation) {
@@ -85,5 +110,17 @@ public class FullAssetAllocationActivity
         for (AssetClass child : children) {
             addModelToList(child, modelList, level + 1);
         }
+    }
+
+    private void setUpToolbar() {
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) return;
+
+//        actionBar.hide();
+        actionBar.setSubtitle(R.string.asset_allocation);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 }

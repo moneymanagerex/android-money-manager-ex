@@ -433,7 +433,13 @@
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
         <activity android:name=".sync.CloudFilePickerActivity" />
-        <activity android:name=".assetallocation.full.FullAssetAllocationActivity"></activity>
+        <activity android:name=".assetallocation.full.FullAssetAllocationActivity">
+            <!--android:parentActivityName=".home.MainActivity"-->
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".home.MainActivity" />-->
+        </activity>
     </application>
 
 </manifest>

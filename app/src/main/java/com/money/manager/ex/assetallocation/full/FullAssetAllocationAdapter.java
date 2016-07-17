@@ -55,6 +55,8 @@ public class FullAssetAllocationAdapter
 
         holder.assetClassTextView.setText(item.assetClass.getName());
         holder.setAllocationTextView.setText(item.assetClass.getAllocation().toString());
+        holder.currentAllocationTextView.setText(item.assetClass.getCurrentAllocation().toString());
+        holder.allocationDiffTextView.setText(item.assetClass.getDiffAsPercentOfSet().toString());
     }
 
     @Override

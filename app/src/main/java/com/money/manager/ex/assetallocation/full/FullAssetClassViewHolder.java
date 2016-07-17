@@ -35,6 +35,8 @@ public class FullAssetClassViewHolder
         listItem = itemView.findViewById(R.id.list_item);
         assetClassTextView = (RobotoTextView) itemView.findViewById(R.id.assetClassTextView);
         setAllocationTextView = (RobotoTextView) itemView.findViewById(R.id.setAllocationTextView);
+        currentAllocationTextView = (RobotoTextView) itemView.findViewById(R.id.currentAllocationTextView);
+        allocationDiffTextView = (RobotoTextView) itemView.findViewById(R.id.allocationDiffTextView);
     }
 
     /**
@@ -43,4 +45,6 @@ public class FullAssetClassViewHolder
     public View listItem;
     public RobotoTextView assetClassTextView;
     public RobotoTextView setAllocationTextView;
+    public RobotoTextView currentAllocationTextView;
+    public RobotoTextView allocationDiffTextView;
 }

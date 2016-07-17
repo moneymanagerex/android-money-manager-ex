@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -69,8 +70,9 @@ public class AssetAllocationActivity
 
         setContentView(R.layout.base_toolbar_activity);
 
-        if (getToolbar() != null) {
-            showActionBar();
+        Toolbar toolbar = getToolbar();
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
             showStandardToolbarActions();
             // change home icon to 'back'.
             setDisplayHomeAsUpEnabled(true);

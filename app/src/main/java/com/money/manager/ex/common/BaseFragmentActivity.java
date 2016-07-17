@@ -42,9 +42,7 @@ public abstract class BaseFragmentActivity
 
         // check if Toolbar define into layout
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-        }
+        if (mToolbar != null) setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -68,6 +66,7 @@ public abstract class BaseFragmentActivity
         // This is used to handle the <- Home arrow button in the toolbar (i.e. settings screens).
         
         switch (item.getItemId()) {
+            // home click can be handled in the manifest by setting up the parent activity.
             case android.R.id.home:
                 if (mDisplayHomeAsUpEnabled) {
                     finish();
@@ -171,13 +170,6 @@ public abstract class BaseFragmentActivity
     public void setDisplayHomeAsUpEnabled(boolean mDisplayHomeAsUpEnabled) {
         this.mDisplayHomeAsUpEnabled = mDisplayHomeAsUpEnabled;
         getSupportActionBar().setDisplayHomeAsUpEnabled(mDisplayHomeAsUpEnabled);
-    }
-
-    /**
-     * Set default toolbar to act as action bar for the activity.
-     */
-    public void showActionBar() {
-        setSupportActionBar(getToolbar());
     }
 
     // protected
