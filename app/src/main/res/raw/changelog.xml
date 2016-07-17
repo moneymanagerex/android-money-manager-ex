@@ -16,20 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.07.16.863">
+    <changelogversion versionName="2016.07.17.864">
         <changelogtext>Adding previous/next date pickers.</changelogtext>
-        <changelogtext>Various stability improvements.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.07.16.862">
-        <changelogtext>Applying transaction display preferences without app restart.</changelogtext>
-        <changelogtext>Better handling for several high-frequency exceptions.</changelogtext>
-        <changelogtext>Updating libraries.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.07.15.860">
-        <changelogtext>New version of CloudRail library.</changelogtext>
-        <changelogtext>Replacing the manual exception handler with an automatic one.</changelogtext>
-        <changelogtext>Fixes and improvements for issues reported by the users.</changelogtext>
         <changelogtext>New preference for sorting the transactions.</changelogtext>
+        <changelogtext>Updating libraries.</changelogtext>
+        <changelogtext>Various stability improvements.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.07.11.853">
         <changelogtext>Note: There are BIG changes in this release!
