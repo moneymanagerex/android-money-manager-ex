@@ -140,18 +140,18 @@ public class SyncService
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         final File tempFile = new File(localFile.toString() + "-download");
 
-        IOnDownloadUploadEntry onDownloadUpload = new IOnDownloadUploadEntry() {
+        IOnDownloadUploadEntry onDownloadHandler = new IOnDownloadUploadEntry() {
             @Override
             public void onPreExecute() {
                 if (notification != null && notificationManager != null) {
-                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
                 }
             }
 
             @Override
             public void onPostExecute(boolean result) {
                 if (notification != null && notificationManager != null) {
-                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
+                    notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
                     if (result) {
                         // copy file
                         Core core = new Core(getApplicationContext());
@@ -182,13 +182,13 @@ public class SyncService
         }
 
         //start
-        onDownloadUpload.onPreExecute();
+        onDownloadHandler.onPreExecute();
         //send message to the database download staring
         sendMessage(SyncMessages.STARTING_DOWNLOAD);
 
         boolean ret = sync.download(remoteFile, tempFile);
 
-        onDownloadUpload.onPostExecute(ret);
+        onDownloadHandler.onPostExecute(ret);
 
         //send message to the database download complete
         sendMessage(SyncMessages.DOWNLOAD_COMPLETE);
@@ -199,18 +199,18 @@ public class SyncService
                 .getNotificationBuilderUpload();
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-        IOnDownloadUploadEntry onDownloadUpload = new IOnDownloadUploadEntry() {
+        IOnDownloadUploadEntry onUpload = new IOnDownloadUploadEntry() {
             @Override
             public void onPreExecute() {
                 if (notification != null && notificationManager != null) {
-                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
                 }
             }
 
             @Override
             public void onPostExecute(boolean result) {
                 if (notification != null && notificationManager != null) {
-                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
+                    notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
                     if (result) {
                         // create notification for open file
                         // pending intent
@@ -234,7 +234,7 @@ public class SyncService
         }
 
         //start
-        onDownloadUpload.onPreExecute();
+        onUpload.onPreExecute();
         //send message to the database upload staring
         sendMessage(SyncMessages.STARTING_UPLOAD);
 
@@ -243,7 +243,7 @@ public class SyncService
         boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
 
         //complete
-        onDownloadUpload.onPostExecute(result);
+        onUpload.onPostExecute(result);
         ///send message to the database upload complete
         sendMessage(SyncMessages.UPLOAD_COMPLETE);
     }

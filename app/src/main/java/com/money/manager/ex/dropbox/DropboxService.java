@@ -157,14 +157,14 @@
 //            @Override
 //            public void onPreExecute() {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+//                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
 //                }
 //            }
 //
 //            @Override
 //            public void onPostExecute(boolean result) {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
+//                    notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
 //                    if (result) {
 //                        // copy file
 //                        Core core = new Core(getApplicationContext());
@@ -193,7 +193,7 @@
 //        ProgressListener listener = new ProgressListener() {
 //            @Override
 //            public void onProgress(long bytes, long total) {
-//                notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS,
+//                notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS,
 //                        new SyncNotificationFactory(getBaseContext())
 //                                .getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
 //            }
@@ -229,14 +229,14 @@
 //            @Override
 //            public void onPreExecute() {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS, notification.build());
+//                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
 //                }
 //            }
 //
 //            @Override
 //            public void onPostExecute(boolean result) {
 //                if (notification != null && notificationManager != null) {
-//                    notificationManager.cancel(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS);
+//                    notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
 //                    if (result) {
 //                        // create notification for open file
 //                        // pending intent
@@ -257,7 +257,7 @@
 //        ProgressListener listener = new ProgressListener() {
 //            @Override
 //            public void onProgress(long bytes, long total) {
-//                notificationManager.notify(SyncConstants.NOTIFICATION_DROPBOX_PROGRESS,
+//                notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS,
 //                        new SyncNotificationFactory(getBaseContext())
 //                                .getNotificationBuilderProgress(notification, (int) total, (int) bytes).build());
 //            }

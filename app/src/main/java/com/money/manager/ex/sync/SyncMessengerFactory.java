@@ -75,6 +75,8 @@ public class SyncMessengerFactory {
                     EventBus.getDefault().post(new DbFileDownloadedEvent());
 
                 } else if (msg.what == SyncMessages.STARTING_UPLOAD) {
+                    // Do not block the user if uploading the changes.
+                    closeDialog(progressDialog);
                     showMessage(R.string.sync_uploading, Toast.LENGTH_LONG);
 
                 } else if (msg.what == SyncMessages.UPLOAD_COMPLETE) {
