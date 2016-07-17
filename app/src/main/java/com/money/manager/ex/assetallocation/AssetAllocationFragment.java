@@ -37,6 +37,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
@@ -49,6 +50,7 @@ import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
+import org.parceler.Parcels;
 
 /**
  * A list fragment that displays a first Asset Class contents (stocks or child asset classes).
@@ -57,15 +59,18 @@ public class AssetAllocationFragment
     extends BaseListFragment {
 
     public static final int REQUEST_STOCK_ID = 1;
+    public static final int REQUEST_EDIT_ALLOCATION = 2;
+
     public static final String PARAM_ASSET_CLASS_ID = "assetClassId";
     public static final String PARAM_DECIMAL_PLACES = "decimalPlaces";
+    public static final String PARAM_ASSET_ALLOCATION = "assetAllocation";
 
     /**
      * Creates a new fragment instance. Sets the appropriate required attributes.
      * @param assetClassId Id of the Asset Class to show.
      * @return Fragment
      */
-    public static AssetAllocationFragment create(Integer assetClassId, int decimalPlaces) {
+    public static AssetAllocationFragment create(Integer assetClassId, int decimalPlaces, AssetClass assetAllocation) {
         AssetAllocationFragment fragment = new AssetAllocationFragment();
 
         Bundle arguments = new Bundle();
@@ -74,6 +79,8 @@ public class AssetAllocationFragment
         }
         arguments.putInt(PARAM_ASSET_CLASS_ID, assetClassId);
         arguments.putInt(PARAM_DECIMAL_PLACES, decimalPlaces);
+        arguments.putParcelable(PARAM_ASSET_ALLOCATION, Parcels.wrap(assetAllocation));
+
         fragment.setArguments(arguments);
 
         return fragment;
@@ -117,10 +124,7 @@ public class AssetAllocationFragment
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
 
-        AssetClass assetClass = retrieveData();
-        if (assetClass != null) {
-            showData(assetClass);
-        }
+        showData();
     }
 
     @Override
@@ -150,6 +154,10 @@ public class AssetAllocationFragment
                 // get the stock id
                 String symbol = data.getStringExtra(SecurityListFragment.INTENT_RESULT_STOCK_SYMBOL);
                 assignStockToAssetClass(symbol);
+                break;
+
+            case REQUEST_EDIT_ALLOCATION:
+                EventBus.getDefault().post(new AssetAllocationReloadRequestedEvent());
                 break;
         }
     }
@@ -279,7 +287,9 @@ public class AssetAllocationFragment
 //        getActivity().openContextMenu(v);
     }
 
-    public void showData(AssetClass assetAllocation) {
+    public void showData() {
+        AssetClass assetAllocation = retrieveData();
+
         Cursor matrixCursor = createMatrixCursor(assetAllocation);
 
         AssetAllocationAdapter adapter = (AssetAllocationAdapter) getListAdapter();
@@ -361,7 +371,7 @@ public class AssetAllocationFragment
         Intent intent = new Intent(getActivity(), AssetClassEditActivity.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Intent.EXTRA_UID, assetClassId);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_EDIT_ALLOCATION);
     }
 
     private MatrixCursor createMatrixCursor(AssetClass allocation) {
@@ -406,7 +416,7 @@ public class AssetAllocationFragment
         values.currentValue = getString(R.string.current);
         values.difference = getString(R.string.difference);
 
-        int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
+//        int decimalPlaces = getArguments().getInt(PARAM_DECIMAL_PLACES);
 
         UIHelpers.populateAssetClassRow(holder, values);
 
@@ -496,8 +506,7 @@ public class AssetAllocationFragment
      * @return Current asset class's id.
      */
     private int getAssetClassId() {
-        Bundle arguments = getArguments();
-        return arguments.getInt(PARAM_ASSET_CLASS_ID);
+        return getArguments().getInt(PARAM_ASSET_CLASS_ID);
     }
 
     private MatrixCursorColumns getSelectedItemType(AdapterView.AdapterContextMenuInfo info) {
@@ -513,17 +522,13 @@ public class AssetAllocationFragment
     }
 
     private AssetClass retrieveData() {
-        AssetClass result = null;
+        int id = getAssetClassId();
 
-        // todo: switch to using event bus instead of interface?
+        AssetAllocationService service = new AssetAllocationService(getContext());
+        AssetClass assetAllocation = Parcels.unwrap(getArguments().getParcelable(PARAM_ASSET_ALLOCATION));
+        AssetClass assetClass = service.findChild(id, assetAllocation);
 
-        DetailFragmentCallbacks parent = (DetailFragmentCallbacks) getActivity();
-        if (parent != null) {
-            int id = getAssetClassId();
-            result = parent.getAssetClass(id);
-        }
-
-        return result;
+        return assetClass;
     }
 
     private void showTypeSelectorDialog() {

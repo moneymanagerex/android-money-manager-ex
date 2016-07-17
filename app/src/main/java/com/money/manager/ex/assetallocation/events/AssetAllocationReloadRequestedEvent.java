@@ -21,5 +21,5 @@ package com.money.manager.ex.assetallocation.events;
  *
  * Intended for using the event bus to request asset allocation recalculation.
  */
-public class AssetAllocationReloadRequested {
+public class AssetAllocationReloadRequestedEvent {
 }

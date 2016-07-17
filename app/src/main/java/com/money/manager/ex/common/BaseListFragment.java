@@ -98,12 +98,14 @@ public abstract class BaseListFragment
             if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD))
                 isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
         }
+
         // set subtitle in actionbar
-        if (!(TextUtils.isEmpty(getSubTitle()))) {
+        String subTitle = getSubTitle();
+        if (!(TextUtils.isEmpty(subTitle))) {
             if (getActivity() instanceof AppCompatActivity) {
                 AppCompatActivity activity = (AppCompatActivity) getActivity();
                 if (activity != null) {
-                    activity.getSupportActionBar().setSubtitle(getSubTitle());
+                    activity.getSupportActionBar().setSubtitle(subTitle);
                 }
             }
         }

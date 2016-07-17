@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
@@ -30,10 +31,8 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
-import com.crashlytics.android.answers.CustomEvent;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequested;
+import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
@@ -48,12 +47,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
+import java.util.List;
+
 /**
  * Asset Allocation view.
  */
 public class AssetAllocationActivity
-    extends BaseFragmentActivity
-    implements DetailFragmentCallbacks {
+    extends BaseFragmentActivity {
 
     private static final int LOADER_ASSET_ALLOCATION = 1;
     private static final String KEY_ASSET_ALLOCATION = "assetAllocation";
@@ -161,19 +161,10 @@ public class AssetAllocationActivity
         return true;
     }
 
-    // Asset Class display fragment
-
-    @Override
-    public AssetClass getAssetClass(int id) {
-        AssetAllocationService service = new AssetAllocationService(this);
-        AssetClass result = service.findChild(id, this.assetAllocation);
-        return result;
-    }
-
     // Events
 
     @Subscribe
-    public void onEvent(AssetAllocationReloadRequested event) {
+    public void onEvent(AssetAllocationReloadRequestedEvent event) {
         // reload Asset Allocation
         getSupportLoaderManager().restartLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
     }
@@ -201,26 +192,24 @@ public class AssetAllocationActivity
         finish();
     }
 
-    private void refreshDataInFragment(AssetClass assetAllocation) {
-        // find the currently displayed fragment
+    private void refreshCurrentFragment() {
         AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
         if (fragment == null) return;
 
-        // find which allocation is being displayed currently.
-        Integer id = fragment.getArguments().getInt(AssetAllocationFragment.PARAM_ASSET_CLASS_ID);
+        fragment.showData();
+    }
 
-        AssetClass toShow;
-        if (id != Constants.NOT_SET) {
-            // find it again in the reloaded data
-            AssetAllocationService service = new AssetAllocationService(this);
-            toShow = service.findChild(id, assetAllocation);
-        } else {
-            // assume root asset allocation.
-            toShow = assetAllocation;
+    private void refreshDataInFragments(AssetClass assetAllocation) {
+        // iterate through all the fragments and update the asset allocation reference.
+        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+        if (allFragments == null) return;
+
+        for (Fragment fragment : allFragments) {
+            AssetAllocationFragment f = (AssetAllocationFragment)fragment;
+            f.getArguments().putParcelable(KEY_ASSET_ALLOCATION, Parcels.wrap(assetAllocation));
         }
 
-        // reload data for the fragment
-        fragment.showData(toShow);
+        refreshCurrentFragment();
     }
 
     private LoaderManager.LoaderCallbacks<AssetClass> setUpLoaderCallbacks() {
@@ -249,7 +238,8 @@ public class AssetAllocationActivity
                     h.post(runnable);
                 } else {
                     // Otherwise, find the fragment and update the data.
-                    refreshDataInFragment(data);
+//                    refreshDataInFragment(data);
+                    refreshDataInFragments(data);
                 }
             }
 
@@ -270,7 +260,8 @@ public class AssetAllocationActivity
 
         // show the fragment
         FragmentManager fm = getSupportFragmentManager();
-        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass.getId(), decimals);
+        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass.getId(), decimals, this.assetAllocation);
+
         String tag = assetClass.getId() != null
             ? assetClass.getId().toString()
             : "root";

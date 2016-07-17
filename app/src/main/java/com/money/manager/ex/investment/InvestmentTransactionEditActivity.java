@@ -230,7 +230,9 @@ public class InvestmentTransactionEditActivity
         String stockName = mViewHolder.stockNameEdit.getText().toString().trim();
         mStock.setName(stockName);
 
-        String symbol = mViewHolder.symbolEdit.getText().toString().trim().replace(" ", "");
+        // Symbols are always uppercase.
+        String symbol = mViewHolder.symbolEdit.getText().toString()
+            .trim().replace(" ", "").toUpperCase();
         mStock.setSymbol(symbol);
 
         mStock.setNotes(mViewHolder.notesEdit.getText().toString());
