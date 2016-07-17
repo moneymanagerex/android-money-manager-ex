@@ -66,9 +66,9 @@
     <dimen name="fonticon_textview">24sp</dimen>
 
     <!-- list items -->
-    <!-- Android Design Guidelines https://www.google.com/design/spec/components/lists.html#lists-specs-->
+    <!-- Android Design Guidelines https://www.google.com/design/spec/components/lists.html#lists-specs -->
     <dimen name="mmex_listitem_height">48dp</dimen>
-    <dimen name="mmex_listitem_height_small">40dp</dimen>
+    <dimen name="mmex_listitem_height_dense">40dp</dimen>
     <dimen name="mmex_listitem_padding_side">16dp</dimen>
     <dimen name="mmex_list_padding_top">8dp</dimen>
     <dimen name="mmex_list_padding_top_small">4dp</dimen>

@@ -77,6 +77,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_account_bills" />
@@ -88,7 +89,7 @@
                 <action android:name="${applicationId}.intent.action.STOP_SYNC_SERVICE" />
             </intent-filter>
         </receiver>
-        <!--<receiver android:name=".dropbox.SyncStartServiceReceiver" />-->
+        <!-- <receiver android:name=".dropbox.SyncStartServiceReceiver" /> -->
         <receiver android:name=".core.RecurringTransactionBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -100,13 +101,13 @@
         <service
             android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <!--<service android:name=".dropbox.DropboxService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="${applicationId}.sync.action.SYNC" />-->
-                <!--<action android:name="${applicationId}.sync.action.DOWNLOAD" />-->
-                <!--<action android:name="${applicationId}.sync.action.UPLOAD" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
+        <!-- <service android:name=".dropbox.DropboxService"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="${applicationId}.sync.action.SYNC" /> -->
+        <!-- <action android:name="${applicationId}.sync.action.DOWNLOAD" /> -->
+        <!-- <action android:name="${applicationId}.sync.action.UPLOAD" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <service android:name=".sync.SyncService">
             <intent-filter>
                 <action android:name="${applicationId}.sync.action.SYNC" />
@@ -431,7 +432,8 @@
 
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
-        <activity android:name=".sync.CloudFilePickerActivity"></activity>
+        <activity android:name=".sync.CloudFilePickerActivity" />
+        <activity android:name=".assetallocation.full.FullAssetAllocationActivity"></activity>
     </application>
 
 </manifest>

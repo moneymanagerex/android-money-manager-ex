@@ -20,8 +20,11 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.money.manager.ex.assetallocation.AssetAllocationActivity">
 
-    <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
-        <!--android:orderInCategory="100" app:showAsAction="never" />-->
+    <item
+        android:id="@+id/menu_asset_allocation_overview"
+        android:icon="?attr/ic_action_report"
+        android:title="@string/overview"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_currencies"
@@ -30,9 +33,8 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/menu_asset_allocation_overview"
-        android:icon="?attr/ic_action_report"
-        android:title="@string/overview"
+        android:id="@+id/menu_new_asset_allocation"
+        android:icon="@null"
+        android:title="@string/asset_allocation"
         app:showAsAction="ifRoom" />
-
 </menu>

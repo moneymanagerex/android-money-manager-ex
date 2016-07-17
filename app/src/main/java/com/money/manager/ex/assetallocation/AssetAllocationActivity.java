@@ -34,6 +34,7 @@ import com.crashlytics.android.answers.ContentViewEvent;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
+import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
@@ -55,8 +56,9 @@ import java.util.List;
 public class AssetAllocationActivity
     extends BaseFragmentActivity {
 
+    public static final String KEY_ASSET_ALLOCATION = "assetAllocation";
+
     private static final int LOADER_ASSET_ALLOCATION = 1;
-    private static final String KEY_ASSET_ALLOCATION = "assetAllocation";
 
     private AssetClass assetAllocation;
     LoaderManager.LoaderCallbacks<AssetClass> mLoaderCallbacks;
@@ -133,6 +135,12 @@ public class AssetAllocationActivity
         icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
         overview.setIcon(icon);
 
+        // New Asset Allocation view
+        MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
+        icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
+        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+        newForm.setIcon(icon);
+
         return true;
     }
 
@@ -144,17 +152,26 @@ public class AssetAllocationActivity
             case android.R.id.home:
                 setResultAndFinish();
                 break;
+
             case R.id.menu_currencies:
                 // open the Currencies activity.
                 intent = new Intent(this, CurrencyListActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
                 startActivity(intent);
                 break;
+
             case R.id.menu_asset_allocation_overview:
                 // show the overview
                 intent = new Intent(this, AssetAllocationOverviewActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.menu_new_asset_allocation:
+                intent = new Intent(this, FullAssetAllocationActivity.class);
+                //intent.putExtra(KEY_ASSET_ALLOCATION, Parcels.wrap(this.assetAllocation));
+                startActivity(intent);
+                break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

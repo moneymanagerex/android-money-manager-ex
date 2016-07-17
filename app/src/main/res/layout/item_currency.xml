@@ -23,7 +23,7 @@
     android:baselineAligned="false"
     android:orientation="horizontal"
     android:layout_gravity="center_vertical"
-    android:minHeight="@dimen/mmex_listitem_height_small"
+    android:minHeight="@dimen/mmex_listitem_height_dense"
     android:paddingStart="@dimen/mmex_listitem_padding_side"
     android:paddingLeft="@dimen/mmex_listitem_padding_side"
     android:paddingRight="@dimen/mmex_listitem_padding_side"

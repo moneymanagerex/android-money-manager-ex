@@ -34,7 +34,7 @@ import info.javaperformance.money.MoneyFactory;
 
 /**
  * Asset Class
- * The class is serialized (parcel) when opening the report from Asset Allocation form.
+ * The serialization (parcel) is not fully working.
  */
 @Parcel(analyze = {ContentValues.class})
 public class AssetClass
