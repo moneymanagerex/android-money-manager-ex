@@ -75,7 +75,7 @@ public class AssetAllocationActivity
             setSupportActionBar(toolbar);
             showStandardToolbarActions();
             // change home icon to 'back'.
-            setDisplayHomeAsUpEnabled(true);
+//            setDisplayHomeAsUpEnabled(true);
         }
 
         if (savedInstanceState != null) {

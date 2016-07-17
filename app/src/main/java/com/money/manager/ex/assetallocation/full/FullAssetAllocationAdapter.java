@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class FullAssetAllocationAdapter
     }
 
     private List<AssetClassViewModel> model;
+//    private int expandedPosition = Constants.NOT_SET;
 
     @Override
     public FullAssetClassViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,6 +52,7 @@ public class FullAssetAllocationAdapter
         AssetClassViewModel item = this.model.get(position);
 
         // color the background, depending on the level. Support 5 levels?
+        // todo: the last level should not be green?
         int colorDepth = 50 * item.level;
         holder.listItem.setBackgroundColor(Color.argb(225, 0, 100 + colorDepth, 0));
 
@@ -57,10 +60,33 @@ public class FullAssetAllocationAdapter
         holder.setAllocationTextView.setText(item.assetClass.getAllocation().toString());
         holder.currentAllocationTextView.setText(item.assetClass.getCurrentAllocation().toString());
         holder.allocationDiffTextView.setText(item.assetClass.getDiffAsPercentOfSet().toString());
+
+        holder.setValueTextView.setText(item.assetClass.getValue().toString());
+        holder.currentValueTextView.setText(item.assetClass.getCurrentValue().toString());
+        holder.valueDiffTextView.setText(item.assetClass.getDifference().toString());
+
+//        if (position == expandedPosition) {
+//            holder.valuetPanel.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.valuetPanel.setVisibility(View.GONE);
+//        }
     }
 
     @Override
     public int getItemCount() {
         return this.model.size();
     }
+
+//    public void onClick(View view) {
+//        FullAssetClassViewHolder holder = (FullAssetClassViewHolder) view.getTag();
+//
+//        // Check for an expanded view, collapse if you find one
+//        if (expandedPosition >= 0) {
+//            int prev = expandedPosition;
+//            notifyItemChanged(prev);
+//        }
+//        // Set the current position to "expanded"
+//        expandedPosition = holder.getPosition();
+//        notifyItemChanged(expandedPosition);
+//    }
 }

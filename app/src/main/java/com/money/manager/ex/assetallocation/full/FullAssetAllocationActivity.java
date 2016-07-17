@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.assetallocation.full;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +25,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
@@ -48,6 +53,9 @@ public class FullAssetAllocationActivity
 
         // Toolbar
         setUpToolbar();
+
+        // Floating action button.
+        setUpFloatingButton();
 
         // List
 
@@ -82,6 +90,13 @@ public class FullAssetAllocationActivity
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // todo reload asset allocation?
+    }
+
     private List<AssetClassViewModel> createViewModel(AssetClass assetAllocation) {
         if (assetAllocation == null) {
             // get asset allocation
@@ -110,6 +125,29 @@ public class FullAssetAllocationActivity
         for (AssetClass child : children) {
             addModelToList(child, modelList, level + 1);
         }
+    }
+
+    private void setUpFloatingButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if (fab == null) return;
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create new asset allocation.
+                Intent intent = new Intent(FullAssetAllocationActivity.this, AssetClassEditActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
+//                intent.putExtra(AssetClassEditActivity.KEY_PARENT_ID, this.getAssetClassId());
+                startActivity(intent);
+            }
+        });
+
+        ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
+        if (scrollView != null) {
+            fab.attachToScrollView(scrollView);
+        }
+
+        fab.setVisibility(View.VISIBLE);
     }
 
     private void setUpToolbar() {

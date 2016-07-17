@@ -26,11 +26,20 @@
 
     <include layout="@layout/toolbar"/>
 
+    <com.melnykov.fab.ObservableScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent" />
+
+    </com.melnykov.fab.ObservableScrollView>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
