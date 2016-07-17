@@ -42,6 +42,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
@@ -397,16 +398,18 @@ public class CategoryListFragment
                 }
                 // save key
                 key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
+
                 // create instance category
                 TableCategory category = new TableCategory();
                 category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
                 category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+
                 // add list
                 mCategories.add(category);
                 listSubCategories = new ArrayList<>();
             }
-            // check if subcategory != -1
-            if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != -1) {
+
+            if (data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET) {
                 QueryCategorySubCategory subCategory = new QueryCategorySubCategory(getActivity());
                 // subcategory
                 subCategory.setSubCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)));

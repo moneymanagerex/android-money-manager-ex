@@ -51,6 +51,7 @@ import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.domainmodel.Subcategory;
+import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -366,55 +367,55 @@ public class Core {
         }
     }
 
-    /**
-     * Returns category and sub-category formatted
-     *
-     * @return category : sub-category
-     */
-    public String getCategSubName(int categoryId, int subCategoryId) {
-        // validation
-        if (categoryId == Constants.NOT_SET && subCategoryId == Constants.NOT_SET) return null;
-
-        String categoryName = null;
-        String subCategoryName, ret;
-        TableCategory category = new TableCategory();
-        // category
-        Cursor cursor = mContext.getContentResolver().query(category.getUri(),
-                null,
-                Category.CATEGID + "=?",
-                new String[]{Integer.toString(categoryId)},
-                null);
-
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        // sub-category
-        SubcategoryRepository repo = new SubcategoryRepository(getContext());
-        cursor = mContext.getContentResolver().query(repo.getUri(),
-                null,
-                Subcategory.SUBCATEGID + "=?",
-                new String[]{Integer.toString(subCategoryId)},
-                null);
-        if ((cursor != null) && (cursor.moveToFirst())) {
-            // set category name and sub category name
-            subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
-        } else {
-            subCategoryName = null;
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") +
-                (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
-
-        return ret;
-    }
+//    /**
+//     * Returns category and sub-category formatted
+//     * @return category:sub-category
+//     */
+//    public String getCategSubName(int categoryId, int subCategoryId) {
+//        // validation
+//        if (categoryId == Constants.NOT_SET && subCategoryId == Constants.NOT_SET) return null;
+//
+//        String categoryName = null;
+//        String subCategoryName, ret;
+//        TableCategory category = new TableCategory();
+//
+//        // category
+//        Cursor cursor = mContext.getContentResolver().query(category.getUri(),
+//                null,
+//                Category.CATEGID + "=?",
+//                new String[]{Integer.toString(categoryId)},
+//                null);
+//
+//        if ((cursor != null) && (cursor.moveToFirst())) {
+//            // set category name and sub category name
+//            categoryName = cursor.getString(cursor.getColumnIndex(Category.CATEGNAME));
+//        }
+//        if (cursor != null) {
+//            cursor.close();
+//        }
+//
+//        // sub-category
+//        SubcategoryRepository repo = new SubcategoryRepository(getContext());
+//        cursor = mContext.getContentResolver().query(repo.getUri(),
+//                null,
+//                Subcategory.SUBCATEGID + "=?",
+//                new String[]{Integer.toString(subCategoryId)},
+//                null);
+//        if ((cursor != null) && (cursor.moveToFirst())) {
+//            // set category name and sub category name
+//            subCategoryName = cursor.getString(cursor.getColumnIndex(Subcategory.SUBCATEGNAME));
+//        } else {
+//            subCategoryName = null;
+//        }
+//        if (cursor != null) {
+//            cursor.close();
+//        }
+//
+//        ret = (!TextUtils.isEmpty(categoryName) ? categoryName : "") +
+//                (!TextUtils.isEmpty(subCategoryName) ? ":" + subCategoryName : "");
+//
+//        return ret;
+//    }
 
     /**
      * Return arrays of month formatted and localized

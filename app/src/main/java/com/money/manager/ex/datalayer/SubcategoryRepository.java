@@ -29,8 +29,10 @@ import com.money.manager.ex.utils.MyDatabaseUtils;
 public class SubcategoryRepository
     extends RepositoryBase {
 
+    public static final String tableName = "subcategory_v1";
+
     public SubcategoryRepository(Context context) {
-        super(context, "subcategory_v1", DatasetType.TABLE, "subcategory");
+        super(context, tableName, DatasetType.TABLE, "subcategory");
     }
 
     @Override

@@ -31,6 +31,8 @@ import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +87,20 @@ public class CategoryService
         long id = ContentUris.parseId(result);
 
         return ((int) id);
+    }
+
+    public String getCategorySubcategoryName(int categoryId, int subCategoryId) {
+        CategoryRepository categoryRepository = new CategoryRepository(getContext());
+        String categoryName = categoryRepository.load(categoryId).getName();
+
+        SubcategoryRepository subcategoryRepository = new SubcategoryRepository(getContext());
+        String subCategoryName = subcategoryRepository.load(subCategoryId).getName();
+
+        String result = "";
+        if (StringUtils.isNotEmpty(categoryName)) result += categoryName;
+        if (StringUtils.isNotEmpty(subCategoryName)) result += ":" + subCategoryName;
+
+        return result;
     }
 
     /**

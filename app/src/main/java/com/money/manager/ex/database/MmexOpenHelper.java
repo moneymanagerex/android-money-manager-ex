@@ -32,6 +32,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Info;
@@ -330,8 +331,8 @@ public class MmexOpenHelper
                         "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7",
                         "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
                         "37;10", "38;10", "39;13", "40;13", "41;13"};
-                final String tableCategory = new TableCategory().getSource();
-                final String tableSubcategory = new SubcategoryRepository(getContext()).getSource();
+//                final String tableCategory = new TableCategory().getSource();
+//                final String tableSubcategory = new SubcategoryRepository(getContext()).getSource();
 
                 for (String item : categories) {
                     int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
@@ -344,11 +345,14 @@ public class MmexOpenHelper
                             ContentValues contentValues = new ContentValues();
                             contentValues.put(Category.CATEGID, categoryId);
                             contentValues.put(Category.CATEGNAME, mContext.getString(idStringCategory));
-                            long newCategoryId = database.insert(tableCategory, null, contentValues);
+                            //long newCategoryId = database.insert(tableCategory, null, contentValues);
 
-                            if (newCategoryId <= 0) {
-                                Log.e(LOGCAT, "insert " + contentValues.toString() +
-                                                "result id: " + Long.toString(newCategoryId));
+                            // Update existing records, inserted via the db creation script.
+                            int updated = database.update(CategoryRepository.tableName, contentValues,
+                                    Category.CATEGID + "=?", new String[] { Integer.toString(categoryId) });
+                            if (updated <= 0) {
+                                Log.e(LOGCAT, "updating " + contentValues.toString() +
+                                                "for category " + Integer.toString(categoryId));
                             }
                         }
                     }
@@ -359,11 +363,12 @@ public class MmexOpenHelper
                         contentValues.put(Subcategory.SUBCATEGID, subCategoryId);
                         contentValues.put(Subcategory.CATEGID, categoryId);
                         contentValues.put(Subcategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
-                        long newSubCategoryId = database.insert(tableSubcategory, null, contentValues);
-
-                        if (newSubCategoryId <= 0) {
-                            Log.e(LOGCAT, "try insert " + contentValues.toString() +
-                                    "result id: " + Long.toString(newSubCategoryId));
+//                        long newSubCategoryId = database.insert(tableSubcategory, null, contentValues);
+                        int updated = database.update(SubcategoryRepository.tableName, contentValues,
+                                Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
+                        if (updated <= 0) {
+                            Log.e(LOGCAT, "updating " + contentValues.toString() +
+                                    "for subcategory " + Integer.toString(subCategoryId));
                         }
                     }
                 }
