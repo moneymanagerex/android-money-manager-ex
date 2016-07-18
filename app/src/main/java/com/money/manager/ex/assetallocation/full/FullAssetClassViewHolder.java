@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.assetallocation.full;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -60,6 +61,16 @@ public class FullAssetClassViewHolder
     public RobotoTextView setValueTextView;
     public RobotoTextView currentValueTextView;
     public RobotoTextView valueDiffTextView;
+
+    public void setLevel(int level, Context context) {
+        // set the left margin based on the level.
+        int indent = level * 10; // (in dp)
+        indent += 16; // (the default indent)
+        float scale = context.getResources().getDisplayMetrics().density;
+        int dpAsPixels = (int) (indent * scale + 0.5f);
+
+        this.listItem.setPadding(dpAsPixels, listItem.getPaddingTop(), listItem.getPaddingRight(), listItem.getPaddingBottom());
+    }
 
     private void initializeBehaviours() {
         listItem.setOnClickListener(new View.OnClickListener() {

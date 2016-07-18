@@ -55,6 +55,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
+import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.MmexOpenHelper;
@@ -487,7 +488,7 @@ public class MainActivity
                 startActivity(intent);
                 break;
             case R.id.menu_asset_allocation:
-                intent = new Intent(this, AssetAllocationActivity.class);
+                intent = new Intent(this, FullAssetAllocationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_search_transaction:

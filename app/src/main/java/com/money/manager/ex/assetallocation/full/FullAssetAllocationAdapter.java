@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.assetallocation.full;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ import android.view.ViewGroup;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.ItemType;
+import com.money.manager.ex.core.FormatUtilities;
 
 import java.util.List;
 
@@ -38,12 +41,14 @@ public class FullAssetAllocationAdapter
         this.model = model;
     }
 
+    private Context context;
     private List<AssetClassViewModel> model;
 //    private int expandedPosition = Constants.NOT_SET;
 
     @Override
     public FullAssetClassViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_full_asset_class, parent, false);
+        this.context = parent.getContext();
+        View view = LayoutInflater.from(this.context).inflate(R.layout.item_full_asset_class, parent, false);
         return new FullAssetClassViewHolder(view);
     }
 
@@ -51,19 +56,24 @@ public class FullAssetAllocationAdapter
     public void onBindViewHolder(FullAssetClassViewHolder holder, int position) {
         AssetClassViewModel item = this.model.get(position);
 
-        // color the background, depending on the level. Support 5 levels?
-        // todo: the last level should not be green?
-        int colorDepth = 50 * item.level;
-        holder.listItem.setBackgroundColor(Color.argb(225, 0, 100 + colorDepth, 0));
+        // color the background, depending on the level.
+        if (!item.assetClass.getType().equals(ItemType.Allocation)) {
+            int colorDepth = 50 * item.level;
+            holder.listItem.setBackgroundColor(Color.argb(225, 0, 100 + colorDepth, 0));
+        }
 
         holder.assetClassTextView.setText(item.assetClass.getName());
         holder.setAllocationTextView.setText(item.assetClass.getAllocation().toString());
         holder.currentAllocationTextView.setText(item.assetClass.getCurrentAllocation().toString());
         holder.allocationDiffTextView.setText(item.assetClass.getDiffAsPercentOfSet().toString());
 
-        holder.setValueTextView.setText(item.assetClass.getValue().toString());
-        holder.currentValueTextView.setText(item.assetClass.getCurrentValue().toString());
-        holder.valueDiffTextView.setText(item.assetClass.getDifference().toString());
+        FormatUtilities format = new FormatUtilities(context);
+
+        holder.setValueTextView.setText(format.getValueFormattedInBaseCurrency(item.assetClass.getValue()));
+        holder.currentValueTextView.setText(format.getValueFormattedInBaseCurrency(item.assetClass.getCurrentValue()));
+        holder.valueDiffTextView.setText(format.getValueFormattedInBaseCurrency(item.assetClass.getDifference()));
+
+        holder.setLevel(item.level, this.context);
 
 //        if (position == expandedPosition) {
 //            holder.valuetPanel.setVisibility(View.VISIBLE);
