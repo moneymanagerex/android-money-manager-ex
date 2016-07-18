@@ -41,6 +41,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmexFileUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -60,7 +61,7 @@ public class MmexOpenHelper
     /*
        The version corresponds to the user version in info table, used by the desktop app.
      */
-    private static final int databaseVersion = 4;
+    private static final int databaseVersion = 7;
 
     // singleton
     private static MmexOpenHelper mInstance;
@@ -145,7 +146,7 @@ public class MmexOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, "Upgrading from " + Integer.toString(oldVersion) + " to " + Integer.toString(newVersion));
+            Log.d(LOGCAT, String.format("Upgrading from %1$d  to %2$d", oldVersion, newVersion));
         }
 
         try {
@@ -161,13 +162,17 @@ public class MmexOpenHelper
 
         // update databases
         updateDatabase(db, oldVersion, newVersion);
+
+        // notify sync about the db update.
+        new SyncManager(getContext()).dataChanged();
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // nothing to do for now.
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Downgrade attempt from " + Integer.toString(oldVersion) +
-            " to " + Integer.toString(newVersion));
+        if (BuildConfig.DEBUG) {
+            Log.d(LOGCAT, String.format("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion));
+        }
     }
 
     @Override
@@ -301,10 +306,11 @@ public class MmexOpenHelper
     }
 
     private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Execute every script between the old and the new version of the database schema.
         for (int i = oldVersion + 1; i <= newVersion; i++) {
             // take a id of instance
             int idResource = mContext.getResources()
-                    .getIdentifier("database_version_" + Integer.toString(newVersion),
+                    .getIdentifier("database_version_" + Integer.toString(i),
                             "raw", mContext.getPackageName());
             if (idResource > 0) {
                 executeRawSql(db, idResource);
