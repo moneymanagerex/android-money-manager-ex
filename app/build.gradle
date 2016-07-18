@@ -28,8 +28,8 @@ android {
         multiDexEnabled true
         minSdkVersion 15 // 4.0.3
         targetSdkVersion 24
-        versionCode 865
-        versionName '2016.07.17'
+        versionCode 866
+        versionName '2016.07.18'
         // 601 = 1.4.17, stable
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -134,10 +134,10 @@ dependencies {
             fileTree(dir: 'libs', include: ['*.jar']),
             // androidSVG
             project(':androidSVG_12'),
-            project(path: ':money'),
 //        'com.caverock:androidsvg:1.2.2-beta-1',
-            'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-            , 'com.cloudrail:cloudrail-si-android:2.5.3'
+            project(path: ':money'),
+            'com.cloudrail:cloudrail-si-android:2.5.4'
+            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             // When updating the support lib, update the overrides in the main build script.
             , 'com.android.support:support-v4:24.0.0'
             , 'com.android.support:appcompat-v7:24.0.0'
