@@ -90,11 +90,20 @@ public class CategoryService
     }
 
     public String getCategorySubcategoryName(int categoryId, int subCategoryId) {
-        CategoryRepository categoryRepository = new CategoryRepository(getContext());
-        String categoryName = categoryRepository.load(categoryId).getName();
+        String categoryName = "";
+        String subCategoryName = "";
 
-        SubcategoryRepository subcategoryRepository = new SubcategoryRepository(getContext());
-        String subCategoryName = subcategoryRepository.load(subCategoryId).getName();
+        if (categoryId != Constants.NOT_SET) {
+            CategoryRepository categoryRepository = new CategoryRepository(getContext());
+            Category category = categoryRepository.load(categoryId);
+            if (category == null) return "";
+            categoryName = category.getName();
+        }
+        if (subCategoryId != Constants.NOT_SET) {
+            SubcategoryRepository subcategoryRepository = new SubcategoryRepository(getContext());
+            Subcategory subcategory = subcategoryRepository.load(subCategoryId);
+            subCategoryName = subcategory.getName();
+        }
 
         String result = "";
         if (StringUtils.isNotEmpty(categoryName)) result += categoryName;
