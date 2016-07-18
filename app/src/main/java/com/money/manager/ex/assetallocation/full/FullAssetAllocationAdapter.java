@@ -24,12 +24,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.core.FormatUtilities;
 
 import java.util.List;
+
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 /**
  * Adapter for the full Asset Allocation display.
@@ -37,12 +39,14 @@ import java.util.List;
 public class FullAssetAllocationAdapter
     extends RecyclerView.Adapter<FullAssetClassViewHolder> {
 
-    public FullAssetAllocationAdapter(List<AssetClassViewModel> model) {
+    public FullAssetAllocationAdapter(List<AssetClassViewModel> model, Money diffThreshold) {
         this.model = model;
+        this.differenceThreshold = diffThreshold;
     }
 
     private Context context;
     private List<AssetClassViewModel> model;
+    private Money differenceThreshold = MoneyFactory.fromDouble(100);
 //    private int expandedPosition = Constants.NOT_SET;
 
     @Override
@@ -65,7 +69,16 @@ public class FullAssetAllocationAdapter
         holder.assetClassTextView.setText(item.assetClass.getName());
         holder.setAllocationTextView.setText(item.assetClass.getAllocation().toString());
         holder.currentAllocationTextView.setText(item.assetClass.getCurrentAllocation().toString());
-        holder.allocationDiffTextView.setText(item.assetClass.getDiffAsPercentOfSet().toString());
+
+        // % diff
+        Money diff = item.assetClass.getDiffAsPercentOfSet();
+        holder.allocationDiffTextView.setText(diff.toString());
+        if (diff.toDouble() >= this.differenceThreshold.toDouble()) {
+            holder.allocationDiffTextView.setTextColor(Color.GREEN);
+        }
+        if (diff.toDouble() <= this.differenceThreshold.multiply(-1).toDouble()) {
+            holder.allocationDiffTextView.setTextColor(Color.RED);
+        }
 
         FormatUtilities format = new FormatUtilities(context);
 

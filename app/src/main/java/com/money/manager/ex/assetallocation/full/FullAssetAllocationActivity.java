@@ -24,19 +24,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.AssetAllocationActivity;
+import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.view.RobotoTextView;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import info.javaperformance.money.Money;
 
 public class FullAssetAllocationActivity
     extends AppCompatActivity {
@@ -64,30 +76,14 @@ public class FullAssetAllocationActivity
 
         List<AssetClassViewModel> model = createViewModel(assetAllocation);
 
+        Money threshold = new AppSettings(this).getInvestmentSettings().getAssetAllocationDifferenceThreshold();
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model);
+        FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model, threshold);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // home click is handled in the manifest by setting up the parent activity.
-            case android.R.id.home:
-                finish();
-                return true;
-
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
+        showTotal(assetAllocation);
     }
 
     @Override
@@ -96,6 +92,76 @@ public class FullAssetAllocationActivity
 
         // todo reload asset allocation?
     }
+
+    // Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
+
+        // customize icons
+
+        // Currencies
+        MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
+        if (currenciesMenu != null) {
+            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
+            icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+            currenciesMenu.setIcon(icon);
+        }
+
+        // Overview
+        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
+        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
+        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+        overview.setIcon(icon);
+
+        // New Asset Allocation view
+        MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
+        icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
+        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+        newForm.setIcon(icon);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+
+            case R.id.menu_currencies:
+                // open the Currencies activity.
+                intent = new Intent(this, CurrencyListActivity.class);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+                break;
+
+            case R.id.menu_asset_allocation_overview:
+                // show the overview
+                intent = new Intent(this, AssetAllocationOverviewActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.menu_new_asset_allocation:
+                intent = new Intent(this, AssetAllocationActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    /**
+     * Private
+     */
 
     private List<AssetClassViewModel> createViewModel(AssetClass assetAllocation) {
         if (assetAllocation == null) {
@@ -160,5 +226,12 @@ public class FullAssetAllocationActivity
 //        actionBar.hide();
         actionBar.setSubtitle(R.string.asset_allocation);
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void showTotal(AssetClass assetAllocation) {
+        RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
+        FormatUtilities format = new FormatUtilities(this);
+
+        totalView.setText(format.getValueFormattedInBaseCurrency(assetAllocation.getValue()));
     }
 }

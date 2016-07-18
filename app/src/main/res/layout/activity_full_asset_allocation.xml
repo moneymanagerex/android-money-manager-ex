@@ -26,6 +26,28 @@
 
     <include layout="@layout/toolbar"/>
 
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mmex_listitem_height_dense"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:gravity="center"
+            android:text="@string/total" />
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/totalAmountTextView"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/total" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
     <com.melnykov.fab.ObservableScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
