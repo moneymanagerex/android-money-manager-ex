@@ -4,6 +4,7 @@
 .settings/
 
 build/
+gradle/
 androidbillinglibrary/build/
 actionbarsherlock/build/
 
@@ -34,4 +35,5 @@ scripts/deployment/node_modules
 /gradle.properties
 
 # Fabric settings
-fabric.properties
+/fabric.properties
+/app/fabric.properties
