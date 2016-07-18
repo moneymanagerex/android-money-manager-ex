@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
@@ -16,19 +17,12 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.money.manager.ex.assetallocation.AssetAllocationActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_currencies"
-        android:icon="?attr/ic_action_reload"
-        android:title="@string/currencies"
+        android:id="@+id/menu_asset_allocation_overview"
+        android:icon="?attr/ic_action_report"
+        android:title="@string/overview"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/menu_new_asset_allocation"
-        android:icon="@null"
-        android:title="@string/asset_allocation"
-        app:showAsAction="ifRoom" />
 </menu>

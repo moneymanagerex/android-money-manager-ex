@@ -131,15 +131,15 @@ public class AssetAllocationActivity
             currenciesMenu.setIcon(icon);
         }
 
-        // Overview
-        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
-        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
-        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
-        overview.setIcon(icon);
+//        // Overview
+//        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
+//        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
+//        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+//        overview.setIcon(icon);
 
         // New Asset Allocation view
         MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
-        icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
+        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
         icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
         newForm.setIcon(icon);
 
@@ -162,11 +162,11 @@ public class AssetAllocationActivity
                 startActivity(intent);
                 break;
 
-            case R.id.menu_asset_allocation_overview:
-                // show the overview
-                intent = new Intent(this, AssetAllocationOverviewActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.menu_asset_allocation_overview:
+//                // show the overview
+//                intent = new Intent(this, AssetAllocationOverviewActivity.class);
+//                startActivity(intent);
+//                break;
 
             case R.id.menu_new_asset_allocation:
                 intent = new Intent(this, FullAssetAllocationActivity.class);
