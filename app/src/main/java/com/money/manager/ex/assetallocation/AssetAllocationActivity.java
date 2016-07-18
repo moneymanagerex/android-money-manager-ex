@@ -225,7 +225,10 @@ public class AssetAllocationActivity
 
         for (Fragment fragment : allFragments) {
             AssetAllocationFragment f = (AssetAllocationFragment)fragment;
-            f.getArguments().putParcelable(KEY_ASSET_ALLOCATION, Parcels.wrap(assetAllocation));
+            Bundle args = f.getArguments();
+            if (args != null) {
+                args.putParcelable(KEY_ASSET_ALLOCATION, Parcels.wrap(assetAllocation));
+            }
         }
 
         refreshCurrentFragment();

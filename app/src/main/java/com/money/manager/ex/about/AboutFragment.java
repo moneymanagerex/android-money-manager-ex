@@ -231,7 +231,13 @@ public class AboutFragment extends Fragment {
         emailIntent.putExtra(Intent.EXTRA_TEXT, logcat);
         // the mail subject
         emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
-        startActivity(Intent.createChooser(emailIntent , "Send email..."));
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getActivity());
+            handler.handle(e, "opening email with logcat");
+        }
     }
 
     /**

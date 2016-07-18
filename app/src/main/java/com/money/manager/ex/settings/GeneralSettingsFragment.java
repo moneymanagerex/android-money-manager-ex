@@ -50,7 +50,7 @@ import java.util.List;
  * Fragment that contains the general settings.
  */
 public class GeneralSettingsFragment
-        extends PreferenceFragment {
+    extends PreferenceFragment {
 
     public static final int REQUEST_PICK_CURRENCY = 1;
 

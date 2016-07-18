@@ -57,6 +57,12 @@ public class BaseSettingsFragmentActivity
             .commit();
     }
 
+    protected void setSettingFragment(android.support.v14.preference.PreferenceFragment fragment) {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content, fragment)
+                .commit();
+    }
+
     protected void setSettingFragment(PreferenceFragmentCompat fragment) {
         getSupportFragmentManager().beginTransaction()
             .replace(R.id.content, fragment)

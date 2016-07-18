@@ -18,6 +18,7 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.util.Log;
 import android.widget.Toast;
@@ -95,38 +96,13 @@ public class MyDatabaseUtils {
      * @return A boolean indicating whether the schema is correct.
      */
     public boolean checkSchema() {
-        boolean result = false;
-
-        // Get the names of all the tables from the generation script.
-        ArrayList<String> scriptTables;
         try {
-            scriptTables = getAllTableNamesFromGenerationScript();
-        } catch (IOException | SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "reading table names from generation script");
-
+            return checkSchemaInternal();
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "checking schema");
             return false;
         }
-
-        // get the list of all the tables from the database.
-        ArrayList<String> existingTables = getTableNamesFromDb();
-
-        // compare. retainAll, removeAll, addAll
-        scriptTables.removeAll(existingTables);
-        // If there is anything left, the script schema has more tables than the db.
-        if (!scriptTables.isEmpty()) {
-            StringBuilder message = new StringBuilder("Tables missing: ");
-            for(String table:scriptTables) {
-                message.append(table);
-                message.append(" ");
-            }
-            showToast(message.toString(), Toast.LENGTH_LONG);
-        } else {
-            // everything matches
-            result = true;
-        }
-
-        return result;
     }
 
     /**
@@ -173,6 +149,41 @@ public class MyDatabaseUtils {
     }
 
     // Private
+
+    private boolean checkSchemaInternal() {
+        boolean result = false;
+
+        // Get the names of all the tables from the generation script.
+        ArrayList<String> scriptTables;
+        try {
+            scriptTables = getAllTableNamesFromGenerationScript();
+        } catch (IOException | SQLiteDiskIOException ex) {
+            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            handler.handle(ex, "reading table names from generation script");
+
+            return false;
+        }
+
+        // get the list of all the tables from the database.
+        ArrayList<String> existingTables = getTableNamesFromDb();
+
+        // compare. retainAll, removeAll, addAll
+        scriptTables.removeAll(existingTables);
+        // If there is anything left, the script schema has more tables than the db.
+        if (!scriptTables.isEmpty()) {
+            StringBuilder message = new StringBuilder("Tables missing: ");
+            for(String table:scriptTables) {
+                message.append(table);
+                message.append(" ");
+            }
+            showToast(message.toString(), Toast.LENGTH_LONG);
+        } else {
+            // everything matches
+            result = true;
+        }
+
+        return result;
+    }
 
     private boolean createDatabase_Internal(String filename)
         throws IOException {
@@ -253,18 +264,18 @@ public class MyDatabaseUtils {
 
     /**
      * Get all table Details from teh sqlite_master table in Db.
-     *
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        Cursor c = MmexOpenHelper.getInstance(getContext()).getReadableDatabase()
-                .rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext()).getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         ArrayList<String> result = new ArrayList<>();
         int i = 0;
         while (c.moveToNext()) {
             String temp = c.getString(i);
             result.add(temp);
         }
+        c.close();
 
         return result;
     }

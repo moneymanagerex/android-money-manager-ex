@@ -22,10 +22,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
+//import android.support.v7.preference.Preference;
+//import android.support.v7.preference.PreferenceFragmentCompat;
+//import android.support.v7.preference.PreferenceManager;
+
 import android.widget.Toast;
 
 import com.money.manager.ex.MoneyManagerApplication;
@@ -42,7 +46,7 @@ import org.greenrobot.eventbus.Subscribe;
  * A simple {@link Fragment} subclass.
  */
 public class SyncPreferenceFragment
-    extends PreferenceFragmentCompat {
+    extends PreferenceFragment { // Compat
 
     public static final int REQUEST_REMOTE_FILE = 1;
     public static final String EXTRA_REMOTE_FILE = "remote_file";
@@ -55,7 +59,9 @@ public class SyncPreferenceFragment
     private SyncManager mSyncManager;
 
     @Override
-    public void onCreatePreferences(Bundle bundle, String s) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         // Use own preference file.
         PreferenceManager prefMgr = getPreferenceManager();
         prefMgr.setSharedPreferencesName(PreferenceConstants.SYNC_PREFERENCES);
@@ -64,7 +70,12 @@ public class SyncPreferenceFragment
         addPreferencesFromResource(R.xml.settings_sync);
 
         initializePreferences();
+
     }
+
+//    @Override
+//    public void onCreatePreferences(Bundle bundle, String s) {
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
