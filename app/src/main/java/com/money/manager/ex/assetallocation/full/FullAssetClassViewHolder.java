@@ -68,7 +68,7 @@ public class FullAssetClassViewHolder
     public void setLevel(int level, Context context) {
         // set the left margin based on the level.
         int indent = level * 10; // (in dp)
-        indent += 16; // (the default indent)
+//        indent += 16; // (the default indent)
         float scale = context.getResources().getDisplayMetrics().density;
         int dpAsPixels = (int) (indent * scale + 0.5f);
 
