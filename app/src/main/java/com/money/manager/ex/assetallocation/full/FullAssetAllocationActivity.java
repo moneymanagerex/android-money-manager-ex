@@ -38,6 +38,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
+import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
@@ -209,6 +210,11 @@ public class FullAssetAllocationActivity
         for (AssetClass child : assetAllocation.getChildren()) {
             addModelToList(child, modelList, 0);
         }
+
+        // add the totals at the end
+        AssetClassViewModel totalModel = new AssetClassViewModel(assetAllocation, 0);
+        totalModel.assetClass.setType(ItemType.Footer);
+        modelList.add(totalModel);
 
         return modelList;
     }

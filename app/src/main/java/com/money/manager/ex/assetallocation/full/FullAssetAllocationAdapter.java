@@ -63,12 +63,20 @@ public class FullAssetAllocationAdapter
         AssetClassViewModel item = this.model.get(position);
 
         // color the background, depending on the level.
-        if (!item.assetClass.getType().equals(ItemType.Allocation)) {
-            int colorDepth = 50 * item.level;
-            holder.listItem.setBackgroundColor(Color.argb(225, 0, 100 + colorDepth, 0));
-        } else {
-            // reset bg color
-            holder.listItem.setBackgroundColor(Color.TRANSPARENT);
+        switch (item.assetClass.getType()) {
+            case Allocation:
+                // reset bg color
+                holder.listItem.setBackgroundColor(Color.TRANSPARENT);
+                break;
+
+            case Footer:
+                holder.listItem.setBackgroundColor(Color.DKGRAY);
+                break;
+
+            default:
+                int colorDepth = 50 * item.level;
+                holder.listItem.setBackgroundColor(Color.argb(225, 0, 100 + colorDepth, 0));
+                break;
         }
 
         holder.assetClassTextView.setText(item.assetClass.getName());
