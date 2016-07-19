@@ -66,6 +66,9 @@ public class FullAssetAllocationAdapter
         if (!item.assetClass.getType().equals(ItemType.Allocation)) {
             int colorDepth = 50 * item.level;
             holder.listItem.setBackgroundColor(Color.argb(225, 0, 100 + colorDepth, 0));
+        } else {
+            // reset bg color
+            holder.listItem.setBackgroundColor(Color.TRANSPARENT);
         }
 
         holder.assetClassTextView.setText(item.assetClass.getName());
