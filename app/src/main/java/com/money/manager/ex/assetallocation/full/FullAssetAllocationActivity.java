@@ -19,11 +19,13 @@ package com.money.manager.ex.assetallocation.full;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,10 +33,12 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
+import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
@@ -44,6 +48,9 @@ import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +74,7 @@ public class FullAssetAllocationActivity
         setUpToolbar();
 
         // Floating action button.
-        setUpFloatingButton();
+//        setUpFloatingButton();
 
         // List
 
@@ -83,7 +90,21 @@ public class FullAssetAllocationActivity
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        showTotal(assetAllocation);
+//        showTotal(assetAllocation);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -159,6 +180,18 @@ public class FullAssetAllocationActivity
         return true;
     }
 
+    /*
+        Events
+     */
+
+    @Subscribe
+    public void onEvent(AssetAllocationItemLongPressedEvent event) {
+        // show context menu.
+        // todo openContextMenu();
+        if (BuildConfig.DEBUG) Log.d("test", "show the context menu here");
+    }
+
+
     /**
      * Private
      */
@@ -224,14 +257,21 @@ public class FullAssetAllocationActivity
         if (actionBar == null) return;
 
 //        actionBar.hide();
-        actionBar.setSubtitle(R.string.asset_allocation);
+//        actionBar.setSubtitle(R.string.asset_allocation);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Title.
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(getString(R.string.asset_allocation));
     }
 
-    private void showTotal(AssetClass assetAllocation) {
-        RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
-        FormatUtilities format = new FormatUtilities(this);
-
-        totalView.setText(format.getValueFormattedInBaseCurrency(assetAllocation.getValue()));
-    }
+//    private void showTotal(AssetClass assetAllocation) {
+//        RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
+//        if (totalView == null) return;
+//
+//        FormatUtilities format = new FormatUtilities(this);
+//
+//        totalView.setText(format.getValueFormattedInBaseCurrency(assetAllocation.getValue()));
+//    }
 }

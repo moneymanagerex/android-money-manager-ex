@@ -27,12 +27,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
@@ -225,6 +228,8 @@ public class AssetAllocationActivity
 
         for (Fragment fragment : allFragments) {
             AssetAllocationFragment f = (AssetAllocationFragment)fragment;
+            if (f == null) continue;
+
             Bundle args = f.getArguments();
             if (args != null) {
                 args.putParcelable(KEY_ASSET_ALLOCATION, Parcels.wrap(assetAllocation));

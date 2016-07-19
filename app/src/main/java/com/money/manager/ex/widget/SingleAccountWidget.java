@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.currency.CurrencyService;
@@ -101,7 +102,8 @@ public class SingleAccountWidget
 //        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
         int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 //        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-        Log.d(this.getClass().getSimpleName(), "resized");
+
+        if (BuildConfig.DEBUG) Log.d(this.getClass().getSimpleName(), "resized");
 
         // Obtain appropriate widget and update it.
         appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, minWidth, minHeight));

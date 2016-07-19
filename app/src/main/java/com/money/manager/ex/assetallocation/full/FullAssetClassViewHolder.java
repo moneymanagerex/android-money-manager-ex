@@ -22,7 +22,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.view.RobotoTextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * View Holder for the full asset class.
@@ -69,7 +72,11 @@ public class FullAssetClassViewHolder
         float scale = context.getResources().getDisplayMetrics().density;
         int dpAsPixels = (int) (indent * scale + 0.5f);
 
-        this.listItem.setPadding(dpAsPixels, listItem.getPaddingTop(), listItem.getPaddingRight(), listItem.getPaddingBottom());
+        // The control to adjust.
+        View item = this.assetClassTextView;
+
+        // Set padding.
+        item.setPadding(dpAsPixels, item.getPaddingTop(), item.getPaddingRight(), item.getPaddingBottom());
     }
 
     private void initializeBehaviours() {
@@ -81,6 +88,15 @@ public class FullAssetClassViewHolder
                 } else {
                     valuetPanel.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        listItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                // show context menu.
+                EventBus.getDefault().post(new AssetAllocationItemLongPressedEvent());
+                return true;
             }
         });
     }

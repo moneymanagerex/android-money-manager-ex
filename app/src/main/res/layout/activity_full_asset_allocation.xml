@@ -16,55 +16,94 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".assetallocation.full.FullAssetAllocationActivity">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar"/>
+<!--<LinearLayout-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--tools:context=".assetallocation.full.FullAssetAllocationActivity">-->
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mmex_listitem_height_dense"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
 
-        <com.money.manager.ex.view.RobotoTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:gravity="center"
-            android:text="@string/total" />
-        <com.money.manager.ex.view.RobotoTextView
-            android:id="@+id/totalAmountTextView"
-            android:layout_width="0dp"
-            android:layout_weight="50"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/total" />
+        <!--<include layout="@layout/toolbar"/>-->
 
-    </android.support.v7.widget.LinearLayoutCompat>
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    <com.melnykov.fab.ObservableScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="?attr/toolbarAppPopupTheme"
+            app:layout_scrollFlags="scroll|enterAlways" />
+            <!--android:elevation="4dp"-->
+            <!--android:minHeight="?attr/actionBarSize"-->
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <!--<android.support.v7.widget.LinearLayoutCompat-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/mmex_listitem_height_dense"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:gravity="center_vertical">-->
+
+        <!--<com.money.manager.ex.view.RobotoTextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="50"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/total" />-->
+        <!--<com.money.manager.ex.view.RobotoTextView-->
+            <!--android:id="@+id/totalAmountTextView"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="50"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/total" />-->
+
+    <!--</android.support.v7.widget.LinearLayoutCompat>-->
+
+    <!--<com.melnykov.fab.ObservableScrollView-->
+        <!--android:id="@+id/scrollView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </com.melnykov.fab.ObservableScrollView>
+    <!--</com.melnykov.fab.ObservableScrollView>-->
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        style="@style/MoneyFloatingActionButton"
-        android:layout_marginBottom="@dimen/fab_margin_bottom_higher"
-        app:fab_colorNormal="@color/md_primary"
-        app:fab_colorPressed="@color/md_primary_dark" />
+    <!--<com.melnykov.fab.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--style="@style/MoneyFloatingActionButton"-->
+        <!--android:layout_marginBottom="@dimen/fab_margin_bottom_higher"-->
+        <!--app:fab_colorNormal="@color/md_primary"-->
+        <!--app:fab_colorPressed="@color/md_primary_dark" />-->
 
-</LinearLayout>
+<!--</LinearLayout>-->
+</android.support.design.widget.CoordinatorLayout>
