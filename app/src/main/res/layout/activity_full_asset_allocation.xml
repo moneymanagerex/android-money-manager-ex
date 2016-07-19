@@ -46,6 +46,15 @@
             app:expandedTitleMarginEnd="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <!--<ImageView-->
+                <!--android:id="@+id/header"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@drawable/ic_logo_money_manager_ex_flat"-->
+                <!--android:fitsSystemWindows="true"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_collapseMode="parallax" />-->
+
             <!-- collapsible part above the toolbar -->
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -70,16 +79,16 @@
                     android:text="@string/total" />
             </android.support.v7.widget.LinearLayoutCompat>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="?attr/toolbarAppPopupTheme"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways" />
-            <!--android:elevation="4dp"-->
-            <!--android:minHeight="?attr/actionBarSize"-->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="?attr/toolbarAppPopupTheme"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways" />
+                <!--android:elevation="4dp"-->
+                <!--android:minHeight="?attr/actionBarSize"-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
