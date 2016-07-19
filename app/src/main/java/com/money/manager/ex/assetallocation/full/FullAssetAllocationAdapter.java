@@ -39,15 +39,17 @@ import info.javaperformance.money.MoneyFactory;
 public class FullAssetAllocationAdapter
     extends RecyclerView.Adapter<FullAssetClassViewHolder> {
 
-    public FullAssetAllocationAdapter(List<AssetClassViewModel> model, Money diffThreshold) {
+    public FullAssetAllocationAdapter(List<AssetClassViewModel> model, Money diffThreshold, FormatUtilities formatter) {
         this.model = model;
         this.differenceThreshold = diffThreshold;
+        mFormatter = formatter;
     }
 
     private Context context;
     private List<AssetClassViewModel> model;
     private Money differenceThreshold = MoneyFactory.fromDouble(100);
 //    private int expandedPosition = Constants.NOT_SET;
+    private FormatUtilities mFormatter;
 
     @Override
     public FullAssetClassViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -80,11 +82,9 @@ public class FullAssetAllocationAdapter
             holder.allocationDiffTextView.setTextColor(Color.RED);
         }
 
-        FormatUtilities format = new FormatUtilities(context);
-
-        holder.setValueTextView.setText(format.getValueFormattedInBaseCurrency(item.assetClass.getValue()));
-        holder.currentValueTextView.setText(format.getValueFormattedInBaseCurrency(item.assetClass.getCurrentValue()));
-        holder.valueDiffTextView.setText(format.getValueFormattedInBaseCurrency(item.assetClass.getDifference()));
+        holder.setValueTextView.setText(mFormatter.getValueFormattedInBaseCurrency(item.assetClass.getValue()));
+        holder.currentValueTextView.setText(mFormatter.getValueFormattedInBaseCurrency(item.assetClass.getCurrentValue()));
+        holder.valueDiffTextView.setText(mFormatter.getValueFormattedInBaseCurrency(item.assetClass.getDifference()));
 
         holder.setLevel(item.level, this.context);
 

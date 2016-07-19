@@ -88,7 +88,7 @@ public class FullAssetAllocationActivity
         Money threshold = new AppSettings(this).getInvestmentSettings().getAssetAllocationDifferenceThreshold();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model, threshold);
+        FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model, threshold, getFormatter());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
