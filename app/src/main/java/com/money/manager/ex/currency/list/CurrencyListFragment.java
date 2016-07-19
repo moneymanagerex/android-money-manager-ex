@@ -306,6 +306,10 @@ public class CurrencyListFragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
+
+        // Customize with font icon, if needed.
+//        MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
+//        item.setIcon(FontIconDrawable.inflate(R.xml.ic_))
     }
 
     @Override
