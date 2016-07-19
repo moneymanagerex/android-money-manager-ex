@@ -265,7 +265,7 @@ public class FullAssetAllocationActivity
         if (actionBar == null) return;
 
 //        actionBar.setSubtitle(R.string.asset_allocation);
-        actionBar.setTitle(R.string.asset_allocation);
+//        actionBar.setTitle(R.string.asset_allocation);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Title.
