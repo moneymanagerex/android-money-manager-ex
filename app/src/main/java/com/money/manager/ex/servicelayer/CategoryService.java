@@ -106,7 +106,6 @@ public class CategoryService
             subCategoryName = subcategory != null 
                 ? subcategory.getName()
                 : "n/a";
-            }
         }
 
         String result = "";
