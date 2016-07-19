@@ -96,13 +96,17 @@ public class CategoryService
         if (categoryId != Constants.NOT_SET) {
             CategoryRepository categoryRepository = new CategoryRepository(getContext());
             Category category = categoryRepository.load(categoryId);
-            if (category == null) return "";
-            categoryName = category.getName();
+            categoryName = category != null
+                ? category.getName()
+                : "n/a";
         }
         if (subCategoryId != Constants.NOT_SET) {
             SubcategoryRepository subcategoryRepository = new SubcategoryRepository(getContext());
             Subcategory subcategory = subcategoryRepository.load(subCategoryId);
-            subCategoryName = subcategory.getName();
+            subCategoryName = subcategory != null 
+                ? subcategory.getName()
+                : "n/a";
+            }
         }
 
         String result = "";
