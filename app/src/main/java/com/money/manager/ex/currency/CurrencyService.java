@@ -271,7 +271,6 @@ public class CurrencyService
 
     /**
      * Formats the given value, in base currency, as a string for display.
-     *
      * @param value to format
      * @return formatted value
      */

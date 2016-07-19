@@ -60,6 +60,8 @@ import info.javaperformance.money.Money;
 public class FullAssetAllocationActivity
     extends AppCompatActivity {
 
+    private FormatUtilities formatter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +92,7 @@ public class FullAssetAllocationActivity
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-//        showTotal(assetAllocation);
+        showTotal(assetAllocation);
     }
 
     @Override
@@ -191,8 +193,7 @@ public class FullAssetAllocationActivity
         if (BuildConfig.DEBUG) Log.d("test", "show the context menu here");
     }
 
-
-    /**
+    /*
      * Private
      */
 
@@ -226,6 +227,13 @@ public class FullAssetAllocationActivity
         }
     }
 
+    private FormatUtilities getFormatter() {
+        if (this.formatter == null) {
+            formatter = new FormatUtilities(this);
+        }
+        return this.formatter;
+    }
+
     private void setUpFloatingButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab == null) return;
@@ -256,8 +264,8 @@ public class FullAssetAllocationActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) return;
 
-//        actionBar.hide();
 //        actionBar.setSubtitle(R.string.asset_allocation);
+        actionBar.setTitle(R.string.asset_allocation);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Title.
@@ -266,12 +274,10 @@ public class FullAssetAllocationActivity
         collapsingToolbar.setTitle(getString(R.string.asset_allocation));
     }
 
-//    private void showTotal(AssetClass assetAllocation) {
-//        RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
-//        if (totalView == null) return;
-//
-//        FormatUtilities format = new FormatUtilities(this);
-//
-//        totalView.setText(format.getValueFormattedInBaseCurrency(assetAllocation.getValue()));
-//    }
+    private void showTotal(AssetClass assetAllocation) {
+        RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
+        if (totalView == null) return;
+
+        totalView.setText(getFormatter().getValueFormattedInBaseCurrency(assetAllocation.getValue()));
+    }
 }

@@ -45,45 +45,47 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <!-- collapsible part above the toolbar -->
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mmex_listitem_height_dense"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="parallax"
+                android:fitsSystemWindows="true">
+
+                <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:text="@string/total" />
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/totalAmountTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/total" />
+            </android.support.v7.widget.LinearLayoutCompat>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="?attr/toolbarAppPopupTheme"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_collapseMode="pin" />
             <!--android:elevation="4dp"-->
             <!--android:minHeight="?attr/actionBarSize"-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <!--<android.support.v7.widget.LinearLayoutCompat-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/mmex_listitem_height_dense"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:gravity="center_vertical">-->
-
-        <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="50"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/total" />-->
-        <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--android:id="@+id/totalAmountTextView"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="50"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/total" />-->
-
-    <!--</android.support.v7.widget.LinearLayoutCompat>-->
 
     <!--<com.melnykov.fab.ObservableScrollView-->
         <!--android:id="@+id/scrollView"-->

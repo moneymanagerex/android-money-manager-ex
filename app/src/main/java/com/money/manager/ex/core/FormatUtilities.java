@@ -51,6 +51,7 @@ public class FormatUtilities {
     }
 
     private Context context;
+    private CurrencyService currencyService;
 
     /**
      * Formats the amount in TextView with the given currency settings.
@@ -70,7 +71,7 @@ public class FormatUtilities {
 
         String displayText;
 
-        CurrencyService currencyService = new CurrencyService(getContext());
+        CurrencyService currencyService = getCurrencyService();
         if (currencyId == null) {
             displayText = currencyService.getBaseCurrencyFormatted(amount);
         } else {
@@ -104,7 +105,7 @@ public class FormatUtilities {
     }
 
     public int getScaleForBaseCurrency() {
-        CurrencyService service = new CurrencyService(context);
+        CurrencyService service = getCurrencyService();
         Currency baseCurrency = service.getBaseCurrency();
         if (baseCurrency == null) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
@@ -173,7 +174,7 @@ public class FormatUtilities {
     }
 
     public String getValueFormatted(Money value, int currencyId) {
-        CurrencyService currencyService = new CurrencyService(getContext());
+        CurrencyService currencyService = getCurrencyService();
         Currency currency = currencyService.getCurrency(currencyId);
         
         return getValueFormatted(value, true, currency);
@@ -278,8 +279,7 @@ public class FormatUtilities {
         // number of decimals - do not modify
         int scale = Constants.DEFAULT_PRECISION;
 
-        CurrencyRepository repo = new CurrencyRepository(getContext());
-        Currency currency = repo.loadCurrency(currencyId);
+        Currency currency = getCurrencyService().getCurrency(currencyId);
 
         // group & decimal symbols
         // currency symbol
@@ -287,8 +287,15 @@ public class FormatUtilities {
             currency.getGroupSeparator(), currency.getPfxSymbol(), currency.getSfxSymbol());
     }
 
+    public CurrencyService getCurrencyService() {
+        if (this.currencyService == null) {
+            this.currencyService = new CurrencyService(getContext());
+        }
+        return this.currencyService;
+    }
+
     public String getValueFormattedInBaseCurrency(Money value) {
-        CurrencyService service = new CurrencyService(getContext());
+        CurrencyService service = getCurrencyService();
         return getValueFormatted(value, service.getBaseCurrency());
     }
 
