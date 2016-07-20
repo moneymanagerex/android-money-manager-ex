@@ -1156,6 +1156,9 @@ public class EditTransactionCommonFunctions {
 
         for(int i = 0; i < mSplitTransactions.size(); i++) {
             ISplitTransaction split = mSplitTransactions.get(i);
+            // How do we get this?
+            //if (split == null) continue;
+
             int id = split.getId();
             ArrayList<ISplitTransaction> deletedSplits = getDeletedSplitCategories();
 
