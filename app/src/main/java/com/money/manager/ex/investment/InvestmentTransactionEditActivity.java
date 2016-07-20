@@ -68,7 +68,7 @@ public class InvestmentTransactionEditActivity
     public static final int ID_COMMISSION = 3;
     public static final int ID_CURRENT_PRICE = 4;
 
-//    private boolean mDirty = false;
+    private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
     private InvestmentTransactionViewHolder mViewHolder;
@@ -77,7 +77,6 @@ public class InvestmentTransactionEditActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
-//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_investment_transaction_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
         showStandardToolbarActions();
@@ -104,8 +103,6 @@ public class InvestmentTransactionEditActivity
         }
 
         initializeForm();
-
-//        mBinding.setStock(mStock);
     }
 
     @Override
