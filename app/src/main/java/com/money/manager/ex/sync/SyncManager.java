@@ -560,8 +560,13 @@ public class SyncManager {
         }
 
         // set last modified date
-        CloudMetaData remoteFileMetadata = getProvider().getMetadata(remoteFile);
-        saveLastModifiedDate(remoteFileMetadata);
+        try {
+            CloudMetaData remoteFileMetadata = getProvider().getMetadata(remoteFile);
+            saveLastModifiedDate(remoteFileMetadata);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "closing input stream after upload");
+        }
 
         // set remote file, if not set (setLinkedRemoteFile)
         if (TextUtils.isEmpty(getRemotePath())) {
