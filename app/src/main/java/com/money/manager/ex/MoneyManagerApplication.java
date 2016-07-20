@@ -326,9 +326,9 @@ public class MoneyManagerApplication
     public double getSummaryAccounts(Context context) {
         try {
             return getSummaryAccountsInternal(context);
-        } catch (IllegalStateException ise) {
+        } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(ise, "getting summary accounts");
+            handler.handle(e, "getting summary accounts");
         }
         return 0;
     }
