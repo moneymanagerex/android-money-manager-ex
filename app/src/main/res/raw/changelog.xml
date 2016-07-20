@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.20.868">
+        <changelogtext>Various stability improvements based on exception reports.</changelogtext>
+        <changelogtext>Improving the new Asset Allocation form.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.18.867">
         <changelogtext>Updating CloudRail library. This should most sync issues identified so far.</changelogtext>
         <changelogtext>New Asset Allocation form.</changelogtext>
