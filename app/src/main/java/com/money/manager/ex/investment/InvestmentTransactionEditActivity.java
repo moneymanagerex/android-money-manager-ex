@@ -68,7 +68,7 @@ public class InvestmentTransactionEditActivity
     public static final int ID_COMMISSION = 3;
     public static final int ID_CURRENT_PRICE = 4;
 
-    private boolean mDirty = false;
+//    private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
     private InvestmentTransactionViewHolder mViewHolder;
@@ -97,7 +97,9 @@ public class InvestmentTransactionEditActivity
                 mStock = repo.load(stockId);
             } else {
                 mStock = Stock.create();
-                mStock.setHeldAt(mAccount.getId());
+                if (mAccount != null) {
+                    mStock.setHeldAt(mAccount.getId());
+                }
             }
         }
 
