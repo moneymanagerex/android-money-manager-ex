@@ -60,6 +60,7 @@ import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
+import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
@@ -226,7 +227,11 @@ public class WatchlistItemsFragment
                 args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
                 args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
                 args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
-                args.putString(EditPriceDialog.ARG_DATE, stock.getPurchaseDate().toString());
+
+//                String dateString = stock.getPurchaseDate().toString();
+                String dateString = DateTime.now().toString();
+                args.putString(EditPriceDialog.ARG_DATE, dateString);
+
                 dialog.setArguments(args);
                 dialog.show(getChildFragmentManager(), "input-amount");
                 break;

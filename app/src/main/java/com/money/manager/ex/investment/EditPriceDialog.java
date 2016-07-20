@@ -93,7 +93,8 @@ public class EditPriceDialog
             mAccountId = getArguments().getInt(ARG_ACCOUNT);
             String symbol = getArguments().getString(ARG_SYMBOL);
             Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
-            DateTime date = DateTime.parse(getArguments().getString(ARG_DATE));
+            String dateString = getArguments().getString(ARG_DATE);
+            DateTime date = DateTime.parse(dateString);
             mPrice = new PriceDownloadedEvent(symbol, price, date);
         }
 

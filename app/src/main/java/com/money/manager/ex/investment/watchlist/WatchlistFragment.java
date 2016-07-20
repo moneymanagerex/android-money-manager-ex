@@ -101,7 +101,7 @@ public class WatchlistFragment
 
     private WatchlistItemsFragment mDataFragment;
     private String mFragmentName;
-
+    private StockRepository mStockRepository;
     private Account mAccount;
 
     // price update counter. Used to know when all the prices are done downloading.
@@ -384,8 +384,6 @@ public class WatchlistFragment
             }
         });
     }
-
-    private StockRepository mStockRepository;
 
     private StockRepository getStockRepository() {
         if (mStockRepository == null) {
