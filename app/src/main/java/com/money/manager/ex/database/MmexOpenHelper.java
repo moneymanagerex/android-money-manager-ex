@@ -268,7 +268,7 @@ public class MmexOpenHelper
 
             try {
                 db.execSQL(aSqlStatment);
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 String errorMessage = e.getMessage();
                 if (errorMessage != null && errorMessage.equals("not an error (code 0)")) {
                     Log.w(LOGCAT, errorMessage);
