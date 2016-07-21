@@ -87,4 +87,24 @@ public class InvestmentSettings
         InfoService service = new InfoService(getContext());
         service.setInfoValue(InfoKeys.QUOTE_PROVIDER, value.name());
     }
+
+    public QuoteProviders getExchangeRateProvider() {
+        QuoteProviders defaultValue = QuoteProviders.YahooYql;
+
+        InfoService service = new InfoService(getContext());
+        String value = service.getInfoValue(InfoKeys.EXCHANGE_RATE_PROVIDER);
+        if (value == null) {
+            return defaultValue;
+        }
+
+        QuoteProviders provider = QuoteProviders.valueOf(value);
+        // default value returned if none set.
+        return provider != null ? provider : defaultValue;
+    }
+
+    public void setExchangeRateProvider(QuoteProviders value) {
+        InfoService service = new InfoService(getContext());
+        service.setInfoValue(InfoKeys.EXCHANGE_RATE_PROVIDER, value.name());
+    }
+
 }

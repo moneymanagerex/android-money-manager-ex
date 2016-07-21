@@ -28,10 +28,15 @@
     <ListPreference
         android:key="@string/pref_quote_provider"
         android:title="@string/quote_provider"
-        android:summary="@null"
-        />
+        android:summary="@null" />
     <!--android:defaultValue="@string/last_month"-->
     <!--android:entries="@array/show_transaction_values"-->
     <!--android:entryValues="@array/show_transaction_values"-->
+
+    <!-- Currency exchange rate provider -->
+    <ListPreference
+        android:key="@string/pref_exchange_rate_provider"
+        android:title="@string/exchange_rate_provider"
+        android:summary="@null" />
 
 </PreferenceScreen>

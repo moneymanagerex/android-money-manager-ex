@@ -428,6 +428,7 @@ public class CurrencyListFragment
     @Subscribe
     public void onEvent(ExchangeRateUpdateConfirmedEvent event) {
         // proceed with rate update
+        // todo: use event.updateAll parameter
 
         // Update only the visible currencies.
         List<Currency> currencies = getVisibleCurrencies();

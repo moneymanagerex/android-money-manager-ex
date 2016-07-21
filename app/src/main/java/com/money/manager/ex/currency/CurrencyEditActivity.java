@@ -201,7 +201,6 @@ public class CurrencyEditActivity
 
     /**
      * This method save data into database
-     *
      * @return true if data is update into database
      */
     private boolean save() {

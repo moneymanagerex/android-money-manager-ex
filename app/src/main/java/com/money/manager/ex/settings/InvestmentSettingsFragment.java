@@ -46,8 +46,11 @@ public class InvestmentSettingsFragment
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        initializeAssetAllocationThreshold();
-        initializeQuotesProvider();
+        InvestmentPreferencesViewHolder viewHolder = new InvestmentPreferencesViewHolder(this);
+
+        initializeAssetAllocationThreshold(viewHolder);
+        initializeQuotesProvider(viewHolder);
+        initializeExchangeRatesProvider(viewHolder);
     }
 
     @Override
@@ -90,9 +93,15 @@ public class InvestmentSettingsFragment
         preference.setSummary(providerName); // show current value
     }
 
-    private void initializeAssetAllocationThreshold() {
-        Preference threshold = findPreference(getString(R.string.pref_asset_allocation_threshold));
-        if (threshold == null) return;
+    private void displayExchangeRatesProvider(String providerName) {
+        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_exchange_rate_provider));
+        if (preference == null) return;
+
+        preference.setSummary(providerName); // show current value
+    }
+
+    private void initializeAssetAllocationThreshold(InvestmentPreferencesViewHolder viewHolder) {
+        if (viewHolder.threshold == null) return;
 
         final InvestmentSettings settings = new InvestmentSettings(getActivity());
 
@@ -108,11 +117,11 @@ public class InvestmentSettingsFragment
                 return true;
             }
         };
-        threshold.setOnPreferenceClickListener(listener);
+        viewHolder.threshold.setOnPreferenceClickListener(listener);
     }
 
-    private void initializeQuotesProvider() {
-        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_quote_provider));
+    private void initializeQuotesProvider(InvestmentPreferencesViewHolder viewHolder) {
+        ListPreference preference = viewHolder.quoteProvider;
         if (preference == null) return;
 
         // initialize
@@ -135,6 +144,36 @@ public class InvestmentSettingsFragment
                 settings.setQuoteProvider(provider);
 
                 displayQuotesProvider(name);
+                return true;
+            }
+        };
+        preference.setOnPreferenceChangeListener(listener);
+    }
+
+    private void initializeExchangeRatesProvider(InvestmentPreferencesViewHolder viewHolder) {
+        ListPreference preference = viewHolder.exchangeRateProvider;
+        if (preference == null) return;
+
+        // initialize
+        preference.setEntries(QuoteProviders.names());
+        preference.setEntryValues(QuoteProviders.names());
+        preference.setDefaultValue(QuoteProviders.YahooYql.name());
+
+        final InvestmentSettings settings = new InvestmentSettings(getContext());
+        QuoteProviders currentProvider = settings.getExchangeRateProvider();
+        preference.setSummary(currentProvider.name()); // show current value
+//        preference.setValue(currentProvider.name());
+        displayExchangeRatesProvider(currentProvider.name());
+
+        Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                // save
+                String name = (String) o;
+                QuoteProviders provider = QuoteProviders.valueOf(name);
+                settings.setExchangeRateProvider(provider);
+
+                displayExchangeRatesProvider(name);
                 return true;
             }
         };

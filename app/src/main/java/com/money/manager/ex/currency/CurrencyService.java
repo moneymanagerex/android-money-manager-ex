@@ -483,7 +483,7 @@ public class CurrencyService
             currencySymbols.add(symbol + baseCurrencySymbol + "=X");
         }
 
-        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory.getUpdaterInstance(getContext());
+        ISecurityPriceUpdater updater = ExchangeRateUpdaterFactory.getUpdaterInstance(getContext());
         updater.downloadPrices(currencySymbols);
         // result received via event
     }

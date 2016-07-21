@@ -16,5 +16,6 @@ public class InfoKeys {
     public static final String SKU_ORDER_ID = "SKU_ORDER_ID";
     public static final String ASSET_ALLOCATION_DIFF_THRESHOLD = "ASSET_ALLOCATION_DIFF_THRESHOLD";
     public static final String QUOTE_PROVIDER = "QUOTE_PROVIDER";
+    public static final String EXCHANGE_RATE_PROVIDER = "EXCHANGE_RATE_PROVIDER";
     public static final String PASSCODE = "PASSCODEMOBILE";
 }
