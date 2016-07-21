@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.21.869">
+        <changelogtext>Synchronizing the file immediately when the remote file location changes.</changelogtext>
+        <changelogtext>Separate preferences for stock and currency exchange rate providers.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.20.868">
         <changelogtext>Various stability improvements based on exception reports.</changelogtext>
         <changelogtext>Improving the new Asset Allocation form.</changelogtext>
