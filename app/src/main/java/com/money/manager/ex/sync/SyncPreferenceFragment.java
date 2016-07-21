@@ -118,31 +118,34 @@ public class SyncPreferenceFragment
         getSyncManager().openDatabase();
     }
 
+    /*
+        Private
+     */
+
     private void handleFileSelection(int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK || data == null) return;
 
         // get value
         String remoteFile = data.getStringExtra(SyncPreferenceFragment.EXTRA_REMOTE_FILE);
 
-        // save selection into preferences
-        getSyncManager().setRemotePath(remoteFile);
-
         // show selected value
         viewHolder.remoteFile.setSummary(remoteFile);
 
-        // todo download db from the cloud storage
-//        if (!oldFile.equals(newFile)) {
-//            // force download file
-//            downloadFileFromDropbox();
-//        }
+        SyncManager sync = getSyncManager();
+
+        String previousFile = sync.getRemotePath();
+
+        // save selection into preferences
+        sync.setRemotePath(remoteFile);
 
         // start sync service
         getSyncManager().startSyncService();
 
-        // todo open db file?
-        // todo add history record (recent files)?
-
-//        getSyncManager().storePersistent();
+        // download db from the cloud storage
+        if (!remoteFile.equals(previousFile)) {
+            // force download file
+            sync.triggerDownload();
+        }
     }
 
     private SyncManager getSyncManager() {
