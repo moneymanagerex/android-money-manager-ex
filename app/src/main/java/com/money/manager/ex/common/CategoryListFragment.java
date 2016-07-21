@@ -708,8 +708,16 @@ public class CategoryListFragment
                 public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                     if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
                         CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                        adapter.setIdGroupChecked(mCategories.get(groupPosition).getCategId());
+
+                        TableCategory category = mCategories.get(groupPosition);
+
+                        adapter.setIdGroupChecked(category.getCategId());
                         adapter.notifyDataSetChanged();
+
+                        int subCategoriesCount = mSubCategories.get(category).size();
+                        if (subCategoriesCount == 0) {
+                            setResultAndFinish();
+                        }
                     }
                     return false;
                 }
