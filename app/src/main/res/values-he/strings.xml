@@ -452,4 +452,5 @@
   <string name="every_12_hours">כל 12 שעות</string>
   <string name="never">אף פעם</string>
   <string name="dropbox_select_file">בחר קובץ מ- Dropbox</string>
+  <!-- Errors -->
 </resources>

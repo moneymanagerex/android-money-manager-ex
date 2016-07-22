@@ -599,4 +599,5 @@
   <string name="every_12_hours">每隔 12 小時</string>
   <string name="never">永遠不要</string>
   <string name="dropbox_select_file">從 Dropbox 選擇一個檔案</string>
+  <!-- Errors -->
 </resources>

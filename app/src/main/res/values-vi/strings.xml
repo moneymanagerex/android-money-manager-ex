@@ -134,6 +134,7 @@
   <string name="status_duplicate">Trùng lặp</string>
   <string name="status_none">Không</string>
   <string name="transfer">Truyền</string>
+  <string name="transfer_amount">Số tiền chuyển</string>
   <string name="transaction_type">Loại giao dịch</string>
   <string name="transaction_status">Tình trạng</string>
   <string name="withdrawal">Rút tiền</string>
@@ -149,6 +150,7 @@
   <!-- application string -->
   <string name="about">Giới thiệu</string>
   <string name="add">Thêm</string>
+  <string name="confirmDelete">Bạn có chắc bạn muốn xóa hồ sơ?</string>
   <string name="date">Ngày</string>
   <string name="delete">Xóa</string>
   <string name="download">Tải về</string>
@@ -228,6 +230,7 @@
   <string name="repeats">Lặp lại</string>
   <string name="occurs">Xảy ra</string>
   <string name="payments_left">Thanh toán còn lại</string>
+  <string name="payments_left_required">Giá trị còn lại của các khoản thanh toán là cần thiết</string>
   <string name="due_date_required">Ngày hết hạn là bắt buộc</string>
   <string name="error_next_occurrence_not_populate">Lần xuất hiện tiếp theo là cần thiết</string>
   <string name="enter_next_occurrence">Nhập việc xảy ra tiếp theo</string>
@@ -287,6 +290,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Phân chia</string>
   <string name="error_split_transaction_empty">Ít nhất phải có một giao dịch được chọn</string>
+  <string name="swipe_to_dismiss">Kéo các mục để loại bỏ.</string>
   <string name="export_data_to_csv">Xuất dữ liệu ra tệp CSV</string>
   <string name="export_data_in_progress">Đang xuất dữ liệu. Vui lòng chờ&#8230;</string>
   <string name="export_file_complete">Dữ liệu đã được xuất thành công ra tệp %1$s</string>
@@ -341,6 +345,7 @@
   <string name="menu_report_where_money_goes">Nơi tiền Đi</string>
   <string name="menu_report_where_money_comes_from">Nơi tiền Đến</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Thời gian thông báo</string>
   <string name="summary_check_repeating_transaction">Thời gian nào bạn sẽ kiểm tra xem có các giao dịch định kỳ quá hạn? (mặc định 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Tác giả</string>
@@ -397,6 +402,8 @@
   <string name="add_transaction">Thêm giao dịch</string>
   <string name="welcome_header">Chào mừng đến với MoneyManagerEx!</string>
   <string name="welcome_body">Tất cả giao dịch trong MoneyManagerEx thuộc về các tài khoản.\n\nBạn hiện không có tài khoản có thể nhìn thấy. Điều chỉnh các bộ lọc cho các tài khoản có thể nhìn thấy trong các Thiết đặt, hoặc lựa chọn một trong các tùy chọn dưới đây.</string>
+  <string name="welcome_body_dropbox">Nếu bạn đã sử dụng MoneyManagerEx trên Windows, Linux hoặc Mac, bạn có thể liên kết với một nhà cung cấp lưu trữ đám mây để đồng bộ hóa cơ sở dữ liệu của bạn</string>
+  <string name="configure_sync">Cấu hình đồng bộ hóa</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Tìm kiếm bằng nội dung văn bản và không phải bằng văn bản bắt đầu với</string>
   <string name="search_text_contain_summary">Tìm kiếm người nhận thanh toán, danh mục, loại tiền tệ, v.v... theo nội dung và không theo bắt đầu các kí tự</string>
@@ -430,6 +437,7 @@
   <string name="montly_last_bussines_day">Hàng tháng (ngày kinh doanh cuối cùng)</string>
   <!-- languages -->
   <string name="locale_application">Ngôn ngữ ứng dụng</string>
+  <string name="transaction_cancel_confirm">Có chắc là bạn muốn huỷ tất cả thay đổi?</string>
   <string name="keep_editing">Tiếp tục chỉnh sửa</string>
   <string name="discard">Hủy bỏ</string>
   <string name="invalid_expression">Từ ngữ không hợp lệ</string>
@@ -504,6 +512,7 @@
   <string name="choose_type">Chọn một loại</string>
   <string name="default_account">Tài khoản mặc định</string>
   <string name="default_account_summary">Tài khoản để sử dụng khi nhập một giao dịch mới.</string>
+  <string name="default_account_not_set">Tài khoản mặc định đã không được thiết lập.</string>
   <string name="balance_account">Số dư tài khoản</string>
   <string name="balance_adjustment">Điều chỉnh Số dư</string>
   <string name="cash">Tiền mặt</string>
@@ -518,16 +527,40 @@
   <string name="title_activity_currency_rates_report">Tỷ giá tiền tệ</string>
   <string name="frequency">Tần suất</string>
   <string name="update_available">Cập nhật sẵn có</string>
+  <string name="update_available_online">Có một tập tin cơ sở dữ liệu được cập nhật có sẵn trên Dropbox. Bạn có muốn cập nhật?</string>
   <string name="currency_not_found">Tiền tệ không tìm thấy</string>
   <string name="homepage">Trang chủ của chúng tôi là http://android.moneymanagerex.org/</string>
   <string name="current_database">Cơ sở dữ liệu hiện thời</string>
   <string name="about_logcat_header">Bạn có thể gửi cho chúng tôi nhật ký ứng dụng bằng cách nhấn vào nút dưới đây.</string>
   <string name="transaction_type_filter">Lọc theo Loại giao dịch</string>
   <string name="status_filter">Lọc theo Trạng thái</string>
+  <string name="filter_options_info">Tùy chọn bộ lọc và thông tin</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Nhập mật khẩu cơ sở dữ liệu</string>
   <string name="income_expense_period">Kì hạn Thu nhập/Chi phí</string>
+  <string name="income_expense_period_summary">Thời gian cho tổng quan về thu nhập/chi phí ở cuối trang màn hình.</string>
+  <string name="appwidget_text">VÍ DỤ</string>
+  <string name="configure">Cấu hình</string>
+  <string name="add_widget">Thêm widget</string>
+  <string name="single_account">Tài khoản duy nhất</string>
+  <string name="watchlist">Danh sách xem</string>
   <!-- edit investment transaction -->
+  <string name="purchase_date">Ngày mua</string>
+  <string name="stock_name">Tên chứng khoán</string>
+  <string name="symbol">Biểu tượng</string>
+  <string name="number_of_shares">Số cổ phần</string>
+  <string name="purchase_price">Giá mua</string>
+  <string name="current_price">Giá hiện tại</string>
+  <string name="price_date">Giá ngày</string>
+  <string name="commission">Tiền hoa hồng</string>
+  <string name="value">Giá trị</string>
+  <string name="view_transactions">Xem giao dịch</string>
+  <string name="error_downloading_symbol">Lỗi tải giá cho biểu tượng</string>
+  <string name="error_updating_rates">Lỗi cập nhật tỷ giá</string>
+  <string name="error_no_price_found_for_symbol">Không tìm thấy giá cho biểu tượng</string>
+  <string name="other">Khác</string>
+  <string name="cleared">Xóa</string>
+  <string name="delete_success">Mục đã xóa</string>
   <!-- asset allocation -->
   <string name="all_accounts">Tất cả tài khoản</string>
   <!-- db password entry -->
@@ -574,4 +607,5 @@
   <string name="every_12_hours">Mỗi giờ 12</string>
   <string name="never">Không bao giờ</string>
   <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
+  <!-- Errors -->
 </resources>

@@ -595,7 +595,6 @@
   <string name="budget_name">Nome do orçamento</string>
   <string name="budget_year">Orçamento Anual</string>
   <string name="budget_month">Orçamento mensal</string>
-  <string name="quote_provider">Provedor de cotação</string>
   <string name="copy">Copiar</string>
   <string name="app_restart">O aplicativo será fechado para aplicar todas as alterações. Por favor reinicie.</string>
   <string name="print">Imprimir</string>
@@ -620,6 +619,7 @@
   <string name="all_currencies">Todas as Moedas</string>
   <!-- Investment -->
   <string name="portfolio">Portfólio</string>
+  <string name="quote_provider">Provedor de cotação</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Seu banco de dados foi baixado</string>
@@ -655,4 +655,5 @@
   <string name="every_12_hours">Cada 12 horas</string>
   <string name="never">Nunca</string>
   <string name="dropbox_select_file">Selecione um arquivo do Dropbox</string>
+  <!-- Errors -->
 </resources>

@@ -464,8 +464,6 @@
   <string name="custom_dates">Настраиваемые даты</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Скрыть подтвержденные суммы со счетов на основной панели.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Скрыть подтвержденные суммы</string>
-  <string name="pref_transaction_sort_by_type_title">Сортировать транзакции по типу</string>
-  <string name="pref_transaction_sort_by_type_summary">Сортировать транзакции за день по типу (пополнение, перевод, снятие)</string>
   <string name="warning">Предупреждение</string>
   <string name="no_transfer_splits">Вы выбрали операцию перевода между счетами вместо текущей операции, но в текущей транзакции присутствуют разделенные [Split] категории. Вы хотите продолжить и удалить разделенные [Split] категории ?</string>
   <string name="qif_export">QIF экспорт</string>
@@ -596,7 +594,6 @@
   <string name="budget_name">Название бюджета</string>
   <string name="budget_year">Год бюджета</string>
   <string name="budget_month">Месяц бюджета</string>
-  <string name="quote_provider">Поставщик цен</string>
   <string name="copy">Копировать</string>
   <string name="app_restart">Для принятия изменений программу необходимо перезапустить.</string>
   <string name="print">Печать</string>
@@ -621,6 +618,7 @@
   <string name="all_currencies">Все Валюты</string>
   <!-- Investment -->
   <string name="portfolio">Портфолио</string>
+  <string name="quote_provider">Поставщик цен</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
@@ -650,4 +648,5 @@
   <string name="never">Никогда не</string>
   <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
   <string name="dropbox_select_file">Выберите файл из Dropbox</string>
+  <!-- Errors -->
 </resources>

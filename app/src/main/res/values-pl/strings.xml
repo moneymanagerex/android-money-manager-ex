@@ -596,7 +596,6 @@
   <string name="budget_name">Nazwa budżetu</string>
   <string name="budget_year">Rok budżetu</string>
   <string name="budget_month">Miesiąc budżetu</string>
-  <string name="quote_provider">Dostawca oferty</string>
   <string name="copy">Kopiuj</string>
   <string name="app_restart">Aplikacja zostanie zamknięta w celu zastosowania zmian. Proszę uruchomić ją ponownie.</string>
   <!-- Currencies -->
@@ -614,6 +613,7 @@
   <string name="error_update_currency_exchange_rate">Wystąpił błąd podczas aktualizowania kursu</string>
   <string name="currencies_empty">Nie znaleziono żadnych walut. Aby utworzyć jedną, stuknij zielony znak plus.</string>
   <!-- Investment -->
+  <string name="quote_provider">Dostawca oferty</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Baza danych została pobrana</string>
@@ -642,4 +642,5 @@
   <string name="every_12_hours">Co 12 godzin</string>
   <string name="never">Nigdy</string>
   <string name="dropbox_select_file">Wybierz plik z Dropboksa</string>
+  <!-- Errors -->
 </resources>

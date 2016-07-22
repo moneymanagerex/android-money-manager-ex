@@ -134,6 +134,7 @@
   <string name="status_duplicate">Duplicata</string>
   <string name="status_none">Aucun</string>
   <string name="transfer">Virement</string>
+  <string name="transfer_amount">Montant du transfert</string>
   <string name="transaction_type">Type d\'opération</string>
   <string name="transaction_status">Etat</string>
   <string name="withdrawal">Débit</string>
@@ -149,6 +150,7 @@
   <!-- application string -->
   <string name="about">A propos</string>
   <string name="add">Ajouter</string>
+  <string name="confirmDelete">Êtes-vous sûr de que vouloir supprimer l’enregistrement ?</string>
   <string name="date">Date</string>
   <string name="delete">Supprimer</string>
   <string name="download">Télécharger</string>
@@ -222,9 +224,14 @@
   <string name="days_overdue">jours de retard !</string>
   <string name="days_remaining">jours restants</string>
   <string name="new_edit_repeating_transaction">Nouvelle/Editer opération périodique</string>
+  <string name="due_date">Date d\'échéance</string>
   <string name="next_occurrence">Occurrence suivante</string>
+  <string name="payment_date">Date du versement</string>
   <string name="repeats">Répétitions</string>
   <string name="occurs">Occurence</string>
+  <string name="payments_left">Versements Restants</string>
+  <string name="payments_left_required">Le montant des Versements Restants est requis</string>
+  <string name="due_date_required">La date d’échéance est requise</string>
   <string name="error_next_occurrence_not_populate">Évènement suivant requis</string>
   <string name="enter_next_occurrence">Entrer l\'occurrence suivante</string>
   <string name="skip_next_occurrence">Ignorer l\'occurrence suivante</string>
@@ -283,6 +290,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Fractionner</string>
   <string name="error_split_transaction_empty">Au moins une opération scission est requise</string>
+  <string name="swipe_to_dismiss">Balayez les éléments pour supprimer.</string>
   <string name="export_data_to_csv">Exporter vers un fichier CSV</string>
   <string name="export_data_in_progress">Exportation des données. Veuillez patienter ...</string>
   <string name="export_file_complete">Les données ont correctement été exportées vers le fichier %1$s</string>
@@ -601,4 +609,5 @@
   <string name="every_12_hours">Toutes les 12 heures</string>
   <string name="never">Jamais</string>
   <string name="dropbox_select_file">Sélectionner un fichier depuis Dropbox</string>
+  <!-- Errors -->
 </resources>

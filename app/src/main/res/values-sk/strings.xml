@@ -639,4 +639,5 @@
   <string name="never">Nikdy</string>
   <string name="dropbox_empty_folder">Adresár Dropbox/Apps/Money Manager Ex Mobile je prázdny. Ak už používate MoneyManagerEx, tak skopírujte databázu do tohto adresára na vašom počítači a potom vykonajte aktualizáciu.</string>
   <string name="dropbox_select_file">Vyberte súbor z Dropboxu</string>
+  <!-- Errors -->
 </resources>

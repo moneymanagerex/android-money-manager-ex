@@ -412,4 +412,5 @@
   <string name="never">Tidak pernah</string>
   <string name="dropbox_empty_folder">Folder di Dropbox/Apps/Money manajer Ex Android kosong. Jika Anda sudah menggunakan MoneyManagerEx salin database Anda ke folder ini di komputer Anda, dan setelah Anda melakukan proses refresh.</string>
   <string name="dropbox_select_file">Pilih file dari Dropbox</string>
+  <!-- Errors -->
 </resources>

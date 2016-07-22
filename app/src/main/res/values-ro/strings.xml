@@ -134,6 +134,7 @@
   <string name="status_duplicate">Duplicat</string>
   <string name="status_none">Niciunul</string>
   <string name="transfer">Transfer</string>
+  <string name="transfer_amount">Suma transferului</string>
   <string name="transaction_type">Tipul de tranzacţie</string>
   <string name="transaction_status">Situație</string>
   <string name="withdrawal">Retragere</string>
@@ -577,6 +578,7 @@
   <string name="asset_allocation_diff_threshold_summary">Pragul care va iniția evidențierea prin culoare a valorii diferite.</string>
   <string name="error_saving_record">Eroare la salvarea înregistrării</string>
   <!-- budgets -->
+  <string name="copy">Copie</string>
   <!-- Currencies -->
   <string name="currencies">Monede</string>
   <string name="currencies_used">Monede, folosite</string>
@@ -591,6 +593,7 @@
   <string name="question_update_currency_exchange_rates">Vrei să actualizezi rata de schimb?</string>
   <string name="error_update_currency_exchange_rate">Eroare la actualizarea ratei</string>
   <string name="currencies_empty">Nu a fost găsită nici o monedă. Pentru a crea una, apasă butonul verde plus.</string>
+  <string name="active_currencies">Valute Active</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
@@ -619,4 +622,5 @@
   <string name="every_12_hours">La fiecare 12 ore</string>
   <string name="never">Niciodată</string>
   <string name="dropbox_select_file">Selectează un fișier din Dropbox</string>
+  <!-- Errors -->
 </resources>

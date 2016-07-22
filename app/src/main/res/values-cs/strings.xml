@@ -572,4 +572,5 @@
   <string name="every_12_hours">Každých 12 hodin</string>
   <string name="never">Nikdy</string>
   <string name="dropbox_select_file">Vyberte soubor z Dropboxu</string>
+  <!-- Errors -->
 </resources>

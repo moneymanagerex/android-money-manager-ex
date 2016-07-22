@@ -619,4 +619,5 @@
   <string name="every_12_hours">12 óránként</string>
   <string name="never">Soha</string>
   <string name="dropbox_select_file">Válasszon egy Dropbox állományt</string>
+  <!-- Errors -->
 </resources>

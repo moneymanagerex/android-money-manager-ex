@@ -594,7 +594,6 @@
   <string name="budget_name">Nombre del Presupuesto</string>
   <string name="budget_year">Año del Presupuesto</string>
   <string name="budget_month">Presupuesto Mensual</string>
-  <string name="quote_provider">Proveedor de cotización</string>
   <string name="copy">Copiar</string>
   <string name="app_restart">Reiniciar la aplicación para que los cambios tengan efecto.</string>
   <!-- Currencies -->
@@ -612,6 +611,7 @@
   <string name="error_update_currency_exchange_rate">Ocurrió un error al actualizar la tasa</string>
   <string name="currencies_empty">No se encontraron monedas. Para crear una, pulsar el botón verde con el símbolo más.</string>
   <!-- Investment -->
+  <string name="quote_provider">Proveedor de cotización</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Su base de datos ha sido descargada</string>
@@ -640,4 +640,5 @@
   <string name="every_12_hours">Cada 12 horas</string>
   <string name="never">Nunca</string>
   <string name="dropbox_select_file">Seleccione un archivo en Dropbox</string>
+  <!-- Errors -->
 </resources>

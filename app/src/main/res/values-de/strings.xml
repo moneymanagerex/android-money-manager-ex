@@ -620,4 +620,5 @@
   <string name="every_12_hours">Alle 12 Stunden</string>
   <string name="never">Nie</string>
   <string name="dropbox_select_file">Wählen Sie eine Datei von Dropbox</string>
+  <!-- Errors -->
 </resources>
