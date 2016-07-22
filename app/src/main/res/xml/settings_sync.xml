@@ -19,12 +19,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
+        android:icon="@null"
         android:key="@string/pref_sync_enabled"
         android:title="@string/sync_enabled"
         android:defaultValue="false" />
 
     <!-- cloud storage provider -->
     <ListPreference
+        android:icon="@null"
         android:key="@string/pref_sync_provider"
         android:dependency="@string/pref_sync_enabled"
         android:title="@string/sync_provider"
@@ -71,6 +73,7 @@
 
     <!-- download -->
     <PreferenceScreen
+        android:icon="@null"
         android:dependency="@string/pref_remote_file"
         android:key="@string/pref_sync_download"
         android:summary="@string/cloud_download"
@@ -85,6 +88,7 @@
 
     <!-- log out -->
     <Preference
+        android:icon="@null"
         android:key="@string/pref_reset_preferences"
         android:title="@string/reset_preferences" />
 
