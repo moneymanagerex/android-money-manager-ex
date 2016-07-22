@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.22.870">
+        <changelogtext>Updating the sync library. Plus a few improvements in handling authentication credentials.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.21.869">
         <changelogtext>Synchronizing the file immediately when the remote file location changes.</changelogtext>
         <changelogtext>Separate preferences for stock and currency exchange rate providers.</changelogtext>
