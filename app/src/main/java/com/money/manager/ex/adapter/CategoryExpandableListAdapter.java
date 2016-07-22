@@ -18,13 +18,16 @@
 package com.money.manager.ex.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,6 +53,11 @@ public class CategoryExpandableListAdapter
 	
 	private int mIdGroupChecked = ListView.INVALID_POSITION;
 	private int mIdChildChecked = ListView.INVALID_POSITION;
+
+    private boolean mShowSelector;
+
+    private final int[] expandedStateSet = {android.R.attr.state_expanded};
+    private final int[] emptyStateSet = {};
 	
 	public static class ViewHolderGroup {
 		TextView textView;
@@ -65,11 +73,13 @@ public class CategoryExpandableListAdapter
 	public CategoryExpandableListAdapter(Context context, int layout,
                                          List<TableCategory> categories,
                                          HashMap<TableCategory,
-                                         List<QueryCategorySubCategory>> subCategories) {
+                                         List<QueryCategorySubCategory>> subCategories,
+                                         boolean showSelector) {
 		mContext = context;
 		mLayout = layout;
 		mCategories = categories;
 		mSubCategories = subCategories;
+        mShowSelector = showSelector;
 	}
 	
 	@Override
@@ -132,22 +142,26 @@ public class CategoryExpandableListAdapter
 
         RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
         if (selector != null) {
-            // set the tag to be the group position
-            selector.setTag(entity.getCategId() + ":" + entity.getSubCategId());
+            if (mShowSelector) {
+                selector.setVisibility(View.VISIBLE);
+                // set the tag to be the group position
+                selector.setTag(entity.getCategId() + ":" + entity.getSubCategId());
 
-            selector.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String tag = v.getTag().toString();
-                    String[] ids = tag.split(":");
-                    Integer groupId = Integer.parseInt(ids[0]);
-                    Integer childId = Integer.parseInt(ids[1]);
-                    setIdChildChecked(groupId, childId);
-                    // close
-                    closeFragment();
-                }
-            });
-
+                selector.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tag = v.getTag().toString();
+                        String[] ids = tag.split(":");
+                        Integer groupId = Integer.parseInt(ids[0]);
+                        Integer childId = Integer.parseInt(ids[1]);
+                        setIdChildChecked(groupId, childId);
+                        // close
+                        closeFragment();
+                    }
+                });
+            } else {
+                selector.setVisibility(View.GONE);
+            }
         }
 
 		return convertView;
@@ -213,22 +227,47 @@ public class CategoryExpandableListAdapter
 
             RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
             if (selector != null) {
-                // set the tag to be the group position
-                selector.setTag(category.getCategId());
+                if (mShowSelector) {
+                    selector.setVisibility(View.VISIBLE);
+                    // set the tag to be the group position
+                    selector.setTag(category.getCategId());
 
-                selector.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String tag = v.getTag().toString();
-                        Integer groupId = Integer.parseInt(tag);
-                        setIdGroupChecked(groupId);
-                        // close
-                        closeFragment();
-                    }
-                });
+                    selector.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String tag = v.getTag().toString();
+                            Integer groupId = Integer.parseInt(tag);
+                            setIdGroupChecked(groupId);
+                            // close
+                            closeFragment();
+                        }
+                    });
+                } else {
+                    selector.setVisibility(View.GONE);
+                }
             }
         }
-		
+
+        ImageView indicatorView = (ImageView) convertView.findViewById(R.id.expandable_list_indicator);
+        if (indicatorView != null) {
+            TypedArray expandableListViewStyle = mContext.getTheme().obtainStyledAttributes(new int[]{android.R.attr.expandableListViewStyle});
+            TypedArray groupIndicator = mContext.getTheme().obtainStyledAttributes(expandableListViewStyle.getResourceId(0, 0), new int[]{android.R.attr.groupIndicator});
+            Drawable drawable = groupIndicator.getDrawable(0);
+            indicatorView.setImageDrawable(drawable);
+            expandableListViewStyle.recycle();
+            groupIndicator.recycle();
+
+            if (getChildrenCount(groupPosition) == 0) {
+                indicatorView.setVisibility( View.INVISIBLE );
+            } else {
+                indicatorView.setVisibility( View.VISIBLE );
+
+                if (drawable != null) {
+                    drawable.setState(isExpanded ? expandedStateSet : emptyStateSet);
+                }
+            }
+        }
+
 		return convertView;
 	}
 

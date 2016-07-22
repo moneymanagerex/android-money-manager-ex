@@ -129,12 +129,7 @@ public class CategoryListFragment
             Show category selector (arrow) when used as a picker.
             Show simple list when opened independently.
         */
-        mLayout = mAction.equals(Intent.ACTION_PICK)
-            ? R.layout.simple_expandable_list_item_selector
-            : android.R.layout.simple_expandable_list_item_2;
-//            mLayout = R.layout.simple_expandable_list_item_multiple_choice_2;
-            // todo: use custom chevron as an indicator, like in drawer menu.
-//            mLayout = R.layout.simple_expandable_custom_list_item;
+        mLayout = R.layout.simple_expandable_list_item_selector;
 
         // manage context menu
         registerForContextMenu(getExpandableListView());
@@ -149,6 +144,9 @@ public class CategoryListFragment
 
         setFloatingActionButtonVisible(true);
         setFloatingActionButtonAttachListView(true);
+
+        // Hide default group indicator
+        getExpandableListView().setGroupIndicator(null);
     }
 
     @Override
@@ -432,8 +430,9 @@ public class CategoryListFragment
             mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
         }
 
+        boolean showSelector = mAction.equals(Intent.ACTION_PICK);
         CategoryExpandableListAdapter adapter = new CategoryExpandableListAdapter(getActivity(),
-            mLayout, mCategories, mSubCategories);
+            mLayout, mCategories, mSubCategories, showSelector);
         adapter.setIdChildChecked(mIdGroupChecked, mIdChildChecked);
         return adapter;
     }
@@ -708,8 +707,16 @@ public class CategoryListFragment
                 public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                     if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
                         CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
-                        adapter.setIdGroupChecked(mCategories.get(groupPosition).getCategId());
+
+                        TableCategory category = mCategories.get(groupPosition);
+
+                        adapter.setIdGroupChecked(category.getCategId());
                         adapter.notifyDataSetChanged();
+
+                        int subCategoriesCount = mSubCategories.get(category).size();
+                        if (subCategoriesCount == 0) {
+                            setResultAndFinish();
+                        }
                     }
                     return false;
                 }
