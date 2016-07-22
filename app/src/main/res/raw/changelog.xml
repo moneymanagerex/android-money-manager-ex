@@ -36,7 +36,7 @@
         <changelogtext>Improving the new Asset Allocation form.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.07.18.867">
-        <changelogtext>Updating CloudRail library. This should most sync issues identified so far.</changelogtext>
+        <changelogtext>Updating CloudRail library. This should resolve most of the sync issues identified so far.</changelogtext>
         <changelogtext>New Asset Allocation form.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.07.17.864">
