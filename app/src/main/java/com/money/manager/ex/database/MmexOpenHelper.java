@@ -23,6 +23,7 @@ import android.database.SQLException;
 //import net.sqlcipher.database.SQLiteDatabase;
 //import net.sqlcipher.database.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
@@ -270,7 +271,7 @@ public class MmexOpenHelper
                 db.execSQL(aSqlStatment);
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
-                if (errorMessage != null && errorMessage.equals("not an error (code 0)")) {
+                if (e instanceof SQLiteException && errorMessage != null && errorMessage.contains("not an error (code 0)")) {
                     Log.w(LOGCAT, errorMessage);
                 } else {
                     ExceptionHandler handler = new ExceptionHandler(getContext(), this);
