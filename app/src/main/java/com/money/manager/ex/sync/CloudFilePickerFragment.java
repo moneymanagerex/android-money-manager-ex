@@ -92,16 +92,22 @@ public class CloudFilePickerFragment
 
     @Subscribe
     public void onEvent(final RemoteFolderContentsRetrievedEvent event) {
-        event.items = sortRemoteItems(event.items);
+//        if (event.items == null) {
+//            // could not retrieve items.
+//            return;
+//        }
+
+        if (event.items != null) {
+            event.items = sortRemoteItems(event.items);
+        }
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 // hide the progress dialog
-                //progressDialog.hide();
                 progressDialog.dismiss();
 
-                // fill the list
+                // Refresh the data in the list.
                 mAdapter = new CloudDataAdapter(getActivity(), event.items);
                 mRecyclerView.setAdapter(mAdapter);
             }
