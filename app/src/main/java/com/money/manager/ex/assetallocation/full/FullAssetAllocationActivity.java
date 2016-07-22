@@ -29,14 +29,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationActivity;
-import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
