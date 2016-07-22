@@ -15,7 +15,7 @@ Financial management can be complicated if there is no clear understanding of ho
 Wizard to simplify creation of accounts and start using MMEX for Android. You have the flexibility of creating accounts in any of the multiple currencies available.
 
 ☆ <b>TRANSACTIONS</b>
-Take note of all expenses and incoming in a clear view: divide and highlight them with different status. Search, filter and sort by every field to have a clear situation of bank accounts at any time.
+Overview of all income and expenses: separate and highlight records with different statuses. Search, filter, and sort by any field to have a clear view of your accounts at any time.
 
 ☆ <b>PAYEES AND CATEGORIES</b>
 Categories indicate the reason an expenditure is made or an income is received. Payees are the people or the institutions that give money or who are paid for goods and services.
