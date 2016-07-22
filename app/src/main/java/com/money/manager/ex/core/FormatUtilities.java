@@ -149,6 +149,8 @@ public class FormatUtilities {
      * @return formatted value
      */
     public String getValueFormatted(Money value, boolean showSymbols, Currency currency) {
+        if (currency == null) return "n/a";
+
         String result = this.getValueFormatted(value, currency.getScale(),
             currency.getDecimalSeparator(), currency.getGroupSeparator());
 

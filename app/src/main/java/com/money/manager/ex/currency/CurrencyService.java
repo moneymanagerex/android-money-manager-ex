@@ -215,41 +215,38 @@ public class CurrencyService
      * @return Id of base currency
      */
     public int getBaseCurrencyId() {
+        if (mBaseCurrencyId != null) return mBaseCurrencyId;
+
         int result;
 
-        // lazy loading the base currency id.
-        if (mBaseCurrencyId == null) {
-            Integer baseCurrencyId = loadBaseCurrencyId();
+        Integer baseCurrencyId = loadBaseCurrencyId();
 
-            if (baseCurrencyId != null) {
-                result = baseCurrencyId;
+        if (baseCurrencyId != null) {
+            result = baseCurrencyId;
+        } else {
+            // No base currency set yet. Try to get it from the system.
+            java.util.Currency systemCurrency = this.getSystemDefaultCurrency();
+            if (systemCurrency == null) {
+                // could not get base currency from the system. Use Euro?
+                //Currency euro = repo.loadCurrency("EUR");
+                //result = euro.getCurrencyId();
+                Log.w("CurrencyService", "system default currency is null!");
+                result = 2;
             } else {
-                // No base currency set yet. Try to get it from the system.
-                java.util.Currency systemCurrency = this.getSystemDefaultCurrency();
-                if (systemCurrency == null) {
-                    // could not get base currency from the system. Use Euro?
-                    //Currency euro = repo.loadCurrency("EUR");
-                    //result = euro.getCurrencyId();
-                    Log.w("CurrencyService", "system default currency is null!");
-                    result = 2;
-                } else {
-                    CurrencyRepository repo = getRepository();
-                    Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
+                CurrencyRepository repo = getRepository();
+                Currency defaultCurrency = repo.loadCurrency(systemCurrency.getCurrencyCode());
 
-                    if (defaultCurrency != null) {
-                        result = defaultCurrency.getCurrencyId();
-                    } else {
-                        // currency not found.
-                        Log.w("CurrencyService", "currency " + systemCurrency.getCurrencyCode() +
-                                "not found!");
-                        result = 2;
-                    }
+                if (defaultCurrency != null) {
+                    result = defaultCurrency.getCurrencyId();
+                } else {
+                    // currency not found.
+                    Log.w("CurrencyService", "currency " + systemCurrency.getCurrencyCode() +
+                            "not found!");
+                    result = 2;
                 }
             }
-            mBaseCurrencyId = result;
-        } else {
-            result = mBaseCurrencyId;
         }
+        mBaseCurrencyId = result;
 
         return result;
     }

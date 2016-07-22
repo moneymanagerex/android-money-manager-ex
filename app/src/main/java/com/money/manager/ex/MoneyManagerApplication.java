@@ -67,9 +67,6 @@ import info.javaperformance.money.Money;
 )
 public class MoneyManagerApplication
     extends MultiDexApplication {
-    // Application
-
-//    public static final String KEY = "8941ED03A52BF76CD48EF951CA623B0709564CA238DB7FE1BA3980E4F617CD52";
 
     private static final String LOGCAT = "MoneyManagerApplication";
 
