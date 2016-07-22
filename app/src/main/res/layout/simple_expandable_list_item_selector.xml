@@ -20,9 +20,21 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
 
+    <RelativeLayout
+        android:layout_width="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/expandable_list_indicator"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_height="match_parent"
         android:mode="twoLine"
         android:orientation="vertical"
         android:paddingBottom="2dip"
@@ -34,8 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/category"
-            android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
             android:layout_marginTop="6dip"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceListItem" />
@@ -45,8 +55,6 @@
             android:id="@android:id/text2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:layout_marginStart="?android:attr/expandableListPreferredItemPaddingLeft"
             android:layout_gravity="start"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
