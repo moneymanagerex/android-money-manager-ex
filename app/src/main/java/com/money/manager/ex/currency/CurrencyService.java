@@ -25,6 +25,7 @@ import android.support.v7.util.SortedList;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -339,6 +340,7 @@ public class CurrencyService
 
         for (Locale locale : locales) {
             try {
+                // todo: this results in an exception if the country code is missing.
                 localeCurrency = java.util.Currency.getInstance(locale);
 
                 // check if already exists currency symbol
@@ -410,14 +412,24 @@ public class CurrencyService
             if (defaultLocale == null) {
                 defaultLocale = Locale.getDefault();
             }
-            currency = java.util.Currency.getInstance(defaultLocale);
-        } catch (Exception ex) {
-            String message = "getting default system currency";
-            if (defaultLocale != null) {
-                message += " for " + defaultLocale.getCountry();
+            // Check if there is a country.
+            if (!StringUtils.isEmpty(defaultLocale.getCountry() )) {
+                currency = java.util.Currency.getInstance(defaultLocale);
             }
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, message);
+            // Otherwise no country info in the locale. Just use the default.
+
+        } catch (Exception ex) {
+            if (!(ex instanceof IllegalArgumentException)) {
+                String message = "getting default system currency";
+                if (defaultLocale != null) {
+                    message += " for " + defaultLocale.getCountry();
+                }
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                handler.handle(ex, message);
+            }
+            // else, just ignore and use the pre-set currency below.
+            // http://docs.oracle.com/javase/7/docs/api/java/util/Currency.html#getInstance(java.util.Locale)
+            // IllegalArgumentException - if the country of the given locale is not a supported ISO 3166 country code.
         }
 
         // can't get the default currency?
