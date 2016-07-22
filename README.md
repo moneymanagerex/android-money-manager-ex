@@ -16,7 +16,7 @@ If you want to join our translation team: [MoneyManagerEx for Android on Crowdin
 
 #### Beta Testing
 
-Opt-in to test the latest releases at [https://play.google.com/apps/testing/com.money.manager.ex](https://play.google.com/apps/testing/com.money.manager.ex)
+You can install the Beta version from [Google Play](https://play.google.com/store/apps/details?id=com.money.manager.ex.beta) in parallel to the stable version, and help us out testing the app before it reaches the Stable channel.
 
 # License
 
