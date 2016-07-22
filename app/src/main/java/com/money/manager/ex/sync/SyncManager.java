@@ -197,6 +197,9 @@ public class SyncManager {
 
             inputStream.close();
             outputStream.close();
+
+            // save any renewed tokens
+            this.storePersistent();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
             handler.handle(e, "downloading from the cloud");
@@ -324,6 +327,9 @@ public class SyncManager {
         CloudMetaData result = null;
         try {
             result = getProvider().getMetadata(remotePath);
+
+            // save any renewed tokens
+            this.storePersistent();
         } catch (NotFoundException e) {
             // just show a message
             ExceptionHandler handler = new ExceptionHandler(getContext());
@@ -572,6 +578,9 @@ public class SyncManager {
         if (TextUtils.isEmpty(getRemotePath())) {
             setRemotePath(remoteFile);
         }
+
+        // save any renewed tokens
+        this.storePersistent();
 
         return true;
     }

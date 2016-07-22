@@ -50,7 +50,7 @@ public class SyncMessengerFactory {
     }
 
     public Messenger createMessenger(final ProgressDialog progressDialog, final String remoteFile) {
-        // Messenger handles received messages from the Dropbox service.
+        // Messenger handles received messages from the sync service.
         Messenger messenger = new Messenger(new Handler() {
             @Override
             public void handleMessage(Message msg) {
