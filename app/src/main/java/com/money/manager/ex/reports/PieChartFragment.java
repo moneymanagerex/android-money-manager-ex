@@ -129,7 +129,9 @@ public class PieChartFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTextColor = UIHelper.resolveIdAttribute(getActivity(), R.attr.chartTextColor);
+
+        UIHelper uiHelper = new UIHelper(getActivity());
+        mTextColor = uiHelper.resolveIdAttribute(R.attr.chartTextColor);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SAVED_INSTANCE))
                 setChartArguments(savedInstanceState.getBundle(KEY_SAVED_INSTANCE));

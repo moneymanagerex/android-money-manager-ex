@@ -218,7 +218,8 @@ public class WatchlistFragment
         MenuItem purgeMenu = menu.findItem(R.id.menu_purge_history);
         if (purgeMenu != null) {
             FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_cut);
-            icon.setTextColor(UIHelper.getColor(getActivity(), R.attr.toolbarItemColor));
+            UIHelper uiHelper = new UIHelper(getActivity());
+            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
 
             purgeMenu.setIcon(icon);
         }

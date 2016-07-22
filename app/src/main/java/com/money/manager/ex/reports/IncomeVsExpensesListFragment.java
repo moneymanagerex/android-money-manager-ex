@@ -418,12 +418,13 @@ public class IncomeVsExpensesListFragment
                 MoneyFactory.fromDouble(income - Math.abs(expenses))));
         txtDifference.setTypeface(null, Typeface.BOLD);
         //change colors
+        UIHelper uiHelper = new UIHelper(getActivity());
         if (income - Math.abs(expenses) < 0) {
             txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
-                UIHelper.resolveIdAttribute(getActivity(), R.attr.holo_red_color_theme)));
+                uiHelper.resolveIdAttribute(R.attr.holo_red_color_theme)));
         } else {
             txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
-                UIHelper.resolveIdAttribute(getActivity(), R.attr.holo_green_color_theme)));
+                uiHelper.resolveIdAttribute(R.attr.holo_green_color_theme)));
         }
     }
 

@@ -416,9 +416,10 @@ public class DashboardFragment
                             "<small>" + daysLeftText + "</small>"}, new Float[]{1f, null, 1f},
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
             TextView txt = (TextView) row.getChildAt(2);
+            UIHelper uiHelper = new UIHelper(getActivity());
             txt.setTextColor(ContextCompat.getColor(getActivity(), (daysLeft >= 0
-                ? UIHelper.getColor(getActivity(), R.attr.holo_green_color_theme)
-                : UIHelper.getColor(getActivity(), R.attr.holo_red_color_theme))));
+                ? uiHelper.getColor(R.attr.holo_green_color_theme)
+                : uiHelper.getColor(R.attr.holo_red_color_theme))));
             // Add Row
             tableLayout.addView(row);
         }

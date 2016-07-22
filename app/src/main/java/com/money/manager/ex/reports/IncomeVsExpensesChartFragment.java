@@ -126,10 +126,10 @@ public class IncomeVsExpensesChartFragment
                 setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(KEY_DISPLAY_AS_UP_ENABLED));
         }
 
-        mTextColor = UIHelper.resolveIdAttribute(getActivity(), R.attr.chartTextColor);
+        UIHelper uiHelper = new UIHelper(getActivity());
+        mTextColor = uiHelper.resolveIdAttribute(R.attr.chartTextColor);
 
         // enabled display as home
-//        ActionBarActivity activity = (ActionBarActivity) getActivity();
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());

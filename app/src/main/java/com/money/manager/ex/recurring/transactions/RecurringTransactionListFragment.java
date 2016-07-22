@@ -77,7 +77,8 @@ public class RecurringTransactionListFragment
         setHasOptionsMenu(true);
         registerForContextMenu(getListView());
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        getListView().setDivider(new ColorDrawable(UIHelper.getColor(getActivity(), R.attr.theme_background_color)));
+        UIHelper uiHelper = new UIHelper(getActivity());
+        getListView().setDivider(new ColorDrawable(uiHelper.getColor(R.attr.theme_background_color)));
 
         setListShown(false);
 

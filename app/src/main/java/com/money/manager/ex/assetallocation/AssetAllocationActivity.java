@@ -130,7 +130,8 @@ public class AssetAllocationActivity
         MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
         if (currenciesMenu != null) {
             FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
-            icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+            UIHelper uiHelper = new UIHelper(this);
+            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
             currenciesMenu.setIcon(icon);
         }
 
@@ -143,7 +144,8 @@ public class AssetAllocationActivity
         // New Asset Allocation view
         MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
         FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
-        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
+        UIHelper uiHelper = new UIHelper(this);
+        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
         newForm.setIcon(icon);
 
         return true;

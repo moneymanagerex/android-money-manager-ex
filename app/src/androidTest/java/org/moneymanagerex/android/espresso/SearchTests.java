@@ -84,7 +84,7 @@ public class SearchTests {
 
         onData(allOf(is(instanceOf(TableCategory.class))))
             .atPosition(5)
-            .onChildView(withId(R.id.selectorText))
+            .onChildView(withId(R.id.selector))
             .perform(click());
 
         formOpens();

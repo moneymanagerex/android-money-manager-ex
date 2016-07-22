@@ -62,10 +62,11 @@ public class PayeeReportAdapter
 
         txtColumn2.setText(currencyService.getCurrencyFormatted(currencyService.getBaseCurrencyId(), MoneyFactory.fromDouble(total)));
         Core core = new Core(context);
+        UIHelper uiHelper = new UIHelper(context);
         if (total < 0) {
-            txtColumn2.setTextColor(ContextCompat.getColor(context, UIHelper.resolveIdAttribute(context, R.attr.holo_red_color_theme)));
+            txtColumn2.setTextColor(ContextCompat.getColor(context, uiHelper.resolveIdAttribute(R.attr.holo_red_color_theme)));
         } else {
-            txtColumn2.setTextColor(ContextCompat.getColor(context, UIHelper.resolveIdAttribute(context, R.attr.holo_green_color_theme)));
+            txtColumn2.setTextColor(ContextCompat.getColor(context, uiHelper.resolveIdAttribute(R.attr.holo_green_color_theme)));
         }
 
         view.setBackgroundColor(core.resolveColorAttribute(cursor.getPosition() % 2 == 1 ? R.attr.row_dark_theme : R.attr.row_light_theme));

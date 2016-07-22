@@ -468,7 +468,8 @@ public class AccountTransactionListFragment
         // Use a font icon.
         FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_chevron_down);
         // get the toolbar item color.
-        icon.setTextColor(UIHelper.getColor(getActivity(), R.attr.toolbarItemColor)); // Color.RED
+        UIHelper uiHelper = new UIHelper(getActivity());
+        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor)); // Color.RED
         item.setIcon(icon);
 
         // selection handled in onOptionsItemSelected
@@ -499,7 +500,8 @@ public class AccountTransactionListFragment
         // Use a font icon.
         FontIconDrawable icon = FontIconDrawable.inflate(getContext(), R.xml.ic_filter);
         // get the toolbar item color.
-        icon.setTextColor(UIHelper.getColor(getContext(), R.attr.toolbarItemColor)); // Color.RED
+        UIHelper uiHelper = new UIHelper(getActivity());
+        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor)); // Color.RED
         item.setIcon(icon);
 
         // selection handled in onOptionsItemSelected

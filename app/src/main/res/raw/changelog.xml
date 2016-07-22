@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="">
+        <changelogtext>Improving category list level indication and simplifying selection with one tap.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.22.871">
         <changelogtext>Handling the cases when no default currency can be identified by the system.</changelogtext>
     </changelogversion>

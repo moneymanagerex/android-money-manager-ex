@@ -105,12 +105,7 @@ public class CategoryListFragment
         mPositionToExpand = new ArrayList<>();
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_ID_GROUP))
-                mIdGroupChecked = savedInstanceState.getInt(KEY_ID_GROUP);
-            if (savedInstanceState.containsKey(KEY_ID_CHILD))
-                mIdChildChecked = savedInstanceState.getInt(KEY_ID_CHILD);
-            if (savedInstanceState.containsKey(KEY_CUR_FILTER))
-                mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
+            restoreInstanceState(savedInstanceState);
         }
 
         setShowMenuItemSearch(true);
@@ -147,6 +142,18 @@ public class CategoryListFragment
 
         // Hide default group indicator
         getExpandableListView().setGroupIndicator(null);
+    }
+
+    private void restoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_ID_GROUP)) {
+            mIdGroupChecked = savedInstanceState.getInt(KEY_ID_GROUP);
+        }
+        if (savedInstanceState.containsKey(KEY_ID_CHILD)) {
+            mIdChildChecked = savedInstanceState.getInt(KEY_ID_CHILD);
+        }
+        if (savedInstanceState.containsKey(KEY_CUR_FILTER)) {
+            mCurFilter = savedInstanceState.getString(KEY_CUR_FILTER, "");
+        }
     }
 
     @Override

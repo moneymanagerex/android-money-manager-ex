@@ -19,7 +19,6 @@ package com.money.manager.ex.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -27,25 +26,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CategoryListFragment;
-import com.money.manager.ex.R;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.TableCategory;
-import com.money.manager.ex.view.RobotoTextView;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CategoryExpandableListAdapter
 		extends BaseExpandableListAdapter {
+
+    public CategoryExpandableListAdapter(Context context, int layout,
+                                         List<TableCategory> categories,
+                                         HashMap<TableCategory,
+                                                 List<QueryCategorySubCategory>> subCategories,
+                                         boolean showSelector) {
+        mContext = context;
+        mLayout = layout;
+        mCategories = categories;
+        mSubCategories = subCategories;
+        mShowSelector = showSelector;
+    }
+
 	private Context mContext;
-	
 	private int mLayout;
 	
 	private List<TableCategory> mCategories;
@@ -58,37 +64,15 @@ public class CategoryExpandableListAdapter
 
     private final int[] expandedStateSet = {android.R.attr.state_expanded};
     private final int[] emptyStateSet = {};
-	
-	public static class ViewHolderGroup {
-		TextView textView;
-        RobotoTextView text1;
-	}
-	
-	public static class ViewHolderChild {
-		TextView textView;
-        RobotoTextView text1;
-		TextView text2;
-	}
-	
-	public CategoryExpandableListAdapter(Context context, int layout,
-                                         List<TableCategory> categories,
-                                         HashMap<TableCategory,
-                                         List<QueryCategorySubCategory>> subCategories,
-                                         boolean showSelector) {
-		mContext = context;
-		mLayout = layout;
-		mCategories = categories;
-		mSubCategories = subCategories;
-        mShowSelector = showSelector;
-	}
-	
+
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		if (groupPosition < mCategories.size()) {
 			TableCategory category = mCategories.get(groupPosition);
 			List<QueryCategorySubCategory> categorySubCategories = mSubCategories.get(category);
-			if (childPosition < categorySubCategories.size())
-				return categorySubCategories.get(childPosition);
+			if (childPosition < categorySubCategories.size()) {
+                return categorySubCategories.get(childPosition);
+            }
 		}
 		return null;
 	}
@@ -101,68 +85,51 @@ public class CategoryExpandableListAdapter
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
 							 View convertView, ViewGroup parent) {
-		ViewHolderChild holder;
+		CategoryListItemViewHolderChild holder;
 		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(mLayout, null);
 			
-			holder = new ViewHolderChild();
-            View text1 = convertView.findViewById(android.R.id.text1);
-            if (text1 instanceof RobotoTextView) {
-                holder.text1 = (RobotoTextView) text1;
-            } else {
-                holder.textView = (TextView) text1;
-            }
-			holder.text2 = (TextView)convertView.findViewById(android.R.id.text2);
-			
+			holder = new CategoryListItemViewHolderChild(convertView);
+
 			convertView.setTag(holder);
-		}
-		holder = (ViewHolderChild)convertView.getTag();
+		} else {
+            holder = (CategoryListItemViewHolderChild) convertView.getTag();
+        }
 		
-		QueryCategorySubCategory entity = (QueryCategorySubCategory)getChild(groupPosition, childPosition);
-		
+		QueryCategorySubCategory entity = (QueryCategorySubCategory) getChild(groupPosition, childPosition);
 		if (entity == null) return convertView;
 
-        if (holder.textView != null) {
-            holder.textView.setText(entity.getSubcategoryName());
-        } else {
-            holder.text1.setText(entity.getSubcategoryName());
-        }
+        holder.text1.setText(entity.getSubcategoryName());
 
         holder.text2.setText(entity.getCategName());
-        holder.text2.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+        holder.text2.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
-        // Selector
+        // Selector. Always hidden on subcategories.
 
-        TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
-        if (selectorText != null) {
-            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
-            selectorText.setTypeface(typeface);
-        }
+//		if (mShowSelector) {
+//			holder.selector.setVisibility(View.VISIBLE);
+//			// set the tag to be the group position
+//			holder.selector.setTag(entity.getCategId() + ":" + entity.getSubCategId());
+//
+//			holder.selector.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					String tag = v.getTag().toString();
+//					String[] ids = tag.split(":");
+//					Integer groupId = Integer.parseInt(ids[0]);
+//					Integer childId = Integer.parseInt(ids[1]);
+//					setIdChildChecked(groupId, childId);
+//					// close
+//					closeFragment();
+//				}
+//			});
+//		} else {
+			holder.selector.setVisibility(View.GONE);
+//		}
 
-        RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
-        if (selector != null) {
-            if (mShowSelector) {
-                selector.setVisibility(View.VISIBLE);
-                // set the tag to be the group position
-                selector.setTag(entity.getCategId() + ":" + entity.getSubCategId());
-
-                selector.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String tag = v.getTag().toString();
-                        String[] ids = tag.split(":");
-                        Integer groupId = Integer.parseInt(ids[0]);
-                        Integer childId = Integer.parseInt(ids[1]);
-                        setIdChildChecked(groupId, childId);
-                        // close
-                        closeFragment();
-                    }
-                });
-            } else {
-                selector.setVisibility(View.GONE);
-            }
-        }
+        // indent subcategory
+        holder.indent.setVisibility(View.VISIBLE);
 
 		return convertView;
 	}
@@ -189,78 +156,57 @@ public class CategoryExpandableListAdapter
 
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-		ViewHolderGroup holder;
+		CategoryListItemViewHolderGroup holder;
 		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(mLayout, null);
 			
-			holder = new ViewHolderGroup();
-			View text1 = convertView.findViewById(android.R.id.text1);
-			if (text1 instanceof RobotoTextView) {
-				holder.text1 = (RobotoTextView) text1;
-			} else {
-				holder.textView = (TextView) text1;
-			}
+			holder = new CategoryListItemViewHolderGroup(convertView);
 
 			convertView.setTag(holder);
 		} else {
-			holder = (ViewHolderGroup)convertView.getTag();
+			holder = (CategoryListItemViewHolderGroup)convertView.getTag();
 		}
 		
-		// check position and size of ArrayList
-		if (groupPosition < mCategories.size()) {
-            TableCategory category = mCategories.get(groupPosition);
+        TableCategory category = mCategories.get(groupPosition);
 
-            if (holder.text1 != null) {
-                holder.text1.setText(category.getCategName());
-            } else {
-                holder.textView.setText(category.getCategName());
-            }
+        holder.text1.setText(category.getCategName());
 
-            // Selector
+        // Selector
 
-            TextView selectorText = (TextView) convertView.findViewById(R.id.selectorText);
-            if (selectorText != null) {
-                Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/mmex.ttf");
-                selectorText.setTypeface(typeface);
-            }
+        if (mShowSelector) {
+            holder.selector.setVisibility(View.VISIBLE);
+            // set the tag to be the group position
+            holder.selector.setTag(category.getCategId());
 
-            RelativeLayout selector = (RelativeLayout) convertView.findViewById(R.id.selector);
-            if (selector != null) {
-                if (mShowSelector) {
-                    selector.setVisibility(View.VISIBLE);
-                    // set the tag to be the group position
-                    selector.setTag(category.getCategId());
-
-                    selector.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String tag = v.getTag().toString();
-                            Integer groupId = Integer.parseInt(tag);
-                            setIdGroupChecked(groupId);
-                            // close
-                            closeFragment();
-                        }
-                    });
-                } else {
-                    selector.setVisibility(View.GONE);
+            holder.selector.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String tag = v.getTag().toString();
+                    Integer groupId = Integer.parseInt(tag);
+                    setIdGroupChecked(groupId);
+                    // close
+                    closeFragment();
                 }
-            }
+            });
+        } else {
+            holder.selector.setVisibility(View.GONE);
         }
 
-        ImageView indicatorView = (ImageView) convertView.findViewById(R.id.expandable_list_indicator);
-        if (indicatorView != null) {
-            TypedArray expandableListViewStyle = mContext.getTheme().obtainStyledAttributes(new int[]{android.R.attr.expandableListViewStyle});
-            TypedArray groupIndicator = mContext.getTheme().obtainStyledAttributes(expandableListViewStyle.getResourceId(0, 0), new int[]{android.R.attr.groupIndicator});
+
+        if (holder.collapseImageView != null) {
+            TypedArray expandableListViewStyle = getContext().getTheme().obtainStyledAttributes(new int[]{android.R.attr.expandableListViewStyle});
+            TypedArray groupIndicator = getContext().getTheme().obtainStyledAttributes(expandableListViewStyle.getResourceId(0, 0), new int[]{android.R.attr.groupIndicator});
             Drawable drawable = groupIndicator.getDrawable(0);
-            indicatorView.setImageDrawable(drawable);
+            holder.collapseImageView.setImageDrawable(drawable);
             expandableListViewStyle.recycle();
             groupIndicator.recycle();
 
-            if (getChildrenCount(groupPosition) == 0) {
-                indicatorView.setVisibility( View.INVISIBLE );
+            boolean hasChildren = getChildrenCount(groupPosition) != 0;
+            if (!hasChildren) {
+                holder.collapseImageView.setVisibility( View.INVISIBLE );
             } else {
-                indicatorView.setVisibility( View.VISIBLE );
+                holder.collapseImageView.setVisibility( View.VISIBLE );
 
                 if (drawable != null) {
                     drawable.setState(isExpanded ? expandedStateSet : emptyStateSet);
@@ -305,11 +251,15 @@ public class CategoryExpandableListAdapter
 	}
 
 	private void closeFragment() {
-        FragmentActivity activity = (FragmentActivity) mContext;
+        FragmentActivity activity = (FragmentActivity) getContext();
         CategoryListFragment fragment =
             (CategoryListFragment) activity
                 .getSupportFragmentManager()
                 .findFragmentByTag(CategoryListActivity.FRAGMENTTAG);
         fragment.setResultAndFinish();
+    }
+
+    private Context getContext() {
+        return mContext;
     }
 }
