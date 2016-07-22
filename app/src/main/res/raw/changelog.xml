@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.22.871">
+        <changelogtext>Handling the cases when no default currency can be identified by the system.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.22.870">
         <changelogtext>Updating the sync library. Plus a few improvements in handling authentication credentials.</changelogtext>
     </changelogversion>
