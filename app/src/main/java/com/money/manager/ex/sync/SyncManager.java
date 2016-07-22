@@ -271,7 +271,13 @@ public class SyncManager {
 
                 try {
                     items = getProvider().getChildren(folder);
-                } catch (RuntimeException ex) {
+
+                    // save any renewed tokens
+                    storePersistent();
+                } catch (Exception ex) {
+//                    if (ex instanceof RuntimeException && ex.getMessage().equals("ServiceCode Error in function standardJSONRequest at 11")) {
+//                        // error fetching remote data. Usually a network problem.
+//                    }
                     ExceptionHandler handler = new ExceptionHandler(getContext());
                     handler.handle(ex, "retrieving the remote folder contents");
                 }
