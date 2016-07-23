@@ -89,10 +89,16 @@ public abstract class BaseFragmentActivity
 
     @Override
     protected void onStart() {
-        super.onStart();
-        // set elevation actionbar 0
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setElevation(0);
+        try {
+            super.onStart();
+            // set elevation actionbar 0
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setElevation(0);
+            }
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(this);
+            handler.handle(e, "initializing activity");
+        }
     }
 
     /**
