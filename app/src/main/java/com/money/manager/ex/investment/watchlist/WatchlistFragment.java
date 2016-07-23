@@ -575,9 +575,11 @@ public class WatchlistFragment
 //    }
 
     private void loadAccount() {
-        if (!getArguments().containsKey(KEY_ACCOUNT_ID)) return;
+        Bundle args = getArguments();
+        if (args == null) return;
+        if (!args.containsKey(KEY_ACCOUNT_ID)) return;
 
-        int accountId = getArguments().getInt(KEY_ACCOUNT_ID);
+        int accountId = args.getInt(KEY_ACCOUNT_ID);
         this.mAccount = new AccountRepository(getActivity()).load(accountId);
     }
 
