@@ -35,14 +35,14 @@
         <com.shamanland.fonticon.FontIconButton
             android:id="@+id/editButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/edit"
             app:iconLeft="@xml/ic_pencil_small" />
         <com.shamanland.fonticon.FontIconButton
             android:id="@+id/favouriteButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/favourite"
             app:iconLeft="@xml/ic_star_outline" />
