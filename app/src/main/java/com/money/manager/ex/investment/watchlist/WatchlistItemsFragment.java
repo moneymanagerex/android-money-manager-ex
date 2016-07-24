@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -198,9 +199,12 @@ public class WatchlistItemsFragment
      */
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+//        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) ;
 
         Cursor cursor = ((StocksCursorAdapter) getListAdapter()).getCursor();
+//        long packedPosition = hasHeaderRow() ? info.packedPosition - 1 : info.packedPosition;
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
