@@ -71,7 +71,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
@@ -251,7 +250,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public boolean hasSplitCategories() {
-        return mSplitTransactions != null && !mSplitTransactions.isEmpty();
+        return !getSplitTransactions().isEmpty();
     }
 
     /**
@@ -536,32 +535,42 @@ public class EditTransactionCommonFunctions {
                 transactionEntity.setPayeeId(Constants.NOT_SET);
                 payeeName = "";
 
-                refreshPayeeName();
+                showPayeeName();
             }
         });
     }
 
+    /**
+     * Initialize Split Categories button & controls.
+     */
     public void initSplitCategories() {
-        // Split button
         viewHolder.splitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean splitting = !isSplitSelected();
 
                 if (splitting) {
-                    createSplitForCategoryAndAmount();
-                }
-
-                setSplit(splitting);
-
-                // if the split has just been set, show the splits dialog immediately?
-                if (isSplitSelected()) {
                     showSplitCategoriesForm(mSplitCategoryEntityName);
+                } else {
+                    // User wants to remove split.
+                    int splitCount = getSplitTransactions().size();
+                    switch (splitCount) {
+                        case 0:
+                            // just remove split
+                            setSplit(false);
+                            break;
+                        case 1:
+                            convertOneSplitIntoRegularTransaction();
+                            break;
+                        default:
+                            showSplitResetNotice();
+                            break;
+                    }
                 }
             }
         });
 
-        onSplitSet();
+        refreshSplitControls();
     }
 
     public void initStatusSelector() {
@@ -765,16 +774,16 @@ public class EditTransactionCommonFunctions {
 
                 setDirty(true);
 
-                transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
+                this.transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
                 if (!isSplitSelected() && !this.transactionEntity.hasCategory() ) {
-                    if (setCategoryFromPayee(transactionEntity.getPayeeId())) {
+                    if (setCategoryFromPayee(this.transactionEntity.getPayeeId())) {
                         displayCategoryName(); // refresh UI
                     }
                 }
                 // refresh UI
-                refreshPayeeName();
+                showPayeeName();
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
@@ -800,24 +809,21 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+                if ((resultCode != Activity.RESULT_OK) || (data == null)) break;
 
                 setDirty(true);
 
                 mSplitTransactions = Parcels.unwrap(data.getParcelableExtra(SplitCategoriesActivity.INTENT_RESULT_SPLIT_TRANSACTION));
-                if (mSplitTransactions != null && mSplitTransactions.size() > 0) {
-                    Money splitSum = MoneyFactory.fromString("0");
-                    for (int i = 0; i < mSplitTransactions.size(); i++) {
-                        splitSum = splitSum.add(mSplitTransactions.get(i).getAmount());
-                    }
-                    transactionEntity.setAmount(splitSum);
-                    displayAmountFrom();
-                }
+
                 // deleted items
                 Parcelable parcelDeletedSplits = data.getParcelableExtra(SplitCategoriesActivity.INTENT_RESULT_SPLIT_TRANSACTION_DELETED);
                 if (parcelDeletedSplits != null) {
                     mSplitTransactionsDeleted = Parcels.unwrap(parcelDeletedSplits);
                 }
+
+                // Splits and deleted splits must be restored before any action takes place.
+                onSplitConfirmed(getSplitTransactions());
+
                 break;
         }
     }
@@ -878,12 +884,7 @@ public class EditTransactionCommonFunctions {
     /**
      * Handle the controls after the split is checked.
      */
-    public void onSplitSet() {
-        if (isSplitSelected()) {
-            // update transaction, remove category & subcategory.
-            transactionEntity.setCategoryId(Constants.NOT_SET);
-            transactionEntity.setSubcategoryId(Constants.NOT_SET);
-        }
+    public void refreshSplitControls() {
         // display category field
         displayCategoryName();
 
@@ -891,21 +892,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.txtAmount.setEnabled(!mSplitSelected);
         viewHolder.txtAmountTo.setEnabled(!mSplitSelected);
 
-        // update Split button
-        int buttonColour, buttonBackground;
-        if (isSplitSelected()) {
-            buttonColour = R.color.button_foreground_active;
-            buttonBackground = R.color.button_background_active;
-            // #188: if there is a Category selected and we are switching to Split Categories.
-        } else {
-            buttonColour = R.color.button_foreground_inactive;
-            Core core = new Core(mContext);
-            buttonBackground = core.usingDarkTheme()
-                ? R.color.button_background_inactive_dark
-                : R.color.button_background_inactive_light;
-        }
-        viewHolder.splitButton.setTextColor(mContext.getResources().getColor(buttonColour));
-        viewHolder.splitButton.setBackgroundColor(mContext.getResources().getColor(buttonBackground));
+        updateSplitButton();
     }
 
     /**
@@ -927,7 +914,7 @@ public class EditTransactionCommonFunctions {
             onTransferSelected();
         } else {
             // Change sign for the split records. Transfers should delete split records.
-            CommonSplitCategoryLogic.changeSign(mSplitTransactions);
+            CommonSplitCategoryLogic.changeSign(getSplitTransactions());
         }
     }
 
@@ -965,7 +952,7 @@ public class EditTransactionCommonFunctions {
     /**
      * update UI interface with PayeeName
      */
-    public void refreshPayeeName() {
+    public void showPayeeName() {
         // write into text button payee name
         if (this.viewHolder.txtSelectPayee != null) {
             String text = !TextUtils.isEmpty(payeeName)
@@ -984,19 +971,18 @@ public class EditTransactionCommonFunctions {
         transactionEntity.setAmountTo(MoneyFactory.fromDouble(0));
     }
 
-    public void setSplit(final boolean checked) {
+    public void setSplit(boolean checked) {
         mSplitSelected = checked;
 
-        onSplitSet();
+        refreshSplitControls();
     }
 
     /**
      * query info payee
-     *
      * @param payeeId id payee
      * @return true if the data selected
      */
-    public boolean selectPayeeName(int payeeId) {
+    public boolean loadPayeeName(int payeeId) {
         PayeeRepository repo = new PayeeRepository(getContext());
         Payee payee = repo.load(payeeId);
         if (payee != null) {
@@ -1010,7 +996,6 @@ public class EditTransactionCommonFunctions {
 
     /**
      * setCategoryFromPayee set last category used from payee
-     *
      * @param payeeId Identify of payee
      * @return true if category set
      */
@@ -1116,13 +1101,12 @@ public class EditTransactionCommonFunctions {
         }
 
         // Split records must exist if split is checked.
-        if (isSplitSelected()
-            && (mSplitTransactions == null || mSplitTransactions.size() <= 0)) {
+        if (isSplitSelected() && getSplitTransactions().isEmpty()) {
             Core.alertDialog(mParent, R.string.error_split_transaction_empty);
             return false;
         }
         // Splits sum must be positive.
-        if (!CommonSplitCategoryLogic.validateSumSign(mSplitTransactions)){
+        if (!CommonSplitCategoryLogic.validateSumSign(getSplitTransactions())){
             Core.alertDialog(mParent, R.string.split_amount_negative);
             return false;
         }
@@ -1130,8 +1114,9 @@ public class EditTransactionCommonFunctions {
         return true;
     }
 
-    // Remove splits when switching to Transfer
-
+    /**
+     * Remove splits when switching to Transfer.
+     */
     public void confirmDeletingCategories() {
         removeAllSplitCategories();
         setSplit(false);
@@ -1152,10 +1137,10 @@ public class EditTransactionCommonFunctions {
      * After the user accepts, remove any split categories.
      */
     public void removeAllSplitCategories() {
-        if(mSplitTransactions == null) return;
+        List<ISplitTransaction> splitTransactions = getSplitTransactions();
 
-        for(int i = 0; i < mSplitTransactions.size(); i++) {
-            ISplitTransaction split = mSplitTransactions.get(i);
+        for(int i = 0; i < splitTransactions.size(); i++) {
+            ISplitTransaction split = splitTransactions.get(i);
             // How do we get this?
             //if (split == null) continue;
 
@@ -1164,11 +1149,10 @@ public class EditTransactionCommonFunctions {
 
             if(id == -1) {
                 // Remove any newly created splits.
-                mSplitTransactions.remove(i);
+                splitTransactions.remove(i);
                 i--;
             } else {
-                // Delete any splits already in the database.
-                // avoid adding duplicate records.
+                // Delete any splits already in the database. Avoid adding duplicate records.
                 if(!deletedSplits.contains(split)) {
                     deletedSplits.add(split);
                 }
@@ -1181,11 +1165,11 @@ public class EditTransactionCommonFunctions {
      * transaction, removing the split category record.
      * @return True if there is only one split. Need to save the transaction.
      */
-    public boolean handleOneSplit() {
+    public boolean convertOneSplitIntoRegularTransaction() {
         if (getSplitTransactions().size() != 1) return false;
 
         // use the first split category record.
-        ISplitTransaction splitTransaction = mSplitTransactions.get(0);
+        ISplitTransaction splitTransaction = getSplitTransactions().get(0);
 
         // reuse the amount & category
         transactionEntity.setAmount(splitTransaction.getAmount());
@@ -1193,7 +1177,11 @@ public class EditTransactionCommonFunctions {
 
         transactionEntity.setCategoryId(splitTransaction.getCategoryId());
         transactionEntity.setSubcategoryId(splitTransaction.getSubcategoryId());
-        displayCategoryName();
+        loadCategoryName();
+//        displayCategoryName();
+
+        // reset split indicator & display category
+        setSplit(false);
 
         getDeletedSplitCategories().add(splitTransaction);
         getSplitTransactions().remove(splitTransaction);
@@ -1257,41 +1245,28 @@ public class EditTransactionCommonFunctions {
     }
 
     /**
-     * Use the existing amount and,
+     * Create a split item using the amount and category from the existing transaction.
      * if there is a Category selected, and we are enabling Splits, use the selected category for
      * the initial split record.
      */
-    private void createSplitForCategoryAndAmount() {
+    private ISplitTransaction createSplitFromTransaction() {
         // Add the new split record of the same type as the parent.
         ISplitTransaction entity = SplitItemFactory.create(this.mSplitCategoryEntityName, transactionEntity.getTransactionType());
 
-        // now use the existing amount
         entity.setAmount(this.transactionEntity.getAmount());
 
-        // Add category
-
         if (this.transactionEntity.hasCategory()) {
-
-            // This category should not be inside any of the existing splits, then.
-            if (!this.getSplitTransactions().isEmpty()) {
-                for (ISplitTransaction split : this.mSplitTransactions) {
-                    if (split.getCategoryId().equals(this.transactionEntity.getCategoryId())) {
-                        return;
-                    }
-                }
-            }
-
             entity.setCategoryId(this.transactionEntity.getCategoryId());
-
-            // SubCategory
             entity.setSubcategoryId(this.transactionEntity.getSubcategoryId());
         }
 
-        this.getSplitTransactions().add(entity);
+        return entity;
     }
 
     private void displayAmountFrom() {
-        Money amount = transactionEntity.getAmount() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmount();
+        Money amount = transactionEntity.getAmount() == null
+            ? MoneyFactory.fromDouble(0)
+            : transactionEntity.getAmount();
 
         displayAmountFormatted(viewHolder.txtAmount, amount, getSourceCurrencyId());
     }
@@ -1327,6 +1302,39 @@ public class EditTransactionCommonFunctions {
             mSplitTransactions = new ArrayList<>();
         }
         return mSplitTransactions;
+    }
+
+    /**
+     * Returning from the Split Categories form after OK button was pressed.
+     */
+    private void onSplitConfirmed(List<ISplitTransaction> splits) {
+        if (splits.isEmpty()) {
+            // All split categories removed.
+            resetCategory();
+            setSplit(false);
+            return;
+        }
+
+        // if there is only one split item, handle it immediately.
+        if (splits.size() == 1) {
+            convertOneSplitIntoRegularTransaction();
+            return;
+        }
+
+        // Multiple split categories exist at this point.
+
+        resetCategory();
+
+        // indicate that the split is active & refresh display
+        setSplit(true);
+
+        // Use the sum of all splits as the Amount.
+        Money splitSum = MoneyFactory.fromString("0");
+        for (int i = 0; i < splits.size(); i++) {
+            splitSum = splitSum.add(splits.get(i).getAmount());
+        }
+        transactionEntity.setAmount(splitSum);
+        displayAmountFrom();
     }
 
     /**
@@ -1368,15 +1376,28 @@ public class EditTransactionCommonFunctions {
         displayAmountTo();
     }
 
+    private void resetCategory() {
+        // Reset the Sub/Category on the transaction.
+        transactionEntity.setCategoryId(Constants.NOT_SET);
+        transactionEntity.setSubcategoryId(Constants.NOT_SET);
+    }
+
     private void showDate(DateTime dateTime) {
         viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 
     private void showSplitCategoriesForm(String datasetName) {
-        Intent intent = new Intent(mParent, SplitCategoriesActivity.class);
+        // If there are no splits, use the current values for the initial split record.
+        List<ISplitTransaction> splitsToShow = getSplitTransactions();
+        if (getSplitTransactions().isEmpty()) {
+            ISplitTransaction currentTransaction = createSplitFromTransaction();
+            splitsToShow.add(currentTransaction);
+        }
+
+        Intent intent = new Intent(getContext(), SplitCategoriesActivity.class);
         intent.putExtra(SplitCategoriesActivity.KEY_DATASET_TYPE, datasetName);
         intent.putExtra(SplitCategoriesActivity.KEY_TRANSACTION_TYPE, transactionEntity.getTransactionType().getCode());
-        intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(mSplitTransactions));
+        intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION, Parcels.wrap(splitsToShow));
         intent.putExtra(SplitCategoriesActivity.KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mSplitTransactionsDeleted));
 
         Integer fromCurrencyId = getSourceCurrencyId();
@@ -1385,11 +1406,41 @@ public class EditTransactionCommonFunctions {
         mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }
 
+    /**
+     * If the user wants to reset the Split but there are multiple records, show the notice
+     * that the records must be adjusted manually.
+     */
+    private void showSplitResetNotice() {
+        new MaterialDialog.Builder(mParent)
+                .title(R.string.split_transaction)
+                .content(R.string.split_reset_notice)
+                .positiveText(android.R.string.ok)
+                .show();
+    }
+
     private void setDate(DateTime dateTime) {
         setDirty(true);
 
         transactionEntity.setDate(dateTime);
 
         showDate(dateTime);
+    }
+
+    private void updateSplitButton() {
+        // update Split button
+        int buttonColour, buttonBackground;
+        if (isSplitSelected()) {
+            buttonColour = R.color.button_foreground_active;
+            buttonBackground = R.color.button_background_active;
+            // #188: if there is a Category selected and we are switching to Split Categories.
+        } else {
+            buttonColour = R.color.button_foreground_inactive;
+            Core core = new Core(getContext());
+            buttonBackground = core.usingDarkTheme()
+                    ? R.color.button_background_inactive_dark
+                    : R.color.button_background_inactive_light;
+        }
+        viewHolder.splitButton.setTextColor(getContext().getResources().getColor(buttonColour));
+        viewHolder.splitButton.setBackgroundColor(getContext().getResources().getColor(buttonBackground));
     }
 }

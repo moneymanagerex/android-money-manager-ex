@@ -135,7 +135,7 @@ public class RecurringTransactionEditActivity
 
         // refresh user interface
         mCommonFunctions.onTransactionTypeChanged(mCommonFunctions.transactionEntity.getTransactionType());
-        mCommonFunctions.refreshPayeeName();
+        mCommonFunctions.showPayeeName();
         mCommonFunctions.displayCategoryName();
 
         showPaymentsLeft();
@@ -450,7 +450,7 @@ public class RecurringTransactionEditActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
-        mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
+        mCommonFunctions.loadPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.loadCategoryName();
 
         return true;
@@ -526,7 +526,7 @@ public class RecurringTransactionEditActivity
 
         // Split Categories
 
-        if (mCommonFunctions.handleOneSplit()) {
+        if (mCommonFunctions.convertOneSplitIntoRegularTransaction()) {
             saveTransaction();
         }
 

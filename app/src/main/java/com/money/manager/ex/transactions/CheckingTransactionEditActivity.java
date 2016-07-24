@@ -103,7 +103,7 @@ public class CheckingTransactionEditActivity
 
         // refresh user interface
         mCommonFunctions.onTransactionTypeChanged(mCommonFunctions.transactionEntity.getTransactionType());
-        mCommonFunctions.refreshPayeeName();
+        mCommonFunctions.showPayeeName();
         mCommonFunctions.displayCategoryName();
     }
 
@@ -336,7 +336,7 @@ public class CheckingTransactionEditActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
-        mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
+        mCommonFunctions.loadPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.loadCategoryName();
 
         return true;
@@ -382,7 +382,7 @@ public class CheckingTransactionEditActivity
         AccountRepository accountRepository = new AccountRepository(this);
         mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
 
-        mCommonFunctions.selectPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
+        mCommonFunctions.loadPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.loadCategoryName();
 
         // handle splits
@@ -470,7 +470,7 @@ public class CheckingTransactionEditActivity
                         if (result) {
                             try {
                                 // refresh field
-                                mCommonFunctions.refreshPayeeName();
+                                mCommonFunctions.showPayeeName();
                                 mCommonFunctions.displayCategoryName();
                             } catch (Exception e) {
                                 Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
@@ -547,7 +547,7 @@ public class CheckingTransactionEditActivity
 
         // Split Categories
 
-        if (mCommonFunctions.handleOneSplit()) {
+        if (mCommonFunctions.convertOneSplitIntoRegularTransaction()) {
             saveTransaction();
         }
 

@@ -656,6 +656,7 @@
     <string name="invalid_recurrence_type">Invalid recurrence type</string>
     <string name="account_not_found">Account not found</string>
     <string name="favourite">Favourite</string>
+    <string name="split_reset_notice">Please note that there are multiple split categories in this transaction. You need to remove them manually.</string>
 
     <!-- budgets -->
     <string name="add_budget">Add Budget</string>
@@ -747,4 +748,5 @@
     <!-- Errors -->
     <string name="error_parsing_value">Error parsing entered value</string>
     <string name="remote_file_not_found">Remote file not found</string>
+
 </resources>
