@@ -36,6 +36,11 @@ public class Query {
     public String[] selectionArgs = null;
     public String sort = null;
 
+    /**
+     * Sets the projection.
+     * @param projection The projection to use. The fields to fetch.
+     * @return Returns this instance of Query for chaining methods.
+     */
     public Query select(String[] projection) {
         // add selection
         this.projection = projection;

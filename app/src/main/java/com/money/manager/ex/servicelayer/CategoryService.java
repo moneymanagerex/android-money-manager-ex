@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
@@ -120,11 +121,12 @@ public class CategoryService
     }
 
     /**
-     * Return a list of all categories
+     * Return a list of all categories. Ordered by name.
      */
     public List<Category> getList() {
-        List<Category> list = getRepository().query(Category.class, null);
-        return list;
+        Query query = new Query().orderBy(Category.CATEGNAME);
+
+        return getRepository().query(Category.class, query);
     }
 
     public int update(int id, String name) {
