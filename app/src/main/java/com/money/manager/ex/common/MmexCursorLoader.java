@@ -47,12 +47,15 @@ public class MmexCursorLoader
     public Cursor loadInBackground() {
         try {
             return super.loadInBackground();
-        } catch (IllegalStateException | SQLiteDiskIOException ex) {
+        } catch (Exception e) {
+//            if (e instanceof IllegalStateException || e instanceof SQLiteDiskIOException ) {
+//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+//            handler.handle(ex, "loading data in cursor loader");
+//        } catch (SQLiteDatabaseCorruptException ex) {
+//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+//            handler.handle(ex, "Your database file is corrupt!");
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "loading data in cursor loader");
-        } catch (SQLiteDatabaseCorruptException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "Your database file is corrupt!");
+            handler.handle(e, "loading data");
         }
         return null;
     }
