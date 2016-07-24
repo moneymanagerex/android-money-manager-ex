@@ -394,8 +394,15 @@ public class SyncManager {
         getContext().startActivity(intent);
     }
 
+    /**
+     * Resets the synchronization preferences and cache.
+     */
     public void resetPreferences() {
         getPreferences().clear();
+
+        // reset provider cache
+        createProviders();
+        storePersistent();
     }
 
     public void scheduleUpload() {
@@ -610,6 +617,18 @@ public class SyncManager {
         return localName.equalsIgnoreCase(remoteName);
     }
 
+    private void createProviders() {
+        try {
+            dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
+            onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
+            googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
+            box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "creating cloud providers");
+        }
+    }
+
     private SyncPreferences getPreferences() {
         if (mPreferences == null) {
             mPreferences = new SyncPreferences(getContext());
@@ -622,35 +641,8 @@ public class SyncManager {
         NetworkUtilities network = new NetworkUtilities(getContext());
         if (!network.isOnline()) return;
 
-        try {
-            // Initialize providers
-
-            dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
-            onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
-            googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
-            box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
-
-            // read from persistence
-
-            String persistent = getPreferences().loadPreference(R.string.pref_dropbox_persistent, null);
-            if (persistent != null) dropbox.get().loadAsString(persistent);
-
-            persistent = getPreferences().loadPreference(R.string.pref_box_persistent, null);
-            if (persistent != null) box.get().loadAsString(persistent);
-
-            persistent = getPreferences().loadPreference(R.string.pref_gdrive_persistent, null);
-            if (persistent != null) googledrive.get().loadAsString(persistent);
-
-            persistent = getPreferences().loadPreference(R.string.pref_onedrive_persistent, null);
-            if (persistent != null) onedrive.get().loadAsString(persistent);
-        } catch (Exception e) {
-            if (e instanceof ParseException) {
-                if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
-            } else {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(e, "initializing cloud providers");
-            }
-        }
+        createProviders();
+        restoreProviderCache();
 
         // Use current provider.
         String providerCode = getPreferences().loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
@@ -743,5 +735,28 @@ public class SyncManager {
                 .createMessenger(progressDialog, getRemotePath());
 
         return messenger;
+    }
+
+    private void restoreProviderCache() {
+        try {
+            String persistent = getPreferences().loadPreference(R.string.pref_dropbox_persistent, null);
+            if (persistent != null) dropbox.get().loadAsString(persistent);
+
+            persistent = getPreferences().loadPreference(R.string.pref_box_persistent, null);
+            if (persistent != null) box.get().loadAsString(persistent);
+
+            persistent = getPreferences().loadPreference(R.string.pref_gdrive_persistent, null);
+            if (persistent != null) googledrive.get().loadAsString(persistent);
+
+            persistent = getPreferences().loadPreference(R.string.pref_onedrive_persistent, null);
+            if (persistent != null) onedrive.get().loadAsString(persistent);
+        } catch (Exception e) {
+            if (e instanceof ParseException) {
+                if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
+            } else {
+                ExceptionHandler handler = new ExceptionHandler(getContext());
+                handler.handle(e, "restoring providers from cache");
+            }
+        }
     }
 }

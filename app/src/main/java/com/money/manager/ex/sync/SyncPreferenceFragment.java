@@ -243,9 +243,9 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 SyncManager sync = getSyncManager();
+                sync.logout();
                 sync.resetPreferences();
                 sync.stopSyncService();
-                sync.logout();
 
                 Core.alertDialog(getActivity(), R.string.preferences_reset);
 
