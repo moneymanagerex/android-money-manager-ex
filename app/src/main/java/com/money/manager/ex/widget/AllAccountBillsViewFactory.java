@@ -33,7 +33,9 @@ import info.javaperformance.money.MoneyFactory;
 /**
  *
  */
-public class AllAccountBillsViewFactory implements RemoteViewsService.RemoteViewsFactory {
+public class AllAccountBillsViewFactory
+    implements RemoteViewsService.RemoteViewsFactory {
+
     private Context mContext;
     private CurrencyService mCurrencyService;
     private Cursor mCursor;
@@ -112,8 +114,13 @@ public class AllAccountBillsViewFactory implements RemoteViewsService.RemoteView
         QueryAccountBills accountBills = new QueryAccountBills(mContext);
         String selection = accountBills.getFilterAccountSelection();
         // create a cursor
-        mCursor = mContext.getContentResolver().query(accountBills.getUri(),
-                null, selection, null, QueryAccountBills.ACCOUNTNAME);
+        try {
+            mCursor = mContext.getContentResolver().query(accountBills.getUri(),
+                    null, selection, null, QueryAccountBills.ACCOUNTNAME);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.handle(e, "reloading accounts cursor");
+        }
     }
 
     @Override
@@ -122,5 +129,9 @@ public class AllAccountBillsViewFactory implements RemoteViewsService.RemoteView
             mCursor.close();
         }
         return;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 }
