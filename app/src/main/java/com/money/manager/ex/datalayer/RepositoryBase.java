@@ -93,6 +93,15 @@ public abstract class RepositoryBase<T extends EntityBase>
         return insert(entity.contentValues);
     }
 
+    /**
+     * Fetch only the first result
+     * @param resultType
+     * @param projection
+     * @param selection
+     * @param args
+     * @param sort Sort order to apply to the query results from which the first will be returned.
+     * @return
+     */
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
         T entity = null;
 

@@ -19,7 +19,7 @@ package org.moneymanagerex.android.espresso;
 import android.support.test.rule.ActivityTestRule;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.search.SearchActivity;
 
 import org.junit.After;
@@ -82,7 +82,7 @@ public class SearchTests {
             .check(matches(isDisplayed()))
             .perform(click());
 
-        onData(allOf(is(instanceOf(TableCategory.class))))
+        onData(allOf(is(instanceOf(Category.class))))
             .atPosition(5)
             .onChildView(withId(R.id.selector))
             .perform(click());

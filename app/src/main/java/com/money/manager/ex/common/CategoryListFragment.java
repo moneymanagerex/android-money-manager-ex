@@ -51,7 +51,6 @@ import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.SQLTypeTransaction;
-import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
@@ -87,8 +86,8 @@ public class CategoryListFragment
     private int mIdGroupChecked = ExpandableListView.INVALID_POSITION;
     private int mIdChildChecked = ExpandableListView.INVALID_POSITION;
 
-    private List<TableCategory> mCategories;
-    private HashMap<TableCategory, List<QueryCategorySubCategory>> mSubCategories;
+    private List<Category> mCategories;
+    private HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
 
     private ArrayList<Integer> mPositionToExpand;
     private String mCurFilter;
@@ -165,7 +164,7 @@ public class CategoryListFragment
         int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
 
         if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-            menu.setHeaderTitle(mCategories.get(group).getCategName().toString());
+            menu.setHeaderTitle(mCategories.get(group).getName());
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
             QueryCategorySubCategory subCategory = mSubCategories.get(mCategories.get(group)).get(child);
             menu.setHeaderTitle(subCategory.getCategName().toString() + ": " + subCategory.getSubcategoryName().toString());
@@ -192,8 +191,8 @@ public class CategoryListFragment
         categoryIds.subCategName = "";
 
         if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-            categoryIds.categId = mCategories.get(group).getCategId();
-            categoryIds.categName = mCategories.get(group).getCategName().toString();
+            categoryIds.categId = mCategories.get(group).getId();
+            categoryIds.categName = mCategories.get(group).getName();
         } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
             categoryIds.categId = mSubCategories.get(mCategories.get(group)).get(child).getCategId();
             categoryIds.subCategId = mSubCategories.get(mCategories.get(group)).get(child).getSubCategId();
@@ -330,7 +329,7 @@ public class CategoryListFragment
                 if (categId == ExpandableListView.INVALID_POSITION) return;
 
                 for (int groupIndex = 0; groupIndex < mCategories.size(); groupIndex++) {
-                    if (mCategories.get(groupIndex).getCategId() == categId) {
+                    if (mCategories.get(groupIndex).getId() == categId) {
                         // Get subcategory
                         if (subCategId != ExpandableListView.INVALID_POSITION) {
                             for (int child = 0; child < mSubCategories.get(mCategories.get(groupIndex)).size(); child++) {
@@ -349,7 +348,7 @@ public class CategoryListFragment
                             result = new Intent();
                             result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGID, categId);
                             result.putExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME,
-                                    mCategories.get(groupIndex).getCategName().toString());
+                                    mCategories.get(groupIndex).getName());
                             result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, subCategId);
                             result.putExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME, "");
                         }
@@ -405,9 +404,9 @@ public class CategoryListFragment
                 key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
 
                 // create instance category
-                TableCategory category = new TableCategory();
-                category.setCategId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
-                category.setCategName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))));
+                Category category = new Category();
+                category.setId(data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID)));
+                category.setName(core.highlight(filter, data.getString(data.getColumnIndex(QueryCategorySubCategory.CATEGNAME))).toString());
 
                 // add list
                 mCategories.add(category);
@@ -498,7 +497,8 @@ public class CategoryListFragment
                     public void onClick(DialogInterface dialog, int which) {
                         int rowsDelete;
                         if (categoryIds.subCategId <= 0) {
-                            rowsDelete = getActivity().getContentResolver().delete(new TableCategory().getUri(),
+                            CategoryRepository repo = new CategoryRepository(getActivity());
+                            rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
                                     Category.CATEGID + "=" + categoryIds.categId,
                                     null);
                         } else {
@@ -609,13 +609,13 @@ public class CategoryListFragment
 
         // Fill categories list.
         CategoryService categoryService = new CategoryService(getActivity());
-        final List<TableCategory> categories = categoryService.getCategoryList();
+        final List<Category> categories = categoryService.getList();
 
         ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<Integer> categoryIds = new ArrayList<>();
-        for (TableCategory category : categories) {
-            categoryIds.add(category.getCategId());
-            categoryNames.add(category.getCategName().toString());
+        for (Category category : categories) {
+            categoryIds.add(category.getId());
+            categoryNames.add(category.getName().toString());
         }
         ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryNames);
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -645,7 +645,7 @@ public class CategoryListFragment
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
                             return;
                         // get category id
-                        int categId = categories.get(spnCategory.getSelectedItemPosition()).getCategId();
+                        int categId = categories.get(spnCategory.getSelectedItemPosition()).getId();
                         ContentValues values = new ContentValues();
                         values.put(Subcategory.CATEGID, categId);
                         values.put(Subcategory.SUBCATEGNAME, name);
@@ -715,9 +715,9 @@ public class CategoryListFragment
                     if (getExpandableListAdapter() != null && getExpandableListAdapter() instanceof CategoryExpandableListAdapter) {
                         CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
 
-                        TableCategory category = mCategories.get(groupPosition);
+                        Category category = mCategories.get(groupPosition);
 
-                        adapter.setIdGroupChecked(category.getCategId());
+                        adapter.setIdGroupChecked(category.getId());
                         adapter.notifyDataSetChanged();
 
                         int subCategoriesCount = mSubCategories.get(category).size();

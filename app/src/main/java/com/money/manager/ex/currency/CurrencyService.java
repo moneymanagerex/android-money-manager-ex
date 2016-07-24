@@ -175,8 +175,7 @@ public class CurrencyService
             .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")", null)
             .orderBy(Currency.CURRENCYNAME);
 
-        List<Currency> unusedCurrencies = getRepository().query(Currency.class, query);
-        return unusedCurrencies;
+        return getRepository().query(Currency.class, query);
     }
 
     public Money doCurrencyExchange(Integer toCurrencyId, Money amount, Integer fromCurrencyId) {

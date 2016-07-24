@@ -19,12 +19,10 @@ package com.money.manager.ex.servicelayer;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.database.TableCategory;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
@@ -33,7 +31,6 @@ import com.money.manager.ex.domainmodel.Subcategory;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,29 +44,36 @@ public class CategoryService
 
     }
 
+    private CategoryRepository mRepository;
+
+//    public int loadIdByName(String name) {
+//        int result = Constants.NOT_SET;
+//
+//        if(TextUtils.isEmpty(name)) { return result; }
+//
+//        String selection = Category.CATEGNAME + "=?";
+//
+//        CategoryRepository repo = new CategoryRepository(getContext());
+//
+//        Cursor cursor = getContext().getContentResolver().query(
+//                repo.getUri(),
+//                new String[] { Category.CATEGID },
+//                selection,
+//                new String[] { name },
+//                null);
+//        if (cursor == null) return Constants.NOT_SET;
+//
+//        if(cursor.moveToFirst()) {
+//            result = cursor.getInt(cursor.getColumnIndex(Category.CATEGID));
+//        }
+//
+//        cursor.close();
+//
+//        return result;
+//    }
+
     public int loadIdByName(String name) {
-        int result = -1;
-
-        if(TextUtils.isEmpty(name)) { return result; }
-
-        String selection = Category.CATEGNAME + "=?";
-
-        CategoryRepository repo = new CategoryRepository(getContext());
-
-        Cursor cursor = getContext().getContentResolver().query(
-                repo.getUri(),
-                new String[] { Category.CATEGID },
-                selection,
-                new String[] { name },
-                null);
-
-        if(cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Category.CATEGID));
-        }
-
-        cursor.close();
-
-        return result;
+        return getRepository().loadIdByName(name);
     }
 
     public int createNew(String name) {
@@ -118,22 +122,9 @@ public class CategoryService
     /**
      * Return a list of all categories
      */
-    public List<TableCategory> getCategoryList() {
-        List<TableCategory> listCategories = new ArrayList<>();
-
-        Cursor cursor = getContext().getContentResolver().query(new TableCategory().getUri(),
-                null, null, null, Category.CATEGNAME);
-        if (cursor == null) return listCategories;
-
-        // populate list from data cursor
-        while (cursor.moveToNext()) {
-            TableCategory category = new TableCategory();
-            category.setValueFromCursor(cursor);
-            listCategories.add(category);
-        }
-        cursor.close();
-
-        return listCategories;
+    public List<Category> getList() {
+        List<Category> list = getRepository().query(Category.class, null);
+        return list;
     }
 
     public int update(int id, String name) {
@@ -168,5 +159,12 @@ public class CategoryService
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
         int links = repo.count(Subcategory.SUBCATEGID + "=?", new String[] { Integer.toString(subcategoryId)});
         return links > 0;
+    }
+
+    private CategoryRepository getRepository() {
+        if (mRepository == null) {
+            mRepository = new CategoryRepository(getContext());
+        }
+        return mRepository;
     }
 }

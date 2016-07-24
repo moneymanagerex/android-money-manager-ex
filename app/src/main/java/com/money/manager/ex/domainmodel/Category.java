@@ -38,7 +38,19 @@ public class Category
         super(contentValues);
     }
 
+    public int getId() {
+        return getInt(CATEGID);
+    }
+
+    public void setId(Integer value) {
+        setInt(CATEGID, value);
+    }
+
     public String getName() {
         return getString(CATEGNAME);
+    }
+
+    public void setName(String value) {
+        setString(CATEGNAME, value);
     }
 }

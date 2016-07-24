@@ -23,11 +23,13 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 
+import java.util.List;
+
 /**
  * A repository for Categories.
  */
 public class CategoryRepository
-    extends RepositoryBase{
+    extends RepositoryBase<Category>{
 
     public static final String tableName = "category_v1";
 
@@ -52,5 +54,14 @@ public class CategoryRepository
                 null);
 
         return category;
+    }
+
+    public int loadIdByName(String name) {
+        Category temp = first(Category.class,
+                new String[] { Category.CATEGID },
+                Category.CATEGNAME + "=?",
+                new String[] { name },
+                null);
+        return temp.getId();
     }
 }

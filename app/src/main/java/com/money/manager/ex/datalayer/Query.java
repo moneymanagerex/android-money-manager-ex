@@ -47,11 +47,17 @@ public class Query {
         return this;
     }
 
-    public Query where(String selection, String[] args) {
-        // append condition
+//    public Query where(String selection, String[] args) {
+//        // append condition
+//        this.selection = selection;
+//        this.selectionArgs = args;
+//
+//        return this;
+//    }
+
+    public Query where(String selection, String... args) {
         this.selection = selection;
         this.selectionArgs = args;
-
         return this;
     }
 

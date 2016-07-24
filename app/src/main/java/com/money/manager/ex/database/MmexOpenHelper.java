@@ -338,8 +338,6 @@ public class MmexOpenHelper
                         "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7",
                         "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
                         "37;10", "38;10", "39;13", "40;13", "41;13"};
-//                final String tableCategory = new TableCategory().getSource();
-//                final String tableSubcategory = new SubcategoryRepository(getContext()).getSource();
 
                 for (String item : categories) {
                     int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));

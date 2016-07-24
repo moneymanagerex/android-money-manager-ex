@@ -31,17 +31,17 @@ import android.widget.ListView;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.database.QueryCategorySubCategory;
-import com.money.manager.ex.database.TableCategory;
+import com.money.manager.ex.domainmodel.Category;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CategoryExpandableListAdapter
-		extends BaseExpandableListAdapter {
+	extends BaseExpandableListAdapter {
 
     public CategoryExpandableListAdapter(Context context, int layout,
-                                         List<TableCategory> categories,
-                                         HashMap<TableCategory,
+                                         List<Category> categories,
+                                         HashMap<Category,
                                                  List<QueryCategorySubCategory>> subCategories,
                                          boolean showSelector) {
         mContext = context;
@@ -54,8 +54,8 @@ public class CategoryExpandableListAdapter
 	private Context mContext;
 	private int mLayout;
 	
-	private List<TableCategory> mCategories;
-	private HashMap<TableCategory, List<QueryCategorySubCategory>> mSubCategories;
+	private List<Category> mCategories;
+	private HashMap<Category, List<QueryCategorySubCategory>> mSubCategories;
 	
 	private int mIdGroupChecked = ListView.INVALID_POSITION;
 	private int mIdChildChecked = ListView.INVALID_POSITION;
@@ -68,7 +68,7 @@ public class CategoryExpandableListAdapter
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		if (groupPosition < mCategories.size()) {
-			TableCategory category = mCategories.get(groupPosition);
+			Category category = mCategories.get(groupPosition);
 			List<QueryCategorySubCategory> categorySubCategories = mSubCategories.get(category);
 			if (childPosition < categorySubCategories.size()) {
                 return categorySubCategories.get(childPosition);
@@ -168,16 +168,16 @@ public class CategoryExpandableListAdapter
 			holder = (CategoryListItemViewHolderGroup)convertView.getTag();
 		}
 		
-        TableCategory category = mCategories.get(groupPosition);
+        Category category = mCategories.get(groupPosition);
 
-        holder.text1.setText(category.getCategName());
+        holder.text1.setText(category.getName());
 
         // Selector
 
         if (mShowSelector) {
             holder.selector.setVisibility(View.VISIBLE);
             // set the tag to be the group position
-            holder.selector.setTag(category.getCategId());
+            holder.selector.setTag(category.getId());
 
             holder.selector.setOnClickListener(new View.OnClickListener() {
                 @Override
