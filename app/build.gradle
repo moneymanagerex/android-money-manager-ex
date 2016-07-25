@@ -136,7 +136,7 @@ dependencies {
             project(':androidSVG_12'),
 //        'com.caverock:androidsvg:1.2.2-beta-1',
             project(path: ':money'),
-            'com.cloudrail:cloudrail-si-android:2.6.0'
+            'com.cloudrail:cloudrail-si-android:2.6.1'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             // When updating the support lib, update the overrides in the main build script.
             , 'com.android.support:support-v4:24.0.0'
