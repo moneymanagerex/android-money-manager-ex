@@ -321,7 +321,13 @@ public class MmexOpenHelper
 
     private boolean initDatabase(SQLiteDatabase database) {
 
-        initBaseCurrency(database);
+        try {
+            initBaseCurrency(database);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+            handler.handle(e, "init database, base currency");
+        }
+
         initDateFormat(database);
         initCategories(database);
 
@@ -409,49 +415,48 @@ public class MmexOpenHelper
         Cursor currencyCursor;
 
         // currencies
-        try {
-            CurrencyService currencyService = new CurrencyService(getContext());
-            Currency systemCurrency = currencyService.getSystemDefaultCurrency();
-            if (systemCurrency == null) return;
+        CurrencyService currencyService = new CurrencyService(getContext());
+        Currency systemCurrency = currencyService.getSystemDefaultCurrency();
+        if (systemCurrency == null) return;
 
-            InfoService infoService = new InfoService(getContext());
+        InfoService infoService = new InfoService(getContext());
 
-            currencyCursor = db.rawQuery("SELECT * FROM " + infoService.repository.getSource() +
-                            " WHERE " + Info.INFONAME + "=?",
-                    new String[]{ InfoKeys.BASECURRENCYID});
-            if (currencyCursor == null) return;
+        currencyCursor = db.rawQuery("SELECT * FROM " + infoService.repository.getSource() +
+                        " WHERE " + Info.INFONAME + "=?",
+                new String[]{ InfoKeys.BASECURRENCYID});
+        if (currencyCursor == null) return;
 
-            boolean recordExists = currencyCursor.moveToFirst();
-            int recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(Info.INFOID));
-            currencyCursor.close();
+        // Get id of the base currency record.
+        int recordId = Constants.NOT_SET;
+        boolean recordExists = currencyCursor.moveToFirst();
+        if (recordExists) {
+            recordId = currencyCursor.getInt(currencyCursor.getColumnIndex(Info.INFOID));
+        }
+        currencyCursor.close();
 
-            // Use the system default currency.
-            int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
+        // Use the system default currency.
+        int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
 
-            if (!recordExists && (currencyId != Constants.NOT_SET)) {
-                long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
-                if (newId <= 0) {
-                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                    handler.showMessage("error inserting base currency on init");
-                }
-            } else {
-                // Update the (empty) record to the default currency.
-                long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
-                if (updatedRecords <= 0) {
-                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                    handler.showMessage("error updating base currency on init");
-                }
+        if (!recordExists && (currencyId != Constants.NOT_SET)) {
+            long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
+            if (newId <= 0) {
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                handler.showMessage("error inserting base currency on init");
             }
+        } else {
+            // Update the (by default empty) record to the default currency.
+            long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
+            if (updatedRecords <= 0) {
+                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                handler.showMessage("error updating base currency on init");
+            }
+        }
 
-            // Can't use provider here as the database is not ready.
+        // Can't use provider here as the database is not ready.
 //            int currencyId = currencyService.loadCurrencyIdFromSymbol(systemCurrency.getCurrencyCode());
 //            String baseCurrencyId = infoService.getInfoValue(InfoService.BASECURRENCYID);
 //            if (!StringUtils.isEmpty(baseCurrencyId)) return;
 //            infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "init database, currency");
-        }
     }
 
     /**

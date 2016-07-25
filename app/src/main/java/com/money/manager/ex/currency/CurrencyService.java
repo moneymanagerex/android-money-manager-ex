@@ -423,7 +423,7 @@ public class CurrencyService
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                 handler.handle(ex, message);
             }
-            // else, just ignore and use the pre-set currency below.
+            // else, just ignore Currency parsing exception and use the pre-set currency below.
             // http://docs.oracle.com/javase/7/docs/api/java/util/Currency.html#getInstance(java.util.Locale)
             // IllegalArgumentException - if the country of the given locale is not a supported ISO 3166 country code.
         }
