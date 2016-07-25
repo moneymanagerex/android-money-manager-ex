@@ -153,7 +153,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         JsonObject resultsJson = results.getAsJsonObject();
         if (resultsJson == null) return null;
-        
+
         JsonElement quoteElement = resultsJson.get("quote");
         if (quoteElement instanceof JsonArray) {
             JsonArray quotes = quoteElement.getAsJsonArray();

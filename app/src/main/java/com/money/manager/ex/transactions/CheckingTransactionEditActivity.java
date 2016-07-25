@@ -399,6 +399,11 @@ public class CheckingTransactionEditActivity
     private boolean handleIntent(Bundle savedInstanceState) {
         Intent intent = getIntent();
         mIntentAction = intent.getAction();
+        
+        if (mIntentAction == null) {
+            ExceptionHandler.warn("no intent action passed to CheckingTransactionEditActivity handle intent");
+            return false;
+        }
 
         if (savedInstanceState == null) {
             int accountId = intent.getIntExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, Constants.NOT_SET);
