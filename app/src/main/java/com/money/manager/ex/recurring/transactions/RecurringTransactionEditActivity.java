@@ -69,8 +69,6 @@ public class RecurringTransactionEditActivity
     public static final String KEY_TO_ACCOUNT_NAME = "RepeatingTransaction:ToAccountName";
     public static final String KEY_TRANS_CODE = "RepeatingTransaction:TransCode";
     public static final String KEY_TRANS_STATUS = "RepeatingTransaction:TransStatus";
-    public static final String KEY_TRANS_AMOUNT = "RepeatingTransaction:TransAmount";
-    public static final String KEY_TRANS_AMOUNTTO = "RepeatingTransaction:TransTotAmount";
     public static final String KEY_PAYEE_NAME = "RepeatingTransaction:PayeeName";
     public static final String KEY_CATEGORY_NAME = "RepeatingTransaction:CategoryName";
     public static final String KEY_SUBCATEGORY_NAME = "RepeatingTransaction:SubCategoryName";
@@ -81,11 +79,7 @@ public class RecurringTransactionEditActivity
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
     public static final String TAG_DATEPICKER = "DatePicker";
 
-    // action type intent
     private String mIntentAction;
-
-    // Model
-    private RecurringTransaction mRecurringTransaction;
 
     // Form controls
     private RecurringTransactionViewHolder mViewHolder;
@@ -96,9 +90,8 @@ public class RecurringTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recurring_transaction);
 
-        initializeModel();
-
-        mCommonFunctions = new EditTransactionCommonFunctions(this, mRecurringTransaction);
+        RecurringTransaction tx = initializeModel();
+        mCommonFunctions = new EditTransactionCommonFunctions(this, tx);
 
         showStandardToolbarActions();
 
@@ -116,7 +109,7 @@ public class RecurringTransactionEditActivity
                     // select data transaction
                     loadRecurringTransaction(id);
                 } else {
-                    mRecurringTransaction.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
+                    mCommonFunctions.transactionEntity.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
                 }
             }
             mIntentAction = getIntent().getAction();
@@ -164,29 +157,12 @@ public class RecurringTransactionEditActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_MODEL, Parcels.wrap(mRecurringTransaction));
+        outState.putParcelable(KEY_MODEL, Parcels.wrap(mCommonFunctions.transactionEntity));
 
         // save the state interface
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mCommonFunctions.transactionEntity.getStatus());
-
-        // Amount To
-        String value = "";
-        Object tag = mCommonFunctions.viewHolder.txtAmountTo.getTag();
-        if (tag != null) {
-            value = tag.toString();
-        }
-        outState.putString(KEY_TRANS_AMOUNTTO, value);
-
-        // amount
-        value = "";
-        tag = mCommonFunctions.viewHolder.txtAmount.getTag();
-        if (tag != null) {
-            value = tag.toString();
-        }
-        outState.putString(KEY_TRANS_AMOUNT, value);
-
         outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
         outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
         outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
@@ -244,7 +220,7 @@ public class RecurringTransactionEditActivity
      * refresh the UI control Payments Left
      */
     public void showPaymentsLeft() {
-        Recurrence recurrence = mRecurringTransaction.getRecurrence();
+        Recurrence recurrence = getRecurringTransaction().getRecurrence();
 
         // Recurrence label
 
@@ -261,10 +237,10 @@ public class RecurringTransactionEditActivity
         mViewHolder.paymentsLeftEditText.setVisibility(recurrence.getValue() > 0 ? View.VISIBLE : View.GONE);
         mViewHolder.paymentsLeftEditText.setHint(recurrence.getValue() >= 11 ? R.string.activates : R.string.payments_left);
 
-        Integer occurrences = mRecurringTransaction.getPaymentsLeft();
+        Integer occurrences = getRecurringTransaction().getPaymentsLeft();
         if (occurrences == null) {
             occurrences = Constants.NOT_SET;
-            mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
+            getRecurringTransaction().setPaymentsLeft(Constants.NOT_SET);
         }
         String value = occurrences == Constants.NOT_SET
                 ? "∞"
@@ -277,6 +253,10 @@ public class RecurringTransactionEditActivity
     }
 
     // Private
+
+    private RecurringTransaction getRecurringTransaction() {
+        return (RecurringTransaction) mCommonFunctions.transactionEntity;
+    }
 
     private void initializeControls() {
         // Payment Date
@@ -318,7 +298,8 @@ public class RecurringTransactionEditActivity
 
         Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
 
-        Integer recurrence = mRecurringTransaction.getRecurrenceInt();
+        RecurringTransaction tx = (RecurringTransaction) mCommonFunctions.transactionEntity;
+        Integer recurrence = tx.getRecurrenceInt();
         if (recurrence >= 200) {
             recurrence = recurrence - 200;
         } // set auto execute without user acknowledgement
@@ -331,13 +312,13 @@ public class RecurringTransactionEditActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCommonFunctions.setDirty(true);
 
-                mRecurringTransaction.setRecurrence(position);
+                getRecurringTransaction().setRecurrence(position);
                 showPaymentsLeft();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mRecurringTransaction.setRecurrence(Constants.NOT_SET);
+                getRecurringTransaction().setRecurrence(Constants.NOT_SET);
                 showPaymentsLeft();
             }
         });
@@ -346,7 +327,7 @@ public class RecurringTransactionEditActivity
     private void initializePaymentDateSelector() {
         if (mViewHolder.paymentDateTextView == null) return;
 
-        DateTime paymentDate = mRecurringTransaction.getPaymentDate();
+        DateTime paymentDate = getRecurringTransaction().getPaymentDate();
         mViewHolder.paymentDateTextView.setText(paymentDate.toString(Constants.LONG_DATE_PATTERN));
 //        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
@@ -391,11 +372,13 @@ public class RecurringTransactionEditActivity
         });
     }
 
-    private void initializeModel() {
-        mRecurringTransaction = RecurringTransaction.createInstance();
+    private RecurringTransaction initializeModel() {
+        RecurringTransaction tx = RecurringTransaction.createInstance();
 
-        mRecurringTransaction.setDueDate(MyDateTimeUtils.today());
-        mRecurringTransaction.setPaymentDate(MyDateTimeUtils.today());
+        tx.setDueDate(MyDateTimeUtils.today());
+        tx.setPaymentDate(MyDateTimeUtils.today());
+
+        return tx;
     }
 
     private void initializeViewHolder() {
@@ -432,13 +415,11 @@ public class RecurringTransactionEditActivity
      */
     private boolean loadRecurringTransaction(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        mRecurringTransaction = repo.load(recurringTransactionId);
-        if (mRecurringTransaction == null) return false;
-
-        mCommonFunctions.transactionEntity = mRecurringTransaction;
+        mCommonFunctions.transactionEntity = repo.load(recurringTransactionId);
+        if (mCommonFunctions.transactionEntity == null) return false;
 
         // Read data.
-        String transCode = mRecurringTransaction.getTransactionCode();
+        String transCode = getRecurringTransaction().getTransactionCode();
         mCommonFunctions.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
 
         // load split transactions only if no category selected.
@@ -465,7 +446,7 @@ public class RecurringTransactionEditActivity
         if (!mCommonFunctions.validateData()) return false;
 
         // Due Date is required
-        if (StringUtils.isEmpty(mRecurringTransaction.getDueDateString())) {
+        if (StringUtils.isEmpty(getRecurringTransaction().getDueDateString())) {
             Core.alertDialog(this, R.string.due_date_required);
             return false;
         }
@@ -477,7 +458,7 @@ public class RecurringTransactionEditActivity
         }
 
         // Payments Left must have a value
-        if (mRecurringTransaction.getPaymentsLeft() == null) {
+        if (getRecurringTransaction().getPaymentsLeft() == null) {
             Core.alertDialog(this, R.string.payments_left_required);
             return false;
         }
@@ -497,9 +478,9 @@ public class RecurringTransactionEditActivity
         value = mViewHolder.paymentsLeftEditText.getText().toString();
         if (NumericHelper.isNumeric(value)) {
             int paymentsLeft = NumericHelper.toInt(value);
-            mRecurringTransaction.setPaymentsLeft(paymentsLeft);
+            getRecurringTransaction().setPaymentsLeft(paymentsLeft);
         } else {
-            mRecurringTransaction.setPaymentsLeft(Constants.NOT_SET);
+            getRecurringTransaction().setPaymentsLeft(Constants.NOT_SET);
         }
 
     }
@@ -541,7 +522,7 @@ public class RecurringTransactionEditActivity
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         // Restore the transaction entity.
-        mRecurringTransaction = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MODEL));
+        mCommonFunctions.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MODEL));
 
         mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
         mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
@@ -568,7 +549,7 @@ public class RecurringTransactionEditActivity
             for (ISplitTransaction item : mCommonFunctions.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
-                splitEntity.setTransId(mRecurringTransaction.getId());
+                splitEntity.setTransId(mCommonFunctions.transactionEntity.getId());
 
                 if (splitEntity.getId() == null || splitEntity.getId() == Constants.NOT_SET) {
                     // insert data
@@ -615,10 +596,10 @@ public class RecurringTransactionEditActivity
     }
 
     private DateTime getPaymentDate() {
-        DateTime dateTime = mRecurringTransaction.getPaymentDate();
+        DateTime dateTime = getRecurringTransaction().getPaymentDate();
         if (dateTime == null) {
             dateTime = DateTime.now();
-            mRecurringTransaction.setPaymentDate(dateTime);
+            getRecurringTransaction().setPaymentDate(dateTime);
         }
 
         return dateTime;
@@ -627,8 +608,7 @@ public class RecurringTransactionEditActivity
     private void setPaymentDate(DateTime dateTime) {
         mCommonFunctions.setDirty(true);
 
-//        mViewHolder.paymentDateTextView.setTag(dateTime.toString(Constants.ISO_DATE_FORMAT));
-        mRecurringTransaction.setPaymentDate(dateTime);
+        getRecurringTransaction().setPaymentDate(dateTime);
         mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
     }
 }
