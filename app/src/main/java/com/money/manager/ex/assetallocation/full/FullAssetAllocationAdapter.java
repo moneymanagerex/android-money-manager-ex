@@ -86,11 +86,16 @@ public class FullAssetAllocationAdapter
         // % diff
         Money diff = item.assetClass.getDiffAsPercentOfSet();
         holder.allocationDiffTextView.setText(diff.toString());
+        int defaultTextColor = holder.allocationDiffTextView.getTextColors().getDefaultColor();
         if (diff.toDouble() >= this.differenceThreshold.toDouble()) {
             holder.allocationDiffTextView.setTextColor(Color.GREEN);
+        } else {
+            holder.allocationDiffTextView.setTextColor(defaultTextColor);
         }
         if (diff.toDouble() <= this.differenceThreshold.multiply(-1).toDouble()) {
             holder.allocationDiffTextView.setTextColor(Color.RED);
+        } else {
+            holder.allocationDiffTextView.setTextColor(defaultTextColor);
         }
 
         holder.setValueTextView.setText(mFormatter.getValueFormattedInBaseCurrency(item.assetClass.getValue()));
