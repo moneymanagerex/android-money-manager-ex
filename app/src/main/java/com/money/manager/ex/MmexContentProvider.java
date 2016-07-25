@@ -142,8 +142,12 @@ public class MmexContentProvider
         try {
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
-            Context context = getContext();
-            ExceptionHandler handler = new ExceptionHandler(context, this);
+            if (e instanceof IllegalStateException) {
+                // todo: handle "connection already closed" here
+                Log.w("db error", "illegal state, connection probably closed");
+            }
+
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "content provider.query " + uri);
         }
         return null;
