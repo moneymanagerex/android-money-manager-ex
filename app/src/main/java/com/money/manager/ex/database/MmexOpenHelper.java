@@ -421,9 +421,10 @@ public class MmexOpenHelper
 
         InfoService infoService = new InfoService(getContext());
 
-        currencyCursor = db.rawQuery("SELECT * FROM " + infoService.repository.getSource() +
-                        " WHERE " + Info.INFONAME + "=?",
-                new String[]{ InfoKeys.BASECURRENCYID});
+        currencyCursor = db.rawQuery(
+            "SELECT * FROM " + infoService.repository.getSource() +
+            " WHERE " + Info.INFONAME + "=?",
+            new String[]{ InfoKeys.BASECURRENCYID});
         if (currencyCursor == null) return;
 
         // Get id of the base currency record.
@@ -436,8 +437,13 @@ public class MmexOpenHelper
 
         // Use the system default currency.
         int currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
+        if (currencyId == Constants.NOT_SET) {
+            // Use Euro by default.
+            currencyId = 2;
+        }
 
-        if (!recordExists && (currencyId != Constants.NOT_SET)) {
+        // Insert/update base currency record into info table.
+        if (!recordExists) {
             long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
             if (newId <= 0) {
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
