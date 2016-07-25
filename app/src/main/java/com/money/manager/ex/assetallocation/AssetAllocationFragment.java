@@ -577,5 +577,4 @@ public class AssetAllocationFragment
         AssetAllocationService service = new AssetAllocationService(getActivity());
         service.assignStockToAssetClass(stockSymbol, getAssetClassId());
     }
-
 }
