@@ -623,6 +623,7 @@
     <string name="asset_classes_empty">No asset classes have been defined. To create one, tap the green plus button.</string>
     <string name="title_activity_asset_class_edit">Edit Asset Class</string>
     <string name="asset_class_name">Asset Class name</string>
+    <string name="asset_class">Asset Class</string>
     <string name="allocation">Allocation</string>
     <string name="current_allocation">Current Allocation</string>
     <string name="move_up">Move up</string>
