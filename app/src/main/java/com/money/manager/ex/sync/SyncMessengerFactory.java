@@ -120,5 +120,4 @@ public class SyncMessengerFactory {
 
         recents.add(entry);
     }
-
 }

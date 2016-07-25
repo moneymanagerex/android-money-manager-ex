@@ -308,7 +308,8 @@ public class SyncManager {
 
     /**
      * Indicates whether synchronization can be performed, meaning all of the criteria must be
-     * true: sync enabled, respect wi-fi sync setting, provider is selected, network is online.
+     * true: sync enabled, respect wi-fi sync setting, provider is selected, network is online,
+     * remote file is set.
      * @return A boolean indicating that sync can be performed.
      */
     public boolean isActive() {
@@ -322,6 +323,11 @@ public class SyncManager {
         // wifi preferences
         if (getPreferences().shouldSyncOnlyOnWifi()) {
             if (!networkUtilities.isOnWiFi()) return false;
+        }
+
+        // Remote file must be set.
+        if (StringUtils.isEmpty(getRemotePath())) {
+            return false;
         }
 
         // check if a provider is selected? Default is Dropbox, so no need.

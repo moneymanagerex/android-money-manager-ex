@@ -89,7 +89,7 @@ public class RecentDatabaseProviderTests {
     @Test
     public void testInsert() {
         RecentDatabaseEntry entry = getEntry(false);
-        String expected = "{\"filename.mmb\":{\"filePath\":\"filename.mmb\",\"dropboxFileName\":\"\",\"linkedToDropbox\":false}}";
+        String expected = "{\"filename.mmb\":{\"filePath\":\"filename.mmb\",\"remoteFileName\":\"\",\"linkedToCloud\":false}}";
 
         _testObject.add(entry);
 
@@ -116,8 +116,8 @@ public class RecentDatabaseProviderTests {
 
         String unique = useRandomPath ? Double.toString(Math.random()) : "";
 
-        entry.dropboxFileName = "";
-        entry.linkedToDropbox = false;
+        entry.remoteFileName = "";
+        entry.linkedToCloud = false;
         entry.filePath = "filename" + unique + ".mmb";
 
         return entry;

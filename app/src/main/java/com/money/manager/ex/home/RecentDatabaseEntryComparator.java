@@ -47,9 +47,9 @@ public class RecentDatabaseEntryComparator
      */
     @Override
     public int compare(RecentDatabaseEntry lhs, RecentDatabaseEntry rhs) {
-        if (lhs.linkedToDropbox != rhs.linkedToDropbox) return 1;
+        if (lhs.linkedToCloud != rhs.linkedToCloud) return 1;
         if (!lhs.filePath.equals(rhs.filePath)) return 1;
-        if (!lhs.dropboxFileName.equals(rhs.dropboxFileName)) return 1;
+        if (!lhs.remoteFileName.equals(rhs.remoteFileName)) return 1;
 
         return 0;
     }

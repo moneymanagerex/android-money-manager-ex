@@ -20,16 +20,14 @@ import java.io.File;
 
 /**
  * An entry in the recent databases list.
- *
- * Created by Alen Siljak on 14/09/2015.
  */
 public class RecentDatabaseEntry {
 
-    public static RecentDatabaseEntry getInstance(String filePath, boolean linkedToDropbox, String dropboxFileName) {
+    public static RecentDatabaseEntry getInstance(String filePath, boolean linkedToCloud, String remoteFileName) {
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
         entry.filePath = filePath;
-        entry.linkedToDropbox = linkedToDropbox;
-        entry.dropboxFileName = dropboxFileName;
+        entry.linkedToCloud = linkedToCloud;
+        entry.remoteFileName = remoteFileName;
         return entry;
     }
 
@@ -41,8 +39,8 @@ public class RecentDatabaseEntry {
     }
 
     public String filePath;
-    public String dropboxFileName;
-    public boolean linkedToDropbox;
+    public String remoteFileName;
+    public boolean linkedToCloud;
 
     public String getFileName() {
         File file = new File(this.filePath);

@@ -53,7 +53,6 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionListFragment;
-import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
@@ -1202,7 +1201,7 @@ public class MainActivity
 
                 item.setTag(entry.filePath);
 
-                if (entry.linkedToDropbox) {
+                if (entry.linkedToCloud) {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
                 } else {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_floppy_disk));
@@ -1216,7 +1215,6 @@ public class MainActivity
                 .withId(R.id.menu_open_database)
                 .withText(getString(R.string.other));
         childDatabases.add(item);
-
 
         return childDatabases;
     }
@@ -1261,30 +1259,14 @@ public class MainActivity
         String currentDb = MoneyManagerApplication.getDatabasePath(this);
         if (recentDb.filePath.equals(currentDb)) return;
 
-        // set the Dropbox file, if any.
-        String dropboxPath = recentDb.linkedToDropbox
-                ? recentDb.dropboxFileName
+        // set the remote file path, if any.
+        String remotePath = recentDb.linkedToCloud
+                ? recentDb.remoteFileName
                 : "";
-        new SyncManager(this).setRemotePath(dropboxPath);
+        new SyncManager(this).setRemotePath(remotePath);
 
         requestDatabaseChange(recentDb.filePath);
     }
-
-//    /**
-//     * Ref: https://developers.google.com/analytics/devguides/collection/android/v4/events
-//     */
-//    private void pingStats() {
-//        MoneyManagerApplication app = (MoneyManagerApplication) getApplication();
-//        Tracker t = app.getDefaultTracker();
-//
-//        t.setScreenName("Screen~MainActivity");
-//        t.send(new HitBuilders.ScreenViewBuilder().build());
-//        // to send an event:
-////        t.send(new HitBuilders.EventBuilder()
-////                .setCategory("Category")
-////                .setAction("Action")
-////                .build());
-//    }
 
     /**
      * Change the database.
