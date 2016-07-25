@@ -348,7 +348,7 @@ public class SyncManager {
             handler.showMessage(R.string.remote_file_not_found);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "fetching remote metadata");
+            handler.handle(e, "fetching remote file info");
         }
         return result;
     }
