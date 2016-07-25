@@ -167,7 +167,10 @@ public class CategoryExpandableListAdapter
 		} else {
 			holder = (CategoryListItemViewHolderGroup)convertView.getTag();
 		}
-		
+
+		// prevent exceptions. todo: Find out how this happens in the first place.
+		if (mCategories.size() == 0) return convertView;
+
         Category category = mCategories.get(groupPosition);
 
         holder.text1.setText(category.getName());
