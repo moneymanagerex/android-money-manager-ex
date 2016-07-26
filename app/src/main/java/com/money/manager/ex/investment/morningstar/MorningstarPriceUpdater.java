@@ -85,8 +85,11 @@ public class MorningstarPriceUpdater
             public void onFailure(Call<String> call, Throwable t) {
                 closeProgressDialog();
 
+                // get the symbol
+                String symbol = call.request().url().queryParameter("t");
+
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(t, "fetching price");
+                handler.handle(t, "fetching price for " + symbol);
             }
         };
 
