@@ -62,6 +62,9 @@ public class CategoryRepository
                 Category.CATEGNAME + "=?",
                 new String[] { name },
                 null);
+
+        if (temp == null) return Constants.NOT_SET;
+        
         return temp.getId();
     }
 }
