@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.07.27.877">
+        <changelogtext>Restoring charts library to the last stable version.</changelogtext>
+        <changelogtext>Support for Android 7 (N)</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.07.26.876">
         <changelogtext>Updating CloudRail library to v2.6.1</changelogtext>
         <changelogtext>Plenty of small fixes and error handling.</changelogtext>
