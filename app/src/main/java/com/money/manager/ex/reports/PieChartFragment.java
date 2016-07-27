@@ -240,10 +240,11 @@ public class PieChartFragment
 
         String text;
         try {
-            ValuePieEntry valuePieEntry = mPieCharts.get(h.getDataSetIndex());
+            int index = Math.round(h.getX());
+            ValuePieEntry valuePieEntry = mPieCharts.get(index);
             text = valuePieEntry.getText().concat(": ").concat(valuePieEntry.getValueFormatted());
 
-            handler.showMessage(text, Toast.LENGTH_LONG);
+            handler.showMessage(text, Toast.LENGTH_SHORT);
         } catch (Exception ex) {
             handler.handle(ex, "clicked on pie chart");
         }
