@@ -163,7 +163,7 @@ dependencies {
             'me.relex:circleindicator:1.2.1',
             'com.shamanland:fonticon:0.1.9',
             'com.code-troopers.betterpickers:library:3.0.0',
-            'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+            'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // google play services
             // JavaMoney
 //        'javax.money:money-api-bp:1.0',
@@ -188,7 +188,7 @@ dependencies {
             // multidex support
             , 'com.android.support:multidex:1.0.0'
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
     }
     //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'

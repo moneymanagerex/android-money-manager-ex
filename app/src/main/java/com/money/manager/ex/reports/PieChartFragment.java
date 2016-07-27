@@ -18,7 +18,6 @@ package com.money.manager.ex.reports;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,12 +33,10 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 
@@ -48,13 +45,13 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class PieChartFragment
-    extends Fragment
-    implements OnChartValueSelectedListener {
+        extends Fragment
+        implements OnChartValueSelectedListener {
 
     private static final String LOGCAT = PieChartFragment.class.getSimpleName();
     private static final Integer MAX_NUM_ITEMS = 12;
     // key arguments
-    public static final String KEY_TITLE = "PieChartFragment:Title";
+//    public static final String KEY_TITLE = "PieChartFragment:Title";
     public static final String KEY_CATEGORIES_VALUES = "PieChartFragment:CategoriesValues";
     public static final String KEY_SAVED_INSTANCE = "PieChartFragment:SavedInstance";
     public static final String KEY_DISPLAY_AS_UP_ENABLED = "PieChartFragment:DisplayHomeAsUpEnabled";
@@ -84,18 +81,17 @@ public class PieChartFragment
                 return lhs.getValue() > rhs.getValue() ? -1 : lhs.getValue() == rhs.getValue() ? 0 : 1;
             }
         });
-        ArrayList<PieEntry> yVals1 = new ArrayList<>();
+        ArrayList<Entry> yVals1 = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
         int length = mPieCharts.size() < MAX_NUM_ITEMS ? mPieCharts.size() : MAX_NUM_ITEMS;
 
         for (int i = 0; i < length; i++) {
-            PieEntry e = new PieEntry((float) mPieCharts.get(i).getValue(), i);
+            Entry e = new Entry((float) mPieCharts.get(i).getValue(), i);
             yVals1.add(e);
             xVals.add(mPieCharts.get(i).getText());
         }
 
-        //PieDataSet dataSet = new PieDataSet(yVals1, "");
         PieDataSet dataSet = new PieDataSet(yVals1, "");
         dataSet.setSliceSpace(3f);
 
@@ -105,8 +101,7 @@ public class PieChartFragment
             colors.add(getResources().getColor(c));
 
         dataSet.setColors(colors);
-//        PieData data = new PieData(xVals, dataSet);
-        PieData data = new PieData(dataSet);
+        PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
 
         if (mTextColor != -1)
@@ -129,9 +124,7 @@ public class PieChartFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        UIHelper uiHelper = new UIHelper(getActivity());
-        mTextColor = uiHelper.resolveIdAttribute(R.attr.chartTextColor);
+        mTextColor = new UIHelper(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SAVED_INSTANCE))
                 setChartArguments(savedInstanceState.getBundle(KEY_SAVED_INSTANCE));
@@ -235,18 +228,18 @@ public class PieChartFragment
     }
 
     @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        ExceptionHandler handler = new ExceptionHandler(getActivity());
-
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
         String text;
         try {
-            int index = Math.round(h.getX());
-            ValuePieEntry valuePieEntry = mPieCharts.get(index);
-            text = valuePieEntry.getText().concat(": ").concat(valuePieEntry.getValueFormatted());
-
-            handler.showMessage(text, Toast.LENGTH_SHORT);
+            text = mPieCharts.get(e.getXIndex()).getText().concat(": ").concat(mPieCharts.get(e.getXIndex()).getValueFormatted());
+//            Snackbar.with(getActivity().getApplicationContext()) // context
+//                    .text(text)
+//                    .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
+//                    .show(getActivity());
+            Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
-            handler.handle(ex, "clicked on pie chart");
+            ExceptionHandler handler = new ExceptionHandler(getActivity());
+            handler.handle(ex, "showing chart item details");
         }
     }
 

@@ -43,25 +43,25 @@ import com.money.manager.ex.core.UIHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IncomeVsExpensesChartFragment
-    extends Fragment
-    implements OnChartValueSelectedListener {
+public class IncomeVsExpensesChartFragment extends Fragment implements
+        OnChartValueSelectedListener {
 
-    // key arguments
+//    private static final String LOGCAT = IncomeVsExpensesChartFragment.class.getSimpleName();
+
     public static final String KEY_EXPENSES_VALUES = "IncomeExpensesChartFragment:ExpensesValues";
     public static final String KEY_INCOME_VALUES = "IncomeExpensesChartFragment:IncomeValues";
     public static final String KEY_TITLE = "IncomeExpensesChartFragment:Title";
     public static final String KEY_XTITLES = "IncomeExpensesChartFragment:XTitles";
     public static final String KEY_SAVED_INSTANCE = "IncomeExpensesChartFragment:SavedInstance";
     public static final String KEY_DISPLAY_AS_UP_ENABLED = "IncomeExpensesChartFragment:DisplayHomeAsUpEnabled";
-    // bundle arguments
+
     private Bundle mArguments;
-    // themes text color
+
     private int mTextColor;
-    // layout
+
     private LinearLayout mLayout;
     private BarChart mChart;
-    // show back home
+
     private boolean mDisplayHomeAsUpEnabled = false;
 
     public void buildChart() {
@@ -87,11 +87,9 @@ public class IncomeVsExpensesChartFragment
         dataSets.add(dataSetIncomes);
         dataSets.add(dataSetExpenses);
 
-        //BarData data = new BarData(xVals, dataSets);
-        BarData data = new BarData(dataSets);
-        if (mTextColor != -1) {
+        BarData data = new BarData(xVals, dataSets);
+        if (mTextColor != -1)
             data.setValueTextColor(getResources().getColor(mTextColor));
-        }
         mChart.setData(data);
         mChart.animateXY(1500, 1500);
         mChart.invalidate();
@@ -110,9 +108,8 @@ public class IncomeVsExpensesChartFragment
             yAxis.setTextColor(getResources().getColor(mTextColor));
         // left label
         yAxis = mChart.getAxisLeft();
-        if (yAxis != null && mTextColor != -1) {
+        if (yAxis != null && mTextColor != -1)
             yAxis.setTextColor(getResources().getColor(mTextColor));
-        }
     }
 
     @Override
@@ -126,10 +123,10 @@ public class IncomeVsExpensesChartFragment
                 setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(KEY_DISPLAY_AS_UP_ENABLED));
         }
 
-        UIHelper uiHelper = new UIHelper(getActivity());
-        mTextColor = uiHelper.resolveIdAttribute(R.attr.chartTextColor);
+        mTextColor = new UIHelper(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
 
         // enabled display as home
+//        ActionBarActivity activity = (ActionBarActivity) getActivity();
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
@@ -210,7 +207,7 @@ public class IncomeVsExpensesChartFragment
     }
 
     @Override
-    public void onValueSelected(Entry e, Highlight h) {
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 
     }
 
