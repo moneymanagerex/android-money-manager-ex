@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="">
+    <changelogversion versionName="2016.07.29.879">
         <changelogtext>Adding a file picker for opening a database.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.07.28.878">

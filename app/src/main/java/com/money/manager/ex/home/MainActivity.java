@@ -244,8 +244,8 @@ public class MainActivity
             case REQUEST_PICKFILE:
                 // data.getData() == null
                 if (resultCode != RESULT_OK) return;
-                if (data == null || !data.hasExtra(FilePickerActivity.RESULT_FILE_PATH) {
-                    // canceled
+                if (data == null || !data.hasExtra(FilePickerActivity.RESULT_FILE_PATH)) {
+                    return;
                 }
 
                 // data.getData().getPath()
