@@ -179,7 +179,7 @@
 //                        // intent is passed to the notification and called if clicked on.
 //                        Intent intent = new SyncCommon().getIntentForOpenDatabase(getBaseContext(), localFile);
 //                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-//                                MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+//                                MainActivity.REQUEST_PICKFILE, intent, 0);
 //                        // create builder
 //                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
 //                                .getNotificationBuilderDownloadComplete(pendingIntent);
@@ -243,7 +243,7 @@
 //                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //                        intent.setData(Uri.fromFile(localFile));
 //                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+//                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE, intent, 0);
 //                        // notification
 //                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
 //                                .getNotificationBuilderUploadComplete(pendingIntent);

@@ -93,6 +93,8 @@ import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MyDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -102,6 +104,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Main activity of the application.
@@ -109,7 +112,7 @@ import java.util.ArrayList;
 public class MainActivity
     extends BaseFragmentActivity {
 
-    public static final int REQUEST_PICKFILE_CODE = 1;
+    public static final int REQUEST_PICKFILE = 1;
     public static final int REQUEST_PASSCODE = 2;
     public static final int REQUEST_TUTORIAL = 3;
     public static final int REQUEST_PASSWORD = 4;
@@ -238,10 +241,12 @@ public class MainActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_PICKFILE_CODE:
-                if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    requestDatabaseChange(data.getData().getPath());
-                }
+            case REQUEST_PICKFILE:
+                if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
+
+                // data.getData().getPath()
+                String selectedPath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+                requestDatabaseChange(selectedPath);
                 break;
 
             case REQUEST_PASSCODE:
@@ -441,7 +446,7 @@ public class MainActivity
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
-        final Core core = new Core(getApplicationContext());
+        final Core core = new Core(this);
         final Boolean isDarkTheme = core.getThemeId() == R.style.Theme_Money_Manager_Dark;
 
         if (item.getId() == null && item.getTag() != null) {
@@ -671,30 +676,6 @@ public class MainActivity
     }
 
     /**
-     * Pick the database file to use.
-     * @param startFolder start folder
-     */
-    public void pickFile(File startFolder) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
-        intent.setType("file/*");
-
-        if (MoneyManagerApplication.getInstanceApp().isUriAvailable(getApplicationContext(), intent)) {
-            try {
-                startActivityForResult(intent, REQUEST_PICKFILE_CODE);
-            } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "selecting a database file");
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.error_intent_pick_file,
-                    Toast.LENGTH_LONG).show();
-        }
-
-        // Note that the selected file is handled in onActivityResult.
-    }
-
-    /**
      * for the change setting restart process application
      */
     public void restartActivity() {
@@ -906,7 +887,10 @@ public class MainActivity
     }
 
     public void openDatabasePicker() {
-        pickFile(Environment.getExternalStorageDirectory());
+        //pickFile(Environment.getExternalStorageDirectory());
+        String dbDirectory = MoneyManagerApplication.getDatabaseDirectory(this);
+        // Environment.getExternalStorageDirectory().getPath()
+        pickFileInternal(dbDirectory);
     }
 
     // Private
@@ -1083,44 +1067,14 @@ public class MainActivity
 //        });
 //    }
 
-    private void originalShowFragment(Bundle savedInstanceState) {
-        Core core = new Core(this);
-
-        // show home fragment
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
-        if (fragment == null) {
-            // fragment create
-            fragment = new HomeFragment();
-            // add to stack
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    //.commit();
-                    .commitAllowingStateLoss();
-        } else if (core.isTablet()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
-                    //.commit();
-                    .commitAllowingStateLoss();
+    private Drawable getDrawableFromResource(int resourceId) {
+        Drawable icon;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            icon = getDrawable(resourceId);
+        } else {
+            icon = getResources().getDrawable(resourceId);
         }
-
-        // manage fragment
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
-            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-            // check if className is null, then setting Home Fragment
-            if (TextUtils.isEmpty(className)) {
-                className = HomeFragment.class.getName();
-            }
-            if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
-                // changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-            } else {
-                try {
-                    showFragment(Class.forName(className));
-                } catch (ClassNotFoundException e) {
-                    Log.e(LOGCAT, e.getMessage());
-                }
-            }
-        }
+        return icon;
     }
 
     private ArrayList<DrawerMenuItem> getDrawerMenuItems() {
@@ -1268,6 +1222,83 @@ public class MainActivity
         requestDatabaseChange(recentDb.filePath);
     }
 
+    private void originalShowFragment(Bundle savedInstanceState) {
+        Core core = new Core(this);
+
+        // show home fragment
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
+        if (fragment == null) {
+            // fragment create
+            fragment = new HomeFragment();
+            // add to stack
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    //.commit();
+                    .commitAllowingStateLoss();
+        } else if (core.isTablet()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    //.commit();
+                    .commitAllowingStateLoss();
+        }
+
+        // manage fragment
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
+            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+            // check if className is null, then setting Home Fragment
+            if (TextUtils.isEmpty(className)) {
+                className = HomeFragment.class.getName();
+            }
+            if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
+                // changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+            } else {
+                try {
+                    showFragment(Class.forName(className));
+                } catch (ClassNotFoundException e) {
+                    Log.e(LOGCAT, e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * Pick the database file to use.
+     * @param startFolder start folder
+     */
+    private void pickFile(File startFolder) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
+        intent.setType("file/*");
+
+        if (MoneyManagerApplication.getInstanceApp().isUriAvailable(this, intent)) {
+            try {
+                startActivityForResult(intent, REQUEST_PICKFILE);
+            } catch (Exception e) {
+                ExceptionHandler handler = new ExceptionHandler(this, this);
+                handler.handle(e, "selecting a database file");
+            }
+        } else {
+            Toast.makeText(this, R.string.error_intent_pick_file,
+                    Toast.LENGTH_LONG).show();
+        }
+
+        // Note that the selected file is handled in onActivityResult.
+    }
+
+    private void pickFileInternal(String locationPath) {
+        new MaterialFilePicker()
+            .withActivity(this)
+            .withRequestCode(REQUEST_PICKFILE)
+            .withRootPath(locationPath)
+            //.withPath(locationPath)
+            .withFilter(Pattern.compile(".*\\.mmb$"))
+            //.withFilterDirectories()
+            .withHiddenFiles(true)
+            .start();
+        // continues in onActivityResult
+    }
+
     /**
      * Change the database.
      *
@@ -1391,15 +1422,5 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
 
         onDrawerItemSubDialogs(adapter, text);
-    }
-
-    private Drawable getDrawableFromResource(int resourceId) {
-        Drawable icon;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            icon = getDrawable(resourceId);
-        } else {
-            icon = getResources().getDrawable(resourceId);
-        }
-        return icon;
     }
 }
