@@ -221,7 +221,7 @@
 //
 //    public void triggerUpload(final File localFile, final Entry remoteFile) {
 //        final NotificationCompat.Builder notification = new SyncNotificationFactory(getBaseContext())
-//                .getNotificationBuilderUpload();
+//                .getNotificationBuilderUploading();
 //        // get instance notification manager
 //        final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 //        // create interface

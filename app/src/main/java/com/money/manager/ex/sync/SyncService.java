@@ -150,53 +150,50 @@ public class SyncService
 
             @Override
             public void onPostExecute(boolean result) {
-                if (notification != null && notificationManager != null) {
-                    notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-                    if (result) {
-                        // copy file
-                        Core core = new Core(getApplicationContext());
-                        try {
-                            core.copy(tempFile, localFile);
-                            tempFile.delete();
-                        } catch (IOException e) {
-                            Log.e(LOGCAT, e.getMessage());
-                            return;
-                        }
-                        // create notification for open file
-                        // intent is passed to the notification and called if clicked on.
-                        Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                                MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
-                        // create builder
-                        final NotificationCompat.Builder notification =
-                                new SyncNotificationFactory(getApplicationContext())
-                                        .getNotificationBuilderDownloadComplete(pendingIntent);
-                        // notify
-                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
-                    }
+                if (notification == null || notificationManager == null) return;
+
+                notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
+
+                if (!result) return;
+
+                // copy file
+                Core core = new Core(getApplicationContext());
+                try {
+                    core.copy(tempFile, localFile);
+                    tempFile.delete();
+                } catch (IOException e) {
+                    Log.e(LOGCAT, e.getMessage());
+                    return;
                 }
+                // create notification for open file
+                // intent is passed to the notification and called if clicked on.
+                Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                        MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+                // create builder
+                final NotificationCompat.Builder notification =
+                        new SyncNotificationFactory(getApplicationContext())
+                                .getNotificationBuilderDownloadComplete(pendingIntent);
+                // notify
+                notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
             }
         };
         if (BuildConfig.DEBUG) {
             Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.getPath());
         }
 
-        //start
         onDownloadHandler.onPreExecute();
-        //send message to the database download staring
         sendMessage(SyncMessages.STARTING_DOWNLOAD);
 
         boolean ret = sync.download(remoteFile, tempFile);
 
         onDownloadHandler.onPostExecute(ret);
-
-        //send message to the database download complete
         sendMessage(SyncMessages.DOWNLOAD_COMPLETE);
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
         final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationBuilderUpload();
+                .getNotificationBuilderUploading();
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         IOnDownloadUploadEntry onUpload = new IOnDownloadUploadEntry() {
@@ -209,42 +206,37 @@ public class SyncService
 
             @Override
             public void onPostExecute(boolean result) {
-                if (notification != null && notificationManager != null) {
-                    notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-                    if (result) {
-                        // create notification for open file
-                        // pending intent
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.setData(Uri.fromFile(localFile));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
-                        // notification
-                        final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                                .getNotificationBuilderUploadComplete(pendingIntent);
-                        // notify
-                        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
-                    }
+                if (notification == null || notificationManager == null) return;
+
+                notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
+
+                if (result) {
+                    // create notification for open file
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setData(Uri.fromFile(localFile));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE_CODE, intent, 0);
+                    // notification
+                    final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
+                            .getNotificationBuilderUploadComplete(pendingIntent);
+                    // notify
+                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
                 }
             }
         };
 
         if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, "Uploading db. Local file: " +
-                    localFile.getPath() + "; Remote file: " + remoteFile.getPath());
+            Log.d(LOGCAT, "Uploading db. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.getPath());
         }
 
-        //start
         onUpload.onPreExecute();
-        //send message to the database upload staring
         sendMessage(SyncMessages.STARTING_UPLOAD);
 
-        //execute
+        // upload
         SyncManager sync = new SyncManager(getApplicationContext());
         boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
 
-        //complete
         onUpload.onPostExecute(result);
-        ///send message to the database upload complete
         sendMessage(SyncMessages.UPLOAD_COMPLETE);
     }
 
@@ -256,8 +248,8 @@ public class SyncService
 
         DateTime remoteLastModified = new DateTime(remoteFile.getModifiedAt());
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified local file: " + localLastModified.toString());
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Date last modified remote file: " + remoteLastModified.toString());
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Local file last modified: " + localLastModified.toString());
+        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Remote file last modified: " + remoteLastModified.toString());
 
         // check date
         if (remoteLastModified.isAfter(localLastModified)) {
