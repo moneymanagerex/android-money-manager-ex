@@ -26,7 +26,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 public class CurrencyRecyclerListActivity
     extends BaseFragmentActivity {
 
-    private static final String FRAGMENTTAG = "Currency_List_Fragment";
+    private static final String FRAGMENTTAG = CurrencyRecyclerListFragment.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
