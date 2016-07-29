@@ -242,7 +242,11 @@ public class MainActivity
 
         switch (requestCode) {
             case REQUEST_PICKFILE:
-                if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
+                // data.getData() == null
+                if (resultCode != RESULT_OK) return;
+                if (data == null || !data.hasExtra(FilePickerActivity.RESULT_FILE_PATH) {
+                    // canceled
+                }
 
                 // data.getData().getPath()
                 String selectedPath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
