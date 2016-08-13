@@ -192,6 +192,8 @@ dependencies {
             , 'com.google.guava:guava:19.0'         // collection libraries
             , 'com.android.support:multidex:1.0.0'  // multidex support
             , 'com.nbsp:library:1.09'               // file picker
+            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
+            , 'io.reactivex:rxjava:1.1.9'
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;

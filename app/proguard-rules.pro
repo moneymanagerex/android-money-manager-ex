@@ -50,21 +50,21 @@
 }
 
 -keepclassmembers class * extends android.app.Activity {
-   public void *(android.view.View);
+    public void *(android.view.View);
 }
 
 # For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
 -keepclassmembers enum * {
- public static **[] values();
- public static ** valueOf(java.lang.String);
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
 }
 
 -keep class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator *;
+    public static final android.os.Parcelable$Creator *;
 }
 
 -keepclassmembers class **.R$* {
- public static <fields>;
+    public static <fields>;
 }
 
 -keep class android.support.v4.app.** { *; }
@@ -95,3 +95,7 @@
 
 #SQLCipher
 -keep class net.sqlcipher.** { *; }
+
+# Ignore warnings
+#-dontwarn com.google.common.util.**
+#-dontwarn com.google.common.base.**
