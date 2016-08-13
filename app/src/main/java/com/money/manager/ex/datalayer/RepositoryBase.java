@@ -174,7 +174,7 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected List<T> query(Class<T> resultType, String selection) {
-        Query query = new Query().where(selection, null);
+        Query query = new Query().where(selection);
         return query(resultType, query);
     }
 

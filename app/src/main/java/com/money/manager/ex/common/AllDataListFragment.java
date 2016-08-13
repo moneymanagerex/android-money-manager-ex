@@ -249,7 +249,7 @@ public class AllDataListFragment
                 QueryAllData allData = new QueryAllData(getActivity());
                 Query query = new Query()
                         .select(allData.getAllColumns())
-                        .where(selection, null)
+                        .where(selection)
                         .orderBy(sort);
 
                 return new MmexCursorLoader(getActivity(), allData.getUri(), query);

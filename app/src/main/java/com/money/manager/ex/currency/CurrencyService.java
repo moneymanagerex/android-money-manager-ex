@@ -172,7 +172,7 @@ public class CurrencyService
 
         Query query = new Query();
         query.select(getRepository().getAllColumns())
-            .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")", null)
+            .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")")
             .orderBy(Currency.CURRENCYNAME);
 
         return getRepository().query(Currency.class, query);

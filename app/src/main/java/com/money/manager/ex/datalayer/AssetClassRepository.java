@@ -72,7 +72,7 @@ public class AssetClassRepository
 
         Query query = new Query()
                 .select(fields)
-                .where(where.getWhere(), null);
+                .where(where.getWhere());
         List<AssetClass> children = query(AssetClass.class, query);
 
         List<Integer> result = new ArrayList<>();
