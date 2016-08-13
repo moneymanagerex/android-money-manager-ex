@@ -74,9 +74,9 @@ android {
 
     buildTypes {
         debug {
-//            minifyEnabled true
-//            shrinkResources true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Disable fabric build id for debug builds
             ext.enableCrashlytics = false;
