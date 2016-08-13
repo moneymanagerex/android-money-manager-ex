@@ -74,18 +74,26 @@ android {
 
     buildTypes {
         debug {
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
             // Disable fabric build id for debug builds
             ext.enableCrashlytics = false;
         }
         beta {
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
+
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled false
             shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt', 'proguard-rules.pro'
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
