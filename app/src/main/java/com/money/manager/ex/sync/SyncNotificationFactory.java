@@ -92,8 +92,8 @@ public class SyncNotificationFactory {
     public NotificationCompat.Builder getNotificationBuilderUploading() {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
-                .setContentInfo(getContext().getString(R.string.sync_uploading))
                 .setAutoCancel(false)
+//                .setContentInfo(getContext().getString(R.string.sync_uploading))
                 .setContentText(getContext().getString(R.string.sync_uploading))
                 //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
