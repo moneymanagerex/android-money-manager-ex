@@ -17,46 +17,33 @@
 package com.money.manager.ex.investment;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.os.ParcelableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.utils.MyDateTimeUtils;
-import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import org.antlr.v4.codegen.model.Sync;
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
