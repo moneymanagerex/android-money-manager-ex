@@ -23,7 +23,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.AccountTransaction;
-import com.money.manager.ex.utils.MyDatabaseUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 /**
  * Repository for Checking Account records.
@@ -61,7 +61,7 @@ public class AccountTransactionRepository
         AccountTransaction tx = (AccountTransaction) first(AccountTransaction.class,
                 getAllColumns(),
                 AccountTransaction.TRANSID + "=?",
-                MyDatabaseUtils.getArgsForId(id),
+                MmexDatabaseUtils.getArgsForId(id),
                 null);
 
         return tx;

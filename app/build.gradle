@@ -15,9 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//plugins {
+//    id "me.tatarka.retrolambda" version "3.3.0-beta4"
+//}
+
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -173,9 +178,10 @@ dependencies {
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             // Retrofit turns your HTTP API into a Java interface.
             ,'com.google.code.gson:gson:2.7'
-            ,'com.squareup.retrofit2:retrofit:2.1.0'
+            ,'com.squareup.retrofit2:retrofit:2.1.0'            // Retrofit
             ,'com.squareup.retrofit2:converter-gson:2.1.0'
             ,'com.squareup.retrofit2:converter-scalars:2.1.0'
+            ,'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             ,'org.greenrobot:eventbus:3.0.0'
             ,'net.danlew:android.joda:2.9.4'
@@ -195,6 +201,8 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
+            ,'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
+
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;

@@ -45,6 +45,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -399,7 +400,7 @@ public class WatchlistFragment
 
         for(int i = 0; i < itemCount; i++) {
             Cursor cursor = (Cursor) mDataFragment.getListAdapter().getItem(i);
-            String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
+            String symbol = cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL));
 
             result[i] = symbol;
         }

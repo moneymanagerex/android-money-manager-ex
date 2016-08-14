@@ -33,6 +33,7 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 import com.money.manager.ex.domainmodel.Stock;
@@ -85,7 +86,7 @@ public class SecurityListFragment
         // create adapter
         MoneySimpleCursorAdapter adapter = new MoneySimpleCursorAdapter(getActivity(),
             layout, null,
-            new String[]{ Stock.SYMBOL },
+            new String[]{ StockFields.SYMBOL },
             new int[]{ android.R.id.text1 }, 0);
         setListAdapter(adapter);
 
@@ -116,20 +117,20 @@ public class SecurityListFragment
                 String selectionArgs[] = null;
 
                 // ignore all the symbols already linked
-                whereClause = Stock.SYMBOL + " NOT IN (SELECT " + AssetClassStock.STOCKSYMBOL +
+                whereClause = StockFields.SYMBOL + " NOT IN (SELECT " + AssetClassStock.STOCKSYMBOL +
                     " FROM " + new AssetClassStockRepository(getActivity()).getSource() + ")";
 
 
                 if (!TextUtils.isEmpty(mCurFilter)) {
-                    whereClause += " AND " + Stock.SYMBOL + " LIKE ?";
+                    whereClause += " AND " + StockFields.SYMBOL + " LIKE ?";
                     selectionArgs = new String[]{ mCurFilter + "%" };
                 }
 
                 StockRepository repo = new StockRepository(getActivity());
                 Query query = new Query()
-                    .select(new String[] { "STOCKID AS _id", Stock.STOCKID, Stock.SYMBOL })
+                    .select(new String[] { "STOCKID AS _id", StockFields.STOCKID, StockFields.SYMBOL })
                     .where(whereClause, selectionArgs)
-                    .orderBy("upper(" + Stock.SYMBOL + ")");
+                    .orderBy("upper(" + StockFields.SYMBOL + ")");
 
                 return new MmexCursorLoader(getActivity(), repo.getUri(), query);
         }

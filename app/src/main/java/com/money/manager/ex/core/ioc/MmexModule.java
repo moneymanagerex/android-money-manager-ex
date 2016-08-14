@@ -18,6 +18,8 @@
 package com.money.manager.ex.core.ioc;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import javax.inject.Singleton;
 
@@ -25,12 +27,14 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * main IoC module
+ * Main IoC module.
+ * Modules provide functionality.
  */
 
 @Module(
     includes = {
         DbModule.class,
+        RepositoryModule.class
     }
 )
 public final class MmexModule {
@@ -42,5 +46,11 @@ public final class MmexModule {
 
     @Provides @Singleton Application provideApplication() {
         return application;
+    }
+
+    @Provides @Singleton
+    SharedPreferences provideSharedPreferences() {
+//        return application.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
+        return PreferenceManager.getDefaultSharedPreferences(application);
     }
 }

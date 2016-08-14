@@ -14,19 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.money.manager.ex.investment.morningstar;
 
 import android.content.Context;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
-import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -35,17 +37,22 @@ import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import okhttp3.Request;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Quote provider: Morningstar
@@ -54,8 +61,11 @@ public class MorningstarPriceUpdater
     extends PriceUpdaterBase
     implements ISecurityPriceUpdater {
 
+    @Inject
     public MorningstarPriceUpdater(Context context) {
         super(context);
+
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
     }
 
     /**
@@ -63,6 +73,9 @@ public class MorningstarPriceUpdater
      */
     private int mCounter;
     private int mTotalRecords;
+    private CompositeSubscription compositeSubscription;
+    @Inject StockRepositorySql stockRepository;
+    private StockHistoryRepository mStockHistoryRepository;
 
     @Override
     public void downloadPrices(List<String> symbols) {
@@ -72,87 +85,90 @@ public class MorningstarPriceUpdater
 
         showProgressDialog(mTotalRecords);
 
-        IMorningstarService service = getMorningstarService();
+        final IMorningstarService service = getMorningstarService();
 
-        Callback<String> callback = new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String symbol = call.request().url().queryParameter("t");
-                onContentDownloaded(symbol, response.body());
-            }
+        final SymbolConverter converter = new SymbolConverter();
+        compositeSubscription = new CompositeSubscription();
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                closeProgressDialog();
+        Subscription allSymbolsSubscription = Observable.from(symbols)
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                // get a Morningstar symbol
+                .map(new Func1<String, String>() {
+                    @Override
+                    public String call(String s) {
+                        return converter.convert(s);
+                    }
+                })
+                // download the price
+                .flatMap(new Func1<String, Observable<Pair<String, String>>>() {
+                    @Override
+                    public Observable<Pair<String, String>> call(final String s) {
+                        return service.getPrice(s)
+                                .map(new Func1<String, Pair<String, String>>() {
+                                    @Override
+                                    public Pair<String, String> call(String price) {
+                                        return Pair.of(s, price);
+                                    }
+                                });
+                    }
+                })
+                // parse the price
+                .map(new Func1<Pair<String, String>, PriceDownloadedEvent>() {
+                    @Override
+                    public PriceDownloadedEvent call(Pair<String, String> s) {
+                        return parse(s.getLeft(), s.getRight());
+                    }
+                })
+                // save to database
+                .map(new Func1<PriceDownloadedEvent, PriceDownloadedEvent>() {
+                    @Override
+                    public PriceDownloadedEvent call(PriceDownloadedEvent priceDownloadedEvent) {
+                        // update the current price of the stock.
+                        stockRepository.updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
 
-                // get the symbol
-                String symbol = call.request().url().queryParameter("t");
+                        // save price history record.
+                        StockHistoryRepository historyRepo = getStockHistoryRepository();
+                        historyRepo.addStockHistoryRecord(priceDownloadedEvent.symbol,
+                                priceDownloadedEvent.price, priceDownloadedEvent.date);
 
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(t, "fetching price for " + symbol);
-            }
-        };
+                        // emit the event object down the stream.
+                        return priceDownloadedEvent;
+                    }
+                })
+                .subscribe(new Subscriber<PriceDownloadedEvent>() {
+                    @Override
+                    public void onCompleted() {
+                        closeProgressDialog();
 
-        SymbolConverter converter = new SymbolConverter();
+                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                        handler.showMessage(getContext().getString(R.string.download_complete));
 
-        for (int i = 0; i < symbols.size(); i++) {
-            String symbol = symbols.get(i);
+                        compositeSubscription.unsubscribe();
 
-            try {
-                String morningstarSymbol = converter.convert(symbol);
+                        // send event to reload the data.
+                        EventBus.getDefault().post(new AllPricesDownloadedEvent());
+                    }
 
-                service.getPrice(morningstarSymbol).enqueue(callback);
-            } catch (Exception ex) {
-                if (i == symbols.size() - 1) {
-                    // close progress dialog if this is the last (or the only) item.
-                    closeProgressDialog();
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        closeProgressDialog();
 
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(ex, "downloading quotes");
-            }
-        }
-    }
+                        ExceptionHandler handler = new ExceptionHandler(getContext());
+                        handler.handle(e, "downloading prices");
+                    }
 
-    private void onContentDownloaded(String symbol, String content) {
-        mCounter++;
-        setProgress(mCounter);
+                    @Override
+                    public void onNext(PriceDownloadedEvent event) {
+                        mCounter++;
+                        setProgress(mCounter);
 
-        if (content == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.showMessage(getContext().getString(R.string.error_updating_rates));
-//            closeProgressDialog();
-            return;
-        }
+                        // todo: update price in the UI?
 
-        // Parse results
-        PriceDownloadedEvent event = null;
-        try {
-            event = parse(symbol, content);
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "parsing downloaded data");
-        }
-
-        // Notify the caller by invoking the interface method.
-        if (event != null) {
-            EventBus.getDefault().post(event);
-        }
-
-        finishIfAllDone();
-    }
-
-    private synchronized void finishIfAllDone() {
-        if (mCounter != mTotalRecords) return;
-
-        closeProgressDialog();
-
-        // Notify user that all the prices have been downloaded.
-        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-        handler.showMessage(getContext().getString(R.string.download_complete));
-
-        // fire an event so that the data can be reloaded.
-        EventBus.getDefault().post(new AllPricesDownloadedEvent());
+//                        Timber.d("processed %s", event.symbol);
+                    }
+                });
+        compositeSubscription.add(allSymbolsSubscription);
     }
 
     private PriceDownloadedEvent parse(String symbol, String html) {
@@ -183,13 +199,21 @@ public class MorningstarPriceUpdater
         return new PriceDownloadedEvent(yahooSymbol, price, date);
     }
 
-    public IMorningstarService getMorningstarService() {
+    private IMorningstarService getMorningstarService() {
         String BASE_URL = "http://quotes.morningstar.com";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
         return retrofit.create(IMorningstarService.class);
+    }
+
+    private StockHistoryRepository getStockHistoryRepository() {
+        if (mStockHistoryRepository == null) {
+            mStockHistoryRepository = new StockHistoryRepository(getContext());
+        }
+        return mStockHistoryRepository;
     }
 }

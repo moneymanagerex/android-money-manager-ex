@@ -49,11 +49,9 @@ public class PriceUpdaterBase
     }
 
     protected void showProgressDialog(Integer max) {
-        Context context = getContext();
+        mDialog = new ProgressDialog(getContext());
 
-        mDialog = new ProgressDialog(context);
-
-        mDialog.setMessage(context.getString(R.string.starting_price_update));
+        mDialog.setMessage(getContext().getString(R.string.starting_price_update));
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 //        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         if (max != null) {
@@ -71,7 +69,8 @@ public class PriceUpdaterBase
     protected void closeProgressDialog() {
         try {
             if (mDialog != null) {
-                DialogUtils.closeProgressDialog(mDialog);
+                mDialog.dismiss();
+//                DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);

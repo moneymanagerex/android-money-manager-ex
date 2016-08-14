@@ -21,15 +21,19 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Stock;
-import com.money.manager.ex.utils.MyDatabaseUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 
@@ -37,14 +41,15 @@ import info.javaperformance.money.Money;
  * Data repository for Stock entities.
  */
 public class StockRepository
-    extends RepositoryBase {
+    extends RepositoryBase<Stock> {
 
+    @Inject
     public StockRepository(Context context) {
         super(context, "stock_v1", DatasetType.TABLE, "stock");
 
     }
 
-    @Override
+//    @Override
     public String[] getAllColumns() {
         String [] idColumn = new String[] {
                 "STOCKID AS _id"
@@ -54,32 +59,27 @@ public class StockRepository
     }
 
     public boolean delete(int id) {
-        int result = super.delete(Stock.STOCKID + "=?", new String[] { Integer.toString(id)});
+        int result = super.delete(StockFields.STOCKID + "=?", new String[] { Integer.toString(id)});
         return result > 0;
     }
 
     public String[] tableColumns() {
-        return new String[] {
-            Stock.STOCKID,
-            Stock.CURRENTPRICE,
-            Stock.COMMISSION,
-            Stock.HELDAT,
-            Stock.PURCHASEDATE,
-            Stock.STOCKNAME,
-            Stock.SYMBOL,
-            Stock.NOTES,
-            Stock.NUMSHARES,
-            Stock.PURCHASEPRICE,
-            Stock.VALUE
-        };
+        Field[] fields = StockFields.class.getFields();
+        String[] names = new String[fields.length];
+
+        for(int i = 0; i < fields.length; i++) {
+            names[i] = fields[i].getName();
+        }
+
+        return names;
     }
 
     public Stock load(int id) {
         if (id == Constants.NOT_SET) return null;
 
-        return (Stock) first(Stock.class,
+        return first(Stock.class,
                 null,
-                Stock.STOCKID + "=?",
+                StockFields.STOCKID + "=?",
                 new String[] { Integer.toString(id) },
                 null);
     }
@@ -92,7 +92,7 @@ public class StockRepository
     public List<Stock> load(Integer[] ids) {
         if (ids.length == 0) return null;
 
-        MyDatabaseUtils dbUtils = new MyDatabaseUtils(getContext());
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(ids.length);
         String[] idParams = new String[ids.length];
 
@@ -101,7 +101,7 @@ public class StockRepository
         }
 
         Cursor c = openCursor(null,
-            Stock.STOCKID + " IN (" + placeHolders + ")",
+            StockFields.STOCKID + " IN (" + placeHolders + ")",
             idParams,
             null);
         if (c == null) return null;
@@ -114,11 +114,11 @@ public class StockRepository
     public List<Stock> loadForSymbols(String[] symbols) {
         if (symbols.length == 0) return null;
 
-        MyDatabaseUtils dbUtils = new MyDatabaseUtils(getContext());
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(symbols.length);
 
         Cursor c = openCursor(null,
-            Stock.SYMBOL + " IN (" + placeHolders + ")",
+            StockFields.SYMBOL + " IN (" + placeHolders + ")",
             symbols,
             null);
         if (c == null) return null;
@@ -136,8 +136,8 @@ public class StockRepository
         int[] result;
 
         Cursor cursor = getContext().getContentResolver().query(this.getUri(),
-                new String[]{ Stock.STOCKID },
-                Stock.SYMBOL + "=?", new String[]{symbol},
+                new String[]{ StockFields.STOCKID },
+                StockFields.SYMBOL + "=?", new String[]{symbol},
                 null);
         if (cursor == null) return null;
 
@@ -146,7 +146,7 @@ public class StockRepository
 
         for (int i = 0; i < records; i++) {
             cursor.moveToNext();
-            result[i] = cursor.getInt(cursor.getColumnIndex(Stock.STOCKID));
+            result[i] = cursor.getInt(cursor.getColumnIndex(StockFields.STOCKID));
         }
         cursor.close();
 
@@ -161,7 +161,7 @@ public class StockRepository
         int id = stock.getId();
 
         WhereStatementGenerator generator = new WhereStatementGenerator();
-        String where = generator.getStatement(Stock.STOCKID, "=", id);
+        String where = generator.getStatement(StockFields.STOCKID, "=", id);
 
         return update(stock, where);
     }

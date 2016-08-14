@@ -21,7 +21,7 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Subcategory;
-import com.money.manager.ex.utils.MyDatabaseUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 /**
  * A repository for Subcategories.
@@ -49,7 +49,7 @@ public class SubcategoryRepository
 
         Subcategory subcategory = (Subcategory) first(Subcategory.class,
                 getAllColumns(),
-                Subcategory.SUBCATEGID + "=?", MyDatabaseUtils.getArgsForId(id),
+                Subcategory.SUBCATEGID + "=?", MmexDatabaseUtils.getArgsForId(id),
                 null);
 
         return subcategory;

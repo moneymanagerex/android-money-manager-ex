@@ -150,7 +150,7 @@ public class AllDataAdapter
         if (StringUtils.isNotEmpty(dateString)) {
             DateTime dateTime = MyDateTimeUtils.from(dateString);
 
-            Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
+            Locale locale = MoneyManagerApplication.getInstance().getAppLocale();
 
             String month = DateTimeFormat.forPattern("MMM").withLocale(locale).print(dateTime);
             holder.txtMonth.setText(month);

@@ -17,11 +17,97 @@
 
 package com.money.manager.ex.datalayer;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+
+import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.database.DatasetType;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.squareup.sqlbrite.BriteDatabase;
+
+import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Repository base for SQLite-based data access.
+ * T is the entity type (class).
  */
 
-public abstract class SqlRepositoryBase<T extends EntityBase> {
+abstract class SqlRepositoryBase<T extends EntityBase> {
+    SqlRepositoryBase(String tableName) {
+        this.tableName = tableName;
+
+    }
+
+    @Inject
+    BriteDatabase database;
+    String tableName;
+
+    public long insert(ContentValues values) {
+        return database.insert(tableName, values);
+    }
+
+    public int delete(String where, String... whereArgs) {
+        return database.delete(tableName, where, whereArgs);
+    }
+
+    public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
+        T entity = null;
+
+        String sql = new Query()
+                .select(projection)
+                .from(tableName)
+                .where(selection)
+                .toString();
+
+        try {
+            Cursor c = database.query(sql, args);
+            if (c == null) return null;
+
+            if (c.moveToNext()) {
+                try {
+                    entity = resultType.newInstance();
+                    //resultType.cast(entity);
+                    entity.loadFromCursor(c);
+                } catch (Exception e) {
+                    ExceptionHandler handler = new ExceptionHandler();
+                    handler.handle(e, "creating " + resultType.getName());
+                }
+            }
+            c.close();
+        } catch (Exception ex) {
+            ExceptionHandler handler = new ExceptionHandler();
+            handler.handle(ex, "fetching first record");
+        }
+
+        return entity;
+    }
+
+    protected boolean update(EntityBase entity, String where, String... selectionArgs) {
+        boolean result = false;
+
+        ContentValues values = entity.contentValues;
+        // remove "_id" from the values.
+        values.remove("_id");
+
+        int updateResult = database.update(tableName,
+                values,
+                where,
+                selectionArgs
+        );
+
+        if (updateResult != 0) {
+            result = true;
+        } else {
+            Timber.w("update failed, %s, values: %s", tableName, entity.contentValues);
+        }
+
+        return  result;
+    }
+
 }

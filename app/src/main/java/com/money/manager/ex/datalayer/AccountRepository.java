@@ -21,14 +21,13 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.utils.MyDatabaseUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 /**
  * Repository for Accounts
@@ -118,7 +117,7 @@ public class AccountRepository
         Account account = (Account) first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
-            MyDatabaseUtils.getArgsForId(id),
+            MmexDatabaseUtils.getArgsForId(id),
             null);
 
         if (account == null) {
@@ -189,7 +188,7 @@ public class AccountRepository
 
     public boolean anyAccountsUsingCurrency(int currencyId) {
         int links = count(Account.CURRENCYID + "=?",
-                MyDatabaseUtils.getArgsForId(currencyId));
+                MmexDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
     }
 

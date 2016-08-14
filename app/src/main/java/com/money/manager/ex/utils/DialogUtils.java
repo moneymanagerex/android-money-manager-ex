@@ -22,6 +22,8 @@ import android.util.Log;
 
 import com.money.manager.ex.core.ExceptionHandler;
 
+import timber.log.Timber;
+
 /**
  * Common dialog utility functions.
  */
@@ -31,8 +33,9 @@ public class DialogUtils {
             progressDialog.hide();
             progressDialog.dismiss();
         } catch (Exception ex) {
-            //ExceptionHandler handler = new ExceptionHandler(getapp)
+//            ExceptionHandler handler = new ExceptionHandler(getapp)
 //            Log.e("Dialog Utils", )
+            Timber.e("error closing a dialog");
             ex.printStackTrace();
         }
     }

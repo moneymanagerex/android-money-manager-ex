@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -43,7 +42,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
@@ -91,7 +89,7 @@ import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
-import com.money.manager.ex.utils.MyDatabaseUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
@@ -578,7 +576,7 @@ public class MainActivity
 
     @Subscribe
     public void onEvent(UsernameLoadedEvent event) {
-        setDrawerUserName(MoneyManagerApplication.getInstanceApp().getUserName());
+        setDrawerUserName(MoneyManagerApplication.getInstance().getUserName());
     }
 
     @Subscribe
@@ -614,7 +612,7 @@ public class MainActivity
 
         // check if we require a password.
         String dbPath = MoneyManagerApplication.getDatabasePath(this);
-        if (MyDatabaseUtils.isEncryptedDatabase(dbPath) && !MmexOpenHelper.getInstance(this).hasPassword()) {
+        if (MmexDatabaseUtils.isEncryptedDatabase(dbPath) && !MmexOpenHelper.getInstance(this).hasPassword()) {
             requestDatabasePassword();
         } else {
             initializeDatabaseAccess(savedInstanceState);
@@ -1280,7 +1278,7 @@ public class MainActivity
         intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
         intent.setType("file/*");
 
-        if (MoneyManagerApplication.getInstanceApp().isUriAvailable(this, intent)) {
+        if (MoneyManagerApplication.getInstance().isUriAvailable(this, intent)) {
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE);
             } catch (Exception e) {
@@ -1320,7 +1318,7 @@ public class MainActivity
         Log.v(LOGCAT, "Changing database to: " + dbFilePath);
 
         // handle encrypted database(s)
-        if (MyDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
+        if (MmexDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
             requestDatabasePassword(dbFilePath);
         } else {
             changeDatabase(dbFilePath, null);

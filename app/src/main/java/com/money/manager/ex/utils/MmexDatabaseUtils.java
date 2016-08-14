@@ -31,6 +31,8 @@ import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.settings.AppSettings;
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,10 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import rx.schedulers.Schedulers;
+
 /**
  * Various database-related utility functions
  */
-public class MyDatabaseUtils {
+public class MmexDatabaseUtils {
 
     public static String[] getArgsForId(int id) {
         String[] result = new String[] { Integer.toString(id) };
@@ -55,7 +59,9 @@ public class MyDatabaseUtils {
         return dbPath.contains(".emb");
     }
 
-    public MyDatabaseUtils(Context context){
+    // Dynamic
+
+    public MmexDatabaseUtils(Context context){
         mContext = context.getApplicationContext();
     }
 

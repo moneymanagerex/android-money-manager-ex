@@ -40,7 +40,7 @@ import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.DonateDialogUtils;
-import com.money.manager.ex.utils.MyDatabaseUtils;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -225,7 +225,7 @@ public class DatabaseSettingsFragment
         }
 
         // try to create the db file.
-        MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
+        MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
         boolean created = db.createDatabase(filename);
 
         if (created) {
@@ -262,7 +262,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
+                MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
 
                 if (BuildConfig.DEBUG) {
                     Log.d(this.getClass().getSimpleName(), "checking db schema");
@@ -290,7 +290,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MyDatabaseUtils db = new MyDatabaseUtils(getActivity());
+                MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
                 boolean result;
                 try {
                     if (BuildConfig.DEBUG) {
@@ -361,7 +361,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MyDatabaseUtils utils = new MyDatabaseUtils(getActivity());
+                MmexDatabaseUtils utils = new MmexDatabaseUtils(getActivity());
 
                 if (BuildConfig.DEBUG) {
                     Log.d(this.getClass().getSimpleName(), "fixing duplicates");

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.money.manager.ex.datalayer;
 
 import android.content.ContentProviderOperation;
@@ -41,6 +40,8 @@ import com.money.manager.ex.domainmodel.EntityBase;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Contains common code for repositories.
@@ -185,10 +186,10 @@ public abstract class RepositoryBase<T extends EntityBase>
      * @return  Boolean indicating whether the operation was successful.
      */
     protected boolean update(EntityBase entity, String where) {
-        return update(entity, where, null);
+        return update(entity, where, (String) null);
     }
 
-    protected boolean update(EntityBase entity, String where, String[] selectionArgs) {
+    protected boolean update(EntityBase entity, String where, String... selectionArgs) {
         boolean result = false;
 
         ContentValues values = entity.contentValues;
@@ -204,8 +205,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         if (updateResult != 0) {
             result = true;
         } else {
-            Log.w(this.getClass().getSimpleName(), "update failed, " + this.getUri() +
-                    ", id:" + entity.contentValues);
+            Timber.w("update failed, %s, values: %s", this.getUri(), entity.contentValues);
         }
 
         return  result;

@@ -25,7 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.HashMap;
@@ -37,7 +39,7 @@ public class StocksCursorAdapter
     extends CursorAdapter {
 
     public StocksCursorAdapter(Context context, Cursor cursor) {
-        super(context, cursor, -1);
+        super(context, cursor, Constants.NOT_SET);
 
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mHeadersAccountIndex = new HashMap<>();
@@ -72,21 +74,21 @@ public class StocksCursorAdapter
         StocksDataViewHolder holder = (StocksDataViewHolder) view.getTag();
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(Stock.HELDAT));
+        int accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
 
         // symbol
-        String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
+        String symbol = cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL));
         holder.symbolTextView.setText(symbol);
 
         // name
-        String name = cursor.getString(cursor.getColumnIndex(Stock.STOCKNAME));
+        String name = cursor.getString(cursor.getColumnIndex(StockFields.STOCKNAME));
         holder.nameTextView.setText(name);
 
         // price
-        String price = cursor.getString(cursor.getColumnIndex(Stock.CURRENTPRICE));
+        String price = cursor.getString(cursor.getColumnIndex(StockFields.CURRENTPRICE));
         holder.priceTextView.setText(price);
 
         // check if item is checked

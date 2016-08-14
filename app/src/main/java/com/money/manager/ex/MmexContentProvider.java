@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -66,6 +67,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
  * MmexContentProvider is the extension of the base class of Android
  * ContentProvider. Its purpose is to implement the read access and modify the
@@ -74,7 +77,6 @@ import java.util.Map;
 public class MmexContentProvider
     extends ContentProvider {
 
-    private static final String LOGCAT = MmexContentProvider.class.getSimpleName();
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
@@ -155,7 +157,7 @@ public class MmexContentProvider
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Insert Uri: " + uri);
+        Timber.d("Insert Uri: %s", uri);
 
         // find object from uri
         Object ret = getObjectFromUri(uri);
@@ -202,7 +204,7 @@ public class MmexContentProvider
 
     @Override
     public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Update Uri: " + uri);
+        Timber.d("Update Uri: %s", uri);
 
         Object ret = getObjectFromUri(uri);
 
@@ -244,7 +246,7 @@ public class MmexContentProvider
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Delete URI: " + uri);
+        Timber.d("Delete URI: %s", uri);
 
         // find object from uri
         Object ret = getObjectFromUri(uri);
@@ -350,7 +352,7 @@ public class MmexContentProvider
 
     public Object getObjectFromUri(Uri uri) {
         int uriMatch = sUriMatcher.match(uri);
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Uri Match Result: " + Integer.toString(uriMatch));
+        Timber.d("Uri Match Result: %s", Integer.toString(uriMatch));
 
         // find key into hash map
         Object objectRet = mapContent.get(uriMatch);
@@ -362,7 +364,7 @@ public class MmexContentProvider
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         return null;
     }
 
@@ -371,11 +373,11 @@ public class MmexContentProvider
         if (values != null) {
             log += " VALUES ( " + values.toString() + ")";
         }
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+        Timber.d(log);
     }
 
     private Cursor query_internal(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Query URI: " + uri);
+        Timber.d("Query URI: %s", uri);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
@@ -385,7 +387,7 @@ public class MmexContentProvider
 
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
         if (database == null) {
-            Log.e(LOGCAT, "Database could not be opened");
+            Timber.e("Database could not be opened");
             return null;
         }
 
@@ -421,8 +423,8 @@ public class MmexContentProvider
         // notify listeners waiting for the data is ready
         cursor.setNotificationUri(context.getContentResolver(), uri);
 
-        if (BuildConfig.DEBUG && !cursor.isClosed()) {
-            Log.d(LOGCAT, "Rows returned: " + cursor.getCount());
+        if (!cursor.isClosed()) {
+            Timber.d("Rows returned: %d", cursor.getCount());
         }
 
         return cursor;
@@ -453,7 +455,7 @@ public class MmexContentProvider
             }
         }
         // log
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+        Timber.d(log);
     }
 
     private void logUpdate(Dataset dataset, ContentValues values, String whereClause, String[] whereArgs) {
@@ -473,7 +475,7 @@ public class MmexContentProvider
         //database.beginTransaction();
 //        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+        Timber.d(log);
     }
 
     private void logDelete(Dataset dataset, String selection, String[] selectionArgs) {
@@ -488,6 +490,6 @@ public class MmexContentProvider
         // open transaction
         //database.beginTransaction();
 //                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, log);
+        Timber.d(log);
     }
 }

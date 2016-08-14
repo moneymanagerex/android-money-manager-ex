@@ -21,9 +21,7 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Category;
-import com.money.manager.ex.utils.MyDatabaseUtils;
-
-import java.util.List;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 /**
  * A repository for Categories.
@@ -50,7 +48,7 @@ public class CategoryRepository
         Category category = (Category) first(Category.class,
                 getAllColumns(),
                 Category.CATEGID + "=?",
-                MyDatabaseUtils.getArgsForId(id),
+                MmexDatabaseUtils.getArgsForId(id),
                 null);
 
         return category;

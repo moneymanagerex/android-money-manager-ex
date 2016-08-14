@@ -45,6 +45,7 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -184,7 +185,7 @@ public class WatchlistItemsFragment
         int cursorPosition = hasHeaderRow() ? info.position - 1 : info.position;
         cursor.moveToPosition(cursorPosition);
 
-        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Stock.SYMBOL)));
+        menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL)));
 
         MenuHelper menuHelper = new MenuHelper(getActivity());
         menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice, menu);
@@ -445,12 +446,12 @@ public class WatchlistItemsFragment
         ArrayList<String> selection = new ArrayList<>();
 
         if (this.accountId != Constants.NOT_SET) {
-            selection.add(Stock.HELDAT + "=" + Integer.toString(this.accountId));
+            selection.add(StockFields.HELDAT + "=" + Integer.toString(this.accountId));
         }
 
         Bundle args = new Bundle();
         args.putStringArrayList(AllDataListFragment.KEY_ARGUMENTS_WHERE, selection);
-        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, Stock.SYMBOL + " ASC");
+        args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT, StockFields.SYMBOL + " ASC");
 
         return args;
     }

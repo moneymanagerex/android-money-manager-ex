@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
 import java.io.PrintWriter;
@@ -51,6 +52,10 @@ public class ExceptionHandler
     public static void warn(String message) {
         Log.w("manual", message);
         Crashlytics.log(message);
+    }
+
+    public ExceptionHandler() {
+        mContext = MoneyManagerApplication.getInstance();
     }
 
     public ExceptionHandler(Context context) {

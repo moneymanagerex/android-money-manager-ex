@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.datalayer;
 
-import com.money.manager.ex.domainmodel.EntityBase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,24 +26,31 @@ import java.util.List;
  * Query object for easier querying through repositories.
  */
 public class Query {
-//    public Query(T repository) {
-//        this.repository = repository;
-//    }
-
-//    private T repository;
     public String[] projection = null;
+    public String from = null;
     public String selection = null;
     public String[] selectionArgs = null;
     public String sort = null;
+
+    public Query() {}
+
+//    public Query(String table) {
+//        this.from = table;
+//    }
 
     /**
      * Sets the projection.
      * @param projection The projection to use. The fields to fetch.
      * @return Returns this instance of Query for chaining methods.
      */
-    public Query select(String[] projection) {
+    public Query select(String... projection) {
         // add selection
         this.projection = projection;
+        return this;
+    }
+
+    public Query from(String table) {
+        from = table;
         return this;
     }
 
@@ -51,14 +58,6 @@ public class Query {
         this.selection = selection;
         return this;
     }
-
-//    public Query where(String selection, String[] args) {
-//        // append condition
-//        this.selection = selection;
-//        this.selectionArgs = args;
-//
-//        return this;
-//    }
 
     public Query where(String selection, String... args) {
         this.selection = selection;
@@ -72,14 +71,11 @@ public class Query {
         return this;
     }
 
-    public List query() {
-//        this.repository.query()
-
-        // todo assemble the query
-
-        // todo execute the query.
-
-        List list = new ArrayList<>();
-        return list;
+    public String toString() {
+        // compose
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(from);
+        String sql = builder.buildQuery(projection, selection, null, null, sort, null);
+        return sql;
     }
 }

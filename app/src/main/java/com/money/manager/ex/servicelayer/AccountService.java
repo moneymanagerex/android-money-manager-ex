@@ -39,6 +39,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -252,7 +253,7 @@ public class AccountService
         // investment accounts
         StockRepository stockRepository = new StockRepository(getContext());
         where.clear();
-        where.addStatement(Stock.HELDAT, "=", accountId);
+        where.addStatement(StockFields.HELDAT, "=", accountId);
         int investmentCount = stockRepository.count(where.getWhere(), null);
 
         return (txCount + investmentCount) > 0;

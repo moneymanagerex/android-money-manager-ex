@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.domainmodel.Stock;
 
 import java.util.HashMap;
@@ -72,21 +73,21 @@ public class PortfolioCursorAdapter
         PortfolioItemDataViewHolder holder = (PortfolioItemDataViewHolder) view.getTag();
 
         // header index
-        int accountId = cursor.getInt(cursor.getColumnIndex(Stock.HELDAT));
+        int accountId = cursor.getInt(cursor.getColumnIndex(StockFields.HELDAT));
         if (!mHeadersAccountIndex.containsKey(accountId)) {
             mHeadersAccountIndex.put(accountId, cursor.getPosition());
         }
 
         // symbol
-        String symbol = cursor.getString(cursor.getColumnIndex(Stock.SYMBOL));
+        String symbol = cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL));
         holder.symbolTextView.setText(symbol);
 
         // number of shares
-        String numberOfShares = cursor.getString(cursor.getColumnIndex(Stock.NUMSHARES));
+        String numberOfShares = cursor.getString(cursor.getColumnIndex(StockFields.NUMSHARES));
         holder.numSharesView.setText(numberOfShares);
 
         // price
-        String price = cursor.getString(cursor.getColumnIndex(Stock.CURRENTPRICE));
+        String price = cursor.getString(cursor.getColumnIndex(StockFields.CURRENTPRICE));
         holder.priceTextView.setText(price);
 
         // check if item is checked

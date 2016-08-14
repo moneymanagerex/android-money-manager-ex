@@ -21,11 +21,8 @@ import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.support.v7.util.SortedList;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -34,7 +31,6 @@ import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
-import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.ExceptionHandler;
@@ -402,7 +398,7 @@ public class CurrencyService
     public java.util.Currency getSystemDefaultCurrency() {
         java.util.Currency currency = null;
 
-        Locale defaultLocale = MoneyManagerApplication.getInstanceApp().getAppLocale();
+        Locale defaultLocale = MoneyManagerApplication.getInstance().getAppLocale();
 
         try {
             if (defaultLocale == null) {

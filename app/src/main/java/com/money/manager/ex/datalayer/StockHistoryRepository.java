@@ -27,15 +27,22 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import org.joda.time.DateTime;
 
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * Stock History
@@ -51,7 +58,6 @@ public class StockHistoryRepository
     public StockHistoryRepository(Context context) {
         super(context, TABLE_NAME, DatasetType.TABLE, "stockhistory");
 
-        mContext = context.getApplicationContext();
     }
 
     private enum UpdateType {
@@ -64,14 +70,17 @@ public class StockHistoryRepository
         private int type;
     }
 
-    private Context mContext;
-    private String LOGCAT = this.getClass().getSimpleName();
+    @Inject
+    Lazy<BriteDatabase> database;
 
     @Override
     public String[] getAllColumns() {
         return new String[] { "HISTID AS _id",
-                StockHistory.HISTID, StockHistory.SYMBOL, StockHistory.DATE,
-                StockHistory.VALUE, StockHistory.UPDTYPE
+                StockHistory.HISTID,
+                StockHistory.SYMBOL,
+                StockHistory.DATE,
+                StockHistory.VALUE,
+                StockHistory.UPDTYPE
         };
     }
 
@@ -84,23 +93,26 @@ public class StockHistoryRepository
 
         boolean recordExists = recordExists(symbol, date);
 
-        ContentValues values = getContentValues(symbol, price, date);
+        // todo: move this to the constructor
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
 
         // check whether to insert or update.
         if (!recordExists) {
-            Uri insert = mContext.getContentResolver().insert(getUri(), values);
-             long id = ContentUris.parseId(insert);
+            ContentValues values = getContentValues(symbol, price, date);
+            long id = database.get().insert(TABLE_NAME, values);
 
             if (id > 0) {
                 // success
                 success = true;
             } else {
-                Log.w(LOGCAT, "Failed inserting stock history record.");
+                Timber.w("Failed inserting stock history record.");
             }
         } else {
             // update
             success = updateHistory(symbol, price, date);
         }
+
+        // todo: notify of changes. sync manager.
 
         return success;
     }
@@ -111,7 +123,7 @@ public class StockHistoryRepository
         String isoDate = MyDateTimeUtils.getIsoStringFrom(date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
-        Cursor cursor = mContext.getContentResolver().query(getUri(),
+        Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 selection,
                 new String[]{symbol, isoDate},
@@ -128,10 +140,6 @@ public class StockHistoryRepository
 
     /**
      * Update history record.
-     * @param symbol
-     * @param price
-     * @param date
-     * @return
      */
     public boolean updateHistory(String symbol, Money price, DateTime date) {
         boolean result;
@@ -141,9 +149,7 @@ public class StockHistoryRepository
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-        int records = mContext.getContentResolver().update(getUri(),
-                values,
-                where, whereArgs);
+        int records = database.get().update(TABLE_NAME, values, where, whereArgs);
 
         result = records > 0;
 
@@ -166,15 +172,14 @@ public class StockHistoryRepository
         try {
             return getLatestPriceFor_Internal(symbol);
         } catch (SQLiteException sqlex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(sqlex, "reading price for " + symbol);
         }
         return null;
     }
 
     private StockHistory getLatestPriceFor_Internal(String symbol) {
-
-        Cursor cursor = mContext.getContentResolver().query(getUri(),
+        Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 StockHistory.SYMBOL + "=?",
                 new String[]{ symbol },
@@ -194,22 +199,21 @@ public class StockHistoryRepository
         return history;
     }
 
-    /**
-     * deletes all price history
-     * @return number of deleted records
-     */
     public int deleteAutomaticPriceHistory() {
-
         // Delete all automatically downloaded prices.
-        int deleted = mContext.getContentResolver().delete(getUri(),
+        int deleted = getContext().getContentResolver().delete(getUri(),
             StockHistory.UPDTYPE + "=?",
             new String[] { "1" });
 
         return deleted;
     }
 
+    /**
+     * deletes all automatic price history
+     * @return number of deleted records
+     */
     public int deleteAllPriceHistory() {
-        int deleted = mContext.getContentResolver().delete(getUri(),
+        int deleted = getContext().getContentResolver().delete(getUri(),
             "1",
             null);
 

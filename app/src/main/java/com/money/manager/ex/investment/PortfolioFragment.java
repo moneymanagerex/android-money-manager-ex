@@ -31,6 +31,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
 
@@ -166,7 +167,7 @@ public class PortfolioFragment
                 StockRepository repo = new StockRepository(getActivity());
                 Query query = new Query()
                     .select(repo.getAllColumns())
-                    .where(Stock.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID));
+                    .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID));
                 //.orderBy(sort);
 
                 return new MmexCursorLoader(getActivity(), repo.getUri(), query);

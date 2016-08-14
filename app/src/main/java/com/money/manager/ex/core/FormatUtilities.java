@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
 
@@ -120,7 +119,7 @@ public class FormatUtilities {
     }
 
     public String getDecimalSeparatorForAppLocale() {
-        Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
+        Locale locale = MoneyManagerApplication.getInstance().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
@@ -131,7 +130,7 @@ public class FormatUtilities {
     }
 
     public String getGroupingSeparatorForAppLocale() {
-        Locale locale = MoneyManagerApplication.getInstanceApp().getAppLocale();
+        Locale locale = MoneyManagerApplication.getInstance().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();
@@ -200,7 +199,7 @@ public class FormatUtilities {
 
         // All these use locale-dependent formatting.
 //        DecimalFormat formatter = new DecimalFormat();
-//        Locale appLocale = MoneyManagerApplication.getInstanceApp().getLocale();
+//        Locale appLocale = MoneyManagerApplication.getInstance().getLocale();
 //        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(appLocale);
         String pattern = NumericPatternGenerator.getPattern(decimals);
         DecimalFormat formatter = new DecimalFormat(pattern);

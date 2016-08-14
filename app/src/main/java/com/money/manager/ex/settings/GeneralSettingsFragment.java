@@ -111,12 +111,12 @@ public class GeneralSettingsFragment
 
         final Preference pUserName = findPreference(getString(PreferenceConstants.PREF_USER_NAME));
         if (pUserName != null) {
-            pUserName.setSummary(MoneyManagerApplication.getInstanceApp().getUserName());
+            pUserName.setSummary(MoneyManagerApplication.getInstance().getUserName());
             pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    MoneyManagerApplication.getInstanceApp().setUserName((String) newValue, true);
-                    pUserName.setSummary(MoneyManagerApplication.getInstanceApp().getUserName());
+                    MoneyManagerApplication.getInstance().setUserName((String) newValue, true);
+                    pUserName.setSummary(MoneyManagerApplication.getInstance().getUserName());
                     return true;
                 }
             });

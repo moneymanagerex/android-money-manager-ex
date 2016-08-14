@@ -24,7 +24,6 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
 import android.text.Html;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +77,7 @@ public class MoneyManagerApplication
     private static float mTextSize;
     private static String userName = "";
 
-    public static MoneyManagerApplication getInstanceApp() {
+    public static MoneyManagerApplication getInstance() {
         return myInstance;
     }
 
@@ -194,7 +193,7 @@ public class MoneyManagerApplication
 
     // Overrides.
 
-    private MmexComponent mainComponent;
+    public MmexComponent mainComponent;
 
     @Override
     public void onCreate() {
@@ -239,7 +238,10 @@ public class MoneyManagerApplication
 //            Timber.plant(new Timber. CrashReportingTree());
 //        }
 
-        mainComponent = DaggerMmexComponent.builder().mmexModule(new MmexModule(this)).build();
+        // Dependency Injection. IoC
+        mainComponent = DaggerMmexComponent.builder()
+                .mmexModule(new MmexModule(this))
+                .build();
     }
 
     @Override

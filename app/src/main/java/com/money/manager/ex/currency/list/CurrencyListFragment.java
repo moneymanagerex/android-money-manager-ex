@@ -18,7 +18,6 @@ package com.money.manager.ex.currency.list;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -34,14 +33,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.currency.CurrencyChartActivity;
-import com.money.manager.ex.currency.CurrencyEditActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
@@ -53,17 +50,13 @@ import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
-import com.money.manager.ex.utils.MyDatabaseUtils;
-import com.shamanland.fonticon.FontIconDrawable;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import info.javaperformance.money.Money;
 
 /**
  *  Currency list.
@@ -414,7 +407,7 @@ public class CurrencyListFragment
                                     }
                                 }
 
-                                MyDatabaseUtils databaseUtils = new MyDatabaseUtils(getActivity());
+                                MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
                                 whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
                                         databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
                                 arguments.addAll(symbols);
