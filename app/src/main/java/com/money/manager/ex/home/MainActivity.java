@@ -214,7 +214,12 @@ public class MainActivity
 
     @Override
     protected void onResume() {
-        super.onResume();
+        try {
+            super.onResume();
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(this);
+            handler.handle(e, "resuming main activity");
+        }
 
         // check if restart activity
         if (isRestartActivitySet()) {
