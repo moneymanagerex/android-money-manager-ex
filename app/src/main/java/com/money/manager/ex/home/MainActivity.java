@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -1290,11 +1291,14 @@ public class MainActivity
     }
 
     private void pickFileInternal(String locationPath) {
+        // root path should be the internal storage?
+        String root = Environment.getExternalStorageDirectory().getPath();
+
         new MaterialFilePicker()
             .withActivity(this)
             .withRequestCode(REQUEST_PICKFILE)
-            .withRootPath(locationPath)
-            //.withPath(locationPath)
+            .withRootPath(root)
+            .withPath(locationPath)
             .withFilter(Pattern.compile(".*\\.mmb$"))
             //.withFilterDirectories()
             .withHiddenFiles(true)
