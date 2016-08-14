@@ -34,7 +34,7 @@ public class SyncBroadcastReceiver
 	public void onReceive(Context context, Intent intent) {
 		SyncManager sync = new SyncManager(context);
 
-        if (!sync.canAutoSync()) return;
+        if (!sync.canSync()) return;
 
 		// check sync interval.
 		if (new SyncPreferences(context).getSyncInterval() == 0) return;

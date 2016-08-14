@@ -211,6 +211,7 @@ public class HomeFragment
 
         switch (id) {
             case LOADER_USER_NAME:
+                // todo This should be on the activity, not in this fragment!
                 InfoRepository repo = new InfoRepository(getActivity());
                 query.select(new String[]{ Info.INFONAME, Info.INFOVALUE });
 
@@ -282,6 +283,7 @@ public class HomeFragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_USER_NAME:
+                // todo This should be on the activity, not in this fragment!
                 if (data != null) {
                     while (data.moveToNext()) {
                         String username;

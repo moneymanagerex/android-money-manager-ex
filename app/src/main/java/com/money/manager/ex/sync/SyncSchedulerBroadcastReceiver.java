@@ -76,7 +76,7 @@ public class SyncSchedulerBroadcastReceiver
 
     private void startHeartbeat(Context context, AlarmManager alarmManager, PendingIntent pendingIntent) {
         SyncManager sync = new SyncManager(context);
-        if (!sync.isActive()) return;
+        if (!sync.isSyncEnabled()) return;
 
         // get frequency in minutes.
         SyncPreferences preferences = new SyncPreferences(context);

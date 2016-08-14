@@ -107,7 +107,7 @@ public class SyncManager {
      * Used also on immediate upload after file changed.
      * @return boolean indicating if auto sync should be done.
      */
-    public boolean canAutoSync() {
+    public boolean canSync() {
         // check if enabled.
         if (!isActive()) return false;
 
@@ -230,7 +230,7 @@ public class SyncManager {
 
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
-        if (!canAutoSync()) {
+        if (!canSync()) {
             Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
             return;
         }
@@ -313,8 +313,7 @@ public class SyncManager {
      * @return A boolean indicating that sync can be performed.
      */
     public boolean isActive() {
-        // The sync needs to be enabled.
-        if (!getPreferences().isSyncEnabled()) return false;
+        if (!isSyncEnabled()) return false;
 
         // network is online.
         NetworkUtilities networkUtilities = new NetworkUtilities(getContext());
@@ -333,6 +332,11 @@ public class SyncManager {
         // check if a provider is selected? Default is Dropbox, so no need.
 
         return true;
+    }
+
+    public boolean isSyncEnabled() {
+        // The sync needs to be enabled.
+        return getPreferences().isSyncEnabled();
     }
 
     public CloudMetaData loadMetadata(String remotePath) {
