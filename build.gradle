@@ -14,21 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     repositories {
         jcenter()
+//        mavenCentral()
+//        maven { url "https://jitpack.io" }
+//        maven { url 'https://maven.fabric.io/public' }          // fabric
+//        maven { url "http://maven.cloudrail.com" }              // cloudrail
+//        maven { url  "http://dl.bintray.com/lukaville/maven" }  // file picker
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
+
+ext {
+    compileSdkVersion = 24
+    buildToolsVersion = '24.0.1'
+}
+
+// This applies to the projects underneath.
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
+        maven { url 'https://maven.fabric.io/public' }          // fabric
+        maven { url "http://maven.cloudrail.com" }              // cloudrail
+        maven { url  "http://dl.bintray.com/lukaville/maven" }  // file picker
     }
+
     // Force all dependent libs to use the same version of the support annotations.
     // This is used in testing libraries (Espresso).
     // https://code.google.com/p/android-test-kit/issues/detail?id=136
@@ -44,3 +61,17 @@ allprojects {
         }
     }
 }
+
+// Fabric
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+// References:
+// http://stackoverflow.com/questions/23241681/why-are-there-two-build-gradle-files-in-an-android-studio-project

@@ -20,8 +20,8 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.1'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.money.manager.ex"
@@ -107,7 +107,6 @@ android {
         enabled = true
     }
 
-    // adding this currently breaks the build because of analytics dependencies?
     productFlavors {
 //        beta {
 //            applicationId "com.money.manager.ex.beta"
@@ -137,11 +136,9 @@ android {
 }
 
 dependencies {
-    apt('org.parceler:parceler:1.1.5')
     compile(
             fileTree(dir: 'libs', include: ['*.jar']),
-            // androidSVG
-            project(':androidSVG_12'),
+            project(':androidSVG_12'),      // androidSVG
 //        'com.caverock:androidsvg:1.2.2-beta-1',
             project(path: ':money'),
             'com.cloudrail:cloudrail-si-android:2.6.1'
@@ -185,7 +182,6 @@ dependencies {
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
             , 'net.danlew:android.joda:2.9.4'
-            , 'org.parceler:parceler-api:1.1.5'
 //            ,'org.joda:joda-money:0.11'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.9.2'               // HTML parsing.
@@ -194,12 +190,18 @@ dependencies {
             , 'com.nbsp:library:1.09'               // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             , 'io.reactivex:rxjava:1.1.9'
+            , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
     }
-    //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
-    // Robolectric, unit testing
+    // Parceler
+    compile 'org.parceler:parceler-api:1.1.5'
+    apt 'org.parceler:parceler:1.1.5'
+    // Dagger 2
+    compile 'com.google.dagger:dagger:2.6'
+    apt 'com.google.dagger:dagger-compiler:2.6'
+
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
@@ -226,6 +228,7 @@ dependencies {
         exclude group: 'io.selendroid', module: 'selendroid-server'
         exclude group: 'io.selendroid', module: 'android-driver-app'
     }
+
     // UI testing
     androidTestCompile(
             'com.android.support.test:runner:0.5',
@@ -251,23 +254,6 @@ dependencies {
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }          // fabric
-    maven { url "http://maven.cloudrail.com" }              // cloudrail
-    maven { url  "http://dl.bintray.com/lukaville/maven" }  // file picker
-}
-
 configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
-}
-
-// Fabric
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
 }
