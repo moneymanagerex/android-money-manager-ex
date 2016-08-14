@@ -58,11 +58,13 @@ public class SyncSchedulerBroadcastReceiver
         //Log actions
         if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
             action = intent.getAction();
-            if (BuildConfig.DEBUG) Log.d(this.getClass().getSimpleName(), "Action request: " + action);
+
+            Timber.d("Action request: %s", action);
         }
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        // PendingIntent.FLAG_CANCEL_CURRENT, FLAG_UPDATE_CURRENT
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -82,19 +84,20 @@ public class SyncSchedulerBroadcastReceiver
 
         // get frequency in minutes.
         SyncPreferences preferences = new SyncPreferences(context);
-        int minute = preferences.getSyncInterval();
+        int minutes = preferences.getSyncInterval();
         // If the period is 0, do not schedule sync.
-        if (minute <= 0) return;
+        if (minutes <= 0) return;
 
         DateTime now = DateTime.now();
 
-        Timber.d("Start at: %s and repeats every: %s minutes",
-                now.toString(Constants.ISO_DATE_FORMAT), minute);
+        Timber.d("Start at: %s and repeat every: %s minutes", now.toString(), minutes);
 
         int secondsInMinute = 60;
 
-        // Schedule alarm for synchronization
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, now.toDateTime().getMillis(),
-                minute * secondsInMinute * 1000, pendingIntent);
+        // Schedule alarm for synchronization. Run immediately the first time.
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                now.toDateTime().getMillis(),
+                minutes * secondsInMinute * 1000,
+                pendingIntent);
     }
 }

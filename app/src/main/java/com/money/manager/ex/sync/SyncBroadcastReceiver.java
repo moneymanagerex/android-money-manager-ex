@@ -23,6 +23,8 @@ import android.content.Intent;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.settings.SyncPreferences;
 
+import timber.log.Timber;
+
 /**
  * Receiver that is triggered by the alarm to run synchronization.
  * Triggered by the timer/heartbeat. Set up in SyncSchedulerBroadcastReceiver.
@@ -32,6 +34,8 @@ public class SyncBroadcastReceiver
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+        Timber.d("receiving a sync intent");
+
 		SyncManager sync = new SyncManager(context);
 
         if (!sync.canSync()) return;

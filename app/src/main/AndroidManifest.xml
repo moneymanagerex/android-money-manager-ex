@@ -89,7 +89,7 @@
                 <action android:name="${applicationId}.intent.action.STOP_SYNC_SERVICE" />
             </intent-filter>
         </receiver>
-        <!-- <receiver android:name=".dropbox.SyncStartServiceReceiver" /> -->
+        <receiver android:name=".sync.SyncBroadcastReceiver" />
         <receiver android:name=".core.RecurringTransactionBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
