@@ -52,6 +52,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Currency;
 
+import timber.log.Timber;
+
 /**
  * Actual helper class for accessing an SQLite database.
  */
@@ -95,9 +97,7 @@ public class MmexOpenHelper
         super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseVersion);
         this.mContext = context;
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Database path:" + MoneyManagerApplication.getDatabasePath(context));
-
-        Log.v(LOGCAT, "event onCreate( )");
+        Timber.d("Database path: %s", MoneyManagerApplication.getDatabasePath(context));
     }
 
     private Context mContext;
@@ -120,7 +120,7 @@ public class MmexOpenHelper
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "execute onCreate method");
+        Timber.d("execute onCreate method");
 
         executeRawSql(db, R.raw.tables_v1);
 
@@ -146,9 +146,7 @@ public class MmexOpenHelper
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, String.format("Upgrading from %1$d  to %2$d", oldVersion, newVersion));
-        }
+        Timber.d("Upgrading from %1$d  to %2$d", oldVersion, newVersion);
 
         try {
             String currentDbFile = db.getPath();
@@ -171,9 +169,7 @@ public class MmexOpenHelper
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // nothing to do for now.
-        if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, String.format("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion));
-        }
+        Timber.d("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion);
     }
 
     @Override
@@ -213,7 +209,8 @@ public class MmexOpenHelper
     @Override
     public SQLiteDatabase getWritableDatabase() {
         try {
-            return getWritableDatabase_Internal();
+            //return getWritableDatabase_Internal();
+            return super.getWritableDatabase();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "opening writable database");
@@ -243,18 +240,18 @@ public class MmexOpenHelper
         return !TextUtils.isEmpty(this.mPassword);
     }
 
-    private SQLiteDatabase getWritableDatabase_Internal() {
-        // String password
+//    private SQLiteDatabase getWritableDatabase_Internal() {
+//        // String password
+////
+////        SQLiteDatabase db = super.getWritableDatabase(password);
+//        SQLiteDatabase db = super.getWritableDatabase();
 //
-//        SQLiteDatabase db = super.getWritableDatabase(password);
-        SQLiteDatabase db = super.getWritableDatabase();
-
-        if (db != null) {
-            db.rawQuery("PRAGMA journal_mode=OFF", null).close();
-        }
-
-        return db;
-    }
+//        if (db != null) {
+//            db.rawQuery("PRAGMA journal_mode=OFF", null).close();
+//        }
+//
+//        return db;
+//    }
 
     /**
      * @param db    SQLite database to execute raw SQL
@@ -265,14 +262,14 @@ public class MmexOpenHelper
         String sqlStatement[] = sqlRaw.split(";");
         // process all statements
         for (String aSqlStatment : sqlStatement) {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, aSqlStatment);
+            Timber.d(aSqlStatment);
 
             try {
                 db.execSQL(aSqlStatment);
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
                 if (e instanceof SQLiteException && errorMessage != null && errorMessage.contains("not an error (code 0)")) {
-                    Log.w(LOGCAT, errorMessage);
+                    Timber.w(errorMessage);
                 } else {
                     ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                     handler.handle(e, "executing raw sql: " + aSqlStatment);
