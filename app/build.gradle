@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId "com.money.manager.ex"
         multiDexEnabled true
-        minSdkVersion 15 // 4.0.3
+        minSdkVersion 14 // 4.0
         targetSdkVersion 24
         versionCode 879
         versionName '2016.07.29'
