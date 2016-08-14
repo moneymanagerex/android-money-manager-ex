@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId "com.money.manager.ex"
         multiDexEnabled true
-        minSdkVersion 14 // 4.0
+        minSdkVersion 15 // 4.0
         targetSdkVersion 24
         versionCode 879
         versionName '2016.07.29'
@@ -141,24 +141,22 @@ dependencies {
             project(':androidSVG_12'),      // androidSVG
 //        'com.caverock:androidsvg:1.2.2-beta-1',
             project(path: ':money'),
-            'com.cloudrail:cloudrail-si-android:2.6.1'
-            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+            'com.cloudrail:cloudrail-si-android:2.6.7'
+            ,'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             // When updating the support lib, update the overrides in the main build script and elsewhere.
             // https://developer.android.com/topic/libraries/support-library/revisions.html
-            , 'com.android.support:support-v4:24.1.1'
-            , 'com.android.support:appcompat-v7:24.1.1'
+            ,'com.android.support:support-v4:24.1.1'
+            ,'com.android.support:appcompat-v7:24.1.1'
             ,'com.android.support:recyclerview-v7:24.1.1'
             ,'com.android.support:cardview-v7:24.1.1',
             'com.android.support:design:24.1.1',    // for Google's floating action button, snackbar...
             'com.android.support:preference-v14:24.1.1',
             'com.android.support:support-annotations:24.1.1',
-//        'com.nispok:snackbar:2.10.10',
             'com.opencsv:opencsv:3.7',
             'net.objecthunter:exp4j:0.4.7',
-            'com.github.gabrielemariotti.changeloglib:changelog:2.1.0',
-            'commons-io:commons-io:2.5'
-            , 'org.apache.commons:commons-lang3:3.4'
-            // Limited to this version. The next one introduces a bug: https://github.com/afollestad/material-dialogs/issues/1122
+            'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
+            ,'commons-io:commons-io:2.5'
+            ,'org.apache.commons:commons-lang3:3.4'
             ,'com.afollestad.material-dialogs:core:0.8.6.1'
 //            ,'com.afollestad.material-dialogs:commons:0.8.6.1'
             ,'com.melnykov:floatingactionbutton:1.3.0'
