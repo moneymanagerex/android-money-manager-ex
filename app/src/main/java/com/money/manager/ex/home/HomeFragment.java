@@ -292,6 +292,7 @@ public class HomeFragment
                             MoneyManagerApplication.getInstanceApp().setUserName(username);
                         }
                     }
+                    data.close();
                 }
                 EventBus.getDefault().post(new UsernameLoadedEvent());
                 break;
@@ -303,6 +304,8 @@ public class HomeFragment
                     ExceptionHandler handler = new ExceptionHandler(getContext(), this);
                     handler.handle(e, "rendering account list");
                 }
+
+                data.close();
 
                 // set total for accounts in the main Drawer.
                 EventBus.getDefault().post(new AccountsTotalLoadedEvent(txtTotalAccounts.getText().toString()));
