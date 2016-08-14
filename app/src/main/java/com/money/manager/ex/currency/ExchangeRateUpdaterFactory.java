@@ -39,9 +39,9 @@ public class ExchangeRateUpdaterFactory {
         QuoteProviders provider = settings.getExchangeRateProvider();
 
         switch (provider) {
-            case Morningstar:
-                updater = new MorningstarPriceUpdater(context);
-                break;
+//            case Morningstar:
+//                updater = new MorningstarPriceUpdater(context);
+//                break;
             case YahooYql:
                 //updater = new YqlSecurityPriceUpdater(context, feedback);
                 updater = new YqlSecurityPriceUpdaterRetrofit(context);
