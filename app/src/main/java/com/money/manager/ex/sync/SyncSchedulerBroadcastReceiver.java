@@ -40,6 +40,8 @@ import org.joda.time.DateTime;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import timber.log.Timber;
+
 /**
  * Schedules the periodic alarm/heartbeat that triggers synchronization.
  * Run from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
@@ -86,14 +88,13 @@ public class SyncSchedulerBroadcastReceiver
 
         DateTime now = DateTime.now();
 
-        if (BuildConfig.DEBUG) {
-            Log.d(this.getClass().getSimpleName(),
-                    "Start at: " + now.toString(Constants.ISO_DATE_FORMAT)
-                            + " and repeats every: " + minute + " minutes");
-        }
+        Timber.d("Start at: %s and repeats every: %s minutes",
+                now.toString(Constants.ISO_DATE_FORMAT), minute);
+
+        int secondsInMinute = 60;
 
         // Schedule alarm for synchronization
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, now.toDateTime().getMillis(),
-                minute * 60 * 1000, pendingIntent);
+                minute * secondsInMinute * 1000, pendingIntent);
     }
 }
