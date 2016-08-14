@@ -164,6 +164,7 @@ public class MorningstarPriceUpdater
                         setProgress(mCounter);
 
                         // todo: update price in the UI?
+                        // todo: remove the progress bar in that case.
 
 //                        Timber.d("processed %s", event.symbol);
                     }

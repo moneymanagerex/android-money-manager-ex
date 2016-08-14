@@ -15,14 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//plugins {
-//    id "me.tatarka.retrolambda" version "3.3.0-beta4"
-//}
-
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -32,7 +27,7 @@ android {
         applicationId "com.money.manager.ex"
         minSdkVersion 15 // 4.0
         targetSdkVersion 24
-        versionCode 880
+        versionCode 881
         versionName '2016.08.14'
 
         multiDexEnabled true
