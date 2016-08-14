@@ -33,6 +33,9 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.core.ioc.DaggerMmexComponent;
+import com.money.manager.ex.core.ioc.MmexComponent;
+import com.money.manager.ex.core.ioc.MmexModule;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
@@ -54,6 +57,7 @@ import java.io.File;
 import java.util.Locale;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * This class extends Application and implements all the methods common in the
@@ -71,6 +75,7 @@ public class MoneyManagerApplication
     private static final String LOGCAT = "MoneyManagerApplication";
 
     private static MoneyManagerApplication myInstance;
+    // todo: remove this static instance!
     private static SharedPreferences appPreferences;
     private static float mTextSize;
     private static String userName = "";
@@ -190,18 +195,18 @@ public class MoneyManagerApplication
 
     // Overrides.
 
+    private MmexComponent mainComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // Set custom default handler for unhandled exceptions. Also set in BaseFragmentActivity.
-//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
 
         // save instance of application
         myInstance = this;
 
         if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
 
+        // todo: move this to dbutils
         // create the default folder for the database.
         Core core = new Core(getApplicationContext());
         core.getExternalStorageDirectory();
@@ -227,6 +232,15 @@ public class MoneyManagerApplication
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build();
         Fabric.with(this, crashlyticsKit); // new Crashlytics()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+//        else {
+//            Timber.plant(new Timber. CrashReportingTree());
+//        }
+
+        mainComponent = DaggerMmexComponent.builder().mmexModule(new MmexModule(this)).build();
     }
 
     @Override
@@ -277,6 +291,9 @@ public class MoneyManagerApplication
         return locale;
     }
 
+    public static MmexComponent getComponent(Context context) {
+        return ((MoneyManagerApplication) context.getApplicationContext()).mainComponent;
+    }
     public boolean setUserName(String userName) {
         return this.setUserName(userName, false);
     }
@@ -330,11 +347,24 @@ public class MoneyManagerApplication
         return 0;
     }
 
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    public boolean isUriAvailable(Context context, Intent intent) {
+        return context.getPackageManager().resolveActivity(intent, 0) != null;
+    }
+
+    // Private
+
     private double getSummaryAccountsInternal(Context context) {
         double curTotal = 0;
 
         LookAndFeelSettings settings = new AppSettings(context)
-            .getLookAndFeelSettings();
+                .getLookAndFeelSettings();
         // compose whereClause
         String where = "";
         // check if show only open accounts
@@ -361,40 +391,4 @@ public class MoneyManagerApplication
 
         return curTotal;
     }
-
-    /**
-     * @return the userName
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    public boolean isUriAvailable(Context context, Intent intent) {
-        return context.getPackageManager().resolveActivity(intent, 0) != null;
-    }
-
-    // Private
-
-//    /**
-//     * Gets the default {@link Tracker} for this {@link Application}.
-//     * @return tracker
-//     */
-//    synchronized public Tracker getDefaultTracker() {
-//        if (mTracker == null) {
-//            //initTrackers();
-//            //AnalyticsTrackers.initialize(this);
-//
-//            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-//            mTracker = analytics.newTracker(R.xml.app_tracker);
-//
-//            Core core = new Core(this);
-//            mTracker.setAppVersion(core.getAppVersionName());
-//
-//            // Enable reporting uncaught exceptions.
-//            mTracker.enableExceptionReporting(true);
-//        }
-//
-//        return mTracker;
-//    }
-
 }

@@ -91,7 +91,7 @@ public class MmexOpenHelper
      * Constructor. This is where the database path gets set.
      * @param context Current context.
      */
-    private MmexOpenHelper(Context context) {
+    public MmexOpenHelper(Context context) {
         super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseVersion);
         this.mContext = context;
 

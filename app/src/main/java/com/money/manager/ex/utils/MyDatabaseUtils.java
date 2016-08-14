@@ -116,7 +116,7 @@ public class MyDatabaseUtils {
         try {
             result = createDatabase_Internal(filename);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "creating database");
         }
         return result;
@@ -158,7 +158,7 @@ public class MyDatabaseUtils {
         try {
             scriptTables = getAllTableNamesFromGenerationScript();
         } catch (IOException | SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(ex, "reading table names from generation script");
 
             return false;
@@ -190,7 +190,7 @@ public class MyDatabaseUtils {
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
-        String location = MoneyManagerApplication.getDatabaseDirectory(mContext);
+        String location = MoneyManagerApplication.getDatabaseDirectory(getContext());
         String newFilePath = location + File.separator + filename;
 
         // Create db file.
@@ -203,11 +203,11 @@ public class MyDatabaseUtils {
         }
 
         // close connection
-        MmexOpenHelper.getInstance(mContext).close();
+        MmexOpenHelper.getInstance(getContext()).close();
 
         // change database
         // store as the default database in settings
-        AppSettings settings = new AppSettings(mContext);
+        AppSettings settings = new AppSettings(getContext());
         boolean pathSet = settings.getDatabaseSettings().setDatabasePath(newFilePath);
         if (!pathSet) {
             Log.e(this.getClass().getSimpleName(), "Error setting the database path.");

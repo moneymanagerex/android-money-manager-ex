@@ -284,7 +284,7 @@ public class Core {
      * @return last payee used
      */
     public Payee getLastPayeeUsed() {
-        MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
+        MmexOpenHelper helper = MmexOpenHelper.getInstance(getContext());
         Payee payee = null;
 
         String sql =
