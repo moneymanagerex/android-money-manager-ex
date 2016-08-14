@@ -117,8 +117,6 @@ public class AllDataListFragment
     public static final String KEY_ARGUMENTS_WHERE = "SearchResultFragment:ArgumentsWhere";
     public static final String KEY_ARGUMENTS_SORT = "SearchResultFragment:ArgumentsSort";
 
-    private static final String LOGCAT = AllDataListFragment.class.getSimpleName();
-
     public int AccountId = Constants.NOT_SET;
     private LinearLayout footer;
     private LoaderManager.LoaderCallbacks<Cursor> mSearResultFragmentLoaderCallbacks;
@@ -383,7 +381,8 @@ public class AllDataListFragment
                 }
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            ExceptionHandler handler = new ExceptionHandler(getActivity());
+            handler.handle(e, "stopping the all-data fragment");
         }
     }
 

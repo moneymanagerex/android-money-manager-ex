@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 public class FullAssetAllocationActivity
     extends AppCompatActivity {
@@ -191,7 +192,7 @@ public class FullAssetAllocationActivity
     public void onEvent(AssetAllocationItemLongPressedEvent event) {
         // show context menu.
         // todo openContextMenu();
-        if (BuildConfig.DEBUG) Log.d("test", "show the context menu here");
+        Timber.d("show the context menu here");
     }
 
     /*

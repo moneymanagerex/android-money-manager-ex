@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ExceptionHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,7 +43,6 @@ import java.util.HashMap;
  */
 public class MmexFileUtils {
 
-    private static final String LOGCAT = MmexFileUtils.class.getSimpleName();
     private static final int BUFFER_DIMENSION = 128;
     // hash map to optimize application
     private static HashMap<Integer, String> rawHashMap = new HashMap<>();
@@ -73,24 +73,25 @@ public class MmexFileUtils {
         // take input stream
         InputStream is = context.getResources().openRawResource(resId);
         if (is != null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[BUFFER_DIMENSION];
             int numRead = 0;
             try {
                 while ((numRead = is.read(buffer)) >= 0) {
-                    baos.write(buffer, 0, numRead);
+                    outputStream.write(buffer, 0, numRead);
                 }
                 // convert to string
-                result = new String(baos.toByteArray());
+                result = new String(outputStream.toByteArray());
             } catch (IOException e) {
-                Log.e(LOGCAT, e.getMessage());
-                e.printStackTrace();
+                ExceptionHandler handler = new ExceptionHandler(context);
+                handler.handle(e, "loadRaw");
             } finally {
-                if (baos != null) {
+                if (outputStream != null) {
                     try {
-                        baos.close();
+                        outputStream.close();
                     } catch (IOException e) {
-                        Log.e(LOGCAT, e.getMessage());
+                        ExceptionHandler handler = new ExceptionHandler(context);
+                        handler.handle(e, "close byte array");
                     }
                 }
             }

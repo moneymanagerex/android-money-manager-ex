@@ -334,12 +334,12 @@ public class SyncManager {
         return true;
     }
 
-    public boolean isSyncEnabled() {
+    boolean isSyncEnabled() {
         // The sync needs to be enabled.
         return getPreferences().isSyncEnabled();
     }
 
-    public CloudMetaData loadMetadata(String remotePath) {
+    CloudMetaData loadMetadata(String remotePath) {
         CloudMetaData result = null;
         try {
             result = getProvider().getMetadata(remotePath);
@@ -378,7 +378,7 @@ public class SyncManager {
         }).start();
     }
 
-    public void logout() {
+    void logout() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -407,7 +407,7 @@ public class SyncManager {
     /**
      * Resets the synchronization preferences and cache.
      */
-    public void resetPreferences() {
+    void resetPreferences() {
         getPreferences().clear();
 
         // reset provider cache
@@ -415,7 +415,7 @@ public class SyncManager {
         storePersistent();
     }
 
-    public void scheduleUpload() {
+    private void scheduleUpload() {
         // Create task/runnable for synchronization.
         if (mRunSyncRunnable == null) {
             mRunSyncRunnable = new Runnable() {
@@ -448,7 +448,7 @@ public class SyncManager {
      * the synchronization.
      * @param file file name
      */
-    public void saveLastModifiedDate(CloudMetaData file) {
+    private void saveLastModifiedDate(CloudMetaData file) {
         DateTime date = new DateTime(file.getModifiedAt());
 
         if (BuildConfig.DEBUG) {
@@ -495,11 +495,11 @@ public class SyncManager {
         getPreferences().set(R.string.pref_remote_file, value);
     }
 
-    public void setSyncInterval(int minutes) {
+    void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
     }
 
-    public void startSyncService() {
+    void startSyncService() {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
@@ -551,7 +551,7 @@ public class SyncManager {
         invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
     }
 
-    public void triggerDownload() {
+    void triggerDownload() {
         invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
     }
 

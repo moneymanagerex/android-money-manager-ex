@@ -320,7 +320,7 @@ public class CheckingTransactionEditActivity
         mCommonFunctions.initNotesControls();
     }
 
-    private boolean loadCheckingAccount(int transId) {
+    private boolean loadTransaction(int transId) {
         AccountTransactionRepository repo = new AccountTransactionRepository(this);
         AccountTransaction tx = repo.load(transId);
         if (tx == null) return false;
@@ -418,11 +418,11 @@ public class CheckingTransactionEditActivity
 
                 switch (mIntentAction) {
                     case Intent.ACTION_EDIT:
-                        loadCheckingAccount(transactionId);
+                        loadTransaction(transactionId);
                         break;
                     case Intent.ACTION_PASTE:
                         // duplicate transaction
-                        loadCheckingAccount(transactionId);
+                        loadTransaction(transactionId);
                         duplicateTransaction();
                         break;
                     case Intent.ACTION_INSERT:

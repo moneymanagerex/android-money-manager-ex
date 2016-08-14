@@ -17,10 +17,13 @@
 package com.money.manager.ex.domainmodel;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -75,6 +78,15 @@ public class AccountTransaction
 
     public AccountTransaction(ContentValues contentValues) {
         super(contentValues);
+    }
+
+    @Override
+    public void loadFromCursor(Cursor c) {
+        super.loadFromCursor(c);
+
+        // Reload all money values.
+        DatabaseUtils.cursorDoubleToCursorValues(c, TRANSAMOUNT, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, TOTRANSAMOUNT, this.contentValues);
     }
 
     public Integer getId() {

@@ -60,7 +60,6 @@ import timber.log.Timber;
 public class MmexOpenHelper
     extends SQLiteOpenHelper {
 
-    private static final String LOGCAT = MmexOpenHelper.class.getSimpleName();
     /*
        The version corresponds to the user version in info table, used by the desktop app.
      */
@@ -76,7 +75,7 @@ public class MmexOpenHelper
      */
     public static synchronized MmexOpenHelper getInstance(Context context) {
         if (mInstance == null) {
-            Log.v(LOGCAT, "MmexOpenHelper.getInstance()");
+            Timber.v("MmexOpenHelper.getInstance()");
 
             mInstance = new MmexOpenHelper(context.getApplicationContext());
         }
@@ -110,7 +109,6 @@ public class MmexOpenHelper
 //    @Override
 //    public void onConfigure(SQLiteDatabase db) {
 //        super.onConfigure(db);
-//        Log.v(LOGCAT, "event onConfigure( )");
 //        db.rawQuery("PRAGMA journal_mode=OFF", null).close();
 //    }
 
@@ -123,10 +121,6 @@ public class MmexOpenHelper
         Timber.d("execute onCreate method");
 
         executeRawSql(db, R.raw.tables_v1);
-
-//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "db version after creation of tables: " + db.getVersion());
-        // Execute update scripts?
-//        updateDatabase(db, 0, databaseVersion);
 
         try {
             initDatabase(db);
@@ -141,7 +135,6 @@ public class MmexOpenHelper
         super.onOpen(db);
 
 //        int version = db.getVersion();
-//        if (BuildConfig.DEBUG) Log.d(LOGCAT, "opening db version: " + version);
     }
 
     @Override
@@ -359,8 +352,7 @@ public class MmexOpenHelper
                             int updated = database.update(CategoryRepository.tableName, contentValues,
                                     Category.CATEGID + "=?", new String[] { Integer.toString(categoryId) });
                             if (updated <= 0) {
-                                Log.e(LOGCAT, "updating " + contentValues.toString() +
-                                                "for category " + Integer.toString(categoryId));
+                                Timber.e("updating %s for category %s", contentValues.toString(), Integer.toString(categoryId));
                             }
                         }
                     }
@@ -375,7 +367,8 @@ public class MmexOpenHelper
                         int updated = database.update(SubcategoryRepository.tableName, contentValues,
                                 Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
                         if (updated <= 0) {
-                            Log.e(LOGCAT, "updating " + contentValues.toString() +
+                            // todo: handle logging better.
+                            Log.e(this.getClass().getSimpleName(), "updating " + contentValues.toString() +
                                     "for subcategory " + Integer.toString(subCategoryId));
                         }
                     }

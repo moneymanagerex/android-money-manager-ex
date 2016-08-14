@@ -72,8 +72,6 @@ import timber.log.Timber;
 public class MoneyManagerApplication
     extends MultiDexApplication {
 
-    private static final String LOGCAT = "MoneyManagerApplication";
-
     private static MoneyManagerApplication myInstance;
     // todo: remove this static instance!
     private static SharedPreferences appPreferences;
@@ -125,7 +123,7 @@ public class MoneyManagerApplication
         DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
 
         String databasePath = dbSettings.getDatabasePath();
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "database setting: " + databasePath);
+        Timber.d("database path: %s", databasePath);
 
         if (!StringUtils.isEmpty(databasePath)) {
             // Use the db path stored in the preferences.
@@ -188,7 +186,8 @@ public class MoneyManagerApplication
                 Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG)
                         .show();
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(context);
+                handler.handle(e, "showing the current database path");
             }
         }
     }
@@ -204,7 +203,7 @@ public class MoneyManagerApplication
         // save instance of application
         myInstance = this;
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application created");
+        Timber.d("Application created");
 
         // todo: move this to dbutils
         // create the default folder for the database.
@@ -249,7 +248,7 @@ public class MoneyManagerApplication
 
         // on terminate is never called
         // ref: http://stackoverflow.com/questions/15162562/application-lifecycle
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Application terminated");
+        Timber.d("Application terminated");
     }
 
     @Override

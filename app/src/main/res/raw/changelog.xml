@@ -16,8 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.07.29.879">
+    <changelogversion versionName="">
         <changelogtext>Adding a file picker for opening a database.</changelogtext>
+        <changelogtext>Correcting the auto-sync trigger.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.07.28.878">
         <changelogtext>Restoring charts library to the last stable version.</changelogtext>
