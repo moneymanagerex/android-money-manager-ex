@@ -190,6 +190,12 @@ dependencies {
             ,'io.reactivex:rxjava:1.1.9'
             ,'com.squareup.sqlbrite:sqlbrite:0.7.0'
             ,'com.jakewharton.timber:timber:4.2.0'
+            ,'com.jakewharton.rxbinding:rxbinding:0.4.0'    // RxBinding
+//            ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
+//            ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+//            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
+//            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
+//            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
@@ -200,6 +206,9 @@ dependencies {
     // Dagger 2
     compile 'com.google.dagger:dagger:2.6'
     apt 'com.google.dagger:dagger-compiler:2.6'
+    // ButterKnife
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
 
     testCompile(
             'commons-io:commons-io:2.5',

@@ -23,60 +23,33 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.money.manager.ex.common.BaseFragmentActivity;
 //import com.money.manager.ex.inapp.util.IabHelper;
 import com.money.manager.ex.common.WebViewActivity;
+import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.core.HttpMethods;
 import com.money.manager.ex.view.RobotoButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.functions.Action1;
+
 public class DonateActivity
-        extends BaseFragmentActivity {
-
-//    private final String PURCHASED_SKU = "DonateActivity:Purchased_Sku";
-//    private final String PURCHASED_TOKEN = "DonateActivity:Purchased_Token";
-
-    // List of valid SKUs
-//    ArrayList<String> skus = new ArrayList<String>();
-    // purchase
-//    private String purchasedSku = "";
-//    private String purchasedToken = "";
-    // Helper In-app Billing
-//    private IabHelper mIabHelper;
+    extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.donate_activity);
-
-        // Set up SKUs
-//        if (false && BuildConfig.DEBUG) {
-//            skus.add("android.test.purchased");
-//            skus.add("android.test.canceled");
-//            skus.add("android.test.refunded");
-//            skus.add("android.test.item_unavailable");
-//            // my items for test
-//            skus.add("com.android.money.manager.ex.test.1");
-//        }
-//        // add SKU application
-//        skus.add("android.money.manager.ex.donations.small");
+        ButterKnife.bind(this);
 
         // set enable return
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // handle clicking on direct donation text
-        setupDirectDonationButton();
-
-        setupHomepageButton();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (!mIabHelper.handleActivityResult(requestCode, resultCode, data))
-            super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -91,74 +64,41 @@ public class DonateActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        try {
-//            if (mIabHelper != null)
-//                mIabHelper.dispose();
-//            mIabHelper = null;
-//        } catch (Exception e) {
-//            Log.e(LOGCAT, e.getMessage());
-//        }
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-//        purchasedSku = savedInstanceState.containsKey(PURCHASED_SKU) ? savedInstanceState.getString(PURCHASED_SKU) : "";
-//        purchasedToken = savedInstanceState.containsKey(PURCHASED_TOKEN) ? savedInstanceState.getString(PURCHASED_TOKEN) : "";
+    // UI Event Handlers
+
+    @OnClick(R.id.donateButton)
+    protected void onDirectDonationClick() {
+        // paypal.me/mmexAndroid
+
+        // parameters
+        HashMap<String, String> values = new HashMap<>();
+        values.put("cmd", "_s-xclick");
+        values.put("hosted_button_id", "5U7RXC25C9UES");
+        values.put("lc", "US");
+
+        // Start web view and open donation form.
+        Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
+        intent.putExtra(WebViewActivity.URL, "https://www.paypal.com/cgi-bin/webscr");
+        intent.putExtra(WebViewActivity.METHOD, HttpMethods.POST);
+        intent.putExtra(WebViewActivity.POST_VALUES, values);
+
+        intent.setAction(Intent.ACTION_DEFAULT);
+        startActivity(intent);
     }
 
-    @Override
-    protected void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putString(PURCHASED_SKU, purchasedSku);
-//        outState.putString(PURCHASED_TOKEN, purchasedToken);
-    }
+    @OnClick(R.id.homepageButton)
+    protected void onHomepageClick() {
+        String siteUrl = "http://android.moneymanagerex.org/";
 
-    private void setupDirectDonationButton() {
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // paypal.me/mmexAndroid
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl));
 
-                // parameters
-                HashMap<String, String> values = new HashMap<>();
-                values.put("cmd", "_s-xclick");
-                values.put("hosted_button_id", "5U7RXC25C9UES");
-                values.put("lc", "US");
-
-                // Start web view and open donation form.
-                Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
-                intent.putExtra(WebViewActivity.URL, "https://www.paypal.com/cgi-bin/webscr");
-                intent.putExtra(WebViewActivity.METHOD, HttpMethods.POST);
-                intent.putExtra(WebViewActivity.POST_VALUES, values);
-
-                intent.setAction(Intent.ACTION_DEFAULT);
-                startActivity(intent);
-            }
-        };
-
-        RobotoButton button = (RobotoButton) findViewById(R.id.donateButton);
-        if (button != null) {
-            button.setOnClickListener(listener);
-        }
-    }
-
-    private void setupHomepageButton() {
-        final String siteUrl = "http://android.moneymanagerex.org/";
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteUrl));
-                startActivity(browserIntent);
-            }
-        };
-//        directDonationLink.setOnClickListener(listener);
-
-        // Homepage Button
-        RobotoButton button = (RobotoButton) findViewById(R.id.homepageButton);
-        if (button != null) {
-            button.setOnClickListener(listener);
+        try {
+            startActivity(browserIntent);
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(this);
+            handler.handle(e, "opening the homepage in a browser");
         }
     }
 }
