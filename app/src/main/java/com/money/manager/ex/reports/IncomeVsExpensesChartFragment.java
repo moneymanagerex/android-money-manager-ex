@@ -43,8 +43,9 @@ import com.money.manager.ex.core.UIHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IncomeVsExpensesChartFragment extends Fragment implements
-        OnChartValueSelectedListener {
+public class IncomeVsExpensesChartFragment
+    extends Fragment
+    implements OnChartValueSelectedListener {
 
 //    private static final String LOGCAT = IncomeVsExpensesChartFragment.class.getSimpleName();
 
