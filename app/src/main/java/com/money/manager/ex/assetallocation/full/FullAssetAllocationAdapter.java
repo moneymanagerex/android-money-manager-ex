@@ -81,7 +81,11 @@ public class FullAssetAllocationAdapter
 
         holder.assetClassTextView.setText(item.assetClass.getName());
         holder.setAllocationTextView.setText(item.assetClass.getAllocation().toString());
-        holder.currentAllocationTextView.setText(item.assetClass.getCurrentAllocation().toString());
+
+        // Current Allocation
+        Money currentAllocation = item.assetClass.getCurrentAllocation();
+        String currentAllocationString = currentAllocation == null ? "" : currentAllocation.toString();
+        holder.currentAllocationTextView.setText(currentAllocationString);
 
         // % diff
         Money diff = item.assetClass.getDiffAsPercentOfSet();
