@@ -42,6 +42,8 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * The background service that synchronizes the database file.
  * It is being invoked by the timer.
@@ -178,9 +180,7 @@ public class SyncService
                 notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
             }
         };
-        if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, "Download file from Dropbox. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.getPath());
-        }
+        Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
         onDownloadHandler.onPreExecute();
         sendMessage(SyncMessages.STARTING_DOWNLOAD);

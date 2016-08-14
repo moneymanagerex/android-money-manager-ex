@@ -33,7 +33,7 @@ import com.money.manager.ex.core.ExceptionHandler;
 /**
  */
 public class SettingsFragment
-        extends PreferenceFragment {
+    extends PreferenceFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,7 @@ public class SettingsFragment
             });
         }
 
+        // Synchronisation
         final Preference dropboxPreference = findPreference(getString(R.string.pref_dropbox_how_it_works));
         if (dropboxPreference != null) {
             dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

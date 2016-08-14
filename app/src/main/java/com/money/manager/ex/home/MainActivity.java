@@ -715,19 +715,19 @@ public class MainActivity
         System.exit(1);
     }
 
-    private void shutdownWithPrompt() {
-        new MaterialDialog.Builder(this)
-                .content(R.string.app_restart)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        shutdownApp();
-                    }
-                })
-                .neutralText(android.R.string.cancel)
-                .show();
-    }
+//    private void shutdownWithPrompt() {
+//        new MaterialDialog.Builder(this)
+//                .content(R.string.app_restart)
+//                .positiveText(android.R.string.ok)
+//                .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        shutdownApp();
+//                    }
+//                })
+//                .neutralText(android.R.string.cancel)
+//                .show();
+//    }
 
     private void startMainActivity() {
         // Don't reuse the same Intent. It loops when called after Dropbox download.
@@ -1023,7 +1023,7 @@ public class MainActivity
     }
 
     private void changeDatabase(String dbFilePath, String password) {
-        String currentDatabase = MoneyManagerApplication.getDatabasePath(this);
+//        String currentDatabase = MoneyManagerApplication.getDatabasePath(this);
 
         Core core = new Core(getApplicationContext());
         core.changeDatabase(dbFilePath, password);
@@ -1033,14 +1033,14 @@ public class MainActivity
             this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
 
-        if (currentDatabase.contentEquals(dbFilePath)) {
-            // just restart the main Activity?
+//        if (currentDatabase.contentEquals(dbFilePath)) {
+//            // just restart the main Activity?
             setRestartActivity(true);
             restartActivity();
-        } else {
-            // db changed, restart the app.
-            shutdownWithPrompt();
-        }
+//        } else {
+//            // db changed, restart the app.
+//            shutdownWithPrompt();
+//        }
     }
 
 //    private void displayDefaultFragment() {

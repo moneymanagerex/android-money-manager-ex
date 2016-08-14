@@ -303,7 +303,7 @@
             android:label="@string/database" />
         <activity
             android:name=".settings.SyncPreferencesActivity"
-            android:label="@string/dropbox" />
+            android:label="@string/synchronization" />
         <activity android:name=".PasscodeActivity">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
@@ -327,9 +327,9 @@
         <activity
             android:name=".DonateActivity"
             android:label="@string/donate" />
-        <activity
-            android:name=".dropbox.DropboxBrowserActivity"
-            android:label="@string/dropbox_select_file" />
+        <!--<activity-->
+            <!--android:name=".dropbox.DropboxBrowserActivity"-->
+            <!--android:label="@string/dropbox_select_file" />-->
         <activity
             android:name=".HelpActivity"
             android:label="@string/help">
