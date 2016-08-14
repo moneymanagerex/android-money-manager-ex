@@ -90,10 +90,8 @@ public class FullAssetAllocationAdapter
         // % diff
         Money diff = item.assetClass.getDiffAsPercentOfSet();
         holder.allocationDiffTextView.setText(diff.toString());
-        // first reset the text color
-        int defaultTextColor = holder.allocationDiffTextView.getTextColors().getDefaultColor();
-        holder.allocationDiffTextView.setTextColor(defaultTextColor);
-        // then color red/green if under/over the threshold.
+
+        // color red/green if under/over the threshold.
         if (diff.toDouble() >= this.differenceThreshold.toDouble()) {
             holder.allocationDiffTextView.setTextColor(Color.GREEN);
         }
@@ -112,6 +110,14 @@ public class FullAssetAllocationAdapter
 //        } else {
 //            holder.valuetPanel.setVisibility(View.GONE);
 //        }
+    }
+
+    @Override
+    public void onViewRecycled(FullAssetClassViewHolder holder) {
+        // reset the text color for diff
+        int defaultTextColor = holder.allocationDiffTextView.getTextColors().getDefaultColor();
+        holder.allocationDiffTextView.setTextColor(defaultTextColor);
+
     }
 
     @Override
