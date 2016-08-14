@@ -352,6 +352,10 @@ public class HomeFragment
                         barExpenses.setProgress((int) Math.abs(expenses));
                     }
                 }
+                // Close the cursor.
+                if (data != null && !data.isClosed()) {
+                    data.close();
+                }
                 break;
         }
     }
