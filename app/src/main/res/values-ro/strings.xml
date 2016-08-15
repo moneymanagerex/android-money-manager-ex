@@ -552,20 +552,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Alocarea Activelor</string>
   <string name="asset_classes_empty">Nu au fost definite clasele de active. Pentru a crea una, apasă butonul verde plus.</string>
-  <string name="title_activity_asset_class_edit">Activitatea de Editare a Claselor de Active</string>
   <string name="asset_class_name">Nume Clasă de Active</string>
   <string name="allocation">Alocare</string>
   <string name="current_allocation">Alocarea Curentă</string>
   <string name="move_up">Mută Sus</string>
   <string name="move_down">Mută jos</string>
   <string name="securities">Valori Mobiliare</string>
-  <string name="title_activity_security_list">Activitate Lista de Securitate</string>
   <string name="no_records_found_create">Nu a fost găsită nici o înregistrare. Pentru a crea una, apasă butonul verde plus.</string>
   <string name="current_value">Valoarea Curentă</string>
   <string name="current">Curent</string>
   <string name="parent">Sursă</string>
   <string name="name">Nume</string>
-  <string name="title_activity_asset_allocation_picker">Activitate Selector Alocare Active</string>
   <string name="stock">Acțiuni</string>
   <string name="all_accounts">Toate conturile</string>
   <string name="records">înregistrări</string>

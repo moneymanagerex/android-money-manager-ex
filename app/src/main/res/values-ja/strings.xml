@@ -137,7 +137,7 @@
   <string name="transfer_amount">振替金額</string>
   <string name="transaction_type">取引の種類</string>
   <string name="transaction_status">状態</string>
-  <string name="withdrawal">取消</string>
+  <string name="withdrawal">払戻</string>
   <string name="db_checking_insert_failed">取引の挿入に失敗しました</string>
   <string name="db_checking_update_failed">取引の更新に失敗しました</string>
   <string name="delete_transaction">取引を削除</string>
@@ -239,6 +239,8 @@
   <string name="notification_repeating_transaction_expired">期限切れの定期的な取引があります</string>
   <string name="notification_click_to_check_repeating_transaction">タッチして期限切れの取引を確認</string>
   <string name="num_repeating_transaction_expired">%1$d の定期的な取引が期限切れ</string>
+  <string name="skip">スキップ</string>
+  <string name="enter">入力</string>
   <!-- 20121121 -->
   <string name="send_feedback">フィードバックを送信</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -455,7 +457,7 @@
   <string name="tutorial_global_1">複数の通貨および言語。オープン ソース。私たちの翻訳チームに参加してください。</string>
   <string name="tutorial_sync_1">マルチプラットフォームのサポート、Dropbox 経由の同期。データを他のアプリケーションにインポートおよびエクスポート。</string>
   <string name="transactions">取引</string>
-  <string name="tutorial_transactions_1">預金の払出、振替。定期的な取引と通知。</string>
+  <string name="tutorial_transactions_1">預金、払戻、振替。定期的な取引と通知。</string>
   <string name="split_category">-分割カテゴリー-</string>
   <string name="title_activity_currency_chart">通貨為替レート表</string>
   <string name="sort_by_ascending">年と月で昇順に並べ替え</string>
@@ -467,6 +469,8 @@
   <string name="custom_dates">カスタム日付</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">ダッシュ ボード上のアカウントから調整済の金額を表示しません。</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">調整済金額を非表示</string>
+  <string name="pref_transaction_sort_by_type_summary">取引の種類 (預金、振替、払戻) で日々の取引を整理します</string>
+  <string name="pref_transaction_sort_by_type_title">取引を種類で並び替え</string>
   <string name="warning">警告</string>
   <string name="no_transfer_splits">振替に切り替える選択をしましたが、取引に分割カテゴリーがあります。分割カテゴリーの削除を続行しますか?</string>
   <string name="qif_export">Qif エクスポート</string>
@@ -564,20 +568,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">資産の割当て</string>
   <string name="asset_classes_empty">資産分類が定義されていません。作成するには、緑のプラスボタンをタップします。</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">資産分類名</string>
   <string name="allocation">割当て</string>
   <string name="current_allocation">現在の割当て</string>
   <string name="move_up">上に移動</string>
   <string name="move_down">下に移動</string>
   <string name="securities">証券</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">レコードが見つかりません。作成するには緑のプラスボタンをタップします。</string>
   <string name="current_value">現在価値</string>
   <string name="current">現在</string>
   <string name="parent">親</string>
   <string name="name">名前</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">株式</string>
   <string name="all_accounts">すべてのアカウント</string>
   <string name="records">レコード</string>
@@ -627,6 +628,7 @@
   <string name="portfolio">ポートフォリオ</string>
   <string name="change_provider">プロバイダーの変更</string>
   <string name="quote_provider">プロバイダーの引用</string>
+  <string name="exchange_rate_provider">為替レート プロバイダー</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
@@ -676,4 +678,6 @@
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android のフォルダーは空です。既に MoneyManagerEx を使用している場合は、コンピューターでこのフォルダーにデータベースをコピーしてから、更新してください。</string>
   <string name="dropbox_select_file">Dropbox からファイルを選択</string>
   <!-- Errors -->
+  <string name="error_parsing_value">入力値の解析時にエラー</string>
+  <string name="remote_file_not_found">リモート ファイルが見つかりません</string>
 </resources>

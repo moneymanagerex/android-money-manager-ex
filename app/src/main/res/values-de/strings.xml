@@ -548,20 +548,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Assetzuordnung</string>
   <string name="asset_classes_empty">Keine Assetklassen festgelegt. Um eine zu erstellen, tippen Sie auf die grüne plus -Taste.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">Name der Assetklasse</string>
   <string name="allocation">Zuordnungen</string>
   <string name="current_allocation">Aktuelle Aufteilung</string>
   <string name="move_up">Nach oben verschieben</string>
   <string name="move_down">Nach unten verschieben</string>
   <string name="securities">Wertpapiere</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">Keine Einträge gefunden. Um einen Eintrag zu erstellen. drücken Sie den grünen Plus-Knopf.</string>
   <string name="current_value">aktueller Wert</string>
   <string name="current">Momentan</string>
   <string name="parent">Elternelement</string>
   <string name="name">Name</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">Bestand</string>
   <string name="all_accounts">Alle Konten</string>
   <string name="records">Aufzeichnungen</string>

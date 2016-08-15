@@ -560,7 +560,6 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Распределение активов</string>
   <string name="asset_classes_empty">Классы активов не были определены. Чтобы его создать, нажмите на зеленую кнопку.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">Название класса активов</string>
   <string name="allocation">Распределение</string>
   <string name="current_allocation">Текущее распределение</string>

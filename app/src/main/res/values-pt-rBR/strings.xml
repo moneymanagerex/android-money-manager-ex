@@ -560,20 +560,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Alocação de ativos</string>
   <string name="asset_classes_empty">Nehuma classe de ativos foi definida. Para criar uma, toque o botão + verde.</string>
-  <string name="title_activity_asset_class_edit">AtivosClasseEditarAtividade</string>
   <string name="asset_class_name">Nome da classe de ativos</string>
   <string name="allocation">Alocação</string>
   <string name="current_allocation">Alocação atual</string>
   <string name="move_up">Mover para cima</string>
   <string name="move_down">Mover para baixo</string>
   <string name="securities">Valores mobiliários</string>
-  <string name="title_activity_security_list">SegurançaListaAtividade</string>
   <string name="no_records_found_create">Nenhum registro foi encontrado. Para criar um, toque o botão + verde.</string>
   <string name="current_value">Valor atual</string>
   <string name="current">Atual</string>
   <string name="parent">Pasta superior</string>
   <string name="name">Nome</string>
-  <string name="title_activity_asset_allocation_picker">AtivosAlocaçãoColhedorAtividade</string>
   <string name="stock">Estoque</string>
   <string name="all_accounts">Todas as contas</string>
   <string name="records">registros</string>
@@ -598,8 +595,9 @@
   <string name="copy">Copiar</string>
   <string name="app_restart">O aplicativo será fechado para aplicar todas as alterações. Por favor reinicie.</string>
   <string name="print">Imprimir</string>
-  <string name="save_as_html">Guardar como HTML</string>
-  <string name="no_network">Não existe nenhuma rede disponível.</string>
+  <string name="min_19">Você precisa ter pelo menos a versão 4.4 do Android para imprimir o documento.</string>
+  <string name="save_as_html">Salvar em HTML</string>
+  <string name="no_network">Rede indisponível.</string>
   <!-- Currencies -->
   <string name="currencies">Moedas</string>
   <string name="currencies_used">Moedas, usadas</string>

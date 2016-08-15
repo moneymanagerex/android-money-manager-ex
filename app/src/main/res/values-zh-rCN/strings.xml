@@ -563,20 +563,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">资产配置</string>
   <string name="asset_classes_empty">未定义可用的资产类别。轻触绿色加号按钮可新建一个资产类别。</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">资产类别名称</string>
   <string name="allocation">分配</string>
   <string name="current_allocation">当前分配</string>
   <string name="move_up">向上移动</string>
   <string name="move_down">向下移动</string>
   <string name="securities">证券</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">没有找到记录。轻触绿色加号按钮可新建一个记录。</string>
   <string name="current_value">当前价值</string>
   <string name="current">当前</string>
   <string name="parent">上一级</string>
   <string name="name">名称</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">股票</string>
   <string name="all_accounts">所有账户</string>
   <string name="records">记录</string>

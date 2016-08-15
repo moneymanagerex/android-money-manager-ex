@@ -560,20 +560,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Przydział aktywów</string>
   <string name="asset_classes_empty">Nie zdefiniowano klas aktywów. Aby utworzyć jedną, stuknij zielony znak plus.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">Nazwa klasy aktywów</string>
   <string name="allocation">Przydział</string>
   <string name="current_allocation">Bieżący przydział</string>
   <string name="move_up">Przesuń w górę</string>
   <string name="move_down">Przesuń w dół</string>
   <string name="securities">Zabezpieczenia</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">Nie znaleziono zapisów. Aby utworzyć jeden, stuknij zielony znak plus.</string>
   <string name="current_value">Bieżąca wartość</string>
   <string name="current">Bieżący</string>
   <string name="parent">Nadrzędny</string>
   <string name="name">Nazwa</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">Magazyn</string>
   <string name="all_accounts">Wszystkie konta</string>
   <string name="records">zapisy</string>

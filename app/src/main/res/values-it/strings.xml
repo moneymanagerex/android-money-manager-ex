@@ -239,6 +239,8 @@
   <string name="notification_repeating_transaction_expired">Ci sono operazioni ricorrenti scadute</string>
   <string name="notification_click_to_check_repeating_transaction">Toccare per controllare le operazioni scadute</string>
   <string name="num_repeating_transaction_expired">%1$d operazioni ricorrenti scadute</string>
+  <string name="skip">Ignora</string>
+  <string name="enter">Inserisci</string>
   <!-- 20121121 -->
   <string name="send_feedback">Invia commenti</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -467,6 +469,8 @@
   <string name="custom_dates">Date personalizzate</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Nascondi gli importi riconciliati dai conti nel cruscotto.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Nascondi importi riconciliati</string>
+  <string name="pref_transaction_sort_by_type_summary">Organizza le operazioni giornaliere per tipo (deposito, trasferimento, prelievo)</string>
+  <string name="pref_transaction_sort_by_type_title">Ordina operazioni per Tipo</string>
   <string name="warning">Avvertenza</string>
   <string name="no_transfer_splits">Si è scelto di passare al trasferimento, ma ci sono categorie suddivise nell\'operazione. Vuoi procedere e rimuovere le categorie suddivise?</string>
   <string name="qif_export">Export QIF</string>
@@ -564,20 +568,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Assegnazione del bene</string>
   <string name="asset_classes_empty">Non sono state definite classi dei beni. Per crearne una, toccare il pulsante verde.</string>
-  <string name="title_activity_asset_class_edit">Attività di modifica classe del bene</string>
   <string name="asset_class_name">Classe del bene</string>
   <string name="allocation">Assegnazione</string>
   <string name="current_allocation">Assegnazione attuale</string>
   <string name="move_up">Sposta sù</string>
   <string name="move_down">Sposta giù</string>
   <string name="securities">Sicurezza</string>
-  <string name="title_activity_security_list">Lista attività di Sicurezza</string>
   <string name="no_records_found_create">Nessun elemento trovato. Per crearne uno, toccare il pulsante verde.</string>
   <string name="current_value">Valore Attuale</string>
   <string name="current">Attuale</string>
   <string name="parent">Asset Superiore</string>
   <string name="name">Nome</string>
-  <string name="title_activity_asset_allocation_picker">Selettore attività di assegnazione bene</string>
   <string name="stock">Azione</string>
   <string name="all_accounts">Tutti i conti</string>
   <string name="records">elementi</string>
@@ -627,6 +628,7 @@
   <string name="portfolio">Portafoglio</string>
   <string name="change_provider">Cambia provider</string>
   <string name="quote_provider">Fornitore Quote</string>
+  <string name="exchange_rate_provider">Provider dei tassi di cambio</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Il database è stato scaricato</string>
@@ -676,4 +678,6 @@
   <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
   <string name="dropbox_select_file">Selezionare un file da Dropbox</string>
   <!-- Errors -->
+  <string name="error_parsing_value">Errore di analisi del valore inserito</string>
+  <string name="remote_file_not_found">File remoto non trovato</string>
 </resources>

@@ -134,6 +134,7 @@
   <string name="status_duplicate">Duplicada</string>
   <string name="status_none">Ninguno</string>
   <string name="transfer">Transferencia</string>
+  <string name="transfer_amount">Importe de la transferencia</string>
   <string name="transaction_type">Tipo de transacción</string>
   <string name="transaction_status">Estado</string>
   <string name="withdrawal">Retiro</string>
@@ -238,6 +239,8 @@
   <string name="notification_repeating_transaction_expired">Existen transacciones recurrentes vencidas</string>
   <string name="notification_click_to_check_repeating_transaction">Toque para comprobar transacción atrasada</string>
   <string name="num_repeating_transaction_expired">%1$d transacción recurrente vencida</string>
+  <string name="skip">Ignorar</string>
+  <string name="enter">Introducir</string>
   <!-- 20121121 -->
   <string name="send_feedback">Enviar comentarios</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -289,6 +292,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Dividido</string>
   <string name="error_split_transaction_empty">Al menos una cantidad en la transacción divida es necesaria</string>
+  <string name="swipe_to_dismiss">Deslizar los objetos para borrarlos.</string>
   <string name="export_data_to_csv">Exportar datos a un archivo CSV</string>
   <string name="export_data_in_progress">Exportando datos. Por favor espere&#8230;</string>
   <string name="export_file_complete">Los datos han sido exportados correctamente al archivo %1$s</string>
@@ -400,6 +404,8 @@
   <string name="add_transaction">Agregar Transacción</string>
   <string name="welcome_header">¡Bienvenido a MoneyManagerEx!</string>
   <string name="welcome_body">Todas las transacciones en MoneyManagerEx pertenecen a cuentas.\n\nActualmente no tiene cuentas visibles. Ajuste el filtro para cuentas visibles en los Ajustes o seleccione una de las siguientes opciones.</string>
+  <string name="welcome_body_dropbox">Si ya estás utilizando MoneyManagerEx en Windows, Linuz o Mac, puedes enlazar con un proveedor de almacenamiento en la nube para sincronizar tu base de datos</string>
+  <string name="configure_sync">Configurar Sincronización</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Buscar por el contenido y no por el inicio del texto</string>
   <string name="search_text_contain_summary">Buscar beneficiarios, categorías, divisas,  etc... por contenido y no por los caracteres iniciales</string>
@@ -463,6 +469,8 @@
   <string name="custom_dates">Rango personalizado</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">No mostrar las cantidades reconciliadas de las cuentas en el panel de control.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">No mostrar las cantidades reconciliadas</string>
+  <string name="pref_transaction_sort_by_type_summary">Organiza transacciones habituales según el tipo de transacción (depósito, transferencia, retirada de efectivo)</string>
+  <string name="pref_transaction_sort_by_type_title">Ordenar Transacciones según su Tipo</string>
   <string name="warning">Advertencia</string>
   <string name="no_transfer_splits">Ha elegido cambiar a transferencia pero hay categorías divididas en la transacción. ¿Desea continuar y eliminar las categorías divididas?</string>
   <string name="qif_export">Exportar a Qif</string>
@@ -523,6 +531,7 @@
   <string name="title_activity_currency_rates_report">Tipos de cambio</string>
   <string name="frequency">Frecuencia</string>
   <string name="update_available">Actualización disponible</string>
+  <string name="update_available_online">Hay un archivo actualizado de la base de datos online. ¿Quiere actualizar?</string>
   <string name="currency_not_found">Moneda no encontrada</string>
   <string name="homepage">Nuestra página web es http://android.moneymanagerex.org/</string>
   <string name="current_database">Base de datos actual</string>
@@ -559,20 +568,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Asignación de activos</string>
   <string name="asset_classes_empty">Sin clases de activos definidos. Para crear uno, pulse el botón verde.</string>
-  <string name="title_activity_asset_class_edit">EditarClaseActividadActivos</string>
   <string name="asset_class_name">Nombre de la Clase de Activo</string>
   <string name="allocation">Asignación</string>
   <string name="current_allocation">Asignación actual</string>
   <string name="move_up">Subir</string>
   <string name="move_down">Bajar</string>
   <string name="securities">Valores</string>
-  <string name="title_activity_security_list">ListaSeguridadActividad</string>
   <string name="no_records_found_create">Sin registros. Para crear uno, pulse el botón y verde.</string>
   <string name="current_value">Valor actual</string>
   <string name="current">Actual</string>
   <string name="parent">Padre</string>
   <string name="name">Nombre</string>
-  <string name="title_activity_asset_allocation_picker">SelectorFacturaciónActivos</string>
   <string name="stock">Existencias</string>
   <string name="all_accounts">Todas las cuentas</string>
   <string name="records">registros</string>
@@ -584,6 +590,7 @@
   <string name="asset_allocation_diff_threshold">Asignación de activos por diferencia de umbral</string>
   <string name="asset_allocation_diff_threshold_summary">El umbral activará la coloración de diferentes valores.</string>
   <string name="error_saving_record">Ocurrió un error guardando el registro</string>
+  <string name="error_loading_currency">Error cargando la moneda</string>
   <string name="symbol_required">Símbolo es requerido</string>
   <string name="recurrence_type_not_set">Tipo de recurrencia sin definir</string>
   <string name="invalid_recurrence_type">Tipo de recurrencia inválida</string>
@@ -596,6 +603,10 @@
   <string name="budget_month">Presupuesto Mensual</string>
   <string name="copy">Copiar</string>
   <string name="app_restart">Reiniciar la aplicación para que los cambios tengan efecto.</string>
+  <string name="print">Imprimir</string>
+  <string name="min_19">Necesita al menos Android 4.4 para poder imprimir el documento.</string>
+  <string name="save_as_html">Guardar como HTML</string>
+  <string name="no_network">No hay ninguna red disponible.</string>
   <!-- Currencies -->
   <string name="currencies">Monedas</string>
   <string name="currencies_used">Monedas, utilizadas</string>
@@ -610,8 +621,14 @@
   <string name="question_update_currency_exchange_rates">¿Quieres actualizar el tipo de cambio?</string>
   <string name="error_update_currency_exchange_rate">Ocurrió un error al actualizar la tasa</string>
   <string name="currencies_empty">No se encontraron monedas. Para crear una, pulsar el botón verde con el símbolo más.</string>
+  <string name="active_currencies">Monedas vigentes</string>
+  <string name="inactive_currencies">Monedas no operativas</string>
+  <string name="all_currencies">Todas las monedas</string>
   <!-- Investment -->
+  <string name="portfolio">Cartera</string>
+  <string name="change_provider">Cambiar proveedor</string>
   <string name="quote_provider">Proveedor de cotización</string>
+  <string name="exchange_rate_provider">Proveedor de tipos de cambio</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>
   <string name="dropbox_file_ready_for_use">Su base de datos ha sido descargada</string>
@@ -631,7 +648,23 @@
   <string name="db_not_dropbox">Su actual base de datos no está sincronizada. Por favor, configure la sincronización con Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Sincronización</string>
+  <string name="sync_enabled">Sincronización habilitada</string>
+  <string name="sync_provider">Proveedor</string>
+  <string name="remote_file">Archivo remoto</string>
+  <string name="please_wait">Espere, por favor</string>
+  <string name="invalid_database">Esta extensión no es reconocida como una base de datos válida.</string>
+  <string name="reset_preferences">Restablecer configuración</string>
+  <string name="preferences_reset">Las preferencias de sincronización han sido restablecidas.</string>
+  <string name="cloud_download">Descargar archivo de base de datos desde el almacenamiento en la nube.</string>
+  <string name="cloud_upload">Guardar archivo de base de datos en el almacenamiento en la nube.</string>
+  <string name="sync_notification_title">Money Manager Ex - Sincronización</string>
+  <string name="sync_downloading">Descargando base de datos. Por favor espere&#8230;</string>
+  <string name="sync_uploading">Subiendo base de datos. Por favor espere&#8230;</string>
+  <string name="syncProgress">Sincronizando archivo. Por favor espere&#8230;</string>
+  <string name="database_is_synchronized">La base de datos está actualizada</string>
+  <string name="upload_file_complete">La base de datos se ha subido con éxito</string>
   <string name="every_5_minutes">Cada 5 minutos</string>
+  <string name="every_10_minutes">Cada 10 minutos</string>
   <string name="every_15_minutes">Cada 15 minutos</string>
   <string name="every_30_minutes">Cada 30 minutos</string>
   <string name="every_hour">Cada hora</string>
@@ -639,6 +672,12 @@
   <string name="every_6_hours">Cada 6 horas</string>
   <string name="every_12_hours">Cada 12 horas</string>
   <string name="never">Nunca</string>
+  <string name="checking_remote_for_changes">Verificar el almacenamiento remoto por cambios en la base de datos.</string>
+  <string name="title_sync_upload_immediate">Subir la base de datos inmediatamente después de una modificación</string>
+  <string name="summary_sync_upload_immediate">Esta opción permite guardar automáticamente cuando se cambia la base de datos</string>
+  <string name="dropbox_empty_folder">La carpeta en Dropbox/Apps/Money Manager Ex Mobile está vacía. Si ya utilizas MoneyManagerEx copia tu base de datos a esta carpeta en tu ordenador, y después actualiza.</string>
   <string name="dropbox_select_file">Seleccione un archivo en Dropbox</string>
   <!-- Errors -->
+  <string name="error_parsing_value">Error de escritura en el valor introducido</string>
+  <string name="remote_file_not_found">No se encontró el archivo remoto</string>
 </resources>
