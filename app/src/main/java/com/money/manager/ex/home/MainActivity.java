@@ -17,6 +17,8 @@
 package com.money.manager.ex.home;
 
 import android.app.NotificationManager;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -44,6 +46,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
+import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
@@ -691,6 +694,8 @@ public class MainActivity
      */
     public void restartActivity() {
         if (mRestartActivity) {
+            resetContentProvider();
+
             // <= 10
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
                 // this is for APIs < 11.
@@ -708,12 +713,21 @@ public class MainActivity
 //                // New api. This will keep the Intent, which hangs after Dropbox update.
 //                this.recreate();
 
+                finish();
                 startMainActivity();
             }
-
         }
-        // set state a false
+
         setRestartActivity(false);
+    }
+
+    private void resetContentProvider() {
+        ContentResolver resolver = this.getContentResolver();
+        String authority = this.getApplicationContext().getPackageName() + ".provider";
+        ContentProviderClient client = resolver.acquireContentProviderClient(authority);
+        MmexContentProvider provider = (MmexContentProvider) client.getLocalContentProvider();
+        provider.resetDatabase();
+//        client.release();
     }
 
     private void shutdownApp() {

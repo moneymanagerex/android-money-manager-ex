@@ -151,11 +151,10 @@ public class MmexContentProvider
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
                 // todo: e "connection already closed" here
-                Log.w("db error", "illegal state, connection probably closed");
+                Timber.w("illegal state, connection probably closed");
             }
 
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "content provider.query " + uri);
+            Timber.e(e, "content provider.query " + uri);
         }
         return null;
     }
@@ -373,6 +372,16 @@ public class MmexContentProvider
     @Override
     public String getType(@NonNull Uri uri) {
         return null;
+    }
+
+    public void resetDatabase() {
+//        mDatabaseHelper.close();
+//        mDatabaseHelper = new MyDatabaseOpenHelper(context);
+
+        openHelper.get().close();
+
+        openHelper = null;
+        initializeDependencies();
     }
 
     // Private
