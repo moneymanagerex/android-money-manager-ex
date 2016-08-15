@@ -48,9 +48,9 @@
   <string name="preferences_general">Général</string>
   <string name="preferences_dispaly">Affichage</string>
   <string name="preferences_behaviour">Comportement</string>
-  <string name="base_currency">Monnaie de référence</string>
-  <string name="base_currency_changed">Taux de change</string>
-  <string name="base_currency_change_notification">La devise de base a été modifiée. Veuillez mettre à jour les taux de change pour obtenir des quantités appropriées dans la nouvelle devise de base.</string>
+  <string name="base_currency">Devise de référence</string>
+  <string name="base_currency_changed">Devise de référence modifiée</string>
+  <string name="base_currency_change_notification">La devise de référence a été modifiée. Veuillez mettre à jour les taux de change pour obtenir des montants adéquats dans la nouvelle devise de référence.</string>
   <string name="view_accounts_opened">Voir les comptes ouverts</string>
   <string name="if_not_selected_willShowAllAccounts">Si non sélectionné, tous les comptes seront affichés</string>
   <string name="view_accounts_favorites">Voir les comptes préférés</string>
@@ -121,8 +121,8 @@
   <string name="group_char">Caractère de groupement</string>
   <string name="scale">Echelle</string>
   <string name="conversion_to_base_rate">Taux de conversion de base</string>
-  <string name="currency_name_empty">Le nom de la monnaie est obligatoire</string>
-  <string name="new_edit_currency">Créer/Editer une devise</string>
+  <string name="currency_name_empty">Le nom de la devise est requis</string>
+  <string name="new_edit_currency">Créer/Éditer une devise</string>
   <!-- transaction -->
   <string name="amount">Montant</string>
   <string name="total_amount">Montant total</string>
@@ -239,6 +239,8 @@
   <string name="notification_repeating_transaction_expired">Il y a des opérations périodiques expirées</string>
   <string name="notification_click_to_check_repeating_transaction">Appuyer pour vérifier les opérations en retard</string>
   <string name="num_repeating_transaction_expired">%1$d opération périodique en retard</string>
+  <string name="skip">Passer</string>
+  <string name="enter">Saisir</string>
   <!-- 20121121 -->
   <string name="send_feedback">Envoyer un commentaire</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -345,6 +347,7 @@
   <string name="menu_report_where_money_goes">Où va l\'argent</string>
   <string name="menu_report_where_money_comes_from">D\'où vient l\'argent</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Heure de notification</string>
   <string name="summary_check_repeating_transaction">À quelle heure voulez-vous vérifier s\'il y a des opérations périodiques en retard ? (par défaut 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Crédits</string>
@@ -401,6 +404,8 @@
   <string name="add_transaction">Ajouter une opération</string>
   <string name="welcome_header">Bienvenue sur MoneyManagerEx</string>
   <string name="welcome_body">Toutes les opérations sur MoneyManagerEx sont dans vos comptes.\n\nVous n\'avez actuellement pas de comptes visibles. Ajuster le filtre pour les comptes visibles dans les paramètres, ou sélectionnez une des options ci-dessous.</string>
+  <string name="welcome_body_dropbox">Si vous utilisez déjà MoneyManagerEx sous Windows, Linux ou Mac, vous pouvez vous connecter à un fournisseur de stockage cloud pour synchroniser votre base de données</string>
+  <string name="configure_sync">Configurer la synchronisation</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Rechercher dans le contenu du texte et non pas en de début de mot</string>
   <string name="search_text_contain_summary">Rechercher des bénéficiaires, devises, etc ... par contenu et non par les caractères du début</string>
@@ -421,6 +426,7 @@
   <string name="change_status">Modifier le statut</string>
   <string name="duplicate_selected_transactions">Dupliquer les opérations sélectionnées</string>
   <string name="sort">Trier</string>
+  <string name="sort_order">Ordre de Tri</string>
   <string name="sort_by_name">Trier par nom</string>
   <string name="sort_by_usage">Trier par utilisation</string>
   <string name="choose_sorting">Choisir le tri</string>
@@ -433,6 +439,7 @@
   <string name="montly_last_bussines_day">Mensuel (dernier jour ouvrable)</string>
   <!-- languages -->
   <string name="locale_application">Langue</string>
+  <string name="transaction_cancel_confirm">Êtes-vous sûr de vouloir annuler vos modifications ?</string>
   <string name="keep_editing">Continuer</string>
   <string name="discard">Abandonner</string>
   <string name="invalid_expression">Expression non valide</string>
@@ -462,6 +469,8 @@
   <string name="custom_dates">Période personnalisée</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Cache les montants rapprochés des comptes du tableau de bord.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Cacher les montants rapprochés</string>
+  <string name="pref_transaction_sort_by_type_summary">Organiser les transactions quotidiennes par type de transaction (dépôt, retrait, transfert)</string>
+  <string name="pref_transaction_sort_by_type_title">Trier les Transactions par Type</string>
   <string name="warning">Attention</string>
   <string name="no_transfer_splits">Vous avez choisi de passer au transfert, mais il y a plusieurs catégories sur la transaction. Vous voulez continuer et de supprimer ces catégories?</string>
   <string name="qif_export">Export Qif</string>
@@ -507,6 +516,7 @@
   <string name="choose_type">Choisissez un type</string>
   <string name="default_account">Compte par défaut</string>
   <string name="default_account_summary">Compte à utiliser lorsque vous entrez dans une nouvelle transaction.</string>
+  <string name="default_account_not_set">Le compte par défaut n\'a pas été sélectionné.</string>
   <string name="balance_account">Solde compte</string>
   <string name="balance_adjustment">Ajustement du solde</string>
   <string name="cash">Espèce</string>
@@ -515,13 +525,14 @@
   <string name="budgets">Budgets</string>
   <string name="budget_list">Liste de budget</string>
   <string name="actual">Actuel</string>
-  <string name="base_currency_not_set">La devise de base n\'a pas été définie</string>
+  <string name="base_currency_not_set">La devise de référence n\'a pas été définie</string>
   <string name="error">Erreur</string>
   <string name="unhandled_crash">Erreur inattendue. Envoyez-nous le log s\'il vous plaît.</string>
   <string name="title_activity_currency_rates_report">Taux de change</string>
   <string name="frequency">Fréquence</string>
   <string name="update_available">Mise à jour disponible</string>
-  <string name="currency_not_found">Monnaie non trouvé</string>
+  <string name="update_available_online">Une base de données mise à jour est disponible sur sur le cloud. Voulez-vous mettre à jour ?</string>
+  <string name="currency_not_found">Devise introuvable</string>
   <string name="homepage">Notre site Internet est http://android.moneymanagerex.org/</string>
   <string name="current_database">Base de données active</string>
   <string name="about_logcat_header">Vous pouvez nous envoyer le journal des applications en cliquant sur le bouton ci-dessous.</string>
@@ -530,6 +541,7 @@
   <!-- Password entry activity -->
   <string name="title_activity_password">Entrez le mot de passe de la base de données</string>
   <string name="income_expense_period">Période de revenus/dépenses</string>
+  <string name="income_expense_period_summary">La période sur laquelle s\'étend la vue d\'ensemble des revenus/dépenses en bas de l\'écran d\'accueil.</string>
   <string name="appwidget_text">Exemple</string>
   <string name="configure">Configurer</string>
   <string name="add_widget">Ajouter un Widget</string>
@@ -547,6 +559,8 @@
   <string name="value">Valeur</string>
   <string name="view_transactions">Afficher les transactions</string>
   <string name="error_downloading_symbol">Erreur pendant le téléchargement des symboles</string>
+  <string name="error_updating_rates">Erreur de mise à jour des taux</string>
+  <string name="error_no_price_found_for_symbol">Aucun prix trouvé pour le symbole</string>
   <string name="other">Autre</string>
   <string name="cleared">Effacé</string>
   <string name="delete_success">Élément supprimé</string>
@@ -567,10 +581,32 @@
   <!-- db password entry -->
   <string name="enter_password">Saisissez le mot de passe</string>
   <string name="success">Opération terminée</string>
+  <string name="overview">Aperçu</string>
+  <string name="title_activity_asset_allocation_overview">Aperçu de l\'allocation des actifs</string>
+  <string name="asset_allocation_diff_threshold">Seuil de différence dans l\'allocation des actifs</string>
+  <string name="asset_allocation_diff_threshold_summary">Le seuil à partir duquel la coloration des différences de valeurs sera déclenchée.</string>
+  <string name="error_saving_record">Erreur lors de la sauvegarde de l\'enregistrement</string>
+  <string name="error_loading_currency">Erreur lors du chargement de la devise</string>
+  <string name="symbol_required">Un symbole est requis</string>
+  <string name="recurrence_type_not_set">Type de récurrence non défini</string>
+  <string name="invalid_recurrence_type">Type de récurrence non valide</string>
+  <string name="account_not_found">Compte introuvable</string>
+  <string name="favourite">Favori</string>
   <!-- budgets -->
+  <string name="add_budget">Ajouter un budget</string>
+  <string name="budget_name">Nom du budget</string>
+  <string name="budget_year">Année du budget</string>
+  <string name="budget_month">Mois du budget</string>
+  <string name="copy">Copier</string>
+  <string name="app_restart">L\'application va maintenant s’arrêter pour appliquer les modifications. Veuillez la redémarrer.</string>
+  <string name="print">Imprimer</string>
+  <string name="min_19">Android 4.4 est la version minimale requise pour imprimer le document.</string>
+  <string name="save_as_html">Enregistrer au format HTML</string>
+  <string name="no_network">Il n’y a aucun réseau disponible.</string>
   <!-- Currencies -->
   <string name="currencies">Devises</string>
-  <string name="currencies_used">Monnaies, utilisées</string>
+  <string name="currencies_used">Devises, utilisées</string>
+  <string name="open_currencies">Afficher les devises</string>
   <string name="import_all_currencies">Importer des devises</string>
   <string name="import_currencies_in_progress">Importation de devises. Veuillez patienter ...</string>
   <string name="question_import_currencies">Vous voulez importer des devises ?</string>
@@ -580,7 +616,10 @@
   <string name="update_menu_currency_exchange_rates">Mise à jour des taux de change</string>
   <string name="question_update_currency_exchange_rates">Vous voulez mettre à jour les taux de change ?</string>
   <string name="error_update_currency_exchange_rate">Il y a eu une erreur de mise à jour du taux</string>
-  <string name="currencies_empty">Aucune monnaies n\'ont été trouvés. Pour créer une, appuyez sur le bouton vert.</string>
+  <string name="currencies_empty">Aucune devise n\'a été trouvée. Pour créer une, appuyez sur le bouton vert.</string>
+  <string name="active_currencies">Devises actives</string>
+  <string name="inactive_currencies">Devises inactives</string>
+  <string name="all_currencies">Toutes les devises</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Dropbox</string>

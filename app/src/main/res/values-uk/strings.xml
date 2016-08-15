@@ -551,20 +551,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Розподіл активів</string>
   <string name="asset_classes_empty">Не було визначено класи активів. Для створення натисніть зелений плюс.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">Назва класу активів</string>
   <string name="allocation">Розподіл</string>
   <string name="current_allocation">Поточний розподіл</string>
   <string name="move_up">Вгору</string>
   <string name="move_down">Вниз</string>
   <string name="securities">Цінні папери</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">Записів не знайдено. Для створення натисніть зелений плюс.</string>
   <string name="current_value">Поточне значення</string>
   <string name="current">Поточний</string>
   <string name="parent">Батьківський</string>
   <string name="name">Назва</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">Запаси</string>
   <string name="all_accounts">Всі рахунки</string>
   <string name="records">записи</string>

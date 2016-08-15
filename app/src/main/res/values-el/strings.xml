@@ -134,6 +134,7 @@
   <string name="status_duplicate">Δημιουργία διπλοτύπου / αντιγράφου</string>
   <string name="status_none">Κανένας</string>
   <string name="transfer">Μεταφορά</string>
+  <string name="transfer_amount">Μεταφορά ποσού</string>
   <string name="transaction_type">Είδος συναλλαγής</string>
   <string name="transaction_status">Κατάσταση</string>
   <string name="withdrawal">Απόσυρση</string>
@@ -149,6 +150,7 @@
   <!-- application string -->
   <string name="about">Σχετικά με</string>
   <string name="add">Προσθέστε</string>
+  <string name="confirmDelete">Θέλετε σίγουρα να διαγράψετε αυτή την εγγραφή;</string>
   <string name="date">Ημερομηνία</string>
   <string name="delete">Διαγραφή</string>
   <string name="download">Λήψη</string>
@@ -228,6 +230,7 @@
   <string name="repeats">Επαναλήψεις</string>
   <string name="occurs">Παρουσιάζεται</string>
   <string name="payments_left">Πληρωμές αριστερά</string>
+  <string name="payments_left_required">Απαιτείται τιμή στις Υπολοιπόμενες Πληρωμές</string>
   <string name="due_date_required">Δέουσα ημερομηνία απαιτείται</string>
   <string name="error_next_occurrence_not_populate">Απαιτείται η επόμενη εμφάνιση</string>
   <string name="enter_next_occurrence">Εισάγετε την επόμενη εµφάνιση</string>
@@ -236,6 +239,8 @@
   <string name="notification_repeating_transaction_expired">Υπάρχουν ληγμένες επαναλαμβανόμενες συναλλαγές</string>
   <string name="notification_click_to_check_repeating_transaction">Αγγίξτε για να ελέγξετε την εκπρόθεσμη συναλλαγή</string>
   <string name="num_repeating_transaction_expired">%1$d εκπρόθεσμη επαναλαμβανόμενη συναλλαγή</string>
+  <string name="skip">Παράλειψη</string>
+  <string name="enter">Εισαγωγή</string>
   <!-- 20121121 -->
   <string name="send_feedback">Αποστολή σχολίων</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -287,6 +292,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Διαχωρισμός</string>
   <string name="error_split_transaction_empty">Απαιτείται τουλάχιστον μια διαιρεμένη συναλλαγή</string>
+  <string name="swipe_to_dismiss">Κάντε swipe στις εγγραφές για να τις αφαιρέσετε.</string>
   <string name="export_data_to_csv">Εξαγωγή δεδομένων στο αρχείο CSV</string>
   <string name="export_data_in_progress">Εξαγωγή δεδομένων. Παρακαλώ περίμενε...</string>
   <string name="export_file_complete">Τα δεδομένα έχουν εξαχθεί με επιτυχία στο αρχείο %1$s</string>
@@ -341,6 +347,7 @@
   <string name="menu_report_where_money_goes">Που πηγαίνουν τα χρήματα</string>
   <string name="menu_report_where_money_comes_from">Από που προέρχονται τα χρήματα</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Ωρα Ειδοποίησης</string>
   <string name="summary_check_repeating_transaction">Τι ώρα θα μπορούσατε να ελέγξετε εάν υπάρχουν επαναλαμβανόμενες καθυστερημένες συναλλαγές; (προεπιλογή 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Πιστώσεις</string>
@@ -398,6 +405,8 @@
   <string name="add_transaction">Προσθέστε συναλλαγή</string>
   <string name="welcome_header">Καλώς ήλθατε στο MoneyManagerEx!</string>
   <string name="welcome_body">Όλες τις συναλλαγές MoneyManagerEx ανήκουν σε Λογαριασμούς.\n\nΕσύ δεν έχεις επί του παρόντος ορατούς λογαριασμούς. Προσαρμόστε το φίλτρο για ορατούς λογαριασμούς στίς ρυθμίσεις, είτε επιλέξτε μία από τις παρακάτω επιλογές.</string>
+  <string name="welcome_body_dropbox">Εάν χρησιμοποιείτε ήδη το MoneyManagerEx στα Windows, Linux ή Mac, μπορείτε να το συνδέσετε με μια υπηρεσία παροχής αποθήκευσης στο σύννεφο για να συγχρονίζετε τη βάση δεδομένων σας</string>
+  <string name="configure_sync">Ρύθμιση παραμέτρων του συγχρονισμού</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Αναζήτηση από το περιεχόμενο κειμένου και όχι από το κείμενο με το οποίο ξεκινά</string>
   <string name="search_text_contain_summary">Αναζήτηση δικαιούχου, κατηγοριών, νομισμάτων, κλπ..., από το περιεχόμενο και όχι από την έναρξη χαρακτήρων</string>
@@ -431,6 +440,7 @@
   <string name="montly_last_bussines_day">Μηνιαία (τελευταία εργάσιμη ημέρα)</string>
   <!-- languages -->
   <string name="locale_application">Εφαρμογή γλώσσας</string>
+  <string name="transaction_cancel_confirm">Θέλετε σίγουρα να απορρίψετε τις αλλαγές;</string>
   <string name="keep_editing">Διατήρηση επεξεργασίας</string>
   <string name="discard">Απόρριψη</string>
   <string name="invalid_expression">Μη έγκυρη έκφραση</string>
@@ -460,6 +470,8 @@
   <string name="custom_dates">Προσαρμοσμένες ημερομηνίες</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Κρύψτε τα συμφωνηθέντα ποσά από τους λογαριασμούς στο ταμπλό.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Κρύψτε τα συμφωνημένα ποσά</string>
+  <string name="pref_transaction_sort_by_type_summary">Τακτοποιήστε τις καθημερινές συναλλαγές ανά είδος συναλλαγής (κατάθεση, μεταφορά, ανάληψη)</string>
+  <string name="pref_transaction_sort_by_type_title">Ταξινόμηση Συναλλαγών ανά Τύπο</string>
   <string name="warning">Προειδοποίηση</string>
   <string name="no_transfer_splits">Επιλέξατε να μεταβείτε σε μεταφορά, αλλά υπάρχουν κατηγορίες Split στη συναλλαγή. Θέλετε να προχωρήσετε και να αφαιρέσετε τις κατηγορίες Split;</string>
   <string name="qif_export">Εξαγωγή Qif</string>
@@ -505,6 +517,7 @@
   <string name="choose_type">Επιλέξτε έναν τύπο</string>
   <string name="default_account">Προεπιλεγμένος λογαριασμός</string>
   <string name="default_account_summary">Ο λογαριασμός που θα χρησιμοποιηθεί κατά την εισαγωγή μιας νέας συναλλαγής.</string>
+  <string name="default_account_not_set">Ο προεπιλεγμένος λογαριασμός δεν έχει οριστεί.</string>
   <string name="balance_account">Υπόλοιπο λογαριασμού</string>
   <string name="balance_adjustment">Ρύθμιση υπολοίπου</string>
   <string name="cash">Μετρητά</string>
@@ -519,12 +532,14 @@
   <string name="title_activity_currency_rates_report">Ισοτιμίες συναλλάγματος</string>
   <string name="frequency">Συχνότητα</string>
   <string name="update_available">Διαθέσιμη ενημέρωση</string>
+  <string name="update_available_online">Βρέθηκε πιο ενημερωμένη Β. Δ. στο διαδίκτυο. Θέλετε να την ενημερώσετε;</string>
   <string name="currency_not_found">Νόμισμα δεν βρέθηκε</string>
   <string name="homepage">Η ιστοσελίδα μας είναι http://android.moneymanagerex.org/</string>
   <string name="current_database">Τρέχουσα βάση δεδομένων</string>
   <string name="about_logcat_header">Μπορείτε να μας στείλετε το αρχείο καταγραφής, κάνοντας κλικ στο κουμπί παρακάτω.</string>
   <string name="transaction_type_filter">Φιλτράρισμα ανά είδος συναλλαγής</string>
   <string name="status_filter">Φιλτράρισμα με βάση την κατάσταση</string>
+  <string name="filter_options_info">Επιλογές φίλτρου και πληροφορίες</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Εισάγετε τον κωδικό πρόσβασης βάσης δεδομένων</string>
   <string name="income_expense_period">Περίοδος εσόδων/εξόδων</string>
@@ -537,10 +552,62 @@
   <!-- edit investment transaction -->
   <string name="purchase_date">Ημερομηνία αγοράς</string>
   <string name="stock_name">Όνομα αποθεμάτων</string>
+  <string name="symbol">Σύμβολο</string>
+  <string name="number_of_shares">Αριθμός μετοχών</string>
+  <string name="purchase_price">Τιμή αγοράς</string>
+  <string name="current_price">Τρέχουσα τιμή</string>
+  <string name="price_date">Ημερομηνία Τιμής</string>
+  <string name="commission">Προμήθεια</string>
+  <string name="value">Aξία</string>
+  <string name="view_transactions">Προβολή συναλλαγών</string>
+  <string name="error_downloading_symbol">Σφάλμα λήψης τιμής για το σύμβολο</string>
+  <string name="error_updating_rates">Σφάλμα κατά την ενημέρωση τιμών</string>
+  <string name="error_no_price_found_for_symbol">Δεν βρέθηκε τιμή για το σύμβολο</string>
+  <string name="other">Άλλα</string>
+  <string name="cleared">Καθαρίστηκαν</string>
+  <string name="delete_success">Το στοιχείο διαγράφηκε</string>
   <!-- asset allocation -->
+  <string name="asset_allocation">Κατανομή στοιχείων ενεργητικού</string>
+  <string name="asset_classes_empty">Δεν έχουν καθοριστεί κατηγορίες στοιχείων ενεργητικού. Για να δημιουργήσετε μία, πατήστε το πράσινο συν το κουμπί.</string>
+  <string name="asset_class_name">Το όνομα της κλάσης περιουσιακού στοιχείου</string>
+  <string name="allocation">Κατανομή</string>
+  <string name="current_allocation">Τρέχουσα κατανομή</string>
+  <string name="move_up">Μετακίνηση προς τα πάνω</string>
+  <string name="move_down">Μετακίνηση προς τα κάτω</string>
+  <string name="securities">Κινητές αξίες</string>
+  <string name="no_records_found_create">Δεν βρέθηκαν οι εγγραφές. Για να δημιουργήσετε μία, πατήστε το πράσινο συν κουμπί (+).</string>
+  <string name="current_value">Τρέχουσα Αξία</string>
+  <string name="current">Τρέχων</string>
+  <string name="parent">Γονικό</string>
+  <string name="name">Όνομα</string>
+  <string name="stock">Χρηματιστήριο</string>
   <string name="all_accounts">Όλοι οι λογαριασμοί</string>
+  <string name="records">εγγραφές</string>
   <!-- db password entry -->
+  <string name="enter_password">Εισάγετε κωδικό πρόσβασης</string>
+  <string name="success">Επιτυχημένη λειτουργία</string>
+  <string name="overview">Επισκόπηση</string>
+  <string name="title_activity_asset_allocation_overview">Επισκόπηση κατανομή στοιχείων ενεργητικού</string>
+  <string name="asset_allocation_diff_threshold">Όριο διαφορά εκχώρησης ενεργητικού</string>
+  <string name="asset_allocation_diff_threshold_summary">Το όριο που θα ορίσει το χρωματισμό των τιμών διαφοράς.</string>
+  <string name="error_saving_record">Σφάλμα κατά την αποθήκευση της εγγραφής</string>
+  <string name="error_loading_currency">Σφάλμα φόρτωσης νομίσματος</string>
+  <string name="symbol_required">Απαιτείται σύμβολο</string>
+  <string name="recurrence_type_not_set">Δεν έχει οριστεί Τύπος περιοδικότητας</string>
+  <string name="invalid_recurrence_type">Μη έγκυρος τύπος περιοδικότητας</string>
+  <string name="account_not_found">Δεν βρέθηκε Λογαριασμός</string>
+  <string name="favourite">Αγαπημένο</string>
   <!-- budgets -->
+  <string name="add_budget">Προσθήκη προϋπολογισμού</string>
+  <string name="budget_name">Όνομα προϋπολογισμού</string>
+  <string name="budget_year">Προϋπολογισμός έτους</string>
+  <string name="budget_month">Προϋπολογισμός Μήνα</string>
+  <string name="copy">Αντίγραφο</string>
+  <string name="app_restart">Η εφαρμογή τώρα θα κλείσει για να εφαρμοστούν οι αλλαγές. Παρακαλώ κάντε επανεκκίνηση.</string>
+  <string name="print">Εκτύπωση</string>
+  <string name="min_19">Χρειάζεται τουλάχιστον Android 4.4, ώστε να είναι σε θέση να εκτυπώσετε το έγγραφο.</string>
+  <string name="save_as_html">Αποθήκευση ως HTML</string>
+  <string name="no_network">Δεν υπάρχει διαθέσιμο δίκτυο.</string>
   <!-- Currencies -->
   <string name="currencies">Νομίσματα</string>
   <string name="currencies_used">Νομίσματα, χρησιμοποιούνται</string>
@@ -555,7 +622,14 @@
   <string name="question_update_currency_exchange_rates">Θέλετε να ενημερώσετε την συναλλαγματική ισοτιμία;</string>
   <string name="error_update_currency_exchange_rate">Υπήρχε σφάλμα κατά την ενημέρωση του ποσοστού</string>
   <string name="currencies_empty">Νομίσματα δεν έχουν βρεθεί. Για να δημιουργήσετε ένα, πατήστε το πράσινο κουμπί.</string>
+  <string name="active_currencies">Ενεργά νομίσματα</string>
+  <string name="inactive_currencies">Ανενεργά νομίσματα</string>
+  <string name="all_currencies">Όλα τα νομίσματα</string>
   <!-- Investment -->
+  <string name="portfolio">Χαρτοφυλάκιο</string>
+  <string name="change_provider">Αλλαγή παρόχου</string>
+  <string name="quote_provider">Πάροχος προσφοράς</string>
+  <string name="exchange_rate_provider">Παροχείς ισοτιμιών</string>
   <!-- deprecated / Dropbox -->
   <string name="dropbox">Κάδος ανακύκλωσης</string>
   <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>
@@ -571,10 +645,27 @@
   <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε...</string>
   <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε..</string>
   <string name="dropbox_linkedFile">Αρχείο Dropbox</string>
+  <string name="dropbox_file_summary_all">Αρχείο οπουδήποτε στο Dropbox</string>
   <string name="db_not_dropbox">Η τρέχουσα βάση δεδομένων δεν έχει συγχρονιστεί. Παρακαλούμε ορίστε συγχρονισμό με το Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Συγχρονισμός</string>
+  <string name="sync_enabled">Ενεργοποιημένος συγχρονισμός</string>
+  <string name="sync_provider">Πάροχος</string>
+  <string name="remote_file">Απομακρυσμένο αρχείο</string>
+  <string name="please_wait">Παρακαλώ περιμένετε</string>
+  <string name="invalid_database">Αυτή η επέκταση δεν αναγνωρίζεται ως έγκυρη βάση δεδομένων.</string>
+  <string name="reset_preferences">Επαναφορά προτιμήσεων</string>
+  <string name="preferences_reset">Οι προτιμήσεις συγχρονισμού έχουν μηδενιστεί.</string>
+  <string name="cloud_download">Κατεβάστε το αρχείο βάσης δεδομένων από το σύννεφο αποθήκευσης.</string>
+  <string name="cloud_upload">Ανεβάστε το αρχείο βάσης δεδομένων στο σύννεφο αποθήκευσης.</string>
+  <string name="sync_notification_title">Money Manager Ex - Συγχρονισμός</string>
+  <string name="sync_downloading">Καταφόρτωση Β. Δ. Παρακαλώ περιμένετε&#8230;</string>
+  <string name="sync_uploading">Ανέβασμα Β. Δ. Παρακαλώ περιμένετε&#8230;</string>
+  <string name="syncProgress">Συγχρονισμός αρχείου. Παρακαλώ περιμένετε&#8230;</string>
+  <string name="database_is_synchronized">Η βάση δεδομένων είναι ενημερωμένη</string>
+  <string name="upload_file_complete">Η Βάση δεδομένων σας έχει ανέβει επιτυχώς</string>
   <string name="every_5_minutes">Κάθε 5 λεπτά</string>
+  <string name="every_10_minutes">Κάθε 10 λεπτά</string>
   <string name="every_15_minutes">Κάθε 15 λεπτά</string>
   <string name="every_30_minutes">Κάθε 30 λεπτά</string>
   <string name="every_hour">Κάθε ώρα</string>
@@ -582,6 +673,12 @@
   <string name="every_6_hours">Κάθε 6 ώρες</string>
   <string name="every_12_hours">Κάθε 12 ώρες</string>
   <string name="never">Ποτέ</string>
+  <string name="checking_remote_for_changes">Έλεγχος απομακρυσμένης αποθήκευσης για τροποποιήσεις της βάσης δεδομένων.</string>
+  <string name="title_sync_upload_immediate">Ανέβασμα της βάσης δεδομένων αμέσως μετά από αλλαγή</string>
+  <string name="summary_sync_upload_immediate">Αυτή η επιλογή επιτρέπει να ανεβάζετε αυτόματα τη βάση δεδομένων μόλις κάνετε κάποια αλλαγή</string>
+  <string name="dropbox_empty_folder">Ο φάκελος Dropbox/Apps/Money Manager Ex Android είναι άδειος. Εάν χρησιμοποιείτε ήδη το MoneyManagerEx αντιγράψτε τη βάση δεδομένων σας σε αυτόν το φάκελο στον υπολογιστή σας, και αφότου ολοκληρώσετε κάντε ανανέωση.</string>
   <string name="dropbox_select_file">Επιλέξτε ένα αρχείο από Dropbox</string>
   <!-- Errors -->
+  <string name="error_parsing_value">Σφάλμα κατά την ανάλυση της τιμής που εισάχθηκε</string>
+  <string name="remote_file_not_found">Δεν βρέθηκε Απομακρυσμένο αρχείο</string>
 </resources>

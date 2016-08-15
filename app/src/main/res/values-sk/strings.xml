@@ -552,20 +552,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Rozloženie aktív</string>
   <string name="asset_classes_empty">Neboli zadefinované žiadne triedy aktív. Pre pridanie klepnite na zelené tlačidlo so symbolom plus.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">Názov triedy aktíva</string>
   <string name="allocation">Rozloženie</string>
   <string name="current_allocation">Súčasné rozloženie</string>
   <string name="move_up">Posunúť nahor</string>
   <string name="move_down">Posunúť nadol</string>
   <string name="securities">Cenné papiere</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">Neboli nájdené žiadne záznamy. Pre jeho vytvorenie klepnite na zelené tlačítko so symbolom plus.</string>
   <string name="current_value">Súčasná hodnota</string>
   <string name="current">Súčasný</string>
   <string name="parent">Nadriadený</string>
   <string name="name">Meno</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">Burza</string>
   <string name="all_accounts">Všetky účty</string>
   <string name="records">záznamy</string>

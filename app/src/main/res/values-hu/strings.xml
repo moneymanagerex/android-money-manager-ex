@@ -551,20 +551,17 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Vagyon elosztás</string>
   <string name="asset_classes_empty">Nincsenek vagyontárgy-osztályok. Új létrehozásához érintse meg a zöld plusz gombot.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
   <string name="asset_class_name">Vagyontárgy-osztály neve</string>
   <string name="allocation">Átutalás</string>
   <string name="current_allocation">Jelenlegi átutalás</string>
   <string name="move_up">Mozgatás Felfelé</string>
   <string name="move_down">Mozgatás lefelé</string>
   <string name="securities">Értékpapírok</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">Nincsenek adatok. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
   <string name="current_value">Jelenlegi érték</string>
   <string name="current">Aktuális</string>
   <string name="parent">Szülő</string>
   <string name="name">Név</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">Készlet</string>
   <string name="all_accounts">Minden számla</string>
   <string name="records">bejegyzések</string>

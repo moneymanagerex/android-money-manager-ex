@@ -568,20 +568,19 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Alokacija imovine</string>
   <string name="asset_classes_empty">Nisu definisane imovinske klase. Da biste kreirali jednu, dodirnite zeleno Plus dugme.</string>
-  <string name="title_activity_asset_class_edit">AssetClassEditActivity</string>
+  <string name="title_activity_asset_class_edit">Uredi vrstu imovine</string>
   <string name="asset_class_name">Naziv klase imovine</string>
+  <string name="asset_class">Vrsta imovine</string>
   <string name="allocation">Alokacija</string>
   <string name="current_allocation">Trenutna alokacija</string>
   <string name="move_up">Pomjeri gore</string>
   <string name="move_down">Pomjeri dole</string>
   <string name="securities">Vrijednosni papiri</string>
-  <string name="title_activity_security_list">SecurityListActivity</string>
   <string name="no_records_found_create">Nema podataka. Da biste napravili jedan, dodirnite zeleno plus dugme.</string>
   <string name="current_value">Trenutna vrijednost</string>
   <string name="current">Trenutno</string>
   <string name="parent">Roditelj</string>
   <string name="name">Ime</string>
-  <string name="title_activity_asset_allocation_picker">AssetAllocationPickerActivity</string>
   <string name="stock">Dionica</string>
   <string name="all_accounts">Svi računi</string>
   <string name="records">zapisi</string>
@@ -599,6 +598,7 @@
   <string name="invalid_recurrence_type">Vrsta ponavljanja nije validna</string>
   <string name="account_not_found">Račun nije pronađen</string>
   <string name="favourite">Favorit</string>
+  <string name="split_reset_notice">Ova transakcija sadrži više kategorija. Morate ih ukloniti ručno.</string>
   <!-- budgets -->
   <string name="add_budget">Dodajte budžet</string>
   <string name="budget_name">Naziv budžeta</string>
