@@ -39,8 +39,6 @@ import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
@@ -166,8 +164,7 @@ public class SyncManager {
             }
             remoteLastModified = new DateTime(remoteFile.getModifiedAt());
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "retrieving the last modified date in compareFilesForSync");
+            Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 
             return SyncMessages.FILE_NOT_CHANGED;
         }
@@ -204,8 +201,7 @@ public class SyncManager {
             // save any renewed tokens
             this.storePersistent();
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "downloading from the cloud");
+            Timber.e(e, "downloading from the cloud");
             return false;
         }
 
@@ -281,8 +277,7 @@ public class SyncManager {
 //                    if (ex instanceof RuntimeException && ex.getMessage().equals("ServiceCode Error in function standardJSONRequest at 11")) {
 //                        // error fetching remote data. Usually a network problem.
 //                    }
-                    ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.e(ex, "retrieving the remote folder contents");
+                    Timber.e(ex, "retrieving the remote folder contents");
                 }
 
                 EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
@@ -349,13 +344,14 @@ public class SyncManager {
 
             // save any renewed tokens
             this.storePersistent();
-        } catch (NotFoundException e) {
-            // just show a message
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.showMessage(R.string.remote_file_not_found);
-        } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "fetching remote file info");
+        }
+//        catch (NotFoundException e) {
+//            // just show a message
+//            ExceptionHandler handler = new ExceptionHandler(getContext());
+//            handler.showMessage(R.string.remote_file_not_found);
+//        }
+        catch (Exception e) {
+            Timber.e(e, "fetching remote file info");
         }
         return result;
     }
@@ -368,14 +364,12 @@ public class SyncManager {
                     getProvider().login();
                 } catch (AuthenticationException e) {
                     if (e.getMessage().equals("Authentication was cancelled")) {
-                        ExceptionHandler.warn("authentication cancelled");
+                        Timber.w("authentication cancelled");
                     } else {
-                        ExceptionHandler handler = new ExceptionHandler(getContext());
-                        handler.e(e, "logging in to cloud provider");
+                        Timber.e(e, "logging in to cloud provider");
                     }
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.e(e, "logging in to cloud provider");
+                    Timber.e(e, "logging in to cloud provider");
                 }
             }
         }).start();
@@ -388,8 +382,7 @@ public class SyncManager {
                 try {
                     getProvider().logout();
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.e(e, "logging out the cloud provider");
+                    Timber.e(e, "logging out the cloud provider");
                 }
             }
         }).start();
@@ -571,24 +564,21 @@ public class SyncManager {
         try {
             input = new FileInputStream(localFile);
         } catch (FileNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "opening local file for upload");
+            Timber.e(e, "opening local file for upload");
             return false;
         }
 
         try {
             getProvider().upload(remoteFile, input, localFile.length(), true);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "uploading database file");
+            Timber.e(e, "uploading database file");
             return false;
         }
 
         try {
             input.close();
         } catch (IOException e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "closing input stream after upload");
+            Timber.e(e, "closing input stream after upload");
         }
 
         // set last modified date
@@ -596,8 +586,7 @@ public class SyncManager {
             CloudMetaData remoteFileMetadata = getProvider().getMetadata(remoteFile);
             saveLastModifiedDate(remoteFileMetadata);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "closing input stream after upload");
+            Timber.e(e, "closing input stream after upload");
         }
 
         // set remote file, if not set (setLinkedRemoteFile)
@@ -637,8 +626,7 @@ public class SyncManager {
             googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
             box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "creating cloud providers");
+            Timber.e(e, "creating cloud providers");
         }
     }
 
@@ -739,8 +727,7 @@ public class SyncManager {
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
             } catch (Exception ex) {
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.e(ex, "displaying sync progress dialog");
+                Timber.e(ex, "displaying sync progress dialog");
             }
         }
 
@@ -765,10 +752,9 @@ public class SyncManager {
             if (persistent != null) onedrive.get().loadAsString(persistent);
         } catch (Exception e) {
             if (e instanceof ParseException) {
-                if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
+                Timber.w(e.getMessage());
             } else {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.e(e, "restoring providers from cache");
+                Timber.e(e, "restoring providers from cache");
             }
         }
     }
