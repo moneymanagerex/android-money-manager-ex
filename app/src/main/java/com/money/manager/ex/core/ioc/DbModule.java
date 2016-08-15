@@ -34,15 +34,15 @@ import timber.log.Timber;
 /**
  * Module for database access.
  */
-
 @Module
 public final class DbModule {
-    @Provides @Singleton
-    SQLiteOpenHelper provideOpenHelper(Application application) {
-        return new MmexOpenHelper(application);
+    @Provides SQLiteOpenHelper provideOpenHelper(Application application) {
+//        return MmexOpenHelper.createNewInstance(application);
+        // Use the existing singleton instance.
+        return MmexOpenHelper.getInstance(application);
     }
 
-    @Provides @Singleton SqlBrite provideSqlBrite() {
+    @Provides SqlBrite provideSqlBrite() {
         return SqlBrite.create(new SqlBrite.Logger() {
             @Override public void log(String message) {
                 Timber.tag("Database").v(message);
@@ -50,7 +50,7 @@ public final class DbModule {
         });
     }
 
-    @Provides @Singleton BriteDatabase provideDatabase(SqlBrite sqlBrite, SQLiteOpenHelper helper) {
+    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, SQLiteOpenHelper helper) {
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         db.setLoggingEnabled(true);
         return db;

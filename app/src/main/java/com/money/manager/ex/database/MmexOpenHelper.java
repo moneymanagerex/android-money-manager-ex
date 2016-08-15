@@ -75,9 +75,7 @@ public class MmexOpenHelper
      */
     public static synchronized MmexOpenHelper getInstance(Context context) {
         if (mInstance == null) {
-            Timber.v("MmexOpenHelper.getInstance()");
-
-            mInstance = new MmexOpenHelper(context.getApplicationContext());
+            mInstance = createNewInstance(context);
         }
         return mInstance;
     }
@@ -89,11 +87,28 @@ public class MmexOpenHelper
     }
 
     /**
+     * For every database change, the helper needs to be recreated.
+     */
+    public static synchronized void reinitialize(Context context) {
+        mInstance = createNewInstance(context);
+    }
+
+    public static synchronized MmexOpenHelper createNewInstance(Context context) {
+        String dbPath = MoneyManagerApplication.getDatabasePath(context);
+
+        Timber.d("creating a new OpenHelper instance for %s", dbPath);
+
+        return new MmexOpenHelper(context.getApplicationContext(), dbPath);
+    }
+
+    // Dynamic
+
+    /**
      * Constructor. This is where the database path gets set.
      * @param context Current context.
      */
-    public MmexOpenHelper(Context context) {
-        super(context, MoneyManagerApplication.getDatabasePath(context), null, databaseVersion);
+    public MmexOpenHelper(Context context, String dbPath) {
+        super(context, dbPath, null, databaseVersion);
         this.mContext = context;
 
         Timber.d("Database path: %s", MoneyManagerApplication.getDatabasePath(context));

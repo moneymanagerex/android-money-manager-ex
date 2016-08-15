@@ -17,12 +17,13 @@
 
 package com.money.manager.ex.core.ioc;
 
-import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.core.Core;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
+import com.money.manager.ex.settings.AppSettings;
 
 import javax.inject.Singleton;
 
@@ -41,6 +42,7 @@ public interface MmexComponent {
     // Custom objects
     void inject(ISecurityPriceUpdater updater);
     void inject(MorningstarPriceUpdater updater);
+    void inject(AppSettings settings);
 
     // Repositories
     void inject(StockRepositorySql repository);
