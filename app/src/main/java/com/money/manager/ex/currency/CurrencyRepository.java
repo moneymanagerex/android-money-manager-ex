@@ -21,13 +21,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Currency;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * Currency repository. Provides access to Currency entities.
@@ -111,8 +111,7 @@ public class CurrencyRepository
         try {
             result = loadCurrencyInternal(selection, selectionArgs);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "loading currency");
+            Timber.e(e, "loading currency");
         }
         return result;
     }

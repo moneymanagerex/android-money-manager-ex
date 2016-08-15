@@ -21,9 +21,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Base class for price updaters. Contains some common and useful code.
@@ -72,8 +73,7 @@ public class PriceUpdaterBase
 //                DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "closing dialog");
+            Timber.e(e, "closing dialog");
         }
     }
 

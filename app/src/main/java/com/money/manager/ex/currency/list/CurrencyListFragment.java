@@ -36,8 +36,8 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -400,8 +400,7 @@ public class CurrencyListFragment
                                 ArrayList<String> symbols = new ArrayList<>();
                                 for (Currency currency : usedCurrencies) {
                                     if (currency == null) {
-                                        ExceptionHandler handler = new ExceptionHandler(getActivity());
-                                        handler.showMessage(getString(R.string.currency_not_found));
+                                        UIHelper.showToast(getActivity(), R.string.currency_not_found);
                                     } else {
                                         symbols.add(currency.getCode());
                                     }

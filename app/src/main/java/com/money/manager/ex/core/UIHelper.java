@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 
@@ -11,6 +12,16 @@ import com.money.manager.ex.Constants;
  * Various methods that assist with the UI Android requirements.
  */
 public class UIHelper {
+
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showToast(Context context, int stringResourceId) {
+        String message = context.getString(stringResourceId);
+        showToast(context, message);
+    }
+
     public UIHelper(Context context) {
         this.context = context;
     }

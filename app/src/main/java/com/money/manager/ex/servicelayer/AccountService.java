@@ -28,10 +28,10 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.ToolbarSpinnerAdapter;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -52,6 +52,7 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Various business logic pieces related to Account(s).
@@ -195,8 +196,7 @@ public class AccountService
         try {
             return getCursorInternal(open, favorite, accountTypes);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(ex, "getting cursor in account repository");
+            Timber.e(ex, "getting cursor in account repository");
         }
         return null;
     }
@@ -316,8 +316,7 @@ public class AccountService
 
         Cursor cursor = getCursor(openOnly, favoriteOnly, accountTypes);
         if (cursor == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.showMessage("Error reading accounts list!");
+            UIHelper.showToast(getContext(), "Error reading accounts list!");
             return result;
         }
 

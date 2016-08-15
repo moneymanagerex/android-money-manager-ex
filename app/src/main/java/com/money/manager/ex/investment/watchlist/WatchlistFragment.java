@@ -94,7 +94,7 @@ public class WatchlistFragment
         args.putInt(KEY_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
 
-        fragment.setNameFragment(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
+        fragment.setFragmentName(WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId));
 
         return fragment;
     }
@@ -282,6 +282,25 @@ public class WatchlistFragment
     }
 
     /**
+     * Start Loader to retrieve data
+     */
+    public void reloadData() {
+        if (mDataFragment != null) {
+            mDataFragment.reloadData();
+        }
+    }
+
+    public String getFragmentName() {
+        return mFragmentName;
+    }
+
+    public void setFragmentName(String fragmentName) {
+        this.mFragmentName = fragmentName;
+    }
+
+    // Private
+
+    /**
      * Called from asynchronous task when a first price is downloaded.
      * @param symbol Stock symbol
      * @param price Stock price
@@ -334,25 +353,6 @@ public class WatchlistFragment
             this.viewHolder.imgAccountFav.setBackgroundResource(R.drawable.ic_star_outline);
         }
     }
-
-    /**
-     * Start Loader to retrieve data
-     */
-    public void reloadData() {
-        if (mDataFragment != null) {
-            mDataFragment.reloadData();
-        }
-    }
-
-    public String getFragmentName() {
-        return mFragmentName;
-    }
-
-    public void setNameFragment(String fragmentName) {
-        this.mFragmentName = fragmentName;
-    }
-
-    // Private
 
     private void changePriceProvider() {
         // show the list with provider choices. Preselect the current one.

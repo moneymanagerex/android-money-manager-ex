@@ -109,7 +109,7 @@ public class MmexOpenHelper
         super(context, dbPath, null, databaseVersion);
         this.mContext = context;
 
-        Timber.d("Database path: %s", MoneyManagerApplication.getDatabasePath(context));
+//        Timber.d("Database path: %s", MoneyManagerApplication.getDatabasePath(context));
     }
 
     private Context mContext;

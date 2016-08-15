@@ -53,7 +53,9 @@ import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -65,7 +67,6 @@ import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.Passcode;
@@ -213,8 +214,7 @@ public class MainActivity
         try {
             super.onResume();
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this);
-            handler.e(e, "resuming main activity");
+            Timber.e(e, "resuming main activity");
         }
 
         // check if restart activity
@@ -231,8 +231,7 @@ public class MainActivity
             try {
                 mDrawerToggle.syncState();
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-                handler.e(e, "drawer sync state");
+                Timber.e(e, "drawer sync state");
             }
         }
     }
@@ -387,8 +386,7 @@ public class MainActivity
             try {
                 super.onBackPressed();
             } catch (IllegalStateException e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.e(e, "on back pressed");
+                Timber.e(e, "on back pressed");
             }
         }
     }
@@ -598,6 +596,12 @@ public class MainActivity
         new SyncManager(this).openDatabase();
     }
 
+    @Subscribe
+    public void onEvent(ErrorRaisedEvent event) {
+        // display the error to the user
+        UIHelper.showToast(this, event.message);
+    }
+
     // Private.
 
     private void initialize(Bundle savedInstanceState) {
@@ -768,8 +772,7 @@ public class MainActivity
                     Class<?> classFragment = loader.loadClass(fragmentClass.getName());
                     fragment = (Fragment) classFragment.newInstance();
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-                    handler.e(e, "creating new fragment");
+                    Timber.e(e, "creating new fragment");
                 }
             }
         }
@@ -798,8 +801,7 @@ public class MainActivity
         try {
             showFragment_Internal(fragment, tagFragment);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.e(e, "showing fragment with tag");
+            Timber.e(e, "showing fragment with tag");
         }
     }
 
@@ -1026,15 +1028,12 @@ public class MainActivity
     }
 
     private void changeDatabase(String dbFilePath, String password) {
-//        String currentDatabase = MoneyManagerApplication.getDatabasePath(this);
-
         try {
             Core core = new Core(getApplicationContext());
             core.changeDatabase(dbFilePath, password);
         } catch (Exception e) {
             //if (e instanceof )
-            ExceptionHandler handler = new ExceptionHandler(this);
-            handler.e(e, "changing the database");
+            Timber.e(e, "changing the database");
             return;
         }
 
@@ -1199,8 +1198,7 @@ public class MainActivity
             // Open this database.
             requestDatabaseChange(pathFile);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.e(e, "opening database from intent");
+            Timber.e(e, "opening database from intent");
         }
     }
 
@@ -1270,8 +1268,7 @@ public class MainActivity
                 try {
                     showFragment(Class.forName(className));
                 } catch (ClassNotFoundException e) {
-                    ExceptionHandler handler = new ExceptionHandler(this);
-                    handler.e(e, "showing fragment " + className);
+                    Timber.e(e, "showing fragment " + className);
                 }
             }
         }
@@ -1290,8 +1287,7 @@ public class MainActivity
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE);
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.e(e, "selecting a database file");
+                Timber.e(e, "selecting a database file");
             }
         } else {
             Toast.makeText(this, R.string.error_intent_pick_file,

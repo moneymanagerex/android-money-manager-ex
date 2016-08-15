@@ -69,6 +69,9 @@ public class MmexDatabaseUtils {
     // Dynamic
 
     public MmexDatabaseUtils(Context context){
+        mContext = context;
+
+        // dependency injection
         MoneyManagerApplication.getInstance().mainComponent.inject(this);
     }
 
@@ -216,7 +219,6 @@ public class MmexDatabaseUtils {
         }
 
         // close connection
-//        MmexOpenHelper.getInstance(getContext()).close();
         openHelper.get().close();
 
         // change database
@@ -248,7 +250,7 @@ public class MmexDatabaseUtils {
 
     private ArrayList<String> getAllTableNamesFromGenerationScript()
             throws IOException {
-        InputStream inputStream = mContext.getResources().openRawResource(R.raw.tables_v1);
+        InputStream inputStream = getContext().getResources().openRawResource(R.raw.tables_v1);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = reader.readLine();
         String textToMatch = "create table";
@@ -281,7 +283,6 @@ public class MmexDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-//        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext()).getReadableDatabase();
         SQLiteDatabase db = openHelper.get().getReadableDatabase();
 
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
@@ -297,11 +298,11 @@ public class MmexDatabaseUtils {
     }
 
     private void showToast(int resourceId, int duration) {
-        Toast.makeText(mContext, resourceId, duration).show();
+        Toast.makeText(getContext(), resourceId, duration).show();
     }
 
     private void showToast(String text, int duration) {
-        Toast.makeText(mContext, text, duration).show();
+        Toast.makeText(getContext(), text, duration).show();
     }
 
 }

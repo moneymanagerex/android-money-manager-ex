@@ -42,6 +42,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.StockFields;
@@ -470,8 +471,7 @@ public class WatchlistItemsFragment
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         StockRepository repo = new StockRepository(getActivity());
                         if (!repo.delete(id)) {
-                            ExceptionHandler handler = new ExceptionHandler(getActivity());
-                            handler.showMessage(R.string.db_delete_failed);
+                            UIHelper.showToast(getActivity(), R.string.db_delete_failed);
                         }
 
                         // restart loader
