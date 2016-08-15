@@ -24,23 +24,16 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MyDateTimeUtils;
-import com.squareup.sqlbrite.BriteDatabase;
 
 import org.joda.time.DateTime;
 
-
-import javax.inject.Inject;
-
-import dagger.Lazy;
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -60,18 +53,15 @@ public class StockHistoryRepository
 
     }
 
-    private enum UpdateType {
+    enum UpdateType {
         Online(1),
         Manual(2);
 
         UpdateType(int i) {
             this.type = i;
         }
-        private int type;
+        public int type;
     }
-
-    @Inject
-    Lazy<BriteDatabase> database;
 
     @Override
     public String[] getAllColumns() {
@@ -93,13 +83,11 @@ public class StockHistoryRepository
 
         boolean recordExists = recordExists(symbol, date);
 
-        // todo: move this to the constructor
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
-
         // check whether to insert or update.
         if (!recordExists) {
             ContentValues values = getContentValues(symbol, price, date);
-            long id = database.get().insert(TABLE_NAME, values);
+            Uri insert = getContext().getContentResolver().insert(getUri(), values);
+            long id = ContentUris.parseId(insert);
 
             if (id > 0) {
                 // success
@@ -111,8 +99,6 @@ public class StockHistoryRepository
             // update
             success = updateHistory(symbol, price, date);
         }
-
-        // todo: notify of changes. sync manager.
 
         return success;
     }
@@ -149,7 +135,9 @@ public class StockHistoryRepository
         where = DatabaseUtils.concatenateWhere(where, StockHistory.DATE + "=?");
         String[] whereArgs = new String[] { symbol, values.getAsString(StockHistory.DATE) };
 
-        int records = database.get().update(TABLE_NAME, values, where, whereArgs);
+        int records = getContext().getContentResolver().update(getUri(),
+                values,
+                where, whereArgs);
 
         result = records > 0;
 

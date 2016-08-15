@@ -22,6 +22,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
@@ -75,7 +76,7 @@ public class MorningstarPriceUpdater
     private int mTotalRecords;
     private CompositeSubscription compositeSubscription;
     @Inject StockRepositorySql stockRepository;
-    private StockHistoryRepository mStockHistoryRepository;
+    @Inject StockHistoryRepositorySql stockHistoryRepository;
 
     @Override
     public void downloadPrices(List<String> symbols) {
@@ -128,8 +129,7 @@ public class MorningstarPriceUpdater
                         stockRepository.updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
 
                         // save price history record.
-                        StockHistoryRepository historyRepo = getStockHistoryRepository();
-                        historyRepo.addStockHistoryRecord(priceDownloadedEvent.symbol,
+                        stockHistoryRepository.addStockHistoryRecord(priceDownloadedEvent.symbol,
                                 priceDownloadedEvent.price, priceDownloadedEvent.date);
 
                         // emit the event object down the stream.
@@ -209,12 +209,5 @@ public class MorningstarPriceUpdater
                 .baseUrl(BASE_URL)
                 .build();
         return retrofit.create(IMorningstarService.class);
-    }
-
-    private StockHistoryRepository getStockHistoryRepository() {
-        if (mStockHistoryRepository == null) {
-            mStockHistoryRepository = new StockHistoryRepository(getContext());
-        }
-        return mStockHistoryRepository;
     }
 }

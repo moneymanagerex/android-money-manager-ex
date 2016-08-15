@@ -18,6 +18,7 @@
 package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -43,5 +44,5 @@ public interface MmexComponent {
 
     // Repositories
     void inject(StockRepositorySql repository);
-    void inject(StockHistoryRepository repository);
+    void inject(StockHistoryRepositorySql repository);
 }

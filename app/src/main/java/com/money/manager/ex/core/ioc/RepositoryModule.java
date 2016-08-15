@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.core.ioc;
 
+import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 
 import javax.inject.Singleton;
@@ -32,5 +33,10 @@ public class RepositoryModule {
     @Provides @Singleton
     StockRepositorySql provideStockRepository() {
         return new StockRepositorySql();
+    }
+
+    @Provides @Singleton
+    StockHistoryRepositorySql provideStockHistoryRepository() {
+        return new StockHistoryRepositorySql();
     }
 }

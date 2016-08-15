@@ -42,7 +42,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockFields;
@@ -50,11 +49,11 @@ import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvExport;
 import com.money.manager.ex.investment.QuoteProviders;
 import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
+import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -200,7 +199,7 @@ public class WatchlistFragment
         selectCurrentAccount();
 
         // restart loader
-        startLoaderData();
+        reloadData();
     }
 
     // Menu
@@ -266,6 +265,11 @@ public class WatchlistFragment
     }
 
     // Events
+
+    @Subscribe
+    public void onEvent(AllPricesDownloadedEvent event) {
+        reloadData();
+    }
 
     @Subscribe
     public void onEvent(PriceDownloadedEvent event) {
@@ -334,7 +338,7 @@ public class WatchlistFragment
     /**
      * Start Loader to retrieve data
      */
-    public void startLoaderData() {
+    public void reloadData() {
         if (mDataFragment != null) {
             mDataFragment.reloadData();
         }
