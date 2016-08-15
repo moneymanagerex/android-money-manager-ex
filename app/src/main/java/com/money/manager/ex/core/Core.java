@@ -153,6 +153,7 @@ public class Core {
 
     private Context mContext;
     @Inject Lazy<MmexOpenHelper> openHelper;
+    @Inject Lazy<AppSettings> appSettings;
 
     /**
      * Change the database used by the app.
@@ -184,9 +185,10 @@ public class Core {
         openHelper.get().close();
 
         // change database
-        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
+//        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
+        appSettings.get().getDatabaseSettings().setDatabasePath(path);
 
-        // todo: The components need to be restarted after this!
+        // todo: The components need to be restarted to read the new database location after this!
 
         // Reinitialize the provider.
 //        MmexOpenHelper.reinitialize(getContext().getApplicationContext());

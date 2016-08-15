@@ -46,6 +46,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -279,6 +280,11 @@ public class WatchlistFragment
     @Subscribe
     public void onEvent(PriceUpdateRequestEvent event) {
         onPriceUpdateRequested(event.symbol);
+    }
+
+    @Subscribe
+    public void onEvent(ErrorRaisedEvent event) {
+        UIHelper.showToast(getActivity(), event.message);
     }
 
     /**

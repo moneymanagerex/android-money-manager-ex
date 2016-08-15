@@ -30,12 +30,12 @@ import dagger.Provides;
  */
 @Module
 public class RepositoryModule {
-    @Provides @Singleton
+    @Provides
     StockRepositorySql provideStockRepository() {
         return new StockRepositorySql();
     }
 
-    @Provides @Singleton
+    @Provides
     StockHistoryRepositorySql provideStockHistoryRepository() {
         return new StockHistoryRepositorySql();
     }
