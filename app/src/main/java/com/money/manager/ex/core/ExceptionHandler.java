@@ -88,7 +88,8 @@ public class ExceptionHandler
     }
 
     public void handle(Throwable t, String errorMessage) {
-        errorMessage = "Error " + errorMessage;
+        errorMessage = String.format("Error %s:\n%s",
+                errorMessage, t.getLocalizedMessage());
 
         String version = getAppVersion() + "." + getAppBuildNumber();
         Log.e(getLogcat(), "version: " + version + ": " + errorMessage + ": " + t.getLocalizedMessage());
@@ -114,6 +115,7 @@ public class ExceptionHandler
     public void showMessage(final String message) {
         showMessage(message, Toast.LENGTH_SHORT);
     }
+
     /**
      * Display a toast message.
      * @param message Message text to display.
