@@ -49,7 +49,7 @@ public class SplitCategory
     public static final String SPLITTRANSAMOUNT = "SPLITTRANSAMOUNT";
 
     public static SplitCategory create(int transactionId, int categoryId, int subcategoryId,
-                                       TransactionTypes transactionType, Money amount) {
+                                       TransactionTypes parentTransactionType, Money amount) {
         SplitCategory entity = new SplitCategory();
 
         entity.setId(Constants.NOT_SET);
@@ -57,6 +57,14 @@ public class SplitCategory
         entity.setSubcategoryId(subcategoryId);
         entity.setAmount(amount);
         entity.setTransId(transactionId);
+
+        TransactionTypes splitType;
+        if (amount.isZero() || amount.compareTo(MoneyFactory.fromDouble(0)) == -1) {
+            splitType = TransactionTypes.Withdrawal;
+        } else {
+            splitType = TransactionTypes.Deposit;
+        }
+        entity.setTransactionType(splitType, parentTransactionType);
 
         return entity;
     }
