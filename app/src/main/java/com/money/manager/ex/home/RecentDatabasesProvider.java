@@ -29,8 +29,6 @@ import java.util.LinkedHashMap;
 
 /**
  * Provides handling of the recent databases file queue.
- *
- * Created by Alen Siljak on 14/09/2015.
  */
 public class RecentDatabasesProvider {
 

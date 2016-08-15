@@ -63,6 +63,10 @@
     public static <fields>;
 }
 
+# MMEX classes
+#-keep class com.money.manager.ex.**
+#-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
+
 # Parceler library
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -105,3 +109,4 @@
 #-renamesourcefileattribute SourceFile
 #-keepattributes SourceFile,LineNumberTable
 #-printmapping build/outputs/mapping/release/mapping.txt
+#-dontobfuscate
