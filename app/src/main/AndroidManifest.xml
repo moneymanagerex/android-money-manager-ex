@@ -414,7 +414,7 @@
             android:label="@string/title_activity_security_list" />
         <activity
             android:name=".assetallocation.AssetAllocationPickerActivity"
-            android:label="@string/title_activity_asset_allocation_picker" />
+            android:label="@string/asset_allocation" />
         <activity
             android:name=".database.PasswordActivity"
             android:label="@string/enter_password" />
