@@ -92,8 +92,8 @@ public class MorningstarPriceUpdater
         compositeSubscription = new CompositeSubscription();
 
         Subscription allSymbolsSubscription = Observable.from(symbols)
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 // get a Morningstar symbol
                 .map(new Func1<String, String>() {
                     @Override
