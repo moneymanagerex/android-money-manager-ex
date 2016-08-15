@@ -20,7 +20,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 
 /**
  * This class is used to interact with application settings/preferences.
@@ -32,12 +37,17 @@ public class AppSettings
     public AppSettings(Context context) {
         super(context);
 
+        // DI
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
     }
 
     @Override
     protected SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getContext());
+//        return PreferenceManager.getDefaultSharedPreferences(getContext());
+        return sharedPreferences.get();
     }
+
+    @Inject Lazy<SharedPreferences> sharedPreferences;
 
     // setting groups
 
