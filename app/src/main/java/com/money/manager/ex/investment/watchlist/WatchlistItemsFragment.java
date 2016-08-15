@@ -427,11 +427,9 @@ public class WatchlistItemsFragment
         AccountRepository repo = new AccountRepository(getActivity());
         Account account = repo.load(this.accountId);
 
-        if (label != null) {
-            label.setText(getString(R.string.cash));
-        }
+        label.setText(getString(R.string.cash));
 
-        if (textView != null) {
+        if (account != null) {
             FormatUtilities formatter = new FormatUtilities(getActivity());
             textView.setText(formatter.getValueFormatted(
                 account.getInitialBalance(), account.getCurrencyId()));
