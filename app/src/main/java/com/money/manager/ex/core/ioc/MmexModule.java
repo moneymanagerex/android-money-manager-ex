@@ -21,6 +21,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.money.manager.ex.settings.AppSettings;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -52,5 +54,10 @@ public final class MmexModule {
     SharedPreferences provideSharedPreferences() {
 //        return application.getSharedPreferences(PREFERENCES_FILE_NAME, 0);
         return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides @Singleton
+    AppSettings provideAppSettings(Application application) {
+        return new AppSettings(application);
     }
 }

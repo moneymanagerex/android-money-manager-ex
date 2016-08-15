@@ -34,6 +34,7 @@ import dagger.Lazy;
 public class AppSettings
     extends SettingsBase {
 
+    @Inject
     public AppSettings(Context context) {
         super(context);
 

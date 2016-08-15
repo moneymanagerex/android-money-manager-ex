@@ -18,9 +18,11 @@
 package com.money.manager.ex.core.ioc;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -36,10 +38,25 @@ import timber.log.Timber;
  */
 @Module
 public final class DbModule {
-    @Provides SQLiteOpenHelper provideOpenHelper(Application application) {
+    private MmexOpenHelper instance;
+
+    @Provides SQLiteOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
 //        return MmexOpenHelper.createNewInstance(application);
         // Use the existing singleton instance.
-        return MmexOpenHelper.getInstance(application);
+        //return MmexOpenHelper.getInstance(application);
+
+        if (instance == null) {
+            instance = MmexOpenHelper.createNewInstance(application);
+        } else {
+            // See whether to reinitialize
+            String currentPath = instance.getDatabaseName();
+            String newPath = appSettings.getDatabaseSettings().getDatabasePath();
+            if (!currentPath.equals(newPath)) {
+                instance.close();
+                instance = MmexOpenHelper.createNewInstance(application);
+            }
+        }
+        return instance;
     }
 
     @Provides SqlBrite provideSqlBrite() {

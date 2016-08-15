@@ -57,7 +57,7 @@ public abstract class SettingsBase {
         try {
             return getContext().getString(settingKeyConstant, "");
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "error getting string for resource " +
                 Integer.toString(settingKeyConstant));
         }
@@ -96,7 +96,7 @@ public abstract class SettingsBase {
         try {
             return getPreferences().getString(key, defaultValue);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
+            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.handle(e, "reading string preference: " + key);
 
             return defaultValue;
