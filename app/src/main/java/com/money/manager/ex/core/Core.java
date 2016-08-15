@@ -63,15 +63,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class Core {
+import timber.log.Timber;
 
-    private static final String LOGCAT = Core.class.getSimpleName();
+public class Core {
 
     /**
      * Shown alert dialog
-     *
      * @param resId id of string
-     * @return alert dialog
      */
     public static void alertDialog(Context ctx, int resId) {
         alertDialog(ctx, ctx.getString(resId));
@@ -79,7 +77,6 @@ public class Core {
 
     /**
      * Shown alert dialog
-     *
      * @param text to display
      */
     public static void alertDialog(Context context, String text) {
@@ -205,7 +202,8 @@ public class Core {
             try {
                 copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                ExceptionHandler handler = new ExceptionHandler(getContext());
+                handler.handle(e, "backing up the database");
                 return null;
             }
         }
@@ -403,7 +401,7 @@ public class Core {
      * @return indicator whether the operation was successful
      */
     public boolean changeDatabase(String path, String password) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "switching database to: " + path);
+        Timber.d("switching database to: %s", path);
 
         File file = new File(path);
         // check if database exists
