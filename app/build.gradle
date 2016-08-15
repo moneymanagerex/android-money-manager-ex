@@ -25,11 +25,11 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        minSdkVersion 15 // 4.0
-        targetSdkVersion 24
         versionCode 881
         versionName '2016.08.15'
 
+        minSdkVersion 15 // 4.0
+        targetSdkVersion 24
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
