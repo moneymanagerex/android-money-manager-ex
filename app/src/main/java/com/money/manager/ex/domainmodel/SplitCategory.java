@@ -69,7 +69,7 @@ public class SplitCategory
         return entity;
     }
 
-    private TransactionTypes transactionType;
+    TransactionTypes transactionType;
 
     public Integer getId() {
         return getInt(SPLITTRANSID);

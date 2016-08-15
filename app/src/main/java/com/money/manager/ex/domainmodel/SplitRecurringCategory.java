@@ -67,7 +67,7 @@ public class SplitRecurringCategory
         return entity;
     }
 
-    private TransactionTypes transactionType;
+    TransactionTypes transactionType;
 
     @Override
     public Integer getId() {
