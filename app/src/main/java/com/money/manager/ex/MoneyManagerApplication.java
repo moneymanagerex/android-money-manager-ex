@@ -72,16 +72,12 @@ public class MoneyManagerApplication
     extends MultiDexApplication {
 
     private static MoneyManagerApplication myInstance;
-    // todo: remove this static instance!
-    private static SharedPreferences appPreferences;
     private static float mTextSize;
     private static String userName = "";
 
     public static MoneyManagerApplication getInstance() {
         return myInstance;
     }
-
-    // Static
 
     /**
      * Returns only the directory name for the databases. This is where the new databases are
@@ -202,8 +198,6 @@ public class MoneyManagerApplication
         // save instance of application
         myInstance = this;
 
-        Timber.d("Application created");
-
         // todo: move this to dbutils
         // create the default folder for the database.
         Core core = new Core(getApplicationContext());
@@ -211,14 +205,13 @@ public class MoneyManagerApplication
 
         // set default text size.
         setTextSize(new TextView(getApplicationContext()).getTextSize());
-        // preference
-        if (appPreferences == null) {
-            appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            RobotoView.setUserFont(Integer.parseInt(
-                appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
-            RobotoView.setUserFontSize(getApplicationContext(),
-                appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
-        }
+
+        // Font
+        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        RobotoView.setUserFont(Integer.parseInt(
+            appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT), "-1")));
+        RobotoView.setUserFontSize(getApplicationContext(),
+            appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
 
         // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
@@ -238,6 +231,13 @@ public class MoneyManagerApplication
 //            Timber.plant(new Timber. CrashReportingTree());
 //        }
 
+        initializeDependencyInjection();
+    }
+
+    /**
+     * Initialize Dagger 2 module(s).
+     */
+    private void initializeDependencyInjection() {
         // Dependency Injection. IoC
         mainComponent = DaggerMmexComponent.builder()
                 .mmexModule(new MmexModule(this))
@@ -292,9 +292,6 @@ public class MoneyManagerApplication
         return locale;
     }
 
-    public static MmexComponent getComponent(Context context) {
-        return ((MoneyManagerApplication) context.getApplicationContext()).mainComponent;
-    }
     public boolean setUserName(String userName) {
         return this.setUserName(userName, false);
     }
@@ -313,13 +310,14 @@ public class MoneyManagerApplication
             }
         }
         // edit preferences
+        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Editor editPreferences = appPreferences.edit();
         editPreferences.putString(getString(PreferenceConstants.PREF_USER_NAME), userName);
-        // commit
 //        editPreferences.commit();
         editPreferences.apply();
         // set the value
         MoneyManagerApplication.userName = userName;
+
         return true;
     }
 
