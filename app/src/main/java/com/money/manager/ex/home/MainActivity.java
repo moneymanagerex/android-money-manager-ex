@@ -104,6 +104,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import timber.log.Timber;
+
 /**
  * Main activity of the application.
  */
@@ -126,7 +128,6 @@ public class MainActivity
 
     // private
 
-    private static final String LOGCAT = MainActivity.class.getSimpleName();
     private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
     private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
@@ -1028,8 +1029,15 @@ public class MainActivity
     private void changeDatabase(String dbFilePath, String password) {
 //        String currentDatabase = MoneyManagerApplication.getDatabasePath(this);
 
-        Core core = new Core(getApplicationContext());
-        core.changeDatabase(dbFilePath, password);
+        try {
+            Core core = new Core(getApplicationContext());
+            core.changeDatabase(dbFilePath, password);
+        } catch (Exception e) {
+            //if (e instanceof )
+            ExceptionHandler handler = new ExceptionHandler(this);
+            handler.handle(e, "changing the database");
+            return;
+        }
 
         // Store the name into the recent files list.
         if (!this.recentDbs.contains(dbFilePath)) {
@@ -1188,7 +1196,7 @@ public class MainActivity
         // decode
         try {
             pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Path intent file to open:" + pathFile);
+            Timber.d("Path intent file to open: %s", pathFile);
             // Open this database.
             requestDatabaseChange(pathFile);
         } catch (Exception e) {
@@ -1263,14 +1271,15 @@ public class MainActivity
                 try {
                     showFragment(Class.forName(className));
                 } catch (ClassNotFoundException e) {
-                    Log.e(LOGCAT, e.getMessage());
+                    ExceptionHandler handler = new ExceptionHandler(this);
+                    handler.handle(e, "showing fragment " + className);
                 }
             }
         }
     }
 
     /**
-     * Pick the database file to use.
+     * Pick the database file to use with any registered provider in the user's system.
      * @param startFolder start folder
      */
     private void pickFile(File startFolder) {
@@ -1293,6 +1302,10 @@ public class MainActivity
         // Note that the selected file is handled in onActivityResult.
     }
 
+    /**
+     * Pick a database file to open using built-in file picker.
+     * @param locationPath ?
+     */
     private void pickFileInternal(String locationPath) {
         // root path should be the internal storage?
         String root = Environment.getExternalStorageDirectory().getPath();
@@ -1315,7 +1328,7 @@ public class MainActivity
      * @param dbFilePath The path to the database file.
      */
     private void requestDatabaseChange(String dbFilePath) {
-        Log.v(LOGCAT, "Changing database to: " + dbFilePath);
+        Timber.v("Changing database to: %s", dbFilePath);
 
         // handle encrypted database(s)
         if (MmexDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
