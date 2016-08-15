@@ -20,7 +20,6 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
@@ -79,18 +78,17 @@ public class DatabaseMigrator14To20 {
         }
         // This was the default database name and it was impossible to create another one
         // at this location.
-        dbPath += "/databases/data.mmb";
+        dbPath += "/databases/" + DEFAULT_DB_FILENAME;
 //        dbPath += "/databases/";
         // There are other internal databases, like webview.db, google_analytics, etc.
 
         return dbPath;
     }
 
-    public String getV20Path() {
+    public String getV20Directory() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        File newPath = dbUtils.getDatabaseStorageDirectory();
+        File newPath = new File(dbUtils.getDatabaseStorageDirectory());
 
-//        String dbPath = newPath.toString() + "/data.mmb";
         String dbPath = newPath.toString();
         return dbPath;
     }
@@ -108,7 +106,7 @@ public class DatabaseMigrator14To20 {
         File legacyFile = new File(legacyPath, DEFAULT_DB_FILENAME);
 
         // copy the legacy database
-        String newPath = getV20Path();
+        String newPath = getV20Directory();
         File newFile = new File(newPath, "legacyData.mmb");
         try {
             copy(legacyFile, newFile);

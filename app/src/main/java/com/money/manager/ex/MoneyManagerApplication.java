@@ -82,34 +82,6 @@ public class MoneyManagerApplication
     }
 
     /**
-     * Returns only the directory name for the databases. This is where the new databases are
-     * created by default.
-     * @return String containing the path to the default directory for storing databases.
-     */
-    public static String getDatabaseDirectory(Context context) {
-        // todo: move this to db utils
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(context);
-        File defaultFolder = dbUtils.getDatabaseStorageDirectory();
-        String databasePath;
-
-        if (defaultFolder.getAbsoluteFile().exists()) {
-            databasePath = defaultFolder.toString();
-        } else {
-            String internalFolder;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                internalFolder = context.getApplicationInfo().dataDir;
-            } else {
-                internalFolder = "/data/data/" + context.getApplicationContext().getPackageName();
-            }
-            // add databases
-            internalFolder += "/databases"; // "/data.mmb";
-            databasePath = internalFolder;
-        }
-
-        return databasePath;
-    }
-
-    /**
      * Reads the current database path from the settings and checks for the existence of the
      * database file.
      * Creates a default database file if the one from settings is not found. Sets this file as
@@ -133,7 +105,8 @@ public class MoneyManagerApplication
 
         // otherwise try other paths or create the default database.
 
-        String defaultDirectory = getDatabaseDirectory(context);
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(context);
+        String defaultDirectory = dbUtils.getDatabaseStorageDirectory();
         String defaultPath = defaultDirectory + "/data.mmb";
 
         dbSettings.setDatabasePath(defaultPath);

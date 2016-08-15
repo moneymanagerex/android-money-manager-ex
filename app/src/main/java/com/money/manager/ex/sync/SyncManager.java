@@ -668,10 +668,10 @@ public class SyncManager {
 
     private File getExternalStorageDirectoryForSync() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        File folder = dbUtils.getDatabaseStorageDirectory();
+        File folder = new File(dbUtils.getDatabaseStorageDirectory());
 
         // manage folder
-        if (folder != null && folder.exists() && folder.isDirectory() && folder.canWrite()) {
+        if (folder.exists() && folder.isDirectory() && folder.canWrite()) {
             // create a folder for remote files
             File folderSync = new File(folder + "/sync");
             // check if folder exists otherwise create

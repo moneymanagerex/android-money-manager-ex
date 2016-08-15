@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -81,7 +82,8 @@ public class MmexApplicationTests {
     public void dbDirectoryHasAppName() {
         final String expected = "MoneyManagerEx";
 
-        String actual = MoneyManagerApplication.getDatabaseDirectory(this.context);
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
+        String actual = dbUtils.getDatabaseStorageDirectory();
 
         assertTrue(actual.contains(expected));
     }

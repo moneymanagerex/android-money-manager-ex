@@ -164,29 +164,49 @@ public class MmexDatabaseUtils {
     }
 
     /**
-     * Get application directory on external storage. The directory is created if it does not exist.
-     * @return the default directory where to store the database
+     * Gets the directory on external storage where the database is (to be) stored. New databases
+     * are created here by default.
+     * The directory is created if it does not exist.
+     * @return the default database directory
      */
-    public File getDatabaseStorageDirectory() {
+    public String getDatabaseStorageDirectory() {
         //get external storage
         File externalStorage;
         externalStorage = Environment.getExternalStorageDirectory();
 
         if (externalStorage == null || !externalStorage.exists() || !externalStorage.isDirectory() || !externalStorage.canWrite()) {
-            return getContext().getFilesDir();
+            return getContext().getFilesDir().getAbsolutePath();
         }
 
-        File folderOutput = new File(externalStorage + File.separator + getContext().getPackageName());
-        if (!folderOutput.exists()) {
-            folderOutput = new File(externalStorage + "/MoneyManagerEx");
-            if (!folderOutput.exists()) {
+        File defaultFolder = new File(externalStorage + File.separator + getContext().getPackageName());
+        if (!defaultFolder.exists()) {
+            defaultFolder = new File(externalStorage + "/MoneyManagerEx");
+            if (!defaultFolder.exists()) {
                 //make a directory
-                if (!folderOutput.mkdirs()) {
-                    return getContext().getFilesDir();
+                if (!defaultFolder.mkdirs()) {
+                    return getContext().getFilesDir().getAbsolutePath();
                 }
             }
         }
-        return folderOutput;
+//        return defaultFolder;
+
+        String databasePath;
+
+        if (defaultFolder.getAbsoluteFile().exists()) {
+            databasePath = defaultFolder.toString();
+        } else {
+            String internalFolder;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                internalFolder = getContext().getApplicationInfo().dataDir;
+            } else {
+                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
+            }
+            // add databases
+            internalFolder += "/databases"; // "/data.mmb";
+            databasePath = internalFolder;
+        }
+
+        return databasePath;
     }
 
     // Private
@@ -231,7 +251,8 @@ public class MmexDatabaseUtils {
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
-        String location = MoneyManagerApplication.getDatabaseDirectory(getContext());
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        String location = dbUtils.getDatabaseStorageDirectory();
         String newFilePath = location + File.separator + filename;
 
         // Create db file.

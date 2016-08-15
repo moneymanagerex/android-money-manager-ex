@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
@@ -53,6 +54,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import timber.log.Timber;
 
 /**
  * Quote provider: Morningstar
@@ -92,19 +94,18 @@ public class MorningstarPriceUpdater
 
         Subscription allSymbolsSubscription = Observable.from(symbols)
                 .subscribeOn(Schedulers.io())
-                // get a Morningstar symbol
                 .map(new Func1<String, String>() {
                     @Override
                     public String call(String s) {
+                        // get a Morningstar symbol
                         return converter.convert(s);
                     }
                 })
-                // Observe the network call on IO thread!
-                .observeOn(Schedulers.io())
-                // download the price
+                .observeOn(Schedulers.io())     // Observe the network call on IO thread!
                 .flatMap(new Func1<String, Observable<Pair<String, String>>>() {
                     @Override
                     public Observable<Pair<String, String>> call(final String s) {
+                        // download the price
                         return service.getPrice(s)
                                 .map(new Func1<String, Pair<String, String>>() {
                                     @Override
@@ -114,17 +115,17 @@ public class MorningstarPriceUpdater
                                 });
                     }
                 })
-                // parse the price
                 .map(new Func1<Pair<String, String>, PriceDownloadedEvent>() {
                     @Override
                     public PriceDownloadedEvent call(Pair<String, String> s) {
+                        // parse the price
                         return parse(s.getLeft(), s.getRight());
                     }
                 })
-                // save to database
                 .map(new Func1<PriceDownloadedEvent, PriceDownloadedEvent>() {
                     @Override
                     public PriceDownloadedEvent call(PriceDownloadedEvent priceDownloadedEvent) {
+                        // save to database
                         // update the current price of the stock.
                         stockRepository.updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
 
@@ -142,8 +143,7 @@ public class MorningstarPriceUpdater
                     public void onCompleted() {
                         closeProgressDialog();
 
-                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.showMessage(getContext().getString(R.string.download_complete));
+                        UIHelper.showToast(getContext(), R.string.download_complete);
 
                         compositeSubscription.unsubscribe();
 
@@ -155,8 +155,7 @@ public class MorningstarPriceUpdater
                     public void onError(Throwable e) {
                         closeProgressDialog();
 
-                        ExceptionHandler handler = new ExceptionHandler(getContext());
-                        handler.e(e, "downloading prices");
+                        Timber.e(e, "downloading prices");
                     }
 
                     @Override

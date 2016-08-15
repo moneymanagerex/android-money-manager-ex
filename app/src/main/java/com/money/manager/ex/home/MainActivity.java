@@ -897,7 +897,9 @@ public class MainActivity
 
     public void openDatabasePicker() {
         //pickFile(Environment.getDatabaseStorageDirectory());
-        String dbDirectory = MoneyManagerApplication.getDatabaseDirectory(this);
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+        String dbDirectory = dbUtils.getDatabaseStorageDirectory();
+
         // Environment.getDatabaseStorageDirectory().getPath()
         pickFileInternal(dbDirectory);
     }
