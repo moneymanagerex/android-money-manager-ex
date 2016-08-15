@@ -93,7 +93,6 @@ public class MorningstarPriceUpdater
 
         Subscription allSymbolsSubscription = Observable.from(symbols)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 // get a Morningstar symbol
                 .map(new Func1<String, String>() {
                     @Override
@@ -101,6 +100,8 @@ public class MorningstarPriceUpdater
                         return converter.convert(s);
                     }
                 })
+                // Observe the network call on IO thread!
+                .observeOn(Schedulers.io())
                 // download the price
                 .flatMap(new Func1<String, Observable<Pair<String, String>>>() {
                     @Override
@@ -136,6 +137,7 @@ public class MorningstarPriceUpdater
                         return priceDownloadedEvent;
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<PriceDownloadedEvent>() {
                     @Override
                     public void onCompleted() {
