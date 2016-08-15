@@ -21,7 +21,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.utils.DialogUtils;
 
 /**
@@ -61,7 +61,7 @@ public class ImportAllCurrenciesTask
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "closing progress dialog");
+            handler.e(e, "closing progress dialog");
         }
         super.onPostExecute(result);
     }

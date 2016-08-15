@@ -19,24 +19,18 @@ package com.money.manager.ex;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.jakewharton.rxbinding.view.RxView;
 import com.money.manager.ex.common.BaseFragmentActivity;
 //import com.money.manager.ex.inapp.util.IabHelper;
 import com.money.manager.ex.common.WebViewActivity;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.HttpMethods;
-import com.money.manager.ex.view.RobotoButton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 public class DonateActivity
     extends BaseFragmentActivity {
@@ -98,7 +92,7 @@ public class DonateActivity
             startActivity(browserIntent);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this);
-            handler.handle(e, "opening the homepage in a browser");
+            handler.e(e, "opening the homepage in a browser");
         }
     }
 }

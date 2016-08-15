@@ -20,11 +20,10 @@ package com.money.manager.ex.investment.yahoocsv;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvParser;
 import com.money.manager.ex.investment.PriceUpdaterBase;
-import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 
@@ -76,7 +75,7 @@ public class YahooCsvQuoteDownloaderRetrofit
                 closeProgressDialog();
 
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(t, "fetching price");
+                handler.e(t, "fetching price");
             }
         };
 
@@ -85,7 +84,7 @@ public class YahooCsvQuoteDownloaderRetrofit
                 service.getPrice(symbol).enqueue(callback);
             } catch (Exception ex) {
                 ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(ex, "downloading quotes");
+                handler.e(ex, "downloading quotes");
             }
         }
     }

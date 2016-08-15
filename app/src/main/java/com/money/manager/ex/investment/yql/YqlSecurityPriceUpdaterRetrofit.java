@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.investment.yql;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.google.gson.JsonArray;
@@ -24,21 +23,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.SecurityPriceModel;
-import com.money.manager.ex.investment.SecurityPriceUpdaterFactory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.utils.DialogUtils;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +94,7 @@ public class YqlSecurityPriceUpdaterRetrofit
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(t, "fetching price");
+                handler.e(t, "fetching price");
                 closeProgressDialog();
             }
         };
@@ -109,7 +105,7 @@ public class YqlSecurityPriceUpdaterRetrofit
             yql.getPrices(query).enqueue(callback);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "fetching prices");
+            handler.e(e, "fetching prices");
         }
     }
 
@@ -245,7 +241,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         try {
             currency = currencyElement.getAsString();
         } catch (UnsupportedOperationException ex) {
-            handler.handle(ex, "reading currency from downloaded price");
+            handler.e(ex, "reading currency from downloaded price");
             currency = "";
         }
         if (currency.equals("GBp")) {

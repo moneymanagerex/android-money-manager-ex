@@ -26,6 +26,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.log.ExceptionHandler;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

@@ -26,12 +26,10 @@ import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
-import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 
 import info.javaperformance.money.MoneyFactory;
@@ -52,7 +50,7 @@ public class RecurringTransactionNotifications {
             notifyRepeatingTransaction_Internal();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "showing notification about recurring transactions");
+            handler.e(ex, "showing notification about recurring transactions");
         }
     }
 
@@ -133,7 +131,7 @@ public class RecurringTransactionNotifications {
             notificationManager.notify(ID_NOTIFICATION, notification);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "showing notification for recurring transaction");
+            handler.e(e, "showing notification for recurring transaction");
         }
     }
 

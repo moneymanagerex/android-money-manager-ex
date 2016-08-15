@@ -18,10 +18,8 @@
 package com.money.manager.ex.about;
 
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
@@ -39,17 +37,13 @@ import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class AboutFragment extends Fragment {
@@ -236,7 +230,7 @@ public class AboutFragment extends Fragment {
             startActivity(Intent.createChooser(emailIntent, "Send email..."));
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity());
-            handler.handle(e, "opening email with logcat");
+            handler.e(e, "opening email with logcat");
         }
     }
 
@@ -255,7 +249,7 @@ public class AboutFragment extends Fragment {
             p = Runtime.getRuntime().exec("logcat -d");
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "executing logcat");
+            handler.e(e, "executing logcat");
         }
         if (p == null) return "";
 
@@ -272,7 +266,7 @@ public class AboutFragment extends Fragment {
             in.close();
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "reading stdout");
+            handler.e(e, "reading stdout");
         }
 
         return output.toString();

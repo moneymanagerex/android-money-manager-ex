@@ -19,9 +19,8 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 
 /**
  * Base class for settings sections.
@@ -58,7 +57,7 @@ public abstract class SettingsBase {
             return getContext().getString(settingKeyConstant, "");
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "error getting string for resource " +
+            handler.e(e, "error getting string for resource " +
                 Integer.toString(settingKeyConstant));
         }
         return "";
@@ -97,7 +96,7 @@ public abstract class SettingsBase {
             return getPreferences().getString(key, defaultValue);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "reading string preference: " + key);
+            handler.e(e, "reading string preference: " + key);
 
             return defaultValue;
         }

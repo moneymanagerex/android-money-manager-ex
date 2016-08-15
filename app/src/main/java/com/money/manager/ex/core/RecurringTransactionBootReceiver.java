@@ -42,7 +42,7 @@ public class RecurringTransactionBootReceiver
             setAlarm(context);
         } catch (Exception e) {
 //            ExceptionHandler handler = new ExceptionHandler(context, this);
-//            handler.handle(e, "checking for due recurring transactions");
+//            handler.e(e, "checking for due recurring transactions");
             Log.e(RecurringTransactionBootReceiver.class.getSimpleName(), e.getMessage());
         }
     }

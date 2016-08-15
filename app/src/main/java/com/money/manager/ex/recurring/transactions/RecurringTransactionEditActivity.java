@@ -30,10 +30,12 @@ import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.ISplitTransaction;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
@@ -55,13 +57,17 @@ import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
+import javax.inject.Inject;
+
+import timber.log.Timber;
+
 /**
  * Recurring transactions are stored in BillsDeposits table.
  */
 public class RecurringTransactionEditActivity
     extends BaseFragmentActivity {
 
-    private static final String LOGCAT = RecurringTransactionEditActivity.class.getSimpleName();
+//    private static final String LOGCAT = RecurringTransactionEditActivity.class.getSimpleName();
 
     public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
@@ -79,6 +85,8 @@ public class RecurringTransactionEditActivity
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
     public static final String TAG_DATEPICKER = "DatePicker";
 
+    @Inject MmexOpenHelper openHelper;
+
     private String mIntentAction;
 
     // Form controls
@@ -90,8 +98,10 @@ public class RecurringTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recurring_transaction);
 
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+
         RecurringTransaction tx = initializeModel();
-        mCommonFunctions = new EditTransactionCommonFunctions(this, tx);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, tx, openHelper);
 
         showStandardToolbarActions();
 
@@ -555,14 +565,14 @@ public class RecurringTransactionEditActivity
                     // insert data
                     if (!splitRepo.insert(splitEntity)) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(LOGCAT, "Insert new split transaction failed!");
+                        Timber.w("Insert new split transaction failed!");
                         return false;
                     }
                 } else {
                     // update data
                     if (!splitRepo.update(splitEntity)) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(LOGCAT, "Update split transaction failed!");
+                        Timber.w("Update split transaction failed!");
                         return false;
                     }
                 }
@@ -581,14 +591,14 @@ public class RecurringTransactionEditActivity
 
             if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
                 Core.alertDialog(this, R.string.db_checking_insert_failed);
-                Log.w(LOGCAT, "Insert new repeating transaction failed!");
+                Timber.w("Insert new repeating transaction failed!");
                 return false;
             }
         } else {
             // update
             if (!repo.update((RecurringTransaction) mCommonFunctions.transactionEntity)) {
                 Core.alertDialog(this, R.string.db_checking_update_failed);
-                Log.w(LOGCAT, "Update repeating  transaction failed!");
+                Timber.w("Update repeating  transaction failed!");
                 return false;
             }
         }

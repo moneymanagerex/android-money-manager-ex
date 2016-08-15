@@ -40,7 +40,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.NetworkUtilities;
@@ -164,7 +164,7 @@ public class SyncManager {
             remoteLastModified = new DateTime(remoteFile.getModifiedAt());
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "retrieving the last modified date in compareFilesForSync");
+            handler.e(e, "retrieving the last modified date in compareFilesForSync");
 
             return SyncMessages.FILE_NOT_CHANGED;
         }
@@ -202,7 +202,7 @@ public class SyncManager {
             this.storePersistent();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "downloading from the cloud");
+            handler.e(e, "downloading from the cloud");
             return false;
         }
 
@@ -279,7 +279,7 @@ public class SyncManager {
 //                        // error fetching remote data. Usually a network problem.
 //                    }
                     ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.handle(ex, "retrieving the remote folder contents");
+                    handler.e(ex, "retrieving the remote folder contents");
                 }
 
                 EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
@@ -352,7 +352,7 @@ public class SyncManager {
             handler.showMessage(R.string.remote_file_not_found);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "fetching remote file info");
+            handler.e(e, "fetching remote file info");
         }
         return result;
     }
@@ -368,11 +368,11 @@ public class SyncManager {
                         ExceptionHandler.warn("authentication cancelled");
                     } else {
                         ExceptionHandler handler = new ExceptionHandler(getContext());
-                        handler.handle(e, "logging in to cloud provider");
+                        handler.e(e, "logging in to cloud provider");
                     }
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.handle(e, "logging in to cloud provider");
+                    handler.e(e, "logging in to cloud provider");
                 }
             }
         }).start();
@@ -386,7 +386,7 @@ public class SyncManager {
                     getProvider().logout();
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.handle(e, "logging out the cloud provider");
+                    handler.e(e, "logging out the cloud provider");
                 }
             }
         }).start();
@@ -569,7 +569,7 @@ public class SyncManager {
             input = new FileInputStream(localFile);
         } catch (FileNotFoundException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "opening local file for upload");
+            handler.e(e, "opening local file for upload");
             return false;
         }
 
@@ -577,7 +577,7 @@ public class SyncManager {
             getProvider().upload(remoteFile, input, localFile.length(), true);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "uploading database file");
+            handler.e(e, "uploading database file");
             return false;
         }
 
@@ -585,7 +585,7 @@ public class SyncManager {
             input.close();
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "closing input stream after upload");
+            handler.e(e, "closing input stream after upload");
         }
 
         // set last modified date
@@ -594,7 +594,7 @@ public class SyncManager {
             saveLastModifiedDate(remoteFileMetadata);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "closing input stream after upload");
+            handler.e(e, "closing input stream after upload");
         }
 
         // set remote file, if not set (setLinkedRemoteFile)
@@ -635,7 +635,7 @@ public class SyncManager {
             box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "creating cloud providers");
+            handler.e(e, "creating cloud providers");
         }
     }
 
@@ -689,7 +689,7 @@ public class SyncManager {
             invokeSyncServiceInternal(action);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "invoking sync service");
+            handler.e(e, "invoking sync service");
         }
     }
 
@@ -737,7 +737,7 @@ public class SyncManager {
                 progressDialog.show();
             } catch (Exception ex) {
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(ex, "displaying sync progress dialog");
+                handler.e(ex, "displaying sync progress dialog");
             }
         }
 
@@ -765,7 +765,7 @@ public class SyncManager {
                 if (BuildConfig.DEBUG) Log.w("cloud persistence", e.getMessage());
             } else {
                 ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(e, "restoring providers from cache");
+                handler.e(e, "restoring providers from cache");
             }
         }
     }

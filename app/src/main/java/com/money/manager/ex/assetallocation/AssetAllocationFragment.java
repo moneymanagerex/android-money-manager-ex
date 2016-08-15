@@ -41,7 +41,7 @@ import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequeste
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;

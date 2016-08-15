@@ -38,7 +38,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -279,7 +279,7 @@ public class CategoriesReportFragment
             category = getCategoryFromSelectedItem(l, position);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "getting category from selected item");
+            handler.e(e, "getting category from selected item");
         }
         if (category == null) return;
 

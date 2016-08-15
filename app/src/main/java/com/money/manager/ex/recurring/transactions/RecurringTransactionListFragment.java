@@ -32,7 +32,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;

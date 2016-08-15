@@ -24,7 +24,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
@@ -68,7 +68,7 @@ public class PriceCsvExport
             result = this.export(filename, content, title);
         } catch (IOException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "exporting prices");
+            handler.e(ex, "exporting prices");
         }
 
         return result;

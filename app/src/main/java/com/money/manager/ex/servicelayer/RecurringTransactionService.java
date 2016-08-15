@@ -23,10 +23,8 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;

@@ -23,21 +23,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexContentProvider;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.EntityBase;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +82,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             return cursor;
         } catch (SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(ex, "querying database");
+            handler.e(ex, "querying database");
             return null;
         }
     }
@@ -117,13 +114,13 @@ public abstract class RepositoryBase<T extends EntityBase>
                     entity.loadFromCursor(c);
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.handle(e, "creating " + resultType.getName());
+                    handler.e(e, "creating " + resultType.getName());
                 }
             }
             c.close();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(ex, "fetching first record");
+            handler.e(ex, "fetching first record");
         }
 
         return entity;
@@ -145,7 +142,7 @@ public abstract class RepositoryBase<T extends EntityBase>
                 results.add(entity);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(e, "creating " + resultType.getName());
+                handler.e(e, "creating " + resultType.getName());
             }
         }
         c.close();
@@ -237,7 +234,7 @@ public abstract class RepositoryBase<T extends EntityBase>
                 .applyBatch(MmexContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "bulk updating");
+            handler.e(e, "bulk updating");
         }
         return results;
     }
@@ -266,7 +263,7 @@ public abstract class RepositoryBase<T extends EntityBase>
                 .applyBatch(MmexContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "bulk updating");
+            handler.e(e, "bulk updating");
         }
         return results;
     }

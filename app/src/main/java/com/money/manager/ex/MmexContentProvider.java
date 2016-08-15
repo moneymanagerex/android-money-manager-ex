@@ -31,7 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.budget.BudgetQuery;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -67,6 +67,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import timber.log.Timber;
 
 /**
@@ -88,6 +91,8 @@ public class MmexContentProvider
 
     }
 
+    @Inject Lazy<MmexOpenHelper> openHelper;
+
     public static String getAuthority() {
         return mAuthority;
     }
@@ -100,7 +105,7 @@ public class MmexContentProvider
     public boolean onCreate() {
         Context context = getContext();
 
-        setAuthority(getContext().getApplicationContext().getPackageName() + ".provider");
+        setAuthority(context.getApplicationContext().getPackageName() + ".provider");
 
         List<Dataset> objMoneyManager = Arrays.asList(
             new AccountRepository(context),
@@ -119,13 +124,13 @@ public class MmexContentProvider
             new StockRepository(context),
             new StockHistoryRepository(context),
             new SubcategoryRepository(context),
-                new QueryAccountBills(getContext()),
-                new QueryCategorySubCategory(getContext()),
-                new QueryAllData(getContext()),
-                new QueryBillDeposits(getContext()),
-                new QueryReportIncomeVsExpenses(getContext()),
-                new BudgetQuery(getContext()),
-                new ViewMobileData(getContext()),
+                new QueryAccountBills(context),
+                new QueryCategorySubCategory(context),
+                new QueryAllData(context),
+                new QueryBillDeposits(context),
+                new QueryReportIncomeVsExpenses(context),
+                new BudgetQuery(context),
+                new ViewMobileData(context),
                 new SQLDataSet()
         );
 
@@ -145,12 +150,12 @@ public class MmexContentProvider
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
-                // todo: handle "connection already closed" here
+                // todo: e "connection already closed" here
                 Log.w("db error", "illegal state, connection probably closed");
             }
 
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "content provider.query " + uri);
+            handler.e(e, "content provider.query " + uri);
         }
         return null;
     }
@@ -172,14 +177,14 @@ public class MmexContentProvider
 
                     //database.beginTransaction();
                     try {
-                        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
+                        initializeDependencies();
 
-                        id = databaseHelper.getWritableDatabase()
+                        id = openHelper.get().getWritableDatabase()
                                 .insertOrThrow(dataset.getSource(), null, values);
                         //database.setTransactionSuccessful();
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(e, "inserting: " + e.getMessage());
+                        handler.e(e, "inserting: " + e.getMessage());
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;
@@ -208,8 +213,9 @@ public class MmexContentProvider
 
         Object ret = getObjectFromUri(uri);
 
-        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        initializeDependencies();
+
+        SQLiteDatabase database = openHelper.get().getWritableDatabase();
 
         int rowsUpdate = 0;
 
@@ -223,7 +229,7 @@ public class MmexContentProvider
                         rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
                     } catch (Exception ex) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(ex, "updating: " + ex.getMessage());
+                        handler.e(ex, "updating: " + ex.getMessage());
                     }
                     break;
                 default:
@@ -265,8 +271,9 @@ public class MmexContentProvider
                 case TABLE:
                     logDelete(dataset, selection, selectionArgs);
                     try {
-                        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(getContext());
-                        rowsDelete = databaseHelper.getWritableDatabase()
+                        initializeDependencies();
+
+                        rowsDelete = openHelper.get().getWritableDatabase()
                                 .delete(dataset.getSource(), selection, selectionArgs);
 
                         // committed
@@ -274,7 +281,7 @@ public class MmexContentProvider
                         //database.setTransactionSuccessful();
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.handle(e, "insert");
+                        handler.e(e, "insert");
                     }
                     break;
                 default:
@@ -283,7 +290,7 @@ public class MmexContentProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
         }
-        // delete notify
+        // send delete notification.
         getContext().getContentResolver().notifyChange(uri, null);
         // notify dropbox data changed
         new SyncManager(getContext()).dataChanged();
@@ -368,6 +375,14 @@ public class MmexContentProvider
         return null;
     }
 
+    // Private
+
+    private void initializeDependencies() {
+        if (openHelper != null) return;
+
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+    }
+
     private void logTableInsert(Dataset dataset, ContentValues values) {
         String log = "INSERT INTO " + dataset.getSource();
         if (values != null) {
@@ -383,9 +398,10 @@ public class MmexContentProvider
         Object sourceObject = getObjectFromUri(uri);
         // take a database reference
         Context context = getContext();
-        MmexOpenHelper databaseHelper = MmexOpenHelper.getInstance(context);
 
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        initializeDependencies();
+
+        SQLiteDatabase database = openHelper.get().getReadableDatabase();
         if (database == null) {
             Timber.e("Database could not be opened");
             return null;

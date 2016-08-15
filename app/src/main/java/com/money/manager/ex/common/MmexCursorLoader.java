@@ -19,12 +19,10 @@ package com.money.manager.ex.common;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabaseCorruptException;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.Query;
 
 /**
@@ -50,12 +48,12 @@ public class MmexCursorLoader
         } catch (Exception e) {
 //            if (e instanceof IllegalStateException || e instanceof SQLiteDiskIOException ) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(ex, "loading data in cursor loader");
+//            handler.e(ex, "loading data in cursor loader");
 //        } catch (SQLiteDatabaseCorruptException ex) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(ex, "Your database file is corrupt!");
+//            handler.e(ex, "Your database file is corrupt!");
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "loading data");
+            handler.e(e, "loading data");
         }
         return null;
     }

@@ -174,11 +174,11 @@ public class SingleAccountWidget
             displayAccountInfo(context, defaultAccountString, views);
         }
 
-        // handle + click -> open the new transaction screen for this account.
+        // e + click -> open the new transaction screen for this account.
         // todo: pass the account id?
         initializeNewTransactionCommand(context, views);
 
-        // handle logo click -> open the app.
+        // e logo click -> open the app.
         initializeStartAppCommand(context, views);
 
         // click account name -> refresh the balance.

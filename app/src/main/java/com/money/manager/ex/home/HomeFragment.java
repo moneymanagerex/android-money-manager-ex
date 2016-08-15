@@ -71,7 +71,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -304,7 +304,7 @@ public class HomeFragment
                     renderAccountsList(data);
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                    handler.handle(e, "rendering account list");
+                    handler.e(e, "rendering account list");
                 }
 
                 // set total for accounts in the main Drawer.
@@ -681,7 +681,7 @@ public class HomeFragment
 //            int currentPosition = Arrays.asList(mLanguageCodes).indexOf(currentLanguage);
 //            languageSpinner.setSelection(currentPosition);
 //
-//            // handle selection.
+//            // e selection.
 //
 //            languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //                @Override
@@ -822,7 +822,7 @@ public class HomeFragment
         LinearLayout panel = (LinearLayout) view.findViewById(R.id.panelMigration);
         panel.setVisibility(View.VISIBLE);
 
-        // handle events, etc.
+        // e events, etc.
 
         Button migrateDatabaseButton = (Button) view.findViewById(R.id.buttonMigrateDatabase);
         if (migrateDatabaseButton != null) {
@@ -879,7 +879,7 @@ public class HomeFragment
             account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "getting the selected account id");
+            handler.e(e, "getting the selected account id");
         }
 
         return account;

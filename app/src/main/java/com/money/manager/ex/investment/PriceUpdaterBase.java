@@ -21,8 +21,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.utils.DialogUtils;
+import com.money.manager.ex.log.ExceptionHandler;
 
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class PriceUpdaterBase
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "closing dialog");
+            handler.e(e, "closing dialog");
         }
     }
 

@@ -21,7 +21,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.lang.reflect.Type;
@@ -135,7 +135,7 @@ public class RecentDatabasesProvider {
             map = parseStorageContent(value);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
-            handler.handle(e, "parsing recents");
+            handler.e(e, "parsing recents");
         }
 
         if (map == null) {

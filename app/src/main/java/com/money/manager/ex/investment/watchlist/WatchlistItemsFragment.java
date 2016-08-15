@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -51,7 +50,7 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -63,7 +62,6 @@ import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
-import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -134,7 +132,7 @@ public class WatchlistItemsFragment
         // create adapter
         StocksCursorAdapter adapter = new StocksCursorAdapter(context, null);
 
-        // handle list item click.
+        // e list item click.
         getListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -370,7 +368,7 @@ public class WatchlistItemsFragment
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "stopping watchlist items fragment");
+            handler.e(e, "stopping watchlist items fragment");
         }
     }
 

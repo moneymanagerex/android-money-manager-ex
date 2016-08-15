@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -57,7 +57,7 @@ public class CalculateRunningBalanceTask
             return runTask();
         } catch (IllegalStateException | SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "balancing amount");
+            handler.e(ex, "balancing amount");
         } catch (Exception e) {
             throw new RuntimeException("Error in Balance Amount Task", e);
         }

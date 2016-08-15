@@ -100,7 +100,7 @@ public class AssetClassListActivity
         LoaderManager.LoaderCallbacks<Cursor> callbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                // handle id if there are multiple loaders?
+                // e id if there are multiple loaders?
 
                 Context context = AssetClassListActivity.this;
                 AssetClassRepository repo = new AssetClassRepository(context);

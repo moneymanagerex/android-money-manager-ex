@@ -24,7 +24,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 
@@ -53,7 +53,7 @@ public class AllAccountBillsViewFactory
             return getCountInternal();
         } catch (IllegalStateException ise) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ise, "getting the record count for widget");
+            handler.e(ise, "getting the record count for widget");
             return 0;
         }
     }
@@ -119,7 +119,7 @@ public class AllAccountBillsViewFactory
                     null, selection, null, QueryAccountBills.ACCOUNTNAME);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "reloading accounts cursor");
+            handler.e(e, "reloading accounts cursor");
         }
     }
 

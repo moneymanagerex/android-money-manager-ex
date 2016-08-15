@@ -139,7 +139,7 @@ public class PortfolioFragment
     // Private
 
     private void initializeList() {
-        // handle list item click.
+        // e list item click.
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

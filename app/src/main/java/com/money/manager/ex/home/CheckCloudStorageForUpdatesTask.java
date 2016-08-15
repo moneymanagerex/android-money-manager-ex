@@ -23,10 +23,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.SyncMessages;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import timber.log.Timber;
 
 /**
  * Check for updates to the database in the cloud.
@@ -56,7 +58,7 @@ public class CheckCloudStorageForUpdatesTask
         } catch (Exception e) {
             //throw new RuntimeException("Error in check Cloud ForUpdates", e);
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "comparing files for sync");
+            handler.e(e, "comparing files for sync");
         }
         return result;
     }
@@ -70,8 +72,7 @@ public class CheckCloudStorageForUpdatesTask
     protected void onPostExecute(Integer ret) {
         // ???
         if (ret == null) {
-            ExceptionHandler.log(CheckCloudStorageForUpdatesTask.class.getSimpleName() +
-                    "onPostExecute ret parameter is null.");
+            Timber.w("onPostExecute ret parameter is null.");
             return;
         }
 
@@ -82,7 +83,7 @@ public class CheckCloudStorageForUpdatesTask
             }
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "showing update notification dialog");
+            handler.e(ex, "showing update notification dialog");
         }
 
         if (ret.equals(SyncMessages.STARTING_UPLOAD)) {

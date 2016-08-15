@@ -31,7 +31,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,7 +49,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -157,7 +156,7 @@ public class AllDataListFragment
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         getListView().setMultiChoiceModeListener(mMultiChoiceModeListener);
 
-        // handle item click
+        // e item click
         getListView().setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -292,7 +291,7 @@ public class AllDataListFragment
                         this.updateFooter(data);
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                        handler.handle(e, "displaying footer");
+                        handler.e(e, "displaying footer");
                     }
                 }
         }
@@ -382,7 +381,7 @@ public class AllDataListFragment
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity());
-            handler.handle(e, "stopping the all-data fragment");
+            handler.e(e, "stopping the all-data fragment");
         }
     }
 

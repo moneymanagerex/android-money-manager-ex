@@ -26,7 +26,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
@@ -161,7 +161,7 @@ public class StockHistoryRepository
             return getLatestPriceFor_Internal(symbol);
         } catch (SQLiteException sqlex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(sqlex, "reading price for " + symbol);
+            handler.e(sqlex, "reading price for " + symbol);
         }
         return null;
     }

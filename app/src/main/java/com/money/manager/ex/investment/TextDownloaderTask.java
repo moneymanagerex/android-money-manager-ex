@@ -22,7 +22,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.DialogUtils;
 
@@ -62,7 +62,7 @@ public class TextDownloaderTask
             return runTask(url);
         } catch (IllegalArgumentException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "No results provided by YQL.");
+            handler.e(ex, "No results provided by YQL.");
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
@@ -92,7 +92,7 @@ public class TextDownloaderTask
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "closing dialog");
+            handler.e(e, "closing dialog");
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
@@ -116,7 +116,7 @@ public class TextDownloaderTask
                 content = downloader.downloadAsText(url);
             } catch (IOException ex) {
                 ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.handle(ex, "downloading price");
+                handler.e(ex, "downloading price");
 
                 return false;
             }

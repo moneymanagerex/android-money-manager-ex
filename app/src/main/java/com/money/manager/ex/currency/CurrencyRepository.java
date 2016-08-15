@@ -21,7 +21,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.datalayer.RepositoryBase;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -112,7 +112,7 @@ public class CurrencyRepository
             result = loadCurrencyInternal(selection, selectionArgs);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "loading currency");
+            handler.e(e, "loading currency");
         }
         return result;
     }

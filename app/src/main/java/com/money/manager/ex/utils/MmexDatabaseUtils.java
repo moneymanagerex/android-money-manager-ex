@@ -25,14 +25,12 @@ import android.widget.Toast;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.settings.AppSettings;
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +41,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import rx.schedulers.Schedulers;
+import javax.inject.Inject;
+
+import dagger.Lazy;
+import timber.log.Timber;
 
 /**
  * Various database-related utility functions
@@ -68,24 +69,24 @@ public class MmexDatabaseUtils {
     // Dynamic
 
     public MmexDatabaseUtils(Context context){
-        mContext = context.getApplicationContext();
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
     }
 
+    @Inject Lazy<MmexOpenHelper> openHelper;
     private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
 
     /**
      * Runs SQLite pragma check on the database file.
      * @return A boolean indicating whether the check was successfully completed.
      */
     public boolean checkIntegrity() {
-        boolean result = MmexOpenHelper.getInstance(getContext())
-                .getReadableDatabase()
+        boolean result = openHelper.get().getReadableDatabase()
                 .isDatabaseIntegrityOk();
         return result;
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     public String makePlaceholders(int len) {
@@ -112,7 +113,7 @@ public class MmexDatabaseUtils {
             return checkSchemaInternal();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "checking schema");
+            handler.e(e, "checking schema");
             return false;
         }
     }
@@ -127,9 +128,9 @@ public class MmexDatabaseUtils {
 
         try {
             result = createDatabase_Internal(filename);
-        } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "creating database");
+        } catch (Exception e) {
+            ExceptionHandler handler = new ExceptionHandler(getContext());
+            handler.e(e, "creating database");
         }
         return result;
     }
@@ -171,7 +172,7 @@ public class MmexDatabaseUtils {
             scriptTables = getAllTableNamesFromGenerationScript();
         } catch (IOException | SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "reading table names from generation script");
+            handler.e(ex, "reading table names from generation script");
 
             return false;
         }
@@ -215,7 +216,8 @@ public class MmexDatabaseUtils {
         }
 
         // close connection
-        MmexOpenHelper.getInstance(getContext()).close();
+//        MmexOpenHelper.getInstance(getContext()).close();
+        openHelper.get().close();
 
         // change database
         // store as the default database in settings
@@ -279,7 +281,9 @@ public class MmexDatabaseUtils {
      * @return An ArrayList of table details.
      */
     private ArrayList<String> getTableNamesFromDb() {
-        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext()).getReadableDatabase();
+//        SQLiteDatabase db = MmexOpenHelper.getInstance(getContext()).getReadableDatabase();
+        SQLiteDatabase db = openHelper.get().getReadableDatabase();
+
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         ArrayList<String> result = new ArrayList<>();
         int i = 0;

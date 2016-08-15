@@ -33,7 +33,7 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
@@ -178,7 +178,7 @@ public class CurrencyService
         if (toCurrencyId == null || fromCurrencyId == null) return amount;
         if (toCurrencyId == Constants.NOT_SET || fromCurrencyId == Constants.NOT_SET) return amount;
 
-        // handle same currencies
+        // e same currencies
         if (toCurrencyId.equals(fromCurrencyId)) return amount;
 
         Currency fromCurrencyFormats = getCurrency(fromCurrencyId);
@@ -360,7 +360,7 @@ public class CurrencyService
                 repo.insert(newCurrency);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(e, "importing currencies from locale " + locale.getDisplayName());
+                handler.e(e, "importing currencies from locale " + locale.getDisplayName());
             }
         }
 
@@ -417,7 +417,7 @@ public class CurrencyService
                     message += " for " + defaultLocale.getCountry();
                 }
                 ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.handle(ex, message);
+                handler.e(ex, message);
             }
             // else, just ignore Currency parsing exception and use the pre-set currency below.
             // http://docs.oracle.com/javase/7/docs/api/java/util/Currency.html#getInstance(java.util.Locale)

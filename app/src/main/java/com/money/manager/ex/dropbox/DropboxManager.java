@@ -165,7 +165,7 @@
 //            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
 //            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(ex, "displaying dropbox progress dialog");
+//            handler.e(ex, "displaying dropbox progress dialog");
 //        }
 //
 //        // start service

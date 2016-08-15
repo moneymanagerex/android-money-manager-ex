@@ -15,23 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.utils;
-
-import android.app.ProgressDialog;
-
-import timber.log.Timber;
+package com.money.manager.ex.log;
 
 /**
- * Common dialog utility functions.
+ * Thrown when an exception happens in the release build.
+ * Can be caught by the UI components to display the message to the user.
  */
-public class DialogUtils {
-    public static void closeProgressDialog(ProgressDialog progressDialog) {
-        try {
-            progressDialog.hide();
-            progressDialog.dismiss();
-        } catch (Exception ex) {
-            Timber.e("error closing a dialog");
-        }
+
+public class ErrorRaisedEvent {
+    public ErrorRaisedEvent(String message) {
+        this.message = message;
     }
 
+    public String message;
 }

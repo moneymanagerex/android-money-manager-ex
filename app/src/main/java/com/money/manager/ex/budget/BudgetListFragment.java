@@ -51,7 +51,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Activities that contain this fragment must implement the
  * {@link BudgetListFragment} interface
- * to handle interaction events.
+ * to e interaction events.
  * Use the {@link BudgetListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */

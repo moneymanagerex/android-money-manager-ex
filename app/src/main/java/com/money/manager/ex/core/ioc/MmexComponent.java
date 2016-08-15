@@ -17,13 +17,18 @@
 
 package com.money.manager.ex.core.ioc;
 
+import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
+import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.DatabaseSettingsFragment;
+import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import javax.inject.Singleton;
 
@@ -33,16 +38,24 @@ import dagger.Component;
  * Main Dagger 2 Component. Represents the link between the Modules and Injections.
  * Component consumes functionality.
  */
-
 @Singleton
 @Component(modules = MmexModule.class)
 public interface MmexComponent {
+    // Activities
     void inject(MainActivity activity);
+    void inject(RecurringTransactionEditActivity activity);
+    void inject(CheckingTransactionEditActivity activity);
+
+    // Fragments
+    void inject(DatabaseSettingsFragment fragment);
 
     // Custom objects
     void inject(ISecurityPriceUpdater updater);
     void inject(MorningstarPriceUpdater updater);
     void inject(AppSettings settings);
+    void inject(Core core);
+    void inject(MmexContentProvider provider);
+    void inject(MmexDatabaseUtils utils);
 
     // Repositories
     void inject(StockRepositorySql repository);

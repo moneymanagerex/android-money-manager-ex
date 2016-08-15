@@ -28,7 +28,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountStatuses;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.ToolbarSpinnerAdapter;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
@@ -42,7 +42,6 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
@@ -197,7 +196,7 @@ public class AccountService
             return getCursorInternal(open, favorite, accountTypes);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "getting cursor in account repository");
+            handler.e(ex, "getting cursor in account repository");
         }
         return null;
     }

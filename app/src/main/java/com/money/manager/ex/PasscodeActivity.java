@@ -18,7 +18,6 @@ package com.money.manager.ex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,7 +28,7 @@ import android.widget.TextView;
 
 
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 
 public class PasscodeActivity
 	extends AppCompatActivity {
@@ -50,7 +49,7 @@ public class PasscodeActivity
 		} catch (Exception e) {
 			//Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
             ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "setting theme in passcode activity");
+            handler.e(e, "setting theme in passcode activity");
 		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);

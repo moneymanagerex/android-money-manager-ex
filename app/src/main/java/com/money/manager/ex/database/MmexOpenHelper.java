@@ -19,7 +19,6 @@ package com.money.manager.ex.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 //import net.sqlcipher.database.SQLiteDatabase;
 //import net.sqlcipher.database.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,7 +27,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -40,7 +38,7 @@ import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmexFileUtils;
@@ -68,17 +66,17 @@ public class MmexOpenHelper
     // singleton
     private static MmexOpenHelper mInstance;
 
-    /**
-     * Returns the singleton instance of the helper for database access.
-     * @param context Use Application context for database access (?)
-     * @return instance of the db helper
-     */
-    public static synchronized MmexOpenHelper getInstance(Context context) {
-        if (mInstance == null) {
-            mInstance = createNewInstance(context);
-        }
-        return mInstance;
-    }
+//    /**
+//     * Returns the singleton instance of the helper for database access.
+//     * @param context Use Application context for database access (?)
+//     * @return instance of the db helper
+//     */
+//    public static synchronized MmexOpenHelper getInstance(Context context) {
+//        if (mInstance == null) {
+//            mInstance = createNewInstance(context);
+//        }
+//        return mInstance;
+//    }
 
     public static synchronized void closeDatabase() {
         if (mInstance == null) return;
@@ -141,7 +139,7 @@ public class MmexOpenHelper
             initDatabase(db);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "initializing database");
+            handler.e(e, "initializing database");
         }
     }
 
@@ -161,7 +159,7 @@ public class MmexOpenHelper
             createDatabaseBackupOnUpgrade(currentDbFile, oldVersion);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(ex, "creating database backup, can't continue");
+            handler.e(ex, "creating database backup, can't continue");
 
             // don't upgrade
             return;
@@ -194,7 +192,7 @@ public class MmexOpenHelper
             db = super.getReadableDatabase();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "opening readable database");
+            handler.e(ex, "opening readable database");
         }
         return db;
     }
@@ -209,7 +207,7 @@ public class MmexOpenHelper
 //            db = super.getReadableDatabase(password);
 //        } catch (Exception ex) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(ex, "opening readable database");
+//            handler.e(ex, "opening readable database");
 //        }
 //        return db;
 //    }
@@ -221,7 +219,7 @@ public class MmexOpenHelper
             return super.getWritableDatabase();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "opening writable database");
+            handler.e(ex, "opening writable database");
         }
         return null;
     }
@@ -235,7 +233,7 @@ public class MmexOpenHelper
 //            return getWritableDatabase_Internal(password);
 //        } catch (Exception ex) {
 //            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(ex, "opening writable database");
+//            handler.e(ex, "opening writable database");
 //        }
 //        return null;
 //    }
@@ -280,7 +278,7 @@ public class MmexOpenHelper
                     Timber.w(errorMessage);
                 } else {
                     ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                    handler.handle(e, "executing raw sql: " + aSqlStatment);
+                    handler.e(e, "executing raw sql: " + aSqlStatment);
                 }
             }
         }
@@ -303,7 +301,7 @@ public class MmexOpenHelper
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "getting sqlite version");
+            handler.e(e, "getting sqlite version");
         } finally {
             if (cursor != null) cursor.close();
 //            if (database != null) database.close();
@@ -330,7 +328,7 @@ public class MmexOpenHelper
             initBaseCurrency(database);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "init database, base currency");
+            handler.e(e, "init database, base currency");
         }
 
         initDateFormat(database);
@@ -382,7 +380,7 @@ public class MmexOpenHelper
                         int updated = database.update(SubcategoryRepository.tableName, contentValues,
                                 Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
                         if (updated <= 0) {
-                            // todo: handle logging better.
+                            // todo: e logging better.
                             Log.e(this.getClass().getSimpleName(), "updating " + contentValues.toString() +
                                     "for subcategory " + Integer.toString(subCategoryId));
                         }
@@ -393,7 +391,7 @@ public class MmexOpenHelper
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "init database, categories");
+            handler.e(e, "init database, categories");
         }
     }
 
@@ -412,7 +410,7 @@ public class MmexOpenHelper
             infoService.updateRaw(database, InfoKeys.DATEFORMAT, pattern);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "init database, date format");
+            handler.e(e, "init database, date format");
         }
     }
 

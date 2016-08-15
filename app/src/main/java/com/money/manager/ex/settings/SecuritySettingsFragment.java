@@ -18,7 +18,6 @@
 package com.money.manager.ex.settings;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -29,8 +28,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.Passcode;
 
 /**

@@ -20,12 +20,11 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.opencsv.CSVParser;
 
-import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -70,7 +69,7 @@ public class PriceCsvParser {
             values = csvParser.parseLineMulti(content);
         } catch (IOException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "parsing downloaded CSV contents");
+            handler.e(e, "parsing downloaded CSV contents");
             return null;
         }
 

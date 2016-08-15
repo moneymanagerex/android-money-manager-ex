@@ -18,24 +18,13 @@
 package com.money.manager.ex.utils;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.ContextMenu;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 
 /**
@@ -84,14 +73,14 @@ public class MmexFileUtils {
                 result = new String(outputStream.toByteArray());
             } catch (IOException e) {
                 ExceptionHandler handler = new ExceptionHandler(context);
-                handler.handle(e, "loadRaw");
+                handler.e(e, "loadRaw");
             } finally {
                 if (outputStream != null) {
                     try {
                         outputStream.close();
                     } catch (IOException e) {
                         ExceptionHandler handler = new ExceptionHandler(context);
-                        handler.handle(e, "close byte array");
+                        handler.e(e, "close byte array");
                     }
                 }
             }

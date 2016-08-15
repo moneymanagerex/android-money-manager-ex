@@ -37,7 +37,7 @@ public class SymbolConverter {
 
         String[] parts = yahooSymbol.split("\\.");
 
-        // handle US exchanges
+        // e US exchanges
         if (parts.length <= 1) {
             // U.S. Do not use an exchange prefix for now.
             return yahooSymbol;

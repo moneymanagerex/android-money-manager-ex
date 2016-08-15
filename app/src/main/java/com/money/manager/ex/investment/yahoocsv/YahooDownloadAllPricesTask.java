@@ -22,7 +22,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
 import com.money.manager.ex.investment.TextDownloader;
 import com.money.manager.ex.sync.SyncManager;
@@ -64,7 +64,7 @@ public class YahooDownloadAllPricesTask
             return runTask(symbols);
         } catch (IllegalArgumentException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "No price provided by Yahoo.");
+            handler.e(ex, "No price provided by Yahoo.");
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
@@ -94,7 +94,7 @@ public class YahooDownloadAllPricesTask
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "closing progress dialog");
+            handler.e(e, "closing progress dialog");
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
@@ -119,7 +119,7 @@ public class YahooDownloadAllPricesTask
                 csv = downloader.downloadAsText(url);
             } catch (IOException iox) {
                 ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(iox, "downloading quote");
+                handler.e(iox, "downloading quote");
                 return false;
             }
             // notify parent about the price update

@@ -26,10 +26,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -38,7 +40,7 @@ import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -59,6 +61,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 /**
  * Activity for editing Checking Account Transaction
  */
@@ -70,6 +74,8 @@ public class CheckingTransactionEditActivity
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
 
+    @Inject MmexOpenHelper openHelper;
+
     private EditTransactionCommonFunctions mCommonFunctions;
 
     @Override
@@ -77,10 +83,12 @@ public class CheckingTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+
         showStandardToolbarActions();
 
         ITransactionEntity model = AccountTransaction.create();
-        mCommonFunctions = new EditTransactionCommonFunctions(this, model);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, model, openHelper);
 
         // restore state, if any.
         if ((savedInstanceState != null)) {
@@ -347,7 +355,7 @@ public class CheckingTransactionEditActivity
             return loadRecurringTransactionInternal(recurringTransactionId);
         } catch (RuntimeException ex) {
             ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(ex, "loading recurring transaction");
+            handler.e(ex, "loading recurring transaction");
             return false;
         }
     }
@@ -385,7 +393,7 @@ public class CheckingTransactionEditActivity
         mCommonFunctions.loadPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
         mCommonFunctions.loadCategoryName();
 
-        // handle splits
+        // e splits
         createSplitCategoriesFromRecurringTransaction();
 
         return true;
@@ -401,7 +409,7 @@ public class CheckingTransactionEditActivity
         mIntentAction = intent.getAction();
 
         if (mIntentAction == null) {
-            ExceptionHandler.warn("no intent action passed to CheckingTransactionEditActivity handle intent");
+            ExceptionHandler.warn("no intent action passed to CheckingTransactionEditActivity e intent");
             return false;
         }
 
@@ -464,7 +472,7 @@ public class CheckingTransactionEditActivity
                         } catch (Exception e) {
                             ExceptionHandler handler = new ExceptionHandler(CheckingTransactionEditActivity.this,
                                     CheckingTransactionEditActivity.this);
-                            handler.handle(e, "loading default payee");
+                            handler.e(e, "loading default payee");
                         }
                         return Boolean.FALSE;
                     }

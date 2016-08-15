@@ -28,7 +28,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 
 /**
  * Look & Feel preferences
@@ -68,7 +68,7 @@ public class LookAndFeelSettings
             result = DefinedDateRangeName.valueOf(value);
         } catch (IllegalArgumentException e) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(e, "parsing default date range");
+//            handler.e(e, "parsing default date range");
             ExceptionHandler.warn("error parsing default date range");
         }
         if (result != null) {

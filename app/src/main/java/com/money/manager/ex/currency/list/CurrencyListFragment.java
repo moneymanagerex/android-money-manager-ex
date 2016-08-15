@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyRepository;

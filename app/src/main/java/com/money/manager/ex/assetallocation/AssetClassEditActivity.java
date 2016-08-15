@@ -25,7 +25,7 @@ import android.support.v4.app.FragmentManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 

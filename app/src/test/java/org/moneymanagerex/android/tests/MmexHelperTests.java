@@ -18,6 +18,7 @@
 package org.moneymanagerex.android.tests;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
@@ -61,10 +62,12 @@ public class MmexHelperTests {
 
     @Test
     public void backup_file_generation() {
-        MmexOpenHelper testObject = MmexOpenHelper.getInstance(UnitTestHelper.getContext());
+        String path = Environment.getExternalStorageDirectory().getPath() + "/somefile.mmb";
+
+        MmexOpenHelper testObject = new MmexOpenHelper(UnitTestHelper.getContext(), path);
 
         try {
-            testObject.createDatabaseBackupOnUpgrade("/sdcard/somefile.mmb", 3);
+            testObject.createDatabaseBackupOnUpgrade(path, 3);
         } catch (Exception ex) {
             Log.d("error", ex.getMessage());
         }

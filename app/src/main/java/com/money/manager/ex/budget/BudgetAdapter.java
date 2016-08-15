@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
@@ -181,7 +181,7 @@ public class BudgetAdapter
             }
         } catch (IllegalStateException ise) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ise, "loading category total");
+            handler.e(ise, "loading category total");
         }
 
         return total;

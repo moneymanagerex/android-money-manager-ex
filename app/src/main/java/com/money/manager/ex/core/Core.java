@@ -44,6 +44,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -60,6 +61,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import timber.log.Timber;
 
 public class Core {
@@ -103,7 +107,7 @@ public class Core {
             setAppLocale_Internal(context, languageToLoad);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(context, null);
-            handler.handle(e, "changing app locale");
+            handler.e(e, "changing app locale");
 
             return false;
         }
@@ -145,6 +149,7 @@ public class Core {
     }
 
     private Context mContext;
+    @Inject Lazy<MmexOpenHelper> openHelper;
 
     /**
      * Change the database used by the app.
@@ -180,7 +185,7 @@ public class Core {
         // Reinitialize the provider.
         MmexOpenHelper.reinitialize(getContext().getApplicationContext());
 
-        MmexOpenHelper.getInstance(getContext()).setPassword(password);
+        // todo MmexOpenHelper.getInstance(getContext()).setPassword(password);
 
         return true;
     }
@@ -235,7 +240,7 @@ public class Core {
                 copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.handle(e, "backing up the database");
+                handler.e(e, "backing up the database");
                 return null;
             }
         }
@@ -258,7 +263,7 @@ public class Core {
             return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext().getApplicationContext(), this);
-            handler.handle(e, "getting app version build number");
+            handler.e(e, "getting app version build number");
             return 0;
         }
     }
@@ -269,7 +274,7 @@ public class Core {
                 getContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(e, "getting app version name");
+            handler.e(e, "getting app version name");
         }
         return "n/a";
     }
@@ -305,7 +310,7 @@ public class Core {
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.handle(e, "getting theme setting");
+            handler.e(e, "getting theme setting");
 
             return R.style.Theme_Money_Manager_Light;
         }
@@ -313,11 +318,10 @@ public class Core {
 
     /**
      * Method, which returns the last payee used
-     *
      * @return last payee used
      */
     public Payee getLastPayeeUsed() {
-        MmexOpenHelper helper = MmexOpenHelper.getInstance(getContext());
+//        MmexOpenHelper helper = MmexOpenHelper.getInstance(getContext());
         Payee payee = null;
 
         String sql =
@@ -328,7 +332,7 @@ public class Core {
         "ORDER BY C.TransDate DESC, C.TransId DESC " +
         "LIMIT 1";
 
-        Cursor cursor = helper.getReadableDatabase().rawQuery(sql, null);
+        Cursor cursor = openHelper.get().getReadableDatabase().rawQuery(sql, null);
 
         // check if cursor can be open
         if (cursor != null && cursor.moveToFirst()) {

@@ -60,7 +60,7 @@ import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -94,7 +94,7 @@ public class EditTransactionCommonFunctions {
     public static final String DATEPICKER_TAG = "datepicker";
 
     public EditTransactionCommonFunctions(BaseFragmentActivity parentActivity,
-                                          ITransactionEntity transactionEntity) {
+                                          ITransactionEntity transactionEntity, MmexOpenHelper openHelper) {
         super();
 
         mContext = parentActivity.getApplicationContext();
@@ -128,6 +128,7 @@ public class EditTransactionCommonFunctions {
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
+    private MmexOpenHelper mOpenHelper;
 
     public boolean deleteMarkedSplits(IRepository repository) {
         for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
@@ -618,7 +619,7 @@ public class EditTransactionCommonFunctions {
             viewHolder.edtTransNumber.setText(transactionEntity.getTransactionNumber());
         }
 
-        // handle change
+        // e change
         viewHolder.edtTransNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -642,14 +643,14 @@ public class EditTransactionCommonFunctions {
         viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
-                AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
+//                MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
+                AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
                 String query = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                     repo.getSource() + " WHERE " +
                     ITransactionEntity.ACCOUNTID + "=?";
 
-                Cursor cursor = helper.getReadableDatabase().rawQuery(query,
+                Cursor cursor = mOpenHelper.getReadableDatabase().rawQuery(query,
                     new String[]{Integer.toString(transactionEntity.getAccountId())});
                 if (cursor == null) return;
 
@@ -664,8 +665,8 @@ public class EditTransactionCommonFunctions {
                             viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
                                 .toString());
                         } catch (Exception e) {
-                            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                            handler.handle(e, "adding transaction number");
+                            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
+                            handler.e(e, "adding transaction number");
                         }
                     }
                 }
@@ -1186,7 +1187,7 @@ public class EditTransactionCommonFunctions {
         getDeletedSplitCategories().add(splitTransaction);
         getSplitTransactions().remove(splitTransaction);
 
-        // handle deletion in the specific implementation.
+        // e deletion in the specific implementation.
         return true;
     }
 
@@ -1315,7 +1316,7 @@ public class EditTransactionCommonFunctions {
             return;
         }
 
-        // if there is only one split item, handle it immediately.
+        // if there is only one split item, e it immediately.
         if (splits.size() == 1) {
             convertOneSplitIntoRegularTransaction();
             return;

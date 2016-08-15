@@ -20,7 +20,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +36,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.ArrayList;
@@ -239,7 +238,7 @@ public class PieChartFragment
             Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getActivity());
-            handler.handle(ex, "showing chart item details");
+            handler.e(ex, "showing chart item details");
         }
     }
 

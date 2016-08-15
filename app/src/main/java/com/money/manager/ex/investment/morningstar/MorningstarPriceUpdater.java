@@ -20,8 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -157,7 +156,7 @@ public class MorningstarPriceUpdater
                         closeProgressDialog();
 
                         ExceptionHandler handler = new ExceptionHandler(getContext());
-                        handler.handle(e, "downloading prices");
+                        handler.e(e, "downloading prices");
                     }
 
                     @Override

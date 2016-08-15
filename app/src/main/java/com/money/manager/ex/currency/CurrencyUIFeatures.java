@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -89,7 +89,7 @@ public class CurrencyUIFeatures {
             success = getService().saveExchangeRate(destinationCurrency, price);
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.handle(ex, "saving exchange rate");
+            handler.e(ex, "saving exchange rate");
         }
 
         if (!success) {

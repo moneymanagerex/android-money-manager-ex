@@ -14,17 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.core;
+package com.money.manager.ex.log;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,10 +41,10 @@ public class ExceptionHandler
     implements Thread.UncaughtExceptionHandler
 {
 
-    public static void log(String message) {
-        Log.i("manual", message);
-        Crashlytics.log(message);
-    }
+//    public static void log(String message) {
+//        Log.i("manual", message);
+//        Crashlytics.log(message);
+//    }
 
     public static void warn(String message) {
         Log.w("manual", message);
@@ -83,11 +80,11 @@ public class ExceptionHandler
         return mContext;
     }
 
-    public void handle(Exception ex, String errorMessage) {
-        this.handle((Throwable) ex, errorMessage);
+    public void e(Exception ex, String errorMessage) {
+        this.e((Throwable) ex, errorMessage);
     }
 
-    public void handle(Throwable t, String errorMessage) {
+    public void e(Throwable t, String errorMessage) {
         errorMessage = String.format("Error %s:\n%s",
                 errorMessage, t.getLocalizedMessage());
 

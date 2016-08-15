@@ -31,7 +31,8 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.CrashReportingTree;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.ioc.DaggerMmexComponent;
 import com.money.manager.ex.core.ioc.MmexComponent;
 import com.money.manager.ex.core.ioc.MmexModule;
@@ -182,7 +183,7 @@ public class MoneyManagerApplication
                         .show();
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(context);
-                handler.handle(e, "showing the current database path");
+                handler.e(e, "showing the current database path");
             }
         }
     }
@@ -226,10 +227,9 @@ public class MoneyManagerApplication
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new CrashReportingTree());
         }
-//        else {
-//            Timber.plant(new Timber. CrashReportingTree());
-//        }
 
         initializeDependencyInjection();
     }
@@ -276,7 +276,7 @@ public class MoneyManagerApplication
                 locale = new Locale(language);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(context, this);
-                handler.handle(e, "parsing locale: " + language);
+                handler.e(e, "parsing locale: " + language);
             }
         }
 
@@ -341,7 +341,7 @@ public class MoneyManagerApplication
             return getSummaryAccountsInternal(context);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.handle(e, "getting summary accounts");
+            handler.e(e, "getting summary accounts");
         }
         return 0;
     }

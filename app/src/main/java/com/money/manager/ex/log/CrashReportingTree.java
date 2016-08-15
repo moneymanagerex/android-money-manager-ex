@@ -21,6 +21,8 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import org.greenrobot.eventbus.EventBus;
+
 import timber.log.Timber;
 
 /**
@@ -45,5 +47,9 @@ public class CrashReportingTree extends Timber.Tree {
 //                Crashlytics.log.logWarning(t);
 //            }
         }
+
+        // also, raise an event for the UI to show the message.
+        // todo: improve by adding more details from the exception log?
+        EventBus.getDefault().post(new ErrorRaisedEvent(message));
     }
 }

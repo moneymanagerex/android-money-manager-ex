@@ -46,7 +46,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -426,10 +426,10 @@ public class WatchlistFragment
             result = export.exportPrices(mDataFragment.getListAdapter(), prefix);
         } catch (IOException ex) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(ex, "exporting stock prices");
+            handler.e(ex, "exporting stock prices");
         }
 
-        // todo: handle result. (?)
+        // todo: e result. (?)
     }
 
     private void confirmPriceUpdate() {
@@ -506,7 +506,7 @@ public class WatchlistFragment
         AccountService accountService = new AccountService(getActivity());
         accountService.loadInvestmentAccountsToSpinner(spinner, true);
 
-        // handle account switching.
+        // e account switching.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

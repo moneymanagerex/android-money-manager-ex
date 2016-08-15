@@ -25,7 +25,7 @@ import android.view.View.OnClickListener;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 
 //import net.sqlcipher.database.SQLiteDatabase;
@@ -63,7 +63,7 @@ public abstract class BaseFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // This is used to handle the <- Home arrow button in the toolbar (i.e. settings screens).
+        // This is used to e the <- Home arrow button in the toolbar (i.e. settings screens).
         
         switch (item.getItemId()) {
             // home click can be handled in the manifest by setting up the parent activity.
@@ -97,7 +97,7 @@ public abstract class BaseFragmentActivity
             }
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this);
-            handler.handle(e, "initializing activity");
+            handler.e(e, "initializing activity");
         }
     }
 
@@ -160,14 +160,14 @@ public abstract class BaseFragmentActivity
     }
 
     /**
-     * Override to handle clicking the Cancel button in the toolbar
+     * Override to e clicking the Cancel button in the toolbar
      */
     public boolean onActionCancelClick() {
         return true;
     }
 
     /**
-     * Override to handle clicking the Action button in the toolbar
+     * Override to e clicking the Action button in the toolbar
      */
     public boolean onActionDoneClick() {
         return true;
@@ -190,7 +190,7 @@ public abstract class BaseFragmentActivity
             this.setTheme(core.getThemeId());
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(e, "setting theme");
+            handler.e(e, "setting theme");
         }
     }
 }

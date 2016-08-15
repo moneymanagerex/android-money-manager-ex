@@ -40,11 +40,13 @@ import timber.log.Timber;
 public final class DbModule {
     private MmexOpenHelper instance;
 
-    @Provides SQLiteOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
+//    @Provides SQLiteOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
 //        return MmexOpenHelper.createNewInstance(application);
         // Use the existing singleton instance.
         //return MmexOpenHelper.getInstance(application);
+//    }
 
+    @Provides MmexOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
         if (instance == null) {
             instance = MmexOpenHelper.createNewInstance(application);
         } else {
@@ -67,7 +69,7 @@ public final class DbModule {
         });
     }
 
-    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, SQLiteOpenHelper helper) {
+    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmexOpenHelper helper) {
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         db.setLoggingEnabled(true);
         return db;

@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 
@@ -81,7 +81,7 @@ public class OnDateButtonClickListener
                 mTextView.setText(displayText);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, this);
-                handler.handle(e, "date selected in search");
+                handler.e(e, "date selected in search");
             }
         }
     };

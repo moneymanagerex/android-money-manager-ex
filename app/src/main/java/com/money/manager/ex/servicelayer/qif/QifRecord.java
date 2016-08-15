@@ -178,7 +178,7 @@ public class QifRecord {
 
         // amount
         Money amount = split.getAmount();
-        // handle sign
+        // e sign
         if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Withdrawal)) {
             amount = amount.negate();
         }

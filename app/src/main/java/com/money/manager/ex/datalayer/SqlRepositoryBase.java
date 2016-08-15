@@ -18,15 +18,10 @@
 package com.money.manager.ex.datalayer;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
-import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.core.ExceptionHandler;
-import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.domainmodel.EntityBase;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
@@ -76,13 +71,13 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
                     entity.loadFromCursor(c);
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler();
-                    handler.handle(e, "creating " + resultType.getName());
+                    handler.e(e, "creating " + resultType.getName());
                 }
             }
             c.close();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler();
-            handler.handle(ex, "fetching first record");
+            handler.e(ex, "fetching first record");
         }
 
         return entity;

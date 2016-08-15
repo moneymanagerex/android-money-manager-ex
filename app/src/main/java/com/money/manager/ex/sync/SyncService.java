@@ -32,7 +32,7 @@ import android.util.Log;
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NetworkUtilities;
@@ -277,7 +277,7 @@ public class SyncService
             mOutMessenger.send(msg);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getApplicationContext());
-            handler.handle(e, "sending message from the sync service");
+            handler.e(e, "sending message from the sync service");
 
             return false;
         }

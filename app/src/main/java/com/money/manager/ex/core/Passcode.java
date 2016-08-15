@@ -27,6 +27,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.dropbox.SimpleCrypto;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.servicelayer.InfoService;
 
 public class Passcode {
@@ -105,7 +106,7 @@ public class Passcode {
             return retrievePasscodeInternal();
         } catch (IllegalStateException | SQLiteDiskIOException ex) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(ex, "retrieving passcode");
+            handler.e(ex, "retrieving passcode");
         }
         return null;
     }

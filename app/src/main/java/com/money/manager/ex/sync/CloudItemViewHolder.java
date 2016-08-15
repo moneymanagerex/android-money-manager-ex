@@ -45,7 +45,7 @@ public class CloudItemViewHolder
     public RobotoTextViewFontIcon nameTextView;
 
     private void initialize(View view) {
-        // handle clicks on the parent element
+        // e clicks on the parent element
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,19 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// These values are used in all the projects.
+ext {
+    compileSdkVersion = 24
+    buildToolsVersion = '24.0.1'
+}
+
 buildscript {
     repositories {
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }  // Fabric
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0-beta1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'io.fabric.tools:gradle:1.+'          // Fabric
     }
-}
-
-ext {
-    compileSdkVersion = 24
-    buildToolsVersion = '24.0.1'
 }
 
 // This applies to the projects underneath.
@@ -57,16 +60,6 @@ allprojects {
     }
 }
 
-// Fabric
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
-
 // References:
 // http://stackoverflow.com/questions/23241681/why-are-there-two-build-gradle-files-in-an-android-studio-project
+// http://stackoverflow.com/questions/22356181/how-to-resolve-the-android-studio-error-where-it-cannot-find-the-projects-manif

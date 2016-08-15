@@ -28,7 +28,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 
 /**
  */
@@ -156,7 +156,7 @@ public class SettingsFragment
                     }
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                    handler.handle(e, "opening preferences screen");
+                    handler.e(e, "opening preferences screen");
                 }
             }
         }

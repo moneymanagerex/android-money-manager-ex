@@ -611,7 +611,7 @@ public class AccountTransactionListFragment
         AccountService accountService = new AccountService(getActivity());
         accountService.loadTransactionAccountsToSpinner(spinner);
 
-        // handle switching of accounts.
+        // e switching of accounts.
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

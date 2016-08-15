@@ -23,7 +23,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.assetallocation.ItemType;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AssetClassRepository;
@@ -199,7 +199,7 @@ public class AssetAllocationService
      * Increase sort order for this item. Finds the next in order and decrease it's sort order.
      */
     public void moveClassDown(int id) {
-        // todo: this is incomplete. Need to set the default value on creation and handle
+        // todo: this is incomplete. Need to set the default value on creation and e
         // deletions. Also pay attention if the order will be ascending or descending and adjust.
 
 //        List<AssetClass> bulk = new ArrayList();

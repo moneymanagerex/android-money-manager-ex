@@ -34,7 +34,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -129,7 +129,7 @@ public class InvestmentTransactionEditActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+        // automatically e clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 //        int id = item.getItemId();
 

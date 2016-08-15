@@ -94,25 +94,25 @@ public class AssetClassStockRepository
         return result;
     }
 
-    /**
-     * Retrieves the cursor for the list of linked securities to the given asset class.
-     * @param assetClassId Id of the asset class for which to load the data.
-     * @return Cursor on the list of linked securities.
-     */
-    public Cursor fetchCursorAssignedSecurities(int assetClassId) {
-        AssetClassStockRepository repo = new AssetClassStockRepository(getContext());
-
-        String sql =
-            "SELECT acs.ID as _id, s.* " +
-            "FROM " + repo.getSource() + " AS acs " +
-            "INNER JOIN STOCK_V1 AS s ON acs." + AssetClassStock.STOCKSYMBOL + " = s.symbol " +
-            "WHERE acs." + AssetClassStock.ASSETCLASSID + "=?";
-        String[] args = new String[] { Integer.toString(assetClassId)};
-
-        Cursor c = MmexOpenHelper.getInstance(getContext()).getReadableDatabase()
-            .rawQuery(sql, args);
-
-//        c.close();
-        return c;
-    }
+//    /**
+//     * Retrieves the cursor for the list of linked securities to the given asset class.
+//     * @param assetClassId Id of the asset class for which to load the data.
+//     * @return Cursor on the list of linked securities.
+//     */
+//    public Cursor fetchCursorAssignedSecurities(int assetClassId) {
+//        AssetClassStockRepository repo = new AssetClassStockRepository(getContext());
+//
+//        String sql =
+//            "SELECT acs.ID as _id, s.* " +
+//            "FROM " + repo.getSource() + " AS acs " +
+//            "INNER JOIN STOCK_V1 AS s ON acs." + AssetClassStock.STOCKSYMBOL + " = s.symbol " +
+//            "WHERE acs." + AssetClassStock.ASSETCLASSID + "=?";
+//        String[] args = new String[] { Integer.toString(assetClassId)};
+//
+//        Cursor c = MmexOpenHelper.getInstance(getContext()).getReadableDatabase()
+//            .rawQuery(sql, args);
+//
+////        c.close();
+//        return c;
+//    }
 }

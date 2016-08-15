@@ -41,7 +41,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -334,7 +334,7 @@ public class IncomeVsExpensesListFragment
             mFooterListView = addListViewFooter();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.handle(e, "adding header and footer in income vs expense report");
+            handler.e(e, "adding header and footer in income vs expense report");
         }
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -433,7 +433,7 @@ public class IncomeVsExpensesListFragment
             showChartInternal();
         } catch (IllegalStateException ise) {
             ExceptionHandler handler = new ExceptionHandler(getActivity().getApplicationContext(), this);
-            handler.handle(ise, "showing chart");
+            handler.e(ise, "showing chart");
         }
     }
 

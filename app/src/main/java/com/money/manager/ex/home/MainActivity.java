@@ -32,7 +32,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -43,7 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -55,7 +53,6 @@ import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -68,7 +65,7 @@ import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.common.CategoryListFragment;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.Passcode;
@@ -217,7 +214,7 @@ public class MainActivity
             super.onResume();
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this);
-            handler.handle(e, "resuming main activity");
+            handler.e(e, "resuming main activity");
         }
 
         // check if restart activity
@@ -235,7 +232,7 @@ public class MainActivity
                 mDrawerToggle.syncState();
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-                handler.handle(e, "drawer sync state");
+                handler.e(e, "drawer sync state");
             }
         }
     }
@@ -288,7 +285,7 @@ public class MainActivity
 
                     // Figure out what to do next. Switch the db or continue with init?
                     if (StringUtils.isEmpty(dbPath)) {
-                        MmexOpenHelper.getInstance(this).setPassword(password);
+                        // todo: MmexOpenHelper.getInstance(this).setPassword(password);
                         // continue
                         initializeDatabaseAccess(null);
                     } else {
@@ -391,7 +388,7 @@ public class MainActivity
                 super.onBackPressed();
             } catch (IllegalStateException e) {
                 ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "on back pressed");
+                handler.e(e, "on back pressed");
             }
         }
     }
@@ -415,6 +412,7 @@ public class MainActivity
             return;
         }
 
+        // todo: redo this using Rx!
         AsyncTask<Void, Integer, Integer> asyncTask = new CheckCloudStorageForUpdatesTask(this);
         asyncTask.execute();
     }
@@ -613,7 +611,8 @@ public class MainActivity
 
         // check if we require a password.
         String dbPath = MoneyManagerApplication.getDatabasePath(this);
-        if (MmexDatabaseUtils.isEncryptedDatabase(dbPath) && !MmexOpenHelper.getInstance(this).hasPassword()) {
+        if (MmexDatabaseUtils.isEncryptedDatabase(dbPath)) {
+            // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
             requestDatabasePassword();
         } else {
             initializeDatabaseAccess(savedInstanceState);
@@ -770,7 +769,7 @@ public class MainActivity
                     fragment = (Fragment) classFragment.newInstance();
                 } catch (Exception e) {
                     ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-                    handler.handle(e, "creating new fragment");
+                    handler.e(e, "creating new fragment");
                 }
             }
         }
@@ -800,7 +799,7 @@ public class MainActivity
             showFragment_Internal(fragment, tagFragment);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.handle(e, "showing fragment with tag");
+            handler.e(e, "showing fragment with tag");
         }
     }
 
@@ -976,7 +975,7 @@ public class MainActivity
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (mDrawer == null) return false;
-                // if the group has child items, do not handle.
+                // if the group has child items, do not e.
                 ArrayList<String> children = (ArrayList<String>) childItems.get(groupPosition);
                 if (children != null) return false;
 
@@ -1035,7 +1034,7 @@ public class MainActivity
         } catch (Exception e) {
             //if (e instanceof )
             ExceptionHandler handler = new ExceptionHandler(this);
-            handler.handle(e, "changing the database");
+            handler.e(e, "changing the database");
             return;
         }
 
@@ -1076,7 +1075,7 @@ public class MainActivity
 //                            .commit();
 //                } catch (Exception e) {
 //                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
-//                    handler.handle(e, "showing initial fragments");
+//                    handler.e(e, "showing initial fragments");
 //                }
 //            }
 //        });
@@ -1201,7 +1200,7 @@ public class MainActivity
             requestDatabaseChange(pathFile);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.handle(e, "opening database from intent");
+            handler.e(e, "opening database from intent");
         }
     }
 
@@ -1272,7 +1271,7 @@ public class MainActivity
                     showFragment(Class.forName(className));
                 } catch (ClassNotFoundException e) {
                     ExceptionHandler handler = new ExceptionHandler(this);
-                    handler.handle(e, "showing fragment " + className);
+                    handler.e(e, "showing fragment " + className);
                 }
             }
         }
@@ -1292,7 +1291,7 @@ public class MainActivity
                 startActivityForResult(intent, REQUEST_PICKFILE);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(this, this);
-                handler.handle(e, "selecting a database file");
+                handler.e(e, "selecting a database file");
             }
         } else {
             Toast.makeText(this, R.string.error_intent_pick_file,
@@ -1330,7 +1329,7 @@ public class MainActivity
     private void requestDatabaseChange(String dbFilePath) {
         Timber.v("Changing database to: %s", dbFilePath);
 
-        // handle encrypted database(s)
+        // e encrypted database(s)
         if (MmexDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
             requestDatabasePassword(dbFilePath);
         } else {

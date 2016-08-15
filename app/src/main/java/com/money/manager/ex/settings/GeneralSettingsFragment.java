@@ -33,7 +33,7 @@ import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -211,7 +211,7 @@ public class GeneralSettingsFragment
                         return true;
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                        handler.handle(e, "changing the start day of the financial year");
+                        handler.e(e, "changing the start day of the financial year");
                     }
                     return false;
                 }
@@ -237,7 +237,7 @@ public class GeneralSettingsFragment
                 }
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                handler.handle(e, "showing the month of the financial year");
+                handler.e(e, "showing the month of the financial year");
             }
             lstFinancialMonth.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -253,7 +253,7 @@ public class GeneralSettingsFragment
                         }
                     } catch (Exception e) {
                         ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                        handler.handle(e, "changing the month of the financial year");
+                        handler.e(e, "changing the month of the financial year");
                         return false;
                     }
                     return true;

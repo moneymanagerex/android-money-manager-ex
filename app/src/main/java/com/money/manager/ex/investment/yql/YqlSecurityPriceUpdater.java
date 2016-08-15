@@ -21,7 +21,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.IDownloadAsyncTaskFeedback;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -121,7 +121,7 @@ public class YqlSecurityPriceUpdater
             pricesList = parseDownloadedJson(content);
         } catch (JSONException e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, "parsing JSON");
+            handler.e(e, "parsing JSON");
         }
 
         for (SecurityPriceModel model : pricesList) {

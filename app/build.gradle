@@ -28,7 +28,7 @@ android {
         versionCode 882
         versionName '2016.08.15'
 
-        minSdkVersion 15 // 4.0
+        minSdkVersion 15 // 4.0.3
         targetSdkVersion 24
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -74,7 +74,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Disable fabric build id for debug builds

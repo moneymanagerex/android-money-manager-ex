@@ -20,15 +20,10 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
-import com.money.manager.ex.utils.MyDateTimeUtils;
 
 import org.joda.time.DateTime;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Handles export of transactions from AllDataListFragment into QIF format.
@@ -48,12 +43,12 @@ public class QifExport
      * Export the transactions into qif format and offer file for sharing.
      */
     public void export(AllDataAdapter adapter) {
-        // just handle errors here
+        // just e errors here
         try {
             this.export_internal(adapter);
         } catch (Exception e) {
             ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.handle(e, ".qif export");
+            handler.e(e, ".qif export");
         }
     }
 

@@ -25,7 +25,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
@@ -91,7 +91,7 @@ public class CalculateRunningBalanceTask2
             return runTask();
         } catch (Exception ex) {
             ExceptionHandler handler = new ExceptionHandler(this.context, this);
-            handler.handle(ex, "balancing amount");
+            handler.e(ex, "balancing amount");
         }
         return null;
     }

@@ -312,7 +312,7 @@
 //            }
 //        } catch (PackageManager.NameNotFoundException e) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(e, "checking version name");
+//            handler.e(e, "checking version name");
 //        }
 //        return key;
 //    }
@@ -343,7 +343,7 @@
 //                }
 //            } catch (RuntimeException e) {
 //                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//                handler.handle(e, "authenticating with Dropbox");
+//                handler.e(e, "authenticating with Dropbox");
 ////                Toast.makeText(context, "Couldn't authenticate with Dropbox", Toast.LENGTH_LONG).show();
 //                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Error authenticating", e);
 //            }
@@ -540,7 +540,7 @@
 //            }
 //        } catch (Exception e) {
 //            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.handle(e, "uploading to dropbox");
+//            handler.e(e, "uploading to dropbox");
 //            return false;
 //        }
 //
@@ -669,7 +669,7 @@
 //            remoteLastModified = getLastModifiedEntry(remoteFile);
 //        } catch (Exception e) {
 //            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.handle(e, "retrieving the last modified date in compareFilesForSync");
+//            handler.e(e, "retrieving the last modified date in compareFilesForSync");
 //
 //            return SyncMessages.FILE_NOT_CHANGED;
 //        }

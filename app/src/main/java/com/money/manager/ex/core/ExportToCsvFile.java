@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -131,7 +132,7 @@ public class ExportToCsvFile
 			csvWriter.close();
 		} catch (Exception e) {
 			ExceptionHandler handler = new ExceptionHandler(mContext, this);
-			handler.handle(e, "exporting to CSV");
+			handler.e(e, "exporting to CSV");
 
 			return false;
 		}

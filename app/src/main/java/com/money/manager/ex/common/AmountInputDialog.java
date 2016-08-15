@@ -33,7 +33,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -332,7 +332,7 @@ public class AmountInputDialog
                 return false;
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                handler.handle(e, "evaluating expression");
+                handler.e(e, "evaluating expression");
             }
         } else {
             mAmount = MoneyFactory.fromString("0");

@@ -19,9 +19,7 @@ package com.money.manager.ex.currency.recycler;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,40 +29,32 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
-import com.money.manager.ex.currency.list.CurrencyListAdapter;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.view.recycler.ContextMenuRecyclerView;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 import com.money.manager.ex.view.recycler.RecyclerViewContextMenuInfo;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.SubscriberExceptionEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -264,7 +254,7 @@ public class CurrencyRecyclerListFragment
     @Subscribe
     public void onEvent(SubscriberExceptionEvent exceptionEvent) {
         ExceptionHandler handler = new ExceptionHandler(getContext());
-        handler.handle(exceptionEvent.throwable, "events");
+        handler.e(exceptionEvent.throwable, "events");
     }
 
     @Subscribe

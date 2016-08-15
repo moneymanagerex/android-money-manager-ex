@@ -16,10 +16,10 @@
  */
 package com.money.manager.ex.settings;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.InputType;
@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.core.ExceptionHandler;
+import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -46,18 +46,26 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
+
 /**
  * Database settings fragment.
  */
 public class DatabaseSettingsFragment
-        extends PreferenceFragment {
+    extends PreferenceFragment {
+
+    @Inject Lazy<MmexOpenHelper> openHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_database);
 
-        PreferenceManager.getDefaultSharedPreferences(getActivity());
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+
+//        PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Database path.
         refreshDbPath();
@@ -75,8 +83,8 @@ public class DatabaseSettingsFragment
         //sqlite version
         Preference pSQLiteVersion = findPreference(getString(PreferenceConstants.PREF_SQLITE_VERSION));
         if (pSQLiteVersion != null) {
-            MmexOpenHelper helper = MmexOpenHelper.getInstance(getActivity().getApplicationContext());
-            String sqliteVersion = helper.getSQLiteVersion();
+//            MmexOpenHelper helper = MmexOpenHelper.getInstance(getActivity().getApplicationContext());
+            String sqliteVersion = openHelper.get().getSQLiteVersion();
             if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
         }
 
@@ -128,10 +136,11 @@ public class DatabaseSettingsFragment
 
         String version = "N/A";
 
-        MmexOpenHelper dbHelper = MmexOpenHelper.getInstance(getActivity());
+//        MmexOpenHelper dbHelper = MmexOpenHelper.getInstance(getActivity());
 
-        if (dbHelper.getReadableDatabase() != null) {
-            int versionNumber = dbHelper.getReadableDatabase().getVersion();
+        SQLiteDatabase db = openHelper.get().getReadableDatabase();
+        if (db != null) {
+            int versionNumber = db.getVersion();
             version = Integer.toString(versionNumber);
         }
 
@@ -306,7 +315,7 @@ public class DatabaseSettingsFragment
                     }
                 } catch (Exception ex) {
                     ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                    handler.handle(ex, "checking integrity");
+                    handler.e(ex, "checking integrity");
                 }
                 return false;
             }
