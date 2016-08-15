@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -115,8 +116,7 @@ public class MmexDatabaseUtils {
         try {
             return checkSchemaInternal();
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "checking schema");
+            Timber.e(e, "checking schema");
             return false;
         }
     }
@@ -132,8 +132,7 @@ public class MmexDatabaseUtils {
         try {
             result = createDatabase_Internal(filename);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "creating database");
+            Timber.e(e, "creating database");
         }
         return result;
     }
@@ -162,6 +161,32 @@ public class MmexDatabaseUtils {
         }
 
         return result;
+    }
+
+    /**
+     * Get application directory on external storage. The directory is created if it does not exist.
+     * @return the default directory where to store the database
+     */
+    public File getDatabaseStorageDirectory() {
+        //get external storage
+        File externalStorage;
+        externalStorage = Environment.getExternalStorageDirectory();
+
+        if (externalStorage == null || !externalStorage.exists() || !externalStorage.isDirectory() || !externalStorage.canWrite()) {
+            return getContext().getFilesDir();
+        }
+
+        File folderOutput = new File(externalStorage + File.separator + getContext().getPackageName());
+        if (!folderOutput.exists()) {
+            folderOutput = new File(externalStorage + "/MoneyManagerEx");
+            if (!folderOutput.exists()) {
+                //make a directory
+                if (!folderOutput.mkdirs()) {
+                    return getContext().getFilesDir();
+                }
+            }
+        }
+        return folderOutput;
     }
 
     // Private

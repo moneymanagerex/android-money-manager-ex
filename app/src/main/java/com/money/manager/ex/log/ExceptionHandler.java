@@ -34,9 +34,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
+ * Deprecated. Replace with calls to Timber, which uses the new production logger.
  * Default exception handler.
  * Used for reporting uncaught exceptions before using Crashlytics.
  */
+@Deprecated
 public class ExceptionHandler
     implements Thread.UncaughtExceptionHandler
 {

@@ -19,7 +19,8 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
-public class DatabaseSettingsActivity extends BaseSettingsFragmentActivity {
+public class DatabaseSettingsActivity
+    extends BaseSettingsFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {

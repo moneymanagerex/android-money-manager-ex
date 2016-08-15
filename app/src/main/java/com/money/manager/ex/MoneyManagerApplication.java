@@ -42,6 +42,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
@@ -86,8 +87,9 @@ public class MoneyManagerApplication
      * @return String containing the path to the default directory for storing databases.
      */
     public static String getDatabaseDirectory(Context context) {
-        Core core = new Core(context);
-        File defaultFolder = core.getExternalStorageDirectory();
+        // todo: move this to db utils
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(context);
+        File defaultFolder = dbUtils.getDatabaseStorageDirectory();
         String databasePath;
 
         if (defaultFolder.getAbsoluteFile().exists()) {
@@ -119,7 +121,7 @@ public class MoneyManagerApplication
         DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
 
         String databasePath = dbSettings.getDatabasePath();
-        Timber.d("database path: %s", databasePath);
+//        Timber.d("database path: %s", databasePath);
 
         if (!StringUtils.isEmpty(databasePath)) {
             // Use the db path stored in the preferences.
@@ -201,8 +203,10 @@ public class MoneyManagerApplication
 
         // todo: move this to dbutils
         // create the default folder for the database.
-        Core core = new Core(getApplicationContext());
-        core.getExternalStorageDirectory();
+//        Core core = new Core(getApplicationContext());
+//        core.getExternalStorageDirectory();
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+        dbUtils.getDatabaseStorageDirectory();
 
         // set default text size.
         setTextSize(new TextView(getApplicationContext()).getTextSize());

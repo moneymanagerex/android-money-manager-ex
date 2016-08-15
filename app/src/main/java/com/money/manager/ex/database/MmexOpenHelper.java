@@ -78,26 +78,26 @@ public class MmexOpenHelper
 //        return mInstance;
 //    }
 
-    public static synchronized void closeDatabase() {
-        if (mInstance == null) return;
+//    public static synchronized void closeDatabase() {
+//        if (mInstance == null) return;
+//
+//        mInstance.close();
+//    }
 
-        mInstance.close();
-    }
+//    /**
+//     * For every database change, the helper needs to be recreated.
+//     */
+//    public static synchronized void reinitialize(Context context) {
+//        mInstance = createNewInstance(context);
+//    }
 
-    /**
-     * For every database change, the helper needs to be recreated.
-     */
-    public static synchronized void reinitialize(Context context) {
-        mInstance = createNewInstance(context);
-    }
-
-    public static synchronized MmexOpenHelper createNewInstance(Context context) {
-        String dbPath = MoneyManagerApplication.getDatabasePath(context);
-
-        Timber.d("creating a new OpenHelper instance for %s", dbPath);
-
-        return new MmexOpenHelper(context.getApplicationContext(), dbPath);
-    }
+//    public static synchronized MmexOpenHelper createNewInstance(Context context) {
+//        String dbPath = MoneyManagerApplication.getDatabasePath(context);
+//
+//        Timber.d("creating a new OpenHelper instance for %s", dbPath);
+//
+//        return new MmexOpenHelper(context.getApplicationContext(), dbPath);
+//    }
 
     // Dynamic
 
@@ -477,7 +477,8 @@ public class MmexOpenHelper
      */
     @Override
     public void finalize() throws Throwable {
-        closeDatabase();
+//        closeDatabase();
+
 //        if (mInstance != null) {
 //            mInstance.close();
 //        }

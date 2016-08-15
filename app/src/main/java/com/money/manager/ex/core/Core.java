@@ -47,6 +47,7 @@ import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
@@ -146,6 +147,8 @@ public class Core {
 
         this.mContext = context;
         // .getApplicationContext() == null ? context.getApplicationContext() : context;
+
+        MoneyManagerApplication.getInstance().mainComponent.inject(this);
     }
 
     private Context mContext;
@@ -177,13 +180,16 @@ public class Core {
         }
 
         // close existing connection.
-        MmexOpenHelper.closeDatabase();
+//        MmexOpenHelper.closeDatabase();
+        openHelper.get().close();
 
         // change database
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
 
+        // todo: The components need to be restarted after this!
+
         // Reinitialize the provider.
-        MmexOpenHelper.reinitialize(getContext().getApplicationContext());
+//        MmexOpenHelper.reinitialize(getContext().getApplicationContext());
 
         // todo MmexOpenHelper.getInstance(getContext()).setPassword(password);
 
@@ -219,8 +225,11 @@ public class Core {
     public File backupDatabase() {
         File database = new File(MoneyManagerApplication.getDatabasePath(getContext()));
         if (!database.exists()) return null;
+
         //create folder to copy database
-        File folderOutput = getExternalStorageDirectory();
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        File folderOutput = dbUtils.getDatabaseStorageDirectory();
+
         //take a folder of database
         ArrayList<File> filesFromCopy = new ArrayList<>();
         //add current database
@@ -239,8 +248,7 @@ public class Core {
             try {
                 copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.e(e, "backing up the database");
+                Timber.e(e, "backing up the database");
                 return null;
             }
         }
@@ -309,8 +317,7 @@ public class Core {
                 return R.style.Theme_Money_Manager_Light;
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "getting theme setting");
+            Timber.e(e, "getting theme setting");
 
             return R.style.Theme_Money_Manager_Light;
         }
@@ -349,34 +356,6 @@ public class Core {
         //helper.close();
 
         return payee;
-    }
-
-    /**
-     * Get application directory on external storage. The directory is created if it does not exist.
-     *
-     * @return the default directory where to store the database
-     */
-    public File getExternalStorageDirectory() {
-        //get external storage
-        File externalStorage;
-        externalStorage = Environment.getExternalStorageDirectory();
-
-        if (externalStorage != null && externalStorage.exists() && externalStorage.isDirectory() && externalStorage.canWrite()) {
-            //create folder to copy database
-            File folderOutput = new File(externalStorage + File.separator + getContext().getPackageName());
-            if (!folderOutput.exists()) {
-                folderOutput = new File(externalStorage + "/MoneyManagerEx");
-                if (!folderOutput.exists()) {
-                    //make a directory
-                    if (!folderOutput.mkdirs()) {
-                        return getContext().getFilesDir();
-                    }
-                }
-            }
-            return folderOutput;
-        } else {
-            return getContext().getFilesDir();
-        }
     }
 
     /**

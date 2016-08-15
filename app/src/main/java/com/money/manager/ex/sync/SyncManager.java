@@ -43,6 +43,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.utils.NetworkUtilities;
 
 import org.apache.commons.io.IOUtils;
@@ -59,6 +60,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+
+import timber.log.Timber;
 
 /**
  * Class used to manage the database synchronization process.
@@ -664,15 +667,16 @@ public class SyncManager {
     }
 
     private File getExternalStorageDirectoryForSync() {
-        Core core = new Core(mContext.getApplicationContext());
-        File folder = core.getExternalStorageDirectory();
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        File folder = dbUtils.getDatabaseStorageDirectory();
+
         // manage folder
         if (folder != null && folder.exists() && folder.isDirectory() && folder.canWrite()) {
             // create a folder for remote files
             File folderSync = new File(folder + "/sync");
             // check if folder exists otherwise create
             if (!folderSync.exists()) {
-                if (!folderSync.mkdirs()) return mContext.getFilesDir();
+                if (!folderSync.mkdirs()) return getContext().getFilesDir();
             }
             return folderSync;
         } else {
@@ -688,8 +692,7 @@ public class SyncManager {
         try {
             invokeSyncServiceInternal(action);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "invoking sync service");
+            Timber.e(e, "invoking sync service");
         }
     }
 

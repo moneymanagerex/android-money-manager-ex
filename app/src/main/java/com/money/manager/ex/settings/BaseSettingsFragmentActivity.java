@@ -23,6 +23,11 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.log.ErrorRaisedEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  */
@@ -35,6 +40,25 @@ public class BaseSettingsFragmentActivity
 
         setContentView(R.layout.settings_activity);
         setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEvent(ErrorRaisedEvent event) {
+        UIHelper.showToast(this, event.message);
     }
 
 //    @Override

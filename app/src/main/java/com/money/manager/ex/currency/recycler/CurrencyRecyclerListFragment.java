@@ -35,7 +35,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyChartActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -60,6 +60,7 @@ import java.util.List;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+import timber.log.Timber;
 
 /**
  * Recycler list fragment.
@@ -129,6 +130,8 @@ public class CurrencyRecyclerListFragment
 
     @Override
     public void onPause() {
+        super.onPause();
+
         // register content observer
         CurrencyRepository repo = new CurrencyRepository(getActivity());
         getActivity().getContentResolver().registerContentObserver(repo.getUri(), true, mObserver);
@@ -136,6 +139,8 @@ public class CurrencyRecyclerListFragment
 
     @Override
     public void onResume() {
+        super.onResume();
+
         // unregister content observer
         getActivity().getContentResolver().unregisterContentObserver(mObserver);
     }
@@ -226,7 +231,8 @@ public class CurrencyRecyclerListFragment
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getContext());
         boolean updated = ui.onPriceDownloaded(event.symbol, event.price, event.date);
         if (!updated) {
-            //todo: show error msg
+            // show error msg
+            UIHelper.showToast(getActivity(), "could not save the price!");
         }
     }
 
@@ -253,8 +259,7 @@ public class CurrencyRecyclerListFragment
 
     @Subscribe
     public void onEvent(SubscriberExceptionEvent exceptionEvent) {
-        ExceptionHandler handler = new ExceptionHandler(getContext());
-        handler.e(exceptionEvent.throwable, "events");
+        Timber.e(exceptionEvent.throwable, "events");
     }
 
     @Subscribe

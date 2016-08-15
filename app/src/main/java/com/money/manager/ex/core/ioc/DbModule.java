@@ -21,6 +21,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
@@ -46,19 +47,25 @@ public final class DbModule {
         //return MmexOpenHelper.getInstance(application);
 //    }
 
-    @Provides MmexOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
+    @Provides MmexOpenHelper provideOpenHelper(Application application) {
         if (instance == null) {
-            instance = MmexOpenHelper.createNewInstance(application);
+            instance = createInstance(application);
         } else {
             // See whether to reinitialize
             String currentPath = instance.getDatabaseName();
-            String newPath = appSettings.getDatabaseSettings().getDatabasePath();
+            String newPath = MoneyManagerApplication.getDatabasePath(application);
+
             if (!currentPath.equals(newPath)) {
                 instance.close();
-                instance = MmexOpenHelper.createNewInstance(application);
+                instance = createInstance(application);
             }
         }
         return instance;
+    }
+
+    private MmexOpenHelper createInstance(Application application) {
+        String dbPath = MoneyManagerApplication.getDatabasePath(application);
+        return new MmexOpenHelper(application, dbPath);
     }
 
     @Provides SqlBrite provideSqlBrite() {

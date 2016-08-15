@@ -23,6 +23,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,6 +46,10 @@ public class DatabaseMigrator14To20 {
     public static final String DEFAULT_DB_FILENAME = "data.mmb";
 
     private Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
 
     /**
      * Checks the legacy (v1.4) location for the database.
@@ -70,7 +75,7 @@ public class DatabaseMigrator14To20 {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             dbPath = mContext.getApplicationInfo().dataDir;
         } else {
-            dbPath = "/data/data/" + mContext.getApplicationContext().getPackageName();
+            dbPath = "/data/data/" + getContext().getApplicationContext().getPackageName();
         }
         // This was the default database name and it was impossible to create another one
         // at this location.
@@ -82,8 +87,9 @@ public class DatabaseMigrator14To20 {
     }
 
     public String getV20Path() {
-        Core core = new Core(mContext);
-        File newPath = core.getExternalStorageDirectory();
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        File newPath = dbUtils.getDatabaseStorageDirectory();
+
 //        String dbPath = newPath.toString() + "/data.mmb";
         String dbPath = newPath.toString();
         return dbPath;
@@ -117,7 +123,7 @@ public class DatabaseMigrator14To20 {
         if (!renameSuccessful) return result;
 
         // set the database path preference
-        AppSettings settings = new AppSettings(mContext);
+        AppSettings settings = new AppSettings(getContext());
         String newFilename = newFile.toString();
         settings.getDatabaseSettings().setDatabasePath(newFilename);
 
@@ -126,7 +132,7 @@ public class DatabaseMigrator14To20 {
 //        MainActivity.setRestartActivity(true);
         EventBus.getDefault().post(new AppRestartRequiredEvent());
 
-        Toast.makeText(mContext, R.string.database_migrate_14_to_20_complete, Toast.LENGTH_LONG)
+        Toast.makeText(getContext(), R.string.database_migrate_14_to_20_complete, Toast.LENGTH_LONG)
                 .show();
 
         result = true;
