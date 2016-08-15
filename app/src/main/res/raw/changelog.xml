@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.14.881">
+    <changelogversion versionName="2016.08.15.881">
         <changelogtext>Adding dependency injection on price download for Morningstar.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.08.14.880">
