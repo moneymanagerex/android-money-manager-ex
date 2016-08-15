@@ -81,6 +81,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.IntentDataParameters;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -358,9 +359,7 @@ public class HomeFragment
         }
 
         // Close the cursor.
-        if (data != null && !data.isClosed()) {
-            data.close();
-        }
+        MmexDatabaseUtils.closeCursor(data);
     }
 
     // Menu

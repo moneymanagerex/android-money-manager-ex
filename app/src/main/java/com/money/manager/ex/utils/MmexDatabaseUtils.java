@@ -50,6 +50,12 @@ import rx.schedulers.Schedulers;
  */
 public class MmexDatabaseUtils {
 
+    public static void closeCursor(Cursor c) {
+        if (c == null || c.isClosed()) return;
+
+        c.close();
+    }
+
     public static String[] getArgsForId(int id) {
         String[] result = new String[] { Integer.toString(id) };
         return result;
