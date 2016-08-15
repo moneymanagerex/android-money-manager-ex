@@ -149,8 +149,43 @@ public class Core {
 
     private Context mContext;
 
-    public Context getContext() {
-        return mContext;
+    /**
+     * Change the database used by the app.
+     *
+     * @param path new database
+     * @return indicator whether the operation was successful
+     */
+    public boolean changeDatabase(String path, String password)
+        throws Exception {
+
+        Timber.d("switching database to: %s", path);
+
+        File file = new File(path);
+        // check if database exists
+        if (!file.exists()) {
+            throw new Exception(getContext().getString(R.string.path_database_not_exists));
+//            Toast.makeText(getContext(), R.string.path_database_not_exists, Toast.LENGTH_LONG).show();
+//            return false;
+        }
+        // check if database can be open in write mode
+        if (!file.canWrite()) {
+            throw new Exception(getContext().getString(R.string.database_can_not_open_write));
+//            Toast.makeText(getContext(), R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
+//            return false;
+        }
+
+        // close existing connection.
+        MmexOpenHelper.closeDatabase();
+
+        // change database
+        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
+
+        // Reinitialize the provider.
+        MmexOpenHelper.reinitialize(getContext().getApplicationContext());
+
+        MmexOpenHelper.getInstance(getContext()).setPassword(password);
+
+        return true;
     }
 
     /**
@@ -217,7 +252,6 @@ public class Core {
 
     /**
      * Get a versioncode of the application.
-     *
      * @return application version name
      */
     public int getAppVersionCode() {
@@ -245,6 +279,10 @@ public class Core {
 
     public String getFullAppVersion() {
         return getAppVersionName() + "." + getAppVersionBuild();
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     /**
@@ -392,38 +430,6 @@ public class Core {
         int layout = getContext().getResources().getConfiguration().screenLayout;
         return ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
                 ((layout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
-    }
-
-    /**
-     * Change the database used by the app.
-     *
-     * @param path new database
-     * @return indicator whether the operation was successful
-     */
-    public boolean changeDatabase(String path, String password) {
-        Timber.d("switching database to: %s", path);
-
-        File file = new File(path);
-        // check if database exists
-        if (!file.exists()) {
-            Toast.makeText(getContext(), R.string.path_database_not_exists, Toast.LENGTH_LONG).show();
-            return false;
-        }
-        // check if database can be open in write mode
-        if (!file.canWrite()) {
-            Toast.makeText(getContext(), R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // close existing connection.
-        MmexOpenHelper.closeDatabase();
-
-        // change database
-        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
-
-        MmexOpenHelper.getInstance(getContext()).setPassword(password);
-
-        return true;
     }
 
     /**
