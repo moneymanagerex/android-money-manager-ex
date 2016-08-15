@@ -59,18 +59,21 @@
     public static ** valueOf(java.lang.String);
 }
 
--keep class * implements android.os.Parcelable {
-    public static final android.os.Parcelable$Creator *;
-}
-
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
+
+# Parceler library
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+-keep class org.parceler.Parceler$$Parcels
 
 -keep class android.support.v4.app.** { *; }
 -keep interface android.support.v4.app.** { *; }
 
 -keep class com.github.mikephil.charting.** { *; }
+-dontwarn io.realm.**
 
 # Retrofit
 -dontwarn retrofit2.**
@@ -87,15 +90,18 @@
 #    <init>(java.lang.Throwable);
 #}
 
-# Parcel library
--keep class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator *;
-}
--keep class org.parceler.Parceler$$Parcels
-
 #SQLCipher
--keep class net.sqlcipher.** { *; }
+#-keep class net.sqlcipher.** { *; }
 
 # Ignore warnings
-#-dontwarn com.google.common.util.**
-#-dontwarn com.google.common.base.**
+-dontwarn org.apache.**
+-dontwarn com.opencsv.bean.**
+-dontwarn com.google.common.**
+-dontwarn sun.misc.Unsafe
+# https://github.com/square/okio/issues/60
+-dontwarn okio.**
+
+# Test for debugging
+#-renamesourcefileattribute SourceFile
+#-keepattributes SourceFile,LineNumberTable
+#-printmapping build/outputs/mapping/release/mapping.txt
