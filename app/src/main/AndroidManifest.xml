@@ -411,7 +411,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".assetallocation.SecurityListActivity"
-            android:label="@string/title_activity_security_list" />
+            android:label="@string/securities" />
         <activity
             android:name=".assetallocation.AssetAllocationPickerActivity"
             android:label="@string/asset_allocation" />
