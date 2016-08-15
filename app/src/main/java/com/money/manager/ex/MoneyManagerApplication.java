@@ -174,12 +174,9 @@ public class MoneyManagerApplication
         // save instance of application
         myInstance = this;
 
-        // todo: move this to dbutils
         // create the default folder for the database.
-//        Core core = new Core(getApplicationContext());
-//        core.getExternalStorageDirectory();
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
-        dbUtils.getDatabaseStorageDirectory();
+//        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+//        dbUtils.getDatabaseStorageDirectory();
 
         // set default text size.
         setTextSize(new TextView(getApplicationContext()).getTextSize());
