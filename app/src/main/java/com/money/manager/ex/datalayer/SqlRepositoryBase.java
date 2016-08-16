@@ -41,7 +41,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         this.database = db;
     }
 
-    BriteDatabase database;
+    public BriteDatabase database;
     String tableName;
 
     public long insert(ContentValues values) {

@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.money.manager.ex.common.MoneyParcelConverter;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.log.ExceptionHandler;

@@ -28,6 +28,7 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.greenrobot.eventbus.EventBus;
@@ -126,12 +127,17 @@ public class MorningstarPriceUpdater
                     @Override
                     public PriceDownloadedEvent call(PriceDownloadedEvent priceDownloadedEvent) {
                         // save to database
+                        BriteDatabase.Transaction tx = stockRepository.database.newTransaction();
+
                         // update the current price of the stock.
                         stockRepository.updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
 
                         // save price history record.
                         stockHistoryRepository.addStockHistoryRecord(priceDownloadedEvent.symbol,
                                 priceDownloadedEvent.price, priceDownloadedEvent.date);
+
+                        tx.markSuccessful();
+                        tx.end();
 
                         // emit the event object down the stream.
                         return priceDownloadedEvent;

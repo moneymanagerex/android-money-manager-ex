@@ -28,7 +28,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudrail.si.exceptions.AuthenticationException;
-import com.cloudrail.si.exceptions.NotFoundException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -94,9 +93,13 @@ public class SyncManager {
     private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
-        if (mDelayedHandler != null) {
-            mDelayedHandler.removeCallbacks(mRunSyncRunnable);
-        }
+//        if (mDelayedHandler != null) {
+//            mDelayedHandler.removeCallbacks(mRunSyncRunnable);
+//        }
+
+        Intent service = new Intent(getContext(), DelayedUploadService.class);
+        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
+        getContext().startService(service);
     }
 
     public Context getContext() {
@@ -223,6 +226,8 @@ public class SyncManager {
 
         // save the last modified date so that we can correctly synchronize later.
         String remotePath = getRemotePath();
+
+        // Is the current database synchronized?
         if (StringUtils.isEmpty(remotePath)) return;
 
         // fake metadata
@@ -242,8 +247,9 @@ public class SyncManager {
         // Should we schedule an upload?
         SyncPreferences preferences = new SyncPreferences(getContext());
         if (preferences.getUploadImmediately()) {
-            abortScheduledUpload();
-            scheduleUpload();
+//            abortScheduledUpload();
+//            scheduleUpload();
+            scheduleUploadViaService();
         }
     }
 
@@ -414,6 +420,12 @@ public class SyncManager {
         // reset provider cache
         createProviders();
         storePersistent();
+    }
+
+    private void scheduleUploadViaService() {
+        Intent service = new Intent(getContext(), DelayedUploadService.class);
+        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
+        getContext().startService(service);
     }
 
     private void scheduleUpload() {

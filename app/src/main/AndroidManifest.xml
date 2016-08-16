@@ -115,6 +115,12 @@
                 <action android:name="${applicationId}.sync.action.UPLOAD" />
             </intent-filter>
         </service>
+        <service android:name=".sync.DelayedUploadService">
+            <intent-filter>
+                <action android:name="${applicationId}.intent.action.START_SYNC_SERVICE" />
+                <action android:name="${applicationId}.intent.action.STOP_SYNC_SERVICE" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name=".MmexContentProvider"

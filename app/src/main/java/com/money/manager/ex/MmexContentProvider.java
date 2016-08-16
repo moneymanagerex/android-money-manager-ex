@@ -28,7 +28,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.money.manager.ex.budget.BudgetQuery;
 import com.money.manager.ex.log.ExceptionHandler;
@@ -145,7 +144,7 @@ public class MmexContentProvider
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         try {
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
@@ -154,7 +153,7 @@ public class MmexContentProvider
                 Timber.w("illegal state, connection probably closed");
             }
 
-            Timber.e(e, "content provider.query " + uri);
+            Timber.e(e, "content provider.query %s", uri);
         }
         return null;
     }
