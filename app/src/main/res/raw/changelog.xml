@@ -16,8 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.16.884">
+    <changelogversion versionName="2016.08.16.886">
         <changelogtext>Delayed upload rewritten as a background service.</changelogtext>
+        <changelogtext>Stability improvements.</changelogtext>
+        <changelogtext>Redoing the Tutorial display logic.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.08.15.883">
         <changelogtext>Quick database switching. No need to restart the app anymore.</changelogtext>
