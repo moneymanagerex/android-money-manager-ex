@@ -694,8 +694,6 @@ public class MainActivity
      */
     public void restartActivity() {
         if (mRestartActivity) {
-            resetContentProvider();
-
             // <= 10
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
                 // this is for APIs < 11.
@@ -1057,6 +1055,8 @@ public class MainActivity
         if (!this.recentDbs.contains(dbFilePath)) {
             this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
+
+        resetContentProvider();
 
 //        if (currentDatabase.contentEquals(dbFilePath)) {
 //            // just restart the main Activity?
