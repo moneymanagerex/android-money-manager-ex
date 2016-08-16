@@ -21,7 +21,6 @@ import android.content.Context;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -116,12 +115,26 @@ public class MorningstarPriceUpdater
                     public Observable<Pair<String, String>> call(final String s) {
                         // download the price
                         return service.getPrice(s)
+                                .doOnError(new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        // report to the UI
+                                        Timber.e(throwable, "fetching %s", s);
+                                    }
+                                })
+                                .onErrorResumeNext(Observable.<String>empty())
                                 .map(new Func1<String, Pair<String, String>>() {
                                     @Override
                                     public Pair<String, String> call(String price) {
                                         return Pair.of(s, price);
                                     }
                                 });
+                    }
+                })
+                .filter(new Func1<Pair<String, String>, Boolean>() {
+                    @Override
+                    public Boolean call(Pair<String, String> stringStringPair) {
+                        return stringStringPair != null;
                     }
                 })
                 .map(new Func1<Pair<String, String>, PriceDownloadedEvent>() {
@@ -188,7 +201,23 @@ public class MorningstarPriceUpdater
 
             compositeSubscription.add(
                     service.getPrice(symbol)
-                        .subscribe()
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Subscriber<String>() {
+                            @Override
+                            public void onCompleted() {
+                                Timber.d("complete");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Timber.e(e, "error downloading prices");
+                            }
+
+                            @Override
+                            public void onNext(String s) {
+                                Timber.d("next %s", s);
+                            }
+                        })
             );
         }
 
