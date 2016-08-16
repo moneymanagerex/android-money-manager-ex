@@ -118,6 +118,9 @@ public class MorningstarPriceUpdater
                                 .doOnError(new Action1<Throwable>() {
                                     @Override
                                     public void call(Throwable throwable) {
+                                        mCounter++;
+                                        setProgress(mCounter);
+
                                         // report to the UI
                                         Timber.e(throwable, "fetching %s", s);
                                     }
@@ -129,12 +132,6 @@ public class MorningstarPriceUpdater
                                         return Pair.of(s, price);
                                     }
                                 });
-                    }
-                })
-                .filter(new Func1<Pair<String, String>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<String, String> stringStringPair) {
-                        return stringStringPair != null;
                     }
                 })
                 .map(new Func1<Pair<String, String>, PriceDownloadedEvent>() {
