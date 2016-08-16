@@ -17,8 +17,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion versionName="2016.08.16.884">
-        <changelogtext>Quick database switching. No need to restart the app anymore.</changelogtext>
-        <changelogtext>Adding dependency injection on price downloader for Morningstar.</changelogtext>
+        <changelogtext>Delayed upload rewritten as a background service.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.08.15.883">
         <changelogtext>Quick database switching. No need to restart the app anymore.</changelogtext>
