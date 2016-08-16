@@ -17,6 +17,7 @@
 package com.money.manager.ex.common;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Optional;
 import timber.log.Timber;
 
 //import net.sqlcipher.database.SQLiteDatabase;
@@ -42,6 +44,7 @@ import timber.log.Timber;
 public abstract class BaseFragmentActivity
     extends AppCompatActivity {
 
+    @Nullable
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
     private boolean mDisplayHomeAsUpEnabled = false;
