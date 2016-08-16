@@ -17,10 +17,10 @@
 
 package com.money.manager.ex.core.ioc;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.settings.AppSettings;
 
 import javax.inject.Singleton;
@@ -40,13 +40,13 @@ import dagger.Provides;
     }
 )
 public final class MmexModule {
-    private final Application application;
+    private final MoneyManagerApplication application;
 
-    public MmexModule(Application application) {
+    public MmexModule(MoneyManagerApplication application) {
         this.application = application;
     }
 
-    @Provides @Singleton Application provideApplication() {
+    @Provides @Singleton MoneyManagerApplication provideApplication() {
         return application;
     }
 
@@ -57,7 +57,7 @@ public final class MmexModule {
     }
 
     @Provides @Singleton
-    AppSettings provideAppSettings(Application application) {
+    AppSettings provideAppSettings(MoneyManagerApplication application) {
         return new AppSettings(application);
     }
 }

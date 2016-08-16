@@ -42,6 +42,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.ioc.DaggerMmexComponent;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.log.ExceptionHandler;
@@ -148,7 +149,7 @@ public class Core {
         this.mContext = context;
         // .getApplicationContext() == null ? context.getApplicationContext() : context;
 
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
     private Context mContext;
@@ -188,10 +189,7 @@ public class Core {
 //        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
         appSettings.get().getDatabaseSettings().setDatabasePath(path);
 
-        // todo: The components need to be restarted to read the new database location after this!
-
-        // Reinitialize the provider.
-//        MmexOpenHelper.reinitialize(getContext().getApplicationContext());
+        MoneyManagerApplication.getApp().initDb(path);
 
         // todo MmexOpenHelper.getInstance(getContext()).setPassword(password);
 

@@ -73,7 +73,7 @@ public class MmexDatabaseUtils {
         mContext = context;
 
         // dependency injection
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
     @Inject Lazy<MmexOpenHelper> openHelper;

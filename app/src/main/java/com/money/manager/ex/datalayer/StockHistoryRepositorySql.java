@@ -25,6 +25,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import org.joda.time.DateTime;
 
@@ -42,10 +43,10 @@ public class StockHistoryRepositorySql
     private static final String TABLE_NAME = "stockhistory_v1";
 
     @Inject
-    public StockHistoryRepositorySql() {
-        super(TABLE_NAME);
+    public StockHistoryRepositorySql(BriteDatabase db) {
+        super(TABLE_NAME, db);
 
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+//        application.mainComponent.inject(this);
     }
 
     public boolean addStockHistoryRecord(String symbol, Money price, DateTime date) {

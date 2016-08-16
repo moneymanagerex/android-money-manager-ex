@@ -64,7 +64,7 @@ public class MmexOpenHelper
     private static final int databaseVersion = 7;
 
     // singleton
-    private static MmexOpenHelper mInstance;
+//    private static MmexOpenHelper mInstance;
 
 //    /**
 //     * Returns the singleton instance of the helper for database access.
@@ -109,7 +109,6 @@ public class MmexOpenHelper
         super(context, dbPath, null, databaseVersion);
         this.mContext = context;
 
-//        Timber.d("Database path: %s", MoneyManagerApplication.getDatabasePath(context));
     }
 
     private Context mContext;
@@ -178,12 +177,12 @@ public class MmexOpenHelper
         Timber.d("Downgrade attempt from %1$d to %2$d", oldVersion, newVersion);
     }
 
-    @Override
-    public synchronized void close() {
-        super.close();
-
-        mInstance = null;
-    }
+//    @Override
+//    public synchronized void close() {
+//        super.close();
+//
+//        mInstance = null;
+//    }
 
     @Override
     public SQLiteDatabase getReadableDatabase() {

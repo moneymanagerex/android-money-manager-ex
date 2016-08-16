@@ -67,7 +67,7 @@ public class MorningstarPriceUpdater
     public MorningstarPriceUpdater(Context context) {
         super(context);
 
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
     /**

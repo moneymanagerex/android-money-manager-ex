@@ -63,7 +63,7 @@ public class DatabaseSettingsFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_database);
 
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
 
 //        PreferenceManager.getDefaultSharedPreferences(getActivity());
 

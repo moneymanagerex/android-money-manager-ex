@@ -22,6 +22,7 @@ import android.database.Cursor;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.domainmodel.Stock;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
@@ -34,12 +35,15 @@ import info.javaperformance.money.Money;
 public class StockRepositorySql
     extends SqlRepositoryBase<Stock> {
 
-    @Inject
-    public StockRepositorySql() {
-        super("stock_v1");
+    public static final String TABLE_NAME = "stock_v1";
 
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+    @Inject
+    public StockRepositorySql(BriteDatabase db) {
+        super(TABLE_NAME, db);
+
+//        application.mainComponent.inject(this);
     }
+
 
     public boolean delete(int id) {
         int result = super.delete(StockFields.STOCKID + "=?", Integer.toString(id));

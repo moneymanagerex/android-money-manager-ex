@@ -27,6 +27,9 @@ import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -39,7 +42,7 @@ import timber.log.Timber;
  */
 @Module
 public final class DbModule {
-    private MmexOpenHelper instance;
+//    private MmexOpenHelper instance;
 
 //    @Provides SQLiteOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
 //        return MmexOpenHelper.createNewInstance(application);
@@ -47,26 +50,41 @@ public final class DbModule {
         //return MmexOpenHelper.getInstance(application);
 //    }
 
-    @Provides MmexOpenHelper provideOpenHelper(Application application) {
-        if (instance == null) {
-            instance = createInstance(application);
-        } else {
-            // See whether to reinitialize
-            String currentPath = instance.getDatabaseName();
-            String newPath = MoneyManagerApplication.getDatabasePath(application);
+//    @Provides MmexOpenHelper provideOpenHelper(Application application) {
+//        if (instance == null) {
+//            instance = createInstance(application);
+//        } else {
+//            // See whether to reinitialize
+//            String currentPath = instance.getDatabaseName();
+//            String newPath = MoneyManagerApplication.getDatabasePath(application);
+//
+//            if (!currentPath.equals(newPath)) {
+//                instance.close();
+//                instance = createInstance(application);
+//            }
+//        }
+//        return instance;
+//    }
 
-            if (!currentPath.equals(newPath)) {
-                instance.close();
-                instance = createInstance(application);
-            }
+    /**
+     * Keeping the open helper reference in the application instance.
+     * @param app Instance of application object (context).
+     * @return Open Helper (Database) instance.
+     */
+    @Provides
+//    @Named("instance")
+    MmexOpenHelper provideOpenHelper(MoneyManagerApplication app) {
+//        MoneyManagerApplication app = MoneyManagerApplication.getInstance();
+        if (app.openHelperAtomicReference == null) {
+            app.initDb(null);
         }
-        return instance;
+        return app.openHelperAtomicReference.get();
     }
 
-    private MmexOpenHelper createInstance(Application application) {
-        String dbPath = MoneyManagerApplication.getDatabasePath(application);
-        return new MmexOpenHelper(application, dbPath);
-    }
+//    private MmexOpenHelper createInstance(Application application) {
+//        String dbPath = MoneyManagerApplication.getDatabasePath(application);
+//        return new MmexOpenHelper(application, dbPath);
+//    }
 
     @Provides SqlBrite provideSqlBrite() {
         return SqlBrite.create(new SqlBrite.Logger() {

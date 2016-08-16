@@ -576,7 +576,7 @@ public class MainActivity
 
     @Subscribe
     public void onEvent(UsernameLoadedEvent event) {
-        setDrawerUserName(MoneyManagerApplication.getInstance().getUserName());
+        setDrawerUserName(MoneyManagerApplication.getApp().getUserName());
     }
 
     @Subscribe
@@ -1299,7 +1299,7 @@ public class MainActivity
         intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
         intent.setType("file/*");
 
-        if (MoneyManagerApplication.getInstance().isUriAvailable(this, intent)) {
+        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
             try {
                 startActivityForResult(intent, REQUEST_PICKFILE);
             } catch (Exception e) {

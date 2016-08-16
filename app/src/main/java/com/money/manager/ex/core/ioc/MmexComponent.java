@@ -19,6 +19,7 @@ package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
@@ -41,6 +42,9 @@ import dagger.Component;
 @Singleton
 @Component(modules = MmexModule.class)
 public interface MmexComponent {
+    // Example on how to expose a provision method.
+//    MmexOpenHelper getHelper();
+
     // Activities
     void inject(MainActivity activity);
     void inject(RecurringTransactionEditActivity activity);

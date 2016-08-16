@@ -34,12 +34,11 @@ import timber.log.Timber;
  */
 
 abstract class SqlRepositoryBase<T extends EntityBase> {
-    SqlRepositoryBase(String tableName) {
+    SqlRepositoryBase(String tableName, BriteDatabase db) {
         this.tableName = tableName;
-
+        this.database = db;
     }
 
-    @Inject
     BriteDatabase database;
     String tableName;
 
@@ -70,14 +69,12 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
                     //resultType.cast(entity);
                     entity.loadFromCursor(c);
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler();
-                    handler.e(e, "creating " + resultType.getName());
+                    Timber.e(e, "creating " + resultType.getName());
                 }
             }
             c.close();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler();
-            handler.e(ex, "fetching first record");
+            Timber.e(ex, "fetching first record");
         }
 
         return entity;

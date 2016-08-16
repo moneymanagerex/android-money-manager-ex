@@ -398,7 +398,7 @@ public class CurrencyService
     public java.util.Currency getSystemDefaultCurrency() {
         java.util.Currency currency = null;
 
-        Locale defaultLocale = MoneyManagerApplication.getInstance().getAppLocale();
+        Locale defaultLocale = MoneyManagerApplication.getApp().getAppLocale();
 
         try {
             if (defaultLocale == null) {

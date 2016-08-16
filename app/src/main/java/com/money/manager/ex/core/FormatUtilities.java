@@ -120,7 +120,7 @@ public class FormatUtilities {
     }
 
     public String getDecimalSeparatorForAppLocale() {
-        Locale locale = MoneyManagerApplication.getInstance().getAppLocale();
+        Locale locale = MoneyManagerApplication.getApp().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
@@ -131,7 +131,7 @@ public class FormatUtilities {
     }
 
     public String getGroupingSeparatorForAppLocale() {
-        Locale locale = MoneyManagerApplication.getInstance().getAppLocale();
+        Locale locale = MoneyManagerApplication.getApp().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();

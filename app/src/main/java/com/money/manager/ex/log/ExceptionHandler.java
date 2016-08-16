@@ -53,10 +53,6 @@ public class ExceptionHandler
         Crashlytics.log(message);
     }
 
-    public ExceptionHandler() {
-        mContext = MoneyManagerApplication.getInstance();
-    }
-
     public ExceptionHandler(Context context) {
         mContext = context;
         mHost = context;

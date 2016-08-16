@@ -389,7 +389,7 @@ public class MmexContentProvider
     private void initializeDependencies() {
         if (openHelper != null) return;
 
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
     private void logTableInsert(Dataset dataset, ContentValues values) {

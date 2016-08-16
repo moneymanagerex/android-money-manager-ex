@@ -39,7 +39,7 @@ public class AppSettings
         super(context);
 
         // DI
-        MoneyManagerApplication.getInstance().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
     @Override

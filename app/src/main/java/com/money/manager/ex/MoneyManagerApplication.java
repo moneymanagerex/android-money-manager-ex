@@ -31,6 +31,7 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.ioc.DaggerMmexComponent;
@@ -56,6 +57,7 @@ import org.parceler.ParcelClasses;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 import info.javaperformance.money.Money;
 import timber.log.Timber;
@@ -73,13 +75,18 @@ import timber.log.Timber;
 public class MoneyManagerApplication
     extends MultiDexApplication {
 
-    private static MoneyManagerApplication myInstance;
+    private static MoneyManagerApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
 
-    public static MoneyManagerApplication getInstance() {
-        return myInstance;
+    public static MoneyManagerApplication getApp() {
+        return appInstance;
     }
+
+//    public static MoneyManagerApplication getApp(Context context) {
+//        MoneyManagerApplication app = (MoneyManagerApplication)context.getApplicationContext();
+//        return app;
+//    }
 
     /**
      * Reads the current database path from the settings and checks for the existence of the
@@ -140,7 +147,7 @@ public class MoneyManagerApplication
 
     /**
      * Shown database path with toast message
-     *
+     * todo: move this out of the application class, somewhere with access to UI!
      * @param context Executing context.
      */
     public static void showCurrentDatabasePath(Context context) {
@@ -166,17 +173,15 @@ public class MoneyManagerApplication
     // Overrides.
 
     public MmexComponent mainComponent;
+//    public volatile MmexOpenHelper openHelper;
+    public AtomicReference<MmexOpenHelper> openHelperAtomicReference;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         // save instance of application
-        myInstance = this;
-
-        // create the default folder for the database.
-//        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
-//        dbUtils.getDatabaseStorageDirectory();
+        appInstance = this;
 
         // set default text size.
         setTextSize(new TextView(getApplicationContext()).getTextSize());
@@ -214,7 +219,7 @@ public class MoneyManagerApplication
     private void initializeDependencyInjection() {
         // Dependency Injection. IoC
         mainComponent = DaggerMmexComponent.builder()
-                .mmexModule(new MmexModule(this))
+                .mmexModule(new MmexModule(appInstance))
                 .build();
     }
 
@@ -238,6 +243,25 @@ public class MoneyManagerApplication
     }
 
     // dynamic
+
+    public void initDb(String path) {
+        MmexOpenHelper db = createDbInstance(path);
+
+        if (openHelperAtomicReference == null) {
+            openHelperAtomicReference = new AtomicReference<>(db);
+        } else {
+            // close existing db
+            openHelperAtomicReference.get().close();
+            openHelperAtomicReference.set(db);
+        }
+    }
+
+    private MmexOpenHelper createDbInstance(String path) {
+        if (StringUtils.isEmpty(path)) {
+            path = getDatabasePath(this);
+        }
+        return new MmexOpenHelper(this, path);
+    }
 
     public Locale getAppLocale() {
         Locale locale = null;
