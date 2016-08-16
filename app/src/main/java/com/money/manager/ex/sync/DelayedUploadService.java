@@ -20,6 +20,8 @@ package com.money.manager.ex.sync;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.money.manager.ex.core.IntentFactory;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -35,14 +37,13 @@ import timber.log.Timber;
 
 public class DelayedUploadService
     extends IntentService {
-//    public DelayedUploadService(String name) {
-//        super(name);
-//    }
+
     public DelayedUploadService() {
         super("com.money.manager.ex.sync.DelayedUploadService");
+
     }
 
-    private AtomicReference<Subscription> delayedSubscription;
+    private static Subscription delayedSubscription;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -56,7 +57,7 @@ public class DelayedUploadService
         }
 
         // schedule a delayed upload.
-        Subscription subscription = Observable.timer(30, TimeUnit.SECONDS)
+        delayedSubscription = Observable.timer(30, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -73,20 +74,21 @@ public class DelayedUploadService
 
                     @Override
                     public void onNext(Long aLong) {
-                        Timber.d("what's this? %d", aLong);
+                        // Run sync.
+                        upload();
                     }
                 });
-
-        delayedSubscription = new AtomicReference<>(subscription);
     }
 
     private void unsubscribe() {
         if (delayedSubscription == null) return;
-        if (delayedSubscription.get() == null) return;
-        if (delayedSubscription.get().isUnsubscribed()) return;
+        if (delayedSubscription.isUnsubscribed()) return;
 
-        delayedSubscription.get().unsubscribe();
+        delayedSubscription.unsubscribe();
     }
 
-
+    private void upload() {
+        new SyncManager(getApplicationContext())
+                .invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+    }
 }

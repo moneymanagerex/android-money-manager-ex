@@ -38,6 +38,7 @@ import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
@@ -422,6 +423,9 @@ public class SyncManager {
         storePersistent();
     }
 
+    /**
+     * Start the delayed upload service.
+     */
     private void scheduleUploadViaService() {
         Intent service = new Intent(getContext(), DelayedUploadService.class);
         service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
@@ -693,7 +697,7 @@ public class SyncManager {
         return currentProvider.get();
     }
 
-    private void invokeSyncService(String action) {
+    public void invokeSyncService(String action) {
         try {
             invokeSyncServiceInternal(action);
         } catch (Exception e) {
@@ -712,19 +716,11 @@ public class SyncManager {
         Messenger messenger = createMessenger();
         String localFile = getLocalPath();
 
-        Intent service = new Intent(getContext(), SyncService.class);
-
-        service.setAction(action);
-
-        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
-        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
-
-        if (messenger != null) {
-            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
-        }
+        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
+                remoteFile, messenger);
 
         // start service
-        getContext().startService(service);
+        getContext().startService(syncServiceIntent);
 
         // Reset any other scheduled uploads as the current operation will modify the files.
         abortScheduledUpload();

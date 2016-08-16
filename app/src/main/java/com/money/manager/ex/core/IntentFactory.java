@@ -17,9 +17,31 @@
 
 package com.money.manager.ex.core;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Messenger;
+
+import com.money.manager.ex.sync.SyncConstants;
+import com.money.manager.ex.sync.SyncService;
+
 /**
  * Generates Intents for common app functionality.
  */
 
 public class IntentFactory {
+    public static Intent getSyncServiceIntent(Context context, String action, String localFile,
+                                              String remoteFile, Messenger messenger) {
+        Intent syncServiceIntent = new Intent(context, SyncService.class);
+
+        syncServiceIntent.setAction(action);
+
+        syncServiceIntent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+        syncServiceIntent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+
+        if (messenger != null) {
+            syncServiceIntent.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
+        }
+
+        return syncServiceIntent;
+    }
 }

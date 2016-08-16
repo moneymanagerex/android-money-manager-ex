@@ -50,6 +50,9 @@ public class SyncMessengerFactory {
     }
 
     public Messenger createMessenger(final ProgressDialog progressDialog, final String remoteFile) {
+        // Handler can be used only when running in a Looper.
+        if (!(getContext() instanceof Activity)) return null;
+
         // Messenger handles received messages from the sync service.
         Messenger messenger = new Messenger(new Handler() {
             @Override
