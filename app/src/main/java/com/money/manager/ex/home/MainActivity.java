@@ -111,8 +111,7 @@ public class MainActivity
 
     public static final int REQUEST_PICKFILE = 1;
     public static final int REQUEST_PASSCODE = 2;
-    public static final int REQUEST_TUTORIAL = 3;
-    public static final int REQUEST_PASSWORD = 4;
+    public static final int REQUEST_PASSWORD = 3;
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
 
@@ -157,8 +156,12 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // show tutorial
-        boolean tutorialShown = showTutorial();
+        // show tutorial on the first run
+        if (needTutorial()) {
+            showTutorial();
+            finish();
+            return;
+        }
 
         // Restore state. Check authentication, etc.
         if (savedInstanceState != null) {
@@ -176,11 +179,11 @@ public class MainActivity
 
 //        pingStats();
 
-        if (!tutorialShown) {
+//        if (!tutorialShown) {
             // Skipped tutorial because it was seen in the past.
             onTutorialComplete(savedInstanceState);
             // Otherwise continue at onActivityResult after tutorial closed.
-        }
+//        }
     }
 
     @Override
@@ -268,10 +271,6 @@ public class MainActivity
                 if (!isAuthenticated) {
                     this.finish();
                 }
-                break;
-
-            case REQUEST_TUTORIAL:
-                onTutorialComplete(null);
                 break;
 
             case REQUEST_PASSWORD:
@@ -834,17 +833,14 @@ public class MainActivity
      * Show tutorial on first run.
      * @return boolean indicator whether the tutorial was displayed or not
      */
-    public boolean showTutorial() {
-        boolean showTutorial = new AppSettings(this).getBehaviourSettings().getShowTutorial();
-        if (!showTutorial) return false;
-
-        // else show tutorial.
+    public void showTutorial() {
         Intent intent = new Intent(this, TutorialActivity.class);
-        startActivityForResult(intent, REQUEST_TUTORIAL);
+        // make top-level so there's no going back.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         // Tutorial is marked as seen when OK on the last page is clicked.
 
-        // Continued at onActivityResult.
-        return true;
+        // Close this activity. A new one will start from Tutorial.
     }
 
     public void setDrawerUserName(String userName) {
@@ -1209,6 +1205,10 @@ public class MainActivity
 //        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
         mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
+    }
+
+    private boolean needTutorial() {
+        return new AppSettings(this).getBehaviourSettings().getShowTutorial();
     }
 
     /**

@@ -18,21 +18,19 @@
 package com.money.manager.ex.tutorial;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -53,6 +51,8 @@ public class TutorialActivity
         //getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.activity_tutorial);
 
+        ButterKnife.bind(this);
+
         CircleIndicator circleIndicator = (CircleIndicator) findViewById(R.id.indicator_default);
 
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager_default);
@@ -60,20 +60,27 @@ public class TutorialActivity
         viewpager.setAdapter(pagerAdapter);
         circleIndicator.setViewPager(viewpager);
 
-        TextView skipText = (TextView) findViewById(R.id.skipTextView);
-        skipText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeTutorial();
-            }
-        });
+//        TextView skipText = (TextView) findViewById(R.id.skipTextView);
+//        skipText.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                closeTutorial();
+//            }
+//        });
     }
 
-    private void closeTutorial(){
+    @OnClick(R.id.skipTextView)
+    void closeTutorial(){
         // Mark tutorial as seen.
         new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
 
         setResult(Activity.RESULT_OK);
+
+        // start the Main Activity.
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
         // close
         finish();
     }

@@ -44,15 +44,15 @@ import timber.log.Timber;
 public abstract class BaseFragmentActivity
     extends AppCompatActivity {
 
-    @Nullable
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-
+    private Toolbar mToolbar;
     private boolean mDisplayHomeAsUpEnabled = false;
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -68,7 +68,7 @@ public abstract class BaseFragmentActivity
 
         super.onCreate(savedInstance);
 
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
     }
 
     @Override
