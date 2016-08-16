@@ -166,10 +166,10 @@ public class Core {
 
         File file = new File(path);
         if (!file.exists()) {
-            throw new Exception(getContext().getString(R.string.path_database_not_exists));
+            throw new RuntimeException(getContext().getString(R.string.path_database_not_exists));
         }
         if (!file.canWrite()) {
-            throw new Exception(getContext().getString(R.string.database_can_not_open_write));
+            throw new RuntimeException(getContext().getString(R.string.database_can_not_open_write));
         }
 
         appSettings.get().getDatabaseSettings().setDatabasePath(path);
