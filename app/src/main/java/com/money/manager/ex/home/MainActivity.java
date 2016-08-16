@@ -191,8 +191,6 @@ public class MainActivity
     protected void onStart() {
         super.onStart();
 
-        EventBus.getDefault().register(this);
-
         // check if has pass-code and authenticate
         if (mInitialized && !isAuthenticated) {
             Passcode passcode = new Passcode(getApplicationContext());
@@ -295,13 +293,6 @@ public class MainActivity
                     }
                 }
         }
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
     }
 
     @Override
@@ -597,12 +588,6 @@ public class MainActivity
     public void onEvent(DbFileDownloadedEvent event) {
         // open the new database.
         new SyncManager(this).openDatabase();
-    }
-
-    @Subscribe
-    public void onEvent(ErrorRaisedEvent event) {
-        // display the error to the user
-        UIHelper.showToast(this, event.message);
     }
 
     // Private.

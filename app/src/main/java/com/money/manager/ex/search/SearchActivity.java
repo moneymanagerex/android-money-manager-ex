@@ -62,20 +62,6 @@ public class SearchActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-//        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-//        EventBus.getDefault().unregister(this);
-
-        super.onStop();
-    }
-
-    @Override
 	protected void onResume() {
 		super.onResume();
 		AllDataListFragment fragment;

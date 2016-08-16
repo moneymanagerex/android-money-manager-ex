@@ -71,20 +71,6 @@ public class AssetClassListActivity
         Loader loader = getSupportLoaderManager().initLoader(LOADER_ASSET_CLASSES, loaderArgs, loaderCallbacks);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
-    }
-
     @Subscribe
     public void onEvent(ListItemClickedEvent event) {
         Intent data = new Intent();

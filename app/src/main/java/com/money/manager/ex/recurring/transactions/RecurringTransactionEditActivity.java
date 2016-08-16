@@ -50,6 +50,7 @@ import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -85,7 +86,8 @@ public class RecurringTransactionEditActivity
     public static final String KEY_ACTION = "RepeatingTransaction:Action";
     public static final String TAG_DATEPICKER = "DatePicker";
 
-    @Inject MmexOpenHelper openHelper;
+    @Inject
+    BriteDatabase database;
 
     private String mIntentAction;
 
@@ -101,7 +103,7 @@ public class RecurringTransactionEditActivity
         MoneyManagerApplication.getApp().mainComponent.inject(this);
 
         RecurringTransaction tx = initializeModel();
-        mCommonFunctions = new EditTransactionCommonFunctions(this, tx, openHelper);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, tx, database);
 
         showStandardToolbarActions();
 
@@ -142,20 +144,6 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.displayCategoryName();
 
         showPaymentsLeft();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
     }
 
     @Override

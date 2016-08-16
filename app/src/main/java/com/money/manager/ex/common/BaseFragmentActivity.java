@@ -25,24 +25,34 @@ import android.view.View.OnClickListener;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import timber.log.Timber;
 
 //import net.sqlcipher.database.SQLiteDatabase;
 
 public abstract class BaseFragmentActivity
     extends AppCompatActivity {
 
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+
     private boolean mDisplayHomeAsUpEnabled = false;
-    private Toolbar mToolbar;
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
 
         // check if Toolbar define into layout
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar != null) setSupportActionBar(mToolbar);
+//        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        if (mToolbar != null) setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -58,7 +68,7 @@ public abstract class BaseFragmentActivity
 
         super.onCreate(savedInstance);
 
-//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -96,9 +106,23 @@ public abstract class BaseFragmentActivity
                 getSupportActionBar().setElevation(0);
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this);
-            handler.e(e, "initializing activity");
+            Timber.e(e, "initializing activity");
         }
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEvent(ErrorRaisedEvent event) {
+        // display the error to the user
+        UIHelper.showToast(this, event.message);
     }
 
     /**

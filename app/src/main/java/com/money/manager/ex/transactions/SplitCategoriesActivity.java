@@ -175,20 +175,6 @@ public class SplitCategoriesActivity
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
-    }
-
     // Events
 
     @Subscribe
@@ -197,7 +183,7 @@ public class SplitCategoriesActivity
     }
 
     @Subscribe
-    public void onAmountEntryRequested(AmountEntryRequestedEvent event) {
+    public void onEvent(AmountEntryRequestedEvent event) {
         AmountInputDialog dialog = AmountInputDialog.getInstance(
                 event.requestId, event.amount, mAdapter.currencyId);
         dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
@@ -221,7 +207,7 @@ public class SplitCategoriesActivity
     }
 
     @Subscribe
-    public void onCategoryRequested(CategoryRequestedEvent event) {
+    public void onEvent(CategoryRequestedEvent event) {
         showCategorySelector(event.requestId);
     }
 

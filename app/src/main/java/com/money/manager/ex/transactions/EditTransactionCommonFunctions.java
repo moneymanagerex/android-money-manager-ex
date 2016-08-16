@@ -49,7 +49,6 @@ import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.IRepository;
 import com.money.manager.ex.datalayer.PayeeRepository;
@@ -70,6 +69,7 @@ import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MyDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
@@ -80,41 +80,35 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
  */
 public class EditTransactionCommonFunctions {
 
-    public static final int REQUEST_PICK_PAYEE = 1;
-    public static final int REQUEST_PICK_ACCOUNT = 2;
-    public static final int REQUEST_PICK_CATEGORY = 3;
-    public static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
+    private static final int REQUEST_PICK_PAYEE = 1;
+    private static final int REQUEST_PICK_ACCOUNT = 2;
+    private static final int REQUEST_PICK_CATEGORY = 3;
+    private static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
 
-    public static final String DATEPICKER_TAG = "datepicker";
+    private static final String DATEPICKER_TAG = "datepicker";
 
     public EditTransactionCommonFunctions(BaseFragmentActivity parentActivity,
-                                          ITransactionEntity transactionEntity, MmexOpenHelper openHelper) {
+                                          ITransactionEntity transactionEntity, BriteDatabase database) {
         super();
 
         mContext = parentActivity.getApplicationContext();
         mParent = parentActivity;
         this.transactionEntity = transactionEntity;
+        this.mDatabase = database;
     }
 
     // Model
     public ITransactionEntity transactionEntity;
-
-    public String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
     public String payeeName;
     public String mToAccountName;
-
-    public List<Account> AccountList;
-    public ArrayList<String> mAccountNameList = new ArrayList<>();
-    public ArrayList<Integer> mAccountIdList = new ArrayList<>();
-    public TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     public String categoryName, subCategoryName;
-
     public ArrayList<ISplitTransaction> mSplitTransactions;
     public ArrayList<ISplitTransaction> mSplitTransactionsDeleted;
 
@@ -128,7 +122,13 @@ public class EditTransactionCommonFunctions {
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
-    private MmexOpenHelper mOpenHelper;
+    private BriteDatabase mDatabase;
+
+    private List<Account> AccountList;
+    private ArrayList<String> mAccountNameList = new ArrayList<>();
+    private ArrayList<Integer> mAccountIdList = new ArrayList<>();
+    private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
+    private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
 
     public boolean deleteMarkedSplits(IRepository repository) {
         for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
@@ -643,15 +643,16 @@ public class EditTransactionCommonFunctions {
         viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                MmexOpenHelper helper = MmexOpenHelper.getInstance(mContext);
                 AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
-                String query = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
+                String sql = "SELECT MAX(CAST(" + ITransactionEntity.TRANSACTIONNUMBER + " AS INTEGER)) FROM " +
                     repo.getSource() + " WHERE " +
                     ITransactionEntity.ACCOUNTID + "=?";
 
-                Cursor cursor = mOpenHelper.getReadableDatabase().rawQuery(query,
-                    new String[]{Integer.toString(transactionEntity.getAccountId())});
+//                Cursor cursor = mOpenHelper.getReadableDatabase().rawQuery(sql,
+//                    new String[]{Integer.toString(transactionEntity.getAccountId())});
+                String accountId = transactionEntity.getAccountId().toString();
+                Cursor cursor = mDatabase.query(sql, accountId);
                 if (cursor == null) return;
 
                 if (cursor.moveToFirst()) {
@@ -665,8 +666,7 @@ public class EditTransactionCommonFunctions {
                             viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
                                 .toString());
                         } catch (Exception e) {
-                            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                            handler.e(e, "adding transaction number");
+                            Timber.e(e, "adding transaction number");
                         }
                     }
                 }

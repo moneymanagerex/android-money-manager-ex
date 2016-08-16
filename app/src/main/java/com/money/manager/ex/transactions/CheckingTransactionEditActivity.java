@@ -53,6 +53,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,7 +75,8 @@ public class CheckingTransactionEditActivity
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
 
-    @Inject MmexOpenHelper openHelper;
+    @Inject
+    BriteDatabase database;
 
     private EditTransactionCommonFunctions mCommonFunctions;
 
@@ -88,7 +90,7 @@ public class CheckingTransactionEditActivity
         showStandardToolbarActions();
 
         ITransactionEntity model = AccountTransaction.create();
-        mCommonFunctions = new EditTransactionCommonFunctions(this, model, openHelper);
+        mCommonFunctions = new EditTransactionCommonFunctions(this, model, database);
 
         // restore state, if any.
         if ((savedInstanceState != null)) {
@@ -116,22 +118,8 @@ public class CheckingTransactionEditActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCommonFunctions.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
     }
 
     @Override

@@ -38,6 +38,7 @@ import com.money.manager.ex.assetallocation.AssetAllocationActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
@@ -58,7 +59,7 @@ import info.javaperformance.money.Money;
 import timber.log.Timber;
 
 public class FullAssetAllocationActivity
-    extends AppCompatActivity {
+    extends BaseFragmentActivity {
 
     private FormatUtilities formatter;
 
@@ -93,20 +94,6 @@ public class FullAssetAllocationActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         showTotal(assetAllocation);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
