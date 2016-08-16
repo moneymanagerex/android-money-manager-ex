@@ -28,9 +28,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
@@ -38,7 +38,6 @@ import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmexFileUtils;
@@ -137,8 +136,7 @@ public class MmexOpenHelper
         try {
             initDatabase(db);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "initializing database");
+            Timber.e(e, "initializing database");
         }
     }
 
@@ -157,8 +155,7 @@ public class MmexOpenHelper
             String currentDbFile = db.getPath();
             createDatabaseBackupOnUpgrade(currentDbFile, oldVersion);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(ex, "creating database backup, can't continue");
+            Timber.e(ex, "creating database backup, can't continue");
 
             // don't upgrade
             return;
@@ -190,8 +187,7 @@ public class MmexOpenHelper
         try {
             db = super.getReadableDatabase();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(ex, "opening readable database");
+            Timber.e(ex, "opening readable database");
         }
         return db;
     }
@@ -217,8 +213,7 @@ public class MmexOpenHelper
             //return getWritableDatabase_Internal();
             return super.getWritableDatabase();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(ex, "opening writable database");
+            Timber.e(ex, "opening writable database");
         }
         return null;
     }
@@ -241,9 +236,9 @@ public class MmexOpenHelper
         this.mPassword = password;
     }
 
-    public boolean hasPassword() {
-        return !TextUtils.isEmpty(this.mPassword);
-    }
+//    public boolean hasPassword() {
+//        return !TextUtils.isEmpty(this.mPassword);
+//    }
 
 //    private SQLiteDatabase getWritableDatabase_Internal() {
 //        // String password
@@ -276,8 +271,7 @@ public class MmexOpenHelper
                 if (e instanceof SQLiteException && errorMessage != null && errorMessage.contains("not an error (code 0)")) {
                     Timber.w(errorMessage);
                 } else {
-                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                    handler.e(e, "executing raw sql: " + aSqlStatment);
+                    Timber.e(e, "executing raw sql: %s", aSqlStatment);
                 }
             }
         }
@@ -299,8 +293,7 @@ public class MmexOpenHelper
                 }
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "getting sqlite version");
+            Timber.e(e, "getting sqlite version");
         } finally {
             if (cursor != null) cursor.close();
 //            if (database != null) database.close();
@@ -326,8 +319,7 @@ public class MmexOpenHelper
         try {
             initBaseCurrency(database);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "init database, base currency");
+            Timber.e(e, "init database, base currency");
         }
 
         initDateFormat(database);
@@ -379,9 +371,8 @@ public class MmexOpenHelper
                         int updated = database.update(SubcategoryRepository.tableName, contentValues,
                                 Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
                         if (updated <= 0) {
-                            // todo: e logging better.
-                            Log.e(this.getClass().getSimpleName(), "updating " + contentValues.toString() +
-                                    "for subcategory " + Integer.toString(subCategoryId));
+                            Timber.w("update failed, %s for subcategory %s", contentValues.toString(),
+                                    Integer.toString(subCategoryId));
                         }
                     }
                 }
@@ -389,8 +380,7 @@ public class MmexOpenHelper
                 countCategories.close();
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "init database, categories");
+            Timber.e(e, "init database, categories");
         }
     }
 
@@ -408,8 +398,7 @@ public class MmexOpenHelper
             InfoService infoService = new InfoService(getContext());
             infoService.updateRaw(database, InfoKeys.DATEFORMAT, pattern);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "init database, date format");
+            Timber.e(e, "init database, date format");
         }
     }
 
@@ -448,15 +437,13 @@ public class MmexOpenHelper
         if (!recordExists) {
             long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
             if (newId <= 0) {
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.showMessage("error inserting base currency on init");
+                UIHelper.showToast(getContext(), "error inserting base currency on init");
             }
         } else {
             // Update the (by default empty) record to the default currency.
             long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
             if (updatedRecords <= 0) {
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.showMessage("error updating base currency on init");
+                UIHelper.showToast(getContext(), "error updating base currency on init");
             }
         }
 

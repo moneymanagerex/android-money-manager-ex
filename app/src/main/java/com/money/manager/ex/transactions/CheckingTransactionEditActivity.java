@@ -29,9 +29,9 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -40,7 +40,6 @@ import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
@@ -55,7 +54,6 @@ import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
@@ -63,6 +61,8 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Activity for editing Checking Account Transaction
@@ -342,8 +342,7 @@ public class CheckingTransactionEditActivity
         try {
             return loadRecurringTransactionInternal(recurringTransactionId);
         } catch (RuntimeException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.e(ex, "loading recurring transaction");
+            Timber.e(ex, "loading recurring transaction");
             return false;
         }
     }
@@ -397,7 +396,7 @@ public class CheckingTransactionEditActivity
         mIntentAction = intent.getAction();
 
         if (mIntentAction == null) {
-            ExceptionHandler.warn("no intent action passed to CheckingTransactionEditActivity e intent");
+            Timber.w("no intent action passed to CheckingTransactionEditActivity e intent");
             return false;
         }
 
@@ -458,9 +457,7 @@ public class CheckingTransactionEditActivity
                                 return Boolean.TRUE;
                             }
                         } catch (Exception e) {
-                            ExceptionHandler handler = new ExceptionHandler(CheckingTransactionEditActivity.this,
-                                    CheckingTransactionEditActivity.this);
-                            handler.e(e, "loading default payee");
+                            Timber.e(e, "loading default payee");
                         }
                         return Boolean.FALSE;
                     }
@@ -491,7 +488,7 @@ public class CheckingTransactionEditActivity
                 Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
                 if (defaultAccountId == null) {
                     // Show toast message.
-                    new ExceptionHandler(this).showMessage(getString(R.string.default_account_not_set));
+                    UIHelper.showToast(this, getString(R.string.default_account_not_set));
                     return false;
                 } else {
                     mCommonFunctions.transactionEntity.setAccountId(defaultAccountId);
