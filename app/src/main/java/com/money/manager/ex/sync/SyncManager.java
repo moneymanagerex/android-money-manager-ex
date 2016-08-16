@@ -217,8 +217,13 @@ public class SyncManager {
      * (Re-)Sets the timer for delayed sync of the database.
      */
     public void dataChanged() {
+        if (!isSyncEnabled()) return;
+
+        // test if the current database is synced at all.
+
         // save the last modified date so that we can correctly synchronize later.
         String remotePath = getRemotePath();
+        if (StringUtils.isEmpty(remotePath)) return;
 
         // fake metadata
         CloudMetaData metaData = new CloudMetaData();

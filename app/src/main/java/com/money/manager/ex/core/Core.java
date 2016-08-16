@@ -158,7 +158,6 @@ public class Core {
 
     /**
      * Change the database used by the app.
-     *
      * @param path new database
      * @return indicator whether the operation was successful
      */
@@ -168,27 +167,16 @@ public class Core {
         Timber.d("switching database to: %s", path);
 
         File file = new File(path);
-        // check if database exists
         if (!file.exists()) {
             throw new Exception(getContext().getString(R.string.path_database_not_exists));
-//            Toast.makeText(getContext(), R.string.path_database_not_exists, Toast.LENGTH_LONG).show();
-//            return false;
         }
-        // check if database can be open in write mode
         if (!file.canWrite()) {
             throw new Exception(getContext().getString(R.string.database_can_not_open_write));
-//            Toast.makeText(getContext(), R.string.database_can_not_open_write, Toast.LENGTH_LONG).show();
-//            return false;
         }
 
-        // close existing connection.
-//        MmexOpenHelper.closeDatabase();
-        openHelper.get().close();
-
-        // change database
-//        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(path);
         appSettings.get().getDatabaseSettings().setDatabasePath(path);
 
+        // change database
         MoneyManagerApplication.getApp().initDb(path);
 
         // todo MmexOpenHelper.getInstance(getContext()).setPassword(password);

@@ -20,8 +20,10 @@ package com.money.manager.ex.datalayer;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.sync.SyncManager;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
@@ -47,7 +49,11 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     }
 
     public int delete(String where, String... whereArgs) {
-        return database.delete(tableName, where, whereArgs);
+        int result = database.delete(tableName, where, whereArgs);
+
+        notifySync();
+
+        return result;
     }
 
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
@@ -94,6 +100,8 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         );
 
         if (updateResult != 0) {
+            notifySync();
+
             result = true;
         } else {
             Timber.w("update failed, %s, values: %s", tableName, entity.contentValues);
@@ -102,4 +110,10 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         return  result;
     }
 
+    /**
+     * Notify sync engine about the database update.
+     */
+    private void notifySync() {
+        new SyncManager(MoneyManagerApplication.getApp()).dataChanged();
+    }
 }
