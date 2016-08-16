@@ -43,6 +43,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import retrofit2.Retrofit;
@@ -52,6 +53,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -77,8 +79,10 @@ public class MorningstarPriceUpdater
     private int mCounter;
     private int mTotalRecords;
     private CompositeSubscription compositeSubscription;
-    @Inject StockRepositorySql stockRepository;
-    @Inject StockHistoryRepositorySql stockHistoryRepository;
+    @Inject Lazy<StockRepositorySql> stockRepository;
+    @Inject Lazy<StockHistoryRepositorySql> stockHistoryRepository;
+    private SymbolConverter symbolConverter;
+    private IMorningstarService service;
 
     @Override
     public void downloadPrices(List<String> symbols) {
@@ -88,18 +92,22 @@ public class MorningstarPriceUpdater
 
         showProgressDialog(mTotalRecords);
 
-        final IMorningstarService service = getMorningstarService();
-
-        final SymbolConverter converter = new SymbolConverter();
+        service = getMorningstarService();
         compositeSubscription = new CompositeSubscription();
+        symbolConverter = new SymbolConverter();
 
-        Subscription allSymbolsSubscription = Observable.from(symbols)
+        processSequentially(symbols);
+//        processInParallel(symbols);
+    }
+
+    private void processSequentially(List<String> symbols) {
+        compositeSubscription.add(Observable.from(symbols)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<String, String>() {
                     @Override
                     public String call(String s) {
                         // get a Morningstar symbol
-                        return converter.convert(s);
+                        return symbolConverter.convert(s);
                     }
                 })
                 .observeOn(Schedulers.io())     // Observe the network call on IO thread!
@@ -123,24 +131,21 @@ public class MorningstarPriceUpdater
                         return parse(s.getLeft(), s.getRight());
                     }
                 })
-                .map(new Func1<PriceDownloadedEvent, PriceDownloadedEvent>() {
+                .doOnNext(new Action1<PriceDownloadedEvent>() {
                     @Override
-                    public PriceDownloadedEvent call(PriceDownloadedEvent priceDownloadedEvent) {
+                    public void call(PriceDownloadedEvent priceDownloadedEvent) {
                         // save to database
-                        BriteDatabase.Transaction tx = stockRepository.database.newTransaction();
+                        BriteDatabase.Transaction tx = stockRepository.get().database.newTransaction();
 
                         // update the current price of the stock.
-                        stockRepository.updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
+                        stockRepository.get().updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
 
                         // save price history record.
-                        stockHistoryRepository.addStockHistoryRecord(priceDownloadedEvent.symbol,
+                        stockHistoryRepository.get().addStockHistoryRecord(priceDownloadedEvent.symbol,
                                 priceDownloadedEvent.price, priceDownloadedEvent.date);
 
                         tx.markSuccessful();
                         tx.end();
-
-                        // emit the event object down the stream.
-                        return priceDownloadedEvent;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -171,18 +176,29 @@ public class MorningstarPriceUpdater
 
                         // todo: update price in the UI?
                         // todo: remove the progress bar in that case.
-
-//                        Timber.d("processed %s", event.symbol);
                     }
-                });
-        compositeSubscription.add(allSymbolsSubscription);
+                })
+        );
+    }
+
+    private void processInParallel(List<String> symbols) {
+        for(int i = 0; i < symbols.size(); i++) {
+            String symbol = symbols.get(i);
+            String morningstarSymbol = symbolConverter.convert(symbol);
+
+            compositeSubscription.add(
+                    service.getPrice(symbol)
+                        .subscribe()
+            );
+        }
+
     }
 
     private PriceDownloadedEvent parse(String symbol, String html) {
         Document doc = Jsoup.parse(html);
 
         // symbol
-        String yahooSymbol = new SymbolConverter().getYahooSymbol(symbol);
+        String yahooSymbol = symbolConverter.getYahooSymbol(symbol);
 
         // price
         String priceString = doc.body().getElementById("last-price-value").text();

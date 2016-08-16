@@ -17,9 +17,6 @@
 
 package com.money.manager.ex.investment.morningstar;
 
-import com.google.gson.JsonElement;
-
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -31,5 +28,5 @@ import rx.Observable;
  */
 public interface IMorningstarService {
     @GET("/stockq/c-header")
-    Observable<String> getPrice(@Query("t") String query);
+    Observable<String> getPrice(@Query("t") String symbol);
 }
