@@ -53,9 +53,6 @@ public abstract class BaseFragmentActivity
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
 
-        // check if Toolbar define into layout
-//        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-//        if (mToolbar != null) setSupportActionBar(mToolbar);
     }
 
     @Override

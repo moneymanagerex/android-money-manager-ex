@@ -23,18 +23,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,9 +56,7 @@ import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
-import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -97,10 +95,8 @@ import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -374,8 +370,8 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(Gravity.LEFT)) {
-            mDrawer.closeDrawer(Gravity.LEFT);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             try {
                 super.onBackPressed();
@@ -388,7 +384,8 @@ public class MainActivity
     // Permissions
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         // cancellation
         if (permissions.length == 0) return;
 
@@ -713,11 +710,11 @@ public class MainActivity
 //        client.release();
     }
 
-    private void shutdownApp() {
-        finish();
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
-    }
+//    private void shutdownApp() {
+//        finish();
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        System.exit(1);
+//    }
 
 //    private void shutdownWithPrompt() {
 //        new MaterialDialog.Builder(this)
@@ -781,8 +778,6 @@ public class MainActivity
 
     /**
      * Displays the fragment without indicating the tag. The tag will be the classname of the fragment
-     *
-     * @param fragment
      */
     public void showFragment(Fragment fragment) {
         showFragment(fragment, fragment.getClass().getName());
@@ -1269,34 +1264,34 @@ public class MainActivity
                 try {
                     showFragment(Class.forName(className));
                 } catch (ClassNotFoundException e) {
-                    Timber.e(e, "showing fragment " + className);
+                    Timber.e(e, "showing fragment %s", className);
                 }
             }
         }
     }
 
-    /**
-     * Pick the database file to use with any registered provider in the user's system.
-     * @param startFolder start folder
-     */
-    private void pickFile(File startFolder) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
-        intent.setType("file/*");
-
-        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
-            try {
-                startActivityForResult(intent, REQUEST_PICKFILE);
-            } catch (Exception e) {
-                Timber.e(e, "selecting a database file");
-            }
-        } else {
-            Toast.makeText(this, R.string.error_intent_pick_file,
-                    Toast.LENGTH_LONG).show();
-        }
-
-        // Note that the selected file is handled in onActivityResult.
-    }
+//    /**
+//     * Pick the database file to use with any registered provider in the user's system.
+//     * @param startFolder start folder
+//     */
+//    private void pickFile(File startFolder) {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setDataAndType(Uri.fromFile(startFolder), "vnd.android.cursor.dir/*");
+//        intent.setType("file/*");
+//
+//        if (MoneyManagerApplication.getApp().isUriAvailable(this, intent)) {
+//            try {
+//                startActivityForResult(intent, REQUEST_PICKFILE);
+//            } catch (Exception e) {
+//                Timber.e(e, "selecting a database file");
+//            }
+//        } else {
+//            Toast.makeText(this, R.string.error_intent_pick_file,
+//                    Toast.LENGTH_LONG).show();
+//        }
+//
+//        // Note that the selected file is handled in onActivityResult.
+//    }
 
     /**
      * Pick a database file to open using built-in file picker.
@@ -1306,15 +1301,19 @@ public class MainActivity
         // root path should be the internal storage?
         String root = Environment.getExternalStorageDirectory().getPath();
 
-        new MaterialFilePicker()
-            .withActivity(this)
-            .withRequestCode(REQUEST_PICKFILE)
-            .withRootPath(root)
-            .withPath(locationPath)
-            .withFilter(Pattern.compile(".*\\.mmb$"))
-            //.withFilterDirectories()
-            .withHiddenFiles(true)
-            .start();
+        try {
+            new MaterialFilePicker()
+                    .withActivity(this)
+                    .withRequestCode(REQUEST_PICKFILE)
+                    .withRootPath(root)
+                    .withPath(locationPath)
+                    .withFilter(Pattern.compile(".*\\.mmb$"))
+                    //.withFilterDirectories()
+                    .withHiddenFiles(true)
+                    .start();
+        } catch (Exception e) {
+            Timber.e(e, "opening file picker for database selection");
+        }
         // continues in onActivityResult
     }
 
