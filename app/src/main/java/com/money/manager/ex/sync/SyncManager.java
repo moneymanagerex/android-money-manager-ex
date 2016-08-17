@@ -349,7 +349,7 @@ public class SyncManager {
         return getPreferences().isSyncEnabled();
     }
 
-    CloudMetaData loadMetadata(String remotePath) {
+    public CloudMetaData loadMetadata(String remotePath) {
         CloudMetaData result = null;
         try {
             result = getProvider().getMetadata(remotePath);

@@ -25,6 +25,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- sync permissions -->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <!-- trying to force ui automator to run on sdk 16 -->
     <!-- <uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" /> -->
@@ -49,8 +53,7 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
 
-        <receiver
-            android:name=".widget.ButtonAddTransactionWidgetProvider"
+        <receiver android:name=".widget.ButtonAddTransactionWidgetProvider"
             android:label="@string/widget_add_transaction">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -60,8 +63,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_button_add_transaction" />
         </receiver>
-        <receiver
-            android:name=".widget.SummaryWidgetProvider"
+        <receiver android:name=".widget.SummaryWidgetProvider"
             android:label="@string/widget_summary">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -71,8 +73,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_summary" />
         </receiver>
-        <receiver
-            android:name=".widget.AccountBillsWidgetProvider"
+        <receiver android:name=".widget.AccountBillsWidgetProvider"
             android:label="@string/widget_all_accounts">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -96,88 +97,20 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".notifications.RecurringTransactionReceiver" />
-
-        <service android:name=".notifications.RecurringTransactionIntentService" />
-        <service
-            android:name=".widget.AccountBillsWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <!-- <service android:name=".dropbox.DropboxService"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="${applicationId}.sync.action.SYNC" /> -->
-        <!-- <action android:name="${applicationId}.sync.action.DOWNLOAD" /> -->
-        <!-- <action android:name="${applicationId}.sync.action.UPLOAD" /> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
-        <service android:name=".sync.SyncService">
+        <receiver android:name=".widget.SingleAccountWidget"
+            android:label="@string/single_account">
             <intent-filter>
-                <action android:name="${applicationId}.sync.action.SYNC" />
-                <action android:name="${applicationId}.sync.action.DOWNLOAD" />
-                <action android:name="${applicationId}.sync.action.UPLOAD" />
-            </intent-filter>
-        </service>
-        <service android:name=".sync.DelayedUploadService">
-            <intent-filter>
-                <action android:name="${applicationId}.intent.action.START_SYNC_SERVICE" />
-                <action android:name="${applicationId}.intent.action.STOP_SYNC_SERVICE" />
-            </intent-filter>
-        </service>
-
-        <provider
-            android:name=".MmexContentProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="true" />
-        <!-- used for qif export -->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
-
-        <service
-            android:name=".widget.SummaryDashExtension"
-            android:icon="@drawable/ic_stat_notification"
-            android:label="@string/widget_summary"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                android:name="protocolVersion"
-                android:value="2" />
-            <meta-data
-                android:name="worldReadable"
-                android:value="true" />
-            <meta-data
-                android:name="description"
-                android:value="@string/dashclock_extension_summary" />
-        </service>
-        <service
-            android:name=".widget.AccountBillsDashExtension"
-            android:icon="@drawable/ic_stat_notification"
-            android:label="@string/widget_all_accounts"
-            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
-            <intent-filter>
-                <action android:name="com.google.android.apps.dashclock.Extension" />
-            </intent-filter>
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_single_account" />
+        </receiver>
 
-            <meta-data
-                android:name="protocolVersion"
-                android:value="2" />
-            <meta-data
-                android:name="worldReadable"
-                android:value="true" />
-            <meta-data
-                android:name="description"
-                android:value="@string/dashclock_extension_summary_all_account" />
-        </service>
+        <!-- activities -->
 
-        <activity
-            android:name=".home.MainActivity"
+        <activity android:name=".home.MainActivity"
             android:label="@string/application_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -217,26 +150,7 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
             </intent-filter>
         </activity>
-        <!-- <activity -->
-        <!-- android:name="com.dropbox.client2.android.AuthActivity" -->
-        <!-- android:configChanges="orientation|keyboard|screenSize" -->
-        <!-- android:launchMode="singleTask" > -->
-        <!-- <intent-filter> -->
-
-
-        <!-- &lt;!&ndash; Change this to be db- followed by your app key &ndash;&gt; -->
-        <!-- <data android:scheme="db-i6trbis92p3zh5w" /> -->
-
-
-        <!-- <action android:name="android.intent.action.VIEW" /> -->
-
-
-        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
-        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <activity
-            android:name=".transactions.CheckingTransactionEditActivity"
+        <activity android:name=".transactions.CheckingTransactionEditActivity"
             android:label="@string/new_edit_transaction">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -246,8 +160,7 @@
                 <!-- <data android:scheme="content" /> -->
             </intent-filter>
         </activity>
-        <activity
-            android:name=".PayeeActivity"
+        <activity android:name=".PayeeActivity"
             android:label="@string/payee">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
@@ -280,8 +193,7 @@
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
-        <activity
-            android:name=".recurring.transactions.RecurringTransactionEditActivity"
+        <activity android:name=".recurring.transactions.RecurringTransactionEditActivity"
             android:label="@string/new_edit_repeating_transaction">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -307,8 +219,7 @@
         <activity
             android:name=".settings.DatabaseSettingsActivity"
             android:label="@string/database" />
-        <activity
-            android:name=".settings.SyncPreferencesActivity"
+        <activity android:name=".settings.SyncPreferencesActivity"
             android:label="@string/synchronization" />
         <activity android:name=".PasscodeActivity">
             <intent-filter>
@@ -327,15 +238,11 @@
         <activity
             android:name=".search.SearchActivity"
             android:label="@string/search" />
-        <activity
-            android:name=".transactions.SplitCategoriesActivity"
+        <activity android:name=".transactions.SplitCategoriesActivity"
             android:label="@string/split_transaction" />
         <activity
             android:name=".DonateActivity"
             android:label="@string/donate" />
-        <!-- <activity -->
-        <!-- android:name=".dropbox.DropboxBrowserActivity" -->
-        <!-- android:label="@string/dropbox_select_file" /> -->
         <activity
             android:name=".HelpActivity"
             android:label="@string/help">
@@ -349,54 +256,17 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-
-        <!-- Samsung MultiWindow Function -->
-        <uses-library
-            android:name="com.sec.android.app.multiwindow"
-            android:required="false" />
-
-        <meta-data
-            android:name="com.sec.android.support.multiwindow"
-            android:value="true" />
-        <meta-data
-            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
-            android:resource="@dimen/app_defaultsize_w" />
-        <meta-data
-            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
-            android:resource="@dimen/app_defaultsize_h" />
-        <meta-data
-            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
-            android:resource="@dimen/app_minimumsize_w" />
-        <meta-data
-            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
-            android:resource="@dimen/app_minimumsize_h" />
-
-        <activity
-            android:name=".tutorial.TutorialActivity"
+        <activity android:name=".tutorial.TutorialActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/application_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".currency.CurrencyChartActivity"
+        <activity android:name=".currency.CurrencyChartActivity"
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" />
         <activity
             android:name=".budget.BudgetsActivity"
             android:label="@string/budgets" />
-
-        <receiver
-            android:name=".widget.SingleAccountWidget"
-            android:label="@string/single_account">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info_single_account" />
-        </receiver>
-
         <activity android:name=".widget.SingleAccountWidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -411,27 +281,20 @@
         <activity
             android:name=".assetallocation.AssetAllocationActivity"
             android:label="@string/asset_allocation" />
-        <activity
-            android:name=".assetallocation.AssetClassEditActivity"
+        <activity android:name=".assetallocation.AssetClassEditActivity"
             android:label="@string/title_activity_asset_class_edit"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".assetallocation.SecurityListActivity"
+        <activity android:name=".assetallocation.SecurityListActivity"
             android:label="@string/securities" />
-        <activity
-            android:name=".assetallocation.AssetAllocationPickerActivity"
+        <activity android:name=".assetallocation.AssetAllocationPickerActivity"
             android:label="@string/asset_allocation" />
-        <activity
-            android:name=".database.PasswordActivity"
+        <activity android:name=".database.PasswordActivity"
             android:label="@string/enter_password" />
-        <activity
-            android:name=".investment.PortfolioActivity"
+        <activity android:name=".investment.PortfolioActivity"
             android:label="@string/portfolio" />
-        <activity
-            android:name=".assetallocation.AssetAllocationOverviewActivity"
+        <activity android:name=".assetallocation.AssetAllocationOverviewActivity"
             android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
-
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
         <activity android:name=".sync.CloudFilePickerActivity" />
@@ -444,9 +307,119 @@
             <!-- android:value=".home.MainActivity" /> -->
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
-        <activity android:name=".home.CreateDatabaseActivity"></activity>
+        <activity android:name=".home.CreateDatabaseActivity" />
         <activity android:name=".home.createdb.CreateDbStepper"
             android:theme="@style/Theme.AppCompat"/>
+
+        <!-- providers -->
+
+        <provider android:name=".MmexContentProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false" />
+        <!-- used for qif export -->
+        <provider android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+        <!-- stub provider for the sync framework -->
+        <provider android:name="com.money.manager.ex.sync.adapter.StubSyncProvider"
+            android:authorities="com.example.android.datasync.provider"
+            android:exported="false"
+            android:syncable="true"/>
+
+        <!-- services -->
+
+        <service android:name=".notifications.RecurringTransactionIntentService" />
+        <service android:name=".widget.AccountBillsWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service android:name=".widget.SummaryDashExtension"
+            android:icon="@drawable/ic_stat_notification"
+            android:label="@string/widget_summary"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+
+            <meta-data
+                android:name="protocolVersion"
+                android:value="2" />
+            <meta-data
+                android:name="worldReadable"
+                android:value="true" />
+            <meta-data
+                android:name="description"
+                android:value="@string/dashclock_extension_summary" />
+        </service>
+        <service android:name=".widget.AccountBillsDashExtension"
+            android:icon="@drawable/ic_stat_notification"
+            android:label="@string/widget_all_accounts"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+
+            <meta-data
+                android:name="protocolVersion"
+                android:value="2" />
+            <meta-data
+                android:name="worldReadable"
+                android:value="true" />
+            <meta-data
+                android:name="description"
+                android:value="@string/dashclock_extension_summary_all_account" />
+        </service>
+        <service android:name=".sync.SyncService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="${applicationId}.sync.action.SYNC" />
+                <action android:name="${applicationId}.sync.action.DOWNLOAD" />
+                <action android:name="${applicationId}.sync.action.UPLOAD" />
+            </intent-filter>
+        </service>
+        <service android:name=".sync.DelayedUploadService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="${applicationId}.intent.action.START_SYNC_SERVICE" />
+                <action android:name="${applicationId}.intent.action.STOP_SYNC_SERVICE" />
+            </intent-filter>
+        </service>
+        <!-- authenticator service for the sync framework -->
+        <service android:name="com.money.manager.ex.sync.adapter.AuthenticatorService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <service android:name="com.money.manager.ex.sync.adapter.SyncAdapterService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+        <!-- Samsung MultiWindow Function -->
+
+        <uses-library android:name="com.sec.android.app.multiwindow"
+            android:required="false" />
+        <meta-data android:name="com.sec.android.support.multiwindow"
+            android:value="true" />
+        <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
+            android:resource="@dimen/app_defaultsize_w" />
+        <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
+            android:resource="@dimen/app_defaultsize_h" />
+        <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
+            android:resource="@dimen/app_minimumsize_w" />
+        <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
+            android:resource="@dimen/app_minimumsize_h" />
     </application>
 
 </manifest>

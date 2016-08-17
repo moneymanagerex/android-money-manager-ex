@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
+import timber.log.Timber;
+
 public class SettingsActivity
     extends BaseSettingsFragmentActivity {
 
@@ -30,6 +32,13 @@ public class SettingsActivity
         super.onCreate(savedInstance);
 
         showFragment();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Timber.d("resuming");
     }
 
     private void showFragment() {

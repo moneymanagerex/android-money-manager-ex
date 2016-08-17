@@ -74,7 +74,7 @@ public class SyncService
             return;
         }
 
-        SyncManager sync = new SyncManager(getBaseContext());
+        SyncManager sync = new SyncManager(getApplicationContext());
 
         String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
         String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
