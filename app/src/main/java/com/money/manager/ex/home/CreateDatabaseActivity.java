@@ -45,7 +45,7 @@ public class CreateDatabaseActivity
     extends BaseFragmentActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.linearLayoutHome) ViewGroup linearWelcome;
+    @BindView(R.id.linearLayoutWelcome) ViewGroup linearWelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -37,8 +37,7 @@
     <!-- existing functionality -->
     <include
         android:id="@+id/linearLayoutWelcome"
-        layout="@layout/welcome_layout"
-        android:visibility="gone"/>
+        layout="@layout/welcome_layout" />
 
 
     <android.support.v7.widget.CardView
