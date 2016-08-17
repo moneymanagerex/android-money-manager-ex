@@ -27,10 +27,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.util.SparseArrayCompat;
 import android.text.TextUtils;
 
 import com.money.manager.ex.budget.BudgetQuery;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -62,9 +62,7 @@ import com.money.manager.ex.sync.SyncManager;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -82,7 +80,7 @@ public class MmexContentProvider
     // object definition for the call to check the content
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     // object map for the definition of the objects referenced in the URI
-    private static Map<Integer, Object> mapContent = new HashMap<>();
+    private static SparseArrayCompat<Object> mapContent = new SparseArrayCompat<>();
     private static String mAuthority;
 
     public MmexContentProvider() {
@@ -103,6 +101,7 @@ public class MmexContentProvider
     @Override
     public boolean onCreate() {
         Context context = getContext();
+        if (context == null) return false;
 
         setAuthority(context.getApplicationContext().getPackageName() + ".provider");
 
@@ -148,18 +147,13 @@ public class MmexContentProvider
         try {
             return query_internal(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
-            if (e instanceof IllegalStateException) {
-                // todo: e "connection already closed" here
-                Timber.w("illegal state, connection probably closed");
-            }
-
             Timber.e(e, "content provider.query %s", uri);
         }
         return null;
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         Timber.d("Insert Uri: %s", uri);
 
         // find object from uri
@@ -181,8 +175,7 @@ public class MmexContentProvider
                                 .insertOrThrow(dataset.getSource(), null, values);
                         //database.setTransactionSuccessful();
                     } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.e(e, "inserting: " + e.getMessage());
+                        Timber.e(e, "inserting: %s", "insert");
                     }
                     parse = dataset.getBasepath() + "/" + id;
                     break;
@@ -194,11 +187,7 @@ public class MmexContentProvider
         }
 
         if (id > 0) {
-            // notify the data inserted
-            getContext().getContentResolver().notifyChange(uri, null);
-
-            // notify dropbox of the data changes
-            new SyncManager(getContext()).dataChanged();
+            notifyChange(uri);
         }
 
         // return Uri with the primary key of the inserted record.
@@ -206,7 +195,7 @@ public class MmexContentProvider
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
         Timber.d("Update Uri: %s", uri);
 
         Object ret = getObjectFromUri(uri);
@@ -226,8 +215,7 @@ public class MmexContentProvider
                     try {
                         rowsUpdate = database.update(dataset.getSource(), values, whereClause, whereArgs);
                     } catch (Exception ex) {
-                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.e(ex, "updating: " + ex.getMessage());
+                        Timber.e(ex, "updating: %s", "update");
                     }
                     break;
                 default:
@@ -238,10 +226,7 @@ public class MmexContentProvider
         }
 
         if (rowsUpdate > 0) {
-            // notify update
-            getContext().getContentResolver().notifyChange(uri, null);
-            // notify dropbox data changed
-            new SyncManager(getContext()).dataChanged();
+            notifyChange(uri);
         }
 
         // return rows modified
@@ -249,7 +234,7 @@ public class MmexContentProvider
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         Timber.d("Delete URI: %s", uri);
 
         // find object from uri
@@ -278,8 +263,7 @@ public class MmexContentProvider
                         //if (BuildConfig.DEBUG) Log.d(LOGCAT, "database set transaction successful");
                         //database.setTransactionSuccessful();
                     } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                        handler.e(e, "insert");
+                        Timber.e(e, "insert");
                     }
                     break;
                 default:
@@ -288,10 +272,8 @@ public class MmexContentProvider
         } else {
             throw new IllegalArgumentException("Object ret of mapContent is not istance of dataset");
         }
-        // send delete notification.
-        getContext().getContentResolver().notifyChange(uri, null);
-        // notify dropbox data changed
-        new SyncManager(getContext()).dataChanged();
+
+        if (rowsDelete > 0) notifyChange(uri);
 
         return rowsDelete;
     }
@@ -374,10 +356,9 @@ public class MmexContentProvider
     }
 
     public void resetDatabase() {
-//        mDatabaseHelper.close();
-//        mDatabaseHelper = new MyDatabaseOpenHelper(context);
-
-        openHelper.get().close();
+        if (openHelper != null) {
+            openHelper.get().close();
+        }
 
         openHelper = null;
         initializeDependencies();
@@ -515,5 +496,14 @@ public class MmexContentProvider
         //database.beginTransaction();
 //                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "database begin transaction");
         Timber.d(log);
+    }
+
+    private void notifyChange(Uri uri) {
+        if (getContext() == null) return;
+
+        // notify update
+        getContext().getContentResolver().notifyChange(uri, null);
+        // notify dropbox data changed
+        new SyncManager(getContext()).dataChanged();
     }
 }
