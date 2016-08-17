@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.16.886">
+    <changelogversion versionName="2016.08.17.887">
+        <changelogtext>Comprehensive initialisation options for new installations.</changelogtext>
         <changelogtext>Delayed upload rewritten as a background service.</changelogtext>
         <changelogtext>Stability improvements.</changelogtext>
         <changelogtext>Redoing the Tutorial display logic.</changelogtext>
