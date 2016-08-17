@@ -26,9 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -56,7 +54,6 @@ import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -91,8 +88,6 @@ import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
-import com.money.manager.ex.utils.MyFileUtils;
-import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -102,9 +97,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
@@ -870,11 +863,11 @@ public class MainActivity
     }
 
     public void openDatabasePicker() {
-        //pickFile(Environment.getDatabaseDirectory());
+        //pickFile(Environment.getDefaultDatabaseDirectory());
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
-        String dbDirectory = dbUtils.getDatabaseDirectory();
+        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
-        // Environment.getDatabaseDirectory().getPath()
+        // Environment.getDefaultDatabaseDirectory().getPath()
         try {
             UIHelper uiHelper = new UIHelper(this);
             uiHelper.pickFileInternal(dbDirectory, REQUEST_PICKFILE);

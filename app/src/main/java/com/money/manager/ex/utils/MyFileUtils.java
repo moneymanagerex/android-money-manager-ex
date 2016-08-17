@@ -30,8 +30,8 @@ import android.support.v4.content.ContextCompat;
  */
 public class MyFileUtils {
 
-    public static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 1;
-    public static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     public MyFileUtils(Context context) {
         this.context = context;

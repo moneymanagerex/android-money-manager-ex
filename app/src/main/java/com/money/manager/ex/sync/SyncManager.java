@@ -670,7 +670,7 @@ public class SyncManager {
 
     private File getExternalStorageDirectoryForSync() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        File folder = new File(dbUtils.getDatabaseDirectory());
+        File folder = new File(dbUtils.getDefaultDatabaseDirectory());
 
         // manage folder
         if (folder.exists() && folder.isDirectory() && folder.canWrite()) {

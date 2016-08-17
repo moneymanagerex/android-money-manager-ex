@@ -21,12 +21,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
@@ -164,51 +162,107 @@ public class MmexDatabaseUtils {
     }
 
     /**
-     * Gets the directory on external storage where the database is (to be) stored. New databases
+     * Gets the directory where the database is (to be) stored. New databases
      * are created here by default.
      * The directory is created if it does not exist.
+     * Ref: https://gist.github.com/granoeste/5574148
      * @return the default database directory
      */
-    public String getDatabaseDirectory() {
+    public String getDefaultDatabaseDirectory() {
         File defaultFolder;
 
         // try with the external storage first.
+        defaultFolder = getDbExternalStorageDirectory();
+        if (defaultFolder != null) return defaultFolder.getAbsolutePath();
+
+        defaultFolder = getExternalFilesDirectory();
+        if (defaultFolder != null) return defaultFolder.getAbsolutePath();
+
+        // Then use files dir.
+        defaultFolder = getPackageDirectory();
+        if (defaultFolder != null) return defaultFolder.getAbsolutePath();
+
+        return null;
+    }
+
+    /**
+     * /sdcard/MoneyManagerEx
+     * @return the location for the database in the publicly accessible storage
+     */
+    private File getDbExternalStorageDirectory() {
+        // sdcard
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
 
-        if (externalStorageDirectory == null || !externalStorageDirectory.exists() ||
-                !externalStorageDirectory.isDirectory() || !externalStorageDirectory.canWrite()) {
-            return getContext().getFilesDir().getAbsolutePath();
+        if (externalStorageDirectory == null) return null;
+        if (!externalStorageDirectory.exists() || !externalStorageDirectory.isDirectory() || !externalStorageDirectory.canWrite()) {
+            return null;
         }
 
-        defaultFolder = new File(externalStorageDirectory + File.separator + getContext().getPackageName());
+        // now create the app's directory to the root
+
+        File defaultFolder = new File(externalStorageDirectory + File.separator + "MoneyManagerEx");
+        if (defaultFolder.exists() && defaultFolder.canRead() && defaultFolder.canWrite()) return defaultFolder;
+
         if (!defaultFolder.exists()) {
-            defaultFolder = new File(externalStorageDirectory + "/MoneyManagerEx");
-            if (!defaultFolder.exists()) {
-                //make a directory
-                if (!defaultFolder.mkdirs()) {
-                    return getContext().getFilesDir().getAbsolutePath();
-                }
+            // create the directory.
+            if (!defaultFolder.mkdirs()) {
+                Timber.w("could not create the storage directory %s", defaultFolder.getAbsolutePath());
+                return null;
             }
         }
-//        return defaultFolder;
 
-        String databasePath;
+        return defaultFolder;
+    }
 
-        if (defaultFolder.getAbsoluteFile().exists()) {
-            databasePath = defaultFolder.toString();
-        } else {
-            String internalFolder;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                internalFolder = getContext().getApplicationInfo().dataDir;
-            } else {
-                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
-            }
-            // add databases
-            internalFolder += "/databases"; // "/data.mmb";
-            databasePath = internalFolder;
+    /**
+     *
+     * @return directory to store the database in external files dir.
+     */
+    private File getExternalFilesDirectory() {
+        // /storage/sdcard0/Android/data/package/files
+        File externalFilesDir = getContext().getExternalFilesDir(null);
+
+        String dbString = externalFilesDir.getAbsolutePath().concat(File.pathSeparator)
+                .concat("databases");
+        File dbPath = new File(dbString);
+
+        if (dbPath.exists() && dbPath.canRead() && dbPath.canWrite()) return dbPath;
+
+        if (!dbPath.mkdir()) {
+            Timber.w("could not create databases directory in external files");
+            return null;
         }
 
-        return databasePath;
+        return dbPath;
+    }
+
+    /**
+     *
+     * @return app's files directory
+     */
+    private File getPackageDirectory() {
+        // getFilesDir() = /data/data/package/files
+        File packageLocation = getContext().getFilesDir().getParentFile();
+        // or: getContext().getApplicationInfo().dataDir
+        // getContext().getFilesDir()
+        //                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
+
+
+        String dbDirectoryPath = packageLocation.getAbsolutePath()
+                .concat(File.pathSeparator)
+                .concat("databases");
+
+        File dbDirectory = new File(dbDirectoryPath);
+        if (dbDirectory.exists() && dbDirectory.canRead() && dbDirectory.canWrite()) return dbDirectory;
+
+        if (!dbDirectory.exists()) {
+            if (!dbDirectory.mkdir()) {
+                Timber.w("could not create databases directory");
+                return null;
+            }
+        }
+
+        return dbDirectory ;
     }
 
     // Private
@@ -254,7 +308,7 @@ public class MmexDatabaseUtils {
 
         // it might be enough simply to generate the new filename and set it as the default database.
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        String location = dbUtils.getDatabaseDirectory();
+        String location = dbUtils.getDefaultDatabaseDirectory();
         String newFilePath = location + File.separator + filename;
 
         // Create db file.

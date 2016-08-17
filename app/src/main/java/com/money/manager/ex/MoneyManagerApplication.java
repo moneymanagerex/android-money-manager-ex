@@ -112,7 +112,7 @@ public class MoneyManagerApplication
         // otherwise try other paths or create the default database.
 
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(context);
-        String defaultDirectory = dbUtils.getDatabaseDirectory();
+        String defaultDirectory = dbUtils.getDefaultDatabaseDirectory();
         String defaultPath = defaultDirectory + "/data.mmb";
 
         dbSettings.setDatabasePath(defaultPath);

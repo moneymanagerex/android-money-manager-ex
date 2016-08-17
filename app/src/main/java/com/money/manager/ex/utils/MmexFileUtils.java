@@ -19,7 +19,9 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.SparseArray;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.log.ExceptionHandler;
 
 import java.io.ByteArrayOutputStream;
@@ -33,8 +35,8 @@ import java.util.HashMap;
 public class MmexFileUtils {
 
     private static final int BUFFER_DIMENSION = 128;
-    // hash map to optimize application
-    private static HashMap<Integer, String> rawHashMap = new HashMap<>();
+    // https://developer.android.com/reference/android/util/SparseArray.html
+    private static SparseArray<String> rawHashMap = new SparseArray<>();
 
     /**
      * @param context application
@@ -42,7 +44,7 @@ public class MmexFileUtils {
      * @return String: String file
      */
     public static String getRawAsString(Context context, int resId) {
-        if (rawHashMap.containsKey(resId)) {
+        if (rawHashMap.indexOfKey(resId) >= 0) {
             return rawHashMap.get(resId);
         } else {
             String raw = loadRaw(context, resId);

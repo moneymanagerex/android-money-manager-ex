@@ -81,7 +81,7 @@ public class MmexApplicationTests {
         final String expected = "MoneyManagerEx";
 
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
-        String actual = dbUtils.getDatabaseDirectory();
+        String actual = dbUtils.getDefaultDatabaseDirectory();
 
         assertTrue(actual.contains(expected));
     }

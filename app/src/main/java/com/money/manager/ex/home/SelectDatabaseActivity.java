@@ -92,7 +92,7 @@ public class SelectDatabaseActivity
     void onOpenDatabaseClick() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
         // todo inspect what happens here
-        String dbDirectory = dbUtils.getDatabaseDirectory();
+        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
         // show the file picker
         try {

@@ -214,7 +214,7 @@ public class Core {
 
         //create folder to copy database
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        File folderOutput = new File(dbUtils.getDatabaseDirectory());
+        File folderOutput = new File(dbUtils.getDefaultDatabaseDirectory());
 
         //take a folder of database
         ArrayList<File> filesFromCopy = new ArrayList<>();
