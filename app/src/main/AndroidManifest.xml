@@ -25,10 +25,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- sync permissions -->
+    <!-- sync authenticator -->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <!-- sync adapter -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <!-- trying to force ui automator to run on sdk 16 -->
     <!-- <uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" /> -->
@@ -326,7 +328,7 @@
                 android:resource="@xml/filepaths" />
         </provider>
         <!-- stub provider for the sync framework -->
-        <provider android:name="com.money.manager.ex.sync.adapter.StubSyncProvider"
+        <provider android:name=".sync.adapter.StubSyncProvider"
             android:authorities="com.example.android.datasync.provider"
             android:exported="false"
             android:syncable="true"/>
@@ -388,7 +390,7 @@
             </intent-filter>
         </service>
         <!-- authenticator service for the sync framework -->
-        <service android:name="com.money.manager.ex.sync.adapter.AuthenticatorService"
+        <service android:name=".sync.adapter.AuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
@@ -397,7 +399,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <service android:name="com.money.manager.ex.sync.adapter.SyncAdapterService"
+        <service android:name=".sync.adapter.SyncAdapterService"
             android:exported="true"
             android:process=":sync">
             <intent-filter>

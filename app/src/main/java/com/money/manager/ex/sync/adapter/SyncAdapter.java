@@ -97,10 +97,11 @@ public class SyncAdapter
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
         Timber.d("synchronizing!");
 
+        // todo update syncResult object with info
+
         SyncManager sync = new SyncManager(getContext());
         AppSettings settings = new AppSettings(getContext());
 
-        // todo get local file
 //        String localFilename = settings.getDatabaseSettings().getDatabasePath();
         String localFilename = sync.getLocalPath();
         String remoteFilename = sync.getRemotePath();
