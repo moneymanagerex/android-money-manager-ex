@@ -41,8 +41,7 @@ public class SelectDatabaseActivity
 
     public static final int REQUEST_PICKFILE = 1;
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +85,10 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.createDatabaseButton)
     void onCreateDatabaseClick() {
-        // todo: show the create database screen
+        // show the create database screen
+        Intent intent = new Intent(this, CreateDatabaseActivity.class);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        startActivity(intent);
     }
 
     @OnClick(R.id.openDatabaseButton)

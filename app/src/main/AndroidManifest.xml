@@ -447,7 +447,8 @@
             <!-- android:name="android.support.PARENT_ACTIVITY" -->
             <!-- android:value=".home.MainActivity" /> -->
         </activity>
-        <activity android:name=".home.SelectDatabaseActivity"></activity>
+        <activity android:name=".home.SelectDatabaseActivity" />
+        <activity android:name=".home.CreateDatabaseActivity"></activity>
     </application>
 
 </manifest>

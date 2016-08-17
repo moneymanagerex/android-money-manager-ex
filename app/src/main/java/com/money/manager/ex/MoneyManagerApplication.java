@@ -97,15 +97,13 @@ public class MoneyManagerApplication
      */
     public static String getDatabasePath(Context context) {
         DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
-
         String databasePath = dbSettings.getDatabasePath();
-//        Timber.d("database path: %s", databasePath);
 
         if (!StringUtils.isEmpty(databasePath)) {
             // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
-                return databaseFile.getPath(); // .toString()
+                return databaseFile.getPath();
             }
         }
 

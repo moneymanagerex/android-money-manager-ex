@@ -197,9 +197,22 @@ public class MainActivity
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
-        // todo: move this to the select-db activity.
-        initialize(savedInstanceState);
-        // async, continue at onRequestPermissionsResult().
+        handleIntent();
+
+        // show change log dialog
+        Core core = new Core(this);
+        if (core.isToDisplayChangelog()) core.showChangelog();
+
+        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
+
+        // check if we require a password.
+        String dbPath = MoneyManagerApplication.getDatabasePath(this);
+        if (MmexDatabaseUtils.isEncryptedDatabase(dbPath)) {
+            // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
+            requestDatabasePassword();
+        } else {
+            initializeDatabaseAccess(savedInstanceState);
+        }
     }
 
     @Override
@@ -577,25 +590,6 @@ public class MainActivity
     }
 
     // Private.
-
-    private void initialize(Bundle savedInstanceState) {
-        handleIntent();
-
-        // show change log dialog
-        Core core = new Core(this);
-        if (core.isToDisplayChangelog()) core.showChangelog();
-
-        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
-
-        // check if we require a password.
-        String dbPath = MoneyManagerApplication.getDatabasePath(this);
-        if (MmexDatabaseUtils.isEncryptedDatabase(dbPath)) {
-            // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
-            requestDatabasePassword();
-        } else {
-            initializeDatabaseAccess(savedInstanceState);
-        }
-    }
 
     private void initializeDatabaseAccess(Bundle savedInstanceState) {
         // Read something from the database at this stage so that the db file gets created.
