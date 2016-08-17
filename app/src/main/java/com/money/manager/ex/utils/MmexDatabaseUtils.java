@@ -169,18 +169,20 @@ public class MmexDatabaseUtils {
      * The directory is created if it does not exist.
      * @return the default database directory
      */
-    public String getDatabaseStorageDirectory() {
-        //get external storage
-        File externalStorage;
-        externalStorage = Environment.getExternalStorageDirectory();
+    public String getDatabaseDirectory() {
+        File defaultFolder;
 
-        if (externalStorage == null || !externalStorage.exists() || !externalStorage.isDirectory() || !externalStorage.canWrite()) {
+        // try with the external storage first.
+        File externalStorageDirectory = Environment.getExternalStorageDirectory();
+
+        if (externalStorageDirectory == null || !externalStorageDirectory.exists() ||
+                !externalStorageDirectory.isDirectory() || !externalStorageDirectory.canWrite()) {
             return getContext().getFilesDir().getAbsolutePath();
         }
 
-        File defaultFolder = new File(externalStorage + File.separator + getContext().getPackageName());
+        defaultFolder = new File(externalStorageDirectory + File.separator + getContext().getPackageName());
         if (!defaultFolder.exists()) {
-            defaultFolder = new File(externalStorage + "/MoneyManagerEx");
+            defaultFolder = new File(externalStorageDirectory + "/MoneyManagerEx");
             if (!defaultFolder.exists()) {
                 //make a directory
                 if (!defaultFolder.mkdirs()) {
@@ -219,9 +221,7 @@ public class MmexDatabaseUtils {
         try {
             scriptTables = getAllTableNamesFromGenerationScript();
         } catch (IOException | SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(ex, "reading table names from generation script");
-
+            Timber.e(ex, "reading table names from generation script");
             return false;
         }
 
@@ -248,11 +248,13 @@ public class MmexDatabaseUtils {
 
     private boolean createDatabase_Internal(String filename)
         throws IOException {
+        boolean result = true;
+
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        String location = dbUtils.getDatabaseStorageDirectory();
+        String location = dbUtils.getDatabaseDirectory();
         String newFilePath = location + File.separator + filename;
 
         // Create db file.
@@ -261,7 +263,7 @@ public class MmexDatabaseUtils {
             showToast(R.string.create_db_exists, Toast.LENGTH_SHORT);
             return false;
         } else {
-            dbFile.createNewFile();
+            result = dbFile.createNewFile();
         }
 
         // close connection
@@ -270,13 +272,9 @@ public class MmexDatabaseUtils {
         // change database
         // store as the default database in settings
         AppSettings settings = new AppSettings(getContext());
-        boolean pathSet = settings.getDatabaseSettings().setDatabasePath(newFilePath);
-        if (!pathSet) {
-            Log.e(this.getClass().getSimpleName(), "Error setting the database path.");
-            showToast(R.string.create_db_error, Toast.LENGTH_SHORT);
-        }
+        settings.getDatabaseSettings().setDatabasePath(newFilePath);
 
-        return pathSet;
+        return result;
     }
 
     private String cleanupFilename(String filename) {

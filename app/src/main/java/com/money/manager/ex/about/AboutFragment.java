@@ -241,7 +241,7 @@ public class AboutFragment extends Fragment {
      * http://developer.android.com/tools/debugging/debugging-log.html
      */
     private String getLogcat() {
-//        File outputFile = new File(Environment.getDatabaseStorageDirectory(), "logcat.txt");
+//        File outputFile = new File(Environment.getDatabaseDirectory(), "logcat.txt");
         Process p = null;
         try {
 //            Runtime.getRuntime().exec(

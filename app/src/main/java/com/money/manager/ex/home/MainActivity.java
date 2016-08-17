@@ -97,6 +97,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -136,7 +137,7 @@ public class MainActivity
 
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
-    private boolean isShowTipsDropbox2 = false;
+//    private boolean isShowTipsDropbox2 = false;
     private boolean isRecurringTransactionStarted = false;
     private boolean hasStarted = false;
     // navigation drawer
@@ -163,6 +164,13 @@ public class MainActivity
             return;
         }
 
+        // show database chooser if no valid database
+        if (!isDatabaseAvailable()) {
+            // todo: show database chooser
+            finish();
+            return;
+        }
+
         // Restore state. Check authentication, etc.
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
@@ -180,9 +188,9 @@ public class MainActivity
 //        pingStats();
 
 //        if (!tutorialShown) {
-            // Skipped tutorial because it was seen in the past.
-            onTutorialComplete(savedInstanceState);
-            // Otherwise continue at onActivityResult after tutorial closed.
+        // Skipped tutorial because it was seen in the past.
+        onTutorialComplete(savedInstanceState);
+        // Otherwise continue at onActivityResult after tutorial closed.
 //        }
     }
 
@@ -348,7 +356,7 @@ public class MainActivity
         }
         outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
-        outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
+//        outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
         outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
         outState.putBoolean(KEY_HAS_STARTED, this.hasStarted);
@@ -884,11 +892,11 @@ public class MainActivity
     }
 
     public void openDatabasePicker() {
-        //pickFile(Environment.getDatabaseStorageDirectory());
+        //pickFile(Environment.getDatabaseDirectory());
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
-        String dbDirectory = dbUtils.getDatabaseStorageDirectory();
+        String dbDirectory = dbUtils.getDatabaseDirectory();
 
-        // Environment.getDatabaseStorageDirectory().getPath()
+        // Environment.getDatabaseDirectory().getPath()
         pickFileInternal(dbDirectory);
     }
 
@@ -1440,5 +1448,16 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
 
         onDrawerItemSubDialogs(adapter, text);
+    }
+
+    public boolean isDatabaseAvailable() {
+        // Do we have a database set?
+        String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
+        if (StringUtils.isEmpty(dbPath)) return false;
+
+        // Does the database file exist?
+        File dbFile = new File(dbPath);
+        return dbFile.exists();
+
     }
 }

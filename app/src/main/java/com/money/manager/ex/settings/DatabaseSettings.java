@@ -39,10 +39,9 @@ public class DatabaseSettings {
         return path;
     }
 
-    public boolean setDatabasePath(String path) {
+    public void setDatabasePath(String path) {
         Context context = mAppSettings.getContext();
         String key = context.getString(R.string.pref_database_path);
-        boolean pathSet = mAppSettings.set(key, path);
-        return pathSet;
+        mAppSettings.set(key, path);
     }
 }

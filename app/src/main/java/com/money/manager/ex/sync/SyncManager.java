@@ -468,16 +468,9 @@ public class SyncManager {
     private void saveLastModifiedDate(CloudMetaData file) {
         DateTime date = new DateTime(file.getModifiedAt());
 
-        if (BuildConfig.DEBUG) {
-            Log.d(this.getClass().getSimpleName(),
-                    "Set remote file: " + file + " last modification date " + date.toString());
-        }
+        Timber.d("Saving last modification date %s for remote file %s", file , date.toString());
 
-        boolean saved = getPreferences().set(file.getPath(), date.toString());
-
-        if (!saved) {
-            Log.e(this.getClass().getSimpleName(), "Could not store last modified date!");
-        }
+        getPreferences().set(file.getPath(), date.toString());
     }
 
     public void setProvider(CloudStorageProviderEnum provider) {
@@ -677,7 +670,7 @@ public class SyncManager {
 
     private File getExternalStorageDirectoryForSync() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        File folder = new File(dbUtils.getDatabaseStorageDirectory());
+        File folder = new File(dbUtils.getDatabaseDirectory());
 
         // manage folder
         if (folder.exists() && folder.isDirectory() && folder.canWrite()) {

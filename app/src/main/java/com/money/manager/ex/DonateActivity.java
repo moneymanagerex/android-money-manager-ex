@@ -22,15 +22,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.money.manager.ex.common.BaseFragmentActivity;
-//import com.money.manager.ex.inapp.util.IabHelper;
 import com.money.manager.ex.common.WebViewActivity;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.HttpMethods;
 
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class DonateActivity
     extends BaseFragmentActivity {
@@ -91,8 +90,7 @@ public class DonateActivity
         try {
             startActivity(browserIntent);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this);
-            handler.e(e, "opening the homepage in a browser");
+            Timber.e(e, "opening the homepage in a browser");
         }
     }
 }

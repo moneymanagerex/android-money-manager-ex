@@ -31,8 +31,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowEnvironment;
 
-import java.io.File;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -83,7 +81,7 @@ public class MmexApplicationTests {
         final String expected = "MoneyManagerEx";
 
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this.context);
-        String actual = dbUtils.getDatabaseStorageDirectory();
+        String actual = dbUtils.getDatabaseDirectory();
 
         assertTrue(actual.contains(expected));
     }

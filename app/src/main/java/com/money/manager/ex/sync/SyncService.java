@@ -27,12 +27,9 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.NetworkUtilities;
@@ -53,7 +50,6 @@ public class SyncService
     extends IntentService {
 
     public static final String INTENT_EXTRA_MESSENGER = "com.money.manager.ex.sync.MESSENGER";
-    private static final String LOGCAT = SyncService.class.getSimpleName();
 
     public SyncService() {
         super("com.money.manager.ex.sync.SyncService");
@@ -63,7 +59,7 @@ public class SyncService
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, intent.toString());
+        Timber.d(intent.toString());
 
         // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
@@ -73,7 +69,7 @@ public class SyncService
         // check if the device is online.
         NetworkUtilities network = new NetworkUtilities(getApplicationContext());
         if (!network.isOnline()) {
-            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
+            Timber.i("Can't sync. Device not online.");
             sendMessage(SyncMessages.NOT_ON_WIFI);
             return;
         }
@@ -109,7 +105,7 @@ public class SyncService
 
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
-            Log.w(LOGCAT, "Local filename different from the remote!");
+            Timber.w("Local filename different from the remote!");
             sendMessage(SyncMessages.ERROR);
             return;
         }
@@ -164,7 +160,7 @@ public class SyncService
                     core.copy(tempFile, localFile);
                     tempFile.delete();
                 } catch (IOException e) {
-                    Log.e(LOGCAT, e.getMessage());
+                    Timber.e(e, "copying downloaded database file");
                     return;
                 }
                 // create notification for open file
@@ -225,9 +221,7 @@ public class SyncService
             }
         };
 
-        if (BuildConfig.DEBUG) {
-            Log.d(LOGCAT, "Uploading db. Local file: " + localFile.getPath() + "; Remote file: " + remoteFile.getPath());
-        }
+        Timber.d("Uploading db. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
         onUpload.onPreExecute();
         sendMessage(SyncMessages.STARTING_UPLOAD);
@@ -248,20 +242,20 @@ public class SyncService
 
         DateTime remoteLastModified = new DateTime(remoteFile.getModifiedAt());
 
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Local file last modified: " + localLastModified.toString());
-        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Remote file last modified: " + remoteLastModified.toString());
+        Timber.d("Local file last modified: %s", localLastModified.toString());
+        Timber.d("Remote file last modified: %s", remoteLastModified.toString());
 
         // check date
         if (remoteLastModified.isAfter(localLastModified)) {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Download " + remoteFile.getPath() + " from the cloud storage.");
+            Timber.d("Download %s from the cloud storage.", remoteFile.getPath());
             // download file
             triggerDownload(localFile, remoteFile);
         } else if (remoteLastModified.isBefore(localLastModified)) {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "Upload " + localFile.getPath() + " to the cloud storage.");
+            Timber.d("Upload %s to the cloud storage.", localFile.getPath());
             // upload file
             triggerUpload(localFile, remoteFile);
         } else {
-            if (BuildConfig.DEBUG) Log.d(LOGCAT, "The local and remote files are the same.");
+            Timber.d("The local and remote files are the same.");
 
             sendMessage(SyncMessages.FILE_NOT_CHANGED);
         }
@@ -276,8 +270,7 @@ public class SyncService
         try {
             mOutMessenger.send(msg);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext());
-            handler.e(e, "sending message from the sync service");
+            Timber.e(e, "sending message from the sync service");
 
             return false;
         }

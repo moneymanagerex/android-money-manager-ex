@@ -87,7 +87,7 @@ public class DatabaseMigrator14To20 {
 
     public String getV20Directory() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
-        File newPath = new File(dbUtils.getDatabaseStorageDirectory());
+        File newPath = new File(dbUtils.getDatabaseDirectory());
 
         String dbPath = newPath.toString();
         return dbPath;

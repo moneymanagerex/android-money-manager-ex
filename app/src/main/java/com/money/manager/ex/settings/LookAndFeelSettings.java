@@ -88,9 +88,9 @@ public class LookAndFeelSettings
         return defaultValue;
     }
 
-    public boolean setShowTransactions(DefinedDateRangeName value) {
+    public void setShowTransactions(DefinedDateRangeName value) {
         String key = getSettingsKey(R.string.pref_show_transaction);
-        return set(key, value.toString());
+        set(key, value.toString());
     }
 
     public boolean getViewOpenAccounts() {

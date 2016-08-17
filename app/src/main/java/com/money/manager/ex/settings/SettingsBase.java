@@ -20,14 +20,17 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.log.ExceptionHandler;
+
+import timber.log.Timber;
 
 /**
  * Base class for settings sections.
  */
-public abstract class SettingsBase {
+abstract class SettingsBase {
 
-    public SettingsBase(Context context) {
+    SettingsBase(Context context) {
         if (context.getApplicationContext() != null) {
             this.mContext = context.getApplicationContext();
         } else {
@@ -37,7 +40,7 @@ public abstract class SettingsBase {
 
     // Context for settings is the Application Context.
     private Context mContext;
-    private SharedPreferences.Editor mEditor;
+//    private SharedPreferences.Editor mEditor;
 
     // common
 
@@ -56,18 +59,9 @@ public abstract class SettingsBase {
         try {
             return getContext().getString(settingKeyConstant, "");
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "error getting string for resource " +
-                Integer.toString(settingKeyConstant));
+            Timber.e(e, "error getting string for resource %d", settingKeyConstant);
         }
         return "";
-    }
-
-    public SharedPreferences.Editor getEditor() {
-        if (mEditor == null) {
-            mEditor = getPreferences().edit();
-        }
-        return mEditor;
     }
 
     /**
@@ -77,12 +71,12 @@ public abstract class SettingsBase {
 //
 //    }
 
-    private boolean save() {
-        boolean result = getEditor()
-//                .apply();
-                .commit();
-        return result;
-    }
+//    private boolean save() {
+//        boolean result = getPreferences().edit()
+////                .apply();
+//                .commit();
+//        return result;
+//    }
 
     // String
 
@@ -95,8 +89,7 @@ public abstract class SettingsBase {
         try {
             return getPreferences().getString(key, defaultValue);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "reading string preference: " + key);
+            Timber.e(e, "reading string preference: %s", key);
 
             return defaultValue;
         }
@@ -104,17 +97,17 @@ public abstract class SettingsBase {
 
     /**
      * Save string value to settings.
-     * @param key
-     * @param value
      */
-    public boolean set(String key, String value) {
-        getEditor().putString(key, value);
-        return save();
+    public void set(String key, String value) {
+        getPreferences().edit()
+            .putString(key, value)
+            .apply();
     }
 
-    public boolean set(Integer settingsKey, String value) {
-        getEditor().putString(getSettingsKey(settingsKey), value);
-        return save();
+    public void set(Integer settingsKey, String value) {
+        getPreferences().edit()
+            .putString(getSettingsKey(settingsKey), value)
+            .apply();
     }
 
     // Boolean
@@ -137,14 +130,15 @@ public abstract class SettingsBase {
         return getPreferences().getBoolean(settingKey, defaultValue);
     }
 
-    public boolean set(String key, boolean value) {
-        getEditor().putBoolean(key, value);
-        return save();
+    public void set(String key, boolean value) {
+        getPreferences().edit()
+            .putBoolean(key, value)
+            .apply();
     }
 
-    public boolean set(Integer key, boolean value) {
+    public void set(Integer key, boolean value) {
         String stringKey = getSettingsKey(key);
-        return this.set(stringKey, value);
+        this.set(stringKey, value);
     }
 
     // Integer
@@ -170,10 +164,9 @@ public abstract class SettingsBase {
     }
 
     protected boolean set(String key, int value) {
-        SharedPreferences.Editor editor = getEditor();
-        editor.putInt(key, value);
-        boolean result = editor.commit();
-        return result;
+        return getPreferences().edit()
+                .putInt(key, value)
+                .commit();
     }
 
     public boolean set(Integer key, int value) {
