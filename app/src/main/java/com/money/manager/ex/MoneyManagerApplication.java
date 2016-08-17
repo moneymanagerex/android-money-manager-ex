@@ -155,14 +155,13 @@ public class MoneyManagerApplication
         if (!lastPath.equals(currentPath)) {
             preferences.edit()
                     .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
-//                    .apply();
-                    .commit();
+                    .apply();
+//                    .commit();
             try {
                 Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG)
                         .show();
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(context);
-                handler.e(e, "showing the current database path");
+                Timber.e(e, "showing the current database path");
             }
         }
     }
@@ -170,7 +169,6 @@ public class MoneyManagerApplication
     // Overrides.
 
     public MmexComponent mainComponent;
-//    public volatile MmexOpenHelper openHelper;
     public AtomicReference<MmexOpenHelper> openHelperAtomicReference;
 
     @Override

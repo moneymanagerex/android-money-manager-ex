@@ -29,6 +29,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -45,6 +46,8 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Fragment that contains the general settings.
@@ -101,7 +104,7 @@ public class GeneralSettingsFragment
                     String language = String.valueOf(newValue);
                     setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
                     MainActivity.setRestartActivity(true);
-//                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+                    // todo EventBus.getDefault().post(new AppRestartRequiredEvent());
                     return true;
                 }
             });
@@ -196,8 +199,7 @@ public class GeneralSettingsFragment
                     try {
                         day = Integer.parseInt((String) newValue);
                     } catch (NumberFormatException e) {
-                        ExceptionHandler handler = new ExceptionHandler(getActivity());
-                        handler.showMessage(R.string.error_parsing_value);
+                        UIHelper.showToast(getActivity(), R.string.error_parsing_value);
                         return false;
                     }
 
@@ -210,8 +212,7 @@ public class GeneralSettingsFragment
                         }
                         return true;
                     } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                        handler.e(e, "changing the start day of the financial year");
+                        Timber.e(e, "changing the start day of the financial year");
                     }
                     return false;
                 }

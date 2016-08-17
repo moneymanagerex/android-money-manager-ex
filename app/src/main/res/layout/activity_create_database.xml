@@ -30,24 +30,43 @@
 
     <include layout="@layout/toolbar"/>
 
-    <!-- todo language selector -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <!-- todo show the default db location -->
+    <!-- todo language selector -->
+            <com.money.manager.ex.view.RobotoButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_language" />
+
+            <!-- todo show the default db location -->
+            <!-- todo select db file name -->
+            <!-- todo create database file -->
+            <!-- todo create account -->
+            <!-- todo default account -->
+            <!-- todo default currency -->
 
     <!-- existing functionality -->
-    <include
-        android:id="@+id/linearLayoutWelcome"
-        layout="@layout/welcome_layout" />
+    <!--<include-->
+        <!--android:id="@+id/linearLayoutWelcome"-->
+        <!--layout="@layout/welcome_layout" />-->
 
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.money.manager.ex.view.RobotoButton
-            android:id="@+id/createDatabaseButton"
+            android:id="@+id/runButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_db" />
+            android:text="@string/run" />
     </android.support.v7.widget.CardView>
 
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

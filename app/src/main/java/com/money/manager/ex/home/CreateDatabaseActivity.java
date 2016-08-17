@@ -20,17 +20,15 @@ package com.money.manager.ex.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.home.createdb.CreateDbStepper;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
@@ -45,7 +43,6 @@ public class CreateDatabaseActivity
     extends BaseFragmentActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.linearLayoutWelcome) ViewGroup linearWelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,26 +52,33 @@ public class CreateDatabaseActivity
         ButterKnife.bind(this);
         getToolbar().setSubtitle(R.string.create_db);
 
-        createWelcomeView();
-
+//        createWelcomeView();
 
         // todo language
-        // todo Create database; use the existing functionality from the database preferences. Set the database as current.
+
+        // todo Create database; use the existing functionality from the database preferences.
+        // Set the database as current in the preferences.
+
         // todo Create account. Allow multiple times.
         // todo Default account. When the first account is created, use that. Allow changing if multiple accounts are created.
         // todo Default currency. Check if set on db creation. Set after the first account and allow changing.
-        // todo "run" option at the end. Starts the main activity.
     }
 
-    @OnClick(R.id.createDatabaseButton)
-    void onCreateClick() {
-        // todo create the database
-        // todo set the current db path in preferences
-        // todo open the main activity
+    @OnClick(R.id.runButton)
+    void onRunClick() {
+        // todo enable the button once the preferences have been done
+
+        // open the main activity
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+
+        Intent stepper = new Intent(this, CreateDbStepper.class);
+        startActivityForResult(stepper, 1);
     }
 
     private void createWelcomeView() {
-        linearWelcome = (ViewGroup) findViewById(R.id.linearLayoutWelcome);
+//        linearWelcome = (ViewGroup) findViewById(R.id.linearLayoutWelcome);
 
         // basic settings
         Button buttonSettings = (Button) this.findViewById(R.id.buttonSettings);

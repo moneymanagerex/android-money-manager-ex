@@ -669,6 +669,7 @@ public class SyncManager {
     }
 
     private File getExternalStorageDirectoryForSync() {
+        // todo check this after refactoring the database utils.
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
         File folder = new File(dbUtils.getDefaultDatabaseDirectory());
 

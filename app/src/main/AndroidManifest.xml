@@ -449,6 +449,7 @@
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
         <activity android:name=".home.CreateDatabaseActivity"></activity>
+        <activity android:name=".home.createdb.CreateDbStepper" />
     </application>
 
 </manifest>

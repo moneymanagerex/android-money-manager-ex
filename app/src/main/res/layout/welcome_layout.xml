@@ -153,6 +153,7 @@
                 android:textSize="18sp"
                 app:typeface="roboto_light" />
 
+            <!-- migration 1.4 to 2.0 -->
             <LinearLayout
                 android:id="@+id/panelMigration"
                 android:orientation="vertical"
