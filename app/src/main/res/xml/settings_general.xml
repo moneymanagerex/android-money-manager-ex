@@ -38,11 +38,6 @@
 
     <ListPreference
         android:icon="@null"
-        android:key="@string/pref_default_account"
-        android:title="@string/default_account" />
-
-    <ListPreference
-        android:icon="@null"
         android:defaultValue=""
         android:entries="@array/status_items"
         android:entryValues="@array/status_values"

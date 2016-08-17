@@ -25,10 +25,13 @@ import com.money.manager.ex.settings.GeneralSettingsActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -92,6 +95,7 @@ public class TutorialActivity
     void onCloseClicked(){
         // show general preferences (language)
         Intent intent = new Intent(this, GeneralSettingsActivity.class);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
     }
 

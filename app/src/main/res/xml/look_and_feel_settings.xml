@@ -43,7 +43,6 @@
     <!--android:entries="@array/show_transaction_values"-->
     <!--android:entryValues="@array/show_transaction_values"-->
 
-
     <CheckBoxPreference
         android:defaultValue="false"
         android:icon="@null"

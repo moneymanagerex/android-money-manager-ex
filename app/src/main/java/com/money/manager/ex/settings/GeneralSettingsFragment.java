@@ -124,7 +124,6 @@ public class GeneralSettingsFragment
             });
         }
 
-        initDefaultAccount();
     }
 
     public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
@@ -137,53 +136,4 @@ public class GeneralSettingsFragment
         }
     }
 
-    private void initDefaultAccount() {
-        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_default_account));
-        if (preference == null) return;
-
-        AccountService accountService = new AccountService(getActivity());
-        List<Account> accounts = accountService.getAccountList(false, false);
-
-        // the list is already sorted by name.
-
-        final String[] entries = new String[accounts.size() + 1];
-        String[] entryValues = new String[accounts.size() + 1];
-        // Add the null value so that the setting can be disabled.
-        entries[0] = getString(R.string.none);
-        entryValues[0] = "-1";
-        // list of currencies
-        for (int i = 1; i < accounts.size() + 1; i++) {
-            entries[i] = accounts.get(i-1).getName();
-            entryValues[i] = accounts.get(i-1).getId().toString();
-        }
-        // set value
-        preference.setEntries(entries);
-        preference.setEntryValues(entryValues);
-
-        final AccountRepository repository = new AccountRepository(getActivity());
-
-        // set account name as the value here
-        Integer defaultAccountId = new GeneralSettings(getActivity()).getDefaultAccountId();
-        String accountName = entries[0]; // none
-        if (defaultAccountId != null && defaultAccountId != Constants.NOT_SET) {
-            accountName = repository.loadName(defaultAccountId);
-        }
-        preference.setSummary(accountName);
-
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String accountName = entries[0];
-                int accountId = Integer.parseInt(newValue.toString());
-                if (accountId != Constants.NOT_SET) {
-                    accountName = repository.loadName(accountId);
-                }
-                preference.setSummary(accountName);
-
-                new GeneralSettings(getActivity()).setDefaultAccountId(accountId);
-
-                return true;
-            }
-        });
-    }
 }

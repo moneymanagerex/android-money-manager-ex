@@ -24,6 +24,11 @@
 
     <ListPreference
         android:icon="@null"
+        android:key="@string/pref_default_account"
+        android:title="@string/default_account" />
+
+    <ListPreference
+        android:icon="@null"
         android:key="@string/pref_date_format"
         android:title="@string/date_format" />
 

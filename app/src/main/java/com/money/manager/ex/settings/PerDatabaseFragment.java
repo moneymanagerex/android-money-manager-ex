@@ -29,16 +29,22 @@ import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
+import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -193,6 +199,7 @@ public class PerDatabaseFragment
             });
         }
 
+        initDefaultAccount();
     }
 
     /**
@@ -232,6 +239,56 @@ public class PerDatabaseFragment
             }
         }
         return null;
+    }
+
+    private void initDefaultAccount() {
+        ListPreference preference = (ListPreference) findPreference(getString(R.string.pref_default_account));
+        if (preference == null) return;
+
+        AccountService accountService = new AccountService(getActivity());
+        List<Account> accounts = accountService.getAccountList(false, false);
+
+        // the list is already sorted by name.
+
+        final String[] entries = new String[accounts.size() + 1];
+        String[] entryValues = new String[accounts.size() + 1];
+        // Add the null value so that the setting can be disabled.
+        entries[0] = getString(R.string.none);
+        entryValues[0] = "-1";
+        // list of currencies
+        for (int i = 1; i < accounts.size() + 1; i++) {
+            entries[i] = accounts.get(i-1).getName();
+            entryValues[i] = accounts.get(i-1).getId().toString();
+        }
+        // set value
+        preference.setEntries(entries);
+        preference.setEntryValues(entryValues);
+
+        final AccountRepository repository = new AccountRepository(getActivity());
+
+        // set account name as the value here
+        Integer defaultAccountId = new GeneralSettings(getActivity()).getDefaultAccountId();
+        String accountName = entries[0]; // none
+        if (defaultAccountId != null && defaultAccountId != Constants.NOT_SET) {
+            accountName = repository.loadName(defaultAccountId);
+        }
+        preference.setSummary(accountName);
+
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String accountName = entries[0];
+                int accountId = Integer.parseInt(newValue.toString());
+                if (accountId != Constants.NOT_SET) {
+                    accountName = repository.loadName(accountId);
+                }
+                preference.setSummary(accountName);
+
+                new GeneralSettings(getActivity()).setDefaultAccountId(accountId);
+
+                return true;
+            }
+        });
     }
 
     private void showCurrentDefaultCurrency() {
