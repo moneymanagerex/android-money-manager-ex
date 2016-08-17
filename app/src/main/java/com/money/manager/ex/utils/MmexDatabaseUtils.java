@@ -185,84 +185,18 @@ public class MmexDatabaseUtils {
         return null;
     }
 
-    /**
-     * /sdcard/MoneyManagerEx
-     * @return the location for the database in the publicly accessible storage
-     */
-    private File getDbExternalStorageDirectory() {
-        // sdcard
-        File externalStorageDirectory = Environment.getExternalStorageDirectory();
+    public boolean isValidDbFile(String dbFilePath) {
+        File dbFile = new File(dbFilePath);
 
-        if (externalStorageDirectory == null) return null;
-        if (!externalStorageDirectory.exists() || !externalStorageDirectory.isDirectory() || !externalStorageDirectory.canWrite()) {
-            return null;
-        }
+        if (!dbFile.exists()) return false;
+        // extension
+        if (!dbFile.getName().endsWith(".mmb")) return false;
+        // also add .emb in the future.
 
-        // now create the app's directory to the root
+        if (!dbFile.canRead()) return false;
+        if (!dbFile.canWrite()) return false;
 
-        File defaultFolder = new File(externalStorageDirectory + File.separator + "MoneyManagerEx");
-        if (defaultFolder.exists() && defaultFolder.canRead() && defaultFolder.canWrite()) return defaultFolder;
-
-        if (!defaultFolder.exists()) {
-            // create the directory.
-            if (!defaultFolder.mkdirs()) {
-                Timber.w("could not create the storage directory %s", defaultFolder.getAbsolutePath());
-                return null;
-            }
-        }
-
-        return defaultFolder;
-    }
-
-    /**
-     *
-     * @return directory to store the database in external files dir.
-     */
-    private File getExternalFilesDirectory() {
-        // /storage/sdcard0/Android/data/package/files
-        File externalFilesDir = getContext().getExternalFilesDir(null);
-
-        String dbString = externalFilesDir.getAbsolutePath().concat(File.pathSeparator)
-                .concat("databases");
-        File dbPath = new File(dbString);
-
-        if (dbPath.exists() && dbPath.canRead() && dbPath.canWrite()) return dbPath;
-
-        if (!dbPath.mkdir()) {
-            Timber.w("could not create databases directory in external files");
-            return null;
-        }
-
-        return dbPath;
-    }
-
-    /**
-     *
-     * @return app's files directory
-     */
-    private File getPackageDirectory() {
-        // getFilesDir() = /data/data/package/files
-        File packageLocation = getContext().getFilesDir().getParentFile();
-        // or: getContext().getApplicationInfo().dataDir
-        // getContext().getFilesDir()
-        //                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
-
-
-        String dbDirectoryPath = packageLocation.getAbsolutePath()
-                .concat(File.pathSeparator)
-                .concat("databases");
-
-        File dbDirectory = new File(dbDirectoryPath);
-        if (dbDirectory.exists() && dbDirectory.canRead() && dbDirectory.canWrite()) return dbDirectory;
-
-        if (!dbDirectory.exists()) {
-            if (!dbDirectory.mkdir()) {
-                Timber.w("could not create databases directory");
-                return null;
-            }
-        }
-
-        return dbDirectory ;
+        return true;
     }
 
     // Private
@@ -374,6 +308,86 @@ public class MmexDatabaseUtils {
         }
 
         return tableNames;
+    }
+
+    /**
+     * /sdcard/MoneyManagerEx
+     * @return the location for the database in the publicly accessible storage
+     */
+    private File getDbExternalStorageDirectory() {
+        // sdcard
+        File externalStorageDirectory = Environment.getExternalStorageDirectory();
+
+        if (externalStorageDirectory == null) return null;
+        if (!externalStorageDirectory.exists() || !externalStorageDirectory.isDirectory() || !externalStorageDirectory.canWrite()) {
+            return null;
+        }
+
+        // now create the app's directory to the root
+
+        File defaultFolder = new File(externalStorageDirectory + File.separator + "MoneyManagerEx");
+        if (defaultFolder.exists() && defaultFolder.canRead() && defaultFolder.canWrite()) return defaultFolder;
+
+        if (!defaultFolder.exists()) {
+            // create the directory.
+            if (!defaultFolder.mkdirs()) {
+                Timber.w("could not create the storage directory %s", defaultFolder.getAbsolutePath());
+                return null;
+            }
+        }
+
+        return defaultFolder;
+    }
+
+    /**
+     *
+     * @return directory to store the database in external files dir.
+     */
+    private File getExternalFilesDirectory() {
+        // /storage/sdcard0/Android/data/package/files
+        File externalFilesDir = getContext().getExternalFilesDir(null);
+
+        String dbString = externalFilesDir.getAbsolutePath().concat(File.pathSeparator)
+                .concat("databases");
+        File dbPath = new File(dbString);
+
+        if (dbPath.exists() && dbPath.canRead() && dbPath.canWrite()) return dbPath;
+
+        if (!dbPath.mkdir()) {
+            Timber.w("could not create databases directory in external files");
+            return null;
+        }
+
+        return dbPath;
+    }
+
+    /**
+     *
+     * @return app's files directory
+     */
+    private File getPackageDirectory() {
+        // getFilesDir() = /data/data/package/files
+        File packageLocation = getContext().getFilesDir().getParentFile();
+        // or: getContext().getApplicationInfo().dataDir
+        // getContext().getFilesDir()
+        //                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
+
+
+        String dbDirectoryPath = packageLocation.getAbsolutePath()
+                .concat(File.pathSeparator)
+                .concat("databases");
+
+        File dbDirectory = new File(dbDirectoryPath);
+        if (dbDirectory.exists() && dbDirectory.canRead() && dbDirectory.canWrite()) return dbDirectory;
+
+        if (!dbDirectory.exists()) {
+            if (!dbDirectory.mkdir()) {
+                Timber.w("could not create databases directory");
+                return null;
+            }
+        }
+
+        return dbDirectory ;
     }
 
     /**
