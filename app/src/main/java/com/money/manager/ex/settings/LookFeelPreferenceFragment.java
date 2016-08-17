@@ -17,7 +17,6 @@
 
 package com.money.manager.ex.settings;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -37,27 +36,23 @@ import com.money.manager.ex.view.RobotoView;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import timber.log.Timber;
+
 /**
  * Look & feel settings.
  */
 public class LookFeelPreferenceFragment
     extends PreferenceFragment {
 
-    private final String LOGCAT = this.getClass().getSimpleName();
-
-    private Context mContext;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mContext = getActivity().getApplicationContext();
 
         addPreferencesFromResource(R.xml.look_and_feel_settings);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        final LookAndFeelSettings settings = new AppSettings(mContext).getLookAndFeelSettings();
+        final LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
 
         // Theme
 
@@ -66,10 +61,13 @@ public class LookFeelPreferenceFragment
             lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (BuildConfig.DEBUG) Log.d(LOGCAT, newValue.toString());
+                    Timber.d("setting theme: %s", newValue.toString());
 
 //                    MainActivity.setRestartActivity(true);
                     EventBus.getDefault().post(new AppRestartRequiredEvent());
+
+                    getActivity().recreate();
+
                     return true;
                 }
             });
@@ -144,7 +142,7 @@ public class LookFeelPreferenceFragment
 
             // Show current value.
 
-            final DefinedDateRangeName rangeName = new AppSettings(mContext).getLookAndFeelSettings()
+            final DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
                     .getShowTransactions();
             DefinedDateRange range = ranges.get(rangeName);
 
@@ -169,7 +167,7 @@ public class LookFeelPreferenceFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (newValue instanceof String && NumberUtils.isNumber(newValue.toString())) {
-                        if (BuildConfig.DEBUG) Log.d(LOGCAT, "Preference set: font = " + newValue.toString());
+                        Timber.d("Preference set: font = %s", newValue.toString());
 
                         RobotoView.setUserFont(Integer.parseInt(newValue.toString()));
                         return true;
@@ -187,7 +185,7 @@ public class LookFeelPreferenceFragment
 
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (BuildConfig.DEBUG) Log.d(LOGCAT, "Preference set: font = " + newValue.toString());
+                    Timber.d("Preference set: font = %s", newValue.toString());
 
                     RobotoView.setUserFontSize(getActivity().getApplicationContext(), newValue.toString());
                     return true;
