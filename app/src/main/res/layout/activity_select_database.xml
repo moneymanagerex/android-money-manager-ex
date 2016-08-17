@@ -30,11 +30,19 @@
 
     <include layout="@layout/toolbar"/>
 
+    <!-- Intro -->
     <com.money.manager.ex.view.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:text="@string/selectDb1" />
+        android:text="@string/intro_text" />
+
+    <!-- Create Database text -->
+    <com.money.manager.ex.view.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="@string/intro_create_db" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -46,6 +54,13 @@
             android:text="@string/create_db" />
     </android.support.v7.widget.CardView>
 
+    <!-- Open Database text -->
+    <com.money.manager.ex.view.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="@string/intro_open_db" />
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -55,6 +70,13 @@
             android:layout_height="wrap_content"
             android:text="@string/open_database" />
     </android.support.v7.widget.CardView>
+
+    <!-- Configure Synchronisation text -->
+    <com.money.manager.ex.view.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="@string/intro_sync" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

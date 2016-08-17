@@ -749,5 +749,8 @@
     <string name="remote_file_not_found">Remote file not found</string>
 
     <!-- Select database screen -->
-    <string name="selectDb1">To start using Money Manager Ex, you need to create a new database or select an existing one to use.</string>
+    <string name="intro_text">To start using Money Manager Ex, you need to have a database file to store your data. Please select one of the available options below.</string>
+    <string name="intro_create_db">You can create a new file and set up the initial preferences.</string>
+    <string name="intro_open_db">Or you can select an existing file from your device.</string>
+    <string name="intro_sync">Alternatively, you can set up the synchronisation with a cloud service and download your database file from online storage for start.</string>
 </resources>

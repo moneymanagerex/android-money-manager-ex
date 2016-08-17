@@ -1,12 +1,19 @@
 package com.money.manager.ex.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+
+import java.util.regex.Pattern;
+
+import timber.log.Timber;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -67,4 +74,26 @@ public class UIHelper {
         int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return dp;
     }
+
+    /**
+     * Pick a database file using built-in file picker.
+     * @param locationPath ?
+     */
+    public void pickFileInternal(String locationPath, int requestCode) {
+        // root path should be the internal storage?
+        String root = Environment.getExternalStorageDirectory().getPath();
+
+        new MaterialFilePicker()
+                .withActivity((Activity) getContext())
+                .withRequestCode(requestCode)
+                .withRootPath(root)
+                .withPath(locationPath)
+                .withFilter(Pattern.compile(".*\\.mmb$"))
+                //.withFilterDirectories()
+                .withHiddenFiles(true)
+                .start();
+
+        // continues in onActivityResult in the parent activity
+    }
+
 }

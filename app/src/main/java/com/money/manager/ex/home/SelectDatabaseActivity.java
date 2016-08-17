@@ -24,7 +24,11 @@ import android.support.v7.widget.Toolbar;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +37,8 @@ import timber.log.Timber;
 
 public class SelectDatabaseActivity
     extends BaseFragmentActivity {
+
+    public static final int REQUEST_PICKFILE = 1;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -53,7 +59,18 @@ public class SelectDatabaseActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // handle permissions
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_PICKFILE:
+                if (resultCode != RESULT_OK) return;
+                if (data == null || !data.hasExtra(FilePickerActivity.RESULT_FILE_PATH)) return;
+
+                // data.getData().getPath()
+                String selectedPath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+                onDatabaseSelected(selectedPath);
+                break;
+        }
     }
 
     // Permissions
@@ -73,11 +90,35 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.openDatabaseButton)
     void onOpenDatabaseClick() {
-        // todo: show the file picker
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+        // todo inspect what happens here
+        String dbDirectory = dbUtils.getDatabaseDirectory();
+
+        // show the file picker
+        try {
+            UIHelper helper = new UIHelper(this);
+            helper.pickFileInternal(dbDirectory, REQUEST_PICKFILE);
+        } catch (Exception e) {
+            Timber.e(e, "opening file picker");
+        }
     }
 
     @OnClick(R.id.setupSyncButton)
     void onSetupSyncClick() {
         // todo: show the create database screen
+    }
+
+    private void onDatabaseSelected(String dbPath) {
+        // todo: check if valid file
+        //MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+
+
+        // store db setting
+        new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
+
+        // open the main activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

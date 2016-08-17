@@ -57,6 +57,7 @@ import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -874,7 +875,12 @@ public class MainActivity
         String dbDirectory = dbUtils.getDatabaseDirectory();
 
         // Environment.getDatabaseDirectory().getPath()
-        pickFileInternal(dbDirectory);
+        try {
+            UIHelper uiHelper = new UIHelper(this);
+            uiHelper.pickFileInternal(dbDirectory, REQUEST_PICKFILE);
+        } catch (Exception e) {
+            Timber.e(e, "displaying the open-database picker");
+        }
     }
 
     // Private
@@ -1287,30 +1293,6 @@ public class MainActivity
 //
 //        // Note that the selected file is handled in onActivityResult.
 //    }
-
-    /**
-     * Pick a database file to open using built-in file picker.
-     * @param locationPath ?
-     */
-    private void pickFileInternal(String locationPath) {
-        // root path should be the internal storage?
-        String root = Environment.getExternalStorageDirectory().getPath();
-
-        try {
-            new MaterialFilePicker()
-                    .withActivity(this)
-                    .withRequestCode(REQUEST_PICKFILE)
-                    .withRootPath(root)
-                    .withPath(locationPath)
-                    .withFilter(Pattern.compile(".*\\.mmb$"))
-                    //.withFilterDirectories()
-                    .withHiddenFiles(true)
-                    .start();
-        } catch (Exception e) {
-            Timber.e(e, "opening file picker for database selection");
-        }
-        // continues in onActivityResult
-    }
 
     /**
      * Change the database.
