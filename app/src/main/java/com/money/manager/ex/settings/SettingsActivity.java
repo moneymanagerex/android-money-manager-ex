@@ -16,16 +16,37 @@
  */
 package com.money.manager.ex.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 
 public class SettingsActivity
-        extends BaseSettingsFragmentActivity {
-//    private static String LOGCAT = SettingsActivity.class.getSimpleName();
+    extends BaseSettingsFragmentActivity {
+
+    public static final String EXTRA_FRAGMENT = "extraFragment";
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setSettingFragment(new SettingsFragment());
+
+        showFragment();
     }
 
+    private void showFragment() {
+        // figure out which fragment to show
+        PreferenceFragment fragment = null;
+
+        Intent intent = getIntent();
+
+        String fragmentName = intent.getStringExtra(EXTRA_FRAGMENT);
+        if (fragmentName.equals(PerDatabaseFragment.class.getSimpleName())) {
+            fragment = new PerDatabaseFragment();
+        }
+
+        // default
+        if (fragment == null) {
+            fragment = new SettingsFragment();
+        }
+        setSettingFragment(fragment);
+    }
 }

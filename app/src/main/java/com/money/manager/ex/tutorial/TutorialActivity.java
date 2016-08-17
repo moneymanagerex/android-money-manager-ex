@@ -20,6 +20,7 @@ package com.money.manager.ex.tutorial;
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.GeneralSettingsActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,6 +40,8 @@ import me.relex.circleindicator.CircleIndicator;
  */
 public class TutorialActivity
     extends FragmentActivity {
+
+    public static final int REQUEST_GENERAL_PREFERENCES = 1;
 
     public static final int RESULT_OK = 1;
 
@@ -64,25 +67,32 @@ public class TutorialActivity
 //        skipText.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                closeTutorial();
+//                onCloseClicked();
 //            }
 //        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_GENERAL_PREFERENCES:
+                // back from general preferences.
+
+                setResult(Activity.RESULT_OK);
+
+                // Mark tutorial as seen.
+                new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
+
+                startMainActivity();
+                break;
+        }
+    }
+
     @OnClick(R.id.skipTextView)
-    void closeTutorial(){
-        // Mark tutorial as seen.
-        new AppSettings(this).getBehaviourSettings().setShowTutorial(false);
-
-        setResult(Activity.RESULT_OK);
-
-        // start the Main Activity.
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-
-        // close
-        finish();
+    void onCloseClicked(){
+        // show general preferences (language)
+        Intent intent = new Intent(this, GeneralSettingsActivity.class);
+        startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
     }
 
     @Override
@@ -107,4 +117,13 @@ public class TutorialActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void startMainActivity() {
+        // start the Main Activity.
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        // close
+        finish();
+    }
 }

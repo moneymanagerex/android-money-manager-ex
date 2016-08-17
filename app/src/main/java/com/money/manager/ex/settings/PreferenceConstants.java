@@ -37,7 +37,7 @@ public class PreferenceConstants {
 
     // General
     public static final Integer PREF_USER_NAME = R.string.pref_user_name;
-    public static final Integer PREF_DATE_FORMAT = R.string.pref_date_format;
+//    public static final Integer PREF_DATE_FORMAT = R.string.pref_date_format;
     public static final Integer PREF_FINANCIAL_YEAR_STARTDATE = R.string.pref_financial_year_startdate;
     public static final Integer PREF_FINANCIAL_YEAR_STARTMONTH = R.string.pref_financial_year_startmonth;
     public static final Integer PREF_BASE_CURRENCY = R.string.pref_base_currency;

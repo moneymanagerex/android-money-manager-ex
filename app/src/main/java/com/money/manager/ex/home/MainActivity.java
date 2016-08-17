@@ -127,7 +127,6 @@ public class MainActivity
 
     private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
-//    private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
     private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
     private static final String KEY_ORIENTATION = "MainActivity:Orientation";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
@@ -137,7 +136,6 @@ public class MainActivity
 
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
-//    private boolean isShowTipsDropbox2 = false;
     private boolean isRecurringTransactionStarted = false;
     private boolean hasStarted = false;
     // navigation drawer
@@ -157,16 +155,7 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // show tutorial on the first run
-        if (needTutorial()) {
-            showTutorial();
-            finish();
-            return;
-        }
-
-        // show database chooser if no valid database
-        if (!isDatabaseAvailable()) {
-            showSelectDatabaseActivity();
+        if (showPrerequisite()) {
             finish();
             return;
         }
@@ -1365,6 +1354,28 @@ public class MainActivity
         // use this call to prevent exception in some cases -> commitAllowingStateLoss()
         // The exception is "fragment already added".
 //        transaction.commitAllowingStateLoss();
+    }
+
+    /**
+     * display any screens that need to be shown before the app actually runs.
+     * This usually happens only on the first run of the app.
+     * @return Indicator if another screen is showing. This means that this activity should close
+     * and not proceed with initialisation.
+     */
+    private boolean showPrerequisite() {
+        // show tutorial on the first run
+        if (needTutorial()) {
+            showTutorial();
+            return true;
+        }
+
+        // show database chooser if no valid database
+        if (!isDatabaseAvailable()) {
+            showSelectDatabaseActivity();
+            return true;
+        }
+
+        return false;
     }
 
     private void showReportsSelector(boolean isDarkTheme, String text) {

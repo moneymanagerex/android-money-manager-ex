@@ -28,6 +28,10 @@
         android:title="@string/preferences_general" />
     <Preference
         android:icon="@null"
+        android:key="@string/pref_per_database"
+        android:title="" />
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_look_feel"
         android:title="@string/preferences_dispaly" />
     <Preference

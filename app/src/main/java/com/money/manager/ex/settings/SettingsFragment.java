@@ -31,6 +31,7 @@ import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.log.ExceptionHandler;
 
 /**
+ * Root settings fragment.
  */
 public class SettingsFragment
     extends PreferenceFragment {
@@ -39,7 +40,7 @@ public class SettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
-        PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
         if (generalPreference != null) {
@@ -47,6 +48,20 @@ public class SettingsFragment
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), GeneralSettingsActivity.class));
+                    return true;
+                }
+            });
+        }
+
+        // Per-Database settings
+        Preference perDbPreference = findPreference(getString(R.string.pref_per_database));
+        if (perDbPreference != null) {
+            perDbPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                    intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, PerDatabaseFragment.class.getSimpleName());
+                    startActivity(intent);
                     return true;
                 }
             });

@@ -31,20 +31,10 @@
         android:summary="@string/username"
         android:title="@string/user" />
 
-    <ListPreference
-        android:icon="@null"
-        android:key="@string/pref_date_format"
-        android:title="@string/date_format" />
-
     <!--<ListPreference-->
         <!--android:icon="@null"-->
         <!--android:key="@string/pref_base_currency"-->
         <!--android:title="@string/base_currency" />-->
-
-    <Preference
-        android:icon="@null"
-        android:key="@string/pref_base_currency"
-        android:title="@string/base_currency" />
 
     <ListPreference
         android:icon="@null"
@@ -66,15 +56,5 @@
         android:entryValues="@array/new_transaction_dialog_values"
         android:key="@string/pref_default_payee"
         android:title="@string/default_payee" />
-
-    <EditTextPreference
-        android:icon="@null"
-        android:key="@string/pref_financial_year_startdate"
-        android:title="@string/financial_year_start_day" />
-
-    <ListPreference
-        android:icon="@null"
-        android:key="@string/pref_financial_year_startmonth"
-        android:title="@string/financial_year_start_month" />
 
 </PreferenceScreen>
