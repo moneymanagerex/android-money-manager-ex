@@ -432,10 +432,6 @@
             android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
 
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.gms.version" -->
-        <!-- android:value="@integer/google_play_services_version" /> -->
-
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
         <activity android:name=".sync.CloudFilePickerActivity" />
@@ -449,7 +445,8 @@
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
         <activity android:name=".home.CreateDatabaseActivity"></activity>
-        <activity android:name=".home.createdb.CreateDbStepper" />
+        <activity android:name=".home.createdb.CreateDbStepper"
+            android:theme="@style/Theme.AppCompat"/>
     </application>
 
 </manifest>
