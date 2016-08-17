@@ -17,11 +17,25 @@
 
 package com.money.manager.ex.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.settings.GeneralSettingsActivity;
+import com.money.manager.ex.settings.SyncPreferencesActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +45,7 @@ public class CreateDatabaseActivity
     extends BaseFragmentActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.linearLayoutHome) ViewGroup linearWelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +54,9 @@ public class CreateDatabaseActivity
 
         ButterKnife.bind(this);
         getToolbar().setSubtitle(R.string.create_db);
+
+        createWelcomeView();
+
 
         // todo language
         // todo Create database; use the existing functionality from the database preferences. Set the database as current.
@@ -54,4 +72,68 @@ public class CreateDatabaseActivity
         // todo set the current db path in preferences
         // todo open the main activity
     }
+
+    private void createWelcomeView() {
+        linearWelcome = (ViewGroup) findViewById(R.id.linearLayoutWelcome);
+
+        // basic settings
+        Button buttonSettings = (Button) this.findViewById(R.id.buttonSettings);
+        if (buttonSettings != null) {
+            buttonSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(CreateDatabaseActivity.this, GeneralSettingsActivity.class));
+                }
+            });
+        }
+
+        // Show current database
+        TextView currentDatabaseTextView = (TextView) this.findViewById(R.id.currentDatabaseTextView);
+        if (currentDatabaseTextView != null) {
+            String path = MoneyManagerApplication.getDatabasePath(this);
+            currentDatabaseTextView.setText(path);
+        }
+
+        // add account button
+        Button btnAddAccount = (Button) this.findViewById(R.id.buttonAddAccount);
+        if (btnAddAccount != null) {
+            btnAddAccount.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CreateDatabaseActivity.this, AccountEditActivity.class);
+                    intent.setAction(Intent.ACTION_INSERT);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        Button btnOpenDatabase = (Button) this.findViewById(R.id.buttonOpenDatabase);
+        if (btnOpenDatabase != null) {
+            btnOpenDatabase.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new RequestOpenDatabaseEvent());
+                }
+            });
+        }
+
+        // Setup Synchronization
+        Button btnSetupSync = (Button) this.findViewById(R.id.buttonSetupSync);
+        if (btnSetupSync != null) {
+            btnSetupSync.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CreateDatabaseActivity.this, SyncPreferencesActivity.class);
+                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Database migration v1.4 -> v2.0 location.
+        //setUpMigrationButton(view);
+    }
+
 }

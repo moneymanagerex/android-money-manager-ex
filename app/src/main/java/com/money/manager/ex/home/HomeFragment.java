@@ -115,7 +115,7 @@ public class HomeFragment
 
     // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
-    private ViewGroup linearHome, linearFooter, linearWelcome;
+    private ViewGroup linearHome, linearFooter;
     private TextView txtTotalAccounts, txtFooterSummary, txtFooterSummaryReconciled;
     private ProgressBar prgAccountBills;
     private FloatingActionButton mFloatingActionButton;
@@ -157,11 +157,6 @@ public class HomeFragment
 
         // inflate layout
         View view = inflater.inflate(R.layout.home_fragment, container, false);
-
-        // reference view into layout
-        linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
-
-        createWelcomeView(view);
 
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
 
@@ -597,69 +592,6 @@ public class HomeFragment
 
 //    private String[] mLanguageCodes;
 
-    private void createWelcomeView(View view) {
-        linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
-
-        // basic settings
-        Button buttonSettings = (Button) view.findViewById(R.id.buttonSettings);
-        if (buttonSettings != null) {
-            buttonSettings.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), GeneralSettingsActivity.class));
-                }
-            });
-        }
-
-        // Show current database
-        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
-        if (currentDatabaseTextView != null) {
-            String path = MoneyManagerApplication.getDatabasePath(getActivity());
-            currentDatabaseTextView.setText(path);
-        }
-
-        // add account button
-        Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
-        if (btnAddAccount != null) {
-            btnAddAccount.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), AccountEditActivity.class);
-                    intent.setAction(Intent.ACTION_INSERT);
-                    startActivity(intent);
-                }
-            });
-        }
-
-        Button btnOpenDatabase = (Button) view.findViewById(R.id.buttonOpenDatabase);
-        if (btnOpenDatabase != null) {
-            btnOpenDatabase.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new RequestOpenDatabaseEvent());
-                }
-            });
-        }
-
-        // Setup Synchronization
-        Button btnSetupSync = (Button) view.findViewById(R.id.buttonSetupSync);
-        if (btnSetupSync != null) {
-            btnSetupSync.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), SyncPreferencesActivity.class);
-                    //intent.putExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN, PreferenceConstants.PREF_DROPBOX_HOWITWORKS);
-                    startActivity(intent);
-                }
-            });
-        }
-
-        // Database migration v1.4 -> v2.0 location.
-        setUpMigrationButton(view);
-    }
-
 //    private void initLanguageDropdown(View view) {
 //        TextView languageSelectorHeader = (TextView) view.findViewById(R.id.languageHeaderTextView);
 //        if (languageSelectorHeader != null) {
@@ -887,7 +819,7 @@ public class HomeFragment
 
     private void renderAccountsList(Cursor cursor) {
         linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
-        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+//        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
 
         mAccountsByType.clear();
         mTotalsByType.clear();
