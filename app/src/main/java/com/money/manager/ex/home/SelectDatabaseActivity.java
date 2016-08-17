@@ -26,6 +26,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
@@ -91,7 +92,6 @@ public class SelectDatabaseActivity
     @OnClick(R.id.openDatabaseButton)
     void onOpenDatabaseClick() {
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
-        // todo inspect what happens here
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
         // show the file picker
@@ -105,7 +105,8 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.setupSyncButton)
     void onSetupSyncClick() {
-        // todo: show the create database screen
+        Intent intent = new Intent(this, SyncPreferencesActivity.class);
+        startActivity(intent);
     }
 
     private void onDatabaseSelected(String dbPath) {
