@@ -748,4 +748,6 @@
     <string name="error_parsing_value">Error parsing entered value</string>
     <string name="remote_file_not_found">Remote file not found</string>
 
+    <!-- Select database screen -->
+    <string name="selectDb1">To start using Money Manager Ex, you need to create a new database or select an existing one to use.</string>
 </resources>

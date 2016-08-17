@@ -83,7 +83,7 @@ public class RobotoView {
     
     public static void setUserFontSize(Context context, String fontSize) {
     	if (fontSize.equalsIgnoreCase("micro")) {
-    		mUserFontSize = context.getResources().getDimension(R.dimen.money_text_view_size_micro);
+    		mUserFontSize = context.getResources().getDimension(R.dimen.mmex_text_view_size_micro);
     	} else if (fontSize.equalsIgnoreCase("small")) {
     		mUserFontSize = context.getResources().getDimension(R.dimen.money_text_view_size_small);
     	} else if (fontSize.equalsIgnoreCase("default")) {

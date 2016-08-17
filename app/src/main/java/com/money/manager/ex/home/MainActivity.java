@@ -56,6 +56,7 @@ import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -102,6 +103,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
@@ -123,11 +125,15 @@ public class MainActivity
         return mRestartActivity;
     }
 
+    public static void setRestartActivity(boolean mRestart) {
+        MainActivity.mRestartActivity = mRestart;
+    }
+
     // private
 
     private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
-    private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
+//    private static final String KEY_IS_SHOW_TIPS_DROPBOX2 = "MainActivity:isShowTipsDropbox2";
     private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
     private static final String KEY_ORIENTATION = "MainActivity:Orientation";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
@@ -166,10 +172,24 @@ public class MainActivity
 
         // show database chooser if no valid database
         if (!isDatabaseAvailable()) {
-            // todo: show database chooser
+            showSelectDatabaseActivity();
             finish();
             return;
         }
+
+        // Layout
+
+        setContentView(R.layout.main_activity);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) setSupportActionBar(toolbar);
+
+        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
+        setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
+
+        initializeDrawer();
+
+        // end layout
 
         // Restore state. Check authentication, etc.
         if (savedInstanceState != null) {
@@ -177,21 +197,15 @@ public class MainActivity
         }
 
         // Initialize the map for recent entries that link to drawer menu items.
-        this.recentDbs = new RecentDatabasesProvider(this.getApplicationContext());
+        this.recentDbs = new RecentDatabasesProvider(this);
 
         // Close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
-        createLayout();
-
-//        pingStats();
-
-//        if (!tutorialShown) {
-        // Skipped tutorial because it was seen in the past.
-        onTutorialComplete(savedInstanceState);
-        // Otherwise continue at onActivityResult after tutorial closed.
-//        }
+        // todo: move this to the select-db activity.
+        initialize(savedInstanceState);
+        // async, continue at onRequestPermissionsResult().
     }
 
     @Override
@@ -388,18 +402,6 @@ public class MainActivity
         }
     }
 
-    // Permissions
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        // cancellation
-        if (permissions.length == 0) return;
-
-        // Currently the request code does not matter. We ask for read/write permissions.
-        initialize(null);
-    }
-
     // Custom methods
 
     public void checkCloudForDbUpdates() {
@@ -411,20 +413,6 @@ public class MainActivity
         // todo: redo this using Rx!
         AsyncTask<Void, Integer, Integer> asyncTask = new CheckCloudStorageForUpdatesTask(this);
         asyncTask.execute();
-    }
-
-    public void createLayout() {
-        setContentView(R.layout.main_activity);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
-
-        LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
-        setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
-
-        initializeDrawer();
     }
 
     /**
@@ -668,16 +656,6 @@ public class MainActivity
         getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
-    private void onTutorialComplete(Bundle savedInstanceState) {
-        // Request external storage permissions.
-        MyFileUtils fileUtils = new MyFileUtils(this);
-        boolean showingDialog = fileUtils.requestExternalStoragePermissions(this);
-        // async, continue at onRequestPermissionsResult().
-        if (!showingDialog) {
-            initialize(savedInstanceState);
-        }
-    }
-
     /**
      * for the change setting restart process application
      */
@@ -838,8 +816,7 @@ public class MainActivity
     }
 
     /**
-     * Show tutorial on first run.
-     * @return boolean indicator whether the tutorial was displayed or not
+     * Show tutorial activity.
      */
     public void showTutorial() {
         Intent intent = new Intent(this, TutorialActivity.class);
@@ -1215,6 +1192,16 @@ public class MainActivity
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }
 
+    private boolean isDatabaseAvailable() {
+        // Do we have a database set?
+        String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
+        if (StringUtils.isEmpty(dbPath)) return false;
+
+        // Does the database file exist?
+        File dbFile = new File(dbPath);
+        return dbFile.exists();
+    }
+
     private boolean needTutorial() {
         return new AppSettings(this).getBehaviourSettings().getShowTutorial();
     }
@@ -1378,8 +1365,11 @@ public class MainActivity
         }
     }
 
-    public static void setRestartActivity(boolean mRestart) {
-        MainActivity.mRestartActivity = mRestart;
+    private void showSelectDatabaseActivity() {
+        Intent intent = new Intent(this, SelectDatabaseActivity.class);
+        // make top-level so there's no going back.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void showFragment_Internal(Fragment fragment, String tag) {
@@ -1450,14 +1440,4 @@ public class MainActivity
         onDrawerItemSubDialogs(adapter, text);
     }
 
-    public boolean isDatabaseAvailable() {
-        // Do we have a database set?
-        String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
-        if (StringUtils.isEmpty(dbPath)) return false;
-
-        // Does the database file exist?
-        File dbFile = new File(dbPath);
-        return dbFile.exists();
-
-    }
 }

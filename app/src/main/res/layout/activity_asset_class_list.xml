@@ -21,8 +21,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_side_margin"
-    android:layout_marginRight="@dimen/activity_side_margin"
+    android:layout_marginLeft="@dimen/mmex_activity_side_margin"
+    android:layout_marginRight="@dimen/mmex_activity_side_margin"
     tools:context=".assetallocation.list.AssetClassListActivity">
 
     <android.support.v7.widget.RecyclerView

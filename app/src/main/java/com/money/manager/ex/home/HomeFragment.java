@@ -595,7 +595,7 @@ public class HomeFragment
         mExpandableListView.addFooterView(linearFooter, null, false);
     }
 
-    private String[] mLanguageCodes;
+//    private String[] mLanguageCodes;
 
     private void createWelcomeView(View view) {
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);

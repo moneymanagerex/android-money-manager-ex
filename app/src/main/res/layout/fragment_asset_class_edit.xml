@@ -36,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_padding_side"
-            android:paddingRight="@dimen/activity_padding_side">
+            android:paddingLeft="@dimen/mmex_activity_side_padding"
+            android:paddingRight="@dimen/mmex_activity_side_padding">
 
             <!-- todo: parent asset class -->
             <com.money.manager.ex.view.RobotoTextView

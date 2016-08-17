@@ -27,8 +27,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/activity_side_margin"
-        android:layout_marginRight="@dimen/activity_side_margin"
+        android:layout_marginLeft="@dimen/mmex_activity_side_margin"
+        android:layout_marginRight="@dimen/mmex_activity_side_margin"
         android:animateLayoutChanges="true"
         android:background="?attr/theme_background_color"
         android:focusable="true"
@@ -47,8 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_padding_side"
-                android:paddingRight="@dimen/activity_padding_side">
+                android:paddingLeft="@dimen/mmex_activity_side_padding"
+                android:paddingRight="@dimen/mmex_activity_side_padding">
 
                 <!-- Purchase Date -->
                 <com.money.manager.ex.view.RobotoTextView

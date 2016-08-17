@@ -26,7 +26,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <!-- Navigation Drawer -->
         <include layout="@layout/toolbar"/>
 
         <LinearLayout

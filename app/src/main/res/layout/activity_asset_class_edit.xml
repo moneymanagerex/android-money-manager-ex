@@ -19,8 +19,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginLeft="@dimen/activity_side_margin"
-    android:layout_marginRight="@dimen/activity_side_margin"
+    android:layout_marginLeft="@dimen/mmex_activity_side_margin"
+    android:layout_marginRight="@dimen/mmex_activity_side_margin"
     android:orientation="vertical">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"

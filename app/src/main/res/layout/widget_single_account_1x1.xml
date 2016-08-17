@@ -25,7 +25,7 @@
         android:contentDescription="@string/logo"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="@dimen/activity_side_margin"
+        android:layout_margin="@dimen/mmex_activity_side_margin"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_logo_money_manager_ex"/>

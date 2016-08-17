@@ -15,7 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <dimen name="money_text_view_size_micro">12sp</dimen>
+    <dimen name="mmex_text_view_size_micro">12sp</dimen>
     <dimen name="money_text_view_size_small">14sp</dimen>
     <dimen name="money_text_view_size_medium">18sp</dimen>
     <dimen name="money_text_view_size_large">22sp</dimen>
@@ -23,11 +23,11 @@
 
     <dimen name="money_button_height">36dp</dimen>
 
-    <dimen name="money_elevation">8dp</dimen>
+    <dimen name="mmex_elevation">8dp</dimen>
 
     <!-- Preference activity side margins -->
-    <dimen name="activity_side_margin">0dp</dimen>
-    <dimen name="activity_padding_side">16dp</dimen>
+    <dimen name="mmex_activity_side_margin">0dp</dimen>
+    <dimen name="mmex_activity_side_padding">16dp</dimen>
 
     <!-- default padding and margin -->
     <dimen name="mmex_padding">4dp</dimen>
@@ -41,7 +41,7 @@
     <dimen name="input_dialog_linear_button_height">52dp</dimen>
 
     <!-- shape dimens -->
-    <dimen name="money_corners_radius">2dp</dimen>
+    <dimen name="mmex_corners_radius">2dp</dimen>
 
     <!-- chart dimens -->
     <dimen name="chart_label_text_size">8sp</dimen>

@@ -17,5 +17,5 @@
   -->
 
 <resources>
-    <dimen name="activity_padding_side">48dp</dimen>
+    <dimen name="mmex_activity_side_padding">48dp</dimen>
 </resources>
