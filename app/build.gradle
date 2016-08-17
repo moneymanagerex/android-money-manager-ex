@@ -15,14 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//plugins {
-//    id "me.tatarka.retrolambda" version "3.2.5"
-//}
-
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -31,7 +26,7 @@ android {
     defaultConfig {
         applicationId "com.money.manager.ex"
         versionName '2016.08.17'
-        versionCode 888
+        versionCode 890
 
         minSdkVersion 15 // 4.0.3
         targetSdkVersion 24

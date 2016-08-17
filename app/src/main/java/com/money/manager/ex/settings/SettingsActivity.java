@@ -39,7 +39,7 @@ public class SettingsActivity
         Intent intent = getIntent();
 
         String fragmentName = intent.getStringExtra(EXTRA_FRAGMENT);
-        if (fragmentName.equals(PerDatabaseFragment.class.getSimpleName())) {
+        if (fragmentName != null && fragmentName.equals(PerDatabaseFragment.class.getSimpleName())) {
             fragment = new PerDatabaseFragment();
         }
 

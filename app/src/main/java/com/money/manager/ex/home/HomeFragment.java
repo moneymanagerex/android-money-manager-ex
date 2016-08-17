@@ -56,22 +56,18 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
-import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -95,6 +91,7 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * The starting fragment that contains the accounts groups with accounts and their balances.
@@ -158,6 +155,7 @@ public class HomeFragment
         // inflate layout
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
+        linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
 
         setUpAccountsList(view);
@@ -298,8 +296,7 @@ public class HomeFragment
                 try {
                     renderAccountsList(data);
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                    handler.e(e, "rendering account list");
+                    Timber.e(e, "rendering account list");
                 }
 
                 // set total for accounts in the main Drawer.
@@ -810,8 +807,7 @@ public class HomeFragment
         try {
             account = (QueryAccountBills) accountsAdapter.getChild(groupPos, childPos);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(e, "getting the selected account id");
+            Timber.e(e, "getting the selected account id");
         }
 
         return account;

@@ -170,8 +170,6 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
-        initializeDrawer();
-
         // end layout
 
         // Restore state. Check authentication, etc.
@@ -202,6 +200,8 @@ public class MainActivity
         } else {
             initializeDatabaseAccess(savedInstanceState);
         }
+
+        initializeDrawer();
     }
 
     @Override
