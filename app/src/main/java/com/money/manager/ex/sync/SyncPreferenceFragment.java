@@ -35,12 +35,16 @@ import android.widget.Toast;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -141,10 +145,13 @@ public class SyncPreferenceFragment
         // start sync service
         getSyncManager().startSyncService();
 
+        // save local file
+        storeLocalFileSetting(remoteFile);
+
         // download db from the cloud storage
         if (!remoteFile.equals(previousFile)) {
             // force download file
-            sync.triggerDownload();
+            forceDownload();
         }
     }
 
@@ -221,8 +228,7 @@ public class SyncPreferenceFragment
         viewHolder.download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                SyncManager sync = getSyncManager();
-                sync.triggerDownload();
+                forceDownload();
                 return true;
             }
         });
@@ -256,6 +262,11 @@ public class SyncPreferenceFragment
         });
     }
 
+    private void forceDownload() {
+        SyncManager sync = getSyncManager();
+        sync.triggerDownload();
+    }
+
     private void forceUpload() {
         String localFile = MoneyManagerApplication.getDatabasePath(getActivity());
         String remoteFile = getSyncManager().getRemotePath();
@@ -269,5 +280,17 @@ public class SyncPreferenceFragment
         Toast.makeText(getActivity().getApplicationContext(), R.string.sync_uploading, Toast.LENGTH_LONG).show();
         // start service
         getActivity().startService(service);
+    }
+
+    private void storeLocalFileSetting(String remoteFile) {
+        String fileName = new File(remoteFile).getName();
+
+        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getActivity());
+        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
+
+        String dbPath = dbDirectory.concat(File.separator).concat(fileName);
+
+        // save preference
+        new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
     }
 }
