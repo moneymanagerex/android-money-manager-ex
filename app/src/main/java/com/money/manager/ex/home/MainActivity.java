@@ -58,6 +58,7 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.sync.adapter.SyncAdapterTrigger;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -101,6 +102,9 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import timber.log.Timber;
+
+import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT;
+import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT_TYPE;
 
 /**
  * Main activity of the application.
@@ -153,14 +157,6 @@ public class MainActivity
     private RecentDatabasesProvider recentDbs;
     private boolean mInitialized = false;
 
-    // sync stuff
-    // The authority for the sync adapter's content provider
-    public static final String AUTHORITY = "com.money.manager.ex.sync.adapter";
-    // An account type, in the form of a domain name
-    public static final String ACCOUNT_TYPE = "example.com";
-    // The account name
-    public static final String ACCOUNT = "dummyaccount";
-
     /**
      * Create a new dummy account for the sync adapter
      *
@@ -187,7 +183,7 @@ public class MainActivity
              * The account exists or some other error occurred. Log this, report it,
              * or handle it internally.
              */
-            Timber.e("can't add account for sync!");
+            Timber.d("can't add account for sync!");
         }
         return newAccount;
     }
@@ -201,8 +197,10 @@ public class MainActivity
             return;
         }
 
+        // todo enable for sync
         // create the sync account
-        CreateSyncAccount(this);
+//        CreateSyncAccount(this);
+//        new SyncAdapterTrigger().runSync();
 
         // Layout
 

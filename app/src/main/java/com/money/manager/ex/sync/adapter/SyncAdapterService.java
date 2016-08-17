@@ -29,6 +29,13 @@ import android.os.IBinder;
 public class SyncAdapterService
     extends Service {
 
+    // The authority for the sync adapter's content provider
+    public static final String AUTHORITY = "com.money.manager.ex.sync.adapter";
+    // An account type, in the form of a domain name
+    public static final String ACCOUNT_TYPE = "com.money.manager.ex.sync";
+    // The account name
+    public static final String ACCOUNT = "Synchronization";
+
     // Storage for an instance of the sync adapter
     private static SyncAdapter sSyncAdapter = null;
     // Object to use as a thread-safe lock
