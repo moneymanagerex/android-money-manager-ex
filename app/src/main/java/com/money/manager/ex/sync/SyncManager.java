@@ -39,6 +39,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -405,10 +406,19 @@ public class SyncManager {
         if (!(getContext() instanceof Activity)) return;
 
         File downloadedDb = new File(getLocalPath());
-        SyncCommon common = new SyncCommon();
 
-        Intent intent = common.getIntentForOpenDatabase(getContext(), downloadedDb);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        boolean isDbSet = dbUtils.useDatabase(downloadedDb.getAbsolutePath());
 
+//        SyncCommon common = new SyncCommon();
+//        Intent intent = common.getIntentForOpenDatabase(getContext(), downloadedDb);
+
+        if (!isDbSet) {
+            UIHelper.showToast(getContext(), R.string.error);
+            return;
+        }
+        
+        Intent intent = IntentFactory.getMainActivityNew(getContext());
         getContext().startActivity(intent);
     }
 

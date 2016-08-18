@@ -27,7 +27,6 @@ public class SyncPreferencesActivity
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        // setSettingFragment(new DropboxSettingsFragment());
         setSettingFragment(new SyncPreferenceFragment());
     }
 }
