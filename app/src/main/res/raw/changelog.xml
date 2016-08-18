@@ -16,26 +16,21 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="">
+    <changelogversion versionName="2016.08.18.892">
+        <changelogtext>Improving the price download speed for Morningstar provider.</changelogtext>
         <changelogtext>Sorting portfolio by symbol.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.08.18.891">
         <changelogtext>Using a different file-picker. This should resolve crashes.</changelogtext>
         <changelogtext>Minor improvements in the Passcode settings.</changelogtext>
         <changelogtext>Completed the new Welcome wizard.</changelogtext>
         <changelogtext>Adding a new library for font icons.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.08.17.890">
         <changelogtext>Comprehensive initialisation options for new installations.</changelogtext>
         <changelogtext>Delayed upload rewritten as a background service.</changelogtext>
         <changelogtext>Stability improvements.</changelogtext>
         <changelogtext>Redoing the Tutorial display logic.</changelogtext>
-    </changelogversion>
-    <changelogversion versionName="2016.08.15.883">
         <changelogtext>Quick database switching. No need to restart the app anymore.</changelogtext>
         <changelogtext>Adding dependency injection on price downloader for Morningstar.</changelogtext>
     </changelogversion>
-    <changelogversion versionName="2016.08.14.880">
+    <changelogversion versionName="2016.08.14.881">
         <changelogtext>Adding a file picker for opening a database.</changelogtext>
         <changelogtext>Updating CloudRail library.</changelogtext>
         <changelogtext>Correcting the auto-sync trigger.</changelogtext>
