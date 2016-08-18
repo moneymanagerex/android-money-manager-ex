@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -51,7 +52,6 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.CalendarUtils;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.IntentUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -365,8 +365,7 @@ public class IncomeVsExpensesListFragment
                 calendar.setLastDayOfMonth();
                 params.dateTo = new DateTime(calendar.getTime());
 
-                IntentUtils intentUtils = new IntentUtils(getActivity());
-                Intent intent = intentUtils.getIntentForSearch(params);
+                Intent intent = IntentFactory.getIntentForSearch(getActivity(), params);
                 startActivity(intent);
             }
         });

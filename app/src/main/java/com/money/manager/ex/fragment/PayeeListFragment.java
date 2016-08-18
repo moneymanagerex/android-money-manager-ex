@@ -42,6 +42,7 @@ import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -51,7 +52,6 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.IntentUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -226,9 +226,7 @@ public class PayeeListFragment
                 parameters.payeeId = payee.getId();
                 parameters.payeeName = payee.getName();
 
-//                showSearchActivityFor(parameters);
-                IntentUtils intentUtils = new IntentUtils(getActivity());
-                Intent intent = intentUtils.getIntentForSearch(parameters);
+                Intent intent = IntentFactory.getIntentForSearch(getActivity(), parameters);
                 startActivity(intent);
         }
         return false;

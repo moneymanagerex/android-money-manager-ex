@@ -54,6 +54,7 @@ import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -651,11 +652,13 @@ public class MainActivity
                 // kill process
 //                android.os.Process.killProcess(android.os.Process.myPid());
             } else {
-//                // New api. This will keep the Intent, which hangs after Dropbox update.
+                // New api. This will keep the Intent, which hangs after the db download!
 //                this.recreate();
 
+                Intent intent = IntentFactory.getMainActivityNew(this);
+                startActivity(intent);
+
                 finish();
-                startMainActivity();
             }
         }
 
@@ -676,35 +679,6 @@ public class MainActivity
 //        android.os.Process.killProcess(android.os.Process.myPid());
 //        System.exit(1);
 //    }
-
-//    private void shutdownWithPrompt() {
-//        new MaterialDialog.Builder(this)
-//                .content(R.string.app_restart)
-//                .positiveText(android.R.string.ok)
-//                .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                    @Override
-//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                        shutdownApp();
-//                    }
-//                })
-//                .neutralText(android.R.string.cancel)
-//                .show();
-//    }
-
-    private void startMainActivity() {
-        // Don't reuse the same Intent. It loops when called after Dropbox download.
-
-        Context baseContext = getBaseContext();
-        Intent intent = baseContext.getPackageManager()
-                .getLaunchIntentForPackage(baseContext.getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-
-        // option 2
-//        Intent intent = getIntent();
-//        finish();
-//        startActivity(intent);
-    }
 
     /**
      * @param mIsDualPanel the mIsDualPanel to set

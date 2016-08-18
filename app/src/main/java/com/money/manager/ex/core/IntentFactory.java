@@ -21,8 +21,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
 
+import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.search.SearchActivity;
+import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncService;
+
+import org.parceler.Parcels;
 
 /**
  * Generates Intents for common app functionality.
@@ -43,5 +48,31 @@ public class IntentFactory {
         }
 
         return syncServiceIntent;
+    }
+
+    public static Intent getIntentForSearch(Context context, SearchParameters parameters) {
+        Intent intent = new Intent(context, SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
+        intent.setAction(Intent.ACTION_INSERT);
+        //getContext().startActivity(intent);
+        return intent;
+    }
+
+    /**
+     * Creates the intent that will start the Main Activity, resetting the activity stack.
+     * This will prevent going back to any previous activity.
+     * @return intent
+     */
+    public static Intent getMainActivityNew(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        // Clear the activity stack completely.
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        return intent;
     }
 }

@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
@@ -125,8 +126,7 @@ public class SelectDatabaseActivity
         new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
 
         // open the main activity
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = IntentFactory.getMainActivityNew(this);
         startActivity(intent);
     }
 }

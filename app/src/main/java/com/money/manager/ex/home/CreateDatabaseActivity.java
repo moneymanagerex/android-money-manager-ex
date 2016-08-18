@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -85,13 +86,7 @@ public class CreateDatabaseActivity
     @OnClick(R.id.runButton)
     void onRunClick() {
         // Open the main activity.
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        // Clear the activity stack completely.
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Intent intent = IntentFactory.getMainActivityNew(this);
         startActivity(intent);
 
         finish();
