@@ -170,4 +170,10 @@
             <!--app:borderWidth="0dp"-->
             <!--/>-->
     </FrameLayout>
+
+    <include
+        android:id="@+id/linearLayoutWelcome"
+        layout="@layout/welcome_layout"
+        android:visibility="gone"/>
+
 </LinearLayout>

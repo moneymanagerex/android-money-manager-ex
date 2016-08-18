@@ -56,13 +56,16 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
+import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -112,7 +115,7 @@ public class HomeFragment
 
     // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
-    private ViewGroup linearHome, linearFooter;
+    private ViewGroup linearHome, linearFooter, linearWelcome;
     private TextView txtTotalAccounts, txtFooterSummary, txtFooterSummaryReconciled;
     private ProgressBar prgAccountBills;
     private FloatingActionButton mFloatingActionButton;
@@ -157,6 +160,8 @@ public class HomeFragment
 
         linearHome = (FrameLayout) view.findViewById(R.id.linearLayoutHome);
         txtTotalAccounts = (TextView) view.findViewById(R.id.textViewTotalAccounts);
+
+        createWelcomeView(view);
 
         setUpAccountsList(view);
 
@@ -587,6 +592,45 @@ public class HomeFragment
         mExpandableListView.addFooterView(linearFooter, null, false);
     }
 
+    private void createWelcomeView(View view) {
+        linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
+
+        // basic settings
+        Button buttonSettings = (Button) view.findViewById(R.id.buttonSettings);
+        if (buttonSettings != null) {
+            buttonSettings.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), GeneralSettingsActivity.class));
+                }
+            });
+        }
+
+        // Show current database
+        TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
+        if (currentDatabaseTextView != null) {
+            String path = MoneyManagerApplication.getDatabasePath(getActivity());
+            currentDatabaseTextView.setText(path);
+        }
+
+        // add account button
+        Button btnAddAccount = (Button) view.findViewById(R.id.buttonAddAccount);
+        if (btnAddAccount != null) {
+            btnAddAccount.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), AccountEditActivity.class);
+                    intent.setAction(Intent.ACTION_INSERT);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Database migration v1.4 -> v2.0 location.
+        setUpMigrationButton(view);
+    }
+
 //    private String[] mLanguageCodes;
 
 //    private void initLanguageDropdown(View view) {
@@ -815,7 +859,7 @@ public class HomeFragment
 
     private void renderAccountsList(Cursor cursor) {
         linearHome.setVisibility(cursor != null && cursor.getCount() > 0 ? View.VISIBLE : View.GONE);
-//        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        linearWelcome.setVisibility(linearHome.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
 
         mAccountsByType.clear();
         mTotalsByType.clear();
