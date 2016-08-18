@@ -125,11 +125,15 @@ public class RecurringTransactionService
                 result = result.plusMonths(numberOfPeriods);
                 break;
             case MONTHLY_LAST_DAY: //month (last day)
-                result = result.dayOfMonth().withMaximumValue();
+                //one liner
+                //  result = result.dayOfMonth().withMinimumValue().plusMonths(1).dayOfMonth().withMaximumValue();
+                result = result.dayOfMonth().withMinimumValue();
+                result = result.plusMonths(1).dayOfMonth().withMaximumValue();
                 break;
             case MONTHLY_LAST_BUSINESS_DAY: //month (last business day)
-                // get the last day of the month,
-                result = result.dayOfMonth().withMaximumValue();
+                // get the last day of the next month,
+                result = result.dayOfMonth().withMinimumValue();
+                result = result.plusMonths(1).dayOfMonth().withMaximumValue();
                 // then iterate backwards until we are not on weekend day.
                 while(result.getDayOfWeek() == DateTimeConstants.SATURDAY ||
                         result.getDayOfWeek() == DateTimeConstants.SUNDAY) {
