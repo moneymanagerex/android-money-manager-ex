@@ -39,6 +39,7 @@ import com.money.manager.ex.core.ioc.DaggerMmexComponent;
 import com.money.manager.ex.core.ioc.MmexComponent;
 import com.money.manager.ex.core.ioc.MmexModule;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.log.DebugTree;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
@@ -191,14 +192,15 @@ public class MoneyManagerApplication
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
 
-        // Setup exception reporting. Disabled for debug builds
+        // Exception reporting. Disabled for debug builds.
         Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build();
         Fabric.with(this, crashlyticsKit); // new Crashlytics()
 
+        // Loggers
         if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+            Timber.plant(new DebugTree());
         } else {
             Timber.plant(new CrashReportingTree());
         }

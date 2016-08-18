@@ -71,9 +71,6 @@ public class CreateDatabaseActivity
         String dbPath = dbUtils.createDatabase(DEFAULT_DB_FILENAME);
         if (TextUtils.isEmpty(dbPath)) return;
 
-        // Read the full path from the preferences.
-//        String filePath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
-
         dbUtils.useDatabase(dbPath);
 
         // show message
