@@ -54,8 +54,16 @@ public class NetworkUtils {
 
     public boolean isOnWiFi() {
         ConnectivityManager connManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        // todo: use connManager.getAllNetworks()
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        return mWifi.isConnected();
+        // check connManager.getAllNetworks()
+
+        // deprecated as of API 23.
+//        NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+        if (networkInfo == null) return false;  // no network
+        if (!networkInfo.isConnected()) return false;
+
+        return networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+
     }
 }
