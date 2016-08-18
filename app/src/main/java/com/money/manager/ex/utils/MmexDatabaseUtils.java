@@ -65,6 +65,20 @@ public class MmexDatabaseUtils {
         return dbPath.contains(".emb");
     }
 
+    public static boolean isValidDbFile(String dbFilePath) {
+        File dbFile = new File(dbFilePath);
+
+        if (!dbFile.exists()) return false;
+        // extension
+        if (!dbFile.getName().endsWith(".mmb")) return false;
+        // also add .emb in the future.
+
+        if (!dbFile.canRead()) return false;
+        if (!dbFile.canWrite()) return false;
+
+        return true;
+    }
+
     // Dynamic
 
     public MmexDatabaseUtils(Context context){
@@ -183,20 +197,6 @@ public class MmexDatabaseUtils {
         if (defaultFolder != null) return defaultFolder.getAbsolutePath();
 
         return null;
-    }
-
-    public boolean isValidDbFile(String dbFilePath) {
-        File dbFile = new File(dbFilePath);
-
-        if (!dbFile.exists()) return false;
-        // extension
-        if (!dbFile.getName().endsWith(".mmb")) return false;
-        // also add .emb in the future.
-
-        if (!dbFile.canRead()) return false;
-        if (!dbFile.canWrite()) return false;
-
-        return true;
     }
 
     // Private

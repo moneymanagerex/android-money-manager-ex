@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.util.ArrayList;
@@ -125,6 +126,10 @@ public class UIHelper {
 
 //        return data.getStringExtra(FilePickerActivity.EXTRA_PATHS);
         String filePath = data.getData().getPath();
+
+        // check if the db file is valid
+        if (!MmexDatabaseUtils.isValidDbFile(filePath)) return null;
+
 //        return data.getData().toString();
         return filePath;
     }
