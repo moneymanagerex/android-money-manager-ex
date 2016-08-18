@@ -197,7 +197,7 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             ,'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
-            ,'com.github.fcannizzaro:material-stepper:1.2.2'
+//            ,'com.github.fcannizzaro:material-stepper:1.2.2'
 
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {

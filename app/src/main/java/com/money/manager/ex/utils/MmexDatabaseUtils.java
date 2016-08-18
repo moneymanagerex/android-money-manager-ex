@@ -236,31 +236,31 @@ public class MmexDatabaseUtils {
 
     private boolean createDatabase_Internal(String filename)
         throws IOException {
-        boolean result = true;
+        boolean result;
 
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
         String location = dbUtils.getDefaultDatabaseDirectory();
-        String newFilePath = location + File.separator + filename;
+
+        String newFilePath = location.concat(File.separator).concat(filename);
 
         // Create db file.
         File dbFile = new File(newFilePath);
         if (dbFile.exists()) {
-            showToast(R.string.create_db_exists, Toast.LENGTH_SHORT);
-            return false;
-        } else {
-            result = dbFile.createNewFile();
+//            showToast(R.string.create_db_exists, Toast.LENGTH_SHORT);
+//            return false;
+            throw new RuntimeException(getContext().getString(R.string.create_db_exists));
         }
+
+        result = dbFile.createNewFile();
 
         // close connection
         openHelper.get().close();
 
-        // change database
-        // store as the default database in settings
-        AppSettings settings = new AppSettings(getContext());
-        settings.getDatabaseSettings().setDatabasePath(newFilePath);
+        // store as the current database in settings
+        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(newFilePath);
 
         return result;
     }

@@ -83,7 +83,6 @@ public class DatabaseSettingsFragment
         //sqlite version
         Preference pSQLiteVersion = findPreference(getString(PreferenceConstants.PREF_SQLITE_VERSION));
         if (pSQLiteVersion != null) {
-//            MmexOpenHelper helper = MmexOpenHelper.getInstance(getActivity().getApplicationContext());
             String sqliteVersion = openHelper.get().getSQLiteVersion();
             if (sqliteVersion != null) pSQLiteVersion.setSummary(sqliteVersion);
         }
@@ -229,20 +228,17 @@ public class DatabaseSettingsFragment
     private boolean createDatabase(String filename) {
         boolean result = false;
 
-        if (TextUtils.isEmpty(filename)) {
-            return result;
-        }
+        if (TextUtils.isEmpty(filename)) return false;
 
         // try to create the db file.
-        MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
-        boolean created = db.createDatabase(filename);
+        boolean created = new MmexDatabaseUtils(getActivity()).createDatabase(filename);
 
         if (created) {
             // Add to recent files. Read the full name from settings.
             filename = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
-            // In Fragments, context has to be received from the parent Activity for some reason.
-            RecentDatabasesProvider recents = new RecentDatabasesProvider(getActivity());
-            recents.add(RecentDatabaseEntry.fromPath(filename));
+
+            RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getActivity());
+            recentDbs.add(RecentDatabaseEntry.fromPath(filename));
 
             // set main activity to reload, to open the new db file.
             MainActivity.setRestartActivity(true);
