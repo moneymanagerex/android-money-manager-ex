@@ -28,8 +28,11 @@ android {
         versionName '2016.08.17'
         versionCode 890
 
+//        minSdkVersion rootProject.ext.minSdkVersion
+//        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 15 // 4.0.3
         targetSdkVersion 24
+
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -136,8 +139,9 @@ android {
 
 dependencies {
     compile(
-            fileTree(dir: 'libs', include: ['*.jar']),
-            project(':androidSVG_12'),      // androidSVG
+            fileTree(dir: 'libs', include: ['*.jar'])
+            ,project(':MMEX Icon Font')
+            ,project(':androidSVG_12'),      // androidSVG
 //        'com.caverock:androidsvg:1.2.2-beta-1',
             project(path: ':money'),
             'com.cloudrail:cloudrail-si-android:2.6.7'
@@ -198,6 +202,7 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             ,'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
 //            ,'com.github.fcannizzaro:material-stepper:1.2.2'
+            ,"com.mikepenz:iconics-core:2.7.2@aar"
 
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {

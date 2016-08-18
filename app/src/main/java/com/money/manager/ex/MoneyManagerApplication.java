@@ -29,6 +29,9 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.mikepenz.iconics.Iconics;
+import com.mikepenz.iconics.typeface.GenericFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmexOpenHelper;
@@ -83,11 +86,6 @@ public class MoneyManagerApplication
     public static MoneyManagerApplication getApp() {
         return appInstance;
     }
-
-//    public static MoneyManagerApplication getApp(Context context) {
-//        MoneyManagerApplication app = (MoneyManagerApplication)context.getApplicationContext();
-//        return app;
-//    }
 
     /**
      * Reads the current database path from the settings and checks for the existence of the
@@ -189,8 +187,8 @@ public class MoneyManagerApplication
         RobotoView.setUserFontSize(getApplicationContext(),
             appPreferences.getString(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE), "default"));
 
-        // Initialize font icons support.
-        FontIconTypefaceHolder.init(getAssets(), "fonts/mmex.ttf");
+        registerCustomFonts();
+
         // Initialize Joda Time
         JodaTimeAndroid.init(this);
 
@@ -207,6 +205,16 @@ public class MoneyManagerApplication
         }
 
         initializeDependencyInjection();
+    }
+
+    private void registerCustomFonts() {
+        String iconFontPath = "fonts/mmex.ttf";
+
+        // Font icons
+        Iconics.registerFont(new MMEXIconFont());
+
+        // Initialize font icons support.
+        FontIconTypefaceHolder.init(getAssets(), iconFontPath);
     }
 
     /**

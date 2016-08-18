@@ -62,6 +62,11 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
+#Icon font
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
 
 # MMEX classes
 #-keep class com.money.manager.ex.**

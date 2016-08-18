@@ -80,6 +80,7 @@ public class CreateDatabaseActivity
         recentDbs.add(RecentDatabaseEntry.fromPath(filePath));
 
         // show message
+
         statusReportView.setVisibility(View.VISIBLE);
         UIHelper.showToast(this, R.string.create_db_success);
         dbPathTextView.setText(filePath);
