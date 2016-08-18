@@ -32,6 +32,7 @@ import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.joda.time.DateTime;
@@ -155,9 +156,8 @@ public class SyncService
                 if (!result) return;
 
                 // copy file
-                Core core = new Core(getApplicationContext());
                 try {
-                    core.copy(tempFile, localFile);
+                    MmxFileUtils.copy(tempFile, localFile);
                     tempFile.delete();
                 } catch (IOException e) {
                     Timber.e(e, "copying downloaded database file");

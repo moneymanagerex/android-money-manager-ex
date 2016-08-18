@@ -47,6 +47,7 @@ import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
@@ -155,27 +156,6 @@ public class Core {
     @Inject Lazy<AppSettings> appSettings;
 
     /**
-     * Method that allows you to make a copy of file
-     *
-     * @param src Source file
-     * @param dst Destination file
-     * @throws IOException
-     */
-    public void copy(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
-        OutputStream out = new FileOutputStream(dst);
-
-        // Transfer bytes from in to out
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        in.close();
-        out.close();
-    }
-
-    /**
      * Backup current database
      *
      * @return new File database backup
@@ -204,7 +184,7 @@ public class Core {
         //copy all files
         for (int i = 0; i < filesFromCopy.size(); i++) {
             try {
-                copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
+                MmxFileUtils.copy(filesFromCopy.get(i), new File(folderOutput + "/" + filesFromCopy.get(i).getName()));
             } catch (Exception e) {
                 Timber.e(e, "backing up the database");
                 return null;

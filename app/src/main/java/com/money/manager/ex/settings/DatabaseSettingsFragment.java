@@ -234,9 +234,6 @@ public class DatabaseSettingsFragment
         String dbPath = dbUtils.createDatabase(filename);
         if (TextUtils.isEmpty(dbPath)) return false;
 
-        // Read the full path from the preferences.
-//        String dbPath = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
-
         boolean isSet = dbUtils.useDatabase(dbPath);
         if (!isSet) return false;
 

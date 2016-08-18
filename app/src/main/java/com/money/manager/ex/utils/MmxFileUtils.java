@@ -31,8 +31,12 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.log.ExceptionHandler;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 /**
@@ -46,6 +50,27 @@ public class MmxFileUtils {
     private static final int BUFFER_DIMENSION = 128;
     // https://developer.android.com/reference/android/util/SparseArray.html
     private static SparseArray<String> rawHashMap = new SparseArray<>();
+
+    /**
+     * Method that allows you to make a copy of file
+     *
+     * @param src Source file
+     * @param dst Destination file
+     * @throws IOException
+     */
+    public static void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+    }
 
     /**
      * @param context application
