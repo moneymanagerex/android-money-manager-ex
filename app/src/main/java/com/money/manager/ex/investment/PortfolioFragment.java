@@ -105,10 +105,6 @@ public class PortfolioFragment
 
         initializeList();
 
-        // test only
-//        Money money = Money.of(150, Monetary.getCurrency("EUR"));
-
-        // set adapter
         setListAdapter(adapter);
 
         initializeLoader();

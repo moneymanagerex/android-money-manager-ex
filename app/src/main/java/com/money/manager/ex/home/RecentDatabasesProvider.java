@@ -27,6 +27,8 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 
+import timber.log.Timber;
+
 /**
  * Provides handling of the recent databases file queue.
  */
@@ -45,8 +47,6 @@ public class RecentDatabasesProvider {
     private Context context;
 
     public boolean add(String key, RecentDatabaseEntry value) {
-        boolean result;
-
         // check if this item already exist.
         if (contains(value)) {
             // Put as the last if it does.
@@ -62,9 +62,7 @@ public class RecentDatabasesProvider {
 
         this.save();
 
-        result = true;
-
-        return result;
+        return true;
     }
 
     public boolean add(RecentDatabaseEntry entry) {
@@ -134,8 +132,7 @@ public class RecentDatabasesProvider {
         try {
             map = parseStorageContent(value);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this.context, this);
-            handler.e(e, "parsing recents");
+            Timber.e(e, "parsing recents");
         }
 
         if (map == null) {

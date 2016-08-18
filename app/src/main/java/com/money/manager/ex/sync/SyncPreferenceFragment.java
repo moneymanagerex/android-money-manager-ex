@@ -114,10 +114,6 @@ public class SyncPreferenceFragment
      */
     @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
-        // set main activity to reload.
-//        MainActivity.setRestartActivity(true);
-        EventBus.getDefault().post(new AppRestartRequiredEvent());
-
         // open the new database.
         getSyncManager().openDatabase();
     }

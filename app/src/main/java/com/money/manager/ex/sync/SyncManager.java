@@ -405,10 +405,11 @@ public class SyncManager {
         // Do this only if called from an activity.
         if (!(getContext() instanceof Activity)) return;
 
-        File downloadedDb = new File(getLocalPath());
+//        File downloadedDb = new File(getLocalPath());
+        // downloadedDb.getAbsolutePath()
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        boolean isDbSet = dbUtils.useDatabase(downloadedDb.getAbsolutePath());
+        boolean isDbSet = dbUtils.useDatabase(getLocalPath(), getRemotePath());
 
 //        SyncCommon common = new SyncCommon();
 //        Intent intent = common.getIntentForOpenDatabase(getContext(), downloadedDb);
@@ -417,7 +418,7 @@ public class SyncManager {
             UIHelper.showToast(getContext(), R.string.error);
             return;
         }
-        
+
         Intent intent = IntentFactory.getMainActivityNew(getContext());
         getContext().startActivity(intent);
     }

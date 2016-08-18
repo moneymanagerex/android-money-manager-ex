@@ -24,6 +24,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -130,7 +132,7 @@ public class MmxDatabaseUtils {
      * @param filename File name for the new database. Extension .mmb will be appended if not
      *                 included in the filename.
      */
-    public String createDatabase(String filename) {
+    public String createDatabase(@NonNull String filename) {
         String result = null;
 
         try {
@@ -205,15 +207,20 @@ public class MmxDatabaseUtils {
         }
     }
 
+    public boolean useDatabase(@NonNull String dbPath) {
+        return useDatabase(dbPath, "");
+    }
+
     /**
      * Change the database used by the app.
      * Sets the given database path (full path to the file) as the current database. Adds it to the
      * recent files. Resets the data layer.
      * All that is needed after this call is to start the Main Activity.
      * @param dbPath The path to the database file to use.
+     * @param remotePath The path to the remote file location in the cloud storage.
      * @return Indicator whether the database is valid for use.
      */
-    public boolean useDatabase(String dbPath) {
+    public boolean useDatabase(@NonNull String dbPath, @NonNull String remotePath) {
         //todo handle encrypted files by accepting password as an argument.
 
         // check if valid
@@ -221,8 +228,11 @@ public class MmxDatabaseUtils {
             throw new RuntimeException(getContext().getString(R.string.database_can_not_open_write));
         }
 
+        // Recent database entry.
+        boolean linkedToCloud = !TextUtils.isEmpty(remotePath);
+        RecentDatabaseEntry recentDb = RecentDatabaseEntry.getInstance(dbPath, linkedToCloud, remotePath);
         RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
-        boolean added = recentDbs.add(RecentDatabaseEntry.fromPath(dbPath));
+        boolean added = recentDbs.add(recentDb);
         if (!added) {
             throw new RuntimeException("could not add to recent files");
         }

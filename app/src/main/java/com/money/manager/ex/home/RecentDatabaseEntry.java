@@ -24,6 +24,8 @@ import java.io.File;
 public class RecentDatabaseEntry {
 
     public static RecentDatabaseEntry getInstance(String filePath, boolean linkedToCloud, String remoteFileName) {
+        //todo use TextUtils.isEmpty(remotePath) to identify if the entry is linked to a remote file.
+
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
         entry.filePath = filePath;
         entry.linkedToCloud = linkedToCloud;
@@ -31,10 +33,12 @@ public class RecentDatabaseEntry {
         return entry;
     }
 
+    /**
+     * Creates an entry for a local file.
+     * @param filePath Path to the local file.
+     * @return Recent entry record that is not linked to a remote location.
+     */
     public static RecentDatabaseEntry fromPath(String filePath) {
-//        File file = new File(filePath);
-//        String fileName = file.getName();
-
         return getInstance(filePath, false, "");
     }
 
