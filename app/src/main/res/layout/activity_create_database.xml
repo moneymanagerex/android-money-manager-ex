@@ -61,16 +61,21 @@
                 android:id="@+id/statusReport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_marginTop="@dimen/mmex_activity_vertical_margin"
                 android:visibility="invisible">
 
                 <com.mikepenz.iconics.view.IconicsImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_gravity="center_horizontal"
                     app:iiv_color="?attr/colorPrimaryDark"
                     app:iiv_icon="mme-check-5" />
-
+                <com.money.manager.ex.view.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/create_db_success" />
             </LinearLayout>
 
             <android.support.v7.widget.CardView
