@@ -155,34 +155,6 @@ public class Core {
     @Inject Lazy<AppSettings> appSettings;
 
     /**
-     * Change the database used by the app.
-     * @param path new database
-     * @return indicator whether the operation was successful
-     */
-    public boolean changeDatabase(String path, String password)
-        throws Exception {
-
-        Timber.d("switching database to: %s", path);
-
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new RuntimeException(getContext().getString(R.string.path_database_not_exists));
-        }
-        if (!file.canWrite()) {
-            throw new RuntimeException(getContext().getString(R.string.database_can_not_open_write));
-        }
-
-        appSettings.get().getDatabaseSettings().setDatabasePath(path);
-
-        // change database
-        MoneyManagerApplication.getApp().initDb(path);
-
-        // todo MmexOpenHelper.getInstance(getContext()).setPassword(password);
-
-        return true;
-    }
-
-    /**
      * Method that allows you to make a copy of file
      *
      * @param src Source file

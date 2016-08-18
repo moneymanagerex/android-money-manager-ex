@@ -19,7 +19,9 @@ package com.money.manager.ex.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -64,20 +66,21 @@ public class CreateDatabaseActivity
     }
 
     private void createDatabase() {
-        boolean created = new MmxDatabaseUtils(this).createDatabase(DEFAULT_DB_FILENAME);
-        if (!created) return;
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+
+        String dbPath = dbUtils.createDatabase(DEFAULT_DB_FILENAME);
+        if (TextUtils.isEmpty(dbPath)) return;
 
         // Read the full path from the preferences.
-        String filePath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
+//        String filePath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
 
-        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(this);
-        recentDbs.add(RecentDatabaseEntry.fromPath(filePath));
+        dbUtils.useDatabase(dbPath);
 
         // show message
 
         statusReportView.setVisibility(View.VISIBLE);
         UIHelper.showToast(this, R.string.create_db_success);
-        dbPathTextView.setText(filePath);
+        dbPathTextView.setText(dbPath);
 
         // enable run button
         runButton.setEnabled(true);

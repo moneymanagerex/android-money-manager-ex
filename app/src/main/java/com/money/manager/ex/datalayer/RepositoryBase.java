@@ -28,7 +28,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MmexContentProvider;
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
@@ -231,7 +231,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         ContentProviderResult[] results = null;
         try {
             results = getContext().getContentResolver()
-                .applyBatch(MmexContentProvider.getAuthority(), operations);
+                .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.e(e, "bulk updating");
@@ -260,7 +260,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         ContentProviderResult[] results = null;
         try {
             results = getContext().getContentResolver()
-                .applyBatch(MmexContentProvider.getAuthority(), operations);
+                .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
             ExceptionHandler handler = new ExceptionHandler(context, this);
             handler.e(e, "bulk updating");

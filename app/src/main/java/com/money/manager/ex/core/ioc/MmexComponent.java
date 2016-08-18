@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.core.ioc;
 
-import com.money.manager.ex.MmexContentProvider;
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
@@ -57,7 +57,7 @@ public interface MmexComponent {
     void inject(MorningstarPriceUpdater updater);
     void inject(AppSettings settings);
     void inject(Core core);
-    void inject(MmexContentProvider provider);
+    void inject(MmxContentProvider provider);
     void inject(MmxDatabaseUtils utils);
 
     // Repositories

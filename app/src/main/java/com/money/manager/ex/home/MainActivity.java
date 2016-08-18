@@ -17,8 +17,6 @@
 package com.money.manager.ex.home;
 
 import android.app.NotificationManager;
-import android.content.ContentProviderClient;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -44,7 +42,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
-import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
@@ -652,15 +649,6 @@ public class MainActivity
         finish();
     }
 
-    private void resetContentProvider() {
-        ContentResolver resolver = this.getContentResolver();
-        String authority = this.getApplicationContext().getPackageName() + ".provider";
-        ContentProviderClient client = resolver.acquireContentProviderClient(authority);
-        MmexContentProvider provider = (MmexContentProvider) client.getLocalContentProvider();
-        provider.resetDatabase();
-//        client.release();
-    }
-
 //    private void shutdownApp() {
 //        finish();
 //        android.os.Process.killProcess(android.os.Process.myPid());
@@ -816,6 +804,7 @@ public class MainActivity
         } catch (Exception e) {
             Timber.e(e, "displaying the open-database picker");
         }
+        // continues in onActivityResult
     }
 
     // Private
@@ -945,8 +934,8 @@ public class MainActivity
 
     private void changeDatabase(String dbFilePath, String password) {
         try {
-            Core core = new Core(getApplicationContext());
-            core.changeDatabase(dbFilePath, password);
+            MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+            dbUtils.useDatabase(dbFilePath); // password
         } catch (Exception e) {
             //if (e instanceof )
             Timber.e(e, "changing the database");
@@ -957,8 +946,6 @@ public class MainActivity
         if (!this.recentDbs.contains(dbFilePath)) {
             this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
         }
-
-        resetContentProvider();
 
 //        if (currentDatabase.contentEquals(dbFilePath)) {
 //            // just restart the main Activity?

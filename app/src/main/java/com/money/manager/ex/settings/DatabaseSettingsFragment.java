@@ -49,6 +49,7 @@ import java.io.File;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
 
 /**
  * Database settings fragment.
@@ -64,8 +65,6 @@ public class DatabaseSettingsFragment
         addPreferencesFromResource(R.xml.settings_database);
 
         MoneyManagerApplication.getApp().mainComponent.inject(this);
-
-//        PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Database path.
         refreshDbPath();
@@ -229,15 +228,17 @@ public class DatabaseSettingsFragment
         // validation
         if (TextUtils.isEmpty(filename)) return false;
 
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getActivity());
+
         // Create the db file. Store the path in the preferences.
-        boolean created = new MmxDatabaseUtils(getActivity()).createDatabase(filename);
-        if (!created) return false;
+        String dbPath = dbUtils.createDatabase(filename);
+        if (TextUtils.isEmpty(dbPath)) return false;
 
         // Read the full path from the preferences.
-        String filePath = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
+//        String dbPath = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
 
-        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getActivity());
-        recentDbs.add(RecentDatabaseEntry.fromPath(filePath));
+        boolean isSet = dbUtils.useDatabase(dbPath);
+        if (!isSet) return false;
 
         // set main activity to reload, to open the new db file.
         MainActivity.setRestartActivity(true);
@@ -265,9 +266,7 @@ public class DatabaseSettingsFragment
             public boolean onPreferenceClick(Preference preference) {
                 MmxDatabaseUtils db = new MmxDatabaseUtils(getActivity());
 
-                if (BuildConfig.DEBUG) {
-                    Log.d(this.getClass().getSimpleName(), "checking db schema");
-                }
+                Timber.d("checking db schema");
 
                 boolean result = db.checkSchema();
                 if (result) {
@@ -294,9 +293,7 @@ public class DatabaseSettingsFragment
                 MmxDatabaseUtils db = new MmxDatabaseUtils(getActivity());
                 boolean result;
                 try {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(this.getClass().getSimpleName(), "checking db integrity.");
-                    }
+                    Timber.d("checking db integrity.");
 
                     result = db.checkIntegrity();
 
@@ -306,8 +303,7 @@ public class DatabaseSettingsFragment
                         showToast(R.string.db_check_integrity_error, Toast.LENGTH_SHORT);
                     }
                 } catch (Exception ex) {
-                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                    handler.e(ex, "checking integrity");
+                    Timber.e(ex, "checking integrity");
                 }
                 return false;
             }

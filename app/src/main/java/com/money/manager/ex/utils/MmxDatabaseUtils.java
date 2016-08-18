@@ -16,19 +16,25 @@
  */
 package com.money.manager.ex.utils;
 
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
+import android.os.Build;
 import android.os.Environment;
-import android.widget.Toast;
 
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 
 import java.io.BufferedReader;
@@ -105,20 +111,6 @@ public class MmxDatabaseUtils {
         return result;
     }
 
-    public String makePlaceholders(int len) {
-        if (len < 1) {
-            // It would lead to an invalid query anyway ..
-            throw new RuntimeException("No placeholders");
-        } else {
-            StringBuilder sb = new StringBuilder(len * 2 - 1);
-            sb.append("?");
-            for (int i = 1; i < len; i++) {
-                sb.append(",?");
-            }
-            return sb.toString();
-        }
-    }
-
     /**
      * Checks if all the required tables are present.
      * Should be expanded and improved to check for the whole schema.
@@ -138,8 +130,8 @@ public class MmxDatabaseUtils {
      * @param filename File name for the new database. Extension .mmb will be appended if not
      *                 included in the filename.
      */
-    public boolean createDatabase(String filename) {
-        boolean result = false;
+    public String createDatabase(String filename) {
+        String result = null;
 
         try {
             result = createDatabase_Internal(filename);
@@ -199,6 +191,53 @@ public class MmxDatabaseUtils {
         return null;
     }
 
+    public String makePlaceholders(int len) {
+        if (len < 1) {
+            // It would lead to an invalid query anyway ..
+            throw new RuntimeException("No placeholders");
+        } else {
+            StringBuilder sb = new StringBuilder(len * 2 - 1);
+            sb.append("?");
+            for (int i = 1; i < len; i++) {
+                sb.append(",?");
+            }
+            return sb.toString();
+        }
+    }
+
+    /**
+     * Change the database used by the app.
+     * Sets the given database path (full path to the file) as the current database. Adds it to the
+     * recent files. Resets the data layer.
+     * All that is needed after this call is to start the Main Activity.
+     * @param dbPath The path to the database file to use.
+     * @return Indicator whether the database is valid for use.
+     */
+    public boolean useDatabase(String dbPath) {
+        //todo handle encrypted files by accepting password as an argument.
+
+        // check if valid
+        if (!isValidDbFile(dbPath)) {
+            throw new RuntimeException(getContext().getString(R.string.database_can_not_open_write));
+        }
+
+        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
+        boolean added = recentDbs.add(RecentDatabaseEntry.fromPath(dbPath));
+        if (!added) {
+            throw new RuntimeException("could not add to recent files");
+        }
+
+        // Set path in preferences.
+        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(dbPath);
+
+        // Switch database in the active data layer.
+        MoneyManagerApplication.getApp().initDb(dbPath);
+
+        resetContentProvider();
+
+        return true;
+    }
+
     // Private
 
     private boolean checkSchemaInternal() {
@@ -225,7 +264,7 @@ public class MmxDatabaseUtils {
                 message.append(table);
                 message.append(" ");
             }
-            showToast(message.toString(), Toast.LENGTH_LONG);
+            UIHelper.showToast(getContext(), message.toString());
         } else {
             // everything matches
             result = true;
@@ -234,27 +273,25 @@ public class MmxDatabaseUtils {
         return result;
     }
 
-    private boolean createDatabase_Internal(String filename)
+    private String createDatabase_Internal(String filename)
         throws IOException {
-        boolean result;
 
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        String location = dbUtils.getDefaultDatabaseDirectory();
+        String location = getDefaultDatabaseDirectory();
 
         String newFilePath = location.concat(File.separator).concat(filename);
 
         // Create db file.
         File dbFile = new File(newFilePath);
         if (dbFile.exists()) {
-//            showToast(R.string.create_db_exists, Toast.LENGTH_SHORT);
-//            return false;
             throw new RuntimeException(getContext().getString(R.string.create_db_exists));
         }
 
-        result = dbFile.createNewFile();
+        if (!dbFile.createNewFile()) {
+            throw new RuntimeException(getContext().getString(R.string.create_db_error));
+        }
 
         // close connection
         openHelper.get().close();
@@ -262,7 +299,7 @@ public class MmxDatabaseUtils {
         // store as the current database in settings
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(newFilePath);
 
-        return result;
+        return newFilePath;
     }
 
     private String cleanupFilename(String filename) {
@@ -347,6 +384,7 @@ public class MmxDatabaseUtils {
         // /storage/sdcard0/Android/data/package/files
         File externalFilesDir = getContext().getExternalFilesDir(null);
 
+        assert externalFilesDir != null;
         String dbString = externalFilesDir.getAbsolutePath().concat(File.pathSeparator)
                 .concat("databases");
         File dbPath = new File(dbString);
@@ -409,12 +447,21 @@ public class MmxDatabaseUtils {
         return result;
     }
 
-    private void showToast(int resourceId, int duration) {
-        Toast.makeText(getContext(), resourceId, duration).show();
-    }
+    private void resetContentProvider() {
+        ContentResolver resolver = getContext().getContentResolver();
+        String authority = getContext().getApplicationContext().getPackageName() + ".provider";
+        ContentProviderClient client = resolver.acquireContentProviderClient(authority);
 
-    private void showToast(String text, int duration) {
-        Toast.makeText(getContext(), text, duration).show();
-    }
+        assert client != null;
+        MmxContentProvider provider = (MmxContentProvider) client.getLocalContentProvider();
 
+        assert provider != null;
+        provider.resetDatabase();
+
+        if (Build.VERSION.SDK_INT >= 24) {
+            client.close();
+        } else {
+            client.release();
+        }
+    }
 }

@@ -22,7 +22,7 @@ import android.content.ContentProvider;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.money.manager.ex.MmexContentProvider;
+import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
@@ -93,10 +93,10 @@ public class UnitTestHelper {
      * @return initialized Content Provider, if needed.
      */
     public static ContentProvider setupContentProvider() {
-        ContentProvider contentProvider = new MmexContentProvider();
+        ContentProvider contentProvider = new MmxContentProvider();
 //        shadowOf(contentProvider).getContext();
         contentProvider.onCreate();
-        ShadowContentResolver.registerProvider(MmexContentProvider.getAuthority(), contentProvider);
+        ShadowContentResolver.registerProvider(MmxContentProvider.getAuthority(), contentProvider);
 
         return contentProvider;
     }

@@ -21,7 +21,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.money.manager.ex.MmexContentProvider;
+import com.money.manager.ex.MmxContentProvider;
 
 /**
  * Dataset
@@ -77,7 +77,7 @@ public abstract class Dataset
 	 * @return the Uri for the content provider
 	 */
 	public Uri getUri() {
-		String baseUri = "content://" + MmexContentProvider.getAuthority() + "/";
+		String baseUri = "content://" + MmxContentProvider.getAuthority() + "/";
 
 		if (!TextUtils.isEmpty(this.basepath)) {
 //			switch (this.type) {

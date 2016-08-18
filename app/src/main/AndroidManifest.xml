@@ -316,7 +316,7 @@
 
         <!-- providers -->
 
-        <provider android:name=".MmexContentProvider"
+        <provider android:name=".MmxContentProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false" />
         <!-- used for qif export -->

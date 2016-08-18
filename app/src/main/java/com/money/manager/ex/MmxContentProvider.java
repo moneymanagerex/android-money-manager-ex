@@ -70,11 +70,11 @@ import dagger.Lazy;
 import timber.log.Timber;
 
 /**
- * MmexContentProvider is the extension of the base class of Android
+ * MmxContentProvider is the extension of the base class of Android
  * ContentProvider. Its purpose is to implement the read access and modify the
  * application data
  */
-public class MmexContentProvider
+public class MmxContentProvider
     extends ContentProvider {
 
     // object definition for the call to check the content
@@ -83,7 +83,7 @@ public class MmexContentProvider
     private static SparseArrayCompat<Object> mapContent = new SparseArrayCompat<>();
     private static String mAuthority;
 
-    public MmexContentProvider() {
+    public MmxContentProvider() {
         super();
 
     }
@@ -95,7 +95,7 @@ public class MmexContentProvider
     }
 
     public static void setAuthority(String mAuthority) {
-        MmexContentProvider.mAuthority = mAuthority;
+        MmxContentProvider.mAuthority = mAuthority;
     }
 
     @Override
