@@ -66,16 +66,10 @@
                 android:visibility="invisible">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    app:iiv_color="@android:color/holo_green_dark"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:iiv_color="?attr/colorPrimaryDark"
                     app:iiv_icon="mme-check-5" />
-                <!--<com.shamanland.fonticon.FontIconView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:text="@string/ic_ic_chevron_left"-->
-                    <!--android:textSize="64sp" />-->
 
             </LinearLayout>
 
