@@ -163,7 +163,8 @@ public class PortfolioFragment
                 StockRepository repo = new StockRepository(getActivity());
                 Query query = new Query()
                     .select(repo.getAllColumns())
-                    .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID));
+                    .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID))
+                    .orderBy(StockFields.SYMBOL);
                 //.orderBy(sort);
 
                 return new MmexCursorLoader(getActivity(), repo.getUri(), query);

@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="">
+        <changelogtext>Sorting portfolio by symbol.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.08.18.891">
         <changelogtext>Using a different file-picker. This should resolve crashes.</changelogtext>
         <changelogtext>Minor improvements in the Passcode settings.</changelogtext>
