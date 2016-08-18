@@ -30,6 +30,7 @@ import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.recurring.transactions.Recurrence;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -123,16 +124,31 @@ public class RecurringTransactionService
                 result = result.plusMonths(numberOfPeriods);
                 break;
             case MONTHLY_LAST_DAY: //month (last day)
-                //one liner
-                //  result = result.dayOfMonth().withMinimumValue().plusMonths(1).dayOfMonth().withMaximumValue();
-                result = result.dayOfMonth().withMinimumValue();
-                result = result.plusMonths(1).dayOfMonth().withMaximumValue();
+                // if the date is not the last day of this month, set it to the end of the month.
+                // else set it to the end of the next month.
+                DateTime lastDayOfMonth = MmxDateTimeUtils.getLastDayOfMonth(result);
+                if (!result.equals(lastDayOfMonth)) {
+                    // set to last day of the month
+                    result = result.dayOfMonth().withMaximumValue();
+                } else {
+                    result = result.plusMonths(1)
+                            .dayOfMonth().withMaximumValue();
+                }
                 break;
+
             case MONTHLY_LAST_BUSINESS_DAY: //month (last business day)
+                // if the date is not the last day of this month, set it to the end of the month.
+                // else set it to the end of the next month.
+                DateTime lastDayOfMonth2 = MmxDateTimeUtils.getLastDayOfMonth(result);
+                if (!result.equals(lastDayOfMonth2)) {
+                    // set to last day of the month
+                    result = result.dayOfMonth().withMaximumValue();
+                } else {
+                    result = result.plusMonths(1)
+                            .dayOfMonth().withMaximumValue();
+                }
                 // get the last day of the next month,
-                result = result.dayOfMonth().withMinimumValue();
-                result = result.plusMonths(1).dayOfMonth().withMaximumValue();
-                // then iterate backwards until we are not on weekend day.
+                // then iterate backwards until we are on a weekday.
                 while(result.getDayOfWeek() == DateTimeConstants.SATURDAY ||
                         result.getDayOfWeek() == DateTimeConstants.SUNDAY) {
                     result = result.minusDays(1);

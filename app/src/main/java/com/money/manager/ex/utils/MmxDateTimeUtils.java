@@ -17,9 +17,7 @@
 package com.money.manager.ex.utils;
 
 import android.content.Context;
-import android.support.v4.text.TextUtilsCompat;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -29,7 +27,6 @@ import com.money.manager.ex.servicelayer.InfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -41,7 +38,7 @@ import java.util.Calendar;
  * only with dates, not times. Many exceptions happen in different time zones during DST,
  * especially the ones that transition at midnight.
  */
-public class MyDateTimeUtils {
+public class MmxDateTimeUtils {
 
     public static DateTime now() {
         return DateTime.now();
@@ -115,6 +112,17 @@ public class MyDateTimeUtils {
         return dateTime.toString(Constants.ISO_DATE_FORMAT);
     }
 
+    /**
+     * Gets the last day of the month in which the given date occurs.
+     * @param dateTime The date/time for which to find the last day of the month.
+     * @return Last calendar day of the month. Date only - the lesser units are reset to 0.
+     */
+    public static DateTime getLastDayOfMonth(DateTime dateTime) {
+        return dateTime
+            .withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0)
+            .dayOfMonth().withMaximumValue();
+    }
+
     public static String getUserStringFromDateTime(Context ctx, DateTime dateTime) {
         if (dateTime == null) return "";
 
@@ -154,40 +162,40 @@ public class MyDateTimeUtils {
         if (period.equalsIgnoreCase(context.getString(R.string.all_transaction)) ||
             period.equalsIgnoreCase(context.getString(R.string.all_time))) {
             // All transactions.
-            dateFrom = MyDateTimeUtils.today().minusYears(1000);
-            dateTo = MyDateTimeUtils.today().plusYears(1000);
+            dateFrom = MmxDateTimeUtils.today().minusYears(1000);
+            dateTo = MmxDateTimeUtils.today().plusYears(1000);
         } else if (period.equalsIgnoreCase(context.getString(R.string.today))) {
-            dateFrom = MyDateTimeUtils.today();
-            dateTo = MyDateTimeUtils.today();
+            dateFrom = MmxDateTimeUtils.today();
+            dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last7days))) {
-            dateFrom = MyDateTimeUtils.today().minusDays(7);
-            dateTo = MyDateTimeUtils.today();
+            dateFrom = MmxDateTimeUtils.today().minusDays(7);
+            dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last15days))) {
-            dateFrom = MyDateTimeUtils.today().minusDays(14);
-            dateTo = MyDateTimeUtils.today();
+            dateFrom = MmxDateTimeUtils.today().minusDays(14);
+            dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.current_month))) {
-            dateFrom = MyDateTimeUtils.today().dayOfMonth().withMinimumValue();
-            dateTo = MyDateTimeUtils.today().dayOfMonth().withMaximumValue();
+            dateFrom = MmxDateTimeUtils.today().dayOfMonth().withMinimumValue();
+            dateTo = MmxDateTimeUtils.today().dayOfMonth().withMaximumValue();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last30days))) {
-            dateFrom = MyDateTimeUtils.today().minusDays(30);
-            dateTo = MyDateTimeUtils.today();
+            dateFrom = MmxDateTimeUtils.today().minusDays(30);
+            dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last3months))) {
-            dateFrom = MyDateTimeUtils.today().minusMonths(3)
+            dateFrom = MmxDateTimeUtils.today().minusMonths(3)
                 .dayOfMonth().withMinimumValue();
-            dateTo = MyDateTimeUtils.today();
+            dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last6months))) {
-            dateFrom = MyDateTimeUtils.today().minusMonths(6)
+            dateFrom = MmxDateTimeUtils.today().minusMonths(6)
                 .dayOfMonth().withMinimumValue();
-            dateTo = MyDateTimeUtils.today();
+            dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.current_year))) {
-            dateFrom = MyDateTimeUtils.today().monthOfYear().withMinimumValue()
+            dateFrom = MmxDateTimeUtils.today().monthOfYear().withMinimumValue()
                 .dayOfMonth().withMinimumValue();
-            dateTo = MyDateTimeUtils.today().monthOfYear().withMaximumValue()
+            dateTo = MmxDateTimeUtils.today().monthOfYear().withMaximumValue()
                 .dayOfMonth().withMaximumValue();
         } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
             // Future transactions
-            dateFrom = MyDateTimeUtils.today().plusDays(1);
-            dateTo = MyDateTimeUtils.today().plusYears(1000);
+            dateFrom = MmxDateTimeUtils.today().plusDays(1);
+            dateTo = MmxDateTimeUtils.today().plusYears(1000);
         } else {
             dateFrom = null;
             dateTo = null;
