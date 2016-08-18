@@ -32,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
+
 /**
  * The code for migrating the databases used in v1.4 to use with 2.0.
  * Users who do not use Dropbox have their databases in the old location. V2.0 started
@@ -41,8 +43,6 @@ public class DatabaseMigrator14To20 {
     public DatabaseMigrator14To20(Context context) {
         mContext = context;
     }
-
-    public static final String DEFAULT_DB_FILENAME = "data.mmb";
 
     private Context mContext;
 

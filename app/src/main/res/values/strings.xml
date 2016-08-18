@@ -756,10 +756,9 @@
     <!-- Create Database screen -->
     <string name="select_language">Select language</string>
     <string name="run">Run Money Manager Ex</string>
+    <string name="create_db_info_1">The default database location is:</string>
 
     <!-- Settings -->
     <string name="per_database_settings">Per-Database</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

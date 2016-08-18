@@ -31,6 +31,7 @@ public class Constants {
 
     // Database
     public static final String MOBILE_DATA_PATTERN = "%%mobiledata%%";
+    public static final String DEFAULT_DB_FILENAME = "data.mmb";
 
     // Intent: Request
     public static final String INTENT_REQUEST_PREFERENCES_SCREEN = "SettingsActivity:PreferenceScreen";

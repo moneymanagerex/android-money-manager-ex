@@ -21,7 +21,7 @@
     <dimen name="money_text_view_size_large">22sp</dimen>
     <dimen name="money_text_view_size_header">16sp</dimen>
 
-    <dimen name="money_button_height">36dp</dimen>
+    <dimen name="mmex_button_height">36dp</dimen>
 
     <dimen name="mmex_elevation">8dp</dimen>
 
@@ -57,9 +57,10 @@
     <dimen name="app_defaultsize_h">598.0dip</dimen>
     <dimen name="app_minimumsize_w">632.0dip</dimen>
     <dimen name="app_minimumsize_h">598.0dip</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="mmex_activity_horizontal_margin">16dp</dimen>
+    <dimen name="mmex_activity_vertical_margin">16dp</dimen>
 
     <!-- font icons sizes -->
     <dimen name="fonticon_drawer">30sp</dimen>

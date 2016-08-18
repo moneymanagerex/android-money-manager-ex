@@ -226,31 +226,27 @@ public class DatabaseSettingsFragment
     }
 
     private boolean createDatabase(String filename) {
-        boolean result = false;
-
+        // validation
         if (TextUtils.isEmpty(filename)) return false;
 
-        // try to create the db file.
+        // Create the db file. Store the path in the preferences.
         boolean created = new MmexDatabaseUtils(getActivity()).createDatabase(filename);
+        if (!created) return false;
 
-        if (created) {
-            // Add to recent files. Read the full name from settings.
-            filename = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
+        // Read the full path from the preferences.
+        String filePath = new AppSettings(getActivity()).getDatabaseSettings().getDatabasePath();
 
-            RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getActivity());
-            recentDbs.add(RecentDatabaseEntry.fromPath(filename));
+        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getActivity());
+        recentDbs.add(RecentDatabaseEntry.fromPath(filePath));
 
-            // set main activity to reload, to open the new db file.
-            MainActivity.setRestartActivity(true);
-            EventBus.getDefault().post(new AppRestartRequiredEvent());
+        // set main activity to reload, to open the new db file.
+        MainActivity.setRestartActivity(true);
+        EventBus.getDefault().post(new AppRestartRequiredEvent());
 
-            // update the displayed value.
-            refreshDbPath();
+        // update the displayed value.
+        refreshDbPath();
 
-            result = true;
-        }
-
-        return result;
+        return true;
     }
 
     private void refreshDbPath() {

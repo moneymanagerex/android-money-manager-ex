@@ -30,9 +30,9 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.money.manager.ex.common.MoneyParcelConverter;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.ioc.DaggerMmexComponent;
 import com.money.manager.ex.core.ioc.MmexComponent;
 import com.money.manager.ex.core.ioc.MmexModule;
@@ -60,6 +60,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import info.javaperformance.money.Money;
 import timber.log.Timber;
+
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 /**
  * This class extends Application and implements all the methods common in the
@@ -111,16 +113,15 @@ public class MoneyManagerApplication
 
         MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(context);
         String defaultDirectory = dbUtils.getDefaultDatabaseDirectory();
-        String defaultPath = defaultDirectory + "/data.mmb";
+        String defaultPath = defaultDirectory.concat(File.pathSeparator).concat(DEFAULT_DB_FILENAME);
 
         dbSettings.setDatabasePath(defaultPath);
 
         // Show notification
-        ExceptionHandler handler = new ExceptionHandler(context);
         if (databasePath.equals(defaultPath)) {
-            handler.showMessage("Default database file will be created at " + defaultPath);
+            UIHelper.showToast(context, "Default database file will be created at " + defaultPath);
         } else {
-            handler.showMessage("Database " + databasePath + " not found. Using default:" + defaultPath);
+            UIHelper.showToast(context, "Database " + databasePath + " not found. Using default:" + defaultPath);
         }
 
         return defaultPath;
@@ -268,8 +269,7 @@ public class MoneyManagerApplication
             try {
                 locale = new Locale(language);
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(context, this);
-                handler.e(e, "parsing locale: " + language);
+                Timber.e(e, "parsing locale: %s", language);
             }
         }
 
@@ -333,8 +333,7 @@ public class MoneyManagerApplication
         try {
             return getSummaryAccountsInternal(context);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.e(e, "getting summary accounts");
+            Timber.e(e, "getting summary accounts");
         }
         return 0;
     }

@@ -22,26 +22,35 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
-
-import org.greenrobot.eventbus.EventBus;
+import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.view.RobotoButton;
+import com.money.manager.ex.view.RobotoTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
+
 public class CreateDatabaseActivity
     extends BaseFragmentActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.runButton) RobotoButton runButton;
+    @BindView(R.id.dbPathTextView) RobotoTextView dbPathTextView;
+    @BindView(R.id.statusReport) LinearLayout statusReportView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +60,9 @@ public class CreateDatabaseActivity
         ButterKnife.bind(this);
         getToolbar().setSubtitle(R.string.create_db);
 
-        // todo: enable creation button if there is no database
-        // todo: disable run button
+        runButton.setEnabled(false);
+
+        createDatabase();
 
         // todo Create account. Allow multiple times.
         // todo Default account. When the first account is created, use that. Allow changing if multiple accounts are created.
@@ -60,21 +70,30 @@ public class CreateDatabaseActivity
     }
 
     private void createDatabase() {
-        // todo Create database; use the existing functionality from the database preferences.
-        // Set the database as current in the preferences.
+        boolean created = new MmexDatabaseUtils(this).createDatabase(DEFAULT_DB_FILENAME);
+        if (!created) return;
 
-        // todo disable create button
-        // todo enable run button
+        // Read the full path from the preferences.
+        String filePath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
+
+        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(this);
+        recentDbs.add(RecentDatabaseEntry.fromPath(filePath));
+
+        // show message
+        statusReportView.setVisibility(View.VISIBLE);
+        UIHelper.showToast(this, R.string.create_db_success);
+        dbPathTextView.setText(filePath);
+
+        // enable run button
+        runButton.setEnabled(true);
     }
 
     @OnClick(R.id.runButton)
     void onRunClick() {
-        // todo enable the button once the preferences have been done
-
         // open the main activity
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
 }
