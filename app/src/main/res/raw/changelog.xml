@@ -30,7 +30,7 @@
         <changelogtext>Quick database switching. No need to restart the app anymore.</changelogtext>
         <changelogtext>Adding dependency injection on price downloader for Morningstar.</changelogtext>
     </changelogversion>
-    <changelogversion versionName="2016.08.14.881">
+    <changelogversion versionName="2016.08.15.881">
         <changelogtext>Adding a file picker for opening a database.</changelogtext>
         <changelogtext>Updating CloudRail library.</changelogtext>
         <changelogtext>Correcting the auto-sync trigger.</changelogtext>
