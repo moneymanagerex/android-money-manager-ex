@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.UIHelpers;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
@@ -95,8 +96,8 @@ public class MorningstarPriceUpdater
         compositeSubscription = new CompositeSubscription();
         symbolConverter = new SymbolConverter();
 
-        processSequentially(symbols);
-//        processInParallel(symbols);
+//        processSequentially(symbols);
+        processInParallel(symbols);
     }
 
     private void processSequentially(List<String> symbols) {
@@ -145,17 +146,7 @@ public class MorningstarPriceUpdater
                     @Override
                     public void call(PriceDownloadedEvent priceDownloadedEvent) {
                         // save to database
-                        BriteDatabase.Transaction tx = stockRepository.get().database.newTransaction();
-
-                        // update the current price of the stock.
-                        stockRepository.get().updateCurrentPrice(priceDownloadedEvent.symbol, priceDownloadedEvent.price);
-
-                        // save price history record.
-                        stockHistoryRepository.get().addStockHistoryRecord(priceDownloadedEvent.symbol,
-                                priceDownloadedEvent.price, priceDownloadedEvent.date);
-
-                        tx.markSuccessful();
-                        tx.end();
+                        savePrice(priceDownloadedEvent);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -193,33 +184,51 @@ public class MorningstarPriceUpdater
 
     private void processInParallel(List<String> symbols) {
         for(int i = 0; i < symbols.size(); i++) {
-            String symbol = symbols.get(i);
-            String morningstarSymbol = symbolConverter.convert(symbol);
+            final String symbol = symbols.get(i);
+            final String morningstarSymbol = symbolConverter.convert(symbol);
 
             compositeSubscription.add(
-                    service.getPrice(symbol)
+                    service.getPrice(morningstarSymbol)
                         .subscribeOn(Schedulers.io())
+                            .doOnNext(new Action1<String>() {
+                                @Override
+                                public void call(String s) {
+                                    PriceDownloadedEvent event = parse(morningstarSymbol, s);
+                                    savePrice(event);
+                                }
+                            })
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Subscriber<String>() {
                             @Override
                             public void onCompleted() {
-                                Timber.d("complete");
+                                finishIfAllDone();
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Timber.e(e, "error downloading prices");
+                                mCounter++;
+                                setProgress(mCounter);
+
+                                Timber.e(e, "error downloading price %s", symbol);
                             }
 
                             @Override
                             public void onNext(String s) {
-                                Timber.d("next %s", s);
+                                mCounter++;
+                                setProgress(mCounter);
                             }
                         })
             );
         }
-
+        // unsubscribe if the user navigates away while downloading prices?
     }
 
+    /**
+     * Parse Morningstar response into price information.
+     * @param symbol Morningstar symbol
+     * @param html Result
+     * @return An object containing price details
+     */
     private PriceDownloadedEvent parse(String symbol, String html) {
         Document doc = Jsoup.parse(html);
 
@@ -246,6 +255,34 @@ public class MorningstarPriceUpdater
         // todo: should this be converted to the exchange time?
 
         return new PriceDownloadedEvent(yahooSymbol, price, date);
+    }
+
+    private synchronized void finishIfAllDone() {
+        if (mCounter != mTotalRecords) return;
+
+        compositeSubscription.unsubscribe();
+
+        closeProgressDialog();
+
+        // Notify user that all the prices have been downloaded.
+        UIHelper.showToast(getContext(), R.string.download_complete);
+
+        // fire an event so that the data can be reloaded.
+        EventBus.getDefault().post(new AllPricesDownloadedEvent());
+    }
+
+    private void savePrice(PriceDownloadedEvent event) {
+        BriteDatabase.Transaction tx = stockRepository.get().database.newTransaction();
+
+        // update the current price of the stock.
+        stockRepository.get().updateCurrentPrice(event.symbol, event.price);
+
+        // save price history record.
+        stockHistoryRepository.get().addStockHistoryRecord(event.symbol,
+                event.price, event.date);
+
+        tx.markSuccessful();
+        tx.end();
     }
 
     private IMorningstarService getMorningstarService() {
