@@ -91,9 +91,14 @@ public class CreateDatabaseActivity
 
     @OnClick(R.id.runButton)
     void onRunClick() {
-        // open the main activity
+        // Open the main activity.
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        // Clear the activity stack completely.
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
         finish();
