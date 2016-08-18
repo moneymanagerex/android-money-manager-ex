@@ -23,13 +23,13 @@ import android.net.NetworkInfo;
 /**
  * Network utility functions
  */
-public class NetworkUtilities {
+public class NetworkUtils {
 
     public static boolean isOnline(Context context) {
-        return new NetworkUtilities(context).isOnline();
+        return new NetworkUtils(context).isOnline();
     }
 
-    public NetworkUtilities(Context context) {
+    public NetworkUtils(Context context) {
         mContext = context;
     }
 

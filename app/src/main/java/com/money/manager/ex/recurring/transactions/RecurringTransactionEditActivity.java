@@ -19,7 +19,6 @@ package com.money.manager.ex.recurring.transactions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -35,7 +34,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.database.ISplitTransaction;
-import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
@@ -48,12 +46,11 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
@@ -333,7 +330,7 @@ public class RecurringTransactionEditActivity
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    DateTime dateTime = MyDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    DateTime dateTime = MmxDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
 
                     setPaymentDate(dateTime);
                 }
@@ -373,8 +370,8 @@ public class RecurringTransactionEditActivity
     private RecurringTransaction initializeModel() {
         RecurringTransaction tx = RecurringTransaction.createInstance();
 
-        tx.setDueDate(MyDateTimeUtils.today());
-        tx.setPaymentDate(MyDateTimeUtils.today());
+        tx.setDueDate(MmxDateTimeUtils.today());
+        tx.setPaymentDate(MmxDateTimeUtils.today());
 
         return tx;
     }
@@ -468,7 +465,7 @@ public class RecurringTransactionEditActivity
 
         // Payment Date
 
-//        DateTime dateTime = MyDateTimeUtils.from(mViewHolder.paymentDateTextView.getTag().toString());
+//        DateTime dateTime = MmxDateTimeUtils.from(mViewHolder.paymentDateTextView.getTag().toString());
 //        mRecurringTransaction.setPaymentDate(dateTime);
 
         // Payments Left

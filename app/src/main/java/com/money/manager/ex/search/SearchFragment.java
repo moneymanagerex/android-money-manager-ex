@@ -49,7 +49,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -327,11 +327,11 @@ public class SearchFragment
 
         // from date
         if (searchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, " >= ", MyDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
+            where.addStatement(QueryAllData.Date, " >= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
         }
         // to date
         if (searchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, " <= ", MyDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
+            where.addStatement(QueryAllData.Date, " <= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
         }
         // payee
         if (searchParameters.payeeId != null) {
@@ -458,7 +458,7 @@ public class SearchFragment
         // Date to
         if (txtDateTo.getTag() != null) {
             String dateString = txtDateTo.getTag().toString();
-            searchParameters.dateTo = MyDateTimeUtils.from(dateString);
+            searchParameters.dateTo = MmxDateTimeUtils.from(dateString);
         }
         // Payee
         if (txtSelectPayee.getTag() != null) {
@@ -541,12 +541,12 @@ public class SearchFragment
             txtDateFrom.setTag(null);
         }
         else {
-            txtDateFrom.setTag(MyDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
+            txtDateFrom.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
         }
-        txtDateFrom.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), searchParameters.dateFrom));
+        txtDateFrom.setText(MmxDateTimeUtils.getUserStringFromDateTime(getContext(), searchParameters.dateFrom));
         // Date to
-        txtDateTo.setTag(MyDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
-        txtDateTo.setText(MyDateTimeUtils.getUserStringFromDateTime(getContext(), searchParameters.dateTo));
+        txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
+        txtDateTo.setText(MmxDateTimeUtils.getUserStringFromDateTime(getContext(), searchParameters.dateTo));
 
         // Payee
         txtSelectPayee.setTag(searchParameters.payeeId);

@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
-
-import java.util.ArrayList;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -128,7 +125,7 @@ public class UIHelper {
         String filePath = data.getData().getPath();
 
         // check if the db file is valid
-        if (!MmexDatabaseUtils.isValidDbFile(filePath)) return null;
+        if (!MmxDatabaseUtils.isValidDbFile(filePath)) return null;
 
 //        return data.getData().toString();
         return filePath;

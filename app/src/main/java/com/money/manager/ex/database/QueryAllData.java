@@ -19,7 +19,7 @@ package com.money.manager.ex.database;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.MmexFileUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
 /**
  */
@@ -61,7 +61,7 @@ public class QueryAllData
     public static final String finyear = "finyear";
 
     public QueryAllData(Context context) {
-        super(MmexFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
+        super(MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
     }
 
     @Override

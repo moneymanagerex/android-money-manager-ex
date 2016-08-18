@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.mikepenz.iconics.Iconics;
-import com.mikepenz.iconics.typeface.GenericFont;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.UIHelper;
@@ -45,7 +44,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
@@ -109,7 +108,7 @@ public class MoneyManagerApplication
 
         // otherwise try other paths or create the default database.
 
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(context);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(context);
         String defaultDirectory = dbUtils.getDefaultDatabaseDirectory();
         String defaultPath = defaultDirectory.concat(File.pathSeparator).concat(DEFAULT_DB_FILENAME);
 

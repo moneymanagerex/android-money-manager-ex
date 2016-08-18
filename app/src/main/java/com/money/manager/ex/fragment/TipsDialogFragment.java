@@ -36,7 +36,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.MmexFileUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
 public class TipsDialogFragment extends DialogFragment {
     public static final String PREF_DIALOG = "com.money.manager.ex_tips_dialog_preferences";
@@ -96,7 +96,7 @@ public class TipsDialogFragment extends DialogFragment {
         WebView webView = (WebView) view.findViewById(R.id.webViewTips);
         webView.setVisibility(isViewAsWeb() ? View.VISIBLE : View.GONE);
         if (getRawWeb() != 0) {
-            webView.loadData(MmexFileUtils.getRawAsString(getActivity(), getRawWeb()), "text/html", "UTF-8");
+            webView.loadData(MmxFileUtils.getRawAsString(getActivity(), getRawWeb()), "text/html", "UTF-8");
         }
         // check box
         CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);

@@ -23,7 +23,7 @@ import android.database.Cursor;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.utils.MmexFileUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 /**
@@ -33,7 +33,7 @@ public class QueryAllDataRepository
     extends RepositoryBase {
 
     public QueryAllDataRepository(Context context) {
-        super(context, MmexFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY,
+        super(context, MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY,
             "queryalldata");
     }
 

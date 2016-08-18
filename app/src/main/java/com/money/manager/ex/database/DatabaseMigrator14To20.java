@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -86,7 +86,7 @@ public class DatabaseMigrator14To20 {
     }
 
     public String getV20Directory() {
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         File newPath = new File(dbUtils.getDefaultDatabaseDirectory());
 
         String dbPath = newPath.toString();

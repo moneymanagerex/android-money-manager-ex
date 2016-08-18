@@ -27,13 +27,10 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
-import com.money.manager.ex.utils.MyFileUtils;
-import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +52,7 @@ public class SelectDatabaseActivity
         ButterKnife.bind(this);
 
         // Request external storage permissions for Android 6+.
-        MyFileUtils fileUtils = new MyFileUtils(this);
+        MmxFileUtils fileUtils = new MmxFileUtils(this);
         fileUtils.requestExternalStoragePermissions(this);
 
         setSupportActionBar(mToolbar);
@@ -99,7 +96,7 @@ public class SelectDatabaseActivity
 
     @OnClick(R.id.openDatabaseButton)
     void onOpenDatabaseClick() {
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
         // show the file picker
@@ -118,7 +115,7 @@ public class SelectDatabaseActivity
 
     private void onDatabaseSelected(String dbPath) {
         // check if the file is a valid database
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         if (!dbUtils.isValidDbFile(dbPath)) {
             UIHelper.showToast(this, R.string.invalid_database);
             return;

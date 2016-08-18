@@ -21,20 +21,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.GeneralSettingsActivity;
-import com.money.manager.ex.settings.SyncPreferencesActivity;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoButton;
 import com.money.manager.ex.view.RobotoTextView;
 
@@ -70,7 +63,7 @@ public class CreateDatabaseActivity
     }
 
     private void createDatabase() {
-        boolean created = new MmexDatabaseUtils(this).createDatabase(DEFAULT_DB_FILENAME);
+        boolean created = new MmxDatabaseUtils(this).createDatabase(DEFAULT_DB_FILENAME);
         if (!created) return;
 
         // Read the full path from the preferences.

@@ -23,7 +23,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
@@ -83,11 +83,11 @@ public class EntityBase
 
     protected DateTime getDateTime(String fieldName) {
         String dateString = getString(fieldName);
-        return MyDateTimeUtils.from(dateString);
+        return MmxDateTimeUtils.from(dateString);
     }
 
     protected void setDateTime(String fieldName, DateTime value) {
-        String dateString = MyDateTimeUtils.getIsoStringFrom(value);
+        String dateString = MmxDateTimeUtils.getIsoStringFrom(value);
         contentValues.put(fieldName, dateString);
     }
 

@@ -56,7 +56,6 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
-import com.money.manager.ex.home.events.RequestOpenDatabaseEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
@@ -65,7 +64,6 @@ import com.money.manager.ex.common.MmexCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -80,7 +78,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.transactions.IntentDataParameters;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -356,7 +354,7 @@ public class HomeFragment
         }
 
         // Close the cursor.
-        MmexDatabaseUtils.closeCursor(data);
+        MmxDatabaseUtils.closeCursor(data);
     }
 
     // Menu

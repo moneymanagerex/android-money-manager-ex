@@ -24,8 +24,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -40,7 +38,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.utils.MmexFileUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -258,7 +256,7 @@ public class MmexOpenHelper
      * @param rawId id raw resource
      */
     private void executeRawSql(SQLiteDatabase db, int rawId) {
-        String sqlRaw = MmexFileUtils.getRawAsString(getContext(), rawId);
+        String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
         String sqlStatement[] = sqlRaw.split(";");
         // process all statements
         for (String aSqlStatment : sqlStatement) {

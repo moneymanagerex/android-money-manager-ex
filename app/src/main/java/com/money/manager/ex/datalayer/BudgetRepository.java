@@ -23,7 +23,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Budget;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 /**
  * Budget repository.
@@ -42,7 +42,7 @@ public class BudgetRepository
     }
 
     public boolean delete(int id) {
-        int deleted = super.delete(Budget.BUDGETYEARID + "=?", MmexDatabaseUtils.getArgsForId(id));
+        int deleted = super.delete(Budget.BUDGETYEARID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return deleted > 0;
     }
 
@@ -72,7 +72,7 @@ public class BudgetRepository
             result = id != 0;
         } else {
             result = super.update(entity, Budget.BUDGETYEARID + "=?",
-                    MmexDatabaseUtils.getArgsForId(entity.getId()));
+                    MmxDatabaseUtils.getArgsForId(entity.getId()));
         }
         return result;
     }

@@ -21,11 +21,10 @@ import android.content.Context;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.StockFields;
-import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.utils.MmexFileUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
 /**
  * Watchlist query.
@@ -34,7 +33,7 @@ public class WatchlistDataset
     extends Dataset {
 
     public WatchlistDataset(Context context) {
-        super(MmexFileUtils.getRawAsString(context, R.raw.query_watchlist), DatasetType.QUERY,
+        super(MmxFileUtils.getRawAsString(context, R.raw.query_watchlist), DatasetType.QUERY,
                 "watchlist");
 
         mContext = context;
@@ -56,7 +55,7 @@ public class WatchlistDataset
     }
 
     public String getWatchlistSqlQuery() {
-        String result = MmexFileUtils.getRawAsString(mContext, R.raw.query_watchlist);
+        String result = MmxFileUtils.getRawAsString(mContext, R.raw.query_watchlist);
         return result;
     }
 

@@ -50,7 +50,7 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.CalendarUtils;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.IntentUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -357,7 +357,7 @@ public class IncomeVsExpensesListFragment
                     calendar.setMonth(Calendar.JANUARY);
                 }
                 calendar.setFirstDayOfMonth();
-                params.dateFrom = MyDateTimeUtils.from(calendar.getCalendar());
+                params.dateFrom = MmxDateTimeUtils.from(calendar.getCalendar());
 
                 if (month == IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                     calendar.setMonth(Calendar.DECEMBER);

@@ -129,10 +129,9 @@ public class RecurringTransactionService
                 DateTime lastDayOfMonth = MmxDateTimeUtils.getLastDayOfMonth(result);
                 if (!result.equals(lastDayOfMonth)) {
                     // set to last day of the month
-                    result = result.dayOfMonth().withMaximumValue();
+                    result = lastDayOfMonth;
                 } else {
-                    result = result.plusMonths(1)
-                            .dayOfMonth().withMaximumValue();
+                    result = lastDayOfMonth.plusMonths(1);
                 }
                 break;
 
@@ -142,10 +141,9 @@ public class RecurringTransactionService
                 DateTime lastDayOfMonth2 = MmxDateTimeUtils.getLastDayOfMonth(result);
                 if (!result.equals(lastDayOfMonth2)) {
                     // set to last day of the month
-                    result = result.dayOfMonth().withMaximumValue();
+                    result = lastDayOfMonth2;
                 } else {
-                    result = result.plusMonths(1)
-                            .dayOfMonth().withMaximumValue();
+                    result = lastDayOfMonth2.plusMonths(1);
                 }
                 // get the last day of the next month,
                 // then iterate backwards until we are on a weekday.

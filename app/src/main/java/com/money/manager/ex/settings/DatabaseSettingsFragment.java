@@ -40,7 +40,7 @@ import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.DonateDialogUtils;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -230,7 +230,7 @@ public class DatabaseSettingsFragment
         if (TextUtils.isEmpty(filename)) return false;
 
         // Create the db file. Store the path in the preferences.
-        boolean created = new MmexDatabaseUtils(getActivity()).createDatabase(filename);
+        boolean created = new MmxDatabaseUtils(getActivity()).createDatabase(filename);
         if (!created) return false;
 
         // Read the full path from the preferences.
@@ -263,7 +263,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
+                MmxDatabaseUtils db = new MmxDatabaseUtils(getActivity());
 
                 if (BuildConfig.DEBUG) {
                     Log.d(this.getClass().getSimpleName(), "checking db schema");
@@ -291,7 +291,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MmexDatabaseUtils db = new MmexDatabaseUtils(getActivity());
+                MmxDatabaseUtils db = new MmxDatabaseUtils(getActivity());
                 boolean result;
                 try {
                     if (BuildConfig.DEBUG) {
@@ -362,7 +362,7 @@ public class DatabaseSettingsFragment
         Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MmexDatabaseUtils utils = new MmexDatabaseUtils(getActivity());
+                MmxDatabaseUtils utils = new MmxDatabaseUtils(getActivity());
 
                 if (BuildConfig.DEBUG) {
                     Log.d(this.getClass().getSimpleName(), "fixing duplicates");

@@ -30,7 +30,7 @@ import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 
@@ -106,7 +106,7 @@ public class StockHistoryRepository
     public boolean recordExists(String symbol, DateTime date) {
         boolean result;
 
-        String isoDate = MyDateTimeUtils.getIsoStringFrom(date);
+        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date);
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(getUri(),

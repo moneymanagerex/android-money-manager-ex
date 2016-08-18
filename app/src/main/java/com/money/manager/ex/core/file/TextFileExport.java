@@ -22,9 +22,6 @@ import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.money.manager.ex.R;
-import com.money.manager.ex.utils.MmexFileUtils;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

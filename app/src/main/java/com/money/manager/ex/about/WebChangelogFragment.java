@@ -26,7 +26,7 @@ import android.webkit.WebView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.utils.NetworkUtilities;
+import com.money.manager.ex.utils.NetworkUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,7 +78,7 @@ public class WebChangelogFragment
 
     private void loadChangelog(View view) {
         // check if there is network access
-        NetworkUtilities utils = new NetworkUtilities(getActivity());
+        NetworkUtils utils = new NetworkUtils(getActivity());
         if (!utils.isOnline()) {
             Core.alertDialog(getActivity(), R.string.no_network);
             return;

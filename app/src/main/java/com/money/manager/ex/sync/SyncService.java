@@ -32,7 +32,7 @@ import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.utils.NetworkUtilities;
+import com.money.manager.ex.utils.NetworkUtils;
 
 import org.joda.time.DateTime;
 
@@ -67,7 +67,7 @@ public class SyncService
         }
 
         // check if the device is online.
-        NetworkUtilities network = new NetworkUtilities(getApplicationContext());
+        NetworkUtils network = new NetworkUtils(getApplicationContext());
         if (!network.isOnline()) {
             Timber.i("Can't sync. Device not online.");
             sendMessage(SyncMessages.NOT_ON_WIFI);

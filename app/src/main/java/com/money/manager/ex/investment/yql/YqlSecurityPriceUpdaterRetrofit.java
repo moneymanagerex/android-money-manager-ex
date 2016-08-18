@@ -29,7 +29,7 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
@@ -198,7 +198,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Date
 
-        DateTime date = MyDateTimeUtils.today();
+        DateTime date = MmxDateTimeUtils.today();
         JsonElement dateElement = quote.get("LastTradeDate");
         if (dateElement != JsonNull.INSTANCE) {
             // Sometimes the date is not available. For now we will use today's date.

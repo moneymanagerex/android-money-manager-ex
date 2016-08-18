@@ -25,7 +25,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.recurring.transactions.Recurrence;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
@@ -164,7 +164,7 @@ public class RecurringTransaction
             return null;
         }
 
-        return MyDateTimeUtils.from(dateString);
+        return MmxDateTimeUtils.from(dateString);
     }
 
     public void setDueDate(DateTime value) {
@@ -197,7 +197,7 @@ public class RecurringTransaction
             return null;
         }
 
-        return MyDateTimeUtils.from(dateString);
+        return MmxDateTimeUtils.from(dateString);
     }
 
     public String getPaymentDateString() {

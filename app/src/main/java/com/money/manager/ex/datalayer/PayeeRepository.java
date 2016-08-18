@@ -21,7 +21,7 @@ import android.content.Context;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 /**
  * Payee repository
@@ -51,7 +51,7 @@ public class PayeeRepository
     public boolean delete(int id) {
         if (id == Constants.NOT_SET) return false;
 
-        int result = delete(Payee.PAYEEID + "=?", MmexDatabaseUtils.getArgsForId(id));
+        int result = delete(Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id));
         return result > 0;
     }
 
@@ -60,7 +60,7 @@ public class PayeeRepository
 
         Payee payee = (Payee) super.first(Payee.class,
                 getAllColumns(),
-                Payee.PAYEEID + "=?", MmexDatabaseUtils.getArgsForId(id),
+                Payee.PAYEEID + "=?", MmxDatabaseUtils.getArgsForId(id),
                 null);
 
         return payee;

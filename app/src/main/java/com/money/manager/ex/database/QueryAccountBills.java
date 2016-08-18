@@ -23,7 +23,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
-import com.money.manager.ex.utils.MmexFileUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
 /**
  * Query account bills = account data with balances.
@@ -57,7 +57,7 @@ public class QueryAccountBills
 
     // constructor
     public QueryAccountBills(Context context) {
-        super(MmexFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
+        super(MmxFileUtils.getRawAsString(context, R.raw.query_account_bills), DatasetType.QUERY, "accountbills");
 
         this.context = context.getApplicationContext();
     }

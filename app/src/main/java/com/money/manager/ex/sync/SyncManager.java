@@ -41,8 +41,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
-import com.money.manager.ex.utils.NetworkUtilities;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.NetworkUtils;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -123,7 +123,7 @@ public class SyncManager {
             }
 
             // check if we are on WiFi connection.
-            NetworkUtilities network = new NetworkUtilities(getContext());
+            NetworkUtils network = new NetworkUtils(getContext());
             if (!network.isOnWiFi()) {
                 Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
                 return false;
@@ -326,12 +326,12 @@ public class SyncManager {
         if (!isSyncEnabled()) return false;
 
         // network is online.
-        NetworkUtilities networkUtilities = new NetworkUtilities(getContext());
-        if (!networkUtilities.isOnline()) return false;
+        NetworkUtils networkUtils = new NetworkUtils(getContext());
+        if (!networkUtils.isOnline()) return false;
 
         // wifi preferences
         if (getPreferences().shouldSyncOnlyOnWifi()) {
-            if (!networkUtilities.isOnWiFi()) return false;
+            if (!networkUtils.isOnWiFi()) return false;
         }
 
         // Remote file must be set.
@@ -653,7 +653,7 @@ public class SyncManager {
 
     private void init() {
         // Do not initialize providers if the network is not present.
-        NetworkUtilities network = new NetworkUtilities(getContext());
+        NetworkUtils network = new NetworkUtils(getContext());
         if (!network.isOnline()) return;
 
         createProviders();
@@ -670,7 +670,7 @@ public class SyncManager {
 
     private File getExternalStorageDirectoryForSync() {
         // todo check this after refactoring the database utils.
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         File folder = new File(dbUtils.getDefaultDatabaseDirectory());
 
         // manage folder

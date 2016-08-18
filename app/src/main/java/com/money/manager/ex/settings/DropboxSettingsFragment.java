@@ -48,7 +48,7 @@
 //import com.money.manager.ex.fragment.TipsDialogFragment;
 //import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 //import com.money.manager.ex.sync.SyncConstants;
-//import com.money.manager.ex.utils.MmexFileUtils;
+//import com.money.manager.ex.utils.MmxFileUtils;
 //
 //import org.greenrobot.eventbus.EventBus;
 //import org.greenrobot.eventbus.Subscribe;
@@ -361,7 +361,7 @@
 //        textTips.setVisibility(View.GONE);
 //        // set webView
 //        final WebView webTips = (WebView) view.findViewById(R.id.webViewTips);
-//        webTips.loadData(MmexFileUtils.getRawAsString(getActivity().getApplicationContext(), rawResources), "text/html", "UTF-8");
+//        webTips.loadData(MmxFileUtils.getRawAsString(getActivity().getApplicationContext(), rawResources), "text/html", "UTF-8");
 //        webTips.setVisibility(View.VISIBLE);
 //
 //        final CheckBox checkDont = (CheckBox) view.findViewById(R.id.checkBoxDontShow);

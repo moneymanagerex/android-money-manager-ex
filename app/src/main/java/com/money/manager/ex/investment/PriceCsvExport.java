@@ -26,7 +26,7 @@ import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.file.TextFileExport;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 
@@ -120,7 +120,7 @@ public class PriceCsvExport
 //        SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
 //        String result = sdf.format(date);
 
-        String result = MyDateTimeUtils.getDateStringFrom(date, csvFormat);
+        String result = MmxDateTimeUtils.getDateStringFrom(date, csvFormat);
 
         // append quotes
         result = "\"" + result + "\"";

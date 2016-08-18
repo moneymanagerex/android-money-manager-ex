@@ -27,7 +27,7 @@ import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 /**
  * Repository for Accounts
@@ -117,7 +117,7 @@ public class AccountRepository
         Account account = (Account) first(Account.class,
             new String[] { Account.CURRENCYID },
             Account.ACCOUNTID + "=?",
-            MmexDatabaseUtils.getArgsForId(id),
+            MmxDatabaseUtils.getArgsForId(id),
             null);
 
         if (account == null) {
@@ -188,7 +188,7 @@ public class AccountRepository
 
     public boolean anyAccountsUsingCurrency(int currencyId) {
         int links = count(Account.CURRENCYID + "=?",
-                MmexDatabaseUtils.getArgsForId(currencyId));
+                MmxDatabaseUtils.getArgsForId(currencyId));
         return links > 0;
     }
 

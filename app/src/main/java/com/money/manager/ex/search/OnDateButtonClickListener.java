@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -51,11 +51,11 @@ public class OnDateButtonClickListener
 
     @Override
     public void onClick(View v) {
-        DateTime dateTime = MyDateTimeUtils.today();
+        DateTime dateTime = MmxDateTimeUtils.today();
         String calendarValue = mTextView.getText().toString();
 
         if (!TextUtils.isEmpty(calendarValue)) {
-            String userDatePattern = MyDateTimeUtils.getUserDatePattern(mParent.getApplicationContext());
+            String userDatePattern = MmxDateTimeUtils.getUserDatePattern(mParent.getApplicationContext());
             DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
             dateTime = formatter.parseDateTime(calendarValue);
         }
@@ -77,7 +77,7 @@ public class OnDateButtonClickListener
                 mTextView.setTag(dateString);
 
                 DateTime date = new DateTime(dateString);
-                String displayText = MyDateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
+                String displayText = MmxDateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
                 mTextView.setText(displayText);
             } catch (Exception e) {
                 ExceptionHandler handler = new ExceptionHandler(mParent, this);

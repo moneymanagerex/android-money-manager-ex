@@ -50,7 +50,7 @@ import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -406,7 +406,7 @@ public class CurrencyListFragment
                                     }
                                 }
 
-                                MmexDatabaseUtils databaseUtils = new MmexDatabaseUtils(getActivity());
+                                MmxDatabaseUtils databaseUtils = new MmxDatabaseUtils(getActivity());
                                 whereClause = Currency.CURRENCY_SYMBOL + " IN (" +
                                         databaseUtils.makePlaceholders(usedCurrencies.size()) + ")";
                                 arguments.addAll(symbols);

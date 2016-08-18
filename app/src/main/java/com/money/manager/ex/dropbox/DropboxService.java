@@ -36,7 +36,7 @@
 //import com.money.manager.ex.core.Core;
 //import com.money.manager.ex.sync.SyncConstants;
 //import com.money.manager.ex.sync.SyncService;
-//import com.money.manager.ex.utils.NetworkUtilities;
+//import com.money.manager.ex.utils.NetworkUtils;
 //
 //import java.io.File;
 //import java.io.IOException;
@@ -69,7 +69,7 @@
 //        }
 //
 //        // check if the device is online.
-//        NetworkUtilities network = new NetworkUtilities(getApplicationContext());
+//        NetworkUtils network = new NetworkUtils(getApplicationContext());
 //        if (!network.isOnline()) {
 //            if (BuildConfig.DEBUG) Log.i(LOGCAT, "Can't sync. Device not online.");
 //            return;

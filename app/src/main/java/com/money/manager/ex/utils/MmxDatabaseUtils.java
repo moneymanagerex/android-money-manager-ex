@@ -48,7 +48,7 @@ import timber.log.Timber;
 /**
  * Various database-related utility functions
  */
-public class MmexDatabaseUtils {
+public class MmxDatabaseUtils {
 
     public static void closeCursor(Cursor c) {
         if (c == null || c.isClosed()) return;
@@ -81,7 +81,7 @@ public class MmexDatabaseUtils {
 
     // Dynamic
 
-    public MmexDatabaseUtils(Context context){
+    public MmxDatabaseUtils(Context context){
         mContext = context;
 
         // dependency injection
@@ -241,7 +241,7 @@ public class MmexDatabaseUtils {
         filename = cleanupFilename(filename);
 
         // it might be enough simply to generate the new filename and set it as the default database.
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String location = dbUtils.getDefaultDatabaseDirectory();
 
         String newFilePath = location.concat(File.separator).concat(filename);

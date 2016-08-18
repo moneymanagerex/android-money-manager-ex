@@ -53,7 +53,7 @@
 //import com.money.manager.ex.sync.SyncConstants;
 //import com.money.manager.ex.sync.SyncMessages;
 //import com.money.manager.ex.sync.SyncService;
-//import com.money.manager.ex.utils.NetworkUtilities;
+//import com.money.manager.ex.utils.NetworkUtils;
 //
 //import org.apache.commons.lang3.StringUtils;
 //import org.joda.time.DateTime;
@@ -174,7 +174,7 @@
 //        if (BuildConfig.DEBUG) Log.i(LOGCAT, "Preferences set to sync on WiFi only.");
 //        if (settings.getDropboxSettings().getShouldSyncOnWifi()) {
 //            // check if we are on WiFi connection.
-//            NetworkUtilities network = new NetworkUtilities(mContext);
+//            NetworkUtils network = new NetworkUtils(mContext);
 //            if (!network.isOnWiFi()) {
 //                Log.i(LOGCAT, "Not on WiFi connection. Not synchronizing.");
 //                return false;

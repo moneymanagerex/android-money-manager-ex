@@ -54,7 +54,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -291,7 +291,7 @@ public class DashboardFragment
         // format month
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.set(year, month - 1, 1);
-        DateTime dateTime = MyDateTimeUtils.from(year, month - 1, 1);
+        DateTime dateTime = MmxDateTimeUtils.from(year, month - 1, 1);
         // titles
 //        titles[1] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
         titles[1] = Integer.toString(year) + "-" + dateTime.toString("MMM");

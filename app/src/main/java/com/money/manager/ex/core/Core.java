@@ -46,7 +46,7 @@ import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
@@ -213,7 +213,7 @@ public class Core {
         if (!database.exists()) return null;
 
         //create folder to copy database
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         File folderOutput = new File(dbUtils.getDefaultDatabaseDirectory());
 
         //take a folder of database

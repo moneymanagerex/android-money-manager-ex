@@ -21,11 +21,10 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Stock;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -92,7 +91,7 @@ public class StockRepository
     public List<Stock> load(Integer[] ids) {
         if (ids.length == 0) return null;
 
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(ids.length);
         String[] idParams = new String[ids.length];
 
@@ -114,7 +113,7 @@ public class StockRepository
     public List<Stock> loadForSymbols(String[] symbols) {
         if (symbols.length == 0) return null;
 
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getContext());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String placeHolders = dbUtils.makePlaceholders(symbols.length);
 
         Cursor c = openCursor(null,

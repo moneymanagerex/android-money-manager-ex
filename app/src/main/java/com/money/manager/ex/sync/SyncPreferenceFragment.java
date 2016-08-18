@@ -39,7 +39,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -285,7 +285,7 @@ public class SyncPreferenceFragment
     private void storeLocalFileSetting(String remoteFile) {
         String fileName = new File(remoteFile).getName();
 
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(getActivity());
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getActivity());
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
         String dbPath = dbDirectory.concat(File.separator).concat(fileName);

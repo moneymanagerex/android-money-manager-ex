@@ -87,8 +87,7 @@ import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
-import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -194,7 +193,7 @@ public class MainActivity
 
         // check if we require a password.
         String dbPath = MoneyManagerApplication.getDatabasePath(this);
-        if (MmexDatabaseUtils.isEncryptedDatabase(dbPath)) {
+        if (MmxDatabaseUtils.isEncryptedDatabase(dbPath)) {
             // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
             requestDatabasePassword();
         } else {
@@ -847,7 +846,7 @@ public class MainActivity
 
     public void openDatabasePicker() {
         //pickFile(Environment.getDefaultDatabaseDirectory());
-        MmexDatabaseUtils dbUtils = new MmexDatabaseUtils(this);
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
         // Environment.getDefaultDatabaseDirectory().getPath()
@@ -1278,7 +1277,7 @@ public class MainActivity
         Timber.v("Changing database to: %s", dbFilePath);
 
         // e encrypted database(s)
-        if (MmexDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
+        if (MmxDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
             requestDatabasePassword(dbFilePath);
         } else {
             changeDatabase(dbFilePath, null);

@@ -36,7 +36,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.datalayer.Query;
-import com.money.manager.ex.utils.MyDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import org.joda.time.DateTime;
 
@@ -70,11 +70,11 @@ public abstract class BaseReportFragment
                 mItemSelected = savedInstanceState.getInt(KEY_ITEM_SELECTED);
             if (savedInstanceState.containsKey(KEY_FROM_DATE)) {
                 String dateFromString = savedInstanceState.getString(KEY_FROM_DATE);
-                mDateFrom = MyDateTimeUtils.from(dateFromString);
+                mDateFrom = MmxDateTimeUtils.from(dateFromString);
             }
             if (savedInstanceState.containsKey(KEY_TO_DATE)) {
                 String dateToString = savedInstanceState.getString(KEY_TO_DATE);
-                mDateTo = MyDateTimeUtils.from(dateToString);
+                mDateTo = MmxDateTimeUtils.from(dateToString);
             }
         }
         //start loader
@@ -145,28 +145,28 @@ public abstract class BaseReportFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_current_month:
-                mDateFrom = MyDateTimeUtils.today().dayOfMonth().withMinimumValue();
+                mDateFrom = MmxDateTimeUtils.today().dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom.dayOfMonth().withMaximumValue();
                 break;
 
             case R.id.menu_last_month:
-                mDateFrom = MyDateTimeUtils.today()
+                mDateFrom = MmxDateTimeUtils.today()
                         .minusMonths(1).dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom.dayOfMonth().withMaximumValue();
                 break;
             case R.id.menu_last_30_days:
-                mDateFrom = MyDateTimeUtils.today().minusDays(30);
-                mDateTo = MyDateTimeUtils.today();
+                mDateFrom = MmxDateTimeUtils.today().minusDays(30);
+                mDateTo = MmxDateTimeUtils.today();
                 break;
             case R.id.menu_current_year:
-                mDateFrom = MyDateTimeUtils.today()
+                mDateFrom = MmxDateTimeUtils.today()
                         .monthOfYear().withMinimumValue()
                         .dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom.monthOfYear().withMaximumValue()
                         .dayOfMonth().withMaximumValue();
                 break;
             case R.id.menu_last_year:
-                mDateFrom = MyDateTimeUtils.today().minusYears(1)
+                mDateFrom = MmxDateTimeUtils.today().minusYears(1)
                         .monthOfYear().withMinimumValue()
                         .dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom
@@ -191,8 +191,8 @@ public abstract class BaseReportFragment
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + MyDateTimeUtils.getIsoStringFrom(mDateFrom) +
-                "' AND " + ViewMobileData.Date + " <= '" + MyDateTimeUtils.getIsoStringFrom(mDateTo) + "'";
+            whereClause = ViewMobileData.Date + " >= '" + MmxDateTimeUtils.getIsoStringFrom(mDateFrom) +
+                "' AND " + ViewMobileData.Date + " <= '" + MmxDateTimeUtils.getIsoStringFrom(mDateTo) + "'";
         }
 
         //check item
@@ -262,12 +262,12 @@ public abstract class BaseReportFragment
                     DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
                     DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-                    mDateFrom = MyDateTimeUtils.from(fromDatePicker);
-                    mDateTo = MyDateTimeUtils.from(toDatePicker);
+                    mDateFrom = MmxDateTimeUtils.from(fromDatePicker);
+                    mDateTo = MmxDateTimeUtils.from(toDatePicker);
 
                     String whereClause =
-                        ViewMobileData.Date + ">='" + MyDateTimeUtils.getIsoStringFrom(mDateFrom) + "' AND " +
-                        ViewMobileData.Date + "<='" + MyDateTimeUtils.getIsoStringFrom(mDateTo) + "'";
+                        ViewMobileData.Date + ">='" + MmxDateTimeUtils.getIsoStringFrom(mDateFrom) + "' AND " +
+                        ViewMobileData.Date + "<='" + MmxDateTimeUtils.getIsoStringFrom(mDateTo) + "'";
 
                     Bundle args = new Bundle();
                     args.putString(KEY_WHERE_CLAUSE, whereClause);
@@ -279,14 +279,14 @@ public abstract class BaseReportFragment
             })
             .show();
         // set date if is null
-        if (mDateFrom == null) mDateFrom = MyDateTimeUtils.today();
-        if (mDateTo == null) mDateTo = MyDateTimeUtils.today();
+        if (mDateFrom == null) mDateFrom = MmxDateTimeUtils.today();
+        if (mDateTo == null) mDateTo = MmxDateTimeUtils.today();
 
         View view = dialog.getCustomView();
         DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
         DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-        MyDateTimeUtils.setDatePicker(mDateFrom, fromDatePicker);
-        MyDateTimeUtils.setDatePicker(mDateTo, toDatePicker);
+        MmxDateTimeUtils.setDatePicker(mDateFrom, fromDatePicker);
+        MmxDateTimeUtils.setDatePicker(mDateTo, toDatePicker);
     }
 }

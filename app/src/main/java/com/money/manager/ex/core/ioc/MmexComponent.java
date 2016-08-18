@@ -19,7 +19,6 @@ package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmexContentProvider;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
@@ -29,7 +28,7 @@ import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActiv
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
-import com.money.manager.ex.utils.MmexDatabaseUtils;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import javax.inject.Singleton;
 
@@ -59,7 +58,7 @@ public interface MmexComponent {
     void inject(AppSettings settings);
     void inject(Core core);
     void inject(MmexContentProvider provider);
-    void inject(MmexDatabaseUtils utils);
+    void inject(MmxDatabaseUtils utils);
 
     // Repositories
     void inject(StockRepositorySql repository);
