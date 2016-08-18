@@ -637,32 +637,19 @@ public class MainActivity
      * for the change setting restart process application
      */
     public void restartActivity() {
-        if (mRestartActivity) {
-            // <= 10
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-                // this is for APIs < 11.
-                Intent intent = getIntent();
-                overridePendingTransition(0, 0);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                // finish this activity
-                finish();
-                overridePendingTransition(0, 0);
-                // restart
-                startActivity(intent);
-                // kill process
-//                android.os.Process.killProcess(android.os.Process.myPid());
-            } else {
-                // New api. This will keep the Intent, which hangs after the db download!
-//                this.recreate();
-
-                Intent intent = IntentFactory.getMainActivityNew(this);
-                startActivity(intent);
-
-                finish();
-            }
-        }
+        if (!mRestartActivity) return;
 
         setRestartActivity(false);
+
+        // kill process
+//                android.os.Process.killProcess(android.os.Process.myPid());
+        // New api. This will keep the Intent, which hangs after the db download!
+//                this.recreate();
+
+        Intent intent = IntentFactory.getMainActivityNew(this);
+        startActivity(intent);
+
+        finish();
     }
 
     private void resetContentProvider() {
