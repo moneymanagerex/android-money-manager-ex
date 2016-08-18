@@ -189,7 +189,7 @@ dependencies {
             ,'org.jsoup:jsoup:1.9.2'               // HTML parsing.
             ,'com.google.guava:guava:19.0'         // collection libraries
             ,'com.android.support:multidex:1.0.0'  // multidex support
-            ,'com.nbsp:library:1.09'               // file picker
+            ,'com.nononsenseapps:filepicker:3.0.0' // file picker
             ,'io.reactivex:rxandroid:1.2.1'        // RxJava
             ,'io.reactivex:rxjava:1.1.9'
             ,'com.squareup.sqlbrite:sqlbrite:0.7.0'

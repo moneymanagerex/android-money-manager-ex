@@ -310,8 +310,9 @@
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
         <activity android:name=".home.CreateDatabaseActivity" />
-        <activity android:name=".home.createdb.CreateDbStepper"
-            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name="com.nononsenseapps.filepicker.FilePickerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/FilePickerTheme" />
 
         <!-- providers -->
 

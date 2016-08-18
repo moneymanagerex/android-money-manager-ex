@@ -29,7 +29,11 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
 import com.money.manager.ex.utils.MyFileUtils;
-import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+import com.nononsenseapps.filepicker.FilePickerActivity;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,10 +68,12 @@ public class SelectDatabaseActivity
         switch (requestCode) {
             case REQUEST_PICKFILE:
                 if (resultCode != RESULT_OK) return;
-                if (data == null || !data.hasExtra(FilePickerActivity.RESULT_FILE_PATH)) return;
+                String selectedPath = UIHelper.getSelectedFile(data);
+                if(StringUtils.isEmpty(selectedPath)) {
+                    UIHelper.showToast(this, R.string.invalid_database);
+                    return;
+                }
 
-                // data.getData().getPath()
-                String selectedPath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
                 onDatabaseSelected(selectedPath);
                 break;
         }
@@ -98,8 +104,7 @@ public class SelectDatabaseActivity
 
         // show the file picker
         try {
-            UIHelper helper = new UIHelper(this);
-            helper.pickFileInternal(dbDirectory, REQUEST_PICKFILE);
+            UIHelper.pickFileDialog(this, dbDirectory, REQUEST_PICKFILE);
         } catch (Exception e) {
             Timber.e(e, "opening file picker");
         }

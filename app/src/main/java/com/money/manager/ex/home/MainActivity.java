@@ -16,8 +16,6 @@
  */
 package com.money.manager.ex.home;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.NotificationManager;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -58,7 +56,6 @@ import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
-import com.money.manager.ex.sync.adapter.SyncAdapterTrigger;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -91,7 +88,7 @@ import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmexDatabaseUtils;
-import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -102,9 +99,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import timber.log.Timber;
-
-import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT;
-import static com.money.manager.ex.sync.adapter.SyncAdapterService.ACCOUNT_TYPE;
 
 /**
  * Main activity of the application.
@@ -266,14 +260,14 @@ public class MainActivity
 
         switch (requestCode) {
             case REQUEST_PICKFILE:
-                // data.getData() == null
                 if (resultCode != RESULT_OK) return;
-                if (data == null || !data.hasExtra(FilePickerActivity.RESULT_FILE_PATH)) {
+
+                String selectedPath = UIHelper.getSelectedFile(data);
+                if(StringUtils.isEmpty(selectedPath)) {
+                    UIHelper.showToast(this, R.string.invalid_database);
                     return;
                 }
 
-                // data.getData().getPath()
-                String selectedPath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
                 requestDatabaseChange(selectedPath);
                 break;
 
@@ -858,8 +852,7 @@ public class MainActivity
 
         // Environment.getDefaultDatabaseDirectory().getPath()
         try {
-            UIHelper uiHelper = new UIHelper(this);
-            uiHelper.pickFileInternal(dbDirectory, REQUEST_PICKFILE);
+            UIHelper.pickFileDialog(this, dbDirectory, REQUEST_PICKFILE);
         } catch (Exception e) {
             Timber.e(e, "displaying the open-database picker");
         }

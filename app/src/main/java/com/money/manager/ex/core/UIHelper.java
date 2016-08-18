@@ -2,6 +2,7 @@ package com.money.manager.ex.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Environment;
 import android.util.DisplayMetrics;
@@ -9,11 +10,9 @@ import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
-import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nononsenseapps.filepicker.FilePickerActivity;
 
-import java.util.regex.Pattern;
-
-import timber.log.Timber;
+import java.util.ArrayList;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -75,25 +74,58 @@ public class UIHelper {
         return dp;
     }
 
-    /**
-     * Pick a database file using built-in file picker.
-     * @param locationPath ?
-     */
-    public void pickFileInternal(String locationPath, int requestCode) {
-        // root path should be the internal storage?
-        String root = Environment.getExternalStorageDirectory().getPath();
+//    /**
+//     * Pick a database file using built-in file picker.
+//     * @param locationPath ?
+//     */
+//    public void pickFileDialog(String locationPath, int requestCode) {
+//        // root path should be the internal storage?
+//        String root = Environment.getExternalStorageDirectory().getPath();
+//
+//        new MaterialFilePicker()
+//                .withActivity((Activity) getContext())
+//                .withRequestCode(requestCode)
+//                .withRootPath(root)
+//                .withPath(locationPath)
+//                .withFilter(Pattern.compile(".*\\.mmb$"))
+//                //.withFilterDirectories()
+//                .withHiddenFiles(true)
+//                .start();
+//
+//        // continues in onActivityResult in the parent activity
+//    }
 
-        new MaterialFilePicker()
-                .withActivity((Activity) getContext())
-                .withRequestCode(requestCode)
-                .withRootPath(root)
-                .withPath(locationPath)
-                .withFilter(Pattern.compile(".*\\.mmb$"))
-                //.withFilterDirectories()
-                .withHiddenFiles(true)
-                .start();
+    public static void pickFileDialog(Activity activity, String location, int requestCode) {
+// This always works
+        Intent i = new Intent(activity, FilePickerActivity.class);
+        // This works if you defined the intent filter
+        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
 
-        // continues in onActivityResult in the parent activity
+        // Set these depending on your use case. These are the defaults.
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
+
+        // Configure initial directory by specifying a String.
+        // You could specify a String like "/storage/emulated/0/", but that can
+        // dangerous. Always use Android's API calls to get paths to the SD-card or
+        // internal memory.
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, location);
+        // Environment.getExternalStorageDirectory().getPath()
+
+        activity.startActivityForResult(i, requestCode);
     }
 
+    public static String getSelectedFile(Intent data) {
+        if (data == null) return null;
+
+//        ArrayList<String> files = data.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
+//        if (files == null || files.size() == 0) return;
+        // files.get(0)
+
+//        return data.getStringExtra(FilePickerActivity.EXTRA_PATHS);
+        String filePath = data.getData().getPath();
+//        return data.getData().toString();
+        return filePath;
+    }
 }
