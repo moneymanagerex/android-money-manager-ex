@@ -402,7 +402,7 @@ public class MmxContentProvider
         if (Dataset.class.isInstance(sourceObject)) {
             Dataset dataset = ((Dataset) sourceObject);
 
-            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
+//            logQuery(dataset, projection, selection, selectionArgs, sortOrder);
 
             switch (dataset.getType()) {
                 case QUERY:
