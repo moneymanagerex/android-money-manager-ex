@@ -186,7 +186,8 @@ public class SyncPreferenceFragment
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
                 // log in to the provider immediately and save to persistence.
                 sync.login();
-                sync.storePersistent();
+                // Login is an async call so no point saving here.
+//                sync.storePersistent();
 
                 return true;
             }
@@ -197,6 +198,8 @@ public class SyncPreferenceFragment
         viewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                getSyncManager().storePersistent();
+
                 // show the file browser/picker.
                 Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
                 startActivityForResult(intent, REQUEST_REMOTE_FILE);
