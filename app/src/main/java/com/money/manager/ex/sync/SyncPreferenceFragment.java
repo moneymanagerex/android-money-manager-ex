@@ -32,6 +32,7 @@ import android.support.v4.app.Fragment;
 
 import android.widget.Toast;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -208,7 +209,22 @@ public class SyncPreferenceFragment
             }
         });
 
-        // synchronization interval
+        // interval
+        if (BuildConfig.DEBUG) {
+            // insert a 1-minute in debug mode
+            CharSequence[] entries = viewHolder.syncInterval.getEntries();
+            String[] newEntries = new String[entries.length + 1];
+            newEntries[0] = "1-minute";
+            System.arraycopy(entries, 0, newEntries, 1, entries.length);
+            viewHolder.syncInterval.setEntries(newEntries);
+            // values
+            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
+            String[] newValues = new String[values.length + 1];
+            newValues[0] = "1";
+            System.arraycopy(entries, 0, newValues, 1, values.length);
+            viewHolder.syncInterval.setEntryValues(newValues);
+        }
+
         viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {

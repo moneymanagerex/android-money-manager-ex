@@ -43,6 +43,9 @@ allprojects {
         maven { url 'https://maven.fabric.io/public' }          // fabric
         maven { url "http://maven.cloudrail.com" }              // cloudrail
         maven { url  "http://dl.bintray.com/lukaville/maven" }  // file picker
+        flatDir {
+            dirs 'libs'
+        }
     }
 
     // Force all dependent libs to use the same version of the support annotations.

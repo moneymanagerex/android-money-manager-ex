@@ -132,6 +132,12 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
 
+    signingConfigs {
+        debug {
+            v2SigningEnabled false;
+        }
+    }
+
     testOptions {
         unitTests.returnDefaultValues = true;
     }

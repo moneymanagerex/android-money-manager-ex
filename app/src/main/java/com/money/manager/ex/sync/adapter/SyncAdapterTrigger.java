@@ -77,6 +77,11 @@ public class SyncAdapterTrigger {
 //    public static final long SYNC_INTERVAL_IN_MINUTES = 60L;
 //    public static final long SYNC_INTERVAL = SYNC_INTERVAL_IN_MINUTES * SECONDS_PER_MINUTE;
 
+    /**
+     *
+     * @param interval Interval in miliseconds to use between runs. Minutes * seconds;
+     * Ref: https://developer.android.com/reference/android/content/ContentResolver.html#addPeriodicSync(android.accounts.Account,%20java.lang.String,%20android.os.Bundle,%20long)
+     */
     public void schedulePeriodicSync(long interval) {
         Account account = new Account(ACCOUNT, ACCOUNT_TYPE);
 
