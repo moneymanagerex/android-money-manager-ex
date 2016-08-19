@@ -210,6 +210,8 @@ public class MorningstarPriceUpdater
                                 setProgress(mCounter);
 
                                 Timber.e(e, "error downloading price %s", symbol);
+
+                                finishIfAllDone();
                             }
 
                             @Override

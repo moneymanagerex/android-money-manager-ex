@@ -33,9 +33,10 @@ public class DebugTree
     @Override
     protected void log(int priority, String tag, String message, Throwable t) {
         if (priority >= Log.WARN) {
-            String uiMessage = message;
+            String uiMessage = message.split("\\n")[0];
             if (t != null) {
-                uiMessage = "Error: " + t.getMessage();
+                String exceptionMessage = t.getMessage();
+                if (exceptionMessage != null) uiMessage = "Error: " + exceptionMessage;
             }
             // send to UI if there are any subscribers.
             if (EventBus.getDefault().hasSubscriberForEvent(ErrorRaisedEvent.class)) {
