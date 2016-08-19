@@ -30,6 +30,8 @@ import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Task that updates all the security prices in the list.
  */
@@ -63,8 +65,7 @@ public class YahooDownloadAllPricesTask
         try {
             return runTask(symbols);
         } catch (IllegalArgumentException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ex, "No price provided by Yahoo.");
+            Timber.e(ex, "No price provided by Yahoo.");
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
@@ -93,8 +94,7 @@ public class YahooDownloadAllPricesTask
                 DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "closing progress dialog");
+            Timber.e(e, "closing progress dialog");
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();
@@ -118,8 +118,7 @@ public class YahooDownloadAllPricesTask
             try {
                 csv = downloader.downloadAsText(url);
             } catch (IOException iox) {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.e(iox, "downloading quote");
+                Timber.e(iox, "downloading quote");
                 return false;
             }
             // notify parent about the price update

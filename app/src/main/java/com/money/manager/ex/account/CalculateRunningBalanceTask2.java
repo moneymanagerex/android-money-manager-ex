@@ -25,7 +25,6 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
@@ -39,6 +38,7 @@ import java.util.HashMap;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Not used!
@@ -90,8 +90,7 @@ public class CalculateRunningBalanceTask2
         try {
             return runTask();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(this.context, this);
-            handler.e(ex, "balancing amount");
+            Timber.e(ex, "balancing amount");
         }
         return null;
     }

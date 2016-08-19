@@ -203,6 +203,8 @@ dependencies {
             ,'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
 //            ,'com.github.fcannizzaro:material-stepper:1.2.2'
             ,"com.mikepenz:iconics-core:2.7.2@aar"
+//            ,'org.slf4j:slf4j-android:1.7.21'   // Logging to file. Used for testing the sync service.
+//            ,'com.github.tony19:logback-android-core:1.1.1-6'   // logback
 
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {

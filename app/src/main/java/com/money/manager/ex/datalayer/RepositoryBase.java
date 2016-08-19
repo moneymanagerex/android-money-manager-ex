@@ -81,8 +81,7 @@ public abstract class RepositoryBase<T extends EntityBase>
                 sort);
             return cursor;
         } catch (SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(ex, "querying database");
+            Timber.e(ex, "querying database");
             return null;
         }
     }

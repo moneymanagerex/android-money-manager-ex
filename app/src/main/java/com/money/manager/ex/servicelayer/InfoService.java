@@ -29,6 +29,8 @@ import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
 
+import timber.log.Timber;
+
 /**
  * Access and manipulation of the info in the Info Table
  */
@@ -114,8 +116,7 @@ public class InfoService
             }
             cursor.close();
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "retrieving info value: " + info);
+            Timber.e(e, "retrieving info value: " + info);
         }
 
         return ret;

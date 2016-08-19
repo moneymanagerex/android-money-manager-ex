@@ -35,6 +35,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Adapter for budgets.
@@ -180,8 +181,7 @@ public class BudgetAdapter
                 cursor.close();
             }
         } catch (IllegalStateException ise) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ise, "loading category total");
+            Timber.e(ise, "loading category total");
         }
 
         return total;

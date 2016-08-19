@@ -32,7 +32,6 @@ import com.money.manager.ex.log.ExceptionHandler;
 
 /**
  * Look & Feel preferences
- * Created by Alen Siljak on 03/07/2015.
  */
 public class LookAndFeelSettings
     extends SettingsBase {

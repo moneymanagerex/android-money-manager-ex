@@ -24,11 +24,11 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  *
@@ -52,8 +52,7 @@ public class AllAccountBillsViewFactory
         try {
             return getCountInternal();
         } catch (IllegalStateException ise) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ise, "getting the record count for widget");
+            Timber.e(ise, "getting the record count for widget");
             return 0;
         }
     }
@@ -118,8 +117,7 @@ public class AllAccountBillsViewFactory
             mCursor = mContext.getContentResolver().query(accountBills.getUri(),
                     null, selection, null, QueryAccountBills.ACCOUNTNAME);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "reloading accounts cursor");
+            Timber.e(e, "reloading accounts cursor");
         }
     }
 

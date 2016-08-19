@@ -68,6 +68,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * The list of securities.
@@ -368,8 +369,7 @@ public class WatchlistItemsFragment
                 }
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(e, "stopping watchlist items fragment");
+            Timber.e(e, "stopping watchlist items fragment");
         }
     }
 

@@ -57,8 +57,7 @@ public class CheckCloudStorageForUpdatesTask
             // continues at PostExecute.
         } catch (Exception e) {
             //throw new RuntimeException("Error in check Cloud ForUpdates", e);
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(e, "comparing files for sync");
+            Timber.e(e, "comparing files for sync");
         }
         return result;
     }
@@ -82,8 +81,7 @@ public class CheckCloudStorageForUpdatesTask
                 showNotificationDialog();
             }
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ex, "showing update notification dialog");
+            Timber.e(ex, "showing update notification dialog");
         }
 
         if (ret.equals(SyncMessages.STARTING_UPLOAD)) {

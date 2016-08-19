@@ -50,6 +50,7 @@ import java.util.Map;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * This class implements all the methods of utility for the management of currencies.
@@ -359,8 +360,7 @@ public class CurrencyService
 
                 repo.insert(newCurrency);
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.e(e, "importing currencies from locale " + locale.getDisplayName());
+                Timber.e(e, "importing currencies from locale %s", locale.getDisplayName());
             }
         }
 
@@ -416,8 +416,7 @@ public class CurrencyService
                 if (defaultLocale != null) {
                     message += " for " + defaultLocale.getCountry();
                 }
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.e(ex, message);
+                Timber.e(ex, message);
             }
             // else, just ignore Currency parsing exception and use the pre-set currency below.
             // http://docs.oracle.com/javase/7/docs/api/java/util/Currency.html#getInstance(java.util.Locale)

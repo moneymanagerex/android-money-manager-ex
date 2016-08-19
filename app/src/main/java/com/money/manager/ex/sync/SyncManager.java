@@ -360,7 +360,6 @@ public class SyncManager {
         }
 //        catch (NotFoundException e) {
 //            // just show a message
-//            ExceptionHandler handler = new ExceptionHandler(getContext());
 //            handler.showMessage(R.string.remote_file_not_found);
 //        }
         catch (Exception e) {

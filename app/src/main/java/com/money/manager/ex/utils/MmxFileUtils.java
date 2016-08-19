@@ -39,6 +39,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 /**
  * File utilities
  */
@@ -108,15 +110,13 @@ public class MmxFileUtils {
                 // convert to string
                 result = new String(outputStream.toByteArray());
             } catch (IOException e) {
-                ExceptionHandler handler = new ExceptionHandler(context);
-                handler.e(e, "loadRaw");
+                Timber.e(e, "loadRaw");
             } finally {
                 if (outputStream != null) {
                     try {
                         outputStream.close();
                     } catch (IOException e) {
-                        ExceptionHandler handler = new ExceptionHandler(context);
-                        handler.e(e, "close byte array");
+                        Timber.e(e, "close byte array");
                     }
                 }
             }
