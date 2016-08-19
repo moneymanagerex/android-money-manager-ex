@@ -54,6 +54,7 @@ import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.sync.SyncServiceMessage;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -95,6 +96,9 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -398,14 +402,41 @@ public class MainActivity
     // Custom methods
 
     public void checkCloudForDbUpdates() {
-        SyncManager sync = new SyncManager(this);
-        if (!sync.isActive()) {
-            return;
-        }
+        final SyncManager sync = new SyncManager(this);
+        if (!sync.isActive()) return;
 
-        // todo: redo this using Rx!
-        AsyncTask<Void, Integer, Integer> asyncTask = new CheckCloudStorageForUpdatesTask(this);
-        asyncTask.execute();
+//        AsyncTask<Void, Integer, SyncServiceMessage> asyncTask = new CheckCloudStorageForUpdatesTask(this);
+//        asyncTask.execute();
+
+        compositeSubscription.add(
+            new SyncManager(this).compareFilesAsync()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<SyncServiceMessage>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("complete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "error checking remote file");
+                    }
+
+                    @Override
+                    public void onNext(SyncServiceMessage syncServiceMessage) {
+                        Timber.d("compare result: %d", syncServiceMessage.code);
+                        switch (syncServiceMessage) {
+                            case STARTING_DOWNLOAD:
+                                UIHelper.showDiffNotificationDialog(MainActivity.this);
+                                break;
+                            case STARTING_UPLOAD:
+                                sync.triggerSynchronization();
+                                break;
+                        }
+                    }
+                })
+        );
     }
 
     /**

@@ -117,20 +117,6 @@
         <item>@string/upload</item>
     </string-array>
 
-    <!-- Define array to show transaction -->
-    <!--<string-array name="show_transaction_values">-->
-        <!--<item>@string/today</item>-->
-        <!--<item>@string/all_transaction</item>-->
-        <!--<item>@string/last7days</item>-->
-        <!--<item>@string/last15days</item>-->
-        <!--<item>@string/current_month</item>-->
-        <!--<item>@string/last30days</item>-->
-        <!--<item>@string/last3months</item>-->
-        <!--<item>@string/last6months</item>-->
-        <!--<item>@string/current_year</item>-->
-        <!--<item>@string/future_transactions</item>-->
-    <!--</string-array>-->
-
     <!-- Define last or none used payee -->
     <string-array name="new_transaction_dialog_values">
         <item>N</item>
@@ -141,21 +127,7 @@
         <item>@string/last</item>
     </string-array>
 
-    <!-- Define timeout synchronize dropbox -->
-    <string-array name="timeout_synchronize_values">
-        <item>0</item>
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>120</item>
-        <item>360</item>
-        <item>720</item>
-        <item>1440</item>
-        <item>10080</item>
-        <item>43200</item>
-    </string-array>
+    <!-- Synchronisation frequencies -->
     <string-array name="timeout_synchronize_items">
         <item>@string/never</item>
         <item>@string/every_5_minutes</item>
@@ -170,6 +142,21 @@
         <item>@string/weekly</item>
         <item>@string/monthly</item>
     </string-array>
+    <string-array name="timeout_synchronize_values">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>10080</item>
+        <item>43200</item>
+    </string-array>
+
     <!-- Define frequencies items and values -->
     <integer-array name="frequencies_values">
         <item>0</item>

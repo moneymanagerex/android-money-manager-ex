@@ -23,9 +23,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.sync.SyncMessages;
+import com.money.manager.ex.sync.SyncServiceMessage;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import timber.log.Timber;
@@ -35,7 +35,7 @@ import timber.log.Timber;
  * Ran on start of the main activity.
  */
 public class CheckCloudStorageForUpdatesTask
-    extends AsyncTask<Void, Integer, Integer> {
+    extends AsyncTask<Void, Integer, SyncServiceMessage> {
 
     public CheckCloudStorageForUpdatesTask(Context context) {
         mContext = context;
@@ -45,8 +45,8 @@ public class CheckCloudStorageForUpdatesTask
     private SyncManager mSyncManager;
 
     @Override
-    protected Integer doInBackground(Void... voids) {
-        Integer result = null;
+    protected SyncServiceMessage doInBackground(Void... voids) {
+        SyncServiceMessage result = null;
 
         try {
             publishProgress(1);
@@ -68,7 +68,7 @@ public class CheckCloudStorageForUpdatesTask
     }
 
     @Override
-    protected void onPostExecute(Integer ret) {
+    protected void onPostExecute(SyncServiceMessage ret) {
         // ???
         if (ret == null) {
             Timber.w("onPostExecute ret parameter is null.");
@@ -76,15 +76,15 @@ public class CheckCloudStorageForUpdatesTask
         }
 
         try {
-            if (ret.equals(SyncMessages.STARTING_DOWNLOAD)) {
+            if (ret.equals(SyncServiceMessage.STARTING_DOWNLOAD.code)) {
 //            showNotificationSnackbar();
-                showNotificationDialog();
+                UIHelper.showDiffNotificationDialog(getContext());
             }
         } catch (Exception ex) {
             Timber.e(ex, "showing update notification dialog");
         }
 
-        if (ret.equals(SyncMessages.STARTING_UPLOAD)) {
+        if (ret.equals(SyncServiceMessage.STARTING_UPLOAD.code)) {
             // upload without prompting.
             getSyncManager().triggerSynchronization();
         }
@@ -121,26 +121,4 @@ public class CheckCloudStorageForUpdatesTask
         return mSyncManager;
     }
 
-    private void showNotificationDialog() {
-        new AlertDialogWrapper.Builder(getContext())
-            // setting alert dialog
-            .setIcon(FontIconDrawable.inflate(mContext, R.xml.ic_alert))
-            .setTitle(R.string.update_available)
-            .setMessage(R.string.update_available_online)
-            .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            })
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    new SyncManager(getContext()).triggerSynchronization();
-
-                    dialog.dismiss();
-                }
-            })
-            .show();
-    }
 }

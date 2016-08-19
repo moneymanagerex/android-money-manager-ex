@@ -29,7 +29,6 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.utils.MmxFileUtils;
@@ -71,7 +70,7 @@ public class SyncService
         NetworkUtils network = new NetworkUtils(getApplicationContext());
         if (!network.isOnline()) {
             Timber.i("Can't sync. Device not online.");
-            sendMessage(SyncMessages.NOT_ON_WIFI);
+            sendMessage(SyncServiceMessage.NOT_ON_WIFI);
             return;
         }
 
@@ -85,7 +84,7 @@ public class SyncService
         File localFile = new File(localFilename);
         CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
         if (remoteFile == null) {
-            sendMessage(SyncMessages.ERROR);
+            sendMessage(SyncServiceMessage.ERROR);
             return;
         }
 
@@ -99,7 +98,7 @@ public class SyncService
 //                remoteFile.setPath(remoteFilename);
 //            } else {
 //                Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
-//                sendMessage(SyncMessages.ERROR);
+//                sendMessage(SyncServiceMessage.ERROR);
 //                return;
 //            }
 //        }
@@ -107,7 +106,7 @@ public class SyncService
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
             Timber.w("Local filename different from the remote!");
-            sendMessage(SyncMessages.ERROR);
+            sendMessage(SyncServiceMessage.ERROR);
             return;
         }
 
@@ -179,12 +178,12 @@ public class SyncService
         Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
         onDownloadHandler.onPreExecute();
-        sendMessage(SyncMessages.STARTING_DOWNLOAD);
+        sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
         boolean ret = sync.download(remoteFile, tempFile);
 
         onDownloadHandler.onPostExecute(ret);
-        sendMessage(SyncMessages.DOWNLOAD_COMPLETE);
+        sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
@@ -224,14 +223,14 @@ public class SyncService
         Timber.d("Uploading db. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
         onUpload.onPreExecute();
-        sendMessage(SyncMessages.STARTING_UPLOAD);
+        sendMessage(SyncServiceMessage.STARTING_UPLOAD);
 
         // upload
         SyncManager sync = new SyncManager(getApplicationContext());
         boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
 
         onUpload.onPostExecute(result);
-        sendMessage(SyncMessages.UPLOAD_COMPLETE);
+        sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
     }
 
     private void triggerSync(final File localFile, CloudMetaData remoteFile) {
@@ -257,15 +256,15 @@ public class SyncService
         } else {
             Timber.d("The local and remote files are the same.");
 
-            sendMessage(SyncMessages.FILE_NOT_CHANGED);
+            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
         }
     }
 
-    private boolean sendMessage(Integer message) {
+    private boolean sendMessage(SyncServiceMessage message) {
         if (mOutMessenger == null) return true;
 
         Message msg = new Message();
-        msg.what = message;
+        msg.what = message.code;
 
         try {
             mOutMessenger.send(msg);

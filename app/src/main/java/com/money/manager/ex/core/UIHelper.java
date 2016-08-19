@@ -2,15 +2,20 @@ package com.money.manager.ex.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.shamanland.fonticon.FontIconDrawable;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -24,6 +29,29 @@ public class UIHelper {
     public static void showToast(Context context, int stringResourceId) {
         String message = context.getString(stringResourceId);
         showToast(context, message);
+    }
+
+    public static void showDiffNotificationDialog(final Context context) {
+        new AlertDialogWrapper.Builder(context)
+                // setting alert dialog
+                .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
+                .setTitle(R.string.update_available)
+                .setMessage(R.string.update_available_online)
+                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new SyncManager(context).triggerSynchronization();
+
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     public UIHelper(Context context) {
@@ -42,8 +70,8 @@ public class UIHelper {
      */
     public int getColor(int attrId) {
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getContext().getTheme();
-        theme.resolveAttribute(attrId, typedValue, true);
+        getContext().getTheme()
+            .resolveAttribute(attrId, typedValue, true);
         return typedValue.data;
     }
 

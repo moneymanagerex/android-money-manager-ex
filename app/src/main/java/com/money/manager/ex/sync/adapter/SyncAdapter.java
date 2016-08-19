@@ -27,11 +27,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.sync.SyncMessages;
 
 import org.joda.time.DateTime;
 
@@ -112,14 +109,14 @@ public class SyncAdapter
         File localFile = new File(localFilename);
         CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
         if (remoteFile == null) {
-//            sendMessage(SyncMessages.ERROR);
+//            sendMessage(SyncServiceMessage.ERROR);
             return;
         }
 
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
             Timber.w("Local filename different from the remote!");
-//            sendMessage(SyncMessages.ERROR);
+//            sendMessage(SyncServiceMessage.ERROR);
             return;
         }
 
@@ -149,7 +146,7 @@ public class SyncAdapter
         } else {
             Timber.d("The local and remote files are the same.");
 
-//            sendMessage(SyncMessages.FILE_NOT_CHANGED);
+//            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
         }
     }
 

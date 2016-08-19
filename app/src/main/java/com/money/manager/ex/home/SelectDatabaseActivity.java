@@ -116,8 +116,8 @@ public class SelectDatabaseActivity
 
     private void onDatabaseSelected(String dbPath) {
         // check if the file is a valid database
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-        if (!dbUtils.isValidDbFile(dbPath)) {
+//        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
+        if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
             UIHelper.showToast(this, R.string.invalid_database);
             return;
         }

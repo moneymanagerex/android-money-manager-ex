@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Messenger;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -58,8 +59,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
+import rx.Observable;
 import timber.log.Timber;
 
 /**
@@ -134,13 +137,22 @@ public class SyncManager {
         return true;
     }
 
+    public Observable<SyncServiceMessage> compareFilesAsync() {
+        return Observable.fromCallable(new Callable<SyncServiceMessage>() {
+            @Override
+            public SyncServiceMessage call() throws Exception {
+                return compareFilesForSync();
+            }
+        });
+    }
+
     /**
      * This function returns if the file is synchronized or not
      * @return int
      */
-    public int compareFilesForSync() {
+    public SyncServiceMessage compareFilesForSync() {
         if (!isActive()) {
-            return SyncMessages.FILE_NOT_CHANGED;
+            return SyncServiceMessage.FILE_NOT_CHANGED;
         }
 
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
@@ -148,15 +160,15 @@ public class SyncManager {
 
         // check if we have the file names.
         if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) {
-            return SyncMessages.FILE_NOT_CHANGED;
+            return SyncServiceMessage.FILE_NOT_CHANGED;
         }
-        if (!areFileNamesSame(localPath, remotePath)) return SyncMessages.FILE_NOT_CHANGED;
+        if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.FILE_NOT_CHANGED;
 
         // get local and remote file info.
         File localFile = new File(localPath);
         CloudMetaData remoteFile = loadMetadata(remotePath) ;
         if (remoteFile == null) {
-            return SyncMessages.ERROR;
+            return SyncServiceMessage.ERROR;
         }
 
         // date last Modified
@@ -171,15 +183,15 @@ public class SyncManager {
         } catch (Exception e) {
             Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 
-            return SyncMessages.FILE_NOT_CHANGED;
+            return SyncServiceMessage.FILE_NOT_CHANGED;
         }
 
         if (remoteLastModified.isAfter(localLastModified)) {
-            return SyncMessages.STARTING_DOWNLOAD;
+            return SyncServiceMessage.STARTING_DOWNLOAD;
         } else if (remoteLastModified.isBefore(localLastModified)) {
-            return SyncMessages.STARTING_UPLOAD;
+            return SyncServiceMessage.STARTING_UPLOAD;
         } else {
-            return SyncMessages.FILE_NOT_CHANGED;
+            return SyncServiceMessage.FILE_NOT_CHANGED;
         }
     }
 
@@ -522,16 +534,18 @@ public class SyncManager {
     void startSyncService() {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
-        getContext().sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+//        getContext().sendBroadcast(intent);
     }
 
-    public void stopSyncService() {
+    void stopSyncService() {
         Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
-        getContext().sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+//        getContext().sendBroadcast(intent);
     }
 
-    public void storePersistent() {
+    void storePersistent() {
         if (dropbox.get() != null) {
             getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
         }

@@ -51,7 +51,7 @@
 //import com.money.manager.ex.settings.DropboxSettings;
 //import com.money.manager.ex.settings.PreferenceConstants;
 //import com.money.manager.ex.sync.SyncConstants;
-//import com.money.manager.ex.sync.SyncMessages;
+//import com.money.manager.ex.sync.SyncServiceMessage;
 //import com.money.manager.ex.sync.SyncService;
 //import com.money.manager.ex.utils.NetworkUtils;
 //
@@ -642,17 +642,17 @@
 //     */
 //    public int compareFilesForSync() {
 //        if (!isLinked()) {
-//            return SyncMessages.FILE_NOT_CHANGED;
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
 //        }
 //
 //        String localPath = MoneyManagerApplication.getDatabasePath(mContext.getApplicationContext());
 //        String remotePath = getLinkedRemoteFile();
 //        // check if file is correct
 //        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath))
-//            return SyncMessages.FILE_NOT_CHANGED;
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
 //        // check if remoteFile path is contain into localFile
 //        if (!localPath.toLowerCase().contains(remotePath.toLowerCase()))
-//            return SyncMessages.FILE_NOT_CHANGED;
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
 //        // get File and Entry
 //        File localFile = new File(localPath);
 //        Entry remoteFile = getEntry(remotePath);
@@ -667,15 +667,15 @@
 //        } catch (Exception e) {
 //            Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 //
-//            return SyncMessages.FILE_NOT_CHANGED;
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
 //        }
 //
 //        if (remoteLastModified.after(localLastModified)) {
-//            return SyncMessages.DOWNLOAD_COMPLETE;
+//            return SyncServiceMessage.DOWNLOAD_COMPLETE;
 //        } else if (remoteLastModified.before(localLastModified)) {
-//            return SyncMessages.UPLOAD_COMPLETE;
+//            return SyncServiceMessage.UPLOAD_COMPLETE;
 //        } else {
-//            return SyncMessages.FILE_NOT_CHANGED;
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
 //        }
 //    }
 //

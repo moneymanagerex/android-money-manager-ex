@@ -49,7 +49,7 @@ public enum AccountTypes {
 
     public final String title;
 
-    private AccountTypes(String s) {
+    AccountTypes(String s) {
         title = s;
     }
 

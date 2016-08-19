@@ -18,14 +18,28 @@
 package com.money.manager.ex.sync;
 
 /**
- * Used to communicate between Sync Service and the UI.
+ * Message codes implemented as an enum to use in switch statements.
  */
-public class SyncMessages {
-    public static final Integer FILE_NOT_CHANGED = 0x000;
-    public static final Integer DOWNLOAD_COMPLETE = 0x000A;
-    public static final Integer UPLOAD_COMPLETE = 0x000B;
-    public static final Integer STARTING_DOWNLOAD = 0x000C;
-    public static final Integer STARTING_UPLOAD = 0x000D;
-    public static final Integer NOT_ON_WIFI = 0x000E;
-    public static final Integer ERROR = 0x000F;
+
+public enum SyncServiceMessage {
+    FILE_NOT_CHANGED(0x000),
+    DOWNLOAD_COMPLETE(0x000A),
+    UPLOAD_COMPLETE(0x000B),
+    STARTING_DOWNLOAD(0x000C),
+    STARTING_UPLOAD(0x000D),
+    NOT_ON_WIFI(0x000E),
+    ERROR(0x000F);
+
+    SyncServiceMessage(int value) {
+        code = value;
+    }
+
+    public int code;
+
+    public static SyncServiceMessage parse(int code) {
+        for (SyncServiceMessage item : SyncServiceMessage.values()) {
+            if (item.code == code) return item;
+        }
+        return null;
+    }
 }

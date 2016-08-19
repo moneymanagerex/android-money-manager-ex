@@ -29,12 +29,12 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 //import net.sqlcipher.database.SQLiteDatabase;
@@ -44,6 +44,7 @@ public abstract class BaseFragmentActivity
 
     private Toolbar mToolbar;
     private boolean mDisplayHomeAsUpEnabled = false;
+    protected CompositeSubscription compositeSubscription;
 
     @Override
     public void setContentView(int layoutResID) {
@@ -61,11 +62,13 @@ public abstract class BaseFragmentActivity
         String locale = settings.getGeneralSettings().getApplicationLanguage();
         Core.setAppLocale(this, locale);
 
-        // add layout inflater for icon fonts in xml
+        // Add layout inflater for icon fonts in xml.
         LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
 
         // Initialize database encryption.
 //        SQLiteDatabase.loadLibs(this);
+
+        this.compositeSubscription = new CompositeSubscription();
 
         super.onCreate(savedInstance);
     }
@@ -116,6 +119,15 @@ public abstract class BaseFragmentActivity
         EventBus.getDefault().unregister(this);
 
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!compositeSubscription.isUnsubscribed()) {
+            compositeSubscription.unsubscribe();
+        }
+
+        super.onDestroy();
     }
 
     @Subscribe

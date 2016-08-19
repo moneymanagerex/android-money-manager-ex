@@ -20,20 +20,7 @@ package com.money.manager.ex.sync;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Messenger;
-import android.widget.Toast;
-
-import com.money.manager.ex.R;
-import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
-import com.money.manager.ex.home.RecentDatabaseEntry;
-import com.money.manager.ex.home.RecentDatabasesProvider;
-import com.money.manager.ex.sync.SyncManager;
-import com.money.manager.ex.sync.SyncMessages;
-import com.money.manager.ex.utils.DialogUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Creates a Messenger
@@ -54,73 +41,6 @@ public class SyncMessengerFactory {
         if (!(getContext() instanceof Activity)) return null;
 
         // Messenger handles received messages from the sync service.
-        Messenger messenger = new Messenger(new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == SyncMessages.NOT_ON_WIFI) {
-                    //showMessage();
-                    closeDialog(progressDialog);
-
-                } else if (msg.what == SyncMessages.FILE_NOT_CHANGED) {
-                    // close dialog
-                    closeDialog(progressDialog);
-                    showMessage(R.string.database_is_synchronized, Toast.LENGTH_LONG);
-
-                } else if (msg.what == SyncMessages.STARTING_DOWNLOAD) {
-                    showMessage(R.string.sync_downloading, Toast.LENGTH_LONG);
-
-                } else if (msg.what == SyncMessages.DOWNLOAD_COMPLETE) {
-                    // Download from Dropbox completed.
-                    storeRecentDb(remoteFile);
-                    // close dialog
-                    closeDialog(progressDialog);
-                    // Notify whoever is interested.
-                    EventBus.getDefault().post(new DbFileDownloadedEvent());
-
-                } else if (msg.what == SyncMessages.STARTING_UPLOAD) {
-                    // Do not block the user if uploading the changes.
-                    closeDialog(progressDialog);
-                    showMessage(R.string.sync_uploading, Toast.LENGTH_LONG);
-
-                } else if (msg.what == SyncMessages.UPLOAD_COMPLETE) {
-                    // close dialog
-                    closeDialog(progressDialog);
-                    showMessage(R.string.upload_file_complete, Toast.LENGTH_LONG);
-                } else if (msg.what == SyncMessages.ERROR) {
-                    closeDialog(progressDialog);
-                    showMessage(R.string.error, Toast.LENGTH_SHORT);
-                }
-            }
-        });
-        return messenger;
-    }
-
-    private void closeDialog(ProgressDialog progressDialog) {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            DialogUtils.closeProgressDialog(progressDialog);
-        }
-    }
-
-    private void showMessage(final int message, final int length) {
-        Context context = getContext();
-        if (!(context instanceof Activity)) return;
-
-        final Activity parent = (Activity) context;
-
-        parent.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getContext(), message, length).show();
-            }
-        });
-    }
-
-    private void storeRecentDb(String remoteFile) {
-        RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
-
-        String localPath = new SyncManager(getContext()).getLocalPath();
-        RecentDatabaseEntry entry = RecentDatabaseEntry.getInstance(localPath, true, remoteFile);
-
-        recents.add(entry);
+        return new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
     }
 }
