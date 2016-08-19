@@ -24,6 +24,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.utils.DialogUtils;
 
+import timber.log.Timber;
+
 /**
  */
 public class ImportAllCurrenciesTask
@@ -60,8 +62,7 @@ public class ImportAllCurrenciesTask
                 DialogUtils.closeProgressDialog(dialog);
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "closing progress dialog");
+            Timber.e(e, "closing progress dialog");
         }
         super.onPostExecute(result);
     }

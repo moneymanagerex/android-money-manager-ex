@@ -50,8 +50,7 @@ public class RecurringTransactionNotifications {
         try {
             notifyRepeatingTransaction_Internal();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ex, "showing notification about recurring transactions");
+            Timber.e(ex, "showing notification about recurring transactions");
         }
     }
 

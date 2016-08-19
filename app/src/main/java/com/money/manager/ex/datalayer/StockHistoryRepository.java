@@ -160,8 +160,7 @@ public class StockHistoryRepository
         try {
             return getLatestPriceFor_Internal(symbol);
         } catch (SQLiteException sqlex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(sqlex, "reading price for " + symbol);
+            Timber.e(sqlex, "reading price for %s", symbol);
         }
         return null;
     }

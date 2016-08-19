@@ -47,6 +47,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 public class AmountInputDialog
     extends DialogFragment {
@@ -331,8 +332,7 @@ public class AmountInputDialog
 
                 return false;
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                handler.e(e, "evaluating expression");
+                Timber.e(e, "evaluating expression");
             }
         } else {
             mAmount = MoneyFactory.fromString("0");

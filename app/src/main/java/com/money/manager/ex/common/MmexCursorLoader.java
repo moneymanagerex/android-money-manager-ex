@@ -25,6 +25,8 @@ import android.support.v4.content.CursorLoader;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.datalayer.Query;
 
+import timber.log.Timber;
+
 /**
  * The cursor loader with exception handling. It should be used instead of ordinary CursorLoader.
  */
@@ -46,14 +48,7 @@ public class MmexCursorLoader
         try {
             return super.loadInBackground();
         } catch (Exception e) {
-//            if (e instanceof IllegalStateException || e instanceof SQLiteDiskIOException ) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.e(ex, "loading data in cursor loader");
-//        } catch (SQLiteDatabaseCorruptException ex) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.e(ex, "Your database file is corrupt!");
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "loading data");
+            Timber.e(e, "loading data");
         }
         return null;
     }

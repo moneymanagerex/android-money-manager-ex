@@ -29,6 +29,8 @@ import com.money.manager.ex.settings.BehaviourSettings;
 
 import java.util.Calendar;
 
+import timber.log.Timber;
+
 /**
  * This class handles BOOT_RECEIVED event.
  */
@@ -41,9 +43,7 @@ public class RecurringTransactionBootReceiver
             // Start heartbeat for Recurring Transaction check.
             setAlarm(context);
         } catch (Exception e) {
-//            ExceptionHandler handler = new ExceptionHandler(context, this);
-//            handler.e(e, "checking for due recurring transactions");
-            Log.e(RecurringTransactionBootReceiver.class.getSimpleName(), e.getMessage());
+            Timber.e(e, "Setting the alarm for recurring transactions check");
         }
     }
 

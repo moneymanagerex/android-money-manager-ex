@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import timber.log.Timber;
+
 public class PieChartFragment
         extends Fragment
         implements OnChartValueSelectedListener {
@@ -237,8 +239,7 @@ public class PieChartFragment
 //                    .show(getActivity());
             Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity());
-            handler.e(ex, "showing chart item details");
+            Timber.e(ex, "showing chart item details");
         }
     }
 

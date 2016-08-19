@@ -978,8 +978,7 @@ public class MainActivity
 //                            .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
 //                            .commit();
 //                } catch (Exception e) {
-//                    ExceptionHandler handler = new ExceptionHandler(MainActivity.this, MainActivity.this);
-//                    handler.e(e, "showing initial fragments");
+//                    Timber.e(e, "showing initial fragments");
 //                }
 //            }
 //        });

@@ -212,8 +212,7 @@ public abstract class BaseFragmentActivity
             Core core = new Core(this);
             this.setTheme(core.getThemeId());
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(this, this);
-            handler.e(e, "setting theme");
+            Timber.e(e, "setting theme");
         }
     }
 }

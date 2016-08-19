@@ -30,6 +30,8 @@ import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.log.ExceptionHandler;
 
+import timber.log.Timber;
+
 /**
  * Look & Feel preferences
  */
@@ -66,9 +68,7 @@ public class LookAndFeelSettings
         try {
             result = DefinedDateRangeName.valueOf(value);
         } catch (IllegalArgumentException e) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.e(e, "parsing default date range");
-            ExceptionHandler.warn("error parsing default date range");
+            Timber.w("error parsing default date range");
         }
         if (result != null) {
             return result;

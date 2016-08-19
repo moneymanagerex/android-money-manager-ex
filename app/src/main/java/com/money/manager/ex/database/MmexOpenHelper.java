@@ -199,8 +199,7 @@ public class MmexOpenHelper
 //        try {
 //            db = super.getReadableDatabase(password);
 //        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.e(ex, "opening readable database");
+//            Timber.e(ex, "opening readable database");
 //        }
 //        return db;
 //    }
@@ -224,8 +223,7 @@ public class MmexOpenHelper
 //        try {
 //            return getWritableDatabase_Internal(password);
 //        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.e(ex, "opening writable database");
+//            Timber.e(ex, "opening writable database");
 //        }
 //        return null;
 //    }

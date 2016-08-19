@@ -164,8 +164,7 @@
 //                    .createMessenger(progressDialog, mDropboxHelper.getLinkedRemoteFile());
 //            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.e(ex, "displaying dropbox progress dialog");
+//            Timber.e(ex, "displaying dropbox progress dialog");
 //        }
 //
 //        // start service

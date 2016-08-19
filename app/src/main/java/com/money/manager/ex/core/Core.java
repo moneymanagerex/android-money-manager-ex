@@ -107,8 +107,7 @@ public class Core {
         try {
             setAppLocale_Internal(context, languageToLoad);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(context, null);
-            handler.e(e, "changing app locale");
+            Timber.e(e, "changing app locale");
 
             return false;
         }
@@ -208,8 +207,7 @@ public class Core {
                 getContext().getPackageName(), 0);
             return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext().getApplicationContext(), this);
-            handler.e(e, "getting app version build number");
+            Timber.e(e, "getting app version build number");
             return 0;
         }
     }

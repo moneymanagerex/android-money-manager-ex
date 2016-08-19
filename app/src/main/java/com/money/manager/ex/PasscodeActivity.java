@@ -30,6 +30,8 @@ import android.widget.TextView;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.log.ExceptionHandler;
 
+import timber.log.Timber;
+
 public class PasscodeActivity
 	extends AppCompatActivity {
 
@@ -48,8 +50,7 @@ public class PasscodeActivity
 			setTheme(core.getThemeId());
 		} catch (Exception e) {
 			//Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
-            ExceptionHandler handler = new ExceptionHandler(getApplicationContext(), this);
-            handler.e(e, "setting theme in passcode activity");
+            Timber.e(e, "setting theme in passcode activity");
 		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);

@@ -36,6 +36,8 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import timber.log.Timber;
+
 public class ExportToCsvFile
         extends AsyncTask<Void, Void, Boolean> {
 
@@ -131,8 +133,7 @@ public class ExportToCsvFile
 			}
 			csvWriter.close();
 		} catch (Exception e) {
-			ExceptionHandler handler = new ExceptionHandler(mContext, this);
-			handler.e(e, "exporting to CSV");
+			Timber.e(e, "exporting to CSV");
 
 			return false;
 		}

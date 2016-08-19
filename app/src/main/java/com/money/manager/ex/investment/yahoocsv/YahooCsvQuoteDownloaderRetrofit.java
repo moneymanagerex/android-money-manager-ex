@@ -36,6 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import timber.log.Timber;
 
 /**
  * Implementation of the Yahoo CSV quote provider using Retrofit.
@@ -74,8 +75,7 @@ public class YahooCsvQuoteDownloaderRetrofit
             public void onFailure(Call<String> call, Throwable t) {
                 closeProgressDialog();
 
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.e(t, "fetching price");
+                Timber.e(t, "fetching price");
             }
         };
 
@@ -83,8 +83,7 @@ public class YahooCsvQuoteDownloaderRetrofit
             try {
                 service.getPrice(symbol).enqueue(callback);
             } catch (Exception ex) {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.e(ex, "downloading quotes");
+                Timber.e(ex, "downloading quotes");
             }
         }
     }

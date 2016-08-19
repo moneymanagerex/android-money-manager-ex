@@ -112,14 +112,12 @@ public abstract class RepositoryBase<T extends EntityBase>
                     //resultType.cast(entity);
                     entity.loadFromCursor(c);
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(getContext());
-                    handler.e(e, "creating " + resultType.getName());
+                    Timber.e(e, "creating %s", resultType.getName());
                 }
             }
             c.close();
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.e(ex, "fetching first record");
+            Timber.e(ex, "fetching first record");
         }
 
         return entity;
@@ -140,8 +138,7 @@ public abstract class RepositoryBase<T extends EntityBase>
 
                 results.add(entity);
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(getContext());
-                handler.e(e, "creating " + resultType.getName());
+                Timber.e(e, "creating %s", resultType.getName());
             }
         }
         c.close();
@@ -232,8 +229,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             results = getContext().getContentResolver()
                 .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.e(e, "bulk updating");
+            Timber.e(e, "bulk updating");
         }
         return results;
     }
@@ -261,8 +257,7 @@ public abstract class RepositoryBase<T extends EntityBase>
             results = getContext().getContentResolver()
                 .applyBatch(MmxContentProvider.getAuthority(), operations);
         } catch (RemoteException | OperationApplicationException e) {
-            ExceptionHandler handler = new ExceptionHandler(context, this);
-            handler.e(e, "bulk updating");
+            Timber.e(e, "bulk updating");
         }
         return results;
     }

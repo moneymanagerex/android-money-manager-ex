@@ -39,6 +39,8 @@ import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.settings.PreferenceConstants;
 
+import timber.log.Timber;
+
 /**
  */
 public abstract class BaseListFragment
@@ -65,8 +67,7 @@ public abstract class BaseListFragment
         try {
             getActivity().setTheme(core.getThemeId());
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(e, "setting app theme");
+            Timber.e(e, "setting app theme");
         }
         super.onCreate(savedInstanceState);
     }

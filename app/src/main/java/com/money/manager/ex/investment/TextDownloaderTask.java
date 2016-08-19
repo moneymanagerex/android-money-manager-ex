@@ -92,8 +92,7 @@ public class TextDownloaderTask
                 DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "closing dialog");
+            Timber.e(e, "closing dialog");
         }
         if (result) {
             Toast.makeText(mContext, R.string.all_prices_updated, Toast.LENGTH_LONG).show();

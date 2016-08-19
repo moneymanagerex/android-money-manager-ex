@@ -30,6 +30,8 @@ import com.money.manager.ex.dropbox.SimpleCrypto;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.servicelayer.InfoService;
 
+import timber.log.Timber;
+
 public class Passcode {
 
     private static final String KEY = "6c2a6f30726b3447747559525162665768412370297c5573342324705b";
@@ -105,8 +107,7 @@ public class Passcode {
         try {
             return retrievePasscodeInternal();
         } catch (IllegalStateException | SQLiteDiskIOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ex, "retrieving passcode");
+            Timber.e(ex, "retrieving passcode");
         }
         return null;
     }

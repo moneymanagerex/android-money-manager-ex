@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * Currency UI-related code, shared across Currency fragments.
@@ -88,8 +89,7 @@ public class CurrencyUIFeatures {
             // update exchange rate.
             success = getService().saveExchangeRate(destinationCurrency, price);
         } catch (Exception ex) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(ex, "saving exchange rate");
+            Timber.e(ex, "saving exchange rate");
         }
 
         if (!success) {

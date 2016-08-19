@@ -311,7 +311,7 @@
 //                key = DropboxConstants.APP_KEY_BETA;
 //            }
 //        } catch (PackageManager.NameNotFoundException e) {
-//            handler.e(e, "checking version name");
+//            Timber.e(e, "checking version name");
 //        }
 //        return key;
 //    }

@@ -30,6 +30,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.log.ExceptionHandler;
 
+import timber.log.Timber;
+
 /**
  * Root settings fragment.
  */
@@ -170,8 +172,7 @@ public class SettingsFragment
                         screen.onItemClick(null, null, preference.getOrder(), 0);
                     }
                 } catch (Exception e) {
-                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                    handler.e(e, "opening preferences screen");
+                    Timber.e(e, "opening preferences screen");
                 }
             }
         }

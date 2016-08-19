@@ -94,8 +94,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
             @Override
             public void onFailure(Call<JsonElement> call, Throwable t) {
-                ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-                handler.e(t, "fetching price");
+                Timber.e(t, "fetching price");
                 closeProgressDialog();
             }
         };

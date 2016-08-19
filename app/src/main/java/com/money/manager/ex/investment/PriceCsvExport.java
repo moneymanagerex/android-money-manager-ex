@@ -35,6 +35,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * Export of security prices to CSV file.
  */
@@ -67,8 +69,7 @@ public class PriceCsvExport
         try {
             result = this.export(filename, content, title);
         } catch (IOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ex, "exporting prices");
+            Timber.e(ex, "exporting prices");
         }
 
         return result;
