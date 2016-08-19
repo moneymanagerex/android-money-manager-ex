@@ -37,8 +37,10 @@ public class DebugTree
             if (t != null) {
                 uiMessage = "Error: " + t.getMessage();
             }
-            // send to UI.
-            EventBus.getDefault().post(new ErrorRaisedEvent(uiMessage));
+            // send to UI if there are any subscribers.
+            if (EventBus.getDefault().hasSubscriberForEvent(ErrorRaisedEvent.class)) {
+                EventBus.getDefault().post(new ErrorRaisedEvent(uiMessage));
+            }
         }
 
         super.log(priority, tag, message, t);
