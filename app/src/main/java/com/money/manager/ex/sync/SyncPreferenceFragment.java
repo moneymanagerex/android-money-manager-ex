@@ -218,7 +218,7 @@ public class SyncPreferenceFragment
             CharSequence[] values = viewHolder.syncInterval.getEntryValues();
             String[] newValues = new String[values.length + 1];
             newValues[0] = "1";
-            System.arraycopy(entries, 0, newValues, 1, values.length);
+            System.arraycopy(values, 0, newValues, 1, values.length);
             viewHolder.syncInterval.setEntryValues(newValues);
         }
 
