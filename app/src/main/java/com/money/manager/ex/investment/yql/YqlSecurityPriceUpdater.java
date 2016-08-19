@@ -42,6 +42,7 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Updates security prices from Yahoo Finance using YQL.
@@ -120,8 +121,7 @@ public class YqlSecurityPriceUpdater
         try {
             pricesList = parseDownloadedJson(content);
         } catch (JSONException e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "parsing JSON");
+            Timber.e(e, "parsing JSON");
         }
 
         for (SecurityPriceModel model : pricesList) {

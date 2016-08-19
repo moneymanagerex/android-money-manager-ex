@@ -219,8 +219,7 @@ public class Core {
             return getContext().getPackageManager().getPackageInfo(
                 getContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "getting app version name");
+            Timber.e(e, "getting app version name");
         }
         return "n/a";
     }

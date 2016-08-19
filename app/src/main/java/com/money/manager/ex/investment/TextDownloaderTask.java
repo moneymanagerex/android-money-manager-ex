@@ -28,6 +28,8 @@ import com.money.manager.ex.utils.DialogUtils;
 
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Task that downloads the requested prices and notifies the caller once downloaded.
  */
@@ -61,8 +63,7 @@ public class TextDownloaderTask
         try {
             return runTask(url);
         } catch (IllegalArgumentException ex) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(ex, "No results provided by YQL.");
+            Timber.e(ex, "No results provided by YQL.");
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error in Yahoo download all prices", e);
@@ -115,8 +116,7 @@ public class TextDownloaderTask
             try {
                 content = downloader.downloadAsText(url);
             } catch (IOException ex) {
-                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-                handler.e(ex, "downloading price");
+                Timber.e(ex, "downloading price");
 
                 return false;
             }

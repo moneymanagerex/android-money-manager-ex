@@ -21,6 +21,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.report.ReportHtmlFormatter;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.util.List;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * Asset Allocation report.
@@ -141,16 +143,15 @@ public class AssetAllocationOverviewActivity
     private void exportHtml() {
         File outFile = null;
         final TextFileExport export = new TextFileExport(this);
-        ExceptionHandler handler = new ExceptionHandler(this);
 
         try {
             export.clearCache();
             outFile = export.createExportFile("asset_allocation.html");
         } catch (IOException e) {
-            handler.e(e, "creating temp file");
+            Timber.e(e, "creating temp file");
         }
         if (outFile == null) {
-            handler.showMessage("File could not be created.");
+            UIHelper.showToast(this, "File could not be created.");
             return;
         }
 

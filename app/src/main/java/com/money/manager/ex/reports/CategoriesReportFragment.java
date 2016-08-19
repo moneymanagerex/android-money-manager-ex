@@ -54,6 +54,7 @@ import java.util.ArrayList;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Categories report fragment.
@@ -278,8 +279,7 @@ public class CategoriesReportFragment
         try {
             category = getCategoryFromSelectedItem(l, position);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "getting category from selected item");
+            Timber.e(e, "getting category from selected item");
         }
         if (category == null) return;
 

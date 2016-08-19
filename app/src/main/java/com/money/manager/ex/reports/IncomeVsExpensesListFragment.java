@@ -62,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Income/Expense Report, list.
@@ -333,8 +334,7 @@ public class IncomeVsExpensesListFragment
             addListViewHeader();
             mFooterListView = addListViewFooter();
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(e, "adding header and footer in income vs expense report");
+            Timber.e(e, "adding header and footer in income vs expense report");
         }
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -431,8 +431,7 @@ public class IncomeVsExpensesListFragment
         try {
             showChartInternal();
         } catch (IllegalStateException ise) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity().getApplicationContext(), this);
-            handler.e(ise, "showing chart");
+            Timber.e(ise, "showing chart");
         }
     }
 

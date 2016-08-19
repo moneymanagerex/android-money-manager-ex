@@ -33,6 +33,7 @@ import java.io.IOException;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Parses CSV response into price information.
@@ -68,8 +69,7 @@ public class PriceCsvParser {
         try {
             values = csvParser.parseLineMulti(content);
         } catch (IOException e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "parsing downloaded CSV contents");
+            Timber.e(e, "parsing downloaded CSV contents");
             return null;
         }
 

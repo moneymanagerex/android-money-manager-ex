@@ -46,6 +46,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import timber.log.Timber;
+
 public class AboutFragment extends Fragment {
     private static Fragment mInstance;
 
@@ -229,8 +231,7 @@ public class AboutFragment extends Fragment {
         try {
             startActivity(Intent.createChooser(emailIntent, "Send email..."));
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity());
-            handler.e(e, "opening email with logcat");
+            Timber.e(e, "opening email with logcat");
         }
     }
 
@@ -248,8 +249,7 @@ public class AboutFragment extends Fragment {
 //                    "logcat -f " + outputFile.getAbsolutePath());
             p = Runtime.getRuntime().exec("logcat -d");
         } catch (IOException e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(e, "executing logcat");
+            Timber.e(e, "executing logcat");
         }
         if (p == null) return "";
 
@@ -265,8 +265,7 @@ public class AboutFragment extends Fragment {
 
             in.close();
         } catch (IOException e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(e, "reading stdout");
+            Timber.e(e, "reading stdout");
         }
 
         return output.toString();

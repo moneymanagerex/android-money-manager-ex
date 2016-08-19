@@ -31,6 +31,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import timber.log.Timber;
+
 /**
  * Click listener
  */
@@ -80,8 +82,7 @@ public class OnDateButtonClickListener
                 String displayText = MmxDateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
                 mTextView.setText(displayText);
             } catch (Exception e) {
-                ExceptionHandler handler = new ExceptionHandler(mParent, this);
-                handler.e(e, "date selected in search");
+                Timber.e(e, "date selected in search");
             }
         }
     };

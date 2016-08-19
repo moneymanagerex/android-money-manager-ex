@@ -79,6 +79,7 @@ import java.util.HashMap;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Fragment that displays the transactions.
@@ -290,8 +291,7 @@ public class AllDataListFragment
                     try {
                         this.updateFooter(data);
                     } catch (Exception e) {
-                        ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                        handler.e(e, "displaying footer");
+                        Timber.e(e, "displaying footer");
                     }
                 }
         }
@@ -380,8 +380,7 @@ public class AllDataListFragment
                 }
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity());
-            handler.e(e, "stopping the all-data fragment");
+            Timber.e(e, "stopping the all-data fragment");
         }
     }
 

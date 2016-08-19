@@ -83,8 +83,7 @@ public class ExceptionHandler
     }
 
     public void e(Throwable t, String errorMessage) {
-        errorMessage = String.format("Error %s:\n%s",
-                errorMessage, t.getLocalizedMessage());
+        errorMessage = String.format("Error %s:\n%s", errorMessage, t.getLocalizedMessage());
 
         String version = getAppVersion() + "." + getAppBuildNumber();
         Log.e(getLogcat(), "version: " + version + ": " + errorMessage + ": " + t.getLocalizedMessage());

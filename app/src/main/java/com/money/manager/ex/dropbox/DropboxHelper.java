@@ -311,7 +311,6 @@
 //                key = DropboxConstants.APP_KEY_BETA;
 //            }
 //        } catch (PackageManager.NameNotFoundException e) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
 //            handler.e(e, "checking version name");
 //        }
 //        return key;
@@ -342,8 +341,7 @@
 //                    storeOauth2Token(oAuth2AccessToken);
 //                }
 //            } catch (RuntimeException e) {
-//                ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//                handler.e(e, "authenticating with Dropbox");
+//                Timber.e(e, "authenticating with Dropbox");
 ////                Toast.makeText(context, "Couldn't authenticate with Dropbox", Toast.LENGTH_LONG).show();
 //                if (BuildConfig.DEBUG) Log.d(LOGCAT, "Error authenticating", e);
 //            }
@@ -539,8 +537,7 @@
 //                }
 //            }
 //        } catch (Exception e) {
-//            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-//            handler.e(e, "uploading to dropbox");
+//            Timber.e(e, "uploading to dropbox");
 //            return false;
 //        }
 //
@@ -668,8 +665,7 @@
 //                localLastModified = new Date(localFile.lastModified());
 //            remoteLastModified = getLastModifiedEntry(remoteFile);
 //        } catch (Exception e) {
-//            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-//            handler.e(e, "retrieving the last modified date in compareFilesForSync");
+//            Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 //
 //            return SyncMessages.FILE_NOT_CHANGED;
 //        }

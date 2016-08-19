@@ -152,8 +152,7 @@ public class InfoService
                 result = id > 0;
             }
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "writing info value");
+            Timber.e(e, "writing info value");
         }
 
         return result;

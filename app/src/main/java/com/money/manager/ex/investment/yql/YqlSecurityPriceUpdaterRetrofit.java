@@ -46,6 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 /**
  * Updates security prices from Yahoo Finance using YQL. Using Retrofit for network access.
@@ -104,8 +105,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 //            prices = yql.getPrices(query).execute().body();
             yql.getPrices(query).enqueue(callback);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.e(e, "fetching prices");
+            Timber.e(e, "fetching prices");
         }
     }
 
@@ -241,7 +241,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         try {
             currency = currencyElement.getAsString();
         } catch (UnsupportedOperationException ex) {
-            handler.e(ex, "reading currency from downloaded price");
+            Timber.e(ex, "reading currency from downloaded price");
             currency = "";
         }
         if (currency.equals("GBp")) {

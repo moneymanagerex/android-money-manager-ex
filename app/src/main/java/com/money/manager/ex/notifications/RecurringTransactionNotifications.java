@@ -33,6 +33,7 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 public class RecurringTransactionNotifications {
 
@@ -130,8 +131,7 @@ public class RecurringTransactionNotifications {
             notificationManager.cancel(ID_NOTIFICATION);
             notificationManager.notify(ID_NOTIFICATION, notification);
         } catch (Exception e) {
-            ExceptionHandler handler = new ExceptionHandler(mContext, this);
-            handler.e(e, "showing notification for recurring transaction");
+            Timber.e(e, "showing notification for recurring transaction");
         }
     }
 

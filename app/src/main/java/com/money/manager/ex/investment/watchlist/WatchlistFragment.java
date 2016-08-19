@@ -74,6 +74,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * The main fragment for the watchlist. Contains the list and everything else.
@@ -431,8 +432,7 @@ public class WatchlistFragment
             }
             result = export.exportPrices(mDataFragment.getListAdapter(), prefix);
         } catch (IOException ex) {
-            ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-            handler.e(ex, "exporting stock prices");
+            Timber.e(ex, "exporting stock prices");
         }
 
         // todo: e result. (?)
