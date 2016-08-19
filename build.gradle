@@ -38,14 +38,13 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+//        flatDir {
+//            dirs 'libs'
+//        }
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven { url 'https://jitpack.io' }
         maven { url 'https://maven.fabric.io/public' }          // fabric
-        maven { url "http://maven.cloudrail.com" }              // cloudrail
-        maven { url  "http://dl.bintray.com/lukaville/maven" }  // file picker
-        flatDir {
-            dirs 'libs'
-        }
+        maven { url 'http://maven.cloudrail.com' }              // cloudrail
     }
 
     // Force all dependent libs to use the same version of the support annotations.
