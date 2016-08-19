@@ -153,7 +153,6 @@ public class QueryAccountBills
      * @return selection made ​​if it appears only accounts opened and / or favorites
      */
     public String getFilterAccountSelection() {
-//        Core core = new Core(context);
         LookAndFeelSettings settings = new AppSettings(this.context).getLookAndFeelSettings();
 
         // check if show only open accounts
