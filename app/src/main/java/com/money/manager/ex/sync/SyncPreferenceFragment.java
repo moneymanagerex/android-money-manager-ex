@@ -226,10 +226,14 @@ public class SyncPreferenceFragment
             public boolean onPreferenceChange(Preference preference, Object o) {
                 // reset timer.
                 SyncManager sync = getSyncManager();
-                sync.setSyncInterval(Integer.parseInt(o.toString()));
+                int interval = Integer.parseInt(o.toString());
+                sync.setSyncInterval(interval);
 
                 sync.stopSyncService();
-                sync.startSyncService();
+                if (interval > 0) {
+                    // don't start sync service if the interval is set to 0.
+                    sync.startSyncService();
+                }
                 return true;
             }
         });
