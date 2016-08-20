@@ -41,6 +41,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -281,7 +282,7 @@ public class SyncManager {
     }
 
     /**
-     *
+     * Assembles the path where the local synchronised file is expected to be found.
      * @return The path of the local cached copy of the remote database.
      */
     public String getLocalPath() {
@@ -421,25 +422,24 @@ public class SyncManager {
         }).start();
     }
 
-    public void openDatabase() {
+    /**
+     * Sets the downloaded database as current. Restarts the Main Activity.
+     */
+    public void useDownloadedDatabase() {
         // Do this only if called from an activity.
         if (!(getContext() instanceof Activity)) return;
-
-//        File downloadedDb = new File(getLocalPath());
-        // downloadedDb.getAbsolutePath()
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         boolean isDbSet = dbUtils.useDatabase(getLocalPath(), getRemotePath());
 
-//        SyncCommon common = new SyncCommon();
-//        Intent intent = common.getIntentForOpenDatabase(getContext(), downloadedDb);
-
         if (!isDbSet) {
-            UIHelper.showToast(getContext(), R.string.error);
+            Timber.w("could not change the database");
             return;
         }
 
         Intent intent = IntentFactory.getMainActivityNew(getContext());
+        // Send info to not check for updates as it is redundant in this case.
+        intent.putExtra(MainActivity.EXTRA_SKIP_REMOTE_CHECK, true);
         getContext().startActivity(intent);
     }
 

@@ -42,6 +42,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -455,27 +456,19 @@ public class CurrencyService
     public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;
 
-        // todo try the rx access during database creation.
-//        String sql = new Query()
-//                .select(Currency.CURRENCYID)
-//                .from(mRepository.tableName)
-//                .where(Currency.CURRENCY_SYMBOL + "=?")
-//                .toString();
+        // Cannot use any other db source here as this happens on database creation!
+
         Cursor cursor = db.query(CurrencyRepositorySql.TABLE_NAME,
-                new String[]{Currency.CURRENCYID},
+                new String[]{ Currency.CURRENCYID },
                 Currency.CURRENCY_SYMBOL + "=?",
-                new String[]{currencySymbol},
+                new String[]{ currencySymbol },
                 null, null, null);
 
-//        Cursor cursor = mRepository.query(sql, currencySymbol);
         if (cursor == null) return result;
 
         // set BaseCurrencyId
         if (cursor.moveToFirst()) {
-            ContentValues cv = new ContentValues();
-            DatabaseUtils.cursorIntToContentValues(cursor, Currency.CURRENCYID, cv);
-//            result = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
-            result = cv.getAsInteger(Currency.CURRENCYID);
+            result = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
         }
         cursor.close();
 

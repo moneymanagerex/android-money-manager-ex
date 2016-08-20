@@ -55,46 +55,10 @@ import timber.log.Timber;
 public class MmexOpenHelper
     extends SQLiteOpenHelper {
 
-    /*
-       The version corresponds to the user version in info table, used by the desktop app.
+    /**
+     * Database schema version.
      */
     private static final int databaseVersion = 7;
-
-    // singleton
-//    private static MmexOpenHelper mInstance;
-
-//    /**
-//     * Returns the singleton instance of the helper for database access.
-//     * @param context Use Application context for database access (?)
-//     * @return instance of the db helper
-//     */
-//    public static synchronized MmexOpenHelper getInstance(Context context) {
-//        if (mInstance == null) {
-//            mInstance = createNewInstance(context);
-//        }
-//        return mInstance;
-//    }
-
-//    public static synchronized void closeDatabase() {
-//        if (mInstance == null) return;
-//
-//        mInstance.close();
-//    }
-
-//    /**
-//     * For every database change, the helper needs to be recreated.
-//     */
-//    public static synchronized void reinitialize(Context context) {
-//        mInstance = createNewInstance(context);
-//    }
-
-//    public static synchronized MmexOpenHelper createNewInstance(Context context) {
-//        String dbPath = MoneyManagerApplication.getDatabasePath(context);
-//
-//        Timber.d("creating a new OpenHelper instance for %s", dbPath);
-//
-//        return new MmexOpenHelper(context.getApplicationContext(), dbPath);
-//    }
 
     // Dynamic
 

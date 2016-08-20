@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -112,6 +111,7 @@ public class MainActivity
     public static final int REQUEST_PASSWORD = 3;
 
     public static final String EXTRA_DATABASE_PATH = "dbPath";
+    public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
 
     /**
      * @return the mRestart
@@ -131,14 +131,14 @@ public class MainActivity
     private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
     private static final String KEY_ORIENTATION = "MainActivity:Orientation";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
-    private static final String KEY_HAS_STARTED = "MainActivity:hasStarted";
+    private static final String KEY_HAS_STARTED = "MainActivity:skipOnlineDbUpdateCheck";
     // state if restart activity
     private static boolean mRestartActivity = false;
 
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isRecurringTransactionStarted = false;
-    private boolean hasStarted = false;
+    private boolean skipOnlineDbUpdateCheck = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
     private DrawerLayout mDrawer;
@@ -370,7 +370,7 @@ public class MainActivity
 //        outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
         outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
-        outState.putBoolean(KEY_HAS_STARTED, this.hasStarted);
+        outState.putBoolean(KEY_HAS_STARTED, this.skipOnlineDbUpdateCheck);
 
         super.onSaveInstanceState(outState);
     }
@@ -404,9 +404,6 @@ public class MainActivity
     public void checkCloudForDbUpdates() {
         final SyncManager sync = new SyncManager(this);
         if (!sync.isActive()) return;
-
-//        AsyncTask<Void, Integer, SyncServiceMessage> asyncTask = new CheckCloudStorageForUpdatesTask(this);
-//        asyncTask.execute();
 
         compositeSubscription.add(
             new SyncManager(this).compareFilesAsync()
@@ -609,7 +606,7 @@ public class MainActivity
     @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
         // open the new database.
-        new SyncManager(this).openDatabase();
+        new SyncManager(this).useDownloadedDatabase();
     }
 
     // Private.
@@ -639,10 +636,10 @@ public class MainActivity
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
-        if (!this.hasStarted) {
-            // This is to avoid checking Dropbox on every device rotation.
+        if (!this.skipOnlineDbUpdateCheck) {
+            // This is to avoid checking for online updates on every device rotation.
             checkCloudForDbUpdates();
-            this.hasStarted = true;
+            this.skipOnlineDbUpdateCheck = true;
         }
 
         this.mInitialized = true;
@@ -1129,18 +1126,25 @@ public class MainActivity
 
     private void handleIntent() {
         Intent intent = getIntent();
-        if (intent == null || intent.getData() == null) return;
+        if (intent == null) return;
 
-        String pathFile = getIntent().getData().getEncodedPath();
-        // decode
-        try {
-            pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-            Timber.d("Path intent file to open: %s", pathFile);
-            // Open this database.
-            requestDatabaseChange(pathFile);
-        } catch (Exception e) {
-            Timber.e(e, "opening database from intent");
+        // Open a db file
+        if (intent.getData() != null) {
+            String pathFile = getIntent().getData().getEncodedPath();
+            // decode
+            try {
+                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+                Timber.d("Path intent file to open: %s", pathFile);
+                // Open this database.
+                requestDatabaseChange(pathFile);
+                return;
+            } catch (Exception e) {
+                Timber.e(e, "opening database from intent");
+            }
         }
+
+        boolean skipRemoteCheck = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
+        this.skipOnlineDbUpdateCheck = skipRemoteCheck;
     }
 
     private void initializeDrawerVariables() {
@@ -1301,7 +1305,7 @@ public class MainActivity
         }
 
         if (savedInstanceState.containsKey(KEY_HAS_STARTED)) {
-            this.hasStarted = savedInstanceState.getBoolean(KEY_HAS_STARTED);
+            this.skipOnlineDbUpdateCheck = savedInstanceState.getBoolean(KEY_HAS_STARTED);
         }
     }
 

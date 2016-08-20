@@ -36,7 +36,6 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -113,7 +112,7 @@ public class SyncPreferenceFragment
     @Subscribe
     public void onEvent(DbFileDownloadedEvent event) {
         // open the new database.
-        getSyncManager().openDatabase();
+        getSyncManager().useDownloadedDatabase();
     }
 
     /*
