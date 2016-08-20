@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.currency;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,15 +27,21 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
+import com.money.manager.ex.utils.DialogUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
+import java.util.concurrent.Callable;
+
 import info.javaperformance.money.Money;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -135,7 +142,7 @@ public class CurrencyUIFeatures {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getService().importAllCurrencies();
+                        importCurrencies();
                     }
                 })
             .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -209,4 +216,36 @@ public class CurrencyUIFeatures {
         getContext().startActivity(intent);
     }
 
+    private void importCurrencies() {
+//        getService().importAllCurrencies();
+
+        final ProgressDialog progress = ProgressDialog.show(getContext(), null,
+                getContext().getString(R.string.import_currencies_in_progress));
+
+        Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return getService().importCurrenciesFromSystemLocales();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        DialogUtils.closeProgressDialog(progress);
+                        // todo getContext().getContentResolver().notifyChange();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "importing currencies from the system");
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        // should we import one by one?
+                    }
+                });
+    }
 }

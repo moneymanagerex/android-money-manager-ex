@@ -16,20 +16,17 @@
  */
 package com.money.manager.ex.currency;
 
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -42,11 +39,9 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
-import com.money.manager.ex.utils.DialogUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,17 +51,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -337,41 +326,7 @@ public class CurrencyService
     /**
      * Import all currencies from Android System
      */
-    public void importAllCurrencies() {
-//        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getContext());
-//        asyncTask.execute();
-
-        // Rx implementation
-        final ProgressDialog progress = ProgressDialog.show(getContext(), null,
-                getContext().getString(R.string.import_currencies_in_progress));
-
-        Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return importCurrenciesFromAvailableLocales();
-            }
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Subscriber<Boolean>() {
-            @Override
-            public void onCompleted() {
-                DialogUtils.closeProgressDialog(progress);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "importing currencies from the system");
-            }
-
-            @Override
-            public void onNext(Boolean aBoolean) {
-                // should we import one by one?
-            }
-        });
-    }
-
-    public boolean importCurrenciesFromAvailableLocales() {
+    public boolean importCurrenciesFromSystemLocales() {
         Locale[] locales = Locale.getAvailableLocales();
         // get map codes and symbols
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
@@ -410,12 +365,13 @@ public class CurrencyService
                 newCurrency.setDecimalPoint(".");
                 newCurrency.setGroupSeparator(",");
 
-                int scale = 10 ^ localeCurrency.getDefaultFractionDigits();
+                int scale = (int) Math.pow((double)10, (double) localeCurrency.getDefaultFractionDigits());
                 newCurrency.setScale(scale);
 
                 newCurrency.setConversionRate(1.0);
 
-                mRepository.insert(newCurrency.contentValues);
+                getContext().getContentResolver().insert(getRepository().getUri(), newCurrency.contentValues);
+                //todo mRepository.insert(newCurrency.contentValues);
             } catch (Exception e) {
                 Timber.e(e, "importing currencies from locale %s", locale.getDisplayName());
             }
