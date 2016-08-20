@@ -415,7 +415,7 @@ public class MainActivity
                 .subscribe(new Subscriber<SyncServiceMessage>() {
                     @Override
                     public void onCompleted() {
-                        Timber.d("complete");
+                        Timber.d("initial remote check complete.");
                     }
 
                     @Override
@@ -432,6 +432,12 @@ public class MainActivity
                                 break;
                             case STARTING_UPLOAD:
                                 sync.triggerSynchronization();
+                                break;
+                            case FILE_NOT_CHANGED:
+                                UIHelper.showToast(MainActivity.this, R.string.database_is_synchronized);
+                                break;
+                            case ERROR:
+                                Timber.w(getString(R.string.remote_file_not_found));
                                 break;
                         }
                     }

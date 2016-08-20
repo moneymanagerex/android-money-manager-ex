@@ -183,7 +183,7 @@ public class SyncManager {
         } catch (Exception e) {
             Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 
-            return SyncServiceMessage.FILE_NOT_CHANGED;
+            return SyncServiceMessage.ERROR;
         }
 
         if (remoteLastModified.isAfter(localLastModified)) {
@@ -197,6 +197,15 @@ public class SyncManager {
 
     public void disableAutoUpload() {
         mAutoUploadDisabled = true;
+    }
+
+    public Observable<Boolean> downloadAsObservable(final CloudMetaData remoteFile, final File localFile) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return download(remoteFile, localFile);
+            }
+        });
     }
 
     /**

@@ -39,6 +39,8 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 
+import rx.Subscriber;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
@@ -55,7 +57,15 @@ public class SyncService
         super("com.money.manager.ex.sync.SyncService");
     }
 
+    private CompositeSubscription compositeSubscription;
     private Messenger mOutMessenger;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        compositeSubscription = new CompositeSubscription();
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -126,6 +136,15 @@ public class SyncService
         }
     }
 
+    @Override
+    public void onDestroy() {
+        if (!compositeSubscription.isUnsubscribed()) {
+            compositeSubscription.unsubscribe();
+        }
+
+        super.onDestroy();
+    }
+
     // private
 
     private void triggerDownload(final File localFile, CloudMetaData remoteFile) {
@@ -138,7 +157,7 @@ public class SyncService
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         final File tempFile = new File(localFile.toString() + "-download");
 
-        IOnDownloadUploadEntry onDownloadHandler = new IOnDownloadUploadEntry() {
+        final IOnDownloadUploadEntry onDownloadHandler = new IOnDownloadUploadEntry() {
             @Override
             public void onPreExecute() {
                 if (notification != null && notificationManager != null) {
@@ -162,6 +181,7 @@ public class SyncService
                     Timber.e(e, "copying downloaded database file");
                     return;
                 }
+
                 // create notification for open file
                 // intent is passed to the notification and called if clicked on.
                 Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
@@ -180,10 +200,29 @@ public class SyncService
         onDownloadHandler.onPreExecute();
         sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
-        boolean ret = sync.download(remoteFile, tempFile);
+//        boolean ret = sync.download(remoteFile, tempFile);
+        compositeSubscription.add(
+            sync.downloadAsObservable(remoteFile, tempFile)
+                    // do not run on another thread as then the service will be destroyed.
+//                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+                            sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                        }
 
-        onDownloadHandler.onPostExecute(ret);
-        sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.e(e, "async download");
+                            sendMessage(SyncServiceMessage.ERROR);
+                        }
+
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            onDownloadHandler.onPostExecute(aBoolean);
+                        }
+                    })
+        );
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
