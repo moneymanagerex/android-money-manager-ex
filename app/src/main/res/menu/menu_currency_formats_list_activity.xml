@@ -29,7 +29,6 @@
         android:icon="@null"
         android:title="@string/import_all_currencies"
         app:showAsAction="ifRoom"/>
-    <!--android:icon-->
 
     <item
         android:id="@+id/menu_show_used"

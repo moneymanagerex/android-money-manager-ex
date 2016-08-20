@@ -17,14 +17,12 @@
 package com.money.manager.ex.common;
 
 import android.os.Bundle;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
@@ -63,7 +61,7 @@ public abstract class BaseFragmentActivity
         Core.setAppLocale(this, locale);
 
         // Add layout inflater for icon fonts in xml.
-        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
+//        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
 
         // Initialize database encryption.
 //        SQLiteDatabase.loadLibs(this);

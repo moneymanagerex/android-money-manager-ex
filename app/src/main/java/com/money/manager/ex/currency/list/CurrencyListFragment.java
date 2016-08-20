@@ -24,7 +24,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -36,7 +35,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -56,7 +54,6 @@ import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
