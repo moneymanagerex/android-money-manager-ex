@@ -16,26 +16,12 @@
  */
 package com.money.manager.ex.settings;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.currency.list.CurrencyListActivity;
-import com.money.manager.ex.datalayer.AccountRepository;
-
-import java.util.List;
 
 /**
  * Fragment that contains the general settings.

@@ -69,10 +69,11 @@ public class CreateDatabaseActivity
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
 
         // Show the default db directory in case of errors.
-        dbPathTextView.setText(dbUtils.getDefaultDatabaseDirectory());
+        String defaultDbPath = dbUtils.getDefaultDatabasePath();
+        dbPathTextView.setText(defaultDbPath);
 
         // Create database file.
-        String dbPath = dbUtils.createDatabase(DEFAULT_DB_FILENAME);
+        String dbPath = dbUtils.createDatabase();
         if (TextUtils.isEmpty(dbPath)) return;
 
         dbUtils.useDatabase(dbPath);

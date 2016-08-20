@@ -111,7 +111,7 @@ public class MoneyManagerApplication
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(context);
         String defaultDirectory = dbUtils.getDefaultDatabaseDirectory();
-        String defaultPath = defaultDirectory.concat(File.pathSeparator).concat(DEFAULT_DB_FILENAME);
+        String defaultPath = defaultDirectory.concat(File.separator).concat(DEFAULT_DB_FILENAME);
 
         dbSettings.setDatabasePath(defaultPath);
 

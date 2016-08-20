@@ -53,6 +53,8 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import timber.log.Timber;
 
+import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
+
 /**
  * Various database-related utility functions
  */
@@ -127,16 +129,21 @@ public class MmxDatabaseUtils {
         }
     }
 
+    public String createDatabase() {
+        return createDatabase(DEFAULT_DB_FILENAME);
+    }
+
     /**
-     * Creates a new database file at the default location.
-     * @param filename File name for the new database. Extension .mmb will be appended if not
-     *                 included in the filename.
+     * Creates a new database file at the default location, with the given db file name.
+     * @param fileName File name for the new database. Extension .mmb will be appended if not
+     *                 included in the fileName. Excludes path!
+     *                 If null, a default file name will be used.
      */
-    public String createDatabase(@NonNull String filename) {
+    public String createDatabase(@NonNull String fileName) {
         String result = null;
 
         try {
-            result = createDatabase_Internal(filename);
+            result = createDatabase_Internal(fileName);
         } catch (Exception e) {
             Timber.e(e, "creating database");
         }
@@ -191,6 +198,16 @@ public class MmxDatabaseUtils {
         if (defaultFolder != null) return defaultFolder.getAbsolutePath();
 
         return null;
+    }
+
+    /**
+     * Generates the default database path, including the filename. This is used for database
+     * creation and display of the default value during creation.
+     * @return The default database path.
+     */
+    public String getDefaultDatabasePath() {
+        return getDefaultDatabaseDirectory()
+                .concat(File.separator).concat(DEFAULT_DB_FILENAME);
     }
 
     public String makePlaceholders(int len) {
@@ -395,7 +412,7 @@ public class MmxDatabaseUtils {
         File externalFilesDir = getContext().getExternalFilesDir(null);
 
         assert externalFilesDir != null;
-        String dbString = externalFilesDir.getAbsolutePath().concat(File.pathSeparator)
+        String dbString = externalFilesDir.getAbsolutePath().concat(File.separator)
                 .concat("databases");
         File dbPath = new File(dbString);
 
@@ -422,7 +439,7 @@ public class MmxDatabaseUtils {
 
 
         String dbDirectoryPath = packageLocation.getAbsolutePath()
-                .concat(File.pathSeparator)
+                .concat(File.separator)
                 .concat("databases");
 
         File dbDirectory = new File(dbDirectoryPath);
