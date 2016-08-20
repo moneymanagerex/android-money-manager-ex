@@ -504,7 +504,7 @@
     <string name="tutorial_overview_1">Quick overview dashboard, budgets, reports with customizations.</string>
     <string name="global">Global</string>
     <string name="tutorial_global_1">Multiple currencies and languages. Open Source. Join our translation team.</string>
-    <string name="tutorial_sync_1">Support for multiple platforms, synchronization via Dropbox. Import and export of your data to other applications.</string>
+    <string name="tutorial_sync_1">Support for multiple platforms, synchronization via multiple cloud services. Import and export of your data to other applications.</string>
     <string name="transactions">Transactions</string>
     <string name="tutorial_transactions_1">Deposits, withdrawals, transfers. Recurring transactions with reminders.</string>
     <string name="split_category">-Split Category-</string>
