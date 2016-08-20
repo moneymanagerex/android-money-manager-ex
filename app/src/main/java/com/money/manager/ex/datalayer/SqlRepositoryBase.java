@@ -56,6 +56,17 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         return result;
     }
 
+    public boolean exists(String sql, String... args) {
+        Cursor c = database.query(sql, args);
+        if (c == null) return false;
+
+        boolean result = c.getCount() > 0;
+
+        c.close();
+
+        return result;
+    }
+
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
         T entity = null;
 

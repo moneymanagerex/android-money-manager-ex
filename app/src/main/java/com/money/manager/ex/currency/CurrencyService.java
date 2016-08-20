@@ -16,19 +16,24 @@
  */
 package com.money.manager.ex.currency;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.CurrencyRepositorySql;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -37,6 +42,7 @@ import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
+import com.money.manager.ex.utils.DialogUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,9 +53,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -58,17 +71,21 @@ import timber.log.Timber;
 public class CurrencyService
     extends ServiceBase {
 
+    @Inject
     public CurrencyService(Context context) {
         super(context);
 
         mCurrencyCodes = new HashMap<>();
-        mCurrencies = new HashMap<>();
+        mCurrencies = new SparseArray<>();
+
+//        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
-    private CurrencyRepository mRepository;
+    @Inject CurrencyRepositorySql mRepository;
+
     private Integer mBaseCurrencyId = null;
     // hash map of all currencies
-    private Map<Integer, Currency> mCurrencies;
+    private SparseArray<Currency> mCurrencies;
     /**
      * a fast lookup for symbol -> id. i.e. EUR->2.
      */
@@ -81,7 +98,7 @@ public class CurrencyService
     public Currency getCurrency(Integer currencyId) {
         if (currencyId == null || currencyId == Constants.NOT_SET) return null;
 
-        if (mCurrencies.containsKey(currencyId)) {
+        if (mCurrencies.indexOfKey(currencyId) >= 0) {
             return mCurrencies.get(currencyId);
         }
 
@@ -253,8 +270,7 @@ public class CurrencyService
         InfoService service = new InfoService(getContext());
         boolean saved = service.setInfoValue(InfoKeys.BASECURRENCYID, Integer.toString(baseCurrencyId));
         if (!saved) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.showMessage(R.string.error_saving_default_currency);
+            new UIHelper(getContext()).showToast(R.string.error_saving_default_currency);
         }
     }
 
@@ -307,19 +323,49 @@ public class CurrencyService
         return result;
     }
 
+    private CurrencyRepository oldRepository;
     public CurrencyRepository getRepository() {
-        if (mRepository == null) {
-            mRepository = new CurrencyRepository(getContext());
+        if (oldRepository == null) {
+            oldRepository = new CurrencyRepository(getContext());
         }
-        return mRepository;
+        return oldRepository;
     }
 
     /**
      * Import all currencies from Android System
      */
     public void importAllCurrencies() {
-        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getContext());
-        asyncTask.execute();
+//        AsyncTask<Void, Void, Boolean> asyncTask = new ImportAllCurrenciesTask(getContext());
+//        asyncTask.execute();
+
+        // Rx implementation
+        final ProgressDialog progress = ProgressDialog.show(getContext(), null,
+                getContext().getString(R.string.import_currencies_in_progress));
+
+        Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return importCurrenciesFromAvailableLocales();
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+                DialogUtils.closeProgressDialog(progress);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "importing currencies from the system");
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                // should we import one by one?
+            }
+        });
     }
 
     public boolean importCurrenciesFromAvailableLocales() {
@@ -328,18 +374,21 @@ public class CurrencyService
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
         java.util.Currency localeCurrency;
         Currency newCurrency;
-        CurrencyRepository repo = getRepository();
-        Currency existingCurrency;
+//        CurrencyRepository repo = getRepository();
+//        Currency existingCurrency;
 
         for (Locale locale : locales) {
             try {
-                // todo: this results in an exception if the country code is missing.
+                String country = locale.getCountry();   // ISO code
+                // String displayCountry = locale.getDisplayCountry(); // full country name
+                if (TextUtils.isEmpty(country)) continue;
+
                 localeCurrency = java.util.Currency.getInstance(locale);
 
                 // check if already exists currency symbol
-                existingCurrency = repo.loadCurrency(localeCurrency.getCurrencyCode());
-
-                if (existingCurrency != null) continue;
+//                existingCurrency = mre.loadCurrency(localeCurrency.getCurrencyCode());
+//                if (existingCurrency != null) continue;
+                if (mRepository.exists(localeCurrency.getCurrencyCode())) continue;
 
                 // No currency. Create a new one.
 
@@ -358,7 +407,7 @@ public class CurrencyService
                 newCurrency.setScale(100);
                 newCurrency.setConversionRate(1.0);
 
-                repo.insert(newCurrency);
+                mRepository.insert(newCurrency.contentValues);
             } catch (Exception e) {
                 Timber.e(e, "importing currencies from locale %s", locale.getDisplayName());
             }

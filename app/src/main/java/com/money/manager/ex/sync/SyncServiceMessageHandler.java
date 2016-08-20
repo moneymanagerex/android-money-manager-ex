@@ -25,6 +25,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -65,11 +66,11 @@ public class SyncServiceMessageHandler
             case FILE_NOT_CHANGED:
                 // close dialog
                 closeDialog(progressDialog);
-                showMessage(R.string.database_is_synchronized, Toast.LENGTH_LONG);
+                new UIHelper(getContext()).showToast(R.string.database_is_synchronized, Toast.LENGTH_LONG);
                 break;
 
             case STARTING_DOWNLOAD:
-                showMessage(R.string.sync_downloading, Toast.LENGTH_LONG);
+                new UIHelper(getContext()).showToast(R.string.sync_downloading, Toast.LENGTH_LONG);
                 break;
 
             case DOWNLOAD_COMPLETE:
@@ -83,18 +84,18 @@ public class SyncServiceMessageHandler
             case STARTING_UPLOAD:
                 // Do not block the user if uploading the changes.
                 closeDialog(progressDialog);
-                showMessage(R.string.sync_uploading, Toast.LENGTH_LONG);
+                new UIHelper(getContext()).showToast(R.string.sync_uploading, Toast.LENGTH_LONG);
                 break;
 
             case UPLOAD_COMPLETE:
                 // close dialog
                 closeDialog(progressDialog);
-                showMessage(R.string.upload_file_complete, Toast.LENGTH_LONG);
+                new UIHelper(getContext()).showToast(R.string.upload_file_complete, Toast.LENGTH_LONG);
                 break;
 
             case ERROR:
                 closeDialog(progressDialog);
-                showMessage(R.string.error, Toast.LENGTH_SHORT);
+                new UIHelper(getContext()).showToast(R.string.error, Toast.LENGTH_SHORT);
                 break;
 
             default:
@@ -110,20 +111,6 @@ public class SyncServiceMessageHandler
         if (progressDialog != null && progressDialog.isShowing()) {
             DialogUtils.closeProgressDialog(progressDialog);
         }
-    }
-
-    private void showMessage(final int message, final int length) {
-        Context context = getContext();
-        if (!(context instanceof Activity)) return;
-
-        final Activity parent = (Activity) context;
-
-        parent.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getContext(), message, length).show();
-            }
-        });
     }
 
     private void storeRecentDb(String remoteFile) {

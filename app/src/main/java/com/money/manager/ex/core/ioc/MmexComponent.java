@@ -19,6 +19,7 @@ package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
@@ -59,6 +60,9 @@ public interface MmexComponent {
     void inject(Core core);
     void inject(MmxContentProvider provider);
     void inject(MmxDatabaseUtils utils);
+
+    // Services
+    void inject(CurrencyService service);
 
     // Repositories
     void inject(StockRepositorySql repository);

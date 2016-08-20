@@ -23,7 +23,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 public class UIHelper {
 
     public static void showToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        new UIHelper(context).showToast(message, Toast.LENGTH_SHORT);
     }
 
     public static void showToast(Context context, int stringResourceId) {
@@ -164,4 +164,37 @@ public class UIHelper {
 //        return data.getData().toString();
         return filePath;
     }
+
+    public void showToast(int messageId) {
+        showToast(messageId, Toast.LENGTH_SHORT);
+    }
+
+    public void showToast(final int message, final int length) {
+        Context context = getContext();
+        if (!(context instanceof Activity)) return;
+
+        final Activity parent = (Activity) context;
+
+        parent.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), message, length).show();
+            }
+        });
+    }
+
+    public void showToast(final String message, final int length) {
+        Context context = getContext();
+        if (!(context instanceof Activity)) return;
+
+        final Activity parent = (Activity) context;
+
+        parent.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), message, length).show();
+            }
+        });
+    }
+
 }
