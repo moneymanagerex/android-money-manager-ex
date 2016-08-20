@@ -429,8 +429,8 @@
                     <com.shamanland.fonticon.FontIconView
                         android:id="@+id/removePayeeButton"
                         style="@style/Money.Button"
-                        android:layout_width="@dimen/mmex_button_height"
-                        android:layout_height="@dimen/mmex_button_height"
+                        android:layout_width="@dimen/mmx_button_height"
+                        android:layout_height="@dimen/mmx_button_height"
                         android:textAlignment="center"
                         android:text="@string/ic_erase"
                         android:textSize="@dimen/fonticon_drawer" />
@@ -464,8 +464,8 @@
                 <com.shamanland.fonticon.FontIconView
                     android:id="@+id/splitButton"
                     style="@style/Money.Button.Transparent"
-                    android:layout_width="@dimen/mmex_button_height"
-                    android:layout_height="@dimen/mmex_button_height"
+                    android:layout_width="@dimen/mmx_button_height"
+                    android:layout_height="@dimen/mmx_button_height"
                     android:textAlignment="center"
                     android:text="@string/ic_split"
                     android:textSize="@dimen/fonticon_drawer" />
@@ -490,8 +490,8 @@
                 <ImageButton
                     android:id="@+id/buttonTransNumber"
                     style="@style/Money.Button"
-                    android:layout_width="@dimen/mmex_button_height"
-                    android:layout_height="@dimen/mmex_button_height"
+                    android:layout_width="@dimen/mmx_button_height"
+                    android:layout_height="@dimen/mmx_button_height"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_action_plusone_dark" />
             </LinearLayout>

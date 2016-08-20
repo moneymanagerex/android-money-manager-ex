@@ -20,9 +20,11 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -33,6 +35,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmexCursorLoader;
@@ -51,6 +56,7 @@ import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.ActivityUtils;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -215,9 +221,17 @@ public class CurrencyListFragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
 
+        UIHelper uiHelper = new UIHelper(getActivity());
+        int primaryColor = uiHelper.getColor(R.attr.toolbarItemColor);
+        int iconSize = uiHelper.getDimenInDp(R.dimen.mmx_toolbar_icon_size);
+
         // Customize with font icon, if needed.
-//        MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
-//        item.setIcon(FontIconDrawable.inflate(R.xml.ic_))
+        MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
+        Drawable icon = new IconicsDrawable(getActivity())
+                .icon(MMEXIconFont.Icon.mmx_share_square)
+                .color(primaryColor)
+                .sizeDp(iconSize);
+        item.setIcon(icon);
     }
 
     @Override

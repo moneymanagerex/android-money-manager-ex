@@ -137,6 +137,9 @@ android {
 //            storeFile file("debug.keystore")
             v2SigningEnabled false;
         }
+        release {
+            keyAlias 'ammex'
+        }
     }
 
     testOptions {
@@ -145,70 +148,70 @@ android {
 }
 
 dependencies {
-//    compile(name:'cloudrail-si-debug', ext:'aar')
+    //    compile(name:'cloudrail-si-debug', ext:'aar')
     compile(
             fileTree(dir: 'libs', include: ['*.jar'])
-            ,project(':MMEX Icon Font')
-            ,project(':androidSVG_12')      // androidSVG
+            , project(':MMEX Icon Font')
+            , project(':androidSVG_12')      // androidSVG
 //        'com.caverock:androidsvg:1.2.2-beta-1',
-            ,project(path: ':money')
-            ,'com.cloudrail:cloudrail-si-android:2.6.7'
-            ,'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-            ,supportDependencies.support
-            ,supportDependencies.appCompat
-            ,supportDependencies.recyclerView
-            ,supportDependencies.cardView
-            ,supportDependencies.design     // for Google's floating action button, snackbar...
-            ,supportDependencies.preference
-            ,supportDependencies.supportAnnotation
-            ,'com.opencsv:opencsv:3.7'
-            ,'net.objecthunter:exp4j:0.4.7'
-            ,'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
-            ,'commons-io:commons-io:2.5'
-            ,'org.apache.commons:commons-lang3:3.4'
-            ,'com.afollestad.material-dialogs:core:0.8.6.1'
+            , project(path: ':money')
+            , 'com.cloudrail:cloudrail-si-android:2.6.7'
+            , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+            , supportDependencies.support
+            , supportDependencies.appCompat
+            , supportDependencies.recyclerView
+            , supportDependencies.cardView
+            , supportDependencies.design     // for Google's floating action button, snackbar...
+            , supportDependencies.preference
+            , supportDependencies.supportAnnotation
+            , 'com.opencsv:opencsv:3.7'
+            , 'net.objecthunter:exp4j:0.4.7'
+            , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
+            , 'commons-io:commons-io:2.5'
+            , 'org.apache.commons:commons-lang3:3.4'
+            , 'com.afollestad.material-dialogs:core:0.8.6.1'
 //            ,'com.afollestad.material-dialogs:commons:0.8.6.1'
-            ,'com.melnykov:floatingactionbutton:1.3.0'
-            ,'com.github.pedrovgs:lynx:1.6'
-            ,'com.astuetz:pagerslidingtabstrip:1.0.1'
-            ,'de.hdodenhof:circleimageview:2.0.0'
+            , 'com.melnykov:floatingactionbutton:1.3.0'
+            , 'com.github.pedrovgs:lynx:1.6'
+            , 'com.astuetz:pagerslidingtabstrip:1.0.1'
+            , 'de.hdodenhof:circleimageview:2.0.0'
             // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
-            ,'me.relex:circleindicator:1.2.1'
-            ,'com.code-troopers.betterpickers:library:3.0.0'
-            ,'com.github.PhilJay:MPAndroidChart:v2.2.5'
+            , 'me.relex:circleindicator:1.2.1'
+            , 'com.code-troopers.betterpickers:library:3.0.0'
+            , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
 //        'javax.money:money-api-bp:1.0',
 //        'org.javamoney:moneta-bp:1.0',
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             // Retrofit turns your HTTP API into a Java interface.
-            ,'com.google.code.gson:gson:2.7'
-            ,'com.squareup.retrofit2:retrofit:2.1.0'            // Retrofit
-            ,'com.squareup.retrofit2:converter-gson:2.1.0'
-            ,'com.squareup.retrofit2:converter-scalars:2.1.0'
-            ,'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+            , 'com.google.code.gson:gson:2.7'
+            , 'com.squareup.retrofit2:retrofit:2.1.0'            // Retrofit
+            , 'com.squareup.retrofit2:converter-gson:2.1.0'
+            , 'com.squareup.retrofit2:converter-scalars:2.1.0'
+            , 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
-            ,'org.greenrobot:eventbus:3.0.0'
-            ,'net.danlew:android.joda:2.9.4'
+            , 'org.greenrobot:eventbus:3.0.0'
+            , 'net.danlew:android.joda:2.9.4'
 //            ,'org.joda:joda-money:0.11'
-            ,'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
-            ,'org.jsoup:jsoup:1.9.2'               // HTML parsing.
-            ,'com.google.guava:guava:19.0'         // collection libraries
-            ,'com.android.support:multidex:1.0.0'  // multidex support
-            ,'com.nononsenseapps:filepicker:3.0.0' // file picker
-            ,'io.reactivex:rxandroid:1.2.1'        // RxJava
-            ,'io.reactivex:rxjava:1.1.9'
-            ,'com.squareup.sqlbrite:sqlbrite:0.7.0'
-            ,'com.jakewharton.timber:timber:4.2.0'
-            ,'com.jakewharton.rxbinding:rxbinding:0.4.0'    // RxBinding
+            , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
+            , 'org.jsoup:jsoup:1.9.2'               // HTML parsing.
+            , 'com.google.guava:guava:19.0'         // collection libraries
+            , 'com.android.support:multidex:1.0.0'  // multidex support
+            , 'com.nononsenseapps:filepicker:3.0.0' // file picker
+            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
+            , 'io.reactivex:rxjava:1.1.9'
+            , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
+            , 'com.jakewharton.timber:timber:4.2.0'
+            , 'com.jakewharton.rxbinding:rxbinding:0.4.0'    // RxBinding
 //            ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
-            ,'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
+            , 'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
 //            ,'com.github.fcannizzaro:material-stepper:1.2.2'
-            ,'com.shamanland:fonticon:0.1.9'
-            ,"com.mikepenz:iconics-core:2.8.0@aar"
+            , 'com.shamanland:fonticon:0.1.9'
+            , "com.mikepenz:iconics-core:2.8.0@aar"
 //            ,'org.slf4j:slf4j-android:1.7.21'   // Logging to file. Used for testing the sync service.
 //            ,'com.github.tony19:logback-android-core:1.1.1-6'   // logback
 
@@ -225,7 +228,6 @@ dependencies {
     // ButterKnife
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
-
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
@@ -252,7 +254,6 @@ dependencies {
         exclude group: 'io.selendroid', module: 'selendroid-server'
         exclude group: 'io.selendroid', module: 'android-driver-app'
     }
-
     // UI testing
     androidTestCompile(
             'com.android.support.test:runner:0.5',

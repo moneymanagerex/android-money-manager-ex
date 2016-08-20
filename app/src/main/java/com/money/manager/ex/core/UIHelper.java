@@ -75,6 +75,12 @@ public class UIHelper {
         return typedValue.data;
     }
 
+    public int getDimenInDp(int dimenId) {
+        int sizeInDp = (int) (getContext().getResources().getDimension(dimenId)
+            / getContext().getResources().getDisplayMetrics().density);
+        return sizeInDp;
+    }
+
     /**
      * Resolve the id attribute into int value
      * @param attr id attribute

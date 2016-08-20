@@ -81,7 +81,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mmex_button_height">
+                android:layout_marginTop="@dimen/mmx_button_height">
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/runButton"
                     android:layout_width="match_parent"
