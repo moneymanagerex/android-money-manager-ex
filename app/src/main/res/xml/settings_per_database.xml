@@ -17,6 +17,12 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:icon="@null"
+        android:key="@string/pref_user_name"
+        android:summary="@string/username"
+        android:title="@string/user" />
+
     <Preference
         android:icon="@null"
         android:key="@string/pref_base_currency"

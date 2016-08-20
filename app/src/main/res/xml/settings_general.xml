@@ -25,17 +25,6 @@
         android:key="@string/pref_locale"
         android:title="@string/locale_application" />
 
-    <EditTextPreference
-        android:icon="@null"
-        android:key="@string/pref_user_name"
-        android:summary="@string/username"
-        android:title="@string/user" />
-
-    <!--<ListPreference-->
-        <!--android:icon="@null"-->
-        <!--android:key="@string/pref_base_currency"-->
-        <!--android:title="@string/base_currency" />-->
-
     <ListPreference
         android:icon="@null"
         android:defaultValue=""

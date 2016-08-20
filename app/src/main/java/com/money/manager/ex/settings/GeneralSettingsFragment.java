@@ -48,7 +48,6 @@ public class GeneralSettingsFragment
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.settings_general);
-//        PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         initializeControls();
     }
@@ -70,27 +69,11 @@ public class GeneralSettingsFragment
                     String language = String.valueOf(newValue);
                     setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
 
-                    MainActivity.setRestartActivity(true);
-                    // todo EventBus.getDefault().post(new AppRestartRequiredEvent());
-
-                    // restart the current activity to apply
+                    // apply the chaneg to the current activity immediately
                     getActivity().recreate();
 
-                    return true;
-                }
-            });
-        }
+                    // other activities apply on create.
 
-        // Username
-
-        final Preference pUserName = findPreference(getString(PreferenceConstants.PREF_USER_NAME));
-        if (pUserName != null) {
-            pUserName.setSummary(MoneyManagerApplication.getApp().getUserName());
-            pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    MoneyManagerApplication.getApp().setUserName((String) newValue, true);
-                    pUserName.setSummary(MoneyManagerApplication.getApp().getUserName());
                     return true;
                 }
             });
