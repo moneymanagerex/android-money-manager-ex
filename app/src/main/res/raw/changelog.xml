@@ -16,7 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.18.892">
+    <changelogversion versionName="2016.08.20.893">
+        <changelogtext>Improving currency import.</changelogtext>
+        <changelogtext>Improving background database comparison and transfer.</changelogtext>
         <changelogtext>Improving the price download speed for Morningstar provider.</changelogtext>
         <changelogtext>Sorting portfolio by symbol.</changelogtext>
         <changelogtext>Using a different file-picker. This should resolve crashes.</changelogtext>
