@@ -17,6 +17,6 @@
   -->
 <font-icon
     xmlns:android="http://schemas.android.com/apk/res-auto"
-    android:text="@string/ic_diff_renamed"
+    android:text="@string/ic_share_square"
     android:textSize="@dimen/fonticon_drawer"
     android:textColor="?android:textColorSecondary" />

@@ -168,7 +168,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:text="@string/ic_diff_renamed"
+                            android:text="@string/ic_share_square"
                             android:textColor="@color/material_grey_700"
                             android:textSize="@dimen/fonticon_drawer" />
                     </RelativeLayout>
