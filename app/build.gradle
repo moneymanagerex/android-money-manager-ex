@@ -121,7 +121,7 @@ android {
 
     lintOptions {
         // stop the gradle build if errors are found - affects XML resources (strings, etc.).
-        abortOnError false
+        abortOnError true
     }
 
     packagingOptions {
