@@ -415,17 +415,17 @@ public class MainActivity
                 .subscribe(new Subscriber<SyncServiceMessage>() {
                     @Override
                     public void onCompleted() {
-                        Timber.d("initial remote check complete.");
+                        Timber.d("Initial remote db comparison complete.");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e(e, "error checking remote file");
+                        Timber.e(e, "checking for remote db updates");
                     }
 
                     @Override
                     public void onNext(SyncServiceMessage syncServiceMessage) {
-                        Timber.d("compare result: %d", syncServiceMessage.code);
+                        Timber.d("Comparing to online storage: %s", syncServiceMessage.name());
                         switch (syncServiceMessage) {
                             case STARTING_DOWNLOAD:
                                 UIHelper.showDiffNotificationDialog(MainActivity.this);
