@@ -144,7 +144,6 @@
   <string name="error_category_not_selected">需要類型</string>
   <string name="error_totamount_empty">需要總金額</string>
   <string name="error_transfer_to_same_account">轉帳的兩個帳戶必須不同</string>
-  <!-- application string -->
   <string name="about">關於</string>
   <string name="add">新增</string>
   <string name="date">日期</string>
@@ -573,21 +572,22 @@
   <string name="currencies_empty">未發現任何貨幣，請點擊綠色加號按鈕新增。</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">您的資料庫已被下載</string>
   <string name="dropbox_open_database_downloaded">若要使用資料庫下載，點擊開啟資料庫</string>
-  <string name="click_to_select_file_dropbox">請從 Dropbox 選擇要使用的檔案</string>
-  <string name="download_from_drobpox">從 Dropbox 下載</string>
-  <string name="summary_download_from_drobpox">點擊後從 Dropbox 資料夾手動下載連結的檔</string>
-  <string name="upload_to_drobpox">上傳到 Dropbox</string>
-  <string name="summary_upload_to_drobpox">點擊後手動上傳連結的檔案到 Dropbox 資料夾</string>
-  <string name="dropbox_how_it_works">Dropbox 在 Money Manager Ex 裡的功用為何？</string>
-  <string name="dropbox_link">連結至 Dropbox</string>
-  <string name="dropbox_unlink">斷開 Dropbox 連結</string>
-  <string name="dropbox_downloadProgress">由 Dropbox 下載檔案中，請稍候&#8230;</string>
-  <string name="dropbox_uploadProgress">上傳檔案至 Dropbox 中，請稍候&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox 檔案</string>
-  <string name="db_not_dropbox">您目前的資料庫未同步。請設定 Dropbox 以同步。</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">同步</string>
   <string name="every_5_minutes">每隔 5 分鐘</string>
@@ -600,4 +600,7 @@
   <string name="never">永遠不要</string>
   <string name="dropbox_select_file">從 Dropbox 選擇一個檔案</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

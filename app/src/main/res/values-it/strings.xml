@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">La categoria è richiesta</string>
   <string name="error_totamount_empty">Importo totale è richiesto</string>
   <string name="error_transfer_to_same_account">Per il trasferimento i conti devono essere diversi</string>
-  <!-- application string -->
   <string name="about">A proposito di</string>
   <string name="add">Aggiungi</string>
   <string name="confirmDelete">Sicuro di voler eliminare questo record?</string>
@@ -568,7 +567,9 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Assegnazione del bene</string>
   <string name="asset_classes_empty">Non sono state definite classi dei beni. Per crearne una, toccare il pulsante verde.</string>
+  <string name="title_activity_asset_class_edit">Modifica classe del bene</string>
   <string name="asset_class_name">Classe del bene</string>
+  <string name="asset_class">Classe del bene</string>
   <string name="allocation">Assegnazione</string>
   <string name="current_allocation">Assegnazione attuale</string>
   <string name="move_up">Sposta sù</string>
@@ -596,6 +597,7 @@
   <string name="invalid_recurrence_type">Tipo di ricorrenza non valido</string>
   <string name="account_not_found">Conto non trovato</string>
   <string name="favourite">Preferito</string>
+  <string name="split_reset_notice">In questa operazione sono presenti più categorie suddivise. È necessario rimuoverle manualmente.</string>
   <!-- budgets -->
   <string name="add_budget">Nuovo budget</string>
   <string name="budget_name">Nome del budget</string>
@@ -630,22 +632,22 @@
   <string name="quote_provider">Fornitore Quote</string>
   <string name="exchange_rate_provider">Provider dei tassi di cambio</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Il database è stato scaricato</string>
   <string name="dropbox_open_database_downloaded">Per utilizzare il database scaricato, toccare Apri Database</string>
-  <string name="click_to_select_file_dropbox">Toccare per selezionare il file da utilizzare da Dropbox</string>
-  <string name="download_from_drobpox">Download da Dropbox</string>
-  <string name="summary_download_from_drobpox">Tocca per scaricare manualmente il file collegato dalla cartella Dropbox</string>
-  <string name="upload_to_drobpox">Upload su Dropbox</string>
-  <string name="summary_upload_to_drobpox">Tocca per caricare manualmente il file collegato alla cartella Dropbox</string>
-  <string name="dropbox_how_it_works">Come funziona Dropbox per Money Manager Ex\?</string>
-  <string name="dropbox_link">Collega con Dropbox</string>
-  <string name="dropbox_unlink">Scollega da Dropbox</string>
-  <string name="dropbox_downloadProgress">Download file da Dropbox. Attendere prego&#8230;</string>
-  <string name="dropbox_uploadProgress">Upload file su Dropbox. Attendere prego&#8230;</string>
-  <string name="dropbox_linkedFile">File Dropbox</string>
-  <string name="dropbox_file_summary_all">File presente in Dropbox</string>
-  <string name="db_not_dropbox">Il database corrente non è sincronizzato. Per favore imposta la sincronizzazione con Dropbox.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Sincronizzazione</string>
   <string name="sync_enabled">Sincronizzazione attivata</string>
@@ -680,4 +682,7 @@
   <!-- Errors -->
   <string name="error_parsing_value">Errore di analisi del valore inserito</string>
   <string name="remote_file_not_found">File remoto non trovato</string>
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

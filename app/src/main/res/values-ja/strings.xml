@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">カテゴリーが必要です</string>
   <string name="error_totamount_empty">合計金額が必要です</string>
   <string name="error_transfer_to_same_account">振替する 2 つのアカウントは一意である必要があります</string>
-  <!-- application string -->
   <string name="about">アプリついて</string>
   <string name="add">追加</string>
   <string name="confirmDelete">レコードを削除してもよろしいですか?</string>
@@ -568,7 +567,9 @@
   <!-- asset allocation -->
   <string name="asset_allocation">資産の割当て</string>
   <string name="asset_classes_empty">資産分類が定義されていません。作成するには、緑のプラスボタンをタップします。</string>
+  <string name="title_activity_asset_class_edit">資産分類を編集</string>
   <string name="asset_class_name">資産分類名</string>
+  <string name="asset_class">資産分類</string>
   <string name="allocation">割当て</string>
   <string name="current_allocation">現在の割当て</string>
   <string name="move_up">上に移動</string>
@@ -596,6 +597,7 @@
   <string name="invalid_recurrence_type">定期的なアイテムの種類が無効です</string>
   <string name="account_not_found">アカウントが見つかりません</string>
   <string name="favourite">お気に入り</string>
+  <string name="split_reset_notice">この取引には複数の分割カテゴリーがあることにご注意ください。それらを手動で削除する必要があります。</string>
   <!-- budgets -->
   <string name="add_budget">予算を追加</string>
   <string name="budget_name">予算名</string>
@@ -630,22 +632,22 @@
   <string name="quote_provider">プロバイダーの引用</string>
   <string name="exchange_rate_provider">為替レート プロバイダー</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
   <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
-  <string name="click_to_select_file_dropbox">タッチして、Dropbox から使用するファイルを選択</string>
-  <string name="download_from_drobpox">Dropbox からダウンロード</string>
-  <string name="summary_download_from_drobpox">タッチして、Dropbox フォルダーからリンクされているファイルを手動でダウンロード</string>
-  <string name="upload_to_drobpox">Dropbox にアップロード</string>
-  <string name="summary_upload_to_drobpox">タッチして、Dropbox フォルダーにリンクされたファイルを手動でアップロード</string>
-  <string name="dropbox_how_it_works">Money Manager Ex で Dropbox はどのように動作しますか?</string>
-  <string name="dropbox_link">Dropbox にリンク</string>
-  <string name="dropbox_unlink">Dropbox のリンクを解除</string>
-  <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
-  <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox のファイル</string>
-  <string name="dropbox_file_summary_all">Dropbox の任意の場所にあるファイル</string>
-  <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">同期</string>
   <string name="sync_enabled">同期が有効です</string>
@@ -680,4 +682,7 @@
   <!-- Errors -->
   <string name="error_parsing_value">入力値の解析時にエラー</string>
   <string name="remote_file_not_found">リモート ファイルが見つかりません</string>
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

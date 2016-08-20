@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">Danh mục được yêu cầu</string>
   <string name="error_totamount_empty">Tổng số tiền được yêu cầu</string>
   <string name="error_transfer_to_same_account">Hai tài khoản cho việc chuyển giao phải khác biệt</string>
-  <!-- application string -->
   <string name="about">Giới thiệu</string>
   <string name="add">Thêm</string>
   <string name="confirmDelete">Bạn có chắc bạn muốn xóa hồ sơ?</string>
@@ -581,21 +580,22 @@
   <string name="currencies_empty">Không có tiền tệ được tìm thấy. Để tạo một tiền tệ, bấm vào nút cộng màu xanh.</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Cơ sở dữ liệu của bạn đã được tải về</string>
   <string name="dropbox_open_database_downloaded">Để sử dụng cơ sở dữ liệu tải về, chạm vào Mở cơ sở dữ liệu</string>
-  <string name="click_to_select_file_dropbox">Chạm để chọn tập tin để sử dụng từ Dropbox</string>
-  <string name="download_from_drobpox">Tải về từ Dropbox</string>
-  <string name="summary_download_from_drobpox">Chạm để tùy chọn tải về tập tin được liên kết từ thư mục Dropbox</string>
-  <string name="upload_to_drobpox">Tải lên Dropbox</string>
-  <string name="summary_upload_to_drobpox">Chạm để tùy chọn tải lên các tập tin được liên kết vào thư mục Dropbox</string>
-  <string name="dropbox_how_it_works">Dropbox làm việc cho Money Manager Ex như thế nào\?</string>
-  <string name="dropbox_link">Liên kết đến Dropbox</string>
-  <string name="dropbox_unlink">Hủy liên kết khỏi Dropbox</string>
-  <string name="dropbox_downloadProgress">Đang tải tập tin từ Dropbox. Vui lòng chờ...</string>
-  <string name="dropbox_uploadProgress">Đang tải tập tin tới Dropbox. Vui lòng chờ...</string>
-  <string name="dropbox_linkedFile">Tập tin Dropbox</string>
-  <string name="db_not_dropbox">Cơ sở dữ liệu hiện tại của bạn không được đồng bộ. Vui lòng thiết lập đồng bộ Dropbox.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Đồng bộ</string>
   <string name="every_5_minutes">Mỗi 5 phút</string>
@@ -608,4 +608,7 @@
   <string name="never">Không bao giờ</string>
   <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

@@ -60,33 +60,33 @@
   <string name="database_version">Έκδοση βάσης δεδομένων</string>
   <string name="title_show_tutorial">Εμφάνιση οδηγού</string>
   <string name="summary_show_tutorial">Να εμφανίσω τον οδηγώ κατά την επόμενη εκτέλεση;</string>
-  <string name="preferences_behaviour_focus_filter_title">Φιλτράρισμα σε επιλογείς</string>
-  <string name="preferences_behaviour_focus_filter_summary">Επικεντρωθεί σε φίλτρο στο επιλογείς. Άλλως περιηγηθείτε.</string>
+  <string name="preferences_behaviour_focus_filter_title">Επικέντρωση στη μπάρα αναζήτησης</string>
+  <string name="preferences_behaviour_focus_filter_summary">Επικέντρωση στην μπάρα αναζήτησης στις οθόνες επιλογής. Αλλιώς στις επιλογές.</string>
   <string name="pref_auto_sync_via_wifi">Αυτόματος συγχρονισμός μόνο σε WiFi</string>
   <string name="pref_auto_sync_via_wifi_summary">Αυτόματου συγχρονισμού μόνο όταν σε WiFi σύνδεση.</string>
   <!-- account -->
   <string name="account">Λογαριασμός</string>
   <string name="account_list">Λίστα λογαριασμών</string>
   <string name="account_empty_list">Δεν έχουν βρεθεί Λογαριασμοί. Για να δημιουργήσετε ένα, πατήστε το πράσινο συν (+) κουμπί.</string>
-  <string name="account_balance">Το υπόλοιπο του λογαριασμού</string>
-  <string name="account_reconciled_balance">Απαιτείται ισορροπία</string>
+  <string name="account_balance">Υπόλοιπο Λογαριασμού</string>
+  <string name="account_reconciled_balance">Τακτοποιημένο Υπόλοιπο</string>
   <string name="delete_account">Διαγραφή λογαριασμού</string>
   <string name="account_name">Όνομα λογαριασμού</string>
   <string name="account_type">Τύπος λογαριασμού</string>
   <string name="account_number">Αριθμός λογαριασμού</string>
-  <string name="account_held_at">Που πραγματοποιήθηκε στο</string>
+  <string name="account_held_at">Που τηρείται</string>
   <string name="account_status">Κατάσταση Λογαριασμού</string>
   <string name="favourite_account">Αγαπημένος λογαριασμός</string>
   <string name="select_currency">Επιλέξτε νόμισμα</string>
-  <string name="checking">Έλεγχος</string>
+  <string name="checking">Τρεχούμενος</string>
   <string name="investment">Επενδύσεις</string>
   <string name="investment_accounts">Επενδυτικοί λογαριασμοί</string>
-  <string name="term">Όρος</string>
+  <string name="term">Προθεσμιακός</string>
   <string name="db_account_insert_failed">Λάθος εισαγωγή του λογαριασμού</string>
   <string name="db_account_update_failed">Σφάλμα κατά την ενημέρωση του λογαριασμού</string>
   <string name="error_currency_not_selected">Το Νόμισμα είναι απαραίτητο</string>
   <string name="error_saving_default_currency">Σφάλμα κατά την αποθήκευση του προεπιλεγμένου νομίσματος</string>
-  <string name="error_initialbal_empty">Το αρχικό υπόλοιπο του λογαριασμού απαιτείται</string>
+  <string name="error_initialbal_empty">Απαιτείται αρχικό υπόλοιπο του λογαριασμού</string>
   <string name="error_accountname_empty">Απαιτείται το όνομα του λογαριασμού</string>
   <string name="error_accounttype_empty">Ο τύπος λογαριασμού απαιτείται</string>
   <string name="error_status_empty">Απαιτείται η κατάσταση του λογαριασμού</string>
@@ -130,14 +130,14 @@
   <string name="status">Κατάσταση</string>
   <string name="status_reconciled">Τακτοποιημένο</string>
   <string name="status_void">Κενό</string>
-  <string name="status_follow_up">Παρακολούθηση</string>
+  <string name="status_follow_up">Προς Παρακολούθηση</string>
   <string name="status_duplicate">Δημιουργία διπλοτύπου / αντιγράφου</string>
-  <string name="status_none">Κανένας</string>
+  <string name="status_none">Καμία</string>
   <string name="transfer">Μεταφορά</string>
   <string name="transfer_amount">Μεταφορά ποσού</string>
   <string name="transaction_type">Είδος συναλλαγής</string>
   <string name="transaction_status">Κατάσταση</string>
-  <string name="withdrawal">Απόσυρση</string>
+  <string name="withdrawal">Ανάληψη</string>
   <string name="db_checking_insert_failed">Η εισαγωγή της συναλλαγή απέτυχε</string>
   <string name="db_checking_update_failed">Η ενημέρωση των συναλλαγών απέτυχε</string>
   <string name="delete_transaction">Διαγράψτε τη συναλλαγή</string>
@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">Η κατηγορία, απαιτείται</string>
   <string name="error_totamount_empty">Το συνολικό ποσό απαιτείται</string>
   <string name="error_transfer_to_same_account">Οι δύο λογαριασμοί για τη μεταφορά πρέπει να είναι διακριτοί</string>
-  <!-- application string -->
   <string name="about">Σχετικά με</string>
   <string name="add">Προσθέστε</string>
   <string name="confirmDelete">Θέλετε σίγουρα να διαγράψετε αυτή την εγγραφή;</string>
@@ -172,12 +171,12 @@
   <string name="website">Ιστοσελίδα</string>
   <string name="contact">Επικοινωνία</string>
   <string name="access_info">Πληροφορίες πρόσβασης</string>
-  <string name="initial_balance">Αρχική ισορροπία</string>
+  <string name="initial_balance">Αρχικό υπόλοιπο</string>
   <string name="notes">Σημειώσεις</string>
   <string name="closed">Κλειστό</string>
   <string name="theme_application">Θέμα</string>
-  <string name="theme_holo">Υλικό Σκοτάδι</string>
-  <string name="theme_light">Υλικό Φως</string>
+  <string name="theme_holo">Σκοτεινό Material</string>
+  <string name="theme_light">Φωτεινό Material</string>
   <!-- 20120906 -->
   <string name="close_application">Στενή εφαρμογή</string>
   <string name="question_close_application">Θέλετε να κλείσετε την εφαρμογή;</string>
@@ -202,13 +201,13 @@
   <string name="widget_all_accounts">Όλοι οι λογαριασμοί</string>
   <string name="widget_add_transaction">Προσθέστε συναλλαγή</string>
   <!-- Recurring Transactions -->
-  <string name="none">Κανένας</string>
+  <string name="none">Καμία</string>
   <string name="once">Μια φορά</string>
   <string name="weekly">Εβδομαδιαία</string>
   <string name="bi_weekly">Δύο φορές την εβδομάδα</string>
   <string name="monthly">Μηνιαία</string>
-  <string name="bi_monthly">Διμηνιαίο</string>
-  <string name="quaterly">Τριμηνιαίος</string>
+  <string name="bi_monthly">Διμηνιαία</string>
+  <string name="quaterly">Τριμηνιαία</string>
   <string name="half_year">Εξαμηνιαία</string>
   <string name="yearly">Ετήσια</string>
   <string name="four_months">Τέσσερις μήνες</string>
@@ -228,7 +227,7 @@
   <string name="next_occurrence">Επόμενη εμφάνιση</string>
   <string name="payment_date">Ημ/νία εξόφλησης</string>
   <string name="repeats">Επαναλήψεις</string>
-  <string name="occurs">Παρουσιάζεται</string>
+  <string name="occurs">Επανάληψη</string>
   <string name="payments_left">Πληρωμές αριστερά</string>
   <string name="payments_left_required">Απαιτείται τιμή στις Υπολοιπόμενες Πληρωμές</string>
   <string name="due_date_required">Δέουσα ημερομηνία απαιτείται</string>
@@ -258,11 +257,11 @@
   <string name="passcode_not_update">Ο κωδικός πρόσβασης δεν είναι ενημερωμένος</string>
   <!-- 20121217 -->
   <string name="lookups_wildcard">Για αναζητήσεις μπορείτε να χρησιμοποιήσετε το χαρακτήρα μπαλαντέρ %</string>
-  <string name="income_vs_expenses_current_month">Εισοδήματα vs έξοδα: τρέχοντας μήνας</string>
-  <string name="income">Εισόδημα</string>
+  <string name="income_vs_expenses_current_month">Έσοδα vs Έξοδα: Τρέχων Μήνας</string>
+  <string name="income">Έσοδα</string>
   <string name="expenses">Έξοδα</string>
   <string name="difference">Διαφορά</string>
-  <string name="no_data">Δεν βρέθηκαν καταχωρήσεις. Δοκιμάστε να προσαρμόσετε την περίοδο ορατή ή πατήστε το πράσινο συν το κουμπί για να δημιουργήσετε μία. </string>
+  <string name="no_data">Δεν βρέθηκαν καταχωρήσεις. Δοκιμάστε να προσαρμόσετε την περίοδο ή πατήστε το πράσινο κουμπί συν για να δημιουργήσετε μία. </string>
   <string name="no_stock_data">∆εν υπάρχουν στοιχεία για αυτόν τον λογαριασμό.</string>
   <string name="month">Μήνας</string>
   <string name="year">Έτος</string>
@@ -270,7 +269,7 @@
   <string name="menu_report_income_vs_expenses">Έσοδα vs  Έξοδα</string>
   <string name="total">Σύνολο </string>
   <!--<string name="option">Option</string>-->
-  <string name="all_time">Πάντα</string>
+  <string name="all_time">Τα πάντα</string>
   <string name="last_month">Προηγούμενος μήνας</string>
   <string name="last30days">Τελευταίες 30 ημέρες</string>
   <string name="last_year">Προηγούμενο Έτος</string>
@@ -313,12 +312,12 @@
   <string name="donate_button_text">Κάντε Δωρεά</string>
   <string name="homepage_button">Ανοίξτε την κεντρική σελίδα</string>
   <!-- 20130225 -->
-  <string name="android_sqlite_vesion">SQLite έκδοση</string>
+  <string name="android_sqlite_vesion">Εκδοση SQLite</string>
   <!-- 20130301 -->
   <!--<string name="sort">Sort</string>-->
   <string name="ascending">Αύξουσα</string>
   <string name="descending">Φθίνουσα</string>
-  <string name="sorting_month">Μήνες Διαλογής</string>
+  <string name="sorting_month">Μήνες Ταξινόμησης</string>
   <!-- 20130305 -->
   <string name="last_modified">Τελευταία τροποποίηση</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
@@ -353,7 +352,7 @@
   <string name="credits">Πιστώσεις</string>
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
-  <string name="top_withdrawals_last_30_days">Κορυφαίες αποσύρσεις: Τελευταίες 30 ημέρες</string>
+  <string name="top_withdrawals_last_30_days">Κορυφαίες αναλήψεις: Τελευταίες 30 ημέρες</string>
   <string name="top_payees_last_30_days">Κορυφαίοι δικαιούχοι: Τελευταίες 30 ημέρες</string>
   <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <string name="upcoming_transactions">Επερχόμενες συναλλαγές</string>
@@ -391,10 +390,10 @@
   <string name="new_account">Νέος λογαριασμός</string>
   <string name="create_new_account">Δημιουργία νέου λογαριασμού</string>
   <string name="amount_greater_or_equal">Ποσό μεγαλύτερο ή ίσο</string>
-  <string name="amount_from">Ποσό από</string>
+  <string name="amount_from">Από Ποσό</string>
   <string name="amount_less_or_equal">Ποσό λιγότερο ή ίσο</string>
-  <string name="amount_to">Ανέρχεται σε</string>
-  <string name="reset">Επαναφορά</string>
+  <string name="amount_to">Μέχρι Ποσό</string>
+  <string name="reset">Καθαρισμός</string>
   <string name="result_search">Αποτέλεσμα της αναζήτησής σας</string>
   <string name="new_repeating_transaction">Νέα επαναλαμβανόμενη συναλλαγή</string>
   <string name="edit_repeating_transaction">Επεξεργαστείτε τις επαναλαμβανόμενες συναλλαγές</string>
@@ -411,7 +410,7 @@
   <string name="search_text_contain_title">Αναζήτηση από το περιεχόμενο κειμένου και όχι από το κείμενο με το οποίο ξεκινά</string>
   <string name="search_text_contain_summary">Αναζήτηση δικαιούχου, κατηγοριών, νομισμάτων, κλπ..., από το περιεχόμενο και όχι από την έναρξη χαρακτήρων</string>
   <string name="rate_application">Ποσοστό εφαρμογής</string>
-  <string name="withdrawal_from">Απόσυρση από %1$s</string>
+  <string name="withdrawal_from">Ανάληψη από %1$s</string>
   <string name="deposit_to">Κατάθεση στο %1$s</string>
   <string name="mmex_website">Ιστοσελίδα MoneyManagerEx</string>
   <string name="android_website">Ιστοσελίδα MMEx για Android</string>
@@ -427,19 +426,19 @@
   <string name="change_status">Αλλαγή κατάστασης</string>
   <string name="duplicate_selected_transactions">Αναπαραγάγετε τις επιλεγμένες συναλλαγές</string>
   <string name="sort">Ταξινόμηση</string>
-  <string name="sort_order">Σειρά Εμφάνισης</string>
+  <string name="sort_order">Σειρά Ταξινόμησης</string>
   <string name="sort_by_name">Ταξινόμηση με βάση το όνομα</string>
   <string name="sort_by_usage">Ταξινόμηση ανά χρήση</string>
   <string name="choose_sorting">Επιλέξτε ταξινόμηση</string>
   <string name="credit_card">Πιστωτική Κάρτα</string>
-  <string name="cash_accounts">Ταμειακοί λογαριασμοί</string>
-  <string name="bank_accounts">Τραπεζικός Λογαριασμός</string>
-  <string name="term_accounts">Όρος λογαριασμών</string>
+  <string name="cash_accounts">Λογαριασμοί Μετρητών</string>
+  <string name="bank_accounts">Τραπεζικοί Λογαριασμοί</string>
+  <string name="term_accounts">Προθεσμιακοί Λογαριασμοί</string>
   <string name="credit_card_accounts">Λογαριασμοί πιστωτικών καρτών</string>
   <string name="montly_last_days">Μηνιαία (τελευταία ημέρα)</string>
   <string name="montly_last_bussines_day">Μηνιαία (τελευταία εργάσιμη ημέρα)</string>
   <!-- languages -->
-  <string name="locale_application">Εφαρμογή γλώσσας</string>
+  <string name="locale_application">Γλώσσα Εφαρμογής</string>
   <string name="transaction_cancel_confirm">Θέλετε σίγουρα να απορρίψετε τις αλλαγές;</string>
   <string name="keep_editing">Διατήρηση επεξεργασίας</string>
   <string name="discard">Απόρριψη</string>
@@ -459,17 +458,17 @@
   <string name="tutorial_sync_1">Υποστήριξη για πολλαπλές πλατφόρμες, συγχρονισμό μέσω του Dropbox. Εισαγωγή και εξαγωγή των δεδομένων σας σε άλλες εφαρμογές.</string>
   <string name="transactions">Συναλλαγές</string>
   <string name="tutorial_transactions_1">Καταθέσεις, αναλήψεις, μεταφορές. Επαναλαμβανόμενες συναλλαγές με υπενθυμίσεις.</string>
-  <string name="split_category">-Κατηγορία Split-</string>
+  <string name="split_category">-Διαχωρισμός Κατηγορίας-</string>
   <string name="title_activity_currency_chart">Πίνακας ποσοστού συναλλαγής νομίσματος</string>
-  <string name="sort_by_ascending">Ταξινόμηση ανά έτος και μηνιαία αύξηση</string>
-  <string name="sort_by_desceding">Ταξινόμηση ανά έτος και μηνιαία μείωση</string>
+  <string name="sort_by_ascending">Αύξουσα ταξινόμηση ανά έτος και μήνα</string>
+  <string name="sort_by_desceding">Φθείνουσα ταξινόμηση ανά έτος και μήνα</string>
   <string name="years">Χρόνια</string>
   <string name="select_the_years_to_be_displayed">Επιλέξτε τα χρόνια που θα εμφανίζονται</string>
-  <string name="to_date">Μέχρι σήμερα</string>
-  <string name="from_date">Από την ημερομηνία</string>
+  <string name="to_date">Μέχρι Ημερομηνία</string>
+  <string name="from_date">Από Ημερομηνία</string>
   <string name="custom_dates">Προσαρμοσμένες ημερομηνίες</string>
-  <string name="pref_transaction_hide_reconciled_amounts_summary">Κρύψτε τα συμφωνηθέντα ποσά από τους λογαριασμούς στο ταμπλό.</string>
-  <string name="pref_transaction_hide_reconciled_amounts_title">Κρύψτε τα συμφωνημένα ποσά</string>
+  <string name="pref_transaction_hide_reconciled_amounts_summary">Κρύψτε τα τακτοποιημένα ποσά από τους λογαριασμούς στο ταμπλό.</string>
+  <string name="pref_transaction_hide_reconciled_amounts_title">Κρύψτε τα τακτοποιημένα ποσά</string>
   <string name="pref_transaction_sort_by_type_summary">Τακτοποιήστε τις καθημερινές συναλλαγές ανά είδος συναλλαγής (κατάθεση, μεταφορά, ανάληψη)</string>
   <string name="pref_transaction_sort_by_type_title">Ταξινόμηση Συναλλαγών ανά Τύπο</string>
   <string name="warning">Προειδοποίηση</string>
@@ -490,7 +489,7 @@
   <string name="database_migrate_14_to_20_success">Η μετεγκατάσταση της βάσης των δεδομένων πέτυχε.</string>
   <string name="database_migrate_14_to_20_complete">Η μετεγκατάσταση ολοκληρώθηκε. Παρακαλώ κλείστε τις ρυθμίσεις για να αρχίσετε να χρησιμοποιείτε αυτήν τη βάση δεδομένων.</string>
   <string name="database_migrate_14_to_20_intro">Μια βάση δεδομένων έχει εντοπιστεί στην παλιά θέση. Πατήστε το κουμπί παρακάτω για να την μεταεγκαταστήσετε στην SD κάρτα και να τη χρησιμοποιήσετε.</string>
-  <string name="clear_recent_files_list">Εκκαθάριση πρόσφατου αρχεία</string>
+  <string name="clear_recent_files_list">Εκκαθάριση πρόσφατων αρχείων</string>
   <string name="export_prices">Οι τιμές εξαγωγής</string>
   <string name="purge_history">Εκκαθάριση ιστορικού τιμών</string>
   <string name="purge_history_confirmation">Θέλετε να διαγράψετε όλο το ιστορικό τιμών για όλους τους λογαριασμούς;</string>
@@ -503,14 +502,14 @@
   <string name="create_db_success">Η βάση δεδομένων δημιουργήθηκε με επιτυχία</string>
   <string name="create_db_error">Δεν μπόρεσε να δημιουργήσει νέο αρχείο βάσης δεδομένων</string>
   <string name="create_db_exists">Η βάση δεδομένων με αυτό το όνομα υπάρχει ήδη!</string>
-  <string name="db_check_integrity">Ελέγξτε την ακεραιότητα του db</string>
+  <string name="db_check_integrity">Ελέγξτε την ακεραιότητα της Β.Δ.</string>
   <string name="db_check_integrity_summary">Εκτελεί έλεγχο της ακεραιότητας των αρχείων βάσης δεδομένων</string>
   <string name="db_check_integrity_success">Η βάση δεδομένων για την ακεραιότητα του ελέγχου πέρασε επιτυχώς.</string>
   <string name="db_check_integrity_error">Σφάλμα: το αρχείο βάσης δεδομένων είναι κατεστραμμένο!</string>
-  <string name="db_check_schema">Ελέγξτε το χρονοδιάγραμμα db</string>
+  <string name="db_check_schema">Ελέγξτε το σχήμα της Β.Δ.</string>
   <string name="db_check_schema_summary">Ελέγξτε αν όλοι πίνακες είναι παρόντες στη βάση δεδομένων.</string>
   <string name="db_check_schema_success">Όλοι οι πίνακες που απαιτούνται είναι παρόντες στη βάση δεδομένων.</string>
-  <string name="db_check_schema_error">Σφάλμα: πίνακες στη βάση δεδομένων που λείπουν!</string>
+  <string name="db_check_schema_error">Σφάλμα: λείπουν πίνακες στη βάση δεδομένων!</string>
   <string name="db_fix_duplicates">Διορθώσετε διπλότυπες εγγραφές</string>
   <string name="split_amount_negative">Το συνολικό ποσό δεν μπορεί να είναι αρνητικό.</string>
   <string name="select_all">Επιλογή όλων</string>
@@ -542,8 +541,8 @@
   <string name="filter_options_info">Επιλογές φίλτρου και πληροφορίες</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Εισάγετε τον κωδικό πρόσβασης βάσης δεδομένων</string>
-  <string name="income_expense_period">Περίοδος εσόδων/εξόδων</string>
-  <string name="income_expense_period_summary">Επισκόπηση περιόδου έσοδων/έξοδων επισκόπηση στο υποσέλιδο της αρχικής οθόνης.</string>
+  <string name="income_expense_period">Περίοδος Εσόδων/Εξόδων</string>
+  <string name="income_expense_period_summary">Η περίοδος επισκόπησης έσοδων/έξοδων στο κάτω μέρος της αρχικής οθόνης.</string>
   <string name="appwidget_text">ΠΑΡΆΔΕΙΓΜΑ</string>
   <string name="configure">Παραμετροποίηση</string>
   <string name="add_widget">Προσθήκη widget</string>
@@ -569,7 +568,9 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Κατανομή στοιχείων ενεργητικού</string>
   <string name="asset_classes_empty">Δεν έχουν καθοριστεί κατηγορίες στοιχείων ενεργητικού. Για να δημιουργήσετε μία, πατήστε το πράσινο συν το κουμπί.</string>
+  <string name="title_activity_asset_class_edit">Επεξεργασία κατηγορίας περιουσιακών στοιχείων</string>
   <string name="asset_class_name">Το όνομα της κλάσης περιουσιακού στοιχείου</string>
+  <string name="asset_class">Κατηγορία περιουσιακών στοιχείων</string>
   <string name="allocation">Κατανομή</string>
   <string name="current_allocation">Τρέχουσα κατανομή</string>
   <string name="move_up">Μετακίνηση προς τα πάνω</string>
@@ -597,6 +598,7 @@
   <string name="invalid_recurrence_type">Μη έγκυρος τύπος περιοδικότητας</string>
   <string name="account_not_found">Δεν βρέθηκε Λογαριασμός</string>
   <string name="favourite">Αγαπημένο</string>
+  <string name="split_reset_notice">Παρακαλώ σημειώσετε ότι υπάρχει διαίρεση σε πολλαπλές κατηγορίες σε αυτήν τη συναλλαγή. Θα πρέπει να τις αφαιρέσετε χειροκίνητα.</string>
   <!-- budgets -->
   <string name="add_budget">Προσθήκη προϋπολογισμού</string>
   <string name="budget_name">Όνομα προϋπολογισμού</string>
@@ -631,22 +633,22 @@
   <string name="quote_provider">Πάροχος προσφοράς</string>
   <string name="exchange_rate_provider">Παροχείς ισοτιμιών</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Κάδος ανακύκλωσης</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>
   <string name="dropbox_open_database_downloaded">Για να χρησιμοποιήσετε τη βάση δεδομένων που κατεβαίνει, ακουμπήστε την Ανοιχτή Βάση δεδομένων</string>
-  <string name="click_to_select_file_dropbox">Αγγίξτε για να επιλέξετε το αρχείο που θα χρησιμοποιηθεί από το Dropbox</string>
-  <string name="download_from_drobpox">Κατεβάστε από το Dropbox</string>
-  <string name="summary_download_from_drobpox">Αγγίξτε για να κατεβάσετε χειροκίνητα το συνδεδεμένο αρχείο από τον φάκελο του Dropbox</string>
-  <string name="upload_to_drobpox">Ανεβάστε στο Dropbox</string>
-  <string name="summary_upload_to_drobpox">Αγγίξτε για να ανεβάσετε με μη αυτόματο τρόπο το συνδεδεμένο αρχείο στον φάκελο Dropbox</string>
-  <string name="dropbox_how_it_works">Πώς λειτουργεί το Dropbox για το Money Manager Ex;</string>
-  <string name="dropbox_link">Σύνδεση με Dropbox</string>
-  <string name="dropbox_unlink">Αποσύνδεση από το Dropbox</string>
-  <string name="dropbox_downloadProgress">Λήψη αρχείου από το Dropbox. Παρακαλώ περιμένετε...</string>
-  <string name="dropbox_uploadProgress">Ανεβαίνει το αρχείο στο Dropbox. Παρακαλώ περιμένετε..</string>
-  <string name="dropbox_linkedFile">Αρχείο Dropbox</string>
-  <string name="dropbox_file_summary_all">Αρχείο οπουδήποτε στο Dropbox</string>
-  <string name="db_not_dropbox">Η τρέχουσα βάση δεδομένων δεν έχει συγχρονιστεί. Παρακαλούμε ορίστε συγχρονισμό με το Dropbox.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Συγχρονισμός</string>
   <string name="sync_enabled">Ενεργοποιημένος συγχρονισμός</string>
@@ -674,11 +676,14 @@
   <string name="every_12_hours">Κάθε 12 ώρες</string>
   <string name="never">Ποτέ</string>
   <string name="checking_remote_for_changes">Έλεγχος απομακρυσμένης αποθήκευσης για τροποποιήσεις της βάσης δεδομένων.</string>
-  <string name="title_sync_upload_immediate">Ανέβασμα της βάσης δεδομένων αμέσως μετά από αλλαγή</string>
+  <string name="title_sync_upload_immediate">Αμεσο ανέβασμα της ΒΔ μετά από αλλαγή</string>
   <string name="summary_sync_upload_immediate">Αυτή η επιλογή επιτρέπει να ανεβάζετε αυτόματα τη βάση δεδομένων μόλις κάνετε κάποια αλλαγή</string>
   <string name="dropbox_empty_folder">Ο φάκελος Dropbox/Apps/Money Manager Ex Android είναι άδειος. Εάν χρησιμοποιείτε ήδη το MoneyManagerEx αντιγράψτε τη βάση δεδομένων σας σε αυτόν το φάκελο στον υπολογιστή σας, και αφότου ολοκληρώσετε κάντε ανανέωση.</string>
   <string name="dropbox_select_file">Επιλέξτε ένα αρχείο από Dropbox</string>
   <!-- Errors -->
   <string name="error_parsing_value">Σφάλμα κατά την ανάλυση της τιμής που εισάχθηκε</string>
   <string name="remote_file_not_found">Δεν βρέθηκε Απομακρυσμένο αρχείο</string>
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

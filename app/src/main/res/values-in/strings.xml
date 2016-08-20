@@ -146,7 +146,6 @@
   <string name="error_category_not_selected">Kategori diperlukan</string>
   <string name="error_totamount_empty">Jumlah total diperlukan</string>
   <string name="error_transfer_to_same_account">Kedua account untuk transfer harus berbeda</string>
-  <!-- application string -->
   <string name="about">Tentang</string>
   <string name="add">Tambah</string>
   <string name="confirmDelete">Apakah Anda yakin mau menghapus catatan?</string>
@@ -387,20 +386,22 @@
   <!-- Investment -->
   <string name="portfolio">Portofolio</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Database Anda telah diunduh</string>
   <string name="dropbox_open_database_downloaded">Untuk menggunakan database download, sentuh Buka Database</string>
-  <string name="click_to_select_file_dropbox">Sentuh untuk memilih file untuk menggunakan dari Dropbox</string>
-  <string name="download_from_drobpox">Unduh dari Dropbox</string>
-  <string name="summary_download_from_drobpox">Sentuh untuk secara manual mengunduh file terkait dari Dropbox folder</string>
-  <string name="upload_to_drobpox">Mengunggah ke Dropbox</string>
-  <string name="dropbox_link">Hubungkan ke DropBox</string>
-  <string name="dropbox_unlink">Lepaskan Hubungan dari Dropbox</string>
-  <string name="dropbox_downloadProgress">Mengunduh berkas dari Dropbox. Harap tunggu&#8230;</string>
-  <string name="dropbox_uploadProgress">Mengunggah file Dropbox. Harap tunggu&#8230;</string>
-  <string name="dropbox_linkedFile">Berkas DropBox</string>
-  <string name="dropbox_file_summary_all">Berkas di mana saja di dalam Dropbox</string>
-  <string name="db_not_dropbox">Database Anda saat ini tidak disinkronisasi. Silakan mempersiapkan sinkronisasi Dropbox.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="every_5_minutes">Setiap 5 menit</string>
   <string name="every_15_minutes">Setiap 15 menit</string>
@@ -413,4 +414,7 @@
   <string name="dropbox_empty_folder">Folder di Dropbox/Apps/Money manajer Ex Android kosong. Jika Anda sudah menggunakan MoneyManagerEx salin database Anda ke folder ini di komputer Anda, dan setelah Anda melakukan proses refresh.</string>
   <string name="dropbox_select_file">Pilih file dari Dropbox</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

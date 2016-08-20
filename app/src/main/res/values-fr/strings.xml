@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">La catégorie est obligatoire</string>
   <string name="error_totamount_empty">Le montant total est obligatoire</string>
   <string name="error_transfer_to_same_account">Les deux comptes lors du transfert doivent être distinct</string>
-  <!-- application string -->
   <string name="about">A propos</string>
   <string name="add">Ajouter</string>
   <string name="confirmDelete">Êtes-vous sûr de que vouloir supprimer l’enregistrement ?</string>
@@ -622,21 +621,22 @@
   <string name="all_currencies">Toutes les devises</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Votre base de données a été téléchargée</string>
   <string name="dropbox_open_database_downloaded">Pour utiliser les données téléchargées, appuyez sur Ouvrir la base de données</string>
-  <string name="click_to_select_file_dropbox">Appuyez pour sélectionner le fichier Dropbox à utiliser</string>
-  <string name="download_from_drobpox">Télécharger depuis Dropbox</string>
-  <string name="summary_download_from_drobpox">Appuyez pour télécharger manuellement le fichier depuis Dropbox</string>
-  <string name="upload_to_drobpox">Envoyer vers Dropbox</string>
-  <string name="summary_upload_to_drobpox">Appuyez pour envoyer manuellement le fichier vers Dropbox</string>
-  <string name="dropbox_how_it_works">Comment fonctionne Dropbox avec Money Manager Ex\?</string>
-  <string name="dropbox_link">Associer à Dropbox</string>
-  <string name="dropbox_unlink">Dissocier de Dropbox</string>
-  <string name="dropbox_downloadProgress">Téléchargement du fichier depuis Dropbox. Patientez s\'il vous plaît...</string>
-  <string name="dropbox_uploadProgress">Envoi du fichier vers Dropbox. Veuillez patienter&#8230;</string>
-  <string name="dropbox_linkedFile">Fichier Dropbox</string>
-  <string name="db_not_dropbox">Votre base de données actuelle n\'est pas synchronisée. Veuillez s\'il vous plaît mettre en place la synchronisation Dropbox.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Synchronisation</string>
   <string name="every_5_minutes">Toutes les 5 minutes</string>
@@ -649,4 +649,7 @@
   <string name="never">Jamais</string>
   <string name="dropbox_select_file">Sélectionner un fichier depuis Dropbox</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

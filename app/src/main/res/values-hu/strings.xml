@@ -146,7 +146,6 @@
   <string name="error_category_not_selected">Kategória megadása kötelező</string>
   <string name="error_totamount_empty">Teljes összeg megadása kötelező</string>
   <string name="error_transfer_to_same_account">Átvezetés csak két különböző számla között lehetséges</string>
-  <!-- application string -->
   <string name="about">Rólunk</string>
   <string name="add">Hozzáad</string>
   <string name="date">Dátum</string>
@@ -590,21 +589,22 @@
   <string name="currencies_empty">A pénznemek nem találhatók. Új létrehozásához érintse meg a zöld plusz gombot.</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Az adatbázis letöltése megtörtént</string>
   <string name="dropbox_open_database_downloaded">A letöltött adatbázis használatához válassza az Adatbázis megnyitása menüt</string>
-  <string name="click_to_select_file_dropbox">Válassza ki a használni kívánt állományt a Dropbox-ból</string>
-  <string name="download_from_drobpox">Letöltés Dropbox-ból</string>
-  <string name="summary_download_from_drobpox">Érintse meg a csatolt Dropbox állomány kézi letöltéséhez</string>
-  <string name="upload_to_drobpox">Feltöltés Dropbox-ba</string>
-  <string name="summary_upload_to_drobpox">Érintse meg a csatolt Dropbox állomány kézi feltöltéséhez</string>
-  <string name="dropbox_how_it_works">Hogyan működik a Dropbox a Money Manager Ex programban\?</string>
-  <string name="dropbox_link">Csatlakozás a Dropbox-hoz</string>
-  <string name="dropbox_unlink">Dropbox leválasztása</string>
-  <string name="dropbox_downloadProgress">Állomány letöltése Dropbox-ból. Kérem várjon&#8230;</string>
-  <string name="dropbox_uploadProgress">Állomány feltöltés Dropbox-ba. Kérem várjon&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox állomány</string>
-  <string name="db_not_dropbox">A jelenlegi adatbázis nincs szinkronizálva. Kérjük, hogy állítsa be a Dropbox szinkronizációt.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Szinkronizálás</string>
   <string name="every_5_minutes">5 percenként</string>
@@ -617,4 +617,7 @@
   <string name="never">Soha</string>
   <string name="dropbox_select_file">Válasszon egy Dropbox állományt</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">请选择类目</string>
   <string name="error_totamount_empty">请填写总金额</string>
   <string name="error_transfer_to_same_account">转出与转入账户不可为同一账户</string>
-  <!-- application string -->
   <string name="about">关于</string>
   <string name="add">添加</string>
   <string name="confirmDelete">您确定要删除记录？</string>
@@ -624,22 +623,22 @@
   <string name="change_provider">更改服务商</string>
   <string name="quote_provider">引用提供程序</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">云同步</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">您的数据库已被下载</string>
   <string name="dropbox_open_database_downloaded">轻触以打开已下载的数据库</string>
-  <string name="click_to_select_file_dropbox">轻触屏幕选择一个需要使用的 Dropbox 文件</string>
-  <string name="download_from_drobpox">从 Dropbox 下载</string>
-  <string name="summary_download_from_drobpox">轻触以从 Dropbox 文件夹手动下载相关联的文件</string>
-  <string name="upload_to_drobpox">上传到 Dropbox</string>
-  <string name="summary_upload_to_drobpox">轻触以将文件手动上传至 Dropbox 文件夹</string>
-  <string name="dropbox_how_it_works">Dropbox 是如何在 Money Manager Ex 中工作的？</string>
-  <string name="dropbox_link">链接到 Dropbox</string>
-  <string name="dropbox_unlink">取消与 Dropbox 的链接</string>
-  <string name="dropbox_downloadProgress">正在将文件从Dropbox下载到本地 请稍候&#8230;</string>
-  <string name="dropbox_uploadProgress">正在将文件上传至Dropbox 请稍候</string>
-  <string name="dropbox_linkedFile">Dropbox 文件</string>
-  <string name="dropbox_file_summary_all">Dropbox 中任意位置的文件</string>
-  <string name="db_not_dropbox">您当前的数据未被同步。请设置 Dropbox 同步。</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">同步</string>
   <string name="sync_enabled">启用同步</string>
@@ -672,4 +671,7 @@
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android 文件夹下没有文件。如果您已经使用计算机将数据库上传至此文件夹，请稍后刷新重试。</string>
   <string name="dropbox_select_file">从 Dropbox 选择一个文件</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

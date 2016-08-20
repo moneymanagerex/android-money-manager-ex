@@ -147,7 +147,6 @@
   <string name="error_category_not_selected">Trebuie precizată categoria</string>
   <string name="error_totamount_empty">Trebuie precizată suma totală</string>
   <string name="error_transfer_to_same_account">Cele două conturi pentru transfer trebuie să fie distincte</string>
-  <!-- application string -->
   <string name="about">Despre</string>
   <string name="add">Adaugă</string>
   <string name="date">Data</string>
@@ -593,21 +592,22 @@
   <string name="active_currencies">Valute Active</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Baza ta de date a fost descărcată</string>
   <string name="dropbox_open_database_downloaded">Pentru a folosi baza de date descărcată, atinge Deschide Baza de date</string>
-  <string name="click_to_select_file_dropbox">Atinge pentru a selecta fișierul ce va fi folosit din Dropbox</string>
-  <string name="download_from_drobpox">Descărcă din Dropbox</string>
-  <string name="summary_download_from_drobpox">Atinge pentru a descărca manual fișierul cu link din dosarul Dropbox</string>
-  <string name="upload_to_drobpox">Încarcă pe Dropbox</string>
-  <string name="summary_upload_to_drobpox">Atinge pentru a încărca manual fișierul cu link în dosarul Dropbox</string>
-  <string name="dropbox_how_it_works">Cum funcționează Dropbox pentru Money Manager Ex\?</string>
-  <string name="dropbox_link">Link la Dropbox</string>
-  <string name="dropbox_unlink">Dezactivează link-ul la Dropbox</string>
-  <string name="dropbox_downloadProgress">Se descarcă fișierul din Dropbox. Te rog să aştepţi&#8230;</string>
-  <string name="dropbox_uploadProgress">Se încarcă fișierul în Dropbox. Te rog să aştepţi&#8230;</string>
-  <string name="dropbox_linkedFile">Fişier Dropbox</string>
-  <string name="db_not_dropbox">Baza ta de date curentă nu este sincronizată. Te rog să setezi sincronizarea cu Dropbox.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Sincronizare</string>
   <string name="every_5_minutes">La fiecare 5 minute</string>
@@ -620,4 +620,7 @@
   <string name="never">Niciodată</string>
   <string name="dropbox_select_file">Selectează un fișier din Dropbox</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

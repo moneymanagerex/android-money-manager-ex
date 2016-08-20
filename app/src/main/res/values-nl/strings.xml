@@ -146,7 +146,6 @@
   <string name="error_category_not_selected">Categorie is vereist</string>
   <string name="error_totamount_empty">Totaalbedrag is vereist</string>
   <string name="error_transfer_to_same_account">De twee rekeningen voor de overboeking moeten verschillend zijn</string>
-  <!-- application string -->
   <string name="about">Info</string>
   <string name="add">Voeg toe</string>
   <string name="confirmDelete">Weet u zeker dat u deze record wilt verwijderen?</string>
@@ -601,22 +600,22 @@
   <string name="currencies_empty">Er zijn geen valuta´s gevonden. Tik op de groene + knop om er een aan te maken.</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Je databank is gedownload</string>
   <string name="dropbox_open_database_downloaded">Om de gedownloade databank te gebruiken, druk je op Open databank</string>
-  <string name="click_to_select_file_dropbox">Seleteer het bestand welke gebruikt dient te worden van Dropbox</string>
-  <string name="download_from_drobpox">Download van Dropbox</string>
-  <string name="summary_download_from_drobpox">Druk hier om handmatig het gelinkte bestand van de Dropbox folder te downloaden</string>
-  <string name="upload_to_drobpox">Upload naar Dropbox</string>
-  <string name="summary_upload_to_drobpox">klik hier om handmatig het gelinkte bestand van de Dropbox folder te uploaden</string>
-  <string name="dropbox_how_it_works">Hoe werkt Dropbox met Money Manager EX?</string>
-  <string name="dropbox_link">Koppeling met Dropbox</string>
-  <string name="dropbox_unlink">Ontkoppel van Dropbox</string>
-  <string name="dropbox_downloadProgress">Bezig met bestand downloaden van Dropbox. Een ogenblik geduld&#8230;</string>
-  <string name="dropbox_uploadProgress">Bezig met bestand uploaden naar Dropbox. Een ogenblik geduld&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox-bestand</string>
-  <string name="dropbox_file_summary_all">Bestand in Dropbox</string>
-  <string name="db_not_dropbox">Je huidige databank is niet gesynchroniseerd. Stel alsjeblieft Dropbox-synchronisatie in.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Synchronisatie</string>
   <string name="every_5_minutes">Elke 5 minuten</string>
@@ -629,4 +628,7 @@
   <string name="never">Nooit</string>
   <string name="dropbox_select_file">Selecteer een bestand in Dropbox</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

@@ -143,7 +143,6 @@
   <string name="error_category_not_selected">Kategori gereklidir</string>
   <string name="error_totamount_empty">Toplam tutar gereklidir</string>
   <string name="error_transfer_to_same_account">Transfer için iki hesabın farklı olması gerekir</string>
-  <!-- application string -->
   <string name="about">Hakkında</string>
   <string name="add">Ekle</string>
   <string name="date">Tarih</string>
@@ -534,21 +533,22 @@
   <string name="currencies_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı düğmesine dokunun.</string>
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
   <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
-  <string name="click_to_select_file_dropbox">Kullanılacak Dropbox dosyasını seçmek için dokunun</string>
-  <string name="download_from_drobpox">Dropbox\'dan indir</string>
-  <string name="summary_download_from_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak indirmek için dokunun</string>
-  <string name="upload_to_drobpox">Dropbox\'a Yükle</string>
-  <string name="summary_upload_to_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak yüklmek için dokunun</string>
-  <string name="dropbox_how_it_works">Dropbox Money Manager Ex için nasıl çalışır?</string>
-  <string name="dropbox_link">Dropbox bağlantısı</string>
-  <string name="dropbox_unlink">Dropbox bağlantısını kaldır</string>
-  <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
-  <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox Dosyası</string>
-  <string name="db_not_dropbox">Geçerli veritabanınız eşitlenmemiş. Lütfen Dropbox eşitlemeyi ayarlayın.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Eşitleme</string>
   <string name="every_5_minutes">Her 5 dakikada</string>
@@ -561,4 +561,7 @@
   <string name="never">Hiç bir zaman</string>
   <string name="dropbox_select_file">Dropbox\'tan bir dosya seç</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>

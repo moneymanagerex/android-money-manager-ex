@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Jednostavan i lagan za korištenje program za upravljanje ličnim finansijama, bankovnim računima, porodičnim budžetom, i tako dalje.</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">Uopšteno</string>
+  <string name="preferences_perdatabase">Po bazi podataka</string>
   <string name="preferences_dispaly">Izgled</string>
   <string name="preferences_behaviour">Ponašanje</string>
   <string name="base_currency">Osnovna valuta</string>
@@ -147,7 +149,6 @@
   <string name="error_category_not_selected">Kategorija je neophodna</string>
   <string name="error_totamount_empty">Ukupan iznos je neophodan</string>
   <string name="error_transfer_to_same_account">Računi za transfer moraju biti različiti</string>
-  <!-- application string -->
   <string name="about">O programu</string>
   <string name="add">Dodaj</string>
   <string name="confirmDelete">Da li ste sigurni da želite obrisati zapis?</string>
@@ -627,28 +628,29 @@
   <string name="active_currencies">Aktivne valute</string>
   <string name="inactive_currencies">Neaktivne valute</string>
   <string name="all_currencies">Sve valute</string>
+  <string name="show_only_used">Prikaži samo aktivne</string>
   <!-- Investment -->
   <string name="portfolio">Portfolio</string>
   <string name="change_provider">Promjena davatelja</string>
   <string name="quote_provider">Izvor cijena</string>
   <string name="exchange_rate_provider">Davatelj kursne liste</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Vaša baza podataka je preuzeta</string>
   <string name="dropbox_open_database_downloaded">Da biste koristili preuzetu bazu podataka, dodirnite \'Otvori bazu podataka\'</string>
-  <string name="click_to_select_file_dropbox">Dodirnite da odabirete datoteku koju želite koristiti sa Dropbox-a</string>
-  <string name="download_from_drobpox">Preuzmi sa Dropbox-a</string>
-  <string name="summary_download_from_drobpox">Dodirnite da ručno preuzmete povezanu datoteku iz Dropbox mape</string>
-  <string name="upload_to_drobpox">Upload na Dropbox</string>
-  <string name="summary_upload_to_drobpox">Dodirnite da ručno pošaljete povezanu datoteku u Dropbox mapu</string>
-  <string name="dropbox_how_it_works">Kako Dropbox radi sa Money Manager Ex\?</string>
-  <string name="dropbox_link">Poveži Dropbox</string>
-  <string name="dropbox_unlink">Prekini vezu s Dropbox-om</string>
-  <string name="dropbox_downloadProgress">Preuzimanje datoteke iz Dropbox-a. Molim pričekajte&#8230;</string>
-  <string name="dropbox_uploadProgress">Upload datoteke u Dropbox. Molim pričekajte&#8230;</string>
-  <string name="dropbox_linkedFile">Dropbox datoteka</string>
-  <string name="dropbox_file_summary_all">Datoteka bilo gdje na Dropbox-u</string>
-  <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Sinhronizacija</string>
   <string name="sync_enabled">Sinkronizacija omogućena</string>
@@ -683,4 +685,15 @@
   <!-- Errors -->
   <string name="error_parsing_value">Pogreška u dekodiranju unesene vrijednosti</string>
   <string name="remote_file_not_found">Udaljena datoteka nije pronađena</string>
+  <!-- Select database screen -->
+  <string name="intro_text">Da biste počeli koristiti Money Manager Ex trebate imati bazu podataka gdje će vaši podaci biti spremljeni. Molim odaberite jednu od opcija ispod.</string>
+  <string name="intro_create_db">Možete kreirati novu datoteku i inicijalne preference.</string>
+  <string name="intro_open_db">Ili možete odabrati postojeću datoteku sa vašeg uređaja.</string>
+  <string name="intro_sync">Alternativno, možete postaviti sinkronizaciju s cloud uslugom i preuzeti bazu podataka sa online spremnika za početak.</string>
+  <!-- Create Database screen -->
+  <string name="select_language">Odaberite jezik</string>
+  <string name="run">Pokreni Money Manager Ex</string>
+  <string name="create_db_info_1">Standardna lokacija baze podataka je:</string>
+  <!-- Settings -->
+  <string name="per_database_settings">Po bazi podataka</string>
 </resources>

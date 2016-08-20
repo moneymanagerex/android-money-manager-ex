@@ -146,7 +146,6 @@
   <string name="error_category_not_selected">Требуется указать категорию</string>
   <string name="error_totamount_empty">Требуется указать полную сумму</string>
   <string name="error_transfer_to_same_account">Для перевода требуются два разных счёта</string>
-  <!-- application string -->
   <string name="about">О программе</string>
   <string name="add">Добавить</string>
   <string name="confirmDelete">Удалить эту запись?</string>
@@ -619,22 +618,22 @@
   <string name="portfolio">Портфолио</string>
   <string name="quote_provider">Поставщик цен</string>
   <!-- deprecated / Dropbox -->
-  <string name="dropbox">Dropbox</string>
+  <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
   <string name="dropbox_open_database_downloaded">Для работы с загруженной базой нажмите Открыть Базу</string>
-  <string name="click_to_select_file_dropbox">Нажмите для выбора файла из Dropbox</string>
-  <string name="download_from_drobpox">Загрузка из Dropbox</string>
-  <string name="summary_download_from_drobpox">Нажмите для принудительной загрузки связанного файла из Dropbox</string>
-  <string name="upload_to_drobpox">Загрузка в Dropbox</string>
-  <string name="summary_upload_to_drobpox">Нажмите для принудительной загрузки файла в папку Dropbox</string>
-  <string name="dropbox_how_it_works">Как Dropbox работает с Money Manager Ex\?</string>
-  <string name="dropbox_link">Соединиться с Dropbox</string>
-  <string name="dropbox_unlink">Отсоединиться от Dropbox</string>
-  <string name="dropbox_downloadProgress">Загрузка файла из Dropbox. Пожалуйста, подождите&#8230;</string>
-  <string name="dropbox_uploadProgress">Выгрузка файла в Dropbox. Подождите, пожалуйста&#8230;</string>
-  <string name="dropbox_linkedFile">Файл Dropbox</string>
-  <string name="dropbox_file_summary_all">Файл в любом месте в Dropbox</string>
-  <string name="db_not_dropbox">Ваша текущая БД не синхронизирована. Пожалуйста, настройте Dropbox синхронизацию.</string>
+  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
+  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
+  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
+  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
+  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
+  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
+  <!--<string name="dropbox_link">Link to Dropbox</string>-->
+  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
+  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
+  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
+  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
+  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Синхронизация</string>
   <string name="every_5_minutes">Каждые 5 минут</string>
@@ -648,4 +647,7 @@
   <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
   <string name="dropbox_select_file">Выберите файл из Dropbox</string>
   <!-- Errors -->
+  <!-- Select database screen -->
+  <!-- Create Database screen -->
+  <!-- Settings -->
 </resources>
