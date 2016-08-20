@@ -62,8 +62,8 @@
   <string name="summary_show_tutorial">Włączyć samouczek przy następnym uruchomieniu aplikacji?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtr w selektorach</string>
   <string name="preferences_behaviour_focus_filter_summary">Wybór filtra w selektorach. W innym przypadku przeglądanie.</string>
-  <string name="pref_auto_sync_via_wifi">Autosynchronizacja tylko na WiFi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Autosynchronizacja tylko na połączeniu z WiFi.</string>
+  <string name="auto_sync_via_wifi">Autosynchronizacja tylko na WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Autosynchronizacja tylko na połączeniu z WiFi.</string>
   <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Lista kont</string>

@@ -85,7 +85,7 @@ public class CheckingTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         showStandardToolbarActions();
 

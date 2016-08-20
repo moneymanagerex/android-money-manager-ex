@@ -18,7 +18,6 @@ package com.money.manager.ex.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -39,7 +38,7 @@ public class AppSettings
         super(context);
 
         // DI
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     @Override

@@ -62,8 +62,8 @@
   <string name="summary_show_tutorial">Handleiding tonen bij volgend gebruik?</string>
   <string name="preferences_behaviour_focus_filter_title">Selectiefilter</string>
   <string name="preferences_behaviour_focus_filter_summary">Focus op filter in selecties. Anders browsen.</string>
-  <string name="pref_auto_sync_via_wifi">Alleen automatisch synchroniseren bij wifi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Alleen automatisch synchroniseren bij wifiverbinding.</string>
+  <string name="auto_sync_via_wifi">Alleen automatisch synchroniseren bij wifi</string>
+  <string name="auto_sync_via_wifi_summary">Alleen automatisch synchroniseren bij wifiverbinding.</string>
   <!-- account -->
   <string name="account">Rekening</string>
   <string name="account_list">Rekeninglijst</string>

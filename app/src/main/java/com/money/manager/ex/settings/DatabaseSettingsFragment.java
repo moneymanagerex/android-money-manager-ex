@@ -36,13 +36,9 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
-import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.utils.DonateDialogUtils;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -64,7 +60,7 @@ public class DatabaseSettingsFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_database);
 
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         // Database path.
         refreshDbPath();
@@ -239,7 +235,6 @@ public class DatabaseSettingsFragment
 
         // set main activity to reload, to open the new db file.
         MainActivity.setRestartActivity(true);
-        EventBus.getDefault().post(new AppRestartRequiredEvent());
 
         // update the displayed value.
         refreshDbPath();
@@ -330,8 +325,7 @@ public class DatabaseSettingsFragment
                                 .setDatabasePath(newDatabases.getAbsolutePath());
                         DonateDialogUtils.resetDonateDialog(getActivity().getApplicationContext());
                         // set to restart activity
-//                        MainActivity.setRestartActivity(true);
-                        EventBus.getDefault().post(new AppRestartRequiredEvent());
+                        MainActivity.setRestartActivity(true);
                     } else {
                         Toast.makeText(getActivity(), R.string.copy_database_on_external_storage_failed, Toast.LENGTH_LONG)
                                 .show();

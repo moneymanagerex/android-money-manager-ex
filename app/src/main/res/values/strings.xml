@@ -68,8 +68,10 @@
     <string name="summary_show_tutorial">Show tutorial on the next run?</string>
     <string name="preferences_behaviour_focus_filter_title">Filter in selectors</string>
     <string name="preferences_behaviour_focus_filter_summary">Focus on filter in selectors. Otherwise browse.</string>
-    <string name="pref_auto_sync_via_wifi">Auto-sync only on WiFi</string>
-    <string name="pref_auto_sync_via_wifi_summary">Auto-synchronize only when on WiFi connection.</string>
+    <string name="auto_sync_via_wifi">Auto-sync only on WiFi</string>
+    <string name="auto_sync_via_wifi_summary">Auto-synchronize only when on WiFi connection.</string>
+    <string name="sync_on_app_start">Synchronize on app start.</string>
+    <string name="sync_on_start">Sync on start</string>
 
     <!-- account -->
     <string name="account">Account</string>

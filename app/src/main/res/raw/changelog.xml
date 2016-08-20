@@ -17,6 +17,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion versionName="2016.08.20.894">
+        <changelogtext>Adding a preference for synchronization on start.</changelogtext>
         <changelogtext>Improving the process and feedback during database creation.</changelogtext>
         <changelogtext>Improving currency import.</changelogtext>
         <changelogtext>Improving background database comparison and transfer.</changelogtext>

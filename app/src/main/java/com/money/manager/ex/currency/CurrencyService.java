@@ -16,11 +16,9 @@
  */
 package com.money.manager.ex.currency;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.text.TextUtils;
@@ -42,7 +40,6 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
-import com.squareup.sqlbrite.SqlBrite;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -72,7 +69,7 @@ public class CurrencyService
         mCurrencyCodes = new HashMap<>();
         mCurrencies = new SparseArray<>();
 
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject CurrencyRepositorySql mRepository;

@@ -97,7 +97,7 @@ public class RecurringTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_recurring_transaction);
 
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         RecurringTransaction tx = initializeModel();
         mCommonFunctions = new EditTransactionCommonFunctions(this, tx, database);

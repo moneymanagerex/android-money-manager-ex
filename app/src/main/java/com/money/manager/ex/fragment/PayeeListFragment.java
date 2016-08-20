@@ -58,8 +58,8 @@ import com.shamanland.fonticon.FontIconDrawable;
  * List of Payees. Used as a picker/selector also.
  */
 public class PayeeListFragment
-        extends BaseListFragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+    extends BaseListFragment
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static String mAction = Intent.ACTION_EDIT;
 

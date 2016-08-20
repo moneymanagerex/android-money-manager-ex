@@ -64,9 +64,9 @@ abstract class SettingsBase {
         return "";
     }
 
-    /**
-     * Clear the preference value (remove preference).
-     */
+//    /**
+//     * Clear the preference value (remove preference).
+//     */
 //    public void clear(String key) {
 //
 //    }

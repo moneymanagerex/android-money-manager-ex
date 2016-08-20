@@ -95,7 +95,7 @@ public class PerDatabaseFragment
 
         // Username
 
-        final Preference pUserName = findPreference(getString(PreferenceConstants.PREF_USER_NAME));
+        final Preference pUserName = findPreference(getString(R.string.pref_user_name));
         if (pUserName != null) {
             pUserName.setSummary(MoneyManagerApplication.getApp().getUserName());
             pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -103,7 +103,7 @@ public class PerDatabaseFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     MoneyManagerApplication.getApp().setUserName((String) newValue, true);
                     pUserName.setSummary(MoneyManagerApplication.getApp().getUserName());
-                    return true;
+                    return false;
                 }
             });
         }
@@ -118,6 +118,7 @@ public class PerDatabaseFragment
             String value = infoService.getInfoValue(InfoKeys.DATEFORMAT);
             lstDateFormat.setSummary(getDateFormatFromMask(value));
             lstDateFormat.setValue(value);
+
             //on change
             lstDateFormat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
@@ -125,10 +126,9 @@ public class PerDatabaseFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (infoService.setInfoValue(InfoKeys.DATEFORMAT, (String) newValue)) {
                         lstDateFormat.setSummary(getDateFormatFromMask((String) newValue));
-                        return true;
-                    } else {
-                        return false;
                     }
+                    // Do not save to preferences file.
+                    return false;
                 }
             });
         }
@@ -145,6 +145,7 @@ public class PerDatabaseFragment
             if (pFinancialDay.getSummary() != null) {
                 pFinancialDay.setDefaultValue(pFinancialDay.getSummary().toString());
             }
+
             pFinancialDay.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -163,7 +164,7 @@ public class PerDatabaseFragment
                         if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_DAY, Integer.toString(day))) {
                             pFinancialDay.setSummary(Integer.toString(day));
                         }
-                        return true;
+//                        return true;
                     } catch (Exception e) {
                         Timber.e(e, "changing the start day of the financial year");
                     }
@@ -203,14 +204,14 @@ public class PerDatabaseFragment
                         if (value > -1 && value < lstFinancialMonth.getEntries().length) {
                             if (infoService.setInfoValue(InfoKeys.FINANCIAL_YEAR_START_MONTH, Integer.toString(value + 1))) {
                                 lstFinancialMonth.setSummary(lstFinancialMonth.getEntries()[value]);
-                                return true;
+//                                return true;
                             }
                         }
                     } catch (Exception e) {
                         Timber.e(e, "changing the month of the financial year");
-                        return false;
+//                        return false;
                     }
-                    return true;
+                    return false;
                 }
             });
         }

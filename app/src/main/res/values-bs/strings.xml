@@ -64,8 +64,8 @@
   <string name="summary_show_tutorial">Prikaži vodič pri slijedećem pokretanju?</string>
   <string name="preferences_behaviour_focus_filter_title">Filter u selektorima</string>
   <string name="preferences_behaviour_focus_filter_summary">Postavi fokus na filter u selektorima. Inače listaj.</string>
-  <string name="pref_auto_sync_via_wifi">Auto-sinhronizuj samo preko WiFi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Auto-sinhronizuj samo ako postoji WiFi konekcija.</string>
+  <string name="auto_sync_via_wifi">Auto-sinhronizuj samo preko WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Auto-sinhronizuj samo ako postoji WiFi konekcija.</string>
   <!-- account -->
   <string name="account">Račun</string>
   <string name="account_list">Lista računa</string>

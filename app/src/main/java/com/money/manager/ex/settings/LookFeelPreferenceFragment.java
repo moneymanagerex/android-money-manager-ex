@@ -23,18 +23,15 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
 import com.money.manager.ex.R;
-import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
+import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.view.RobotoView;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.greenrobot.eventbus.EventBus;
 
 import timber.log.Timber;
 
@@ -63,8 +60,7 @@ public class LookFeelPreferenceFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Timber.d("setting theme: %s", newValue.toString());
 
-//                    MainActivity.setRestartActivity(true);
-                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+                    MainActivity.setRestartActivity(true);
 
                     getActivity().recreate();
 
@@ -86,8 +82,7 @@ public class LookFeelPreferenceFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     settings.setViewOpenAccounts((Boolean) newValue);
-//                    MainActivity.setRestartActivity(true);
-                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+                    MainActivity.setRestartActivity(true);
                     return true;
                 }
             });
@@ -106,8 +101,7 @@ public class LookFeelPreferenceFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     settings.setViewFavouriteAccounts((Boolean) newValue);
-//                    MainActivity.setRestartActivity(true);
-                    EventBus.getDefault().post(new AppRestartRequiredEvent());
+                    MainActivity.setRestartActivity(true);
                     return true;
                 }
             });
@@ -121,8 +115,7 @@ public class LookFeelPreferenceFragment
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                MainActivity.setRestartActivity(true);
-                EventBus.getDefault().post(new AppRestartRequiredEvent());
+                MainActivity.setRestartActivity(true);
                 return true;
             }
         };

@@ -62,8 +62,8 @@
   <string name="summary_show_tutorial">Hiện hướng dẫn trong lần chạy tới?</string>
   <string name="preferences_behaviour_focus_filter_title">Bộ lọc trong bộ chọn</string>
   <string name="preferences_behaviour_focus_filter_summary">Tập trung vào bộ lọc trong bộ chọn. Nếu không thì duyệt.</string>
-  <string name="pref_auto_sync_via_wifi">Đồng bộ tự động chỉ trên WiFi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Đồng bộ tự động chỉ khi vào kết nối WiFi.</string>
+  <string name="auto_sync_via_wifi">Đồng bộ tự động chỉ trên WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Đồng bộ tự động chỉ khi vào kết nối WiFi.</string>
   <!-- account -->
   <string name="account">Tài khoản</string>
   <string name="account_list">Danh sách tài khoản</string>

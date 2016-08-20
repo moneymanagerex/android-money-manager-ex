@@ -43,7 +43,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -51,11 +50,6 @@ import com.money.manager.ex.utils.MmxFileUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.DateFormatSymbols;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -147,7 +141,7 @@ public class Core {
         this.mContext = context;
         // .getApplicationContext() == null ? context.getApplicationContext() : context;
 
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     private Context mContext;

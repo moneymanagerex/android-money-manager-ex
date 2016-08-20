@@ -19,7 +19,6 @@ package com.money.manager.ex;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
@@ -32,6 +31,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
@@ -165,10 +165,12 @@ public class MoneyManagerApplication
         }
     }
 
-    // Overrides.
+    // Instance fields.
 
-    public MmexComponent mainComponent;
+    public MmexComponent iocComponent;
     public AtomicReference<MmexOpenHelper> openHelperAtomicReference;
+
+    // Overrides.
 
     @Override
     public void onCreate() {
@@ -208,22 +210,12 @@ public class MoneyManagerApplication
         initializeDependencyInjection();
     }
 
-    private void registerCustomFonts() {
-        String iconFontPath = "fonts/mmex.ttf";
-
-        // Font icons
-        Iconics.registerFont(new MMEXIconFont());
-
-        // Initialize font icons support.
-        FontIconTypefaceHolder.init(getAssets(), iconFontPath);
-    }
-
     /**
      * Initialize Dagger 2 module(s).
      */
     private void initializeDependencyInjection() {
         // Dependency Injection. IoC
-        mainComponent = DaggerMmexComponent.builder()
+        iocComponent = DaggerMmexComponent.builder()
                 .mmexModule(new MmexModule(appInstance))
                 .build();
     }
@@ -303,29 +295,23 @@ public class MoneyManagerApplication
      * @param save     save into database
      */
     public boolean setUserName(String userName, boolean save) {
+        MoneyManagerApplication.userName = userName;
+
         if (save) {
             InfoService service = new InfoService(this.getApplicationContext());
-            boolean updateSuccessful = service.setInfoValue("USERNAME", userName);
+            boolean updateSuccessful = service.setInfoValue(InfoKeys.USERNAME, userName);
 
             if (!updateSuccessful) {
                 return false;
             }
         }
-        // edit preferences
-        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Editor editPreferences = appPreferences.edit();
-        editPreferences.putString(getString(PreferenceConstants.PREF_USER_NAME), userName);
-//        editPreferences.commit();
-        editPreferences.apply();
-        // set the value
-        MoneyManagerApplication.userName = userName;
 
         return true;
     }
 
     public String loadUserNameFromDatabase(Context context) {
         InfoService service = new InfoService(context);
-        String username = service.getInfoValue("USERNAME");
+        String username = service.getInfoValue(InfoKeys.USERNAME);
 
         String result = StringUtils.isEmpty(username) ? "" : username;
 
@@ -391,4 +377,15 @@ public class MoneyManagerApplication
 
         return curTotal;
     }
+
+    private void registerCustomFonts() {
+        String iconFontPath = "fonts/mmex.ttf";
+
+        // Font icons
+        Iconics.registerFont(new MMEXIconFont());
+
+        // Initialize font icons support.
+        FontIconTypefaceHolder.init(getAssets(), iconFontPath);
+    }
+
 }

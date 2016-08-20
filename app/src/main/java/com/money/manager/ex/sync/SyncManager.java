@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Messenger;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -40,7 +39,6 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
@@ -73,8 +71,8 @@ import timber.log.Timber;
 public class SyncManager {
 
     // Delayed synchronization
-    private static Handler mDelayedHandler = null;
-    private static Runnable mRunSyncRunnable = null;
+//    private static Handler mDelayedHandler = null;
+//    private static Runnable mRunSyncRunnable = null;
 
     // Instance methods
 
@@ -246,15 +244,11 @@ public class SyncManager {
     public void dataChanged() {
         if (!isSyncEnabled()) return;
 
-        // test if the current database is synced at all.
-
-        // save the last modified date so that we can correctly synchronize later.
+        // Check if the current database is linked to a cloud service.
         String remotePath = getRemotePath();
-
-        // Is the current database synchronized?
         if (StringUtils.isEmpty(remotePath)) return;
 
-        // fake metadata
+        // Fake the metadata to save the current date/time.
         CloudMetaData metaData = new CloudMetaData();
         metaData.setPath(remotePath);
         metaData.setModifiedAt(DateTime.now().getMillis());
@@ -423,27 +417,6 @@ public class SyncManager {
     }
 
     /**
-     * Sets the downloaded database as current. Restarts the Main Activity.
-     */
-    public void useDownloadedDatabase() {
-        // Do this only if called from an activity.
-        if (!(getContext() instanceof Activity)) return;
-
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        boolean isDbSet = dbUtils.useDatabase(getLocalPath(), getRemotePath());
-
-        if (!isDbSet) {
-            Timber.w("could not change the database");
-            return;
-        }
-
-        Intent intent = IntentFactory.getMainActivityNew(getContext());
-        // Send info to not check for updates as it is redundant in this case.
-        intent.putExtra(MainActivity.EXTRA_SKIP_REMOTE_CHECK, true);
-        getContext().startActivity(intent);
-    }
-
-    /**
      * Resets the synchronization preferences and cache.
      */
     void resetPreferences() {
@@ -463,29 +436,29 @@ public class SyncManager {
         getContext().startService(service);
     }
 
-    private void scheduleUpload() {
-        // Create task/runnable for synchronization.
-        if (mRunSyncRunnable == null) {
-            mRunSyncRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (BuildConfig.DEBUG) {
-                        Log.d("SyncManager", "Starting delayed upload");
-                    }
-
-                    invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
-                }
-            };
-        }
-
-        // Schedule delayed execution of the sync task.
-        if (BuildConfig.DEBUG) Log.d(this.getClass().getSimpleName(), "Scheduling delayed upload to the cloud storage.");
-
-        mDelayedHandler = new Handler();
-
-        // Synchronize after 30 seconds.
-        mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
-    }
+//    private void scheduleUpload() {
+//        // Create task/runnable for synchronization.
+//        if (mRunSyncRunnable == null) {
+//            mRunSyncRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (BuildConfig.DEBUG) {
+//                        Log.d("SyncManager", "Starting delayed upload");
+//                    }
+//
+//                    invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+//                }
+//            };
+//        }
+//
+//        // Schedule delayed execution of the sync task.
+//        Timber.d("Scheduling delayed upload to the cloud storage.");
+//
+//        mDelayedHandler = new Handler();
+//
+//        // Synchronize after 30 seconds.
+//        mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
+//    }
 
     public void setEnabled(boolean enabled) {
         getPreferences().setSyncEnabled(enabled);
@@ -499,7 +472,7 @@ public class SyncManager {
     private void saveLastModifiedDate(CloudMetaData file) {
         DateTime date = new DateTime(file.getModifiedAt());
 
-        Timber.d("Saving last modification date %s for remote file %s", file , date.toString());
+        Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
         getPreferences().set(file.getPath(), date.toString());
     }
@@ -543,15 +516,15 @@ public class SyncManager {
     void startSyncService() {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 //        getContext().sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     void stopSyncService() {
         Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
 //        getContext().sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     void storePersistent() {
@@ -645,6 +618,27 @@ public class SyncManager {
         this.storePersistent();
 
         return true;
+    }
+
+    /**
+     * Sets the downloaded database as current. Restarts the Main Activity.
+     */
+    public void useDownloadedDatabase() {
+        // Do this only if called from an activity.
+        if (!(getContext() instanceof Activity)) return;
+
+        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
+        boolean isDbSet = dbUtils.useDatabase(getLocalPath(), getRemotePath());
+
+        if (!isDbSet) {
+            Timber.w("could not change the database");
+            return;
+        }
+
+        Intent intent = IntentFactory.getMainActivityNew(getContext());
+        // Send info to not check for updates as it is redundant in this case.
+        intent.putExtra(MainActivity.EXTRA_SKIP_REMOTE_CHECK, true);
+        getContext().startActivity(intent);
     }
 
     // private

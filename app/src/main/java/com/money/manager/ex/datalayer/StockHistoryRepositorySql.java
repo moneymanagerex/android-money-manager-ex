@@ -45,7 +45,7 @@ public class StockHistoryRepositorySql
     public StockHistoryRepositorySql(BriteDatabase db) {
         super(TABLE_NAME, db);
 
-//        application.mainComponent.inject(this);
+//        application.iocComponent.inject(this);
     }
 
     public boolean addStockHistoryRecord(String symbol, Money price, DateTime date) {

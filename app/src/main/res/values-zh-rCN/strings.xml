@@ -62,8 +62,8 @@
   <string name="summary_show_tutorial">是否在下次运行时显示教程？</string>
   <string name="preferences_behaviour_focus_filter_title">在选择列表中显示搜索框</string>
   <string name="preferences_behaviour_focus_filter_summary">在选择列表中显示搜索框，取消选择将以浏览模式显示</string>
-  <string name="pref_auto_sync_via_wifi">仅在连接至无线网络时自动同步</string>
-  <string name="pref_auto_sync_via_wifi_summary">自动同步将仅在无线网络连接时进行</string>
+  <string name="auto_sync_via_wifi">仅在连接至无线网络时自动同步</string>
+  <string name="auto_sync_via_wifi_summary">自动同步将仅在无线网络连接时进行</string>
   <!-- account -->
   <string name="account">账户</string>
   <string name="account_list">账户列表</string>

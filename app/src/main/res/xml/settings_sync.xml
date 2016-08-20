@@ -68,8 +68,8 @@
         android:defaultValue="false"
         android:dependency="@string/pref_sync_enabled"
         android:key="@string/pref_sync_via_wifi"
-        android:title="@string/pref_auto_sync_via_wifi"
-        android:summary="@string/pref_auto_sync_via_wifi_summary" />
+        android:title="@string/auto_sync_via_wifi"
+        android:summary="@string/auto_sync_via_wifi_summary" />
 
     <!-- download -->
     <PreferenceScreen
@@ -85,6 +85,14 @@
         android:key="@string/pref_sync_upload"
         android:summary="@string/cloud_upload"
         android:title="@string/upload" />
+
+    <CheckBoxPreference
+        android:title="@string/sync_on_start"
+        android:summary="@string/sync_on_app_start"
+        android:key="@string/pref_sync_on_app_start"
+        android:defaultValue="true"
+        android:dependency="@string/pref_sync_enabled"
+        android:icon="@null" />
 
     <!-- log out -->
     <Preference

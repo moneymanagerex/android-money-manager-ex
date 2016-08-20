@@ -62,8 +62,8 @@
   <string name="summary_show_tutorial">次回の実行時にチュートリアルを表示しますか?</string>
   <string name="preferences_behaviour_focus_filter_title">セレクターでフィルター</string>
   <string name="preferences_behaviour_focus_filter_summary">セレクターでフィルターにフォーカスを当てます。それ以外の場合、参照します。</string>
-  <string name="pref_auto_sync_via_wifi">WiFi でのみ自動同期</string>
-  <string name="pref_auto_sync_via_wifi_summary">WiFi 接続時のみ自動同期します。</string>
+  <string name="auto_sync_via_wifi">WiFi でのみ自動同期</string>
+  <string name="auto_sync_via_wifi_summary">WiFi 接続時のみ自動同期します。</string>
   <!-- account -->
   <string name="account">アカウント</string>
   <string name="account_list">アカウント一覧</string>

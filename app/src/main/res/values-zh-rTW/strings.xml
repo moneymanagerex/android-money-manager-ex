@@ -60,8 +60,8 @@
   <string name="summary_show_tutorial">下次執行時顯示教程？</string>
   <string name="preferences_behaviour_focus_filter_title">在選擇列表中顯示搜尋框</string>
   <string name="preferences_behaviour_focus_filter_summary">在選擇列表中顯示搜尋框，取消選擇將以瀏覽模式顯示</string>
-  <string name="pref_auto_sync_via_wifi">僅在 WiFi 自動同步</string>
-  <string name="pref_auto_sync_via_wifi_summary">僅在 WiFi 連接時自動同步。</string>
+  <string name="auto_sync_via_wifi">僅在 WiFi 自動同步</string>
+  <string name="auto_sync_via_wifi_summary">僅在 WiFi 連接時自動同步。</string>
   <!-- account -->
   <string name="account">帳戶</string>
   <string name="account_list">帳戶清單</string>

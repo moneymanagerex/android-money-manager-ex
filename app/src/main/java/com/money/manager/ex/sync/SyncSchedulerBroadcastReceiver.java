@@ -70,6 +70,7 @@ public class SyncSchedulerBroadcastReceiver
 
         // Cancel existing heartbeat.
         if (action.equals(ACTION_STOP)) {
+            Timber.d("Stopping synchronisation.");
             alarmManager.cancel(pendingIntent);
             return;
         }
@@ -90,7 +91,7 @@ public class SyncSchedulerBroadcastReceiver
 
         DateTime now = DateTime.now();
 
-        Timber.d("Start at: %s and repeat every: %s minutes", now.toString(), minutes);
+        Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toString(), minutes);
 
         int secondsInMinute = 60;
 

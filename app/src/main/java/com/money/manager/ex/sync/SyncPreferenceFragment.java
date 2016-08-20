@@ -63,7 +63,7 @@ public class SyncPreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Use own preference file.
+        // Use a separate sync preference file.
         PreferenceManager prefMgr = getPreferenceManager();
         prefMgr.setSharedPreferencesName(PreferenceConstants.SYNC_PREFERENCES);
         prefMgr.setSharedPreferencesMode(Context.MODE_PRIVATE); // MODE_WORLD_READABLE
@@ -71,7 +71,6 @@ public class SyncPreferenceFragment
         addPreferencesFromResource(R.xml.settings_sync);
 
         initializePreferences();
-
     }
 
 //    @Override
@@ -257,6 +256,8 @@ public class SyncPreferenceFragment
                 return false;
             }
         });
+
+        // Sync on app start. Handled automatically?
 
         // reset preferences
 

@@ -91,12 +91,12 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        File localFile = new File(localFilename);
         CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
         if (remoteFile == null) {
             sendMessage(SyncServiceMessage.ERROR);
             return;
         }
+        File localFile = new File(localFilename);
 
         // todo: modify this part after db initial upload has been implemented.
 //        if (remoteFile == null) {

@@ -58,8 +58,8 @@
   <string name="database_version">Verze databáze</string>
   <string name="title_show_tutorial">Zobrazit průvodce</string>
   <string name="summary_show_tutorial">Zobrazit průvodce při příštím spuštění?</string>
-  <string name="pref_auto_sync_via_wifi">Auto synchronizace pouze přes WiFi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Automaticky synchronizovat pouze přes WiFi připojení.</string>
+  <string name="auto_sync_via_wifi">Auto synchronizace pouze přes WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Automaticky synchronizovat pouze přes WiFi připojení.</string>
   <!-- account -->
   <string name="account">Účet</string>
   <string name="account_list">Seznam účtů</string>

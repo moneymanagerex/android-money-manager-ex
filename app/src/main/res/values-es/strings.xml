@@ -62,8 +62,8 @@
   <string name="summary_show_tutorial">Mostrar el tutorial la próxima vez?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtrar en los selectores</string>
   <string name="preferences_behaviour_focus_filter_summary">Enfocarse en filtrar en los selectores. De lo contrario, navegar.</string>
-  <string name="pref_auto_sync_via_wifi">Sincronizar automáticamente sólo en WiFi</string>
-  <string name="pref_auto_sync_via_wifi_summary">Sincronizar automáticamente solo mediante una conexión WiFi.</string>
+  <string name="auto_sync_via_wifi">Sincronizar automáticamente sólo en WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Sincronizar automáticamente solo mediante una conexión WiFi.</string>
   <!-- account -->
   <string name="account">Cuenta</string>
   <string name="account_list">Lista de las cuentas</string>

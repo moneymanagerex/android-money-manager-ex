@@ -41,7 +41,7 @@ public class StockRepositorySql
     public StockRepositorySql(BriteDatabase db) {
         super(TABLE_NAME, db);
 
-//        application.mainComponent.inject(this);
+//        application.iocComponent.inject(this);
     }
 
 

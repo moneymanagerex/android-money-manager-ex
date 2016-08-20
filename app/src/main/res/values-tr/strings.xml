@@ -61,8 +61,8 @@
   <string name="summary_show_tutorial">Bir sonraki açılışta program özellikleri gösterilsin mi?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtre Seçici</string>
   <string name="preferences_behaviour_focus_filter_summary">Seçiciler filtrede odaklanmak. Aksi takdirde göz atın.</string>
-  <string name="pref_auto_sync_via_wifi">Sadece Wifi olduğunda eşitle</string>
-  <string name="pref_auto_sync_via_wifi_summary">Yalnızca WiFi bağlantısı olduğunda otomatik eşitle.</string>
+  <string name="auto_sync_via_wifi">Sadece Wifi olduğunda eşitle</string>
+  <string name="auto_sync_via_wifi_summary">Yalnızca WiFi bağlantısı olduğunda otomatik eşitle.</string>
   <!-- account -->
   <string name="account">Hesap</string>
   <string name="account_list">Hesap Listesi</string>

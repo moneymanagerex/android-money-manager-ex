@@ -95,7 +95,7 @@ public class MmxDatabaseUtils {
         mContext = context;
 
         // dependency injection
-        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<MmexOpenHelper> openHelper;
@@ -245,7 +245,7 @@ public class MmxDatabaseUtils {
             throw new RuntimeException(getContext().getString(R.string.database_can_not_open_write));
         }
 
-        // Recent database entry.
+        // Store a Recent Database entry.
         boolean linkedToCloud = !TextUtils.isEmpty(remotePath);
         RecentDatabaseEntry recentDb = RecentDatabaseEntry.getInstance(dbPath, linkedToCloud, remotePath);
         RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());

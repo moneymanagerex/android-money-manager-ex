@@ -53,6 +53,7 @@ import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncServiceMessage;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -81,7 +82,6 @@ import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
-import com.money.manager.ex.settings.events.AppRestartRequiredEvent;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.tutorial.TutorialActivity;
@@ -135,6 +135,8 @@ public class MainActivity
     // state if restart activity
     private static boolean mRestartActivity = false;
 
+//    @Inject SharedPreferences preferences;
+
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isRecurringTransactionStarted = false;
@@ -162,8 +164,10 @@ public class MainActivity
         }
 
         // Layout
-
         setContentView(R.layout.main_activity);
+
+        // IoC
+//        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) setSupportActionBar(toolbar);
@@ -179,7 +183,7 @@ public class MainActivity
         }
 
         // Initialize the map for recent entries that link to drawer menu items.
-        this.recentDbs = new RecentDatabasesProvider(this);
+        initializeRecentDatabaseList();
 
         // Close any existing notifications.
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -367,7 +371,6 @@ public class MainActivity
         }
         outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
-//        outState.putBoolean(KEY_IS_SHOW_TIPS_DROPBOX2, isShowTipsDropbox2);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
         outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
         outState.putBoolean(KEY_HAS_STARTED, this.skipOnlineDbUpdateCheck);
@@ -382,8 +385,6 @@ public class MainActivity
             notificationManager.cancelAll();
         super.onDestroy();
 
-        // close database
-//        MmexOpenHelper.closeDatabase();
     }
 
     @Override
@@ -594,12 +595,6 @@ public class MainActivity
         setDrawerTotalAccounts(event.amount);
     }
 
-    @Subscribe
-    public void onEvent(AppRestartRequiredEvent event) {
-        MainActivity.mRestartActivity = true;
-//        restartActivity();
-    }
-
     /**
      * A newer database file has just been downloaded. Reload.
      */
@@ -636,7 +631,9 @@ public class MainActivity
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
-        if (!this.skipOnlineDbUpdateCheck) {
+        // Check cloud storage for updates?
+        boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
+        if (syncOnStart && !this.skipOnlineDbUpdateCheck) {
             // This is to avoid checking for online updates on every device rotation.
             checkCloudForDbUpdates();
             this.skipOnlineDbUpdateCheck = true;
@@ -653,7 +650,7 @@ public class MainActivity
         if (mDrawer == null) return;
 
         mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
-        mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawer.addDrawerListener(mDrawerToggle);
 
         // create drawer menu
         initializeDrawerVariables();
@@ -976,19 +973,11 @@ public class MainActivity
             return;
         }
 
-        // Store the name into the recent files list.
-        if (!this.recentDbs.contains(dbFilePath)) {
-            this.recentDbs.add(RecentDatabaseEntry.fromPath(dbFilePath));
-        }
+        // Refresh the recent files list.
+        initializeRecentDatabaseList();
 
-//        if (currentDatabase.contentEquals(dbFilePath)) {
-//            // just restart the main Activity?
-            setRestartActivity(true);
-            restartActivity();
-//        } else {
-//            // db changed, restart the app.
-//            shutdownWithPrompt();
-//        }
+        setRestartActivity(true);
+        restartActivity();
     }
 
 //    private void displayDefaultFragment() {
@@ -1160,6 +1149,10 @@ public class MainActivity
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }
 
+    private void initializeRecentDatabaseList() {
+        this.recentDbs = new RecentDatabasesProvider(this);
+    }
+
     private boolean isDatabaseAvailable() {
         // Do we have a database set?
         String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
@@ -1170,13 +1163,12 @@ public class MainActivity
         return dbFile.exists();
     }
 
-    private boolean needTutorial() {
+    private boolean isTutorialNeeded() {
         return new AppSettings(this).getBehaviourSettings().getShowTutorial();
     }
 
     /**
      * called when quick-switching the recent databases from the navigation menu.
-     *
      * @param recentDb selected recent database entry
      */
     private void onOpenDatabaseClick(RecentDatabaseEntry recentDb) {
@@ -1350,7 +1342,7 @@ public class MainActivity
      */
     private boolean showPrerequisite() {
         // show tutorial on the first run
-        if (needTutorial()) {
+        if (isTutorialNeeded()) {
             showTutorial();
             return true;
         }
