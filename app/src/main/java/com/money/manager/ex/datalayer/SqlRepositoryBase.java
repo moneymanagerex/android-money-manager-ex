@@ -42,7 +42,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     }
 
     public BriteDatabase database;
-    String tableName;
+    public String tableName;
 
     public long insert(ContentValues values) {
         return database.insert(tableName, values);
@@ -95,6 +95,10 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         }
 
         return entity;
+    }
+
+    public Cursor query(String sql, String... args) {
+        return database.query(sql, args);
     }
 
     protected boolean update(EntityBase entity, String where, String... selectionArgs) {

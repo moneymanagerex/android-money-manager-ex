@@ -17,15 +17,19 @@
 package com.money.manager.ex.currency;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -78,7 +82,7 @@ public class CurrencyService
         mCurrencyCodes = new HashMap<>();
         mCurrencies = new SparseArray<>();
 
-//        MoneyManagerApplication.getApp().mainComponent.inject(this);
+        MoneyManagerApplication.getApp().mainComponent.inject(this);
     }
 
     @Inject CurrencyRepositorySql mRepository;
@@ -121,8 +125,7 @@ public class CurrencyService
 
         Currency currency = this.getCurrency(baseCurrencyId);
         if (currency == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.showMessage(getContext().getString(R.string.base_currency_not_set));
+            new UIHelper(getContext()).showToast(R.string.base_currency_not_set);
             return null;
         }
         return currency.getCode();
@@ -374,8 +377,6 @@ public class CurrencyService
         HashMap<String, String> symbols = getCurrenciesCodeAndSymbol();
         java.util.Currency localeCurrency;
         Currency newCurrency;
-//        CurrencyRepository repo = getRepository();
-//        Currency existingCurrency;
 
         for (Locale locale : locales) {
             try {
@@ -386,16 +387,20 @@ public class CurrencyService
                 localeCurrency = java.util.Currency.getInstance(locale);
 
                 // check if already exists currency symbol
-//                existingCurrency = mre.loadCurrency(localeCurrency.getCurrencyCode());
-//                if (existingCurrency != null) continue;
                 if (mRepository.exists(localeCurrency.getCurrencyCode())) continue;
 
                 // No currency. Create a new one.
 
                 newCurrency = new Currency();
 
-                //newCurrency.setName(localeCurrency.getDisplayName());
-                newCurrency.setName(localeCurrency.getSymbol());
+                // Name
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    newCurrency.setName(localeCurrency.getDisplayName());
+                } else {
+                    newCurrency.setName(localeCurrency.getSymbol());
+                }
+
+                // Symbol
                 newCurrency.setCode(localeCurrency.getCurrencyCode());
 
                 if (symbols != null && symbols.containsKey(localeCurrency.getCurrencyCode())) {
@@ -404,7 +409,10 @@ public class CurrencyService
 
                 newCurrency.setDecimalPoint(".");
                 newCurrency.setGroupSeparator(",");
-                newCurrency.setScale(100);
+
+                int scale = 10 ^ localeCurrency.getDefaultFractionDigits();
+                newCurrency.setScale(scale);
+
                 newCurrency.setConversionRate(1.0);
 
                 mRepository.insert(newCurrency.contentValues);
@@ -480,21 +488,38 @@ public class CurrencyService
         return currency;
     }
 
+    /**
+     * Fetches a currency by symbol.
+     * Ran on database creation during OpenHelper instantiation.
+     * todo Test if any advanced helpers can be used at that stage?
+     * @param db    Database instance.
+     * @param currencySymbol Currency symbol to load.
+     * @return Id of the currency with the given symbol.
+     */
     public int loadCurrencyIdFromSymbolRaw(SQLiteDatabase db, String currencySymbol) {
         int result = Constants.NOT_SET;
 
-        CurrencyRepository repo = getRepository();
-
-        Cursor cursor = db.query(repo.getSource(),
+        // todo try the rx access during database creation.
+//        String sql = new Query()
+//                .select(Currency.CURRENCYID)
+//                .from(mRepository.tableName)
+//                .where(Currency.CURRENCY_SYMBOL + "=?")
+//                .toString();
+        Cursor cursor = db.query(CurrencyRepositorySql.TABLE_NAME,
                 new String[]{Currency.CURRENCYID},
                 Currency.CURRENCY_SYMBOL + "=?",
                 new String[]{currencySymbol},
                 null, null, null);
+
+//        Cursor cursor = mRepository.query(sql, currencySymbol);
         if (cursor == null) return result;
 
         // set BaseCurrencyId
         if (cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+            ContentValues cv = new ContentValues();
+            DatabaseUtils.cursorIntToContentValues(cursor, Currency.CURRENCYID, cv);
+//            result = cursor.getInt(cursor.getColumnIndex(Currency.CURRENCYID));
+            result = cv.getAsInteger(Currency.CURRENCYID);
         }
         cursor.close();
 

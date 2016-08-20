@@ -97,7 +97,7 @@ public class NumericHelper {
 
     /**
      * Extracts the number of decimal places from scale/precision value.
-     * @param scale Scale, usually from the currency.
+     * @param scale Scale, usually from the currency entity.
      * @return Number of decimals to use (precision?).
      */
     public int getNumberOfDecimals(int scale) {

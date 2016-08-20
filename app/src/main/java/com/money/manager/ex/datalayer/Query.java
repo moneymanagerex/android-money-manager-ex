@@ -54,6 +54,11 @@ public class Query {
         return this;
     }
 
+    /**
+     * With this method the arguments can be passed directly to the database query.
+     * @param selection Selection statement with placeholders for arguments.
+     * @return Query object.
+     */
     public Query where(String selection) {
         this.selection = selection;
         return this;

@@ -29,16 +29,18 @@ import javax.inject.Inject;
 public class CurrencyRepositorySql
     extends SqlRepositoryBase<Currency> {
 
+    public static final String TABLE_NAME = "currencyformats_v1";
+
     @Inject
     CurrencyRepositorySql(BriteDatabase db) {
-        super("currencyformats_v1", db);
+        super(TABLE_NAME, db);
     }
 
     public boolean exists(String currencyCode) {
         String sql = new Query()
                 .select(Currency.CURRENCYID)
                 .from(tableName)
-                .where(Currency.CURRENCY_SYMBOL + "=?", currencyCode)
+                .where(Currency.CURRENCY_SYMBOL + "=?")
                 .toString();
 
         return super.exists(sql, currencyCode);
