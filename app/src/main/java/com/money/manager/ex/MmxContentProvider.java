@@ -339,7 +339,7 @@ public class MmxContentProvider
 
     public Object getObjectFromUri(Uri uri) {
         int uriMatch = sUriMatcher.match(uri);
-        Timber.d("Uri Match Result: %s", Integer.toString(uriMatch));
+//        Timber.d("Uri Match Result: %s", Integer.toString(uriMatch));
 
         // find key into hash map
         Object objectRet = mapContent.get(uriMatch);
@@ -381,12 +381,10 @@ public class MmxContentProvider
     }
 
     private Cursor query_internal(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
-        Timber.d("Query URI: %s", uri);
+        Timber.d("Querying URI: %s", uri);
 
         // find object from uri
         Object sourceObject = getObjectFromUri(uri);
-        // take a database reference
-        Context context = getContext();
 
         initializeDependencies();
 
@@ -426,7 +424,7 @@ public class MmxContentProvider
         }
 
         // notify listeners waiting for the data is ready
-        cursor.setNotificationUri(context.getContentResolver(), uri);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         if (!cursor.isClosed()) {
             Timber.d("Rows returned: %d", cursor.getCount());
