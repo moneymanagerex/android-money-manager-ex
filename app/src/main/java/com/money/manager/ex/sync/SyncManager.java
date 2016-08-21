@@ -530,15 +530,16 @@ public class SyncManager {
     void startSyncService() {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
-//        getContext().sendBroadcast(intent);
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+        getContext().sendBroadcast(intent);
+//        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     void stopSyncService() {
         Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
-//        getContext().sendBroadcast(intent);
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+        getContext().sendBroadcast(intent);
+        // sync scheduler broadcast receiver does not receive a brodcast when using local manager!
+//        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
     void storePersistent() {
