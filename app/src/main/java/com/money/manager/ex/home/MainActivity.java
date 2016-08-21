@@ -482,7 +482,10 @@ public class MainActivity
                 showFragment(HomeFragment.class);
                 break;
             case R.id.menu_sync:
-                new SyncManager(this).triggerSynchronization();
+                SyncManager sync = new SyncManager(this);
+                sync.triggerSynchronization();
+                // re-set the sync timer.
+                sync.startSyncServiceAlarm();
                 break;
             case R.id.menu_open_database:
                 openDatabasePicker();
