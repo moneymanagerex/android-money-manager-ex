@@ -108,13 +108,12 @@ public class SyncAdapter
 
         File localFile = new File(localFilename);
 
-        // todo: adjust this
-        CloudMetaData remoteFile = null;
-//        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
-//        if (remoteFile == null) {
-////            sendMessage(SyncServiceMessage.ERROR);
-//            return;
-//        }
+        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename)
+                .toBlocking().value();
+        if (remoteFile == null) {
+//            sendMessage(SyncServiceMessage.ERROR);
+            return;
+        }
 
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
