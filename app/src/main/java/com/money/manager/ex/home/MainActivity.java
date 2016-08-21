@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -273,7 +274,7 @@ public class MainActivity
                     return;
                 }
 
-                requestDatabaseChange(selectedPath);
+                requestDatabaseChange(selectedPath, "");
                 break;
 
             case REQUEST_PASSCODE:
@@ -296,20 +297,20 @@ public class MainActivity
                 }
                 break;
 
-            case REQUEST_PASSWORD:
-                if (resultCode == RESULT_OK && data != null) {
-                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
-                    String password = data.getStringExtra(PasswordActivity.EXTRA_PASSWORD);
-
-                    // Figure out what to do next. Switch the db or continue with init?
-                    if (StringUtils.isEmpty(dbPath)) {
-                        // todo: MmexOpenHelper.getInstance(this).setPassword(password);
-                        // continue
-                        initializeDatabaseAccess(null);
-                    } else {
-                        changeDatabase(dbPath, password);
-                    }
-                }
+//            case REQUEST_PASSWORD:
+//                if (resultCode == RESULT_OK && data != null) {
+//                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
+//                    String password = data.getStringExtra(PasswordActivity.EXTRA_PASSWORD);
+//
+//                    // Figure out what to do next. Switch the db or continue with init?
+//                    if (StringUtils.isEmpty(dbPath)) {
+//                        // MmexOpenHelper.getInstance(this).setPassword(password);
+//                        // continue
+//                        initializeDatabaseAccess(null);
+//                    } else {
+//                        changeDatabase(dbPath, password);
+//                    }
+//                }
         }
     }
 
@@ -963,10 +964,10 @@ public class MainActivity
         });
     }
 
-    private void changeDatabase(String dbFilePath, String password) {
+    private void changeDatabase(String localPath, String remotePath) {
         try {
             MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-            dbUtils.useDatabase(dbFilePath); // password
+            dbUtils.useDatabase(localPath, remotePath);
         } catch (Exception e) {
             //if (e instanceof )
             Timber.e(e, "changing the database");
@@ -1125,7 +1126,7 @@ public class MainActivity
                 pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
                 Timber.d("Path intent file to open: %s", pathFile);
                 // Open this database.
-                requestDatabaseChange(pathFile);
+                requestDatabaseChange(pathFile, "");
                 return;
             } catch (Exception e) {
                 Timber.e(e, "opening database from intent");
@@ -1182,7 +1183,7 @@ public class MainActivity
                 : "";
         new SyncManager(this).setRemotePath(remotePath);
 
-        requestDatabaseChange(recentDb.filePath);
+        requestDatabaseChange(recentDb.filePath, remotePath);
     }
 
     private void originalShowFragment(Bundle savedInstanceState) {
@@ -1253,15 +1254,15 @@ public class MainActivity
      *
      * @param dbFilePath The path to the database file.
      */
-    private void requestDatabaseChange(String dbFilePath) {
+    private void requestDatabaseChange(String dbFilePath, @NonNull String remotePath) {
         Timber.v("Changing database to: %s", dbFilePath);
 
         // e encrypted database(s)
-        if (MmxDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
-            requestDatabasePassword(dbFilePath);
-        } else {
-            changeDatabase(dbFilePath, null);
-        }
+//        if (MmxDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
+//            requestDatabasePassword(dbFilePath);
+//        } else {
+            changeDatabase(dbFilePath, remotePath);
+//        }
     }
 
     private void requestDatabasePassword() {

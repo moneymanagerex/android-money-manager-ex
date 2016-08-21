@@ -76,7 +76,7 @@ public class CreateDatabaseActivity
         String dbPath = dbUtils.createDatabase();
         if (TextUtils.isEmpty(dbPath)) return;
 
-        dbUtils.useDatabase(dbPath);
+        dbUtils.useDatabase(dbPath, "");
 
         // show message
 

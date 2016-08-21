@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -214,7 +215,7 @@ public class MmxDateTimeUtils {
      */
     public static String getUserDatePattern(Context context) {
         InfoService service = new InfoService(context);
-        String pattern = service.getInfoValue("DATEFORMAT");
+        String pattern = service.getInfoValue(InfoKeys.DATEFORMAT);
 
         if (!StringUtils.isEmpty(pattern)) {
             //replace part of pattern

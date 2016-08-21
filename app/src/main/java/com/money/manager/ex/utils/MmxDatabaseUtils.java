@@ -224,10 +224,6 @@ public class MmxDatabaseUtils {
         }
     }
 
-    public boolean useDatabase(@NonNull String dbPath) {
-        return useDatabase(dbPath, "");
-    }
-
     /**
      * Change the database used by the app.
      * Sets the given database path (full path to the file) as the current database. Adds it to the
@@ -387,15 +383,17 @@ public class MmxDatabaseUtils {
             return null;
         }
 
-        // now create the app's directory to the root
+        // now create the app's directory in the root.
 
-        File defaultFolder = new File(externalStorageDirectory + File.separator + "MoneyManagerEx");
+        String defaultPath = externalStorageDirectory.getAbsolutePath()
+                .concat(File.separator).concat("MoneyManagerEx");
+        File defaultFolder = new File(defaultPath);
         if (defaultFolder.exists() && defaultFolder.canRead() && defaultFolder.canWrite()) return defaultFolder;
 
         if (!defaultFolder.exists()) {
             // create the directory.
             if (!defaultFolder.mkdirs()) {
-                Timber.w("could not create the storage directory %s", defaultFolder.getAbsolutePath());
+                Timber.w("could not create the storage directory %s", defaultPath);
                 return null;
             }
         }
@@ -436,7 +434,6 @@ public class MmxDatabaseUtils {
         // or: getContext().getApplicationInfo().dataDir
         // getContext().getFilesDir()
         //                internalFolder = "/data/data/" + getContext().getApplicationContext().getPackageName();
-
 
         String dbDirectoryPath = packageLocation.getAbsolutePath()
                 .concat(File.separator)

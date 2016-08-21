@@ -230,7 +230,7 @@ public class DatabaseSettingsFragment
         String dbPath = dbUtils.createDatabase(filename);
         if (TextUtils.isEmpty(dbPath)) return false;
 
-        boolean isSet = dbUtils.useDatabase(dbPath);
+        boolean isSet = dbUtils.useDatabase(dbPath, "");
         if (!isSet) return false;
 
         // set main activity to reload, to open the new db file.
