@@ -22,6 +22,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -117,23 +118,26 @@ public class SingleAccountWidget
 
     private RemoteViews getRemoteViews(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if (mRemoteViews == null) {
-            int width, height;
+            // this call is available only on API 16!
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                int width, height;
+                Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
-            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+                width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
-            width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-            height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-
-            //AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
+                //AppWidgetProviderInfo info = appWidgetManager.getAppWidgetInfo(appWidgetId);
 //                width = info.minResizeWidth;
 //                height = info.minResizeHeight;
 //                width = info.minWidth;
 //                height = info.minHeight;
 
-            mRemoteViews = getRemoteViews(context, width, height);
+                mRemoteViews = getRemoteViews(context, width, height);
+            } else {
+                mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
+            }
         }
         return mRemoteViews;
-
     }
 
     /**
@@ -159,8 +163,6 @@ public class SingleAccountWidget
     }
 
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        // Construct the RemoteViews object
-//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_single_account);
         RemoteViews views = getRemoteViews(context, appWidgetManager, appWidgetId);
 
         // todo: allow selecting the account from a list.

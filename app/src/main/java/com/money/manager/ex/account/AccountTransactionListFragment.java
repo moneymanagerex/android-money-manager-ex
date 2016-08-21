@@ -650,6 +650,15 @@ public class AccountTransactionListFragment
     }
 
     /**
+     * Implementation using Rx instead of AsyncTask.
+     */
+    private void populateRunningBalanceRx() {
+        Bundle arguments = prepareQuery();
+
+
+    }
+
+    /**
      * Prepare SQL query for record selection.
      * @return bundle with query
      */

@@ -61,7 +61,6 @@ public class CalculateRunningBalanceTask2
         this.context = context.getApplicationContext();
         this.accountId = accountId;
         this.startingDate = startingDate;
-//        this.listener = listener;
         this.selectionBundle = selection;
     }
 
