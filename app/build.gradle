@@ -87,13 +87,13 @@ android {
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
 
-//            minifyEnabled false
-//            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             applicationVariants.all { variant ->
