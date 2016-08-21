@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
@@ -113,10 +114,8 @@ public class YqlSecurityPriceUpdaterRetrofit
      * Here we have all the prices.
      */
     public void onContentDownloaded(JsonElement response) {
-        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-
         if (response == null) {
-            handler.showMessage(R.string.error_updating_rates);
+            UIHelper.showToast(getContext(), R.string.error_updating_rates);
             closeProgressDialog();
             return;
         }
@@ -124,7 +123,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         // parse Json results
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
         if (pricesList == null) {
-            handler.showMessage(R.string.error_no_price_found_for_symbol);
+            UIHelper.showToast(getContext(), R.string.error_no_price_found_for_symbol);
         } else {
             // Send the parsed price data to the listener(s).
             for (SecurityPriceModel model : pricesList) {
@@ -135,7 +134,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        handler.showMessage(R.string.download_complete);
+        UIHelper.showToast(getContext(), R.string.download_complete);
     }
 
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {
