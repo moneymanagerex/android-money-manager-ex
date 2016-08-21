@@ -199,15 +199,17 @@ public class MainActivity
         MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
 
         // check if we require a password.
-        String dbPath = MoneyManagerApplication.getDatabasePath(this);
-        if (MmxDatabaseUtils.isEncryptedDatabase(dbPath)) {
-            // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
-            requestDatabasePassword();
-        } else {
-            initializeDatabaseAccess(savedInstanceState);
-        }
+//        String dbPath = MoneyManagerApplication.getDatabasePath(this);
+//        if (MmxDatabaseUtils.isEncryptedDatabase(dbPath)) {
+//            // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
+//            requestDatabasePassword();
+//        } else {
+        initializeDatabaseAccess(savedInstanceState);
+//        }
 
         initializeDrawer();
+
+        initializeSync();
     }
 
     @Override
@@ -215,7 +217,7 @@ public class MainActivity
         super.onStart();
 
         // check if has pass-code and authenticate
-        if (mInitialized && !isAuthenticated) {
+        if (!isAuthenticated) {
             Passcode passcode = new Passcode(getApplicationContext());
             if (passcode.hasPasscode() && !isInAuthentication) {
                 Intent intent = new Intent(this, PasscodeActivity.class);
@@ -631,7 +633,9 @@ public class MainActivity
         // notification send broadcast
         Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
         getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
+    }
 
+    private void initializeSync() {
         // Check cloud storage for updates?
         boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
         if (syncOnStart && !this.skipOnlineDbUpdateCheck) {
@@ -640,7 +644,9 @@ public class MainActivity
             this.skipOnlineDbUpdateCheck = true;
         }
 
-        this.mInitialized = true;
+        // todo Start the heartbeat if not running (could be killed by the user or the system)
+        // Do this until sync framework solution is active.
+
     }
 
     private void initializeDrawer() {
@@ -966,8 +972,8 @@ public class MainActivity
 
     private void changeDatabase(String localPath, String remotePath) {
         try {
-            MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
-            dbUtils.useDatabase(localPath, remotePath);
+            new MmxDatabaseUtils(this)
+                    .useDatabase(localPath, remotePath);
         } catch (Exception e) {
             //if (e instanceof )
             Timber.e(e, "changing the database");
@@ -980,33 +986,6 @@ public class MainActivity
         setRestartActivity(true);
         restartActivity();
     }
-
-//    private void displayDefaultFragment() {
-//        // show main navigation fragment
-//        final String homeFragmentTag = HomeFragment.class.getSimpleName();
-//        HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager()
-//                .findFragmentByTag(homeFragmentTag);
-//
-//        if (homeFragment == null) {
-//            // fragment create
-//            homeFragment = new HomeFragment();
-//        }
-//
-//        final HomeFragment finalFragment = homeFragment;
-//        // ref: http://stackoverflow.com/a/14178962/202166
-//        new Handler().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.fragmentContent, finalFragment, homeFragmentTag)
-//                            .commit();
-//                } catch (Exception e) {
-//                    Timber.e(e, "showing initial fragments");
-//                }
-//            }
-//        });
-//    }
 
     private Drawable getDrawableFromResource(int resourceId) {
         Drawable icon;

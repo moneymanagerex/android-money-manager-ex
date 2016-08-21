@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.20.894">
+    <changelogversion versionName="2016.08.21.895">
+        <changelogtext>Synchronization algorithm rewritten and improved to handle conflicts.</changelogtext>
         <changelogtext>Adding a preference for synchronization on start.</changelogtext>
         <changelogtext>Improving the process and feedback during database creation.</changelogtext>
         <changelogtext>Improving currency import.</changelogtext>
