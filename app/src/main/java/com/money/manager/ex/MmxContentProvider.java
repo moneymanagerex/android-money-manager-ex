@@ -501,9 +501,9 @@ public class MmxContentProvider
     private void notifyChange(Uri uri) {
         if (getContext() == null) return;
 
-        // notify update
+        // notify update. todo Do this also after changes via sqlite.
         getContext().getContentResolver().notifyChange(uri, null);
-        // notify dropbox data changed
+        // notify the sync that database has changed.
         new SyncManager(getContext()).dataChanged();
     }
 }
