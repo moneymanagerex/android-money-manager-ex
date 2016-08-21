@@ -91,11 +91,10 @@ public class MmexOpenHelper
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Timber.d("execute onCreate method");
-
-        executeRawSql(db, R.raw.tables_v1);
+        Timber.d("OpenHelper onCreate");
 
         try {
+            executeRawSql(db, R.raw.tables_v1);
             initDatabase(db);
         } catch (Exception e) {
             Timber.e(e, "initializing database");
@@ -220,6 +219,7 @@ public class MmexOpenHelper
     private void executeRawSql(SQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
         String sqlStatement[] = sqlRaw.split(";");
+
         // process all statements
         for (String aSqlStatment : sqlStatement) {
             Timber.d(aSqlStatment);
@@ -239,7 +239,6 @@ public class MmexOpenHelper
 
     /**
      * Get SQLite Version installed
-     *
      * @return version of SQLite
      */
     public String getSQLiteVersion() {
@@ -264,18 +263,16 @@ public class MmexOpenHelper
     private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Execute every script between the old and the new version of the database schema.
         for (int i = oldVersion + 1; i <= newVersion; i++) {
-            // take a id of instance
-            int idResource = mContext.getResources()
+            int resourceId = mContext.getResources()
                     .getIdentifier("database_version_" + Integer.toString(i),
                             "raw", mContext.getPackageName());
-            if (idResource > 0) {
-                executeRawSql(db, idResource);
+            if (resourceId > 0) {
+                executeRawSql(db, resourceId);
             }
         }
     }
 
     private boolean initDatabase(SQLiteDatabase database) {
-
         try {
             initBaseCurrency(database);
         } catch (Exception e) {
@@ -414,21 +411,8 @@ public class MmexOpenHelper
 //            infoService.setInfoValue(InfoService.BASECURRENCYID, Integer.toString(currencyId));
     }
 
-    /**
-     * Try to close everything when destroyed.
-     * @throws Throwable
-     * reference:
-     * http://stackoverflow.com/questions/4557154/android-sqlite-db-when-to-close
-     * http://stackoverflow.com/questions/14469782/android-sqlite-right-way-to-open-close-db
-     */
     @Override
     public void finalize() throws Throwable {
-//        closeDatabase();
-
-//        if (mInstance != null) {
-//            mInstance.close();
-//        }
-
         super.finalize();
     }
 
