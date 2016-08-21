@@ -393,7 +393,7 @@ public class SyncManager {
                 return getProvider().getMetadata(remotePath);
             }
         })
-                .retry()
+                .retry(1)
                 .doOnError(new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
