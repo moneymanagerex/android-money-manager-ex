@@ -49,27 +49,27 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-//        flatDir {
-//            dirs 'libs'
-//        }
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.fabric.io/public' }          // fabric
         maven { url 'http://maven.cloudrail.com' }              // cloudrail
+//        flatDir {
+//            // use libs directory as a Maven repository.
+//            dirs 'libs'
+//        }
     }
 
-    // Force all dependent libs to use the same version of the support annotations.
-    // This is used in testing libraries (Espresso).
-    // https://code.google.com/p/android-test-kit/issues/detail?id=136
+    /**
+     * Force all dependent libs to use the same version of the libraries.
+     * This is used in testing libraries (Espresso).
+     * https://code.google.com/p/android-test-kit/issues/detail?id=136
+     */
     configurations.all {
         resolutionStrategy {
             force 'org.hamcrest:hamcrest-core:1.3'
             force 'junit:junit:4.12'
-//            force 'com.android.support:support-annotations:24.2.0'
             force supportDependencies.supportAnnotation
-//            force 'com.android.support:appcompat-v7:24.2.0'
             force supportDependencies.appCompat
-//            force 'com.android.support:design:24.2.0'
             force supportDependencies.design
             force 'com.google.code.gson:gson:2.7'
             force 'com.google.guava:guava:19.0'

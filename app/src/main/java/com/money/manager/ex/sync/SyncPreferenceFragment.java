@@ -43,6 +43,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -227,6 +229,7 @@ public class SyncPreferenceFragment
                 SyncManager sync = getSyncManager();
                 int interval = Integer.parseInt(o.toString());
                 sync.setSyncInterval(interval);
+                Timber.d("sync interval set to %d", interval);
 
                 sync.stopSyncService();
                 if (interval > 0) {

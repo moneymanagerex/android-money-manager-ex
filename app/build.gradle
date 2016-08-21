@@ -148,7 +148,7 @@ android {
 }
 
 dependencies {
-    //    compile(name:'cloudrail-si-debug', ext:'aar')
+//    compile(name:'cloudrail-si-debug', ext:'aar')
     compile(
             fileTree(dir: 'libs', include: ['*.jar'])
             , project(':MMEX Icon Font')
@@ -175,8 +175,7 @@ dependencies {
             , 'com.github.pedrovgs:lynx:1.6'
             , 'com.astuetz:pagerslidingtabstrip:1.0.1'
             , 'de.hdodenhof:circleimageview:2.0.0'
-            // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
-            , 'me.relex:circleindicator:1.2.1'
+            , 'me.relex:circleindicator:1.2.1'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             , 'com.code-troopers.betterpickers:library:3.0.0'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
@@ -209,12 +208,8 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
-//            ,'com.github.fcannizzaro:material-stepper:1.2.2'
             , 'com.shamanland:fonticon:0.1.9'
             , "com.mikepenz:iconics-core:2.8.0@aar"
-//            ,'org.slf4j:slf4j-android:1.7.21'   // Logging to file. Used for testing the sync service.
-//            ,'com.github.tony19:logback-android-core:1.1.1-6'   // logback
-
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
