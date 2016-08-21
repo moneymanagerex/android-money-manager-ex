@@ -174,7 +174,7 @@ public class SyncManager {
         DateTime localLastModified;
         DateTime remoteLastModified;
         try {
-            localLastModified = getLastModifiedDate(remoteFile);
+            localLastModified = getCachedLastModifiedDateFor(remoteFile);
             if (localLastModified == null) {
                 localLastModified = new DateTime(localFile.lastModified());
             }
@@ -213,7 +213,7 @@ public class SyncManager {
      * @param localFile Local file reference
      * @return Indicator whether the download was successful.
      */
-    public boolean download(CloudMetaData remoteFile, File localFile) {
+    private boolean download(CloudMetaData remoteFile, File localFile) {
         try {
             InputStream inputStream = getProvider().download(remoteFile.getPath());
             OutputStream outputStream = new FileOutputStream(localFile, false);
@@ -230,7 +230,7 @@ public class SyncManager {
             return false;
         }
 
-        saveLastModifiedDate(remoteFile);
+        cacheRemoteLastModifiedDate(remoteFile);
 
         abortScheduledUpload();
 
@@ -248,12 +248,14 @@ public class SyncManager {
         String remotePath = getRemotePath();
         if (StringUtils.isEmpty(remotePath)) return;
 
-        // Fake the metadata to save the current date/time.
-        CloudMetaData metaData = new CloudMetaData();
-        metaData.setPath(remotePath);
-        metaData.setModifiedAt(DateTime.now().getMillis());
+        new SyncPreferences(getContext()).setLocalFileChanged(true);
 
-        saveLastModifiedDate(metaData);
+//        // Fake the metadata to save the current date/time.
+//        CloudMetaData metaData = new CloudMetaData();
+//        metaData.setPath(remotePath);
+//        metaData.setModifiedAt(DateTime.now().getMillis());
+//
+//        cacheRemoteLastModifiedDate(metaData);
 
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
@@ -315,15 +317,19 @@ public class SyncManager {
     }
 
     /**
-     * Gets last modified datetime of the database file from the preferences.
-     * @param file file name
+     * Gets last saved datetime of the remote file modification from the preferences.
+     * @param file file name, key
      * @return date of last modification
      */
-    public DateTime getLastModifiedDate(CloudMetaData file) {
+    public DateTime getCachedLastModifiedDateFor(CloudMetaData file) {
         String dateString = getPreferences().get(file.getPath(), null);
         if (TextUtils.isEmpty(dateString)) return null;
 
         return new DateTime(dateString);
+    }
+
+    public DateTime getModificationDate(CloudMetaData remoteFile) {
+        return new DateTime(remoteFile.getModifiedAt());
     }
 
     public String getRemotePath() {
@@ -331,6 +337,14 @@ public class SyncManager {
             mRemoteFile = getPreferences().loadPreference(R.string.pref_remote_file, "");
         }
         return mRemoteFile;
+    }
+
+    public void invokeSyncService(String action) {
+        try {
+            invokeSyncServiceInternal(action);
+        } catch (Exception e) {
+            Timber.e(e, "invoking sync service");
+        }
     }
 
     /**
@@ -469,7 +483,7 @@ public class SyncManager {
      * the synchronization.
      * @param file file name
      */
-    private void saveLastModifiedDate(CloudMetaData file) {
+    private void cacheRemoteLastModifiedDate(CloudMetaData file) {
         DateTime date = new DateTime(file.getModifiedAt());
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
@@ -604,10 +618,14 @@ public class SyncManager {
         // set last modified date
         try {
             CloudMetaData remoteFileMetadata = getProvider().getMetadata(remoteFile);
-            saveLastModifiedDate(remoteFileMetadata);
+            cacheRemoteLastModifiedDate(remoteFileMetadata);
         } catch (Exception e) {
             Timber.e(e, "closing input stream after upload");
         }
+
+        // reset local change indicator
+        // todo this must handle changes made during the upload!
+        new SyncPreferences(getContext()).setLocalFileChanged(false);
 
         // set remote file, if not set (setLinkedRemoteFile)
         if (TextUtils.isEmpty(getRemotePath())) {
@@ -716,14 +734,6 @@ public class SyncManager {
 
     private CloudStorage getProvider() {
         return currentProvider.get();
-    }
-
-    public void invokeSyncService(String action) {
-        try {
-            invokeSyncServiceInternal(action);
-        } catch (Exception e) {
-            Timber.e(e, "invoking sync service");
-        }
     }
 
     private void invokeSyncServiceInternal(String action) {

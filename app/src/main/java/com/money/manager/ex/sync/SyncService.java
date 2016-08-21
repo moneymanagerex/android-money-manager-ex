@@ -29,8 +29,10 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.money.manager.ex.R;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
@@ -59,12 +61,14 @@ public class SyncService
 
     private CompositeSubscription compositeSubscription;
     private Messenger mOutMessenger;
+    private NotificationManager mNotificationManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         compositeSubscription = new CompositeSubscription();
+        mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -226,76 +230,77 @@ public class SyncService
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
-        final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationBuilderUploading();
-        final NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        IOnDownloadUploadEntry onUpload = new IOnDownloadUploadEntry() {
-            @Override
-            public void onPreExecute() {
-                if (notification != null && notificationManager != null) {
-                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
-                }
-            }
-
-            @Override
-            public void onPostExecute(boolean result) {
-                if (notification == null || notificationManager == null) return;
-
-                notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-
-                if (result) {
-                    // create notification for open file
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.setData(Uri.fromFile(localFile));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE, intent, 0);
-                    // notification
-                    final NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                            .getNotificationBuilderUploadComplete(pendingIntent);
-                    // notify
-                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
-                }
-            }
-        };
-
         Timber.d("Uploading db. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
-        onUpload.onPreExecute();
+        showNotificationUploading();
         sendMessage(SyncServiceMessage.STARTING_UPLOAD);
 
         // upload
         SyncManager sync = new SyncManager(getApplicationContext());
         boolean result = sync.upload(localFile.getPath(), remoteFile.getPath());
 
-        onUpload.onPostExecute(result);
+        // notification, upload complete
+        showNotificationUploadComplete(result, localFile);
         sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
+    }
+
+    private void showNotificationUploadComplete(boolean result, File localFile) {
+        if (mNotificationManager == null) return;
+
+        mNotificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
+
+        if (!result) return;
+
+        // create notification for open file
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setData(Uri.fromFile(localFile));
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE, intent, 0);
+        // notification
+        NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationBuilderUploadComplete(pendingIntent);
+        // notify
+        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
+
     }
 
     private void triggerSync(final File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
+        SyncPreferences preferences = new SyncPreferences(getApplicationContext());
 
-        DateTime localLastModified = sync.getLastModifiedDate(remoteFile);
-        if (localLastModified == null) localLastModified = new DateTime(localFile.lastModified());
+        // are there local changes?
+        boolean isLocalModified = preferences.isLocalFileChanged();
+        Timber.d("local file has changes: %b", isLocalModified);
 
-        DateTime remoteLastModified = new DateTime(remoteFile.getModifiedAt());
+        // are there remote changes?
+        DateTime cachedLastModified = sync.getCachedLastModifiedDateFor(remoteFile);
+        DateTime remoteLastModified = sync.getModificationDate(remoteFile);
+        boolean isRemoteModified = !cachedLastModified.isEqual(remoteLastModified);
+        Timber.d("Remote file has changes: %b", isRemoteModified);
 
-        Timber.d("Local file last modified: %s", localLastModified.toString());
-        Timber.d("Remote file last modified: %s", remoteLastModified.toString());
-
-        // check date
-        if (remoteLastModified.isAfter(localLastModified)) {
-            Timber.d("Download %s from the cloud storage.", remoteFile.getPath());
+        if (!isLocalModified && !isRemoteModified) {
+            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
+            return;
+        }
+        // if both changed, there is a conflict!
+        if (isLocalModified && isRemoteModified) {
+            Timber.w(getString(R.string.both_files_modified));
+            sendMessage(SyncServiceMessage.ERROR);
+            return;
+        }
+        if (isRemoteModified) {
+            // remoteLastModified.isAfter(localLastModified)
+            Timber.d("Remote file %s changed. Triggering download.", remoteFile.getPath());
             // download file
             triggerDownload(localFile, remoteFile);
-        } else if (remoteLastModified.isBefore(localLastModified)) {
-            Timber.d("Upload %s to the cloud storage.", localFile.getPath());
+            return;
+        }
+        if (isLocalModified) {
+            // remoteLastModified.isBefore(localLastModified)
+            Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
             // upload file
             triggerUpload(localFile, remoteFile);
-        } else {
-            Timber.d("The local and remote files are the same.");
-
-            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
+            return;
         }
     }
 
@@ -313,5 +318,15 @@ public class SyncService
             return false;
         }
         return true;
+    }
+
+    private void showNotificationUploading() {
+        NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationBuilderUploading();
+
+        // send notification, upload starting
+        if (notification == null || mNotificationManager == null) return;
+
+        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
     }
 }

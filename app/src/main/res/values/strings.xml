@@ -764,4 +764,5 @@
     <!-- Settings -->
     <string name="per_database_settings">Per-Database</string>
 
+    <string name="both_files_modified">Both the local and the remote database files have been modified!</string>
 </resources>

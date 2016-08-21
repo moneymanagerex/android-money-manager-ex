@@ -179,17 +179,14 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity
-            android:name=".about.AboutActivity"
+        <activity android:name=".about.AboutActivity"
             android:label="@string/about" />
-        <activity
-            android:name=".currency.CurrencyEditActivity"
+        <activity android:name=".currency.CurrencyEditActivity"
             android:label="@string/new_edit_currency">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity
-            android:name=".account.AccountEditActivity"
+        <activity android:name=".account.AccountEditActivity"
             android:label="@string/account_list">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -200,26 +197,19 @@
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity
-            android:name=".settings.SettingsActivity"
+        <activity android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
-        <activity
-            android:name=".settings.GeneralSettingsActivity"
+        <activity android:name=".settings.GeneralSettingsActivity"
             android:label="@string/preferences_general" />
-        <activity
-            android:name=".settings.LookFeelSettingsActivity"
+        <activity android:name=".settings.LookFeelSettingsActivity"
             android:label="@string/preferences_dispaly" />
-        <activity
-            android:name=".settings.BehaviourSettingsActivity"
+        <activity android:name=".settings.BehaviourSettingsActivity"
             android:label="@string/preferences_behaviour" />
-        <activity
-            android:name=".settings.InvestmentSettingsActivity"
+        <activity android:name=".settings.InvestmentSettingsActivity"
             android:label="@string/investment" />
-        <activity
-            android:name=".settings.SecuritySettingsActivity"
+        <activity android:name=".settings.SecuritySettingsActivity"
             android:label="@string/preferences_security" />
-        <activity
-            android:name=".settings.DatabaseSettingsActivity"
+        <activity android:name=".settings.DatabaseSettingsActivity"
             android:label="@string/database" />
         <activity android:name=".settings.SyncPreferencesActivity"
             android:label="@string/synchronization" />
@@ -228,14 +218,11 @@
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".reports.IncomeVsExpensesActivity"
+        <activity android:name=".reports.IncomeVsExpensesActivity"
             android:label="@string/menu_report_income_vs_expenses" />
-        <activity
-            android:name=".reports.PayeesReportActivity"
+        <activity android:name=".reports.PayeesReportActivity"
             android:label="@string/payee" />
-        <activity
-            android:name=".reports.CategoriesReportActivity"
+        <activity android:name=".reports.CategoriesReportActivity"
             android:label="@string/category" />
         <activity
             android:name=".search.SearchActivity"

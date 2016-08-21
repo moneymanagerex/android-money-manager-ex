@@ -37,6 +37,7 @@ import java.util.Calendar;
  * Most methods specify UTC as the time zone, since time zones play no role in MMEX as we work
  * only with dates, not times. Many exceptions happen in different time zones during DST,
  * especially the ones that transition at midnight.
+ * However, using UTC has implications in that the filter date/times are not correct when using Today.
  */
 public class MmxDateTimeUtils {
 
@@ -45,7 +46,8 @@ public class MmxDateTimeUtils {
     }
 
     public static DateTime today() {
-        return new DateTime(DateTimeZone.UTC)
+        // removing DateTimeZone.UTC
+        return new DateTime()
                 .withHourOfDay(0)
                 .withMinuteOfHour(0)
                 .withSecondOfMinute(0)
@@ -64,7 +66,7 @@ public class MmxDateTimeUtils {
 
         DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
 //        DateTime dateTime = format.parseDateTime(dateString);
-        DateTime dateTime = format.withZoneUTC()
+        DateTime dateTime = format // .withZoneUTC()
                 .parseDateTime(dateString);
         return dateTime;
     }
@@ -83,7 +85,8 @@ public class MmxDateTimeUtils {
 
     public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
         //DateTimeZone.setDefault(DateTimeZone.UTC); <-- sets the default for JodaTime.
-        return new DateTime(DateTimeZone.UTC)
+        // DateTimeZone.UTC
+        return new DateTime()
                 .withYear(year)
                 .withMonthOfYear(monthOfYear)
                 .withDayOfMonth(dayOfMonth)
