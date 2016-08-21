@@ -20,11 +20,10 @@ import java.util.Comparator;
 
 /**
  * Comparator for RecentDatabaseEntry objects that compares their properties.
- *
- * Created by Alen on 14/09/2015.
  */
 public class RecentDatabaseEntryComparator
-        implements Comparator<RecentDatabaseEntry> {
+    implements Comparator<RecentDatabaseEntry> {
+
     /**
      * Compares the two specified objects to determine their relative ordering. The ordering
      * implied by the return value of this method for all possible pairs of

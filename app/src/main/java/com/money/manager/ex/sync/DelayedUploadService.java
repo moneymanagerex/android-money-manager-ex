@@ -41,8 +41,6 @@ public class DelayedUploadService
     public DelayedUploadService() {
         super("com.money.manager.ex.sync.DelayedUploadService");
 
-//        android.os.Debug.isDebuggerConnected();
-//        android.os.Debug.waitForDebugger();
     }
 
     private static Subscription delayedSubscription;

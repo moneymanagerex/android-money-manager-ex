@@ -146,14 +146,11 @@ public class MainActivity
     private LinearLayout mDrawerLayout;
     private DrawerLayout mDrawer;
     private MyActionBarDrawerToggle mDrawerToggle;
-    // object in drawer
-    private LinearLayout mDrawerLinearRepeating;
     private TextView mDrawerTextUserName;
     private TextView mDrawerTextTotalAccounts;
     // state dual panel
     private boolean mIsDualPanel = false;
     private RecentDatabasesProvider recentDbs;
-    private boolean mInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +172,6 @@ public class MainActivity
 
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
-
-        // end layout
 
         // Restore state. Check authentication, etc.
         if (savedInstanceState != null) {
@@ -410,13 +405,16 @@ public class MainActivity
         if (!sync.isActive()) return;
 
         compositeSubscription.add(
-            new SyncManager(this).compareFilesAsync()
+            sync.compareFilesAsync()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<SyncServiceMessage>() {
                     @Override
                     public void onCompleted() {
                         Timber.d("Initial remote db comparison complete.");
+
+                        // re-set sync timer.
+                        sync.startSyncServiceAlarm();
                     }
 
                     @Override
@@ -644,7 +642,7 @@ public class MainActivity
             this.skipOnlineDbUpdateCheck = true;
         }
 
-        // todo Start the heartbeat if not running (could be killed by the user or the system)
+        // todo Start the heartbeat if not running (could be killed by the user or the system).
         // Do this until sync framework solution is active.
 
     }
@@ -1120,7 +1118,7 @@ public class MainActivity
         mDrawerLayout = (LinearLayout) findViewById(R.id.linearLayoutDrawer);
 
         // repeating transaction
-        mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
+        LinearLayout mDrawerLinearRepeating = (LinearLayout) findViewById(R.id.linearLayoutRepeatingTransaction);
         if (mDrawerLinearRepeating != null) {
             mDrawerLinearRepeating.setVisibility(View.GONE);
         }

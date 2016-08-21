@@ -137,7 +137,7 @@ public class SyncPreferenceFragment
         sync.setRemotePath(remoteFile);
 
         // start sync service
-        getSyncManager().startSyncService();
+        getSyncManager().startSyncServiceAlarm();
 
         // save local file
         storeLocalFileSetting(remoteFile);
@@ -167,9 +167,9 @@ public class SyncPreferenceFragment
                 Boolean enabled = (Boolean) o;
                 getSyncManager().setEnabled(enabled);
                 if (enabled) {
-                    getSyncManager().startSyncService();
+                    getSyncManager().startSyncServiceAlarm();
                 } else {
-                    getSyncManager().stopSyncService();
+                    getSyncManager().stopSyncServiceAlarm();
                 }
                 return true;
             }
@@ -231,10 +231,10 @@ public class SyncPreferenceFragment
                 sync.setSyncInterval(interval);
                 Timber.d("sync interval set to %d", interval);
 
-                sync.stopSyncService();
+                sync.stopSyncServiceAlarm();
                 if (interval > 0) {
                     // don't start sync service if the interval is set to 0.
-                    sync.startSyncService();
+                    sync.startSyncServiceAlarm();
                 }
                 return true;
             }
@@ -270,7 +270,7 @@ public class SyncPreferenceFragment
                 SyncManager sync = getSyncManager();
                 sync.logout();
                 sync.resetPreferences();
-                sync.stopSyncService();
+                sync.stopSyncServiceAlarm();
 
                 Core.alertDialog(getActivity(), R.string.preferences_reset);
 

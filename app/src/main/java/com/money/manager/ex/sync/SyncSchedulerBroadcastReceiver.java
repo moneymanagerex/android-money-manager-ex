@@ -43,8 +43,8 @@ import java.util.Calendar;
 import timber.log.Timber;
 
 /**
- * Schedules the periodic alarm/heartbeat that triggers synchronization.
- * Run from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
+ * Schedules the periodic alarm (sync heartbeat) that triggers cloud synchronization.
+ * Scheduled run from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
     extends BroadcastReceiver {
@@ -55,28 +55,32 @@ public class SyncSchedulerBroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = "";
-        //Log actions
+        // by default, the action is ACTION_START. This is assumed on device boot.
+
         if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
             action = intent.getAction();
-
-            Timber.d("Action request: %s", action);
+            Timber.d("Sync scheduler request: %s", action);
         }
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingSyncIntent = PendingIntent.getBroadcast(context, 0, syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         // PendingIntent.FLAG_CANCEL_CURRENT, FLAG_UPDATE_CURRENT
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = getAlarmManager(context);
 
         // Cancel existing heartbeat.
         if (action.equals(ACTION_STOP)) {
-            Timber.d("Stopping synchronisation.");
-            alarmManager.cancel(pendingIntent);
+            Timber.d("Stopping synchronization alarm.");
+
+            alarmManager.cancel(pendingSyncIntent);
             return;
         }
 
-        // by default, the action is ACTION_START. This is assumed on device boot.
-        startHeartbeat(context, alarmManager, pendingIntent);
+        startHeartbeat(context, alarmManager, pendingSyncIntent);
+    }
+
+    private AlarmManager getAlarmManager(Context context) {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
     private void startHeartbeat(Context context, AlarmManager alarmManager, PendingIntent pendingIntent) {
@@ -86,16 +90,15 @@ public class SyncSchedulerBroadcastReceiver
         // get frequency in minutes.
         SyncPreferences preferences = new SyncPreferences(context);
         int minutes = preferences.getSyncInterval();
-        // If the period is 0, do not schedule sync.
+        // If the period is 0, do not schedule the alarm.
         if (minutes <= 0) return;
 
         DateTime now = DateTime.now();
+        int secondsInMinute = 60;
 
         Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toString(), minutes);
 
-        int secondsInMinute = 60;
-
-        // Schedule alarm for synchronization. Run immediately the first time.
+        // Schedule the alarm for synchronization. Run immediately and then in the given interval.
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 now.toDateTime().getMillis(),
                 minutes * secondsInMinute * 1000,

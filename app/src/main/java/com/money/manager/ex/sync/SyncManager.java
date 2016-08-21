@@ -22,7 +22,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -97,10 +96,6 @@ public class SyncManager {
     private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
-//        if (mDelayedHandler != null) {
-//            mDelayedHandler.removeCallbacks(mRunSyncRunnable);
-//        }
-
         Intent service = new Intent(getContext(), DelayedUploadService.class);
         service.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
         getContext().startService(service);
@@ -250,13 +245,6 @@ public class SyncManager {
 
         new SyncPreferences(getContext()).setLocalFileChanged(true);
 
-//        // Fake the metadata to save the current date/time.
-//        CloudMetaData metaData = new CloudMetaData();
-//        metaData.setPath(remotePath);
-//        metaData.setModifiedAt(DateTime.now().getMillis());
-//
-//        cacheRemoteLastModifiedDate(metaData);
-
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
         if (!canSync()) {
@@ -269,7 +257,7 @@ public class SyncManager {
         if (preferences.getUploadImmediately()) {
 //            abortScheduledUpload();
 //            scheduleUpload();
-            scheduleUploadViaService();
+            scheduleDelayedUpload();
         }
     }
 
@@ -444,7 +432,7 @@ public class SyncManager {
     /**
      * Start the delayed upload service.
      */
-    private void scheduleUploadViaService() {
+    private void scheduleDelayedUpload() {
         Intent service = new Intent(getContext(), DelayedUploadService.class);
         service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().startService(service);
@@ -523,22 +511,23 @@ public class SyncManager {
         getPreferences().set(R.string.pref_remote_file, value);
     }
 
-    void setSyncInterval(int minutes) {
+    public void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
     }
 
-    void startSyncService() {
+    public void startSyncServiceAlarm() {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
+        // SyncSchedulerBroadcastReceiver does not receive a brodcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    void stopSyncService() {
+    public void stopSyncServiceAlarm() {
         Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
         getContext().sendBroadcast(intent);
-        // sync scheduler broadcast receiver does not receive a brodcast when using local manager!
+        // SyncSchedulerBroadcastReceiver does not receive a brodcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
@@ -582,7 +571,7 @@ public class SyncManager {
         invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
     }
 
-    void triggerDownload() {
+    public void triggerDownload() {
         invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
     }
 
