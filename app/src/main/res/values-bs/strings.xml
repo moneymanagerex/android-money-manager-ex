@@ -66,6 +66,7 @@
   <string name="preferences_behaviour_focus_filter_summary">Postavi fokus na filter u selektorima. Inače listaj.</string>
   <string name="auto_sync_via_wifi">Auto-sinhronizuj samo preko WiFi</string>
   <string name="auto_sync_via_wifi_summary">Auto-sinhronizuj samo ako postoji WiFi konekcija.</string>
+  <string name="sync_on_app_start">Sinhronizuj pri pokretanju aplikacije.</string>
   <!-- account -->
   <string name="account">Račun</string>
   <string name="account_list">Lista računa</string>
@@ -456,7 +457,7 @@
   <string name="tutorial_overview_1">Nadzorna ploča za brzi pregled, budžeti, izvještaji sa prilagođavanjem.</string>
   <string name="global">Globalno</string>
   <string name="tutorial_global_1">Višestruke valute i jezici. Otvoreni izvorni kod. Priključite se našem prevodilačkom timu.</string>
-  <string name="tutorial_sync_1">Podrška za više platformi, sinhronizacija putem Dropbox-a. Uvoz i izvoz podataka s drugim aplikacijama.</string>
+  <string name="tutorial_sync_1">Podrška za više platformi, sinhronizacija putem više online servisa. Uvoz i izvoz podataka prema drugim aplikacijama.</string>
   <string name="transactions">Transakcije</string>
   <string name="tutorial_transactions_1">Depoziti, povlačenja, prenosi. Ponavljajuće transakcije s podsjetnicima.</string>
   <string name="split_category">-Podijeljena kategorija-</string>
@@ -638,19 +639,19 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Vaša baza podataka je preuzeta</string>
   <string name="dropbox_open_database_downloaded">Da biste koristili preuzetu bazu podataka, dodirnite \'Otvori bazu podataka\'</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
+  <string name="click_to_select_file_dropbox">Dodirnite da odabirete datoteku koju želite koristiti sa Dropbox-a</string>
+  <string name="download_from_drobpox">Preuzmi sa Dropbox-a</string>
+  <string name="summary_download_from_drobpox">Dodirnite da ručno preuzmete povezanu datoteku iz Dropbox mape</string>
+  <string name="upload_to_drobpox">Upload na Dropbox</string>
+  <string name="summary_upload_to_drobpox">Dodirnite da ručno pošaljete povezanu datoteku u Dropbox mapu</string>
+  <string name="dropbox_how_it_works">Kako Dropbox radi sa Money Manager Ex\?</string>
+  <string name="dropbox_link">Poveži Dropbox</string>
+  <string name="dropbox_unlink">Prekini vezu s Dropbox-om</string>
+  <string name="dropbox_downloadProgress">Preuzimanje datoteke sa Dropbox-a. Molim pričekajte&#8230;</string>
+  <string name="dropbox_uploadProgress">Upload datoteke na Dropbox. Molim pričekajte&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox datoteka</string>
+  <string name="dropbox_file_summary_all">Datoteka bilo gdje na Dropbox-u</string>
+  <string name="db_not_dropbox">Vaša trenutna baza podataka nije sinhronizovana. Molim vas podesite Dropbox sinkronizaciju.</string>
   <!-- Synchronization -->
   <string name="synchronization">Sinhronizacija</string>
   <string name="sync_enabled">Sinkronizacija omogućena</string>

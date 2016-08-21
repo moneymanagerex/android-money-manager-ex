@@ -62,8 +62,6 @@
   <string name="summary_show_tutorial">Hiện hướng dẫn trong lần chạy tới?</string>
   <string name="preferences_behaviour_focus_filter_title">Bộ lọc trong bộ chọn</string>
   <string name="preferences_behaviour_focus_filter_summary">Tập trung vào bộ lọc trong bộ chọn. Nếu không thì duyệt.</string>
-  <string name="auto_sync_via_wifi">Đồng bộ tự động chỉ trên WiFi</string>
-  <string name="auto_sync_via_wifi_summary">Đồng bộ tự động chỉ khi vào kết nối WiFi.</string>
   <!-- account -->
   <string name="account">Tài khoản</string>
   <string name="account_list">Danh sách tài khoản</string>
@@ -452,7 +450,6 @@
   <string name="tutorial_overview_1">Tổng quan nhanh bảng điều khiển, ngân sách, báo cáo với các tùy chỉnh.</string>
   <string name="global">Toàn cảnh</string>
   <string name="tutorial_global_1">Nhiều loại tiền tệ và ngôn ngữ. Mã nguồn mở. Tham gia đội ngũ dịch thuật.</string>
-  <string name="tutorial_sync_1">Hỗ trợ cho nhiều nền tảng, đồng bộ thông qua Dropbox. Nhập và xuất dữ liệu của bạn sang các ứng dụng khác.</string>
   <string name="transactions">Giao dịch</string>
   <string name="tutorial_transactions_1">Tiền gửi, rút tiền, chuyển khoản. Giao dịch định kỳ với công cụ nhắc nhở.</string>
   <string name="split_category">-Chia danh mục-</string>
@@ -583,19 +580,6 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Cơ sở dữ liệu của bạn đã được tải về</string>
   <string name="dropbox_open_database_downloaded">Để sử dụng cơ sở dữ liệu tải về, chạm vào Mở cơ sở dữ liệu</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Đồng bộ</string>
   <string name="every_5_minutes">Mỗi 5 phút</string>

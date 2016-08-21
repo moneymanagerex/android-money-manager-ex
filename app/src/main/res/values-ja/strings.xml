@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">個人の財政状況や銀行口座、家族の予算などを管理する、シンプルで使いやすいアプリケーションです。</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">全般</string>
+  <string name="preferences_perdatabase">データベース単位</string>
   <string name="preferences_dispaly">ルック &amp; フィール</string>
   <string name="preferences_behaviour">動作</string>
   <string name="base_currency">基本通貨</string>
@@ -64,6 +66,7 @@
   <string name="preferences_behaviour_focus_filter_summary">セレクターでフィルターにフォーカスを当てます。それ以外の場合、参照します。</string>
   <string name="auto_sync_via_wifi">WiFi でのみ自動同期</string>
   <string name="auto_sync_via_wifi_summary">WiFi 接続時のみ自動同期します。</string>
+  <string name="sync_on_app_start">アプリ起動時に同期します。</string>
   <!-- account -->
   <string name="account">アカウント</string>
   <string name="account_list">アカウント一覧</string>
@@ -454,7 +457,7 @@
   <string name="tutorial_overview_1">概要のダッシュ ボード、予算、カスタマイズしたレポート。</string>
   <string name="global">全般</string>
   <string name="tutorial_global_1">複数の通貨および言語。オープン ソース。私たちの翻訳チームに参加してください。</string>
-  <string name="tutorial_sync_1">マルチプラットフォームのサポート、Dropbox 経由の同期。データを他のアプリケーションにインポートおよびエクスポート。</string>
+  <string name="tutorial_sync_1">マルチプラットフォームのサポート、複数のクラウドサービス経由の同期。データを他のアプリケーションにインポートおよびエクスポート。</string>
   <string name="transactions">取引</string>
   <string name="tutorial_transactions_1">預金、払戻、振替。定期的な取引と通知。</string>
   <string name="split_category">-分割カテゴリー-</string>
@@ -626,6 +629,7 @@
   <string name="active_currencies">有効な通貨</string>
   <string name="inactive_currencies">無効な通貨</string>
   <string name="all_currencies">すべての通貨</string>
+  <string name="show_only_used">使用済のみ表示</string>
   <!-- Investment -->
   <string name="portfolio">ポートフォリオ</string>
   <string name="change_provider">プロバイダーの変更</string>
@@ -635,19 +639,19 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
   <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
+  <string name="click_to_select_file_dropbox">タッチして、Dropbox から使用するファイルを選択</string>
+  <string name="download_from_drobpox">Dropbox からダウンロード</string>
+  <string name="summary_download_from_drobpox">タッチして、Dropbox フォルダーからリンクされているファイルを手動でダウンロード</string>
+  <string name="upload_to_drobpox">Dropbox にアップロード</string>
+  <string name="summary_upload_to_drobpox">タッチして、Dropbox フォルダーにリンクされたファイルを手動でアップロード</string>
+  <string name="dropbox_how_it_works">Money Manager Ex で Dropbox はどのように動作しますか?</string>
+  <string name="dropbox_link">Dropbox にリンク</string>
+  <string name="dropbox_unlink">Dropbox のリンクを解除</string>
+  <string name="dropbox_downloadProgress">Dropbox からファイルをダウンロードしています。しばらくお待ちください&#8230;</string>
+  <string name="dropbox_uploadProgress">Dropbox にファイルをアップロードしています。しばらくお待ちください&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox のファイル</string>
+  <string name="dropbox_file_summary_all">Dropbox の任意の場所にあるファイル</string>
+  <string name="db_not_dropbox">現在のデータベースは同期されません。Dropbox の同期を設定してください。</string>
   <!-- Synchronization -->
   <string name="synchronization">同期</string>
   <string name="sync_enabled">同期が有効です</string>
@@ -683,6 +687,14 @@
   <string name="error_parsing_value">入力値の解析時にエラー</string>
   <string name="remote_file_not_found">リモート ファイルが見つかりません</string>
   <!-- Select database screen -->
+  <string name="intro_text">Money Manager Ex を使用するには、データベース ファイルにデータを格納する必要があります。以下の利用可能なオプションのいずれかを選択してください。</string>
+  <string name="intro_create_db">新しいファイルを作成し、初期設定を行うことができます。</string>
+  <string name="intro_open_db">または、お使いのデバイスから既存のファイルを選択できます。</string>
+  <string name="intro_sync">また、クラウドサービスとの同期を設定し、オンラインストレージから、開始するデータベース ファイルをダウンロードすることができます。</string>
   <!-- Create Database screen -->
+  <string name="select_language">言語を選択</string>
+  <string name="run">Money Manager Ex を実行</string>
+  <string name="create_db_info_1">デフォルトのデータベースの場所は:</string>
   <!-- Settings -->
+  <string name="per_database_settings">データベース単位</string>
 </resources>

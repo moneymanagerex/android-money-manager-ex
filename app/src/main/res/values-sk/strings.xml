@@ -62,8 +62,6 @@
   <string name="summary_show_tutorial">Zobraziť sprievodcu pri ďalšom spustení?</string>
   <string name="preferences_behaviour_focus_filter_title">Filter výberu</string>
   <string name="preferences_behaviour_focus_filter_summary">Nastaví filter výberu. Inak zobrazí všetko.</string>
-  <string name="auto_sync_via_wifi">Automatická synchronizácia len cez WiFi</string>
-  <string name="auto_sync_via_wifi_summary">Automaticky synchronizovať len cez WiFi pripojenie.</string>
   <!-- account -->
   <string name="account">Účet</string>
   <string name="account_list">Zoznam účtov</string>
@@ -444,7 +442,6 @@
   <string name="tutorial_overview_1">Rýchly prehľad, rozpočty, zostavy s vlastným nastavením.</string>
   <string name="global">Globálne</string>
   <string name="tutorial_global_1">Niekoľko mien a jazykov. Open Source. Pripojte sa k nášmu týmu prekladateľov.</string>
-  <string name="tutorial_sync_1">Podpora pre niekoľko platforiem, synchronizácia cez Dropbox. Import a export dát do iných aplikácií.</string>
   <string name="transactions">Transakcie</string>
   <string name="tutorial_transactions_1">Vklady, výbery, prevody. Opakujúce sa transakcie s pripomienkami.</string>
   <string name="split_category">-Rozdeliť kategóriu-</string>
@@ -611,19 +608,6 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Vaša databáza bola stiahnutá</string>
   <string name="dropbox_open_database_downloaded">Ak chcete použiť stiahnutú databázu, klepnite na Otvoriť databázu</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Synchronizácia</string>
   <string name="every_5_minutes">Každých 5 minút</string>

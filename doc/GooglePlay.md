@@ -2,7 +2,7 @@
 Money Manager Ex for Android
 
 [Short Description]
-Manage your income and expenses on mobile device, synchronize to cloud
+Manage your income and expenses on mobile device, synchronize to the cloud
 
 [Full Description]
 <b>Money Manager Ex</b> is a free, Open Source, cross-platform, easy-to-use personal finance software. It primarily helps organize one's finances and keeps track of where, when and how the money flows. It is a great tool to get a bird's eye view of your financial worth.

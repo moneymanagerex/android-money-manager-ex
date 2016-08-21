@@ -62,8 +62,6 @@
   <string name="summary_show_tutorial">Handleiding tonen bij volgend gebruik?</string>
   <string name="preferences_behaviour_focus_filter_title">Selectiefilter</string>
   <string name="preferences_behaviour_focus_filter_summary">Focus op filter in selecties. Anders browsen.</string>
-  <string name="auto_sync_via_wifi">Alleen automatisch synchroniseren bij wifi</string>
-  <string name="auto_sync_via_wifi_summary">Alleen automatisch synchroniseren bij wifiverbinding.</string>
   <!-- account -->
   <string name="account">Rekening</string>
   <string name="account_list">Rekeninglijst</string>
@@ -449,7 +447,6 @@
   <string name="tutorial_overview_1">Snel overzicht dashboard, begrotingen, rapporten met aanpassingen.</string>
   <string name="global">Wereldwijd</string>
   <string name="tutorial_global_1">Meerdere valuta\'s en talen. Open Source. Wordt lid van ons vertalingsteam.</string>
-  <string name="tutorial_sync_1">Ondersteuning voor meerdere platforms, synchronisatie via Dropbox. Importeren en exporteren van uw gegevens naar andere applicaties.</string>
   <string name="transactions">Transacties</string>
   <string name="tutorial_transactions_1">Stortingen, opnames, overschrijvingen. Periodieke transacties met herinneringen.</string>
   <string name="split_category">-Splits categorie-</string>
@@ -603,19 +600,6 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Je databank is gedownload</string>
   <string name="dropbox_open_database_downloaded">Om de gedownloade databank te gebruiken, druk je op Open databank</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Synchronisatie</string>
   <string name="every_5_minutes">Elke 5 minuten</string>

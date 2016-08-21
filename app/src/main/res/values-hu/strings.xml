@@ -62,8 +62,6 @@
   <string name="summary_show_tutorial">Útmutató megjelenítése a következő indításkor?</string>
   <string name="preferences_behaviour_focus_filter_title">Fókusz a szűrőkre</string>
   <string name="preferences_behaviour_focus_filter_summary">Engedélyezi a szűrőt a listáknál. Egyébként választhat a listából.</string>
-  <string name="auto_sync_via_wifi">Auto-sync csak WiFi-n</string>
-  <string name="auto_sync_via_wifi_summary">Automatikus szinkronizálás csak WiFi-n keresztül.</string>
   <!-- account -->
   <string name="account">Számla</string>
   <string name="account_list">Számla lista</string>
@@ -444,7 +442,6 @@
   <string name="tutorial_overview_1">Gyors áttekintő oldal, költségvetések, jelentések, testreszabás.</string>
   <string name="global">Globális</string>
   <string name="tutorial_global_1">Többféle pénznem és nyelv. Nyílt forráskód. Csatlakozzon fordító csapatunkhoz.</string>
-  <string name="tutorial_sync_1">Multiplatform támogatás, Dropbox szinkronizáció. Import és export lehetőség, kapcsolódás egyéb alkalmazásaihoz.</string>
   <string name="transactions">Tranzakciók</string>
   <string name="tutorial_transactions_1">Bevételek, kiadások, átvezetések. Ismétlődő tranzakciók értesítésekkel.</string>
   <string name="split_category">Kategória megosztás</string>
@@ -592,19 +589,6 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Az adatbázis letöltése megtörtént</string>
   <string name="dropbox_open_database_downloaded">A letöltött adatbázis használatához válassza az Adatbázis megnyitása menüt</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Szinkronizálás</string>
   <string name="every_5_minutes">5 percenként</string>

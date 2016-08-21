@@ -62,8 +62,6 @@
   <string name="summary_show_tutorial">是否在下次运行时显示教程？</string>
   <string name="preferences_behaviour_focus_filter_title">在选择列表中显示搜索框</string>
   <string name="preferences_behaviour_focus_filter_summary">在选择列表中显示搜索框，取消选择将以浏览模式显示</string>
-  <string name="auto_sync_via_wifi">仅在连接至无线网络时自动同步</string>
-  <string name="auto_sync_via_wifi_summary">自动同步将仅在无线网络连接时进行</string>
   <!-- account -->
   <string name="account">账户</string>
   <string name="account_list">账户列表</string>
@@ -451,7 +449,6 @@
   <string name="tutorial_overview_1">快速浏览仪主页，预算，和自定义报告。</string>
   <string name="global">全球</string>
   <string name="tutorial_global_1">多种货币和语言。开放源码软件。加入我们的翻译团队。</string>
-  <string name="tutorial_sync_1">支持多个平台，通过 Dropbox 的同步。导入和导出到其他应用程序数据。</string>
   <string name="transactions">交易</string>
   <string name="tutorial_transactions_1">存款、 取款、 转账。带有提醒的周期性交易。</string>
   <string name="split_category">-拆分类目-</string>
@@ -626,19 +623,6 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">您的数据库已被下载</string>
   <string name="dropbox_open_database_downloaded">轻触以打开已下载的数据库</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">同步</string>
   <string name="sync_enabled">启用同步</string>

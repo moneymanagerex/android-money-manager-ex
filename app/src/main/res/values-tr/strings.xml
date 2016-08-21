@@ -61,8 +61,6 @@
   <string name="summary_show_tutorial">Bir sonraki açılışta program özellikleri gösterilsin mi?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtre Seçici</string>
   <string name="preferences_behaviour_focus_filter_summary">Seçiciler filtrede odaklanmak. Aksi takdirde göz atın.</string>
-  <string name="auto_sync_via_wifi">Sadece Wifi olduğunda eşitle</string>
-  <string name="auto_sync_via_wifi_summary">Yalnızca WiFi bağlantısı olduğunda otomatik eşitle.</string>
   <!-- account -->
   <string name="account">Hesap</string>
   <string name="account_list">Hesap Listesi</string>
@@ -428,7 +426,6 @@
   <string name="tutorial_overview_1">Hızlı genel bakış denetim masası, bütçeler ve özelleştirilmiş raporlar.</string>
   <string name="global">Genel</string>
   <string name="tutorial_global_1">Çoklu para birimleri ve çoklu dil desteği. Açık kaynak kodu. Çeviri ekibimize katılın.</string>
-  <string name="tutorial_sync_1">Çoklu platform desteği, Dropbox eşitleme. Verileri diğer uygulamalardan içe ve dışa aktarma.</string>
   <string name="transactions">İşlemler</string>
   <string name="tutorial_transactions_1">Hesaba yatanlar, hesaptan çekilenler, havaleler. Hatırlatma özellikli tekrar eden işlemler.</string>
   <string name="split_category">-Kategori Böl-</string>
@@ -536,19 +533,6 @@
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
   <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
-  <!--<string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>-->
-  <!--<string name="download_from_drobpox">Download from Dropbox</string>-->
-  <!--<string name="summary_download_from_drobpox">Touch to manually download the linked file from Dropbox folder</string>-->
-  <!--<string name="upload_to_drobpox">Upload to Dropbox</string>-->
-  <!--<string name="summary_upload_to_drobpox">Touch to manually upload the linked file to Dropbox folder</string>-->
-  <!--<string name="dropbox_how_it_works">How does Dropbox work for Money Manager Ex\?</string>-->
-  <!--<string name="dropbox_link">Link to Dropbox</string>-->
-  <!--<string name="dropbox_unlink">Unlink from Dropbox</string>-->
-  <!--<string name="dropbox_downloadProgress">Downloading file from Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_uploadProgress">Uploading file to Dropbox. Please wait…</string>-->
-  <!--<string name="dropbox_linkedFile">Dropbox File</string>-->
-  <!--<string name="dropbox_file_summary_all">File anywhere in Dropbox</string>-->
-  <!--<string name="db_not_dropbox">Your current database is not synchronized. Please set up Dropbox synchronization.</string>-->
   <!-- Synchronization -->
   <string name="synchronization">Eşitleme</string>
   <string name="every_5_minutes">Her 5 dakikada</string>
