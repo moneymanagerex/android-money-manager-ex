@@ -107,11 +107,14 @@ public class SyncAdapter
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
         File localFile = new File(localFilename);
-        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
-        if (remoteFile == null) {
-//            sendMessage(SyncServiceMessage.ERROR);
-            return;
-        }
+
+        // todo: adjust this
+        CloudMetaData remoteFile = null;
+//        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
+//        if (remoteFile == null) {
+////            sendMessage(SyncServiceMessage.ERROR);
+//            return;
+//        }
 
         // check if name is same
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {

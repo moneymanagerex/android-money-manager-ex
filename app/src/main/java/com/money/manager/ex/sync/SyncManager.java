@@ -61,6 +61,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import rx.Observable;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.Subscriber;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
@@ -160,8 +166,15 @@ public class SyncManager {
 
         // get local and remote file info.
         File localFile = new File(localPath);
-        CloudMetaData remoteFile = loadMetadata(remotePath) ;
-        if (remoteFile == null) {
+        final CloudMetaData[] remoteFile = {null};
+        loadMetadataObservable(remotePath)
+                .subscribe(new Action1<CloudMetaData>() {
+                    @Override
+                    public void call(CloudMetaData cloudMetaData) {
+                        remoteFile[0] = cloudMetaData;
+                    }
+                });
+        if (remoteFile[0] == null) {
             return SyncServiceMessage.ERROR;
         }
 
@@ -169,11 +182,11 @@ public class SyncManager {
         DateTime localLastModified;
         DateTime remoteLastModified;
         try {
-            localLastModified = getCachedLastModifiedDateFor(remoteFile);
+            localLastModified = getCachedLastModifiedDateFor(remoteFile[0]);
             if (localLastModified == null) {
                 localLastModified = new DateTime(localFile.lastModified());
             }
-            remoteLastModified = new DateTime(remoteFile.getModifiedAt());
+            remoteLastModified = new DateTime(remoteFile[0].getModifiedAt());
         } catch (Exception e) {
             Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 
@@ -368,22 +381,32 @@ public class SyncManager {
         return getPreferences().isSyncEnabled();
     }
 
-    public CloudMetaData loadMetadata(String remotePath) {
-        CloudMetaData result = null;
-        try {
-            result = getProvider().getMetadata(remotePath);
+    /**
+     * Retrieves the remote metadata. Retries once on fail to work around #957.
+     * @return Remote file metadata.
+     */
+    public Single<CloudMetaData> loadMetadataObservable(final String remotePath) {
 
-            // save any renewed tokens
-            this.storePersistent();
-        }
-//        catch (NotFoundException e) {
-//            // just show a message
-//            handler.showMessage(R.string.remote_file_not_found);
-//        }
-        catch (Exception e) {
-            Timber.e(e, "fetching remote file info");
-        }
-        return result;
+        return Single.fromCallable(new Callable<CloudMetaData>() {
+            @Override
+            public CloudMetaData call() throws Exception {
+                return getProvider().getMetadata(remotePath);
+            }
+        })
+                .retry()
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Timber.e(throwable, "fetching remote metadata");
+                    }
+                })
+                .doOnSuccess(new Action1<CloudMetaData>() {
+                    @Override
+                    public void call(CloudMetaData cloudMetaData) {
+                        // save any renewed tokens
+                        SyncManager.this.storePersistent();
+                    }
+                });
     }
 
     public void login() {
@@ -606,12 +629,16 @@ public class SyncManager {
         }
 
         // set last modified date
-        try {
-            CloudMetaData remoteFileMetadata = getProvider().getMetadata(remoteFile);
-            cacheRemoteLastModifiedDate(remoteFileMetadata);
-        } catch (Exception e) {
-            Timber.e(e, "closing input stream after upload");
-        }
+        final CloudMetaData[] remoteFileMetadata = {null};
+        loadMetadataObservable(remoteFile)
+                .subscribe(new Action1<CloudMetaData>() {
+                    @Override
+                    public void call(CloudMetaData cloudMetaData) {
+                        remoteFileMetadata[0] = cloudMetaData;
+                    }
+                });
+
+        cacheRemoteLastModifiedDate(remoteFileMetadata[0]);
 
         // reset local change indicator
         // todo this must handle changes made during the upload!

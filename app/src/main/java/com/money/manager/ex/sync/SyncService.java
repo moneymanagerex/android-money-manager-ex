@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 
 import rx.Subscriber;
+import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -95,8 +96,15 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
-        if (remoteFile == null) {
+        final CloudMetaData[] remoteFile = {null};
+        sync.loadMetadataObservable(remoteFilename)
+        .subscribe(new Action1<CloudMetaData>() {
+            @Override
+            public void call(CloudMetaData cloudMetaData) {
+                remoteFile[0] = cloudMetaData;
+            }
+        });
+        if (remoteFile[0] == null) {
             sendMessage(SyncServiceMessage.ERROR);
             return;
         }
@@ -118,7 +126,7 @@ public class SyncService
 //        }
 
         // check if name is same
-        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
+        if (!localFile.getName().toLowerCase().equals(remoteFile[0].getName().toLowerCase())) {
             Timber.w("Local filename different from the remote!");
             sendMessage(SyncServiceMessage.ERROR);
             return;
@@ -128,14 +136,14 @@ public class SyncService
         String action = intent.getAction();
         switch (action) {
             case SyncConstants.INTENT_ACTION_DOWNLOAD:
-                triggerDownload(localFile, remoteFile);
+                triggerDownload(localFile, remoteFile[0]);
                 break;
             case SyncConstants.INTENT_ACTION_UPLOAD:
-                triggerUpload(localFile, remoteFile);
+                triggerUpload(localFile, remoteFile[0]);
                 break;
             case SyncConstants.INTENT_ACTION_SYNC:
             default:
-                triggerSync(localFile, remoteFile);
+                triggerSync(localFile, remoteFile[0]);
                 break;
         }
     }
