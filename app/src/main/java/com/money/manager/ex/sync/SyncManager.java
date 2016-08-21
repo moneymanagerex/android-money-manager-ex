@@ -166,15 +166,9 @@ public class SyncManager {
 
         // get local and remote file info.
         File localFile = new File(localPath);
-        final CloudMetaData[] remoteFile = {null};
-        loadMetadataObservable(remotePath)
-                .subscribe(new Action1<CloudMetaData>() {
-                    @Override
-                    public void call(CloudMetaData cloudMetaData) {
-                        remoteFile[0] = cloudMetaData;
-                    }
-                });
-        if (remoteFile[0] == null) {
+        CloudMetaData remoteFile = loadMetadataObservable(remotePath)
+                .toBlocking().value();
+        if (remoteFile == null) {
             return SyncServiceMessage.ERROR;
         }
 
@@ -182,11 +176,11 @@ public class SyncManager {
         DateTime localLastModified;
         DateTime remoteLastModified;
         try {
-            localLastModified = getCachedLastModifiedDateFor(remoteFile[0]);
+            localLastModified = getCachedLastModifiedDateFor(remoteFile);
             if (localLastModified == null) {
                 localLastModified = new DateTime(localFile.lastModified());
             }
-            remoteLastModified = new DateTime(remoteFile[0].getModifiedAt());
+            remoteLastModified = new DateTime(remoteFile.getModifiedAt());
         } catch (Exception e) {
             Timber.e(e, "retrieving the last modified date in compareFilesForSync");
 
@@ -629,16 +623,11 @@ public class SyncManager {
         }
 
         // set last modified date
-        final CloudMetaData[] remoteFileMetadata = {null};
-        loadMetadataObservable(remoteFile)
-                .subscribe(new Action1<CloudMetaData>() {
-                    @Override
-                    public void call(CloudMetaData cloudMetaData) {
-                        remoteFileMetadata[0] = cloudMetaData;
-                    }
-                });
+        CloudMetaData remoteFileMetadata = loadMetadataObservable(remoteFile)
+                .toBlocking()
+                .value();
 
-        cacheRemoteLastModifiedDate(remoteFileMetadata[0]);
+        cacheRemoteLastModifiedDate(remoteFileMetadata);
 
         // reset local change indicator
         // todo this must handle changes made during the upload!

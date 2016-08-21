@@ -96,15 +96,9 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        final CloudMetaData[] remoteFile = {null};
-        sync.loadMetadataObservable(remoteFilename)
-        .subscribe(new Action1<CloudMetaData>() {
-            @Override
-            public void call(CloudMetaData cloudMetaData) {
-                remoteFile[0] = cloudMetaData;
-            }
-        });
-        if (remoteFile[0] == null) {
+        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename)
+                .toBlocking().value();
+        if (remoteFile == null) {
             sendMessage(SyncServiceMessage.ERROR);
             return;
         }
@@ -126,7 +120,7 @@ public class SyncService
 //        }
 
         // check if name is same
-        if (!localFile.getName().toLowerCase().equals(remoteFile[0].getName().toLowerCase())) {
+        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
             Timber.w("Local filename different from the remote!");
             sendMessage(SyncServiceMessage.ERROR);
             return;
@@ -136,14 +130,14 @@ public class SyncService
         String action = intent.getAction();
         switch (action) {
             case SyncConstants.INTENT_ACTION_DOWNLOAD:
-                triggerDownload(localFile, remoteFile[0]);
+                triggerDownload(localFile, remoteFile);
                 break;
             case SyncConstants.INTENT_ACTION_UPLOAD:
-                triggerUpload(localFile, remoteFile[0]);
+                triggerUpload(localFile, remoteFile);
                 break;
             case SyncConstants.INTENT_ACTION_SYNC:
             default:
-                triggerSync(localFile, remoteFile[0]);
+                triggerSync(localFile, remoteFile);
                 break;
         }
     }
