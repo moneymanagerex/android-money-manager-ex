@@ -238,7 +238,8 @@ public class MmxDatabaseUtils {
 
         // check if valid
         if (!isValidDbFile(dbPath)) {
-            throw new RuntimeException(getContext().getString(R.string.database_can_not_open_write));
+            // getContext().getString(R.string.database_can_not_open_write)
+            throw new RuntimeException("Not a valid database file!");
         }
 
         // Store a Recent Database entry.
