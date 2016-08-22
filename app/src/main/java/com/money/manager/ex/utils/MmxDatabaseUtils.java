@@ -409,8 +409,9 @@ public class MmxDatabaseUtils {
     private File getExternalFilesDirectory() {
         // /storage/sdcard0/Android/data/package/files
         File externalFilesDir = getContext().getExternalFilesDir(null);
-
-        assert externalFilesDir != null;
+        //assert externalFilesDir != null;
+        if (externalFilesDir == null) return null;
+        
         String dbString = externalFilesDir.getAbsolutePath().concat(File.separator)
                 .concat("databases");
         File dbPath = new File(dbString);
