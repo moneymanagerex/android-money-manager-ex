@@ -317,7 +317,7 @@
         </provider>
         <!-- stub provider for the sync framework -->
         <provider android:name=".sync.adapter.StubSyncProvider"
-            android:authorities="com.example.android.datasync.provider"
+            android:authorities="${applicationId}.datasyncprovider"
             android:exported="false"
             android:syncable="true"/>
 

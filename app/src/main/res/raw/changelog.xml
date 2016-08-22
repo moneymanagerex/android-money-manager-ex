@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.22.897">
+    <changelogversion versionName="2016.08.22.898">
         <changelogtext>Resolving the metadata exceptions during synchronization by retrying the request.</changelogtext>
         <changelogtext>Synchronization algorithm rewritten and improved to handle conflicts.</changelogtext>
         <changelogtext>Adding a preference for synchronization on start.</changelogtext>
