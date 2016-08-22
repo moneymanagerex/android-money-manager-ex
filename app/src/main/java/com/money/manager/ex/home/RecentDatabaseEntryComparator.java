@@ -48,6 +48,9 @@ public class RecentDatabaseEntryComparator
     public int compare(RecentDatabaseEntry lhs, RecentDatabaseEntry rhs) {
         if (lhs.linkedToCloud != rhs.linkedToCloud) return 1;
         if (!lhs.filePath.equals(rhs.filePath)) return 1;
+
+        if (lhs.remoteFileName == null) lhs.remoteFileName = "";
+        if (rhs.remoteFileName == null) rhs.remoteFileName = "";
         if (!lhs.remoteFileName.equals(rhs.remoteFileName)) return 1;
 
         return 0;
