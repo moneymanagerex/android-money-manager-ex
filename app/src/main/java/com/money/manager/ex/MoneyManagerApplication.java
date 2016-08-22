@@ -33,7 +33,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.core.ioc.DaggerMmexComponent;
 import com.money.manager.ex.core.ioc.MmexComponent;
@@ -168,7 +168,7 @@ public class MoneyManagerApplication
     // Instance fields.
 
     public MmexComponent iocComponent;
-    public AtomicReference<MmexOpenHelper> openHelperAtomicReference;
+    public AtomicReference<MmxOpenHelper> openHelperAtomicReference;
 
     // Overrides.
 
@@ -242,7 +242,7 @@ public class MoneyManagerApplication
     // dynamic
 
     public void initDb(String path) {
-        MmexOpenHelper db = createDbInstance(path);
+        MmxOpenHelper db = createDbInstance(path);
 
         if (openHelperAtomicReference == null) {
             openHelperAtomicReference = new AtomicReference<>(db);
@@ -253,11 +253,11 @@ public class MoneyManagerApplication
         }
     }
 
-    private MmexOpenHelper createDbInstance(String path) {
+    private MmxOpenHelper createDbInstance(String path) {
         if (StringUtils.isEmpty(path)) {
             path = getDatabasePath(this);
         }
-        return new MmexOpenHelper(this, path);
+        return new MmxOpenHelper(this, path);
     }
 
     public Locale getAppLocale() {

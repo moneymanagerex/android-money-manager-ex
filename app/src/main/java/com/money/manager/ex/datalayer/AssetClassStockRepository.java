@@ -20,9 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MmexOpenHelper;
 import com.money.manager.ex.database.WhereStatementGenerator;
-import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.AssetClassStock;
 
 import java.util.ArrayList;
@@ -109,7 +107,7 @@ public class AssetClassStockRepository
 //            "WHERE acs." + AssetClassStock.ASSETCLASSID + "=?";
 //        String[] args = new String[] { Integer.toString(assetClassId)};
 //
-//        Cursor c = MmexOpenHelper.getInstance(getContext()).getReadableDatabase()
+//        Cursor c = MmxOpenHelper.getInstance(getContext()).getReadableDatabase()
 //            .rawQuery(sql, args);
 //
 ////        c.close();

@@ -27,7 +27,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Currency;
 
 import org.robolectric.Robolectric;
@@ -116,7 +116,7 @@ public class UnitTestHelper {
      * Reset database helper instance. Use after every test on @After.
      */
     public static void teardownDatabase() {
-        resetSingleton(MmexOpenHelper.class, "mInstance");
+        resetSingleton(MmxOpenHelper.class, "mInstance");
     }
 
     public static void setupLog() {

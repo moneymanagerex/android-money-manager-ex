@@ -52,7 +52,7 @@ import timber.log.Timber;
 /**
  * Actual helper class for accessing an SQLite database.
  */
-public class MmexOpenHelper
+public class MmxOpenHelper
     extends SQLiteOpenHelper {
 
     /**
@@ -66,7 +66,7 @@ public class MmexOpenHelper
      * Constructor. This is where the database path gets set.
      * @param context Current context.
      */
-    public MmexOpenHelper(Context context, String dbPath) {
+    public MmxOpenHelper(Context context, String dbPath) {
         super(context, dbPath, null, databaseVersion);
         this.mContext = context;
 

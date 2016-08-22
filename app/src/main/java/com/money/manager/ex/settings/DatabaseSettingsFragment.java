@@ -34,7 +34,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.utils.DonateDialogUtils;
@@ -53,7 +53,7 @@ import timber.log.Timber;
 public class DatabaseSettingsFragment
     extends PreferenceFragment {
 
-    @Inject Lazy<MmexOpenHelper> openHelper;
+    @Inject Lazy<MmxOpenHelper> openHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,7 +130,7 @@ public class DatabaseSettingsFragment
 
         String version = "N/A";
 
-//        MmexOpenHelper dbHelper = MmexOpenHelper.getInstance(getActivity());
+//        MmxOpenHelper dbHelper = MmxOpenHelper.getInstance(getActivity());
 
         SQLiteDatabase db = openHelper.get().getReadableDatabase();
         if (db != null) {

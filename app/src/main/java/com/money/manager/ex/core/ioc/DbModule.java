@@ -17,20 +17,10 @@
 
 package com.money.manager.ex.core.ioc;
 
-import android.app.Application;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
-
 import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.database.MmexOpenHelper;
-import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
-
-import java.util.concurrent.atomic.AtomicReference;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,15 +32,15 @@ import timber.log.Timber;
  */
 @Module
 public final class DbModule {
-//    private MmexOpenHelper instance;
+//    private MmxOpenHelper instance;
 
 //    @Provides SQLiteOpenHelper provideOpenHelper(Application application, AppSettings appSettings) {
-//        return MmexOpenHelper.createNewInstance(application);
+//        return MmxOpenHelper.createNewInstance(application);
         // Use the existing singleton instance.
-        //return MmexOpenHelper.getInstance(application);
+        //return MmxOpenHelper.getInstance(application);
 //    }
 
-//    @Provides MmexOpenHelper provideOpenHelper(Application application) {
+//    @Provides MmxOpenHelper provideOpenHelper(Application application) {
 //        if (instance == null) {
 //            instance = createInstance(application);
 //        } else {
@@ -73,7 +63,7 @@ public final class DbModule {
      */
     @Provides
 //    @Named("instance")
-    MmexOpenHelper provideOpenHelper(MoneyManagerApplication app) {
+    MmxOpenHelper provideOpenHelper(MoneyManagerApplication app) {
 //        MoneyManagerApplication app = MoneyManagerApplication.getInstance();
         if (app.openHelperAtomicReference == null) {
             app.initDb(null);
@@ -81,9 +71,9 @@ public final class DbModule {
         return app.openHelperAtomicReference.get();
     }
 
-//    private MmexOpenHelper createInstance(Application application) {
+//    private MmxOpenHelper createInstance(Application application) {
 //        String dbPath = MoneyManagerApplication.getDatabasePath(application);
-//        return new MmexOpenHelper(application, dbPath);
+//        return new MmxOpenHelper(application, dbPath);
 //    }
 
     @Provides SqlBrite provideSqlBrite() {
@@ -94,7 +84,7 @@ public final class DbModule {
         });
     }
 
-    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmexOpenHelper helper) {
+    @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         db.setLoggingEnabled(true);
         return db;

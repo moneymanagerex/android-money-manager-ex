@@ -43,7 +43,7 @@ import dagger.Component;
 @Component(modules = MmexModule.class)
 public interface MmexComponent {
     // Example on how to expose a provision method.
-//    MmexOpenHelper getHelper();
+//    MmxOpenHelper getHelper();
 
     // Activities
     void inject(MainActivity activity);

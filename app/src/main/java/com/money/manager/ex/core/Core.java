@@ -41,7 +41,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -145,7 +145,7 @@ public class Core {
     }
 
     private Context mContext;
-    @Inject Lazy<MmexOpenHelper> openHelper;
+    @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<AppSettings> appSettings;
 
     /**
@@ -257,7 +257,7 @@ public class Core {
      * @return last payee used
      */
     public Payee getLastPayeeUsed() {
-//        MmexOpenHelper helper = MmexOpenHelper.getInstance(getContext());
+//        MmxOpenHelper helper = MmxOpenHelper.getInstance(getContext());
         Payee payee = null;
 
         String sql =

@@ -196,7 +196,7 @@ public class MainActivity
         // check if we require a password.
 //        String dbPath = MoneyManagerApplication.getDatabasePath(this);
 //        if (MmxDatabaseUtils.isEncryptedDatabase(dbPath)) {
-//            // todo: && !MmexOpenHelper.getInstance(this).hasPassword()
+//            // todo: && !MmxOpenHelper.getInstance(this).hasPassword()
 //            requestDatabasePassword();
 //        } else {
         initializeDatabaseAccess(savedInstanceState);
@@ -301,7 +301,7 @@ public class MainActivity
 //
 //                    // Figure out what to do next. Switch the db or continue with init?
 //                    if (StringUtils.isEmpty(dbPath)) {
-//                        // MmexOpenHelper.getInstance(this).setPassword(password);
+//                        // MmxOpenHelper.getInstance(this).setPassword(password);
 //                        // continue
 //                        initializeDatabaseAccess(null);
 //                    } else {

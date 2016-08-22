@@ -32,7 +32,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.RecentDatabaseEntry;
@@ -98,7 +98,7 @@ public class MmxDatabaseUtils {
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    @Inject Lazy<MmexOpenHelper> openHelper;
+    @Inject Lazy<MmxOpenHelper> openHelper;
     private Context mContext;
 
     public Context getContext() {

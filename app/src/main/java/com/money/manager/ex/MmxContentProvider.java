@@ -34,7 +34,7 @@ import com.money.manager.ex.budget.BudgetQuery;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
-import com.money.manager.ex.database.MmexOpenHelper;
+import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
@@ -88,7 +88,7 @@ public class MmxContentProvider
 
     }
 
-    @Inject Lazy<MmexOpenHelper> openHelper;
+    @Inject Lazy<MmxOpenHelper> openHelper;
 
     public static String getAuthority() {
         return mAuthority;
