@@ -109,7 +109,7 @@ public class CurrencyUIFeatures {
     }
 
     public void showDialogDeleteCurrency(final int currencyId, final int itemPosition) {
-        // config alert dialog
+        // config alert binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
                 .setTitle(R.string.delete_currency)
                 .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
@@ -129,7 +129,7 @@ public class CurrencyUIFeatures {
                 dialog.cancel();
             }
         });
-        // create dialog and show
+        // create binaryDialog and show
         alertDialog.create().show();
     }
 
@@ -155,7 +155,7 @@ public class CurrencyUIFeatures {
     }
 
     public void showDialogUpdateExchangeRates() {
-        // config alert dialog
+        // config alert binaryDialog
         new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.download)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
@@ -178,7 +178,7 @@ public class CurrencyUIFeatures {
     }
 
     /**
-     * Displays a prompt dialog for choosing whether to update all or active-only currencies.
+     * Displays a prompt binaryDialog for choosing whether to update all or active-only currencies.
      */
     public void showActiveInactiveSelectorForUpdate() {
         // offer active and all currencies

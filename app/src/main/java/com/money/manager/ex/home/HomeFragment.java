@@ -143,7 +143,7 @@ public class HomeFragment
         // The fragment is using a custom option in the actionbar menu.
         setHasOptionsMenu(true);
 
-        // restore number input dialog reference, if any
+        // restore number input binaryDialog reference, if any
         if (savedInstanceState != null) {
             this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
         }
@@ -543,7 +543,7 @@ public class HomeFragment
     public void startBalanceAccount(QueryAccountBills account) {
         setAccountBeingBalanced(account);
 
-        // get the amount via input dialog.
+        // get the amount via input binaryDialog.
         int currencyId = account.getCurrencyId();
 
         AmountInputDialog dialog = AmountInputDialog.getInstance(REQUEST_BALANCE_ACCOUNT,

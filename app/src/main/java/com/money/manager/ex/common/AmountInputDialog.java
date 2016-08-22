@@ -244,7 +244,7 @@ public class AmountInputDialog
             showAmountInEntryField();
         }
 
-        // evaluate the expression initially, in case there is an existing amount passed to the dialog.
+        // evaluate the expression initially, in case there is an existing amount passed to the binaryDialog.
         evalExpression();
 
         // Dialog
@@ -478,9 +478,9 @@ public class AmountInputDialog
     }
 
     private void initializeNewDialog() {
-        // not in restored state. new dialog
+        // not in restored state. new binaryDialog
 
-        // Display the existing amount, if any has been passed into the dialog.
+        // Display the existing amount, if any has been passed into the binaryDialog.
         NumericHelper numericHelper = new NumericHelper(getContext());
         Currency currency = mCurrencyService.getCurrency(mCurrencyId);
 

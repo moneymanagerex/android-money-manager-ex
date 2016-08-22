@@ -597,7 +597,7 @@ public class AccountTransactionListFragment
         int id = item.getItemId();
 
         if (id == R.id.menuTransactionFilters) {
-            // show dialog
+            // show binaryDialog
             showFilterDialog();
             return true;
         }

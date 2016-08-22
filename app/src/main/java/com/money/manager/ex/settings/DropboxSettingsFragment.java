@@ -384,13 +384,13 @@
 //        alertDialog.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 //
 //            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
+//            public void onClick(DialogInterface binaryDialog, int which) {
+//                binaryDialog.dismiss();
 //            }
 //        });
 //        // set auto close to false
 //        alertDialog.setCancelable(false);
-//        // show dialog
+//        // show binaryDialog
 //        alertDialog.create().show();
 //    }
 //
@@ -407,7 +407,7 @@
 //    }
 //
 //    private void downloadFileFromDropbox() {
-//        // must send the parent activity here in order to display the progress dialog.
+//        // must send the parent activity here in order to display the progress binaryDialog.
 //        SyncPreferencesActivity parent = (SyncPreferencesActivity) getActivity();
 //        DropboxManager dropbox = new DropboxManager(parent, mDropboxHelper);
 //        dropbox.downloadFromDropbox();

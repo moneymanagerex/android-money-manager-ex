@@ -1345,7 +1345,7 @@ public class EditTransactionCommonFunctions {
         // Check whether to delete split categories, if any.
         if(hasSplitCategories()) {
             // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+            // Use DialogFragment in order to redraw the binaryDialog when switching device orientation.
 
             DialogFragment dialog = new YesNoDialog();
             Bundle args = new Bundle();

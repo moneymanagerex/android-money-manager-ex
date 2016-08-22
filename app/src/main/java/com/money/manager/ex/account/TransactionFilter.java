@@ -23,7 +23,7 @@ import org.parceler.Parcel;
 
 /**
  * Contains the selected filters for the account transactions list.
- * Used to pass to the UI filter dialog, and to the adapter when querying the data.
+ * Used to pass to the UI filter binaryDialog, and to the adapter when querying the data.
  */
 @Parcel
 public class TransactionFilter {

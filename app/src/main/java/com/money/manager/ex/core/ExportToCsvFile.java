@@ -51,7 +51,7 @@ public class ExportToCsvFile
 	public ExportToCsvFile(Context context, AllDataAdapter adapter) {
 		mContext = context;
 		mAdapter = adapter;
-		// create progress dialog
+		// create progress binaryDialog
 		dialog = new ProgressDialog(mContext);
 	}
 
@@ -97,7 +97,7 @@ public class ExportToCsvFile
 		// compose file name
 		mFileName = folderOutput + "/" + prefix
 				+ new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".csv";
-		// dialog
+		// binaryDialog
 		dialog.setIndeterminate(true);
 		dialog.setMessage(mContext.getString(R.string.export_data_in_progress));
 		dialog.show();

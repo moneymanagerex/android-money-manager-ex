@@ -122,7 +122,7 @@ public class EditTransactionTests
         // changing the date to 15th
         solo.clickOnView(dateView);
         solo.waitForDialogToOpen(1000);
-        System.out.println("dialog open");
+        System.out.println("binaryDialog open");
 
 //        assertThat(solo.searchText(month + " " + year)).isTrue();
         solo.clickOnText(Integer.toString(expectedDay));

@@ -72,7 +72,7 @@ public class MorningstarPriceUpdater
     }
 
     /**
-     * Tracks the number of records to update. Used to close progress dialog when all done.
+     * Tracks the number of records to update. Used to close progress binaryDialog when all done.
      */
     private int mCounter;
     private int mTotalRecords;

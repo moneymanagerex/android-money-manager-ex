@@ -574,7 +574,7 @@ public class WatchlistFragment
 //            @Override
 //            public void onRefresh() {
 //                // update prices
-//                // todo: do not display the manual progress dialog
+//                // todo: do not display the manual progress binaryDialog
 //                String[] symbols = getAllShownSymbols();
 //                ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
 //                        .getUpdaterInstance(getContext());

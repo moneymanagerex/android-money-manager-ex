@@ -328,7 +328,7 @@ public class PayeeListFragment
     }
 
     private void showDialogDeletePayee(final int payeeId) {
-        // creating dialog
+        // creating binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_payee)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
@@ -352,7 +352,7 @@ public class PayeeListFragment
                 dialog.cancel();
                 }
         });
-        // show dialog
+        // show binaryDialog
         alertDialog.create()
             .show();
     }
@@ -365,7 +365,7 @@ public class PayeeListFragment
         if (!TextUtils.isEmpty(payeeName)) {
             edtPayeeName.setSelection(payeeName.length());
         }
-        // create dialog
+        // create binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setView(viewDialog)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_user))
@@ -418,7 +418,7 @@ public class PayeeListFragment
                 dialog.cancel();
             }
         });
-        // show dialog
+        // show binaryDialog
         alertDialog.create().show();
     }
 

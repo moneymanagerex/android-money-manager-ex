@@ -453,7 +453,7 @@ public class CategoryListFragment
     }
 
     /**
-     * Show alter dialog confirm delete category or sub category
+     * Show alter binaryDialog confirm delete category or sub category
      */
     private void showDialogDeleteCategorySub(final CategorySub categoryIds) {
         boolean canDelete;
@@ -484,7 +484,7 @@ public class CategoryListFragment
             return;
         }
 
-        // create and set alert dialog
+        // create and set alert binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_category)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
@@ -523,12 +523,12 @@ public class CategoryListFragment
                 dialog.cancel();
             }
         });
-        // show dialog
+        // show binaryDialog
         alertDialog.create().show();
     }
 
     /**
-     * Show alter dialog, for create or edit new category
+     * Show alter binaryDialog, for create or edit new category
      */
     private void showDialogEditCategoryName(final SQLTypeTransaction type, final int categoryId,
                                             final CharSequence categoryName) {
@@ -546,7 +546,7 @@ public class CategoryListFragment
                 ? R.string.add_category
                 : R.string.edit_categoryName;
 
-        // create alter dialog
+        // create alter binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setView(viewDialog)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
@@ -579,19 +579,19 @@ public class CategoryListFragment
                         restartLoader();
                     }
                 });
-        // listener on cancel dialog
+        // listener on cancel binaryDialog
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-        // create dialog and show
+        // create binaryDialog and show
         alertDialog.create().show();
     }
 
     /**
-     * Show alter dialog, for create or edit new category
+     * Show alter binaryDialog, for create or edit new category
      */
     private void showDialogEditSubCategoryName(final SQLTypeTransaction type, final int categoryId,
                                                final int subCategoryId, final CharSequence subCategName) {
@@ -629,7 +629,7 @@ public class CategoryListFragment
                 ? R.string.add_subcategory
                 : R.string.edit_categoryName;
 
-        // create alter dialog
+        // create alter binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setView(viewDialog)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
@@ -675,14 +675,14 @@ public class CategoryListFragment
                         restartLoader();
                     }
                 });
-        // listener on cancel dialog
+        // listener on cancel binaryDialog
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-        // create dialog and show
+        // create binaryDialog and show
         alertDialog.create().show();
     }
 
@@ -747,7 +747,7 @@ public class CategoryListFragment
                      **/
 //                        showNameEntryDialog();
 
-                    // todo: depending on the choice, show the edit dialog. 0-based
+                    // todo: depending on the choice, show the edit binaryDialog. 0-based
                     if (which == 0) {
                         showDialogEditCategoryName(SQLTypeTransaction.INSERT, -1, null);
                     } else {

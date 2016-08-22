@@ -73,7 +73,7 @@ public class PriceUpdaterBase
 //                DialogUtils.closeProgressDialog(mDialog);
             }
         } catch (Exception e) {
-            Timber.e(e, "closing dialog");
+            Timber.e(e, "closing binaryDialog");
         }
     }
 

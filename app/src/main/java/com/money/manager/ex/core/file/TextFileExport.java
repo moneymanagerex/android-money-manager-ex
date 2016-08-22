@@ -43,7 +43,7 @@ public class TextFileExport {
      * Export text contents as a file.
      * @param fileName The name of the file only (i.e. name + extension).
      * @param contents Text contents to save into the file.
-     * @param dialogTitle The title to use for the export dialog.
+     * @param dialogTitle The title to use for the export binaryDialog.
      * @return Indicator whether the operation was successful.
      * @throws IOException
      */

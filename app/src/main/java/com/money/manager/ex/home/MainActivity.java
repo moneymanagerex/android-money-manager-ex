@@ -187,7 +187,7 @@ public class MainActivity
 
         handleIntent();
 
-        // show change log dialog
+        // show change log binaryDialog
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
 
@@ -818,13 +818,13 @@ public class MainActivity
                 })
                 .build();
 
-//        ListView listView = dialog.getListView();
+//        ListView listView = binaryDialog.getListView();
 //        if (listView != null) {
 //            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override
 //                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                    onDrawerMenuAndOptionMenuSelected(adapter.getItem(position));
-//                    dialog.dismiss();
+//                    binaryDialog.dismiss();
 //                }
 //            });
 //        }

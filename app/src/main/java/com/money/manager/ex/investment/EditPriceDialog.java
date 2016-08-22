@@ -49,7 +49,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Edit price dialog for manual entry/modification of the latest stock price.
+ * Edit price binaryDialog for manual entry/modification of the latest stock price.
  * Ref:
  * http://developer.android.com/guide/topics/ui/dialogs.html
  * http://www.vogella.com/tutorials/AndroidDialogs/article.html
@@ -85,7 +85,7 @@ public class EditPriceDialog
             mPrice = new PriceDownloadedEvent(symbol, price, date);
         }
 
-        // Create dialog.
+        // Create binaryDialog.
 
         AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
                 .setTitle(mPrice.symbol)

@@ -210,7 +210,7 @@ public class AssetClassEditFragment
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(INPUT_ALLOCATION,
                     assetClass.getAllocation());
-//                dialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
+//                binaryDialog.setTargetFragment(AssetClassEditFragment.this, INPUT_ALLOCATION);
                 dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
             }
         });

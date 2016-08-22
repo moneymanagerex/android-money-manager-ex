@@ -5,17 +5,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action0;
+import rx.subscriptions.Subscriptions;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -33,7 +41,7 @@ public class UIHelper {
 
     public static void showDiffNotificationDialog(final Context context) {
         new AlertDialogWrapper.Builder(context)
-                // setting alert dialog
+                // setting alert binaryDialog
                 .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
                 .setTitle(R.string.update_available)
                 .setMessage(R.string.update_available_online)
@@ -53,6 +61,49 @@ public class UIHelper {
                 })
                 .show();
     }
+
+    public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                        .title(title)
+                        .content(message)
+                        .positiveText(android.R.string.ok)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                subscriber.onNext(true);
+                                subscriber.onCompleted();
+                            }
+                        })
+                        .negativeText(android.R.string.cancel)
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                subscriber.onNext(false);
+                                subscriber.onCompleted();
+                            }
+                        })
+                        .build();
+
+                // cleaning up
+                subscriber.add(Subscriptions.create(new Action0() {
+                    @Override
+                    public void call() {
+                        dialog.dismiss();
+                    }
+                }));
+
+                // show the dialog
+                dialog.show();
+            }
+        });
+    }
+
+    /*
+        Instance
+     */
 
     public UIHelper(Context context) {
         this.context = context;

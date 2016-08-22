@@ -33,6 +33,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -43,6 +44,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
+import rx.functions.Action1;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
@@ -129,24 +132,31 @@ public class SyncPreferenceFragment
         // show selected value
         viewHolder.remoteFile.setSummary(remoteFile);
 
-        SyncManager sync = getSyncManager();
-
-        String previousFile = sync.getRemotePath();
-
-        // save selection into preferences
-        sync.setRemotePath(remoteFile);
+        // Save the selection into preferences.
+        getSyncManager().setRemotePath(remoteFile);
 
         // start sync service
         getSyncManager().startSyncServiceAlarm();
 
-        // save local file
+        // save local path.
         storeLocalFileSetting(remoteFile);
 
-        // download db from the cloud storage
-        if (!remoteFile.equals(previousFile)) {
-            // force download file
-            forceDownload();
-        }
+        UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download)
+                .filter(new Func1<Boolean, Boolean>() {
+                    @Override
+                    public Boolean call(Boolean aBoolean) {
+                        // proceed only if user accepts
+                        return aBoolean;
+                    }
+                })
+//                .toBlocking().single();
+            .subscribe(new Action1<Boolean>() {
+                @Override
+                public void call(Boolean aBoolean) {
+                    // download db from the cloud storage
+                    checkIfLocalFileExists();
+                }
+            });
     }
 
     private SyncManager getSyncManager() {
@@ -281,9 +291,35 @@ public class SyncPreferenceFragment
         });
     }
 
+    private void checkIfLocalFileExists() {
+//        String remote = getSyncManager().getRemotePath();
+        String local = getSyncManager().getLocalPath();
+
+        // check if the file exists and prompt the user.
+        if (new File(local).exists()) {
+            // prompt
+            UIHelper.binaryDialog(getActivity(), R.string.file_exists, R.string.file_exists_long)
+                    .filter(new Func1<Boolean, Boolean>() {
+                        @Override
+                        public Boolean call(Boolean aBoolean) {
+                            // proceed only if user confirms
+                            return aBoolean;
+                        }
+                    })
+                    .subscribe(new Action1<Boolean>() {
+                        @Override
+                        public void call(Boolean aBoolean) {
+                            // finally download the file.
+                            forceDownload();
+                        }
+                    });
+        } else {
+            forceDownload();
+        }
+    }
+
     private void forceDownload() {
-        SyncManager sync = getSyncManager();
-        sync.triggerDownload();
+        getSyncManager().triggerDownload();
     }
 
     private void forceUpload() {

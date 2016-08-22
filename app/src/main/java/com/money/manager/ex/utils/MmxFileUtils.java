@@ -138,7 +138,7 @@ public class MmxFileUtils {
 
     /**
      * Dangerous permissions have to be requested at runtime as of API 23 (Android M, 6).
-     * @return boolean indicating whether the request permission dialog is displayed and should be
+     * @return boolean indicating whether the request permission binaryDialog is displayed and should be
      * handled asynchronously.
      */
     public boolean requestExternalStoragePermissions(Activity activity) {

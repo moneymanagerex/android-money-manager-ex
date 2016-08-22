@@ -181,7 +181,7 @@ public abstract class BaseReportFragment
                 //check item
                 item.setChecked(true);
                 mItemSelected = item.getItemId();
-                //show dialog
+                //show binaryDialog
                 showDialogCustomDates();
                 return true;
 //                break;
@@ -274,7 +274,7 @@ public abstract class BaseReportFragment
 
                     startLoader(args);
 
-                    //super.onPositive(dialog);
+                    //super.onPositive(binaryDialog);
                 }
             })
             .show();

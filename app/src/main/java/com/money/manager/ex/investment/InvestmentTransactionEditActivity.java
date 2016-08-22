@@ -171,7 +171,7 @@ public class InvestmentTransactionEditActivity
     }
 
     /**
-     * Raised after the amount has been entered in the number input dialog.
+     * Raised after the amount has been entered in the number input binaryDialog.
      */
     @Subscribe
     public void onEvent(AmountEnteredEvent event) {

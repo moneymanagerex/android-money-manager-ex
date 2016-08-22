@@ -482,7 +482,7 @@ public class WatchlistItemsFragment
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        // close dialog
+                        // close binaryDialog
                         dialog.cancel();
                     }
                 })

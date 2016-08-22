@@ -767,17 +767,17 @@ public class SyncManager {
 
     private Messenger createMessenger() {
         ProgressDialog progressDialog = null;
-        // Create progress dialog only if called from the UI.
+        // Create progress binaryDialog only if called from the UI.
         if (getContext() instanceof Activity) {
             try {
-                //progress dialog shown only when downloading an updated db file.
+                //progress binaryDialog shown only when downloading an updated db file.
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage(getContext().getString(R.string.syncProgress));
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
             } catch (Exception ex) {
-                Timber.e(ex, "displaying sync progress dialog");
+                Timber.e(ex, "displaying sync progress binaryDialog");
             }
         }
 

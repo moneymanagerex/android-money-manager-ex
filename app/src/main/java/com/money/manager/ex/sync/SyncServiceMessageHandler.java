@@ -64,7 +64,7 @@ public class SyncServiceMessageHandler
                 break;
 
             case FILE_NOT_CHANGED:
-                // close dialog
+                // close binaryDialog
                 closeDialog(progressDialog);
                 new UIHelper(getContext()).showToast(R.string.database_is_synchronized, Toast.LENGTH_LONG);
                 break;
@@ -75,7 +75,7 @@ public class SyncServiceMessageHandler
 
             case DOWNLOAD_COMPLETE:
                 storeRecentDb(remoteFile);
-                // close dialog
+                // close binaryDialog
                 closeDialog(progressDialog);
                 // Notify whoever is interested.
                 EventBus.getDefault().post(new DbFileDownloadedEvent());
@@ -88,7 +88,7 @@ public class SyncServiceMessageHandler
                 break;
 
             case UPLOAD_COMPLETE:
-                // close dialog
+                // close binaryDialog
                 closeDialog(progressDialog);
                 new UIHelper(getContext()).showToast(R.string.upload_file_complete, Toast.LENGTH_LONG);
                 break;

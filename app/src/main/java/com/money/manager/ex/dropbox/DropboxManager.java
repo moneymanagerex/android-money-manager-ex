@@ -153,7 +153,7 @@
 //
 //        ProgressDialog progressDialog;
 //        try {
-//            //progress dialog
+//            //progress binaryDialog
 //            progressDialog = new ProgressDialog(mContext);
 //            progressDialog.setCancelable(false);
 //            progressDialog.setMessage(mContext.getString(R.string.syncProgress));
@@ -164,7 +164,7 @@
 //                    .createMessenger(progressDialog, mDropboxHelper.getLinkedRemoteFile());
 //            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
-//            Timber.e(ex, "displaying dropbox progress dialog");
+//            Timber.e(ex, "displaying dropbox progress binaryDialog");
 //        }
 //
 //        // start service

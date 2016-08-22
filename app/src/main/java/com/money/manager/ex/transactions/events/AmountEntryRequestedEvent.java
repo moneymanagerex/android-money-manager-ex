@@ -20,7 +20,7 @@ package com.money.manager.ex.transactions.events;
 import info.javaperformance.money.Money;
 
 /**
- * Event raised from a list or recycler view item when it wants the amount input dialog to show.
+ * Event raised from a list or recycler view item when it wants the amount input binaryDialog to show.
  */
 public class AmountEntryRequestedEvent {
 

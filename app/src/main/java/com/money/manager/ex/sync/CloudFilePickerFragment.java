@@ -104,7 +104,7 @@ public class CloudFilePickerFragment
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // hide the progress dialog
+                // hide the progress binaryDialog
                 progressDialog.dismiss();
 
                 // Refresh the data in the list.

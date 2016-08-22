@@ -38,7 +38,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
  */
 public class DonateDialogUtils {
     /**
-     * Show donate dialog
+     * Show donate binaryDialog
      *
      * @param context   Application
      * @param forceShow if boolean indicating whether you want to force the showing
@@ -56,7 +56,7 @@ public class DonateDialogUtils {
             if (TextUtils.isEmpty(infoService.getInfoValue(InfoKeys.SKU_ORDER_ID))) {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
-                //create dialog
+                //create binaryDialog
                 AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context)
                     .setCancelable(false)
                     .setTitle(R.string.donate)
@@ -75,7 +75,7 @@ public class DonateDialogUtils {
                         dialog.dismiss();
                     }
                 });
-                // show dialog
+                // show binaryDialog
                 showDialog.create().show();
             }
             return true;
@@ -84,7 +84,7 @@ public class DonateDialogUtils {
     }
 
     /**
-     * Reset to force show donate dialog
+     * Reset to force show donate binaryDialog
      *
      * @param context application
      */
