@@ -96,8 +96,7 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename)
-                .toBlocking().value();
+        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename);
         if (remoteFile == null) {
             sendMessage(SyncServiceMessage.ERROR);
             return;

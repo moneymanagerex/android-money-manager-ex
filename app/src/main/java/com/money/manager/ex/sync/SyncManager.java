@@ -166,8 +166,7 @@ public class SyncManager {
 
         // get local and remote file info.
         File localFile = new File(localPath);
-        CloudMetaData remoteFile = loadMetadataObservable(remotePath)
-                .toBlocking().value();
+        CloudMetaData remoteFile = loadMetadataObservable(remotePath);
         if (remoteFile == null) {
             return SyncServiceMessage.ERROR;
         }
@@ -207,36 +206,6 @@ public class SyncManager {
                 return download(remoteFile, localFile);
             }
         });
-    }
-
-    /**
-     * Downloads the file from the storage service.
-     * @param remoteFile Remote file entry
-     * @param localFile Local file reference
-     * @return Indicator whether the download was successful.
-     */
-    private boolean download(CloudMetaData remoteFile, File localFile) {
-        try {
-            InputStream inputStream = getProvider().download(remoteFile.getPath());
-            OutputStream outputStream = new FileOutputStream(localFile, false);
-
-            IOUtils.copy(inputStream, outputStream);
-
-            inputStream.close();
-            outputStream.close();
-
-            // save any renewed tokens
-            this.storePersistent();
-        } catch (Exception e) {
-            Timber.e(e, "downloading from the cloud");
-            return false;
-        }
-
-        cacheRemoteLastModifiedDate(remoteFile);
-
-        abortScheduledUpload();
-
-        return true;
     }
 
     /**
@@ -379,28 +348,34 @@ public class SyncManager {
      * Retrieves the remote metadata. Retries once on fail to work around #957.
      * @return Remote file metadata.
      */
-    public Single<CloudMetaData> loadMetadataObservable(final String remotePath) {
+    public CloudMetaData loadMetadataObservable(final String remotePath) {
+        final CloudMetaData[] result = {null};
 
-        return Single.fromCallable(new Callable<CloudMetaData>() {
+        Single.fromCallable(new Callable<CloudMetaData>() {
             @Override
             public CloudMetaData call() throws Exception {
                 return getProvider().getMetadata(remotePath);
             }
         })
                 .retry(1)
-                .doOnError(new Action1<Throwable>() {
+                .subscribe(new SingleSubscriber<CloudMetaData>() {
                     @Override
-                    public void call(Throwable throwable) {
-                        Timber.e(throwable, "fetching remote metadata");
-                    }
-                })
-                .doOnSuccess(new Action1<CloudMetaData>() {
-                    @Override
-                    public void call(CloudMetaData cloudMetaData) {
+                    public void onSuccess(CloudMetaData value) {
                         // save any renewed tokens
                         SyncManager.this.storePersistent();
+
+                        result[0] = value;
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        Timber.e(error, "fetching remote metadata");
                     }
                 });
+
+        // .toBlocking().value()
+
+        return result[0];
     }
 
     public void login() {
@@ -446,15 +421,6 @@ public class SyncManager {
         storePersistent();
     }
 
-    /**
-     * Start the delayed upload service.
-     */
-    private void scheduleDelayedUpload() {
-        Intent service = new Intent(getContext(), DelayedUploadService.class);
-        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
-        getContext().startService(service);
-    }
-
 //    private void scheduleUpload() {
 //        // Create task/runnable for synchronization.
 //        if (mRunSyncRunnable == null) {
@@ -481,19 +447,6 @@ public class SyncManager {
 
     public void setEnabled(boolean enabled) {
         getPreferences().setSyncEnabled(enabled);
-    }
-
-    /**
-     * Save the last modified datetime of the remote file into Settings for comparison during
-     * the synchronization.
-     * @param file file name
-     */
-    private void cacheRemoteLastModifiedDate(CloudMetaData file) {
-        DateTime date = new DateTime(file.getModifiedAt());
-
-        Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
-
-        getPreferences().set(file.getPath(), date.toString());
     }
 
     public void setProvider(CloudStorageProviderEnum provider) {
@@ -623,9 +576,11 @@ public class SyncManager {
         }
 
         // set last modified date
-        CloudMetaData remoteFileMetadata = loadMetadataObservable(remoteFile)
-                .toBlocking()
-                .value();
+        CloudMetaData remoteFileMetadata = loadMetadataObservable(remoteFile);
+        if (remoteFileMetadata == null) {
+            Timber.w("Could not retrieve metadata after upload! Aborting.");
+            return false;
+        }
 
         cacheRemoteLastModifiedDate(remoteFileMetadata);
 
@@ -665,7 +620,9 @@ public class SyncManager {
         getContext().startActivity(intent);
     }
 
-    // private
+    /*
+        Private
+     */
 
     /**
      * Compares the local and remote db filenames. Use for safety check before synchronization.
@@ -684,6 +641,19 @@ public class SyncManager {
         return localName.equalsIgnoreCase(remoteName);
     }
 
+    /**
+     * Save the last modified datetime of the remote file into Settings for comparison during
+     * the synchronization.
+     * @param file file name
+     */
+    private void cacheRemoteLastModifiedDate(CloudMetaData file) {
+        DateTime date = new DateTime(file.getModifiedAt());
+
+        Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
+
+        getPreferences().set(file.getPath(), date.toString());
+    }
+
     private void createProviders() {
         try {
             dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
@@ -693,6 +663,36 @@ public class SyncManager {
         } catch (Exception e) {
             Timber.e(e, "creating cloud providers");
         }
+    }
+
+    /**
+     * Downloads the file from the storage service.
+     * @param remoteFile Remote file entry
+     * @param localFile Local file reference
+     * @return Indicator whether the download was successful.
+     */
+    private boolean download(CloudMetaData remoteFile, File localFile) {
+        try {
+            InputStream inputStream = getProvider().download(remoteFile.getPath());
+            OutputStream outputStream = new FileOutputStream(localFile, false);
+
+            IOUtils.copy(inputStream, outputStream);
+
+            inputStream.close();
+            outputStream.close();
+
+            // save any renewed tokens
+            this.storePersistent();
+        } catch (Exception e) {
+            Timber.e(e, "downloading from the cloud");
+            return false;
+        }
+
+        cacheRemoteLastModifiedDate(remoteFile);
+
+        abortScheduledUpload();
+
+        return true;
     }
 
     private SyncPreferences getPreferences() {
@@ -808,4 +808,14 @@ public class SyncManager {
             }
         }
     }
+
+    /**
+     * Start the delayed upload service.
+     */
+    private void scheduleDelayedUpload() {
+        Intent service = new Intent(getContext(), DelayedUploadService.class);
+        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
+        getContext().startService(service);
+    }
+
 }

@@ -108,8 +108,7 @@ public class SyncAdapter
 
         File localFile = new File(localFilename);
 
-        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename)
-                .toBlocking().value();
+        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename);
         if (remoteFile == null) {
 //            sendMessage(SyncServiceMessage.ERROR);
             return;

@@ -424,7 +424,7 @@ public class MainActivity
 
                     @Override
                     public void onNext(SyncServiceMessage syncServiceMessage) {
-                        Timber.d("Comparing to online storage: %s", syncServiceMessage.name());
+                        Timber.d("Db compared to cloud. Result: %s", syncServiceMessage.name());
                         switch (syncServiceMessage) {
                             case STARTING_DOWNLOAD:
                                 UIHelper.showDiffNotificationDialog(MainActivity.this);
@@ -436,7 +436,7 @@ public class MainActivity
                                 UIHelper.showToast(MainActivity.this, R.string.database_is_synchronized);
                                 break;
                             case ERROR:
-                                Timber.w(getString(R.string.remote_file_not_found));
+                                Timber.w(getString(R.string.error_checking_remote));
                                 break;
                         }
                     }
