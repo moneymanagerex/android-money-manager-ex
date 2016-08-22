@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
@@ -141,22 +142,24 @@ public class SyncPreferenceFragment
         // save local path.
         storeLocalFileSetting(remoteFile);
 
-        UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download)
-                .filter(new Func1<Boolean, Boolean>() {
+        ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+            UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download)
+                    .filter(new Func1<Boolean, Boolean>() {
+                        @Override
+                        public Boolean call(Boolean aBoolean) {
+                            // proceed only if user accepts
+                            return aBoolean;
+                        }
+                    })
+    //                .toBlocking().single();
+                .subscribe(new Action1<Boolean>() {
                     @Override
-                    public Boolean call(Boolean aBoolean) {
-                        // proceed only if user accepts
-                        return aBoolean;
+                    public void call(Boolean aBoolean) {
+                        // download db from the cloud storage
+                        checkIfLocalFileExists();
                     }
                 })
-//                .toBlocking().single();
-            .subscribe(new Action1<Boolean>() {
-                @Override
-                public void call(Boolean aBoolean) {
-                    // download db from the cloud storage
-                    checkIfLocalFileExists();
-                }
-            });
+        );
     }
 
     private SyncManager getSyncManager() {
@@ -298,21 +301,23 @@ public class SyncPreferenceFragment
         // check if the file exists and prompt the user.
         if (new File(local).exists()) {
             // prompt
-            UIHelper.binaryDialog(getActivity(), R.string.file_exists, R.string.file_exists_long)
-                    .filter(new Func1<Boolean, Boolean>() {
-                        @Override
-                        public Boolean call(Boolean aBoolean) {
-                            // proceed only if user confirms
-                            return aBoolean;
-                        }
-                    })
-                    .subscribe(new Action1<Boolean>() {
-                        @Override
-                        public void call(Boolean aBoolean) {
-                            // finally download the file.
-                            forceDownload();
-                        }
-                    });
+            ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+                UIHelper.binaryDialog(getActivity(), R.string.file_exists, R.string.file_exists_long)
+                        .filter(new Func1<Boolean, Boolean>() {
+                            @Override
+                            public Boolean call(Boolean aBoolean) {
+                                // proceed only if user confirms
+                                return aBoolean;
+                            }
+                        })
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                // finally download the file.
+                                forceDownload();
+                            }
+                        })
+            );
         } else {
             forceDownload();
         }

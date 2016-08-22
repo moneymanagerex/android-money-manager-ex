@@ -40,9 +40,10 @@ import timber.log.Timber;
 public abstract class BaseFragmentActivity
     extends AppCompatActivity {
 
+    public CompositeSubscription compositeSubscription;
+
     private Toolbar mToolbar;
     private boolean mDisplayHomeAsUpEnabled = false;
-    protected CompositeSubscription compositeSubscription;
 
     @Override
     public void setContentView(int layoutResID) {

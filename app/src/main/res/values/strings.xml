@@ -748,7 +748,7 @@
     <string name="dropbox_select_file">Select a file from Dropbox</string>
     <string name="confirm_download">Do you want to download the remote file now?</string>
     <string name="file_exists">File exists</string>
-    <string name="file_exists_long">A file with the same name already exists in the local storage. Do you want to overwrite this file? (A backup copy will still be created)</string>
+    <string name="file_exists_long">A file with the same name already exists in the local storage. Do you want to overwrite this file?</string>
 
     <!-- Errors -->
     <string name="error_parsing_value">Error parsing entered value</string>
