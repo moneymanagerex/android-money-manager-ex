@@ -25,8 +25,8 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionName '2016.08.22'
         versionCode 898
+        versionName getVersionAsDate() + "." + versionCode
 
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
@@ -278,4 +278,10 @@ dependencies {
 
 configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
+}
+
+def getVersionAsDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy.MM.dd')
+    return formattedDate
 }

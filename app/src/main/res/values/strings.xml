@@ -495,9 +495,8 @@
     <string name="discard">Discard</string>
     <string name="invalid_expression">Invalid expression</string>
     <string name="send_me_logcat">Logcat</string>
-    <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="due_today">Due Today</string>
-    <string name="issues_tracker">Issues Tracker on GitHub</string>
+    <string name="issues_tracker">Issue Tracker on GitHub</string>
     <string name="action_settings">Settings</string>
     <string name="close">Close</string>
     <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
@@ -699,6 +698,7 @@
 
     <!-- deprecated / Dropbox -->
     <!--<string name="dropbox">Dropbox</string>-->
+    <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
     <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
     <string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>

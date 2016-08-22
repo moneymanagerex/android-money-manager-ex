@@ -208,8 +208,9 @@ public class Core {
 
     public String getAppVersionName() {
         try {
-            return getContext().getPackageManager().getPackageInfo(
-                getContext().getPackageName(), 0).versionName;
+            return getContext().getPackageManager()
+                    .getPackageInfo(getContext().getPackageName(), 0)
+                    .versionName;
         } catch (PackageManager.NameNotFoundException e) {
             Timber.e(e, "getting app version name");
         }
