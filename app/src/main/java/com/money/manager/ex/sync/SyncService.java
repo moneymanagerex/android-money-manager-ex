@@ -74,7 +74,8 @@ public class SyncService
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Timber.d("Running sync service: %s", intent.toString());
+        String intentString = intent != null ? intent.toString() : "null";
+        Timber.d("Running sync service: %s", intentString);
 
         // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
