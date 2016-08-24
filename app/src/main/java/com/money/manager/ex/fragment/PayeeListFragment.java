@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -185,7 +186,15 @@ public class PayeeListFragment
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = null;
+        if (item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
+            info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        } else {
+            return false;
+        }
+//        if (item.getMenuInfo() instanceof ExpandableListView.ExpandableListContextMenuInfo) {
+//            info = item.getMenuInfo();
+//        }
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
@@ -195,6 +204,8 @@ public class PayeeListFragment
         payee.loadFromCursor(cursor);
 
         ContextMenuIds menuId = ContextMenuIds.get(item.getItemId());
+        if (menuId == null) return false;
+
         switch (menuId) {
             case EDIT:
                 showDialogEditPayeeName(SQLTypeTransaction.UPDATE, payee.getId(), payee.getName());
