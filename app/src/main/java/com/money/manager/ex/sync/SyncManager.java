@@ -369,6 +369,9 @@ public class SyncManager {
 
                     @Override
                     public void onError(Throwable error) {
+                        // todo handle DNS exceptions by just showing a message?
+                        //if (error instanceof RuntimeException && error.getMessage().equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname"))
+
                         Timber.e(error, "fetching remote metadata");
                     }
                 });

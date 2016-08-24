@@ -192,6 +192,10 @@ public class FullAssetAllocationActivity
             AssetAllocationService service = new AssetAllocationService(this);
             assetAllocation = service.loadAssetAllocation();
         }
+        // This happens.
+        if (assetAllocation == null) {
+            return null;
+        }
 
         // linearize for display
         List<AssetClassViewModel> modelList = new ArrayList<>();
