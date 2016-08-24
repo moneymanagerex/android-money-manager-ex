@@ -219,15 +219,13 @@ public class CurrencyListFragment
         inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
 
         UIHelper uiHelper = new UIHelper(getActivity());
-        int primaryColor = uiHelper.getColor(R.attr.toolbarItemColor);
-        int iconSize = uiHelper.getDimenInDp(R.dimen.mmx_toolbar_icon_size);
 
         // Customize with font icon, if needed.
         MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
         Drawable icon = new IconicsDrawable(getActivity())
                 .icon(MMEXIconFont.Icon.mmx_share_square)
-                .color(primaryColor)
-                .sizeDp(iconSize);
+                .color(uiHelper.getPrimaryColor())
+                .sizeDp(uiHelper.getToolbarIconSize());
         item.setIcon(icon);
     }
 

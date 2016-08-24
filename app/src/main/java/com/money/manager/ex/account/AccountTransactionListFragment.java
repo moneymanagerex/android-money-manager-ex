@@ -42,6 +42,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
@@ -495,14 +497,14 @@ public class AccountTransactionListFragment
      * @param menu menu/toolbar to add the icon to.
      */
     private void initTransactionStatusMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
+//        MenuItem item = menu.findItem(R.id.menuTransactionStatusSelector);
 
-        // Use a font icon.
-        FontIconDrawable icon = FontIconDrawable.inflate(getContext(), R.xml.ic_filter);
-        // get the toolbar item color.
-        UIHelper uiHelper = new UIHelper(getActivity());
-        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor)); // Color.RED
-        item.setIcon(icon);
+        // todo Use a font icon.
+//        UIHelper uiHelper = new UIHelper(getActivity());
+//        IconicsDrawable icon = new IconicsDrawable(getActivity())
+//                .icon(MMEXIconFont.Icon.mmx_filter)
+//                .color(uiHelper.getPrimaryColor())
+//                .sizeDp(uiHelper.getToolbarIconSize());
 
         // selection handled in onOptionsItemSelected
     }

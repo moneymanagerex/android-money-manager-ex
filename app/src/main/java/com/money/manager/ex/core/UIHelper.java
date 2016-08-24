@@ -132,6 +132,14 @@ public class UIHelper {
         return sizeInDp;
     }
 
+    public int getToolbarIconSize() {
+        return getDimenInDp(R.dimen.mmx_toolbar_icon_size);
+    }
+
+    public int getPrimaryColor() {
+        return getColor(R.attr.toolbarItemColor);
+    }
+
     /**
      * Resolve the id attribute into int value
      * @param attr id attribute
