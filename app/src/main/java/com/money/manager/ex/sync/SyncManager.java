@@ -131,8 +131,8 @@ public class SyncManager {
         return true;
     }
 
-    public Observable<SyncServiceMessage> compareFilesAsync() {
-        return Observable.fromCallable(new Callable<SyncServiceMessage>() {
+    public Single<SyncServiceMessage> compareFilesAsync() {
+        return Single.fromCallable(new Callable<SyncServiceMessage>() {
             @Override
             public SyncServiceMessage call() throws Exception {
                 return compareFilesForSync();
@@ -141,44 +141,67 @@ public class SyncManager {
     }
 
     /**
-     * This function returns if the file is synchronized or not
+     * Compares the remote file last-changed-date with the locally cached data.
+     * @return An indicator if the remote file has changed since the last synchronization.
+     */
+    private boolean isRemoteFileModified(String localPath) {
+        String remotePath = getRemotePath();
+
+        // validations
+        if (TextUtils.isEmpty(remotePath)) {
+            throw new IllegalArgumentException("remote file not set");
+        }
+
+        CloudMetaData remoteFile = loadMetadata(remotePath);
+        if (remoteFile == null) {
+            throw new RuntimeException("remote metadata could not be retrieved");
+        }
+
+        // Compare the local cache and the remote info.
+        DateTime localLastModified;
+        DateTime remoteLastModified;
+        File localFile = new File(localPath);
+
+        localLastModified = getCachedLastModifiedDateFor(remoteFile);
+        if (localLastModified == null) {
+            localLastModified = new DateTime(localFile.lastModified());
+        }
+        remoteLastModified = new DateTime(remoteFile.getModifiedAt());
+
+        // this is the new logic!
+        DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile);
+        DateTime remoteLastModified = getModificationDate(remoteFile);
+        boolean result = !remoteLastModified.isEqual(cachedLastModified);
+    }
+
+    /**
+     * This function returns if the local database file is synchronized or not.
      * @return int
      */
-    public SyncServiceMessage compareFilesForSync() {
+    private SyncServiceMessage compareFilesForSync() {
+        // todo: reuse the logic from SyncService.triggerSync!
+
         if (!isActive()) {
-            return SyncServiceMessage.FILE_NOT_CHANGED;
+            return SyncServiceMessage.SYNC_DISABLED;
+        }
+
+        // Is local file changed?
+        boolean localChanged = getPreferences().isLocalFileChanged();
+        boolean remoteChanged;
+        try {
+            remoteChanged = isRemoteFileModified();
+        } catch (Exception e) {
+            Timber.e(e, "error checking for remote changes");
+            return SyncServiceMessage.ERROR;
         }
 
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-        String remotePath = getRemotePath();
 
         // check if we have the file names.
-        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) {
-            return SyncServiceMessage.FILE_NOT_CHANGED;
-        }
-        if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.FILE_NOT_CHANGED;
-
-        // get local and remote file info.
-        File localFile = new File(localPath);
-        CloudMetaData remoteFile = loadMetadataObservable(remotePath);
-        if (remoteFile == null) {
+        if (TextUtils.isEmpty(localPath)) {
             return SyncServiceMessage.ERROR;
         }
-
-        // date last Modified
-        DateTime localLastModified;
-        DateTime remoteLastModified;
-        try {
-            localLastModified = getCachedLastModifiedDateFor(remoteFile);
-            if (localLastModified == null) {
-                localLastModified = new DateTime(localFile.lastModified());
-            }
-            remoteLastModified = new DateTime(remoteFile.getModifiedAt());
-        } catch (Exception e) {
-            Timber.e(e, "retrieving the last modified date in compareFilesForSync");
-
-            return SyncServiceMessage.ERROR;
-        }
+        // todo if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.ERROR;
 
         if (remoteLastModified.isAfter(localLastModified)) {
             return SyncServiceMessage.STARTING_DOWNLOAD;
@@ -336,7 +359,7 @@ public class SyncManager {
      * Retrieves the remote metadata. Retries once on fail to work around #957.
      * @return Remote file metadata.
      */
-    public CloudMetaData loadMetadataObservable(final String remotePath) {
+    public CloudMetaData loadMetadata(final String remotePath) {
         final CloudMetaData[] result = {null};
 
         Single.fromCallable(new Callable<CloudMetaData>() {
@@ -558,7 +581,7 @@ public class SyncManager {
         }
 
         // set last modified date
-        CloudMetaData remoteFileMetadata = loadMetadataObservable(remoteFile);
+        CloudMetaData remoteFileMetadata = loadMetadata(remoteFile);
         if (remoteFileMetadata == null) {
             Timber.w("Could not retrieve metadata after upload! Aborting.");
             return false;

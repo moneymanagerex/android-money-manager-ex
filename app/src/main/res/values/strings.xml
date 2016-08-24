@@ -749,6 +749,7 @@
     <string name="confirm_download">Do you want to download the remote file now?</string>
     <string name="file_exists">File exists</string>
     <string name="file_exists_long">A file with the same name already exists in the local storage. Do you want to overwrite this file?</string>
+    <string name="synchronization_disabled">Synchronization is disabled.</string>
 
     <!-- Warnings -->
     <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favourite.</string>

@@ -41,8 +41,8 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 
+import rx.SingleSubscriber;
 import rx.Subscriber;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -97,7 +97,7 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename);
+        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
         if (remoteFile == null) {
             sendMessage(SyncServiceMessage.ERROR);
             return;
@@ -268,6 +268,9 @@ public class SyncService
 
     private void triggerSync(final File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
+
+        SyncServiceMessage comparison = sync.compareFilesAsync().toBlocking().value();
+
         SyncPreferences preferences = new SyncPreferences(getApplicationContext());
 
         // are there local changes?
@@ -275,9 +278,8 @@ public class SyncService
         Timber.d("local file has changes: %b", isLocalModified);
 
         // are there remote changes?
-        DateTime cachedLastModified = sync.getCachedLastModifiedDateFor(remoteFile);
-        DateTime remoteLastModified = sync.getModificationDate(remoteFile);
-        boolean isRemoteModified = !remoteLastModified.isEqual(cachedLastModified);
+        // todo
+        boolean isRemoteModified = sync.is;
         Timber.d("Remote file has changes: %b", isRemoteModified);
 
         if (!isLocalModified && !isRemoteModified) {

@@ -28,7 +28,8 @@ public enum SyncServiceMessage {
     STARTING_DOWNLOAD(0x000C),
     STARTING_UPLOAD(0x000D),
     NOT_ON_WIFI(0x000E),
-    ERROR(0x000F);
+    ERROR(0x000F),
+    SYNC_DISABLED(1);
 
     SyncServiceMessage(int value) {
         code = value;
