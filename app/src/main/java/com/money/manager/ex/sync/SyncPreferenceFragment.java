@@ -303,15 +303,25 @@ public class SyncPreferenceFragment
         viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                SyncManager sync = getSyncManager();
-                sync.logout();
-                sync.resetPreferences();
-                sync.stopSyncServiceAlarm();
+                final SyncManager sync = getSyncManager();
+                sync.logoutObservable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleSubscriber<Void>() {
+                        @Override
+                        public void onSuccess(Void value) {
+                            sync.resetPreferences();
+                            sync.stopSyncServiceAlarm();
 
-                Core.alertDialog(getActivity(), R.string.preferences_reset);
+                            Core.alertDialog(getActivity(), R.string.preferences_reset);
 
-                getActivity().recreate();
+                            getActivity().recreate();
+                        }
 
+                        @Override
+                        public void onError(Throwable error) {
+                            Timber.e(error, "logging out the cloud provider");                        }
+                    });
                 return false;
             }
         });

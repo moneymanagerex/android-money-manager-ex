@@ -394,17 +394,15 @@ public class SyncManager {
         .toSingle();
     }
 
-    void logout() {
-        new Thread(new Runnable() {
+    public Single<Void> logoutObservable() {
+        return Observable.fromCallable(new Callable<Void>() {
             @Override
-            public void run() {
-                try {
-                    getProvider().logout();
-                } catch (Exception e) {
-                    Timber.e(e, "logging out the cloud provider");
-                }
+            public Void call() throws Exception {
+                getProvider().logout();
+                return null;
             }
-        }).start();
+        })
+        .toSingle();
     }
 
     /**
