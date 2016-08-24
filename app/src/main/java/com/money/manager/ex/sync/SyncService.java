@@ -276,7 +276,7 @@ public class SyncService
         // are there remote changes?
         DateTime cachedLastModified = sync.getCachedLastModifiedDateFor(remoteFile);
         DateTime remoteLastModified = sync.getModificationDate(remoteFile);
-        boolean isRemoteModified = !cachedLastModified.isEqual(remoteLastModified);
+        boolean isRemoteModified = !remoteLastModified.isEqual(cachedLastModified);
         Timber.d("Remote file has changes: %b", isRemoteModified);
 
         if (!isLocalModified && !isRemoteModified) {
