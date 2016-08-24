@@ -26,7 +26,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cloudrail.si.exceptions.AuthenticationException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -40,13 +39,11 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -63,11 +60,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import rx.Observable;
 import rx.Single;
 import rx.SingleSubscriber;
-import rx.Subscriber;
 import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -258,27 +251,21 @@ public class SyncManager {
         return localPath + remoteFileName;
     }
 
-    public void getRemoteFolderContentsAsync(final String folder) {
-        new Thread(new Runnable() {
+    public Single<List<CloudMetaData>> getRemoteFolderContentsAsync(final String folder) {
+        return Observable.fromCallable(new Callable<List<CloudMetaData>>() {
             @Override
-            public void run() {
-                List<CloudMetaData> items = null;
-
-                try {
-                    items = getProvider().getChildren(folder);
-
-                    // save any renewed tokens
-                    storePersistent();
-                } catch (Exception ex) {
-//                    if (ex instanceof RuntimeException && ex.getMessage().equals("ServiceCode Error in function standardJSONRequest at 11")) {
-//                        // error fetching remote data. Usually a network problem.
-//                    }
-                    Timber.e(ex, "retrieving the remote folder contents");
-                }
-
-                EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
+            public List<CloudMetaData> call() throws Exception {
+                return getProvider().getChildren(folder);
             }
-        }).start();
+        })
+                .doOnCompleted(new Action0() {
+                    @Override
+                    public void call() {
+                        // save any renewed tokens
+                        storePersistent();
+                    }
+                })
+                .toSingle();
     }
 
     /**
