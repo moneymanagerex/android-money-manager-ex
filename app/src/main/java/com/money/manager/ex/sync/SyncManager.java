@@ -67,6 +67,7 @@ import rx.Subscriber;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -371,6 +372,7 @@ public class SyncManager {
                     public void onError(Throwable error) {
                         // todo handle DNS exceptions by just showing a message?
                         //if (error instanceof RuntimeException && error.getMessage().equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname"))
+                        // Unable to resolve host "www.googleapis.com": No address associated with hostname
 
                         Timber.e(error, "fetching remote metadata");
                     }
@@ -381,23 +383,15 @@ public class SyncManager {
         return result[0];
     }
 
-    public void login() {
-        new Thread(new Runnable() {
+    public Single<Void> loginObservable() {
+        return Observable.fromCallable(new Callable<Void>() {
             @Override
-            public void run() {
-                try {
-                    getProvider().login();
-                } catch (AuthenticationException e) {
-                    if (e.getMessage().equals("Authentication was cancelled")) {
-                        Timber.w("authentication cancelled");
-                    } else {
-                        Timber.e(e, "logging in to cloud provider");
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "logging in to cloud provider");
-                }
+            public Void call() throws Exception {
+                getProvider().login();
+                return null;
             }
-        }).start();
+        })
+        .toSingle();
     }
 
     void logout() {

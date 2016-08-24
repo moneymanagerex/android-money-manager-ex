@@ -45,8 +45,11 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
+import rx.SingleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -192,15 +195,35 @@ public class SyncPreferenceFragment
         viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                SyncManager sync = getSyncManager();
+                final SyncManager sync = getSyncManager();
                 // set the new provider
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
-                // log in to the provider immediately and save to persistence.
-                sync.login();
-                // Login is an async call so no point saving here.
-//                sync.storePersistent();
+                final boolean[] result = new boolean[1];
 
-                return true;
+                // log in to the provider immediately and save to persistence.
+                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+                    sync.loginObservable()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new SingleSubscriber<Void>() {
+                                @Override
+                                public void onSuccess(Void value) {
+                                    result[0] = true;
+                                    sync.storePersistent();
+                                }
+
+                                @Override
+                                public void onError(Throwable error) {
+                                    if (error.getMessage().equals("Authentication was cancelled")) {
+                                        Timber.w("authentication cancelled");
+                                    } else {
+                                        Timber.e(error, "logging in to cloud provider");
+                                    }
+                                }
+                            })
+                );
+
+                return result[0];
             }
         });
 
