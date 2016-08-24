@@ -1366,7 +1366,17 @@ public class EditTransactionCommonFunctions {
 
         // Set the destination account, if not already.
         if (transactionEntity.getAccountToId() == null || transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
-            transactionEntity.setAccountToId(mAccountIdList.get(0));
+            if (mAccountIdList.size() == 0) {
+                // notify the user and exit.
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.warning)
+                        .content(R.string.no_accounts_available_for_selection)
+                        .positiveText(android.R.string.ok)
+                        .show();
+                return;
+            } else {
+                transactionEntity.setAccountToId(mAccountIdList.get(0));
+            }
         }
 
         // calculate AmountTo only if not set previously.
