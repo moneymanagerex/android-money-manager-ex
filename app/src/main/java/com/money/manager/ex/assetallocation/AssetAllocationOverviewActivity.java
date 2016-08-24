@@ -287,6 +287,8 @@ public class AssetAllocationOverviewActivity
     }
 
     private String getSummaryRow(AssetClass allocation) {
+        if (allocation == null) return "n/a";
+
         String html = "";
         FormatUtilities formatter = new FormatUtilities(this);
 
@@ -369,21 +371,28 @@ public class AssetAllocationOverviewActivity
 
     private void createWebPrintJob(WebView webView) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            ExceptionHandler handler = new ExceptionHandler(this);
-            handler.showMessage(R.string.min_19);
+            UIHelper.showToast(this, R.string.min_19);
             return;
+        } else {
+            // Get a PrintManager instance
+            PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
+
+            // Get a print adapter instance
+            PrintDocumentAdapter printAdapter;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                printAdapter = webView.createPrintDocumentAdapter(getString(R.string.asset_allocation));
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                printAdapter = webView.createPrintDocumentAdapter();
+            } else {
+                // to satisfy lint.
+                return;
+            }
+
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Document";
+            // PrintJob printJob =
+            printManager.print(jobName, printAdapter, new PrintAttributes.Builder().build());
         }
-
-        // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) getSystemService(Context.PRINT_SERVICE);
-
-        // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-
-        // Create a print job with name and adapter instance
-        String jobName = getString(R.string.app_name) + " Document";
-        PrintJob printJob = printManager.print(jobName, printAdapter,
-                new PrintAttributes.Builder().build());
     }
 
     private boolean showContextMenu() {
