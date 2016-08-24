@@ -47,6 +47,9 @@ public class DelayedUploadService
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        // validation.
+        if (intent == null) return;
+
         // Cancel any existing subscriptions.
         unsubscribe();
 
