@@ -16,7 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.24.899">
+    <changelogversion versionName="2016.08.25.900">
+        <changelogtext>Sync adjustment on start.</changelogtext>
+        <changelogtext>Adjustment for passcode on Android N (crypto provider is deprecated).</changelogtext>
         <changelogtext>Faster file list retrieval from the cloud.</changelogtext>
         <changelogtext>Additional stabilization - handling many reported exceptions for unique cases.</changelogtext>
     </changelogversion>
