@@ -34,7 +34,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -443,11 +443,9 @@ public class InvestmentTransactionEditActivity
     }
 
     private boolean validate() {
-        ExceptionHandler handler = new ExceptionHandler(this);
-
         // symbol must not be empty.
         if (StringUtils.isEmpty(mStock.getSymbol())) {
-            handler.showMessage(getString(R.string.symbol_required));
+            UIHelper.showToast(this, getString(R.string.symbol_required));
             return false;
         }
 

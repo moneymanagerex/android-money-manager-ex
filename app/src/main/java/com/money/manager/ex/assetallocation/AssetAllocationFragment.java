@@ -41,8 +41,8 @@ import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequeste
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.domainmodel.Stock;
@@ -172,14 +172,12 @@ public class AssetAllocationFragment
 
     @Override
     public void onFloatingActionButtonClickListener() {
-        ExceptionHandler handler = new ExceptionHandler(getActivity());
-
         AssetClass assetClass = retrieveData();
 
         // check which item to create
         ItemType type = assetClass.getType();
         if (type == null) {
-            handler.showMessage("Item type not set.");
+            UIHelper.showToast(getActivity(), "Item type not set.");
             return;
         }
 

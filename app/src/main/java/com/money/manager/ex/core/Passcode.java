@@ -130,7 +130,6 @@ public class Passcode {
 
     /**
      * Set a passcode into database
-     *
      * @param passcode passcode to use
      */
     private boolean updatePasscode(String passcode) {

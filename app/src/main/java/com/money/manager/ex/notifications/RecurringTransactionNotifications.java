@@ -27,7 +27,6 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionListActivity;

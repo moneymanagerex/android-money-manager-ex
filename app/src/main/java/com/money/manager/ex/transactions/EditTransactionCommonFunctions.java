@@ -47,6 +47,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.CategoryRepository;
@@ -59,7 +60,6 @@ import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -181,8 +181,7 @@ public class EditTransactionCommonFunctions {
         AccountRepository repo = new AccountRepository(getContext());
         Integer currencyId = repo.loadCurrencyIdFor(accountId);
         if (currencyId == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.showMessage(R.string.error_loading_currency);
+            UIHelper.showToast(getContext(), R.string.error_loading_currency);
 
             currencyId = Constants.NOT_SET;
         }

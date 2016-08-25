@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
@@ -236,8 +236,7 @@ public class RecurringTransactionService
         RecurringTransactionRepository repo = getRepository();
         boolean updated = repo.update(mRecurringTransaction);
         if (!updated) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.showMessage(R.string.error_saving_record);
+            UIHelper.showToast(getContext(), R.string.error_saving_record);
         }
     }
 

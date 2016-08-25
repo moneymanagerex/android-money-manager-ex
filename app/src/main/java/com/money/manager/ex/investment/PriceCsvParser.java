@@ -20,7 +20,6 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.opencsv.CSVParser;

@@ -28,7 +28,6 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
-import com.money.manager.ex.log.ExceptionHandler;
 
 import timber.log.Timber;
 
