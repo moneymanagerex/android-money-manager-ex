@@ -26,6 +26,8 @@ import android.widget.TextView;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.view.RobotoView;
 
+import timber.log.Timber;
+
 /**
  */
 public class MoneySimpleCursorAdapter
@@ -47,7 +49,7 @@ public class MoneySimpleCursorAdapter
             try {
                 v.setTypeface(RobotoView.obtainTypeface(mContext, RobotoView.getUserFont()));
             } catch (Exception e) {
-                Log.e(LOGCAT, e.getMessage());
+                Timber.e(e, "getting roboto typeface");
             }
             super.setViewText(v, text);
             // check if highlight text

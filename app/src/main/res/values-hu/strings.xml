@@ -599,7 +599,7 @@
   <string name="every_6_hours">6 óránként</string>
   <string name="every_12_hours">12 óránként</string>
   <string name="never">Soha</string>
-  <string name="dropbox_select_file">Válasszon egy Dropbox állományt</string>
+  <string name="select_remote_file">Válasszon egy Dropbox állományt</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

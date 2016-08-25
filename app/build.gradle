@@ -100,7 +100,8 @@ android {
 
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
+                    // append the version to the file name.
+                    def version = "-" + defaultConfig.versionName.replace(".", "-") // + "_r" + defaultConfig.versionCode
                     output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", version + ".apk"))
                 }
             }

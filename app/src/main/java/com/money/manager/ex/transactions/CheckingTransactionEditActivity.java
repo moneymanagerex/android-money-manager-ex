@@ -471,7 +471,7 @@ public class CheckingTransactionEditActivity
                                 mCommonFunctions.showPayeeName();
                                 mCommonFunctions.displayCategoryName();
                             } catch (Exception e) {
-                                Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+                                Timber.e(e, "showing payee and category names");
                             }
                         }
                     }

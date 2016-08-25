@@ -70,7 +70,7 @@
 //
 //        String dropboxFile = mDropboxHelper.getLinkedRemoteFile();
 //        if (TextUtils.isEmpty(dropboxFile)) {
-//            Toast.makeText(mContext, R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, R.string.select_remote_file, Toast.LENGTH_SHORT).show();
 //            return;
 //        }
 //

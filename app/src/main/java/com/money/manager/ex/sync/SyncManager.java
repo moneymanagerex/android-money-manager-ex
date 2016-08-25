@@ -37,6 +37,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -131,86 +132,89 @@ public class SyncManager {
         return true;
     }
 
-    public Single<SyncServiceMessage> compareFilesAsync() {
-        return Single.fromCallable(new Callable<SyncServiceMessage>() {
-            @Override
-            public SyncServiceMessage call() throws Exception {
-                return compareFilesForSync();
-            }
-        });
-    }
+//    public Single<SyncServiceMessage> compareFilesAsync() {
+//        return Single.fromCallable(new Callable<SyncServiceMessage>() {
+//            @Override
+//            public SyncServiceMessage call() throws Exception {
+//                return compareFilesForSync();
+//            }
+//        });
+//    }
 
-    /**
-     * Compares the remote file last-changed-date with the locally cached data.
-     * @return An indicator if the remote file has changed since the last synchronization.
-     */
-    private boolean isRemoteFileModified(String localPath) {
-        String remotePath = getRemotePath();
-
-        // validations
-        if (TextUtils.isEmpty(remotePath)) {
-            throw new IllegalArgumentException("remote file not set");
-        }
-
-        CloudMetaData remoteFile = loadMetadata(remotePath);
-        if (remoteFile == null) {
-            throw new RuntimeException("remote metadata could not be retrieved");
-        }
-
-        // Compare the local cache and the remote info.
-        DateTime localLastModified;
-        DateTime remoteLastModified;
-        File localFile = new File(localPath);
-
-        localLastModified = getCachedLastModifiedDateFor(remoteFile);
-        if (localLastModified == null) {
-            localLastModified = new DateTime(localFile.lastModified());
-        }
-        remoteLastModified = new DateTime(remoteFile.getModifiedAt());
-
-        // this is the new logic!
+    public boolean isRemoteFileModified(CloudMetaData remoteFile) {
         DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile);
         DateTime remoteLastModified = getModificationDate(remoteFile);
-        boolean result = !remoteLastModified.isEqual(cachedLastModified);
+
+        return !remoteLastModified.isEqual(cachedLastModified);
     }
 
-    /**
-     * This function returns if the local database file is synchronized or not.
-     * @return int
-     */
-    private SyncServiceMessage compareFilesForSync() {
-        // todo: reuse the logic from SyncService.triggerSync!
+//    /**
+//     * Compares the remote file last-changed-date with the locally cached data.
+//     * @return An indicator if the remote file has changed since the last synchronization.
+//     */
+//    private boolean isRemoteFileModified(String localPath) {
+//        String remotePath = getRemotePath();
+//
+//        // validations
+//        if (TextUtils.isEmpty(remotePath)) {
+//            throw new IllegalArgumentException("remote file not set");
+//        }
+//
+//        CloudMetaData remoteFile = loadMetadata(remotePath);
+//        if (remoteFile == null) {
+//            throw new RuntimeException("remote metadata could not be retrieved");
+//        }
 
-        if (!isActive()) {
-            return SyncServiceMessage.SYNC_DISABLED;
-        }
+//    // Compare the local cache and the remote info.
+//    DateTime localLastModified;
+//    DateTime remoteLastModified;
+//    File localFile = new File(localPath);
+//
+//    localLastModified = getCachedLastModifiedDateFor(remoteFile);
+//    if (localLastModified == null) {
+//        localLastModified = new DateTime(localFile.lastModified());
+//    }
+//    remoteLastModified = new DateTime(remoteFile.getModifiedAt());
+//
+//    }
 
-        // Is local file changed?
-        boolean localChanged = getPreferences().isLocalFileChanged();
-        boolean remoteChanged;
-        try {
-            remoteChanged = isRemoteFileModified();
-        } catch (Exception e) {
-            Timber.e(e, "error checking for remote changes");
-            return SyncServiceMessage.ERROR;
-        }
-
-        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-
-        // check if we have the file names.
-        if (TextUtils.isEmpty(localPath)) {
-            return SyncServiceMessage.ERROR;
-        }
-        // todo if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.ERROR;
-
-        if (remoteLastModified.isAfter(localLastModified)) {
-            return SyncServiceMessage.STARTING_DOWNLOAD;
-        } else if (remoteLastModified.isBefore(localLastModified)) {
-            return SyncServiceMessage.STARTING_UPLOAD;
-        } else {
-            return SyncServiceMessage.FILE_NOT_CHANGED;
-        }
-    }
+//    /**
+//     * This function returns if the local database file is synchronized or not.
+//     * @return int
+//     */
+//    private SyncServiceMessage compareFilesForSync() {
+//        // todo: reuse the logic from SyncService.triggerSync!
+//
+//        if (!isActive()) {
+//            return SyncServiceMessage.SYNC_DISABLED;
+//        }
+//
+//        // Is local file changed?
+//        boolean localChanged = getPreferences().isLocalFileChanged();
+//        boolean remoteChanged;
+//        try {
+//            remoteChanged = isRemoteFileModified();
+//        } catch (Exception e) {
+//            Timber.e(e, "error checking for remote changes");
+//            return SyncServiceMessage.ERROR;
+//        }
+//
+//        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
+//
+//        // check if we have the file names.
+//        if (TextUtils.isEmpty(localPath)) {
+//            return SyncServiceMessage.ERROR;
+//        }
+//        // todo if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.ERROR;
+//
+//        if (remoteLastModified.isAfter(localLastModified)) {
+//            return SyncServiceMessage.STARTING_DOWNLOAD;
+//        } else if (remoteLastModified.isBefore(localLastModified)) {
+//            return SyncServiceMessage.STARTING_UPLOAD;
+//        } else {
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
+//        }
+//    }
 
     public void disableAutoUpload() {
         mAutoUploadDisabled = true;
@@ -506,7 +510,7 @@ public class SyncManager {
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    void storePersistent() {
+    public void storePersistent() {
         if (dropbox.get() != null) {
             getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
         }
@@ -527,12 +531,13 @@ public class SyncManager {
         // Make sure that the current database is also the one linked in the cloud.
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         if (TextUtils.isEmpty(localPath)) {
+            UIHelper.showToast(getContext(), R.string.filenames_differ);
             return;
         }
 
         String remotePath = getRemotePath();
         if (TextUtils.isEmpty(remotePath)) {
-            Toast.makeText(getContext(), R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.select_remote_file, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -822,5 +827,4 @@ public class SyncManager {
         service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().startService(service);
     }
-
 }

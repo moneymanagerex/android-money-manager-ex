@@ -590,7 +590,7 @@
   <string name="every_6_hours">Mỗi 6 giờ</string>
   <string name="every_12_hours">Mỗi giờ 12</string>
   <string name="never">Không bao giờ</string>
-  <string name="dropbox_select_file">Chọn một tập tin từ Dropbox</string>
+  <string name="select_remote_file">Chọn một tập tin từ Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

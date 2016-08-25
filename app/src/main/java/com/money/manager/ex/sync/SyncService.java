@@ -113,7 +113,7 @@ public class SyncService
 //                remoteFile = new CloudMetaData();
 //                remoteFile.setPath(remoteFilename);
 //            } else {
-//                Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
+//                Timber.e("remoteFile is null. SyncService.onHandleIntent premature exit.");
 //                sendMessage(SyncServiceMessage.ERROR);
 //                return;
 //            }
@@ -266,11 +266,8 @@ public class SyncService
 
     }
 
-    private void triggerSync(final File localFile, CloudMetaData remoteFile) {
+    private void triggerSync(File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
-
-        SyncServiceMessage comparison = sync.compareFilesAsync().toBlocking().value();
-
         SyncPreferences preferences = new SyncPreferences(getApplicationContext());
 
         // are there local changes?
@@ -278,8 +275,7 @@ public class SyncService
         Timber.d("local file has changes: %b", isLocalModified);
 
         // are there remote changes?
-        // todo
-        boolean isRemoteModified = sync.is;
+        boolean isRemoteModified = sync.isRemoteFileModified(remoteFile);
         Timber.d("Remote file has changes: %b", isRemoteModified);
 
         if (!isLocalModified && !isRemoteModified) {

@@ -26,6 +26,8 @@ import android.webkit.WebView;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.utils.MmxFileUtils;
 
+import timber.log.Timber;
+
 public class HelpActivity
         extends BaseFragmentActivity {
 
@@ -59,7 +61,7 @@ public class HelpActivity
                 mWebView.loadUrl(getIntent().getData().toString());
             }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Timber.e(e, "setting content of web view");
         }
     }
 

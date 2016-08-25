@@ -629,7 +629,7 @@
   <string name="every_12_hours">Каждые 12 часов</string>
   <string name="never">Никогда не</string>
   <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
-  <string name="dropbox_select_file">Выберите файл из Dropbox</string>
+  <string name="select_remote_file">Выберите файл из Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Base for exporting any type of text files.
  */
@@ -54,12 +56,12 @@ public class TextFileExport {
         // save into temp file.
         File file = createExportFile(fileName);
         if (file == null) {
-            Log.e(this.LOGCAT, "Error creating qif file in cache.");
+            Timber.e("Error creating qif file in cache.");
             return false;
         }
         boolean saved = dumpContentIntoFile(contents, file);
         if (!saved) {
-            Log.e(this.LOGCAT, "Error saving data into qif file.");
+            Timber.e("Error saving data into qif file.");
             return false;
         }
 

@@ -682,7 +682,7 @@
   <string name="title_sync_upload_immediate">変更した直後にデータベースをアップロード</string>
   <string name="summary_sync_upload_immediate">このオプションで、データベースを変更するとすぐに自動的にアップロードすることができます。</string>
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android のフォルダーは空です。既に MoneyManagerEx を使用している場合は、コンピューターでこのフォルダーにデータベースをコピーしてから、更新してください。</string>
-  <string name="dropbox_select_file">Dropbox からファイルを選択</string>
+  <string name="select_remote_file">Dropbox からファイルを選択</string>
   <!-- Errors -->
   <string name="error_parsing_value">入力値の解析時にエラー</string>
   <string name="remote_file_not_found">リモート ファイルが見つかりません</string>

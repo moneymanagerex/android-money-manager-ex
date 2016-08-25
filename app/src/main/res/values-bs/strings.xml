@@ -682,7 +682,7 @@
   <string name="title_sync_upload_immediate">Pošalji bazu podataka odmah nakon promjene</string>
   <string name="summary_sync_upload_immediate">Ova opcija omogućava automatsko slanje čim napravite promjenu u bazi podataka</string>
   <string name="dropbox_empty_folder">Mapa Dropbox/Apps/MoneyManagerEx Android je prazan. Ako već koristite MoneyManagerEx, kopirajte svoju bazu podataka u ovu mapu i zatim osvježite.</string>
-  <string name="dropbox_select_file">Odabir datoteke iz Dropbox-a</string>
+  <string name="select_remote_file">Odabir datoteke iz Dropbox-a</string>
   <!-- Errors -->
   <string name="error_parsing_value">Pogreška u dekodiranju unesene vrijednosti</string>
   <string name="remote_file_not_found">Udaljena datoteka nije pronađena</string>

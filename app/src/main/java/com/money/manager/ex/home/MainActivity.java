@@ -401,50 +401,50 @@ public class MainActivity
 
     // Custom methods
 
-    public void checkCloudForDbUpdates() {
-        final SyncManager sync = new SyncManager(this);
-        if (!sync.isActive()) return;
-
-        compositeSubscription.add(
-            sync.compareFilesAsync()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<SyncServiceMessage>() {
-                    @Override
-                    public void onSuccess(SyncServiceMessage value) {
-                        Timber.d("Db compared to cloud. Result: %s", value.name());
-                        switch (value) {
-                            case STARTING_DOWNLOAD:
-                                UIHelper.showDiffNotificationDialog(MainActivity.this);
-                                break;
-                            case STARTING_UPLOAD:
-                                sync.triggerSynchronization();
-                                break;
-                            case FILE_NOT_CHANGED:
-                                UIHelper.showToast(MainActivity.this, R.string.database_is_synchronized);
-                                break;
-                            case SYNC_DISABLED:
-                                Timber.w(getString(R.string.synchronization_disabled));
-                                break;
-                            case ERROR:
-                                Timber.w(getString(R.string.error_checking_remote));
-                                break;
-                        }
-
-                        dbUpdateCheckDone = true;
-//                        Timber.d("Initial remote db comparison complete.");
-
-                        // re-set sync timer.
-                        sync.startSyncServiceAlarm();
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        Timber.e(error, "checking for remote db updates");
-                    }
-                })
-        );
-    }
+//    public void checkCloudForDbUpdates() {
+//        final SyncManager sync = new SyncManager(this);
+//        if (!sync.isActive()) return;
+//
+//        compositeSubscription.add(
+//            sync.compareFilesAsync()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new SingleSubscriber<SyncServiceMessage>() {
+//                    @Override
+//                    public void onSuccess(SyncServiceMessage value) {
+//                        Timber.d("Db compared to cloud. Result: %s", value.name());
+//                        switch (value) {
+//                            case STARTING_DOWNLOAD:
+//                                UIHelper.showDiffNotificationDialog(MainActivity.this);
+//                                break;
+//                            case STARTING_UPLOAD:
+//                                sync.triggerSynchronization();
+//                                break;
+//                            case FILE_NOT_CHANGED:
+//                                UIHelper.showToast(MainActivity.this, R.string.database_is_synchronized);
+//                                break;
+//                            case SYNC_DISABLED:
+//                                Timber.w(getString(R.string.synchronization_disabled));
+//                                break;
+//                            case ERROR:
+//                                Timber.w(getString(R.string.error_checking_remote));
+//                                break;
+//                        }
+//
+//                        dbUpdateCheckDone = true;
+////                        Timber.d("Initial remote db comparison complete.");
+//
+//                        // re-set sync timer.
+//                        sync.startSyncServiceAlarm();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable error) {
+//                        Timber.e(error, "checking for remote db updates");
+//                    }
+//                })
+//        );
+//    }
 
     /**
      * @return the mIsDualPanel
@@ -643,7 +643,8 @@ public class MainActivity
         boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
         if (syncOnStart && !this.dbUpdateCheckDone) {
             // This is to avoid checking for online updates on every device rotation.
-            checkCloudForDbUpdates();
+//            checkCloudForDbUpdates();
+            new SyncManager(this).triggerSynchronization();
         }
     }
 

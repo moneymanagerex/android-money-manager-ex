@@ -59,7 +59,7 @@ public class Passcode {
         try {
             ret = SimpleCrypto.decrypt(KEY, s);
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Timber.e(e, "encrypting passcode");
         }
         return ret;
     }
@@ -75,7 +75,7 @@ public class Passcode {
         try {
             ret = SimpleCrypto.encrypt(KEY, s);
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Timber.e(LOGCAT, e.getMessage());
         }
         return ret;
     }
@@ -164,7 +164,7 @@ public class Passcode {
             return cleanPasscode_Internal();
         } catch (Exception ex) {
             String error = "Error clearing passcode";
-            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+            Timber.e("%s: %s", error, ex.getLocalizedMessage());
             ex.printStackTrace();
             Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
         }

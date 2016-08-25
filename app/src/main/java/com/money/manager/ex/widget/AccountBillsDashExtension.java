@@ -32,6 +32,7 @@ import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.currency.CurrencyService;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 public class AccountBillsDashExtension extends DashClockExtension {
 
@@ -76,7 +77,7 @@ public class AccountBillsDashExtension extends DashClockExtension {
                 .expandedBody(body)
                 .clickIntent(new Intent(this, MainActivity.class)));
         } catch (Exception e) {
-            Log.e(AccountBillsDashExtension.class.getSimpleName(), e.getMessage());
+            Timber.e(e, "updating accounts/bills widget");
         }
     }
 }

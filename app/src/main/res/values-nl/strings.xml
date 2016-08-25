@@ -610,7 +610,7 @@
   <string name="every_6_hours">Elke 6 uur</string>
   <string name="every_12_hours">Elke 12 uur</string>
   <string name="never">Nooit</string>
-  <string name="dropbox_select_file">Selecteer een bestand in Dropbox</string>
+  <string name="select_remote_file">Selecteer een bestand in Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->
