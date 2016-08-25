@@ -223,6 +223,8 @@ public class InvestmentTransactionEditActivity
     }
 
     private void displayStock(Stock stock, InvestmentTransactionViewHolder viewHolder) {
+        if (mAccount == null) return;
+        
         // Date
         viewHolder.dateView.setText(stock.getPurchaseDate().toString(Constants.LONG_DATE_PATTERN));
 
