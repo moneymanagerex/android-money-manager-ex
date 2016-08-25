@@ -642,9 +642,16 @@ public class MainActivity
         // Check cloud storage for updates?
         boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
         if (syncOnStart && !this.dbUpdateCheckDone) {
-            // This is to avoid checking for online updates on every device rotation.
 //            checkCloudForDbUpdates();
-            new SyncManager(this).triggerSynchronization();
+
+            SyncManager sync = new SyncManager(this);
+            sync.triggerSynchronization();
+
+            // This is to avoid checking for online updates on every device rotation.
+            dbUpdateCheckDone = true;
+
+            // re-set sync timer.
+            sync.startSyncServiceAlarm();
         }
     }
 
