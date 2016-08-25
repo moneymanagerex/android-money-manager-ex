@@ -121,7 +121,8 @@ public class AssetClassEditActivity
         if (intent == null) return;
 
         // Insert or Edit?
-        this.mAction = intent.getAction();
+        mAction = intent.getAction();
+        if (mAction == null) return;
 
         AssetClass assetClass = null;
 
