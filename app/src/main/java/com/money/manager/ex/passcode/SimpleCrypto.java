@@ -14,26 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.dropbox;
+package com.money.manager.ex.passcode;
 
 import android.os.Build;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import timber.log.Timber;
+
 /**
- * {@link http://www.androidsnippets.com/encryptdecrypt-strings}
+ * http://www.androidsnippets.com/encryptdecrypt-strings
+ * http://android-developers.blogspot.co.at/2016/06/security-crypto-provider-deprecated-in.html
  * @author ferenc.hechler
  */
 public class SimpleCrypto {
 
 	public static String encrypt(String seed, String cleartext) throws Exception {
 		byte[] rawKey = getRawKey(seed.getBytes());
-		byte[] result = encrypt(rawKey, cleartext.getBytes());
+
+        byte[] result = encrypt(rawKey, cleartext.getBytes());
 		return toHex(result);
 	}
 	
@@ -104,5 +112,4 @@ public class SimpleCrypto {
 	private static void appendHex(StringBuffer sb, byte b) {
 		sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
 	}
-	
 }

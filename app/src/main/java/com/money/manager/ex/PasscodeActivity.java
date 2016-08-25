@@ -28,7 +28,12 @@ import android.widget.TextView;
 
 
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.log.ErrorRaisedEvent;
 import com.money.manager.ex.log.ExceptionHandler;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import timber.log.Timber;
 
@@ -41,9 +46,6 @@ public class PasscodeActivity
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-//		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(getApplicationContext()));
-
 		// set theme
 		Core core = new Core(getApplicationContext());
 		try {
@@ -147,4 +149,25 @@ public class PasscodeActivity
 			}
 		}
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		EventBus.getDefault().register(this);
+	}
+
+	@Override
+	protected void onStop() {
+		EventBus.getDefault().unregister(this);
+
+		super.onStop();
+	}
+
+	@Subscribe
+	public void onEvent(ErrorRaisedEvent event) {
+		// display the error to the user
+		UIHelper.showToast(this, event.message);
+	}
+
 }
