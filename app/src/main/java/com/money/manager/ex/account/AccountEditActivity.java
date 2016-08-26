@@ -523,7 +523,6 @@ public class AccountEditActivity
 
     /**
      * Select the account identified by accountId
-     *
      * @param accountId account id
      * @return true if data is correctly selected, false if error occurs
      */
@@ -539,10 +538,13 @@ public class AccountEditActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        mAccount = Parcels.unwrap(savedInstanceState.getParcelable(KEY_ACCOUNT_ENTITY));
+        Account restored = Parcels.unwrap(savedInstanceState.getParcelable(KEY_ACCOUNT_ENTITY));
+        if (restored != null) {
+            mAccount = restored;
 
-        if (savedInstanceState.getInt(KEY_SYMBOL) == MINUS) {
-            mAccount.setInitialBalance(mAccount.getInitialBalance().negate());
+            if (savedInstanceState.getInt(KEY_SYMBOL) == MINUS) {
+                mAccount.setInitialBalance(mAccount.getInitialBalance().negate());
+            }
         }
 
         mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
@@ -552,7 +554,6 @@ public class AccountEditActivity
 
     /**
      * Query info for current currency
-     *
      * @param currencyId Id of the currency to select
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */
