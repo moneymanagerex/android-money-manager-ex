@@ -39,28 +39,28 @@ public class UIHelper {
         showToast(context, message);
     }
 
-    public static void showDiffNotificationDialog(final Context context) {
-        new AlertDialogWrapper.Builder(context)
-                // setting alert binaryDialog
-                .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
-                .setTitle(R.string.update_available)
-                .setMessage(R.string.update_available_online)
-                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new SyncManager(context).triggerSynchronization();
-
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
+//    public static void showDiffNotificationDialog(final Context context) {
+//        new AlertDialogWrapper.Builder(context)
+//                // setting alert binaryDialog
+//                .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
+//                .setTitle(R.string.update_available)
+//                .setMessage(R.string.update_available_online)
+//                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        new SyncManager(context).triggerSynchronization(true);
+//
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .show();
+//    }
 
     public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {

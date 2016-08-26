@@ -66,7 +66,6 @@ public class DelayedUploadService
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onCompleted() {
-//                        Timber.d("complete");
                         unsubscribe();
                     }
 
@@ -92,6 +91,6 @@ public class DelayedUploadService
 
     private void upload() {
         new SyncManager(getApplicationContext())
-                .invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+                .invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD, false);
     }
 }

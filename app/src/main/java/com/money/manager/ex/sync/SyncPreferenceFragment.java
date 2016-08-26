@@ -243,20 +243,20 @@ public class SyncPreferenceFragment
         });
 
         // interval
-        if (BuildConfig.DEBUG) {
-            // insert a 1-minute in debug mode
-            CharSequence[] entries = viewHolder.syncInterval.getEntries();
-            String[] newEntries = new String[entries.length + 1];
-            newEntries[0] = "1-minute";
-            System.arraycopy(entries, 0, newEntries, 1, entries.length);
-            viewHolder.syncInterval.setEntries(newEntries);
-            // values
-            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
-            String[] newValues = new String[values.length + 1];
-            newValues[0] = "1";
-            System.arraycopy(values, 0, newValues, 1, values.length);
-            viewHolder.syncInterval.setEntryValues(newValues);
-        }
+//        if (BuildConfig.DEBUG) {
+//            // insert a 1-minute in debug mode
+//            CharSequence[] entries = viewHolder.syncInterval.getEntries();
+//            String[] newEntries = new String[entries.length + 1];
+//            newEntries[0] = "1-minute";
+//            System.arraycopy(entries, 0, newEntries, 1, entries.length);
+//            viewHolder.syncInterval.setEntries(newEntries);
+//            // values
+//            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
+//            String[] newValues = new String[values.length + 1];
+//            newValues[0] = "1";
+//            System.arraycopy(values, 0, newValues, 1, values.length);
+//            viewHolder.syncInterval.setEntryValues(newValues);
+//        }
 
         viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -296,8 +296,6 @@ public class SyncPreferenceFragment
             }
         });
 
-        // Sync on app start. Handled automatically?
-
         // reset preferences
 
         viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -328,7 +326,6 @@ public class SyncPreferenceFragment
     }
 
     private void checkIfLocalFileExists() {
-//        String remote = getSyncManager().getRemotePath();
         String local = getSyncManager().getLocalPath();
 
         // check if the file exists and prompt the user.
@@ -357,7 +354,7 @@ public class SyncPreferenceFragment
     }
 
     private void forceDownload() {
-        getSyncManager().triggerDownload();
+        getSyncManager().triggerDownload(true);
     }
 
     private void forceUpload() {

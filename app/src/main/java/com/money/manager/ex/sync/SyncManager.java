@@ -318,9 +318,9 @@ public class SyncManager {
         return mRemoteFile;
     }
 
-    public void invokeSyncService(String action) {
+    public void invokeSyncService(String action, boolean showProgressbar) {
         try {
-            invokeSyncServiceInternal(action);
+            invokeSyncServiceInternal(action, showProgressbar);
         } catch (Exception e) {
             Timber.e(e, "invoking sync service");
         }
@@ -525,7 +525,7 @@ public class SyncManager {
         }
     }
 
-    public void triggerSynchronization() {
+    public void triggerSynchronization(boolean showProgressbar) {
         if (!isActive())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
@@ -548,11 +548,11 @@ public class SyncManager {
             return;
         }
 
-        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
+        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC, showProgressbar);
     }
 
-    public void triggerDownload() {
-        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+    public void triggerDownload(boolean showProgressbar) {
+        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD, showProgressbar);
     }
 
     /**
@@ -752,7 +752,7 @@ public class SyncManager {
         return currentProvider.get();
     }
 
-    private void invokeSyncServiceInternal(String action) {
+    private void invokeSyncServiceInternal(String action, boolean showProgressbar) {
         // Validation.
         String remoteFile = getRemotePath();
         // We need a value in remote file name settings.
@@ -760,7 +760,7 @@ public class SyncManager {
 
         // Action
 
-        Messenger messenger = createMessenger();
+        Messenger messenger = createMessenger(showProgressbar);
         String localFile = getLocalPath();
 
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
@@ -775,10 +775,10 @@ public class SyncManager {
         // once done, the message is sent out via messenger. See Messenger definition in factory.
     }
 
-    private Messenger createMessenger() {
+    private Messenger createMessenger(boolean showProgressbar) {
         ProgressDialog progressDialog = null;
         // Create progress binaryDialog only if called from the UI.
-        if (getContext() instanceof Activity) {
+        if (showProgressbar && (getContext() instanceof Activity)) {
             try {
                 //progress binaryDialog shown only when downloading an updated db file.
                 progressDialog = new ProgressDialog(getContext());

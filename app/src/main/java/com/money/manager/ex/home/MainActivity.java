@@ -459,7 +459,6 @@ public class MainActivity
 
     /**
      * Handle the callback from the drawer click handler.
-     *
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
@@ -485,7 +484,7 @@ public class MainActivity
                 break;
             case R.id.menu_sync:
                 SyncManager sync = new SyncManager(this);
-                sync.triggerSynchronization();
+                sync.triggerSynchronization(true);
                 // re-set the sync timer.
                 sync.startSyncServiceAlarm();
                 break;
@@ -645,7 +644,7 @@ public class MainActivity
 //            checkCloudForDbUpdates();
 
             SyncManager sync = new SyncManager(this);
-            sync.triggerSynchronization();
+            sync.triggerSynchronization(false);
 
             // This is to avoid checking for online updates on every device rotation.
             dbUpdateCheckDone = true;
