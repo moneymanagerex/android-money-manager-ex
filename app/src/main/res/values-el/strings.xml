@@ -663,7 +663,7 @@
   <string name="title_sync_upload_immediate">Αμεσο ανέβασμα της ΒΔ μετά από αλλαγή</string>
   <string name="summary_sync_upload_immediate">Αυτή η επιλογή επιτρέπει να ανεβάζετε αυτόματα τη βάση δεδομένων μόλις κάνετε κάποια αλλαγή</string>
   <string name="dropbox_empty_folder">Ο φάκελος Dropbox/Apps/Money Manager Ex Android είναι άδειος. Εάν χρησιμοποιείτε ήδη το MoneyManagerEx αντιγράψτε τη βάση δεδομένων σας σε αυτόν το φάκελο στον υπολογιστή σας, και αφότου ολοκληρώσετε κάντε ανανέωση.</string>
-  <string name="dropbox_select_file">Επιλέξτε ένα αρχείο από Dropbox</string>
+  <string name="select_remote_file">Επιλέξτε ένα αρχείο από Dropbox</string>
   <!-- Errors -->
   <string name="error_parsing_value">Σφάλμα κατά την ανάλυση της τιμής που εισάχθηκε</string>
   <string name="remote_file_not_found">Δεν βρέθηκε Απομακρυσμένο αρχείο</string>

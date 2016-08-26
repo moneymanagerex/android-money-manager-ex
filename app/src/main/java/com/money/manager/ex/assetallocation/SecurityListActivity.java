@@ -40,7 +40,23 @@ public class SecurityListActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get asset class id
-        int assetClassId = getAssetClassId();
+        Integer assetClassId = getAssetClassId();
+        showFragmentForAssetClass(assetClassId);
+    }
+
+    private Integer getAssetClassId() {
+        Intent intent = getIntent();
+        if (intent == null) return null;
+
+        int assetClassId = intent.getIntExtra(EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
+        if (assetClassId == Constants.NOT_SET) return null;
+
+        return assetClassId;
+    }
+
+    private void showFragmentForAssetClass(Integer assetClassId) {
+        if (assetClassId == null) return;
+
         SecurityListFragment listFragment = SecurityListFragment.create(assetClassId);
 
         Intent intent = getIntent();
@@ -52,16 +68,5 @@ public class SecurityListActivity
         if (fm.findFragmentById(R.id.content) == null) {
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENTTAG).commit();
         }
-
-    }
-
-    private Integer getAssetClassId() {
-        Intent intent = getIntent();
-        if (intent == null) return null;
-
-        int assetClassId = intent.getIntExtra(EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
-        if (assetClassId == Constants.NOT_SET) return null;
-
-        return assetClassId;
     }
 }

@@ -582,7 +582,7 @@
   <string name="every_6_hours">每隔 6 小時</string>
   <string name="every_12_hours">每隔 12 小時</string>
   <string name="never">永遠不要</string>
-  <string name="dropbox_select_file">從 Dropbox 選擇一個檔案</string>
+  <string name="select_remote_file">從 Dropbox 選擇一個檔案</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

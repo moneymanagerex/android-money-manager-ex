@@ -27,9 +27,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import com.money.manager.ex.Constants;
-import com.money.manager.ex.log.ExceptionHandler;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
 
 import timber.log.Timber;
 
@@ -138,7 +134,7 @@ public class MmxFileUtils {
 
     /**
      * Dangerous permissions have to be requested at runtime as of API 23 (Android M, 6).
-     * @return boolean indicating whether the request permission dialog is displayed and should be
+     * @return boolean indicating whether the request permission binaryDialog is displayed and should be
      * handled asynchronously.
      */
     public boolean requestExternalStoragePermissions(Activity activity) {

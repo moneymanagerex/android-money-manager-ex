@@ -653,7 +653,7 @@
   <string name="title_sync_upload_immediate">更改后立即上传数据库</string>
   <string name="summary_sync_upload_immediate">选中此选项后数据库一有变化则立即自动上传</string>
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android 文件夹下没有文件。如果您已经使用计算机将数据库上传至此文件夹，请稍后刷新重试。</string>
-  <string name="dropbox_select_file">从 Dropbox 选择一个文件</string>
+  <string name="select_remote_file">从 Dropbox 选择一个文件</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

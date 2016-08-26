@@ -248,7 +248,7 @@ public class RecurringTransactionListFragment
     // private
 
     private void confirmDelete(final int id) {
-        // create alert dialog
+        // create alert binaryDialog
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_repeating_transaction)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))

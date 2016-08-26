@@ -39,7 +39,6 @@ import timber.log.Timber;
 
 /**
  * Adapter for budgets.
- * Created by Alen Siljak on 5/07/2015.
  */
 public class BudgetAdapter
     extends SimpleCursorAdapter {
@@ -168,10 +167,12 @@ public class BudgetAdapter
         }
 
         try {
+            String query = prepareQuery(where);
+            // todo check this use of dataset with null uri.
             SQLDataSet dataSet = new SQLDataSet();
             Cursor cursor = mContext.getContentResolver().query(dataSet.getUri(),
                     null,
-                    prepareQuery(where),
+                    query,
                     null,
                     null);
             if (cursor == null) return 0;

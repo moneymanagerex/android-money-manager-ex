@@ -19,15 +19,15 @@ package com.money.manager.ex.core;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDiskIOException;
+import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.dropbox.SimpleCrypto;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.passcode.Encryptor;
+import com.money.manager.ex.passcode.SimpleCrypto;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import timber.log.Timber;
@@ -59,30 +59,33 @@ public class Passcode {
         try {
             ret = SimpleCrypto.decrypt(KEY, s);
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Timber.e(e, "encrypting passcode");
         }
         return ret;
     }
 
     /**
      * Encrypt clear passcode
-     *
      * @param s clear passcode
      * @return encrypted string
      */
     private String encrypt(String s) {
         String ret = null;
         try {
-            ret = SimpleCrypto.encrypt(KEY, s);
+            if (Build.VERSION.SDK_INT <= 24) {
+                ret = SimpleCrypto.encrypt(KEY, s);
+            } else {
+                // todo Encryptor.enc
+                return s;
+            }
         } catch (Exception e) {
-            Log.e(LOGCAT, e.getMessage());
+            Timber.e(LOGCAT, e.getMessage());
         }
         return ret;
     }
 
     /**
      * Get decrypt passcode
-     *
      * @return null if not set passcode else passcode
      */
     public String getPasscode() {
@@ -96,7 +99,6 @@ public class Passcode {
 
     /**
      * Return true if passcode has set otherwise false
-     *
      * @return indicator whether there is a passcode or not.
      */
     public boolean hasPasscode() {
@@ -121,16 +123,15 @@ public class Passcode {
 
     /**
      * Set a decrypt pass code
-     *
      * @param passcode new pass code
      */
     public boolean setPasscode(String passcode) {
-        return updatePasscode(encrypt(passcode));
+        String encrypted = encrypt(passcode);
+        return updatePasscode(encrypted);
     }
 
     /**
      * Set a passcode into database
-     *
      * @param passcode passcode to use
      */
     private boolean updatePasscode(String passcode) {
@@ -164,7 +165,7 @@ public class Passcode {
             return cleanPasscode_Internal();
         } catch (Exception ex) {
             String error = "Error clearing passcode";
-            Log.e(LOGCAT, error + ": " + ex.getLocalizedMessage());
+            Timber.e("%s: %s", error, ex.getLocalizedMessage());
             ex.printStackTrace();
             Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
         }

@@ -100,7 +100,7 @@ public class SplitCategoriesActivityTests {
         View view = fragment.getView().findViewById(R.id.editTextTotAmount);
         assertThat(view).isNotNull();
 
-        // click to open input dialog here
+        // click to open input binaryDialog here
 
         // receive amount back
         // todo: replace this with EventBus

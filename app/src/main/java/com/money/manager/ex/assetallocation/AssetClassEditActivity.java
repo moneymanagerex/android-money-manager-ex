@@ -25,7 +25,7 @@ import android.support.v4.app.FragmentManager;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 
@@ -121,7 +121,8 @@ public class AssetClassEditActivity
         if (intent == null) return;
 
         // Insert or Edit?
-        this.mAction = intent.getAction();
+        mAction = intent.getAction();
+        if (mAction == null) return;
 
         AssetClass assetClass = null;
 
@@ -140,8 +141,7 @@ public class AssetClassEditActivity
                 AssetClassRepository repo = new AssetClassRepository(this);
                 assetClass = repo.load(id);
                 if (assetClass == null) {
-                    ExceptionHandler handler = new ExceptionHandler(this);
-                    handler.showMessage("No asset class found in the database!");
+                    UIHelper.showToast(this, "No asset class found in the database!");
                     // todo: show error message and return (close edit activity)
                     return;
                 }

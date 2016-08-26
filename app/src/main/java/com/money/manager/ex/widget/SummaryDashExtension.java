@@ -29,6 +29,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 public class SummaryDashExtension extends DashClockExtension {
 
@@ -51,7 +52,7 @@ public class SummaryDashExtension extends DashClockExtension {
                     .expandedBody(app.getUserName())
                     .clickIntent(new Intent(this, MainActivity.class)));
         } catch (Exception e) {
-            Log.e(SummaryDashExtension.class.getSimpleName(), e.getMessage());
+            Timber.e(e, "updating summary dash extension");
         }
     }
 }

@@ -110,10 +110,15 @@ public class AccountListFragment
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        // ExpandableListView$ExpandableListContextMenuInfo
+        if (!(menuInfo instanceof AdapterView.AdapterContextMenuInfo)) return false;
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int accountId = (int) info.id;
         int itemId = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(itemId);
+        if (menuId == null) return false;
 
         switch (menuId) {
             case EDIT:
@@ -276,11 +281,11 @@ public class AccountListFragment
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // close dialog
+                // close binaryDialog
                 dialog.cancel();
             }
         });
-        // show dialog
+        // show binaryDialog
         alertDialog.create().show();
     }
 

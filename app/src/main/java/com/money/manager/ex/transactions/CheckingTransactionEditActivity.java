@@ -471,7 +471,7 @@ public class CheckingTransactionEditActivity
                                 mCommonFunctions.showPayeeName();
                                 mCommonFunctions.displayCategoryName();
                             } catch (Exception e) {
-                                Log.e(EditTransactionActivityConstants.LOGCAT, e.getMessage());
+                                Timber.e(e, "showing payee and category names");
                             }
                         }
                     }
@@ -571,9 +571,11 @@ public class CheckingTransactionEditActivity
         if ((isTransfer) || !mCommonFunctions.hasPayee() || mCommonFunctions.hasSplitCategories()) {
             return;
         }
+        if (mCommonFunctions.transactionEntity == null) return;
 
         PayeeRepository payeeRepository = new PayeeRepository(this);
         Payee payee = payeeRepository.load(mCommonFunctions.transactionEntity.getPayeeId());
+        if (payee == null) return;
 
         payee.setCategoryId(mCommonFunctions.transactionEntity.getCategoryId());
         payee.setSubcategoryId(mCommonFunctions.transactionEntity.getSubcategoryId());
@@ -581,8 +583,7 @@ public class CheckingTransactionEditActivity
         boolean saved = payeeRepository.save(payee);
         if (!saved) {
             Toast.makeText(getApplicationContext(), R.string.db_payee_update_failed, Toast.LENGTH_SHORT).show();
-            Log.w(EditTransactionActivityConstants.LOGCAT, "Update Payee with Id=" +
-                    Integer.toString(mCommonFunctions.transactionEntity.getPayeeId()) + " return <= 0");
+            Timber.w("Update Payee with Id=%d return <= 0", mCommonFunctions.transactionEntity.getPayeeId());
         }
 
     }
@@ -614,14 +615,14 @@ public class CheckingTransactionEditActivity
                     // insert data
                     if (!splitRepo.insert(entity)) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new split transaction failed!");
+                        Timber.w("Insert new split transaction failed!");
                         return false;
                     }
                 } else {
                     // update data
                     if (!splitRepo.update(entity)) {
                         Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                        Log.w(EditTransactionActivityConstants.LOGCAT, "Update split transaction failed!");
+                        Timber.w("Update split transaction failed!");
                         return false;
                     }
                 }
@@ -640,7 +641,7 @@ public class CheckingTransactionEditActivity
 
             if (!mCommonFunctions.transactionEntity.hasId()) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_insert_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Insert new transaction failed!");
+                Timber.w("Insert new transaction failed!");
                 return false;
             }
         } else {
@@ -648,7 +649,7 @@ public class CheckingTransactionEditActivity
             boolean updated = repo.update((AccountTransaction) mCommonFunctions.transactionEntity);
             if (!updated) {
                 Toast.makeText(getApplicationContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Update transaction failed!");
+                Timber.w("Update transaction failed!");
                 return false;
             }
         }

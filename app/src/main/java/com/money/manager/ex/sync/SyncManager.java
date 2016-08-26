@@ -26,7 +26,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cloudrail.si.exceptions.AuthenticationException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -38,15 +37,14 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -63,10 +61,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import rx.Observable;
 import rx.Single;
 import rx.SingleSubscriber;
-import rx.Subscriber;
 import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
@@ -137,63 +132,89 @@ public class SyncManager {
         return true;
     }
 
-    public Observable<SyncServiceMessage> compareFilesAsync() {
-        return Observable.fromCallable(new Callable<SyncServiceMessage>() {
-            @Override
-            public SyncServiceMessage call() throws Exception {
-                return compareFilesForSync();
-            }
-        });
+//    public Single<SyncServiceMessage> compareFilesAsync() {
+//        return Single.fromCallable(new Callable<SyncServiceMessage>() {
+//            @Override
+//            public SyncServiceMessage call() throws Exception {
+//                return compareFilesForSync();
+//            }
+//        });
+//    }
+
+    public boolean isRemoteFileModified(CloudMetaData remoteFile) {
+        DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile);
+        DateTime remoteLastModified = getModificationDate(remoteFile);
+
+        return !remoteLastModified.isEqual(cachedLastModified);
     }
 
-    /**
-     * This function returns if the file is synchronized or not
-     * @return int
-     */
-    public SyncServiceMessage compareFilesForSync() {
-        if (!isActive()) {
-            return SyncServiceMessage.FILE_NOT_CHANGED;
-        }
+//    /**
+//     * Compares the remote file last-changed-date with the locally cached data.
+//     * @return An indicator if the remote file has changed since the last synchronization.
+//     */
+//    private boolean isRemoteFileModified(String localPath) {
+//        String remotePath = getRemotePath();
+//
+//        // validations
+//        if (TextUtils.isEmpty(remotePath)) {
+//            throw new IllegalArgumentException("remote file not set");
+//        }
+//
+//        CloudMetaData remoteFile = loadMetadata(remotePath);
+//        if (remoteFile == null) {
+//            throw new RuntimeException("remote metadata could not be retrieved");
+//        }
 
-        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-        String remotePath = getRemotePath();
+//    // Compare the local cache and the remote info.
+//    DateTime localLastModified;
+//    DateTime remoteLastModified;
+//    File localFile = new File(localPath);
+//
+//    localLastModified = getCachedLastModifiedDateFor(remoteFile);
+//    if (localLastModified == null) {
+//        localLastModified = new DateTime(localFile.lastModified());
+//    }
+//    remoteLastModified = new DateTime(remoteFile.getModifiedAt());
+//
+//    }
 
-        // check if we have the file names.
-        if (TextUtils.isEmpty(localPath) || TextUtils.isEmpty(remotePath)) {
-            return SyncServiceMessage.FILE_NOT_CHANGED;
-        }
-        if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.FILE_NOT_CHANGED;
-
-        // get local and remote file info.
-        File localFile = new File(localPath);
-        CloudMetaData remoteFile = loadMetadataObservable(remotePath);
-        if (remoteFile == null) {
-            return SyncServiceMessage.ERROR;
-        }
-
-        // date last Modified
-        DateTime localLastModified;
-        DateTime remoteLastModified;
-        try {
-            localLastModified = getCachedLastModifiedDateFor(remoteFile);
-            if (localLastModified == null) {
-                localLastModified = new DateTime(localFile.lastModified());
-            }
-            remoteLastModified = new DateTime(remoteFile.getModifiedAt());
-        } catch (Exception e) {
-            Timber.e(e, "retrieving the last modified date in compareFilesForSync");
-
-            return SyncServiceMessage.ERROR;
-        }
-
-        if (remoteLastModified.isAfter(localLastModified)) {
-            return SyncServiceMessage.STARTING_DOWNLOAD;
-        } else if (remoteLastModified.isBefore(localLastModified)) {
-            return SyncServiceMessage.STARTING_UPLOAD;
-        } else {
-            return SyncServiceMessage.FILE_NOT_CHANGED;
-        }
-    }
+//    /**
+//     * This function returns if the local database file is synchronized or not.
+//     * @return int
+//     */
+//    private SyncServiceMessage compareFilesForSync() {
+//        // todo: reuse the logic from SyncService.triggerSync!
+//
+//        if (!isActive()) {
+//            return SyncServiceMessage.SYNC_DISABLED;
+//        }
+//
+//        // Is local file changed?
+//        boolean localChanged = getPreferences().isLocalFileChanged();
+//        boolean remoteChanged;
+//        try {
+//            remoteChanged = isRemoteFileModified();
+//        } catch (Exception e) {
+//            Timber.e(e, "error checking for remote changes");
+//            return SyncServiceMessage.ERROR;
+//        }
+//
+//        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
+//
+//        // check if we have the file names.
+//        if (TextUtils.isEmpty(localPath)) {
+//            return SyncServiceMessage.ERROR;
+//        }
+//        // todo if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.ERROR;
+//
+//        if (remoteLastModified.isAfter(localLastModified)) {
+//            return SyncServiceMessage.STARTING_DOWNLOAD;
+//        } else if (remoteLastModified.isBefore(localLastModified)) {
+//            return SyncServiceMessage.STARTING_UPLOAD;
+//        } else {
+//            return SyncServiceMessage.FILE_NOT_CHANGED;
+//        }
+//    }
 
     public void disableAutoUpload() {
         mAutoUploadDisabled = true;
@@ -257,27 +278,21 @@ public class SyncManager {
         return localPath + remoteFileName;
     }
 
-    public void getRemoteFolderContentsAsync(final String folder) {
-        new Thread(new Runnable() {
+    public Single<List<CloudMetaData>> getRemoteFolderContentsAsync(final String folder) {
+        return Observable.fromCallable(new Callable<List<CloudMetaData>>() {
             @Override
-            public void run() {
-                List<CloudMetaData> items = null;
-
-                try {
-                    items = getProvider().getChildren(folder);
-
-                    // save any renewed tokens
-                    storePersistent();
-                } catch (Exception ex) {
-//                    if (ex instanceof RuntimeException && ex.getMessage().equals("ServiceCode Error in function standardJSONRequest at 11")) {
-//                        // error fetching remote data. Usually a network problem.
-//                    }
-                    Timber.e(ex, "retrieving the remote folder contents");
-                }
-
-                EventBus.getDefault().post(new RemoteFolderContentsRetrievedEvent(items));
+            public List<CloudMetaData> call() throws Exception {
+                return getProvider().getChildren(folder);
             }
-        }).start();
+        })
+                .doOnCompleted(new Action0() {
+                    @Override
+                    public void call() {
+                        // save any renewed tokens
+                        storePersistent();
+                    }
+                })
+                .toSingle();
     }
 
     /**
@@ -303,9 +318,9 @@ public class SyncManager {
         return mRemoteFile;
     }
 
-    public void invokeSyncService(String action) {
+    public void invokeSyncService(String action, boolean showProgressbar) {
         try {
-            invokeSyncServiceInternal(action);
+            invokeSyncServiceInternal(action, showProgressbar);
         } catch (Exception e) {
             Timber.e(e, "invoking sync service");
         }
@@ -348,7 +363,7 @@ public class SyncManager {
      * Retrieves the remote metadata. Retries once on fail to work around #957.
      * @return Remote file metadata.
      */
-    public CloudMetaData loadMetadataObservable(final String remotePath) {
+    public CloudMetaData loadMetadata(final String remotePath) {
         final CloudMetaData[] result = {null};
 
         Single.fromCallable(new Callable<CloudMetaData>() {
@@ -369,6 +384,10 @@ public class SyncManager {
 
                     @Override
                     public void onError(Throwable error) {
+                        // todo handle DNS exceptions by just showing a message?
+                        //if (error instanceof RuntimeException && error.getMessage().equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname"))
+                        // Unable to resolve host "www.googleapis.com": No address associated with hostname
+
                         Timber.e(error, "fetching remote metadata");
                     }
                 });
@@ -378,36 +397,26 @@ public class SyncManager {
         return result[0];
     }
 
-    public void login() {
-        new Thread(new Runnable() {
+    public Single<Void> loginObservable() {
+        return Observable.fromCallable(new Callable<Void>() {
             @Override
-            public void run() {
-                try {
-                    getProvider().login();
-                } catch (AuthenticationException e) {
-                    if (e.getMessage().equals("Authentication was cancelled")) {
-                        Timber.w("authentication cancelled");
-                    } else {
-                        Timber.e(e, "logging in to cloud provider");
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "logging in to cloud provider");
-                }
+            public Void call() throws Exception {
+                getProvider().login();
+                return null;
             }
-        }).start();
+        })
+        .toSingle();
     }
 
-    void logout() {
-        new Thread(new Runnable() {
+    public Single<Void> logoutObservable() {
+        return Observable.fromCallable(new Callable<Void>() {
             @Override
-            public void run() {
-                try {
-                    getProvider().logout();
-                } catch (Exception e) {
-                    Timber.e(e, "logging out the cloud provider");
-                }
+            public Void call() throws Exception {
+                getProvider().logout();
+                return null;
             }
-        }).start();
+        })
+        .toSingle();
     }
 
     /**
@@ -501,7 +510,7 @@ public class SyncManager {
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    void storePersistent() {
+    public void storePersistent() {
         if (dropbox.get() != null) {
             getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
         }
@@ -516,18 +525,19 @@ public class SyncManager {
         }
     }
 
-    public void triggerSynchronization() {
+    public void triggerSynchronization(boolean showProgressbar) {
         if (!isActive())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         if (TextUtils.isEmpty(localPath)) {
+            UIHelper.showToast(getContext(), R.string.filenames_differ);
             return;
         }
 
         String remotePath = getRemotePath();
         if (TextUtils.isEmpty(remotePath)) {
-            Toast.makeText(getContext(), R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.select_remote_file, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -538,11 +548,11 @@ public class SyncManager {
             return;
         }
 
-        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
+        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC, showProgressbar);
     }
 
-    public void triggerDownload() {
-        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+    public void triggerDownload(boolean showProgressbar) {
+        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD, showProgressbar);
     }
 
     /**
@@ -576,7 +586,7 @@ public class SyncManager {
         }
 
         // set last modified date
-        CloudMetaData remoteFileMetadata = loadMetadataObservable(remoteFile);
+        CloudMetaData remoteFileMetadata = loadMetadata(remoteFile);
         if (remoteFileMetadata == null) {
             Timber.w("Could not retrieve metadata after upload! Aborting.");
             return false;
@@ -742,7 +752,7 @@ public class SyncManager {
         return currentProvider.get();
     }
 
-    private void invokeSyncServiceInternal(String action) {
+    private void invokeSyncServiceInternal(String action, boolean showProgressbar) {
         // Validation.
         String remoteFile = getRemotePath();
         // We need a value in remote file name settings.
@@ -750,7 +760,7 @@ public class SyncManager {
 
         // Action
 
-        Messenger messenger = createMessenger();
+        Messenger messenger = createMessenger(showProgressbar);
         String localFile = getLocalPath();
 
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
@@ -765,19 +775,19 @@ public class SyncManager {
         // once done, the message is sent out via messenger. See Messenger definition in factory.
     }
 
-    private Messenger createMessenger() {
+    private Messenger createMessenger(boolean showProgressbar) {
         ProgressDialog progressDialog = null;
-        // Create progress dialog only if called from the UI.
-        if (getContext() instanceof Activity) {
+        // Create progress binaryDialog only if called from the UI.
+        if (showProgressbar && (getContext() instanceof Activity)) {
             try {
-                //progress dialog shown only when downloading an updated db file.
+                //progress binaryDialog shown only when downloading an updated db file.
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage(getContext().getString(R.string.syncProgress));
                 progressDialog.setIndeterminate(true);
                 progressDialog.show();
             } catch (Exception ex) {
-                Timber.e(ex, "displaying sync progress dialog");
+                Timber.e(ex, "displaying sync progress binaryDialog");
             }
         }
 
@@ -817,5 +827,4 @@ public class SyncManager {
         service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().startService(service);
     }
-
 }

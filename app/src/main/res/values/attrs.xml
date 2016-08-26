@@ -87,7 +87,7 @@
         <attr name="toolbarItemColor" format="color|reference" />
         <!--<attr name="toolbar_spinner_item_text_color" format="color|reference" />-->
 
-        <!-- number input dialog / calculator -->
+        <!-- number input binaryDialog / calculator -->
         <attr name="calculator_button_background" format="reference" />
         <attr name="calculator_button_operator_background" format="reference" />
 

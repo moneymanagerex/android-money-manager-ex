@@ -34,7 +34,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
@@ -171,7 +171,7 @@ public class InvestmentTransactionEditActivity
     }
 
     /**
-     * Raised after the amount has been entered in the number input dialog.
+     * Raised after the amount has been entered in the number input binaryDialog.
      */
     @Subscribe
     public void onEvent(AmountEnteredEvent event) {
@@ -223,6 +223,8 @@ public class InvestmentTransactionEditActivity
     }
 
     private void displayStock(Stock stock, InvestmentTransactionViewHolder viewHolder) {
+        if (mAccount == null) return;
+
         // Date
         viewHolder.dateView.setText(stock.getPurchaseDate().toString(Constants.LONG_DATE_PATTERN));
 
@@ -443,11 +445,9 @@ public class InvestmentTransactionEditActivity
     }
 
     private boolean validate() {
-        ExceptionHandler handler = new ExceptionHandler(this);
-
         // symbol must not be empty.
         if (StringUtils.isEmpty(mStock.getSymbol())) {
-            handler.showMessage(getString(R.string.symbol_required));
+            UIHelper.showToast(this, getString(R.string.symbol_required));
             return false;
         }
 

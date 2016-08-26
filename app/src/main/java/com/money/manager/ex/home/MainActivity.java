@@ -96,6 +96,7 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
+import rx.SingleSubscriber;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -132,7 +133,7 @@ public class MainActivity
     private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
     private static final String KEY_ORIENTATION = "MainActivity:Orientation";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
-    private static final String KEY_HAS_STARTED = "MainActivity:skipOnlineDbUpdateCheck";
+    private static final String KEY_HAS_STARTED = "MainActivity:dbUpdateCheckDone";
     // state if restart activity
     private static boolean mRestartActivity = false;
 
@@ -141,7 +142,7 @@ public class MainActivity
     private boolean isAuthenticated = false;
     private boolean isInAuthentication = false;
     private boolean isRecurringTransactionStarted = false;
-    private boolean skipOnlineDbUpdateCheck = false;
+    private boolean dbUpdateCheckDone = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
     private DrawerLayout mDrawer;
@@ -187,7 +188,7 @@ public class MainActivity
 
         handleIntent();
 
-        // show change log dialog
+        // show change log binaryDialog
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
 
@@ -371,7 +372,7 @@ public class MainActivity
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
         outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
-        outState.putBoolean(KEY_HAS_STARTED, this.skipOnlineDbUpdateCheck);
+        outState.putBoolean(KEY_HAS_STARTED, this.dbUpdateCheckDone);
 
         super.onSaveInstanceState(outState);
     }
@@ -400,49 +401,50 @@ public class MainActivity
 
     // Custom methods
 
-    public void checkCloudForDbUpdates() {
-        final SyncManager sync = new SyncManager(this);
-        if (!sync.isActive()) return;
-
-        compositeSubscription.add(
-            sync.compareFilesAsync()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SyncServiceMessage>() {
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("Initial remote db comparison complete.");
-
-                        // re-set sync timer.
-                        sync.startSyncServiceAlarm();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.e(e, "checking for remote db updates");
-                    }
-
-                    @Override
-                    public void onNext(SyncServiceMessage syncServiceMessage) {
-                        Timber.d("Db compared to cloud. Result: %s", syncServiceMessage.name());
-                        switch (syncServiceMessage) {
-                            case STARTING_DOWNLOAD:
-                                UIHelper.showDiffNotificationDialog(MainActivity.this);
-                                break;
-                            case STARTING_UPLOAD:
-                                sync.triggerSynchronization();
-                                break;
-                            case FILE_NOT_CHANGED:
-                                UIHelper.showToast(MainActivity.this, R.string.database_is_synchronized);
-                                break;
-                            case ERROR:
-                                Timber.w(getString(R.string.error_checking_remote));
-                                break;
-                        }
-                    }
-                })
-        );
-    }
+//    public void checkCloudForDbUpdates() {
+//        final SyncManager sync = new SyncManager(this);
+//        if (!sync.isActive()) return;
+//
+//        compositeSubscription.add(
+//            sync.compareFilesAsync()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new SingleSubscriber<SyncServiceMessage>() {
+//                    @Override
+//                    public void onSuccess(SyncServiceMessage value) {
+//                        Timber.d("Db compared to cloud. Result: %s", value.name());
+//                        switch (value) {
+//                            case STARTING_DOWNLOAD:
+//                                UIHelper.showDiffNotificationDialog(MainActivity.this);
+//                                break;
+//                            case STARTING_UPLOAD:
+//                                sync.triggerSynchronization();
+//                                break;
+//                            case FILE_NOT_CHANGED:
+//                                UIHelper.showToast(MainActivity.this, R.string.database_is_synchronized);
+//                                break;
+//                            case SYNC_DISABLED:
+//                                Timber.w(getString(R.string.synchronization_disabled));
+//                                break;
+//                            case ERROR:
+//                                Timber.w(getString(R.string.error_checking_remote));
+//                                break;
+//                        }
+//
+//                        dbUpdateCheckDone = true;
+////                        Timber.d("Initial remote db comparison complete.");
+//
+//                        // re-set sync timer.
+//                        sync.startSyncServiceAlarm();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable error) {
+//                        Timber.e(error, "checking for remote db updates");
+//                    }
+//                })
+//        );
+//    }
 
     /**
      * @return the mIsDualPanel
@@ -457,7 +459,6 @@ public class MainActivity
 
     /**
      * Handle the callback from the drawer click handler.
-     *
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
@@ -483,7 +484,7 @@ public class MainActivity
                 break;
             case R.id.menu_sync:
                 SyncManager sync = new SyncManager(this);
-                sync.triggerSynchronization();
+                sync.triggerSynchronization(true);
                 // re-set the sync timer.
                 sync.startSyncServiceAlarm();
                 break;
@@ -639,15 +640,18 @@ public class MainActivity
     private void initializeSync() {
         // Check cloud storage for updates?
         boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
-        if (syncOnStart && !this.skipOnlineDbUpdateCheck) {
+        if (syncOnStart && !this.dbUpdateCheckDone) {
+//            checkCloudForDbUpdates();
+
+            SyncManager sync = new SyncManager(this);
+            sync.triggerSynchronization(false);
+
             // This is to avoid checking for online updates on every device rotation.
-            checkCloudForDbUpdates();
-            this.skipOnlineDbUpdateCheck = true;
+            dbUpdateCheckDone = true;
+
+            // re-set sync timer.
+            sync.startSyncServiceAlarm();
         }
-
-        // todo Start the heartbeat if not running (could be killed by the user or the system).
-        // Do this until sync framework solution is active.
-
     }
 
     private void initializeDrawer() {
@@ -818,13 +822,13 @@ public class MainActivity
                 })
                 .build();
 
-//        ListView listView = dialog.getListView();
+//        ListView listView = binaryDialog.getListView();
 //        if (listView != null) {
 //            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override
 //                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                    onDrawerMenuAndOptionMenuSelected(adapter.getItem(position));
-//                    dialog.dismiss();
+//                    binaryDialog.dismiss();
 //                }
 //            });
 //        }
@@ -1114,7 +1118,7 @@ public class MainActivity
         }
 
         boolean skipRemoteCheck = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
-        this.skipOnlineDbUpdateCheck = skipRemoteCheck;
+        this.dbUpdateCheckDone = skipRemoteCheck;
     }
 
     private void initializeDrawerVariables() {
@@ -1278,7 +1282,7 @@ public class MainActivity
         }
 
         if (savedInstanceState.containsKey(KEY_HAS_STARTED)) {
-            this.skipOnlineDbUpdateCheck = savedInstanceState.getBoolean(KEY_HAS_STARTED);
+            this.dbUpdateCheckDone = savedInstanceState.getBoolean(KEY_HAS_STARTED);
         }
     }
 

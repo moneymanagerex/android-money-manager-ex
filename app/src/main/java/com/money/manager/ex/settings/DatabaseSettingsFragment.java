@@ -130,8 +130,6 @@ public class DatabaseSettingsFragment
 
         String version = "N/A";
 
-//        MmxOpenHelper dbHelper = MmxOpenHelper.getInstance(getActivity());
-
         SQLiteDatabase db = openHelper.get().getReadableDatabase();
         if (db != null) {
             int versionNumber = db.getVersion();

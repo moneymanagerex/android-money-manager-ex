@@ -64,7 +64,7 @@ import timber.log.Timber;
 public class Core {
 
     /**
-     * Shown alert dialog
+     * Shown alert binaryDialog
      * @param resId id of string
      */
     public static void alertDialog(Context ctx, int resId) {
@@ -72,12 +72,12 @@ public class Core {
     }
 
     /**
-     * Shown alert dialog
+     * Shown alert binaryDialog
      * @param text to display
      */
     public static void alertDialog(Context context, String text) {
         new AlertDialogWrapper.Builder(context)
-            // setting alert dialog
+            // setting alert binaryDialog
             .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
             .setTitle(R.string.attention)
             .setMessage(text)
@@ -208,8 +208,9 @@ public class Core {
 
     public String getAppVersionName() {
         try {
-            return getContext().getPackageManager().getPackageInfo(
-                getContext().getPackageName(), 0).versionName;
+            return getContext().getPackageManager()
+                    .getPackageInfo(getContext().getPackageName(), 0)
+                    .versionName;
         } catch (PackageManager.NameNotFoundException e) {
             Timber.e(e, "getting app version name");
         }
@@ -371,7 +372,7 @@ public class Core {
 
         // create layout
         View view = LayoutInflater.from(getContext()).inflate(R.layout.changelog_layout, null);
-        //create dialog
+        //create binaryDialog
         new AlertDialogWrapper.Builder(getContext())
             .setCancelable(false)
             .setTitle(R.string.changelog)
@@ -384,7 +385,7 @@ public class Core {
                     }
                 }
             )
-            // show dialog
+            // show binaryDialog
             .create().show();
         return true;
     }

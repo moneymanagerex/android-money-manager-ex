@@ -40,11 +40,11 @@ public class YesNoDialog
     }
 
     /**
-     * Here we store the identifier in which context the dialog is used.
-     * Since this dialog can be used for any binary outcome, there needs to be a way
+     * Here we store the identifier in which context the binaryDialog is used.
+     * Since this binaryDialog can be used for any binary outcome, there needs to be a way
      * to distinguish which one it is handling.
      * This is used in the caller to distinguish which action to take in case there are
-     * multiple instances of yes-no dialog.
+     * multiple instances of yes-no binaryDialog.
      * If there is only one then it does not need to be used.
      */
     private String mPurpose;

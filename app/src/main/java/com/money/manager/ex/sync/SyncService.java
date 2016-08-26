@@ -41,8 +41,8 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 
+import rx.SingleSubscriber;
 import rx.Subscriber;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -74,7 +74,8 @@ public class SyncService
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Timber.d("Running sync service: %s", intent.toString());
+        String intentString = intent != null ? intent.toString() : "null";
+        Timber.d("Running sync service: %s", intentString);
 
         // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
@@ -96,7 +97,7 @@ public class SyncService
         // check if file is correct
         if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
 
-        CloudMetaData remoteFile = sync.loadMetadataObservable(remoteFilename);
+        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
         if (remoteFile == null) {
             sendMessage(SyncServiceMessage.ERROR);
             return;
@@ -112,7 +113,7 @@ public class SyncService
 //                remoteFile = new CloudMetaData();
 //                remoteFile.setPath(remoteFilename);
 //            } else {
-//                Log.e(LOGCAT, "remoteFile is null. SyncService.onHandleIntent premature exit.");
+//                Timber.e("remoteFile is null. SyncService.onHandleIntent premature exit.");
 //                sendMessage(SyncServiceMessage.ERROR);
 //                return;
 //            }
@@ -265,7 +266,7 @@ public class SyncService
 
     }
 
-    private void triggerSync(final File localFile, CloudMetaData remoteFile) {
+    private void triggerSync(File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
         SyncPreferences preferences = new SyncPreferences(getApplicationContext());
 
@@ -274,9 +275,7 @@ public class SyncService
         Timber.d("local file has changes: %b", isLocalModified);
 
         // are there remote changes?
-        DateTime cachedLastModified = sync.getCachedLastModifiedDateFor(remoteFile);
-        DateTime remoteLastModified = sync.getModificationDate(remoteFile);
-        boolean isRemoteModified = !cachedLastModified.isEqual(remoteLastModified);
+        boolean isRemoteModified = sync.isRemoteFileModified(remoteFile);
         Timber.d("Remote file has changes: %b", isRemoteModified);
 
         if (!isLocalModified && !isRemoteModified) {

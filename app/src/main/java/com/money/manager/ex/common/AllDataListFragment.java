@@ -729,7 +729,7 @@ public class AllDataListFragment
      * @param transactionIds primary key of transaction
      */
     private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
-        // create alert dialog and set title and message
+        // create alert binaryDialog and set title and message
         AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
             .setTitle(R.string.delete_transaction)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
@@ -800,7 +800,7 @@ public class AllDataListFragment
         alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // close dialog
+                // close binaryDialog
                 dialog.cancel();
             }
         });
@@ -910,7 +910,7 @@ public class AllDataListFragment
                 .withIcon(isDarkTheme ? R.drawable.ic_action_halt_dark : R.drawable.ic_action_halt_light)
                 .withShortcut("V"));
 
-        // open dialog
+        // open binaryDialog
         final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title(getString(R.string.change_status))
                 .adapter(adapter, null)

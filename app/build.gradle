@@ -25,8 +25,8 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionName '2016.08.22'
-        versionCode 898
+        versionCode 901
+        versionName getVersionAsDate() + "." + versionCode
 
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
@@ -100,7 +100,8 @@ android {
 
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    def version = "-" + defaultConfig.versionName.replace(".", "_") + "_r" + defaultConfig.versionCode
+                    // append the version to the file name.
+                    def version = "-" + defaultConfig.versionName.replace(".", "-") // + "_r" + defaultConfig.versionCode
                     output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", version + ".apk"))
                 }
             }
@@ -278,4 +279,10 @@ dependencies {
 
 configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
+}
+
+def getVersionAsDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy.MM.dd')
+    return formattedDate
 }

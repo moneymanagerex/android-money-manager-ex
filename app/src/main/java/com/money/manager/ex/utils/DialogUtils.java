@@ -22,7 +22,7 @@ import android.app.ProgressDialog;
 import timber.log.Timber;
 
 /**
- * Common dialog utility functions.
+ * Common binaryDialog utility functions.
  */
 public class DialogUtils {
     public static void closeProgressDialog(ProgressDialog progressDialog) {
@@ -30,7 +30,7 @@ public class DialogUtils {
             progressDialog.hide();
             progressDialog.dismiss();
         } catch (Exception ex) {
-            Timber.e("error closing a dialog");
+            Timber.e("error closing a binaryDialog");
         }
     }
 

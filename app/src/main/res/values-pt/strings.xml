@@ -630,7 +630,7 @@
   <string name="every_6_hours">Cada 6 horas</string>
   <string name="every_12_hours">Cada 12 horas</string>
   <string name="never">Nunca</string>
-  <string name="dropbox_select_file">Selecione um ficheiro do Dropbox</string>
+  <string name="select_remote_file">Selecione um ficheiro do Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

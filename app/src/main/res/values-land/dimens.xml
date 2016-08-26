@@ -20,7 +20,7 @@
     <dimen name="fab_margin_bottom_home_fragment">32dp</dimen>
     <dimen name="fab_margin_bottom_higher">52dp</dimen>
 
-    <!-- font size amount dialog -->
+    <!-- font size amount binaryDialog -->
     <dimen name="input_dialog_text_size">32sp</dimen>
     <dimen name="input_dialog_button_height">50dp</dimen>
     <dimen name="input_dialog_linear_button_height">50dp</dimen>

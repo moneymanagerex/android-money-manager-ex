@@ -116,7 +116,7 @@ public class FilterDialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        Dialog dialog = super.onCreateDialog(savedInstanceState);
+//        Dialog binaryDialog = super.onCreateDialog(savedInstanceState);
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
             .title(getActivity().getString(R.string.account))
             .customView(R.layout.fragment_filter_dialog, true)

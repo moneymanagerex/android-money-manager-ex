@@ -621,7 +621,7 @@
   <string name="every_6_hours">Co 6 godzin</string>
   <string name="every_12_hours">Co 12 godzin</string>
   <string name="never">Nigdy</string>
-  <string name="dropbox_select_file">Wybierz plik z Dropboksa</string>
+  <string name="select_remote_file">Wybierz plik z Dropboksa</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

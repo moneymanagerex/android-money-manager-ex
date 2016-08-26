@@ -599,7 +599,7 @@
   <string name="every_6_hours">Alle 6 Stunden</string>
   <string name="every_12_hours">Alle 12 Stunden</string>
   <string name="never">Nie</string>
-  <string name="dropbox_select_file">Wählen Sie eine Datei von Dropbox</string>
+  <string name="select_remote_file">Wählen Sie eine Datei von Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

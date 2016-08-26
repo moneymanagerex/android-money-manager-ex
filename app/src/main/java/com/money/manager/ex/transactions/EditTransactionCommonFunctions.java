@@ -47,6 +47,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.CategoryRepository;
@@ -59,7 +60,6 @@ import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -139,7 +139,7 @@ public class EditTransactionCommonFunctions {
 
             if (!repository.delete(splitToDelete)) {
                 Toast.makeText(getContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
+                Timber.w("Delete split transaction failed!");
                 return false;
             }
         }
@@ -181,8 +181,7 @@ public class EditTransactionCommonFunctions {
         AccountRepository repo = new AccountRepository(getContext());
         Integer currencyId = repo.loadCurrencyIdFor(accountId);
         if (currencyId == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext());
-            handler.showMessage(R.string.error_loading_currency);
+            UIHelper.showToast(getContext(), R.string.error_loading_currency);
 
             currencyId = Constants.NOT_SET;
         }
@@ -1345,7 +1344,7 @@ public class EditTransactionCommonFunctions {
         // Check whether to delete split categories, if any.
         if(hasSplitCategories()) {
             // Prompt the user to confirm deleting split categories.
-            // Use DialogFragment in order to redraw the dialog when switching device orientation.
+            // Use DialogFragment in order to redraw the binaryDialog when switching device orientation.
 
             DialogFragment dialog = new YesNoDialog();
             Bundle args = new Bundle();
@@ -1366,7 +1365,17 @@ public class EditTransactionCommonFunctions {
 
         // Set the destination account, if not already.
         if (transactionEntity.getAccountToId() == null || transactionEntity.getAccountToId().equals(Constants.NOT_SET)) {
-            transactionEntity.setAccountToId(mAccountIdList.get(0));
+            if (mAccountIdList.size() == 0) {
+                // notify the user and exit.
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.warning)
+                        .content(R.string.no_accounts_available_for_selection)
+                        .positiveText(android.R.string.ok)
+                        .show();
+                return;
+            } else {
+                transactionEntity.setAccountToId(mAccountIdList.get(0));
+            }
         }
 
         // calculate AmountTo only if not set previously.

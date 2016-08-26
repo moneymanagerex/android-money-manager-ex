@@ -60,11 +60,11 @@ public class AboutFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        String text, version, build;
+        String text, version;
         View view = inflater.inflate(R.layout.about_fragment, container, false);
 
         BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
-        if (activity != null) {
+        if (activity != null && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -72,8 +72,9 @@ public class AboutFragment extends Fragment {
         TextView txtVersion = (TextView) view.findViewById(R.id.textViewVersion);
         Core core = new Core(getActivity());
         version = core.getAppVersionName();
-        build = core.getAppVersionBuild();
-        txtVersion.setText(getString(R.string.version) + " " + version + " (" + getString(R.string.build) + " " + build + ")");
+//        build = core.getAppVersionBuild();
+        txtVersion.setText(getString(R.string.version) + " " + version);
+        // + " (" + getString(R.string.build) + " " + build + ")"
 
         // Send Feedback
         TextView txtFeedback = (TextView) view.findViewById(R.id.textViewLinkFeedback);
@@ -103,7 +104,7 @@ public class AboutFragment extends Fragment {
         clickListenerRate.setUrl("http://play.google.com/store/apps/details?id=com.money.manager.ex");
         txtRate.setOnClickListener(clickListenerRate);
 
-        // issues tracker application
+        // application issue tracker
         TextView txtIssues = (TextView) view.findViewById(R.id.textViewIssuesTracker);
         text = "<u>" + txtIssues.getText() + "</u>";
         txtIssues.setText(Html.fromHtml(text));

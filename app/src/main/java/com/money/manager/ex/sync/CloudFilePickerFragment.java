@@ -33,7 +33,6 @@ import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.sync.events.RemoteFolderContentsRetrievedEvent;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,6 +41,12 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import rx.SingleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,30 +96,6 @@ public class CloudFilePickerFragment
     }
 
     @Subscribe
-    public void onEvent(final RemoteFolderContentsRetrievedEvent event) {
-//        if (event.items == null) {
-//            // could not retrieve items.
-//            return;
-//        }
-
-        if (event.items != null) {
-            event.items = sortRemoteItems(event.items);
-        }
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // hide the progress dialog
-                progressDialog.dismiss();
-
-                // Refresh the data in the list.
-                mAdapter = new CloudDataAdapter(getActivity(), event.items);
-                mRecyclerView.setAdapter(mAdapter);
-            }
-        });
-    }
-
-    @Subscribe
     public void onEvent(ListItemClickedEvent event) {
         // get item
         CloudMetaData item = mAdapter.mData.get(event.id);
@@ -147,7 +128,34 @@ public class CloudFilePickerFragment
                 .canceledOnTouchOutside(false)
                 .show();
 
-        getSyncManager().getRemoteFolderContentsAsync(folder);
+        getSyncManager().getRemoteFolderContentsAsync(folder)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<List<CloudMetaData>, List<CloudMetaData>>() {
+                    @Override
+                    public List<CloudMetaData> call(List<CloudMetaData> cloudMetaDatas) {
+                        // sort the items in the process.
+                        return sortRemoteItems(cloudMetaDatas);
+                    }
+                })
+        .subscribe(new SingleSubscriber<List<CloudMetaData>>() {
+            @Override
+            public void onSuccess(List<CloudMetaData> value) {
+                // hide the progress binaryDialog
+                progressDialog.dismiss();
+
+                // Refresh the data in the list.
+                mAdapter = new CloudDataAdapter(getActivity(), value);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                progressDialog.dismiss();
+                Timber.e(error, "retrieving the remote folder contents");
+            }
+        });
+
     }
 
     private boolean isValidDatabase(CloudMetaData item) {

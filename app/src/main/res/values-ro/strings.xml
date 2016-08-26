@@ -602,7 +602,7 @@
   <string name="every_6_hours">La fiecare 6 ore</string>
   <string name="every_12_hours">La fiecare 12 ore</string>
   <string name="never">Niciodată</string>
-  <string name="dropbox_select_file">Selectează un fișier din Dropbox</string>
+  <string name="select_remote_file">Selectează un fișier din Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

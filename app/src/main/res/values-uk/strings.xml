@@ -599,7 +599,7 @@
   <string name="every_6_hours">Кожні 6 годин</string>
   <string name="every_12_hours">Кожні 12 годин</string>
   <string name="never">Ніколи</string>
-  <string name="dropbox_select_file">Виберіть файл з Dropbox</string>
+  <string name="select_remote_file">Виберіть файл з Dropbox</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

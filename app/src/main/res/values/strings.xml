@@ -495,9 +495,8 @@
     <string name="discard">Discard</string>
     <string name="invalid_expression">Invalid expression</string>
     <string name="send_me_logcat">Logcat</string>
-    <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="due_today">Due Today</string>
-    <string name="issues_tracker">Issues Tracker on GitHub</string>
+    <string name="issues_tracker">Issue Tracker on GitHub</string>
     <string name="action_settings">Settings</string>
     <string name="close">Close</string>
     <string name="tutorial_accounts_1">Multiple account types: checking, savings, credit, assets, and investments.</string>
@@ -699,6 +698,7 @@
 
     <!-- deprecated / Dropbox -->
     <!--<string name="dropbox">Dropbox</string>-->
+    <string name="dropbox_database_can_be_updted">There is an update of the database on Dropbox</string>
     <string name="dropbox_file_ready_for_use">Your database has been downloaded</string>
     <string name="dropbox_open_database_downloaded">To use the database downloaded, touch Open Database</string>
     <string name="click_to_select_file_dropbox">Touch to select the file to use from Dropbox</string>
@@ -745,7 +745,15 @@
     <string name="title_sync_upload_immediate">Upload the database immediately after change</string>
     <string name="summary_sync_upload_immediate">This option allows to automatically upload as soon as you change the database</string>
     <string name="dropbox_empty_folder">The folder in Dropbox/Apps/Money Manager Ex Android is empty. If you already use MoneyManagerEx copy your database to this folder in your computer, and after you do the refresh.</string>
-    <string name="dropbox_select_file">Select a file from Dropbox</string>
+    <string name="select_remote_file">Select a remote file from the cloud storage</string>
+    <string name="confirm_download">Do you want to download the remote file now?</string>
+    <string name="file_exists">File exists</string>
+    <string name="file_exists_long">A file with the same name already exists in the local storage. Do you want to overwrite this file?</string>
+    <string name="synchronization_disabled">Synchronization is disabled.</string>
+    <string name="filenames_differ">The remote and local filenames differ. Aborting synchronization.</string>
+
+    <!-- Warnings -->
+    <string name="no_accounts_available_for_selection">There are no accounts available for selection. Please adjust your preferences for account filtering or mark some accounts as favourite.</string>
 
     <!-- Errors -->
     <string name="error_parsing_value">Error parsing entered value</string>

@@ -29,6 +29,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.robotium.solo.Solo;
 
+import timber.log.Timber;
+
 public class UiTestHelpersRobotium {
 
     public UiTestHelpersRobotium(Solo solo) {
@@ -118,7 +120,7 @@ public class UiTestHelpersRobotium {
             Process pr = rt.exec("adb uninstall your.package");
             pr.waitFor();
         } catch (Exception e) {
-            Log.e("uninstalling app", e.getMessage());
+            Timber.e(e, "uninstalling app");
         }
     }
 

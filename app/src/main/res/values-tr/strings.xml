@@ -543,7 +543,7 @@
   <string name="every_6_hours">Her 6 saatte</string>
   <string name="every_12_hours">Her 12 Saatte</string>
   <string name="never">Hiç bir zaman</string>
-  <string name="dropbox_select_file">Dropbox\'tan bir dosya seç</string>
+  <string name="select_remote_file">Dropbox\'tan bir dosya seç</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

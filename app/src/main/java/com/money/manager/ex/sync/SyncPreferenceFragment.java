@@ -32,7 +32,9 @@ import android.widget.Toast;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -43,6 +45,11 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
+import rx.SingleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -129,24 +136,33 @@ public class SyncPreferenceFragment
         // show selected value
         viewHolder.remoteFile.setSummary(remoteFile);
 
-        SyncManager sync = getSyncManager();
-
-        String previousFile = sync.getRemotePath();
-
-        // save selection into preferences
-        sync.setRemotePath(remoteFile);
+        // Save the selection into preferences.
+        getSyncManager().setRemotePath(remoteFile);
 
         // start sync service
         getSyncManager().startSyncServiceAlarm();
 
-        // save local file
+        // save local path.
         storeLocalFileSetting(remoteFile);
 
-        // download db from the cloud storage
-        if (!remoteFile.equals(previousFile)) {
-            // force download file
-            forceDownload();
-        }
+        ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+            UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download)
+                    .filter(new Func1<Boolean, Boolean>() {
+                        @Override
+                        public Boolean call(Boolean aBoolean) {
+                            // proceed only if user accepts
+                            return aBoolean;
+                        }
+                    })
+    //                .toBlocking().single();
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        // download db from the cloud storage
+                        checkIfLocalFileExists();
+                    }
+                })
+        );
     }
 
     private SyncManager getSyncManager() {
@@ -179,15 +195,35 @@ public class SyncPreferenceFragment
         viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                SyncManager sync = getSyncManager();
+                final SyncManager sync = getSyncManager();
                 // set the new provider
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
-                // log in to the provider immediately and save to persistence.
-                sync.login();
-                // Login is an async call so no point saving here.
-//                sync.storePersistent();
+                final boolean[] result = new boolean[1];
 
-                return true;
+                // log in to the provider immediately and save to persistence.
+                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+                    sync.loginObservable()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new SingleSubscriber<Void>() {
+                                @Override
+                                public void onSuccess(Void value) {
+                                    result[0] = true;
+                                    sync.storePersistent();
+                                }
+
+                                @Override
+                                public void onError(Throwable error) {
+                                    if (error.getMessage().equals("Authentication was cancelled")) {
+                                        Timber.w("authentication cancelled");
+                                    } else {
+                                        Timber.e(error, "logging in to cloud provider");
+                                    }
+                                }
+                            })
+                );
+
+                return result[0];
             }
         });
 
@@ -207,20 +243,20 @@ public class SyncPreferenceFragment
         });
 
         // interval
-        if (BuildConfig.DEBUG) {
-            // insert a 1-minute in debug mode
-            CharSequence[] entries = viewHolder.syncInterval.getEntries();
-            String[] newEntries = new String[entries.length + 1];
-            newEntries[0] = "1-minute";
-            System.arraycopy(entries, 0, newEntries, 1, entries.length);
-            viewHolder.syncInterval.setEntries(newEntries);
-            // values
-            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
-            String[] newValues = new String[values.length + 1];
-            newValues[0] = "1";
-            System.arraycopy(values, 0, newValues, 1, values.length);
-            viewHolder.syncInterval.setEntryValues(newValues);
-        }
+//        if (BuildConfig.DEBUG) {
+//            // insert a 1-minute in debug mode
+//            CharSequence[] entries = viewHolder.syncInterval.getEntries();
+//            String[] newEntries = new String[entries.length + 1];
+//            newEntries[0] = "1-minute";
+//            System.arraycopy(entries, 0, newEntries, 1, entries.length);
+//            viewHolder.syncInterval.setEntries(newEntries);
+//            // values
+//            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
+//            String[] newValues = new String[values.length + 1];
+//            newValues[0] = "1";
+//            System.arraycopy(values, 0, newValues, 1, values.length);
+//            viewHolder.syncInterval.setEntryValues(newValues);
+//        }
 
         viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -260,30 +296,65 @@ public class SyncPreferenceFragment
             }
         });
 
-        // Sync on app start. Handled automatically?
-
         // reset preferences
 
         viewHolder.resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                SyncManager sync = getSyncManager();
-                sync.logout();
-                sync.resetPreferences();
-                sync.stopSyncServiceAlarm();
+                final SyncManager sync = getSyncManager();
+                sync.logoutObservable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleSubscriber<Void>() {
+                        @Override
+                        public void onSuccess(Void value) {
+                            sync.resetPreferences();
+                            sync.stopSyncServiceAlarm();
 
-                Core.alertDialog(getActivity(), R.string.preferences_reset);
+                            Core.alertDialog(getActivity(), R.string.preferences_reset);
 
-                getActivity().recreate();
+                            getActivity().recreate();
+                        }
 
+                        @Override
+                        public void onError(Throwable error) {
+                            Timber.e(error, "logging out the cloud provider");                        }
+                    });
                 return false;
             }
         });
     }
 
+    private void checkIfLocalFileExists() {
+        String local = getSyncManager().getLocalPath();
+
+        // check if the file exists and prompt the user.
+        if (new File(local).exists()) {
+            // prompt
+            ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+                UIHelper.binaryDialog(getActivity(), R.string.file_exists, R.string.file_exists_long)
+                        .filter(new Func1<Boolean, Boolean>() {
+                            @Override
+                            public Boolean call(Boolean aBoolean) {
+                                // proceed only if user confirms
+                                return aBoolean;
+                            }
+                        })
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                // finally download the file.
+                                forceDownload();
+                            }
+                        })
+            );
+        } else {
+            forceDownload();
+        }
+    }
+
     private void forceDownload() {
-        SyncManager sync = getSyncManager();
-        sync.triggerDownload();
+        getSyncManager().triggerDownload(true);
     }
 
     private void forceUpload() {

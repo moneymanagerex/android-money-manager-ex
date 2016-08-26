@@ -555,7 +555,7 @@
   <string name="every_6_hours">Každých 6 hodin</string>
   <string name="every_12_hours">Každých 12 hodin</string>
   <string name="never">Nikdy</string>
-  <string name="dropbox_select_file">Vyberte soubor z Dropboxu</string>
+  <string name="select_remote_file">Vyberte soubor z Dropboxu</string>
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

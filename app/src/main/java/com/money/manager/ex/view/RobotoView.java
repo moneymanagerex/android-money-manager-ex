@@ -29,6 +29,8 @@ import android.widget.TextView;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 
+import timber.log.Timber;
+
 /**
  * Implementation of a {@link TextView} with native support for all the Roboto fonts on all
  * versions of Android, with customization from users.
@@ -292,7 +294,7 @@ public class RobotoView {
     			try {
     				view.setTypeface(RobotoView.obtainTypeface(context, typefaceValue));
     			} catch (Exception e) {
-    				Log.e(LOGCAT, e.getMessage());
+    				Timber.e(e, "setting roboto typeface");
     			}
     		}
 		}

@@ -70,7 +70,7 @@
 //
 //        String dropboxFile = mDropboxHelper.getLinkedRemoteFile();
 //        if (TextUtils.isEmpty(dropboxFile)) {
-//            Toast.makeText(mContext, R.string.dropbox_select_file, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, R.string.select_remote_file, Toast.LENGTH_SHORT).show();
 //            return;
 //        }
 //
@@ -153,7 +153,7 @@
 //
 //        ProgressDialog progressDialog;
 //        try {
-//            //progress dialog
+//            //progress binaryDialog
 //            progressDialog = new ProgressDialog(mContext);
 //            progressDialog.setCancelable(false);
 //            progressDialog.setMessage(mContext.getString(R.string.syncProgress));
@@ -164,7 +164,7 @@
 //                    .createMessenger(progressDialog, mDropboxHelper.getLinkedRemoteFile());
 //            service.putExtra(SyncService.INTENT_EXTRA_MESSENGER, messenger);
 //        } catch (Exception ex) {
-//            Timber.e(ex, "displaying dropbox progress dialog");
+//            Timber.e(ex, "displaying dropbox progress binaryDialog");
 //        }
 //
 //        // start service

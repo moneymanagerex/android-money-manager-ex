@@ -24,7 +24,7 @@ import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
 /**
- * View Holder pattern for edit price dialog.
+ * View Holder pattern for edit price binaryDialog.
  */
 public class EditPriceViewHolder {
 

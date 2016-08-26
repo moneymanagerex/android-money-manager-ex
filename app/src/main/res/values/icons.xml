@@ -61,7 +61,7 @@
     <string name="ic_bill">O</string>
     <string name="ic_pie_chart">P</string>
     <string name="ic_star">Q</string>
-    <string name="ic_filter">R</string>
+    <!--<string name="ic_filter">R</string>-->
     <string name="ic_credit_card">S</string>
     <string name="ic_report_page">T</string>
     <string name="ic_sort_asc">U</string>

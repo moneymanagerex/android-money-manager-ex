@@ -659,7 +659,7 @@
   <string name="title_sync_upload_immediate">Subir la base de datos inmediatamente después de una modificación</string>
   <string name="summary_sync_upload_immediate">Esta opción permite guardar automáticamente cuando se cambia la base de datos</string>
   <string name="dropbox_empty_folder">La carpeta en Dropbox/Apps/Money Manager Ex Mobile está vacía. Si ya utilizas MoneyManagerEx copia tu base de datos a esta carpeta en tu ordenador, y después actualiza.</string>
-  <string name="dropbox_select_file">Seleccione un archivo en Dropbox</string>
+  <string name="select_remote_file">Seleccione un archivo en Dropbox</string>
   <!-- Errors -->
   <string name="error_parsing_value">Error de escritura en el valor introducido</string>
   <string name="remote_file_not_found">No se encontró el archivo remoto</string>

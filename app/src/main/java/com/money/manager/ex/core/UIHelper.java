@@ -5,17 +5,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action0;
+import rx.subscriptions.Subscriptions;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -31,28 +39,71 @@ public class UIHelper {
         showToast(context, message);
     }
 
-    public static void showDiffNotificationDialog(final Context context) {
-        new AlertDialogWrapper.Builder(context)
-                // setting alert dialog
-                .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
-                .setTitle(R.string.update_available)
-                .setMessage(R.string.update_available_online)
-                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new SyncManager(context).triggerSynchronization();
+//    public static void showDiffNotificationDialog(final Context context) {
+//        new AlertDialogWrapper.Builder(context)
+//                // setting alert binaryDialog
+//                .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
+//                .setTitle(R.string.update_available)
+//                .setMessage(R.string.update_available_online)
+//                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        new SyncManager(context).triggerSynchronization(true);
+//
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .show();
+//    }
 
+    public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                        .title(title)
+                        .content(message)
+                        .positiveText(android.R.string.ok)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                subscriber.onNext(true);
+                                subscriber.onCompleted();
+                            }
+                        })
+                        .negativeText(android.R.string.cancel)
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                subscriber.onNext(false);
+                                subscriber.onCompleted();
+                            }
+                        })
+                        .build();
+
+                // cleaning up
+                subscriber.add(Subscriptions.create(new Action0() {
+                    @Override
+                    public void call() {
                         dialog.dismiss();
                     }
-                })
-                .show();
+                }));
+
+                // show the dialog
+                dialog.show();
+            }
+        });
     }
+
+    /*
+        Instance
+     */
 
     public UIHelper(Context context) {
         this.context = context;
@@ -79,6 +130,14 @@ public class UIHelper {
         int sizeInDp = (int) (getContext().getResources().getDimension(dimenId)
             / getContext().getResources().getDisplayMetrics().density);
         return sizeInDp;
+    }
+
+    public int getToolbarIconSize() {
+        return getDimenInDp(R.dimen.mmx_toolbar_icon_size);
+    }
+
+    public int getPrimaryColor() {
+        return getColor(R.attr.toolbarItemColor);
     }
 
     /**
