@@ -571,6 +571,7 @@ public class CheckingTransactionEditActivity
         if ((isTransfer) || !mCommonFunctions.hasPayee() || mCommonFunctions.hasSplitCategories()) {
             return;
         }
+        if (mCommonFunctions.transactionEntity == null) return;
 
         PayeeRepository payeeRepository = new PayeeRepository(this);
         Payee payee = payeeRepository.load(mCommonFunctions.transactionEntity.getPayeeId());

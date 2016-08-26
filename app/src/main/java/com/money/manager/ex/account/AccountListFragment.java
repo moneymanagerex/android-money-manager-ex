@@ -110,10 +110,15 @@ public class AccountListFragment
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        // ExpandableListView$ExpandableListContextMenuInfo
+        if (!(menuInfo instanceof AdapterView.AdapterContextMenuInfo)) return false;
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int accountId = (int) info.id;
         int itemId = item.getItemId();
         ContextMenuIds menuId = ContextMenuIds.get(itemId);
+        if (menuId == null) return false;
 
         switch (menuId) {
             case EDIT:
