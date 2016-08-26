@@ -144,7 +144,7 @@ public class AboutFragment extends Fragment {
         imageViewGithub.setOnClickListener(clickListenerGithub);
         // image view twitter
         OnClickListenerUrl clickListenerTwitter = new OnClickListenerUrl();
-        clickListenerTwitter.setUrl("https://twitter.com/MMEXForAndroid");
+        clickListenerTwitter.setUrl("https://twitter.com/MMEX4Android");
         ImageView imageViewTwitter = (ImageView) view.findViewById(R.id.imageViewTwitter);
         imageViewTwitter.setOnClickListener(clickListenerTwitter);
         // GPLv2 license

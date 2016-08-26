@@ -53,4 +53,4 @@ Web: http://android.moneymanagerex.org/
 G+: http://google.com/+AndroidMoneyManagerEx
 G+ Community: http://goo.gl/R693Ih
 Forum: http://forum.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=PlayStore&utm_source=Website
-Twitter: https://twitter.com/MMEXForAndroid
+Twitter: https://twitter.com/MMEX4Android
