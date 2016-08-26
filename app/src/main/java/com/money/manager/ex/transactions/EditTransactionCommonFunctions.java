@@ -139,7 +139,7 @@ public class EditTransactionCommonFunctions {
 
             if (!repository.delete(splitToDelete)) {
                 Toast.makeText(getContext(), R.string.db_checking_update_failed, Toast.LENGTH_SHORT).show();
-                Log.w(EditTransactionActivityConstants.LOGCAT, "Delete split transaction failed!");
+                Timber.w("Delete split transaction failed!");
                 return false;
             }
         }
