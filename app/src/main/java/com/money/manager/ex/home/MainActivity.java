@@ -37,6 +37,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -162,7 +163,9 @@ public class MainActivity
     // state dual panel
     private boolean mIsDualPanel = false;
     private RecentDatabasesProvider recentDbs;
+    // sync rotating icon
     private MenuItem mSyncMenuItem = null;
+    private boolean mIsSynchronizing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -331,6 +334,14 @@ public class MainActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
+        if (mIsSynchronizing) {
+            createSyncToolbarItem(menu);
+            startSyncIconRotation(mSyncMenuItem);
+        } else {
+            stopSyncIconRotation(mSyncMenuItem);
+            destroySyncToolbarItem(menu);
+        }
+
         return true;
     }
 
@@ -338,10 +349,6 @@ public class MainActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-//            case Menu.FIRST:
-//                new SyncManager(this).triggerSynchronization(false);
-//                break;
-
             case android.R.id.home:
                 // toggle drawer with the menu hardware button.
                 if (mDrawer != null) {
@@ -625,13 +632,17 @@ public class MainActivity
         setDrawerTotalAccounts(event.amount);
     }
 
+    /**
+     * Force execution on the main thread as the event can be received on the service thread.
+     * @param event Sync started event.
+     */
     @Subscribe
     public void onEvent(SyncStartingEvent event) {
         Single.fromCallable(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                createSyncToolbarItem();
-                startSyncIconRotation(mSyncMenuItem);
+                mIsSynchronizing = true;
+                invalidateOptionsMenu();
                 return null;
             }
         })
@@ -640,13 +651,17 @@ public class MainActivity
                 .subscribe();
     }
 
+    /**
+     * Force execution on the main thread as the event can be received on the service thread.
+     * @param event Sync stopped event.
+     */
     @Subscribe
     public void onEvent(SyncStoppingEvent event) {
         Single.fromCallable(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                createSyncToolbarItem();
-                stopSyncIconRotation(mSyncMenuItem);
+                mIsSynchronizing = false;
+                invalidateOptionsMenu();
                 return null;
             }
         })
@@ -1049,13 +1064,15 @@ public class MainActivity
         restartActivity();
     }
 
-    private void createSyncToolbarItem() {
-        Menu menu = getToolbar().getMenu();
+    private void createSyncToolbarItem(Menu menu) {
+//        Menu menu = getToolbar().getMenu();
         if (menu == null) return;
+
+        int id = R.id.menuSyncProgress;
 
         if (new SyncManager(this).isActive()) {
             // add rotating icon
-            if (menu.findItem(Menu.FIRST) == null) {
+            if (menu.findItem(id) == null) {
                 boolean hasAnimation = false;
 
                 if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
@@ -1065,8 +1082,11 @@ public class MainActivity
                 }
 
                 // create (new) menu item.
-                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
-                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.menu_sync_progress, menu);
+                mSyncMenuItem = menu.findItem(id);
+//                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
+//                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                 Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
                 mSyncMenuItem.setIcon(syncIcon);
 
@@ -1080,6 +1100,22 @@ public class MainActivity
                 stopSyncIconRotation(mSyncMenuItem);
                 mSyncMenuItem = null;
             }
+        }
+    }
+
+    private void destroySyncToolbarItem(Menu menu) {
+//        Menu menu = getToolbar().getMenu();
+        if (menu == null) return;
+
+        int id = R.id.menuSyncProgress;
+
+        if (menu.findItem(id) != null) {
+            menu.removeItem(id);
+        }
+
+        if (mSyncMenuItem != null) {
+            stopSyncIconRotation(mSyncMenuItem);
+            mSyncMenuItem = null;
         }
     }
 
@@ -1378,7 +1414,6 @@ public class MainActivity
     }
 
     private void startSyncIconRotation(MenuItem item) {
-//        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
         if (item == null) return;
 
         // define the animation for rotation
@@ -1400,7 +1435,6 @@ public class MainActivity
     }
 
     private void stopSyncIconRotation(MenuItem item) {
-//        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
         if (item == null) return;
 
         View actionView = item.getActionView();
