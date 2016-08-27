@@ -76,6 +76,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -467,6 +468,7 @@ public class EditTransactionCommonFunctions {
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
+                    .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                     .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
                     .setThemeDark();
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);

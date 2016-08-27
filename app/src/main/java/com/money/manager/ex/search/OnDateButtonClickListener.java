@@ -63,6 +63,7 @@ public class OnDateButtonClickListener
         }
 
         CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+            .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
             .setOnDateSetListener(mDateSetListener)
             .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
             .setThemeDark();

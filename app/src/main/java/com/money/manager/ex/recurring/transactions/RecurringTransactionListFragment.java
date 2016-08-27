@@ -36,6 +36,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
@@ -43,6 +44,7 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
@@ -50,10 +52,12 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * The recurring transactions list fragment.
@@ -339,11 +343,15 @@ public class RecurringTransactionListFragment
     }
 
     private void showCaldroidFragment() {
+        Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
         CaldroidFragment caldroidFragment = new CaldroidFragment();
+
+        // Customization
         Bundle args = new Bundle();
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(appLocale);
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxDateTimeUtils.getFirstDayOfWeek());
         caldroidFragment.setArguments(args);
 
         android.support.v4.app.FragmentTransaction t = getActivity().getSupportFragmentManager()

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
@@ -27,11 +28,11 @@ import com.money.manager.ex.servicelayer.InfoService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Utilities for DateTime.
@@ -108,6 +109,12 @@ public class MmxDateTimeUtils {
         DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
         String result = format.print(dateTime);
         return result;
+    }
+
+    public static int getFirstDayOfWeek() {
+        Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
+        Calendar cal = Calendar.getInstance(appLocale);
+        return cal.getFirstDayOfWeek();
     }
 
     public static String getIsoStringFrom(DateTime dateTime) {
