@@ -54,6 +54,8 @@ import java.util.concurrent.Callable;
 
 import rx.Observable;
 import rx.Single;
+import rx.functions.Action0;
+import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -200,11 +202,26 @@ public class SyncManager {
         mAutoUploadDisabled = true;
     }
 
-    public Observable<Boolean> downloadAsObservable(final CloudMetaData remoteFile, final File localFile) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Void> downloadSingle(final CloudMetaData remoteFile, final File localFile) {
+        return Single.fromCallable(new Callable<Void>() {
             @Override
-            public Boolean call() throws Exception {
-                return download(remoteFile, localFile);
+            public Void call() throws Exception {
+                downloadFile(remoteFile, localFile);
+                return null;
+            }
+        })
+        .doOnSuccess(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                // clear local changes
+                resetLocalChanges();
+
+                // save any renewed tokens
+                mStorageClient.cacheCredentials();
+
+                cacheRemoteLastModifiedDate(remoteFile);
+
+                abortScheduledUpload();
             }
         });
     }
@@ -225,7 +242,7 @@ public class SyncManager {
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
         if (!canSync()) {
-            Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
+            Timber.i("Not on WiFi connection. Not synchronizing.");
             return;
         }
 
@@ -458,6 +475,7 @@ public class SyncManager {
             return false;
         }
 
+        // Transfer the file.
         try {
             mStorageClient.upload(remoteFile, input, localFile.length(), true);
         } catch (Exception e) {
@@ -477,12 +495,10 @@ public class SyncManager {
             Timber.w("Could not retrieve metadata after upload! Aborting.");
             return false;
         }
-
         cacheRemoteLastModifiedDate(remoteFileMetadata);
 
-        // reset local change indicator
-        // todo this must handle changes made during the upload!
-        new SyncPreferences(getContext()).setLocalFileChanged(false);
+        // Reset local changes indicator. todo this must handle changes made during the upload!
+        resetLocalChanges();
 
         // set remote file, if not set (setLinkedRemoteFile)
         if (TextUtils.isEmpty(getRemotePath())) {
@@ -578,28 +594,14 @@ public class SyncManager {
      * @param localFile Local file reference
      * @return Indicator whether the download was successful.
      */
-    private boolean download(CloudMetaData remoteFile, File localFile) {
-        try {
-            InputStream inputStream = mStorageClient.download(remoteFile.getPath());
-            OutputStream outputStream = new FileOutputStream(localFile, false);
+    private void downloadFile(CloudMetaData remoteFile, File localFile) throws IOException {
+        InputStream inputStream = mStorageClient.download(remoteFile.getPath());
+        OutputStream outputStream = new FileOutputStream(localFile, false);
 
-            IOUtils.copy(inputStream, outputStream);
+        IOUtils.copy(inputStream, outputStream);
 
-            inputStream.close();
-            outputStream.close();
-
-            // save any renewed tokens
-            mStorageClient.cacheCredentials();
-        } catch (Exception e) {
-            Timber.e(e, "downloading from the cloud");
-            return false;
-        }
-
-        cacheRemoteLastModifiedDate(remoteFile);
-
-        abortScheduledUpload();
-
-        return true;
+        inputStream.close();
+        outputStream.close();
     }
 
     private File getExternalStorageDirectoryForSync() {
@@ -660,6 +662,10 @@ public class SyncManager {
 //        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
 //        getContext().startService(service);
 //    }
+
+    private void resetLocalChanges() {
+        new SyncPreferences(getContext()).setLocalFileChanged(false);
+    }
 
     /**
      * Schedule delayed upload via timer.

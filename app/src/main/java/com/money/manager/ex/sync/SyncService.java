@@ -43,6 +43,7 @@ import java.io.IOException;
 
 import rx.SingleSubscriber;
 import rx.Subscriber;
+import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -166,9 +167,6 @@ public class SyncService
         final IOnDownloadUploadEntry onDownloadHandler = new IOnDownloadUploadEntry() {
             @Override
             public void onPreExecute() {
-                if (notification != null && notificationManager != null) {
-                    notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
-                }
             }
 
             @Override
@@ -203,29 +201,28 @@ public class SyncService
         };
         Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
-        onDownloadHandler.onPreExecute();
+//        onDownloadHandler.onPreExecute();
+        if (notification != null && notificationManager != null) {
+            notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
+        }
         sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
 //        boolean ret = sync.download(remoteFile, tempFile);
         compositeSubscription.add(
-            sync.downloadAsObservable(remoteFile, tempFile)
+            sync.downloadSingle(remoteFile, tempFile)
                     // do not run on another thread as then the service will be destroyed.
 //                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Subscriber<Boolean>() {
+                    .subscribe(new SingleSubscriber<Void>() {
                         @Override
-                        public void onCompleted() {
+                        public void onSuccess(Void value) {
+                            onDownloadHandler.onPostExecute(true);
                             sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            Timber.e(e, "async download");
+                        public void onError(Throwable error) {
+                            Timber.e(error, "async download");
                             sendMessage(SyncServiceMessage.ERROR);
-                        }
-
-                        @Override
-                        public void onNext(Boolean aBoolean) {
-                            onDownloadHandler.onPostExecute(aBoolean);
                         }
                     })
         );
