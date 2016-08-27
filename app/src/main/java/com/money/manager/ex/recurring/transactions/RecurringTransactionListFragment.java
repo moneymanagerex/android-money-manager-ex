@@ -31,7 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.Query;
@@ -172,7 +172,7 @@ public class RecurringTransactionListFragment
                         .where(select)
                         .orderBy(QueryBillDeposits.NEXTOCCURRENCEDATE);
 
-                return new MmexCursorLoader(getActivity(), mBillDeposits.getUri(), query);
+                return new MmxCursorLoader(getActivity(), mBillDeposits.getUri(), query);
         }
 
         return null;

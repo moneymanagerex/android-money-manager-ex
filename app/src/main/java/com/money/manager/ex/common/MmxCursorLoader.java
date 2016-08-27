@@ -30,14 +30,14 @@ import timber.log.Timber;
 /**
  * The cursor loader with exception handling. It should be used instead of ordinary CursorLoader.
  */
-public class MmexCursorLoader
+public class MmxCursorLoader
     extends CursorLoader {
 
-    public MmexCursorLoader(Context context) {
+    public MmxCursorLoader(Context context) {
         super(context);
     }
 
-    public MmexCursorLoader(Context context, Uri uri, Query query) {
+    public MmxCursorLoader(Context context, Uri uri, Query query) {
         // String[] projection, String selection, String[] selectionArgs, String sortOrder
         super(context, uri, query.projection, query.selection, query.selectionArgs, query.sort);
 

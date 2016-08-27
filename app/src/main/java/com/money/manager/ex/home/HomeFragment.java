@@ -60,9 +60,8 @@ import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
 import com.money.manager.ex.home.events.RequestWatchlistFragmentEvent;
 import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.settings.GeneralSettingsActivity;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
@@ -204,7 +203,7 @@ public class HomeFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        MmexCursorLoader result;
+        MmxCursorLoader result;
         Query query = new Query();
 
         switch (id) {
@@ -213,7 +212,7 @@ public class HomeFragment
                 InfoRepository repo = new InfoRepository(getActivity());
                 query.select(new String[]{ Info.INFONAME, Info.INFOVALUE });
 
-                result = new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
                 break;
 
             case LOADER_ACCOUNT_BILLS:
@@ -236,7 +235,7 @@ public class HomeFragment
                     .where(where)
                     .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
 
-                result = new MmexCursorLoader(getActivity(), queryAccountBills.getUri(), query);
+                result = new MmxCursorLoader(getActivity(), queryAccountBills.getUri(), query);
                 break;
 
             case LOADER_INCOME_EXPENSES:
@@ -255,7 +254,7 @@ public class HomeFragment
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
                 query.select(report.getAllColumns())
                         .where(whereStatement);
-                result = new MmexCursorLoader(getActivity(), report.getUri(), query);
+                result = new MmxCursorLoader(getActivity(), report.getUri(), query);
                 break;
 
             default:

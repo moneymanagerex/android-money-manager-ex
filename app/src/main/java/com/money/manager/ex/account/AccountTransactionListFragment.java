@@ -42,8 +42,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
@@ -51,7 +49,7 @@ import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
@@ -339,7 +337,7 @@ public class AccountTransactionListFragment
                     .where(QueryAccountBills.ACCOUNTID + "=?",
                             new String[] { Integer.toString(mAccountId) });
 
-                return new MmexCursorLoader(getActivity(),
+                return new MmxCursorLoader(getActivity(),
                     new QueryAccountBills(getActivity()).getUri(),
                     query);
         }

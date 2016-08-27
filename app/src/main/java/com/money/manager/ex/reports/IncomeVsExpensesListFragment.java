@@ -40,9 +40,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
@@ -137,13 +136,13 @@ public class IncomeVsExpensesListFragment
                     .where(selection)
                     .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
 
-                return new MmexCursorLoader(getActivity(), report.getUri(), query);
+                return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_YEARS:
                 ViewMobileData mobileData = new ViewMobileData(getContext());
                 selection = "SELECT DISTINCT Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
                 query.where(selection);
-                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
+                return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
         }
         return null;
     }

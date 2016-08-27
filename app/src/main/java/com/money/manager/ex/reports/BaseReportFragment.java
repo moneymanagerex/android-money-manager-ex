@@ -31,7 +31,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
@@ -109,7 +109,7 @@ public abstract class BaseReportFragment
                 Query query = new Query()
                         .where(where);
 
-                result = new MmexCursorLoader(getActivity(),  // context
+                result = new MmxCursorLoader(getActivity(),  // context
                         new SQLDataSet().getUri(),          // uri
                         query);
                 break;

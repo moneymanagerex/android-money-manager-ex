@@ -30,7 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
@@ -38,7 +38,6 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public class AssetClassListActivity
@@ -106,7 +105,7 @@ public class AssetClassListActivity
                     .select(repo.getAllColumns())
                     .where(where.getWhere());
 
-                return new MmexCursorLoader(context, repo.getUri(), query);
+                return new MmxCursorLoader(context, repo.getUri(), query);
             }
 
             @Override

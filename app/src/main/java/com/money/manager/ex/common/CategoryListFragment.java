@@ -274,7 +274,7 @@ public class CategoryListFragment
                     .where(whereClause, selectionArgs)
                     .orderBy(QueryCategorySubCategory.CATEGNAME + ", " + QueryCategorySubCategory.SUBCATEGNAME);
 
-                return new MmexCursorLoader(getActivity(), mQuery.getUri(), query);
+                return new MmxCursorLoader(getActivity(), mQuery.getUri(), query);
         }
         return null;
     }

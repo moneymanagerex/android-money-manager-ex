@@ -29,7 +29,7 @@ import android.widget.AdapterView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -167,7 +167,7 @@ public class PortfolioFragment
                     .orderBy(StockFields.SYMBOL);
                 //.orderBy(sort);
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
             }
 
             @Override

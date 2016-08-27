@@ -35,7 +35,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -166,7 +166,7 @@ public class AccountListFragment
                         .where(whereClause, selectionArgs)
                         .orderBy("upper(" + Account.ACCOUNTNAME + ")");
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;

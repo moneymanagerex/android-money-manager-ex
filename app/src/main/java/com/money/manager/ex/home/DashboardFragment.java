@@ -44,7 +44,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -168,15 +168,15 @@ public class DashboardFragment
                             " AND " +
                             IncomeVsExpenseReportEntity.YEAR + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
 
-                return new MmexCursorLoader(getActivity(), report.getUri(), query);
+                return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_SCREEN2:
                 query.where(prepareQueryTopWithdrawals());
-                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
+                return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
 
             case ID_LOADER_SCREEN3:
                 query.where(prepareQueryTopPayees());
-                return new MmexCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
+                return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
 
             case ID_LOADER_SCREEN4:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
@@ -184,7 +184,7 @@ public class DashboardFragment
                     .where(QueryBillDeposits.DAYSLEFT + "<=10")
                     .orderBy(QueryBillDeposits.DAYSLEFT);
 
-                return new MmexCursorLoader(getActivity(), billDeposits.getUri(), query);
+                return new MmxCursorLoader(getActivity(), billDeposits.getUri(), query);
         }
         return null;
     }

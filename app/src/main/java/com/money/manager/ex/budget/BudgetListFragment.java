@@ -25,21 +25,17 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
@@ -153,7 +149,7 @@ public class BudgetListFragment
                     .select(repo.getAllColumns())
                     .orderBy(Budget.BUDGETYEARNAME);
 
-                result = new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
                 break;
         }
         return result;

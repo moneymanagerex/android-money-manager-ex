@@ -29,8 +29,7 @@ import android.widget.ListView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.database.WhereStatementGenerator;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.StockFields;
@@ -132,7 +131,7 @@ public class SecurityListFragment
                     .where(whereClause, selectionArgs)
                     .orderBy("upper(" + StockFields.SYMBOL + ")");
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;

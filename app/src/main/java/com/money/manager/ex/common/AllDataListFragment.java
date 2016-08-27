@@ -49,7 +49,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -250,7 +249,7 @@ public class AllDataListFragment
                         .where(selection)
                         .orderBy(sort);
 
-                return new MmexCursorLoader(getActivity(), allData.getUri(), query);
+                return new MmxCursorLoader(getActivity(), allData.getUri(), query);
         }
         return null;
     }

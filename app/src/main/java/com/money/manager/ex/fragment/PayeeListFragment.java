@@ -34,7 +34,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -48,7 +47,7 @@ import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchParameters;
@@ -261,7 +260,7 @@ public class PayeeListFragment
                         .where(whereClause, selectionArgs)
                         .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
 
-                return new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                return new MmxCursorLoader(getActivity(), repo.getUri(), query);
         }
 
         return null;

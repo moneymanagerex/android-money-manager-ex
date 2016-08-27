@@ -38,7 +38,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.MmexCursorLoader;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyChartActivity;
@@ -441,7 +441,7 @@ public class CurrencyListFragment
                                 .where(whereClause, selectionArgs)
                                 .orderBy("upper(" + Currency.CURRENCYNAME + ")");
 
-                        return new MmexCursorLoader(getActivity(), repo.getUri(), query);
+                        return new MmxCursorLoader(getActivity(), repo.getUri(), query);
                 }
 
                 return null;

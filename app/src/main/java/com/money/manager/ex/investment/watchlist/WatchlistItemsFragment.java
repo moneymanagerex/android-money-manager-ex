@@ -50,8 +50,7 @@ import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.common.MmexCursorLoader;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
@@ -278,7 +277,7 @@ public class WatchlistItemsFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        MmexCursorLoader result;
+        MmxCursorLoader result;
 
         //animation
         setListShown(false);
@@ -307,7 +306,7 @@ public class WatchlistItemsFragment
                         .where(selection)
                         .orderBy(sort);
 
-                result = new MmexCursorLoader(getActivity(), mStockRepository.getUri(), query);
+                result = new MmxCursorLoader(getActivity(), mStockRepository.getUri(), query);
                 break;
             default:
                 result = null;
