@@ -27,6 +27,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.money.manager.ex.BuildConfig;
@@ -213,7 +214,8 @@ public class SyncPreferenceFragment
 
                                 @Override
                                 public void onError(Throwable error) {
-                                    if (error.getMessage().equals("Authentication was cancelled")) {
+                                    String errorMessage = error.getMessage();
+                                    if (!TextUtils.isEmpty(errorMessage) && errorMessage.equals("Authentication was cancelled")) {
                                         Timber.w("authentication cancelled");
                                     } else {
                                         Timber.e(error, "logging in to cloud provider");
