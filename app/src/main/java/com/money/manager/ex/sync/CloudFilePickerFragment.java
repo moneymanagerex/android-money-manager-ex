@@ -128,7 +128,7 @@ public class CloudFilePickerFragment
                 .canceledOnTouchOutside(false)
                 .show();
 
-        getSyncManager().getRemoteFolderContentsAsync(folder)
+        getSyncManager().getRemoteFolderContentsSingle(folder)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Func1<List<CloudMetaData>, List<CloudMetaData>>() {

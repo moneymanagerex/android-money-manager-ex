@@ -17,13 +17,16 @@
 
 package com.money.manager.ex.sync;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
-import com.money.manager.ex.core.IntentFactory;
+import org.joda.time.DateTime;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import rx.Observable;
 import rx.Observer;
@@ -51,15 +54,33 @@ public class DelayedUploadService
         if (intent == null) return;
 
         // Cancel any existing subscriptions.
-        unsubscribe();
+//        unsubscribe();
 
         String action = intent.getAction();
+        if (TextUtils.isEmpty(action)) return;
+
         if (action.equals(SyncSchedulerBroadcastReceiver.ACTION_STOP)) {
             // do not schedule a sync.
             return;
         }
 
         // schedule a delayed upload.
+        scheduleUpload();
+    }
+
+    /*
+        Private
+     */
+
+    private AlarmManager getAlarmManager(Context context) {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    }
+
+    /**
+     * Schedules via Rx timer. The drawback is that, if the app is closed, this timer will
+     * never execute.
+     */
+    private void scheduleRx() {
         delayedSubscription = Observable.timer(30, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -80,6 +101,26 @@ public class DelayedUploadService
                         upload();
                     }
                 });
+    }
+
+    /**
+     * Schedules a system timer for the upload action.
+     */
+    private void scheduleUpload() {
+        Context context = getApplicationContext();
+
+        Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_DELAYED_UPLOAD,
+                syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarmManager = getAlarmManager(context);
+        // Trigger in 30 seconds from now.
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                DateTime.now().getMillis() + 30000,
+                pendingIntent);
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+//                DateTime.now().toDateTime().getMillis(),
+//                30 * 1000,
+//                pendingIntent);
     }
 
     private void unsubscribe() {

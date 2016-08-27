@@ -40,6 +40,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * Implementation of App Widget functionality.
@@ -104,7 +105,7 @@ public class SingleAccountWidget
         int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 //        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 
-        if (BuildConfig.DEBUG) Log.d(this.getClass().getSimpleName(), "resized");
+        Timber.d("resized");
 
         // Obtain appropriate widget and update it.
         appWidgetManager.updateAppWidget(appWidgetId, getRemoteViews(context, minWidth, minHeight));

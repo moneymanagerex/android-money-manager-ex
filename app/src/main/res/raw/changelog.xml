@@ -16,6 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="">
+        <changelogtext>Using a service for delayed upload to ensure execution.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.08.26.901">
         <changelogtext>Sync adjustment on start, not displaying the progressbar.</changelogtext>
         <changelogtext>Adjustment for passcode on Android N (crypto provider is deprecated).</changelogtext>

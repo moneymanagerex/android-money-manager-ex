@@ -18,6 +18,8 @@
 package com.money.manager.ex.sync;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,14 +28,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cloudrail.si.exceptions.ParseException;
-import com.cloudrail.si.interfaces.CloudStorage;
-import com.cloudrail.si.services.Box;
-import com.cloudrail.si.services.Dropbox;
-import com.cloudrail.si.services.GoogleDrive;
-import com.cloudrail.si.services.OneDrive;
 import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
@@ -56,50 +51,35 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicReference;
 
 import rx.Observable;
 import rx.Single;
-import rx.SingleSubscriber;
-import rx.functions.Action0;
 import timber.log.Timber;
 
 /**
- * Class used to manage the database synchronization process.
- * Currently forwards the calls to the Dropbox Helper.
+ * Class used to manage the database file synchronization process.
  */
 public class SyncManager {
 
-    // Delayed synchronization
-//    private static Handler mDelayedHandler = null;
-//    private static Runnable mRunSyncRunnable = null;
-
-    // Instance methods
-
     public SyncManager(Context context) {
         mContext = context;
-
-        init();
+        mStorageClient = new CloudStorageClient(context);
     }
 
-    private final AtomicReference<CloudStorage> dropbox = new AtomicReference<>();
-    private final AtomicReference<CloudStorage> box = new AtomicReference<>();
-    private final AtomicReference<CloudStorage> googledrive = new AtomicReference<>();
-    private final AtomicReference<CloudStorage> onedrive = new AtomicReference<>();
-
     private Context mContext;
+    CloudStorageClient mStorageClient;
     private String mRemoteFile;
-    private AtomicReference<CloudStorage> currentProvider;
     private SyncPreferences mPreferences;
-    /**
-     * Used to temporarily disable auto-upload while performing batch updates.
-     */
+    // Used to temporarily disable auto-upload while performing batch updates.
     private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
-        Intent service = new Intent(getContext(), DelayedUploadService.class);
-        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
-        getContext().startService(service);
+//        Intent service = new Intent(getContext(), DelayedUploadService.class);
+//        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
+//        getContext().startService(service);
+
+        PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
+        getAlarmManager().cancel(pendingIntent);
     }
 
     public Context getContext() {
@@ -117,14 +97,12 @@ public class SyncManager {
 
         // should we sync only on wifi?
         if (getPreferences().shouldSyncOnlyOnWifi()) {
-            if (BuildConfig.DEBUG) {
-                Log.i(this.getClass().getSimpleName(), "Preferences set to sync on WiFi only.");
-            }
+            Timber.d("Preferences set to sync on WiFi only.");
 
             // check if we are on WiFi connection.
             NetworkUtils network = new NetworkUtils(getContext());
             if (!network.isOnWiFi()) {
-                Log.i(this.getClass().getSimpleName(), "Not on WiFi connection. Not synchronizing.");
+                Timber.i("Not on WiFi connection. Not synchronizing.");
                 return false;
             }
         }
@@ -278,21 +256,8 @@ public class SyncManager {
         return localPath + remoteFileName;
     }
 
-    public Single<List<CloudMetaData>> getRemoteFolderContentsAsync(final String folder) {
-        return Observable.fromCallable(new Callable<List<CloudMetaData>>() {
-            @Override
-            public List<CloudMetaData> call() throws Exception {
-                return getProvider().getChildren(folder);
-            }
-        })
-                .doOnCompleted(new Action0() {
-                    @Override
-                    public void call() {
-                        // save any renewed tokens
-                        storePersistent();
-                    }
-                })
-                .toSingle();
+    public Single<List<CloudMetaData>> getRemoteFolderContentsSingle(String folder) {
+        return mStorageClient.getContents(folder);
     }
 
     /**
@@ -363,60 +328,16 @@ public class SyncManager {
      * Retrieves the remote metadata. Retries once on fail to work around #957.
      * @return Remote file metadata.
      */
-    public CloudMetaData loadMetadata(final String remotePath) {
-        final CloudMetaData[] result = {null};
-
-        Single.fromCallable(new Callable<CloudMetaData>() {
-            @Override
-            public CloudMetaData call() throws Exception {
-                return getProvider().getMetadata(remotePath);
-            }
-        })
-                .retry(1)
-                .subscribe(new SingleSubscriber<CloudMetaData>() {
-                    @Override
-                    public void onSuccess(CloudMetaData value) {
-                        // save any renewed tokens
-                        SyncManager.this.storePersistent();
-
-                        result[0] = value;
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        // todo handle DNS exceptions by just showing a message?
-                        //if (error instanceof RuntimeException && error.getMessage().equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname"))
-                        // Unable to resolve host "www.googleapis.com": No address associated with hostname
-
-                        Timber.e(error, "fetching remote metadata");
-                    }
-                });
-
-        // .toBlocking().value()
-
-        return result[0];
+    public CloudMetaData loadMetadata(String remotePath) {
+        return mStorageClient.loadMetadata(remotePath);
     }
 
-    public Single<Void> loginObservable() {
-        return Observable.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                getProvider().login();
-                return null;
-            }
-        })
-        .toSingle();
+    public Single<Void> login() {
+        return mStorageClient.login();
     }
 
-    public Single<Void> logoutObservable() {
-        return Observable.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                getProvider().logout();
-                return null;
-            }
-        })
-        .toSingle();
+    public Single<Void> logout() {
+        return mStorageClient.logout();
     }
 
     /**
@@ -426,8 +347,8 @@ public class SyncManager {
         getPreferences().clear();
 
         // reset provider cache
-        createProviders();
-        storePersistent();
+        mStorageClient.createProviders();
+        mStorageClient.cacheCredentials();
     }
 
 //    private void scheduleUpload() {
@@ -459,29 +380,7 @@ public class SyncManager {
     }
 
     public void setProvider(CloudStorageProviderEnum provider) {
-        // Sync provider mapping
-        switch (provider) {
-            case DROPBOX:
-                currentProvider = dropbox;
-                break;
-            case ONEDRIVE:
-                // OneDrive
-                currentProvider = onedrive;
-                break;
-            case GOOGLEDRIVE:
-                // Google Drive
-                currentProvider = googledrive;
-                break;
-            case BOX:
-                // Box
-                currentProvider = box;
-                break;
-            default:
-                // default provider
-                currentProvider = dropbox;
-                break;
-        }
-
+        mStorageClient.setProvider(provider);
     }
 
     public void setRemotePath(String value) {
@@ -508,21 +407,6 @@ public class SyncManager {
         getContext().sendBroadcast(intent);
         // SyncSchedulerBroadcastReceiver does not receive a brodcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
-    }
-
-    public void storePersistent() {
-        if (dropbox.get() != null) {
-            getPreferences().set(R.string.pref_dropbox_persistent, dropbox.get().saveAsString());
-        }
-        if (box.get() != null) {
-            getPreferences().set(R.string.pref_onedrive_persistent, box.get().saveAsString());
-        }
-        if (googledrive.get() != null) {
-            getPreferences().set(R.string.pref_gdrive_persistent, googledrive.get().saveAsString());
-        }
-        if (onedrive.get() != null) {
-            getPreferences().set(R.string.pref_box_persistent, onedrive.get().saveAsString());
-        }
     }
 
     public void triggerSynchronization(boolean showProgressbar) {
@@ -573,7 +457,7 @@ public class SyncManager {
         }
 
         try {
-            getProvider().upload(remoteFile, input, localFile.length(), true);
+            mStorageClient.upload(remoteFile, input, localFile.length(), true);
         } catch (Exception e) {
             Timber.e(e, "uploading database file");
             return false;
@@ -604,7 +488,7 @@ public class SyncManager {
         }
 
         // save any renewed tokens
-        this.storePersistent();
+        mStorageClient.cacheCredentials();
 
         return true;
     }
@@ -664,15 +548,26 @@ public class SyncManager {
         getPreferences().set(file.getPath(), date.toString());
     }
 
-    private void createProviders() {
-        try {
-            dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
-            onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
-            googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
-            box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
-        } catch (Exception e) {
-            Timber.e(e, "creating cloud providers");
+    private Messenger createMessenger(boolean showProgressbar) {
+        ProgressDialog progressDialog = null;
+        // Create progress binaryDialog only if called from the UI.
+        if (showProgressbar && (getContext() instanceof Activity)) {
+            try {
+                //progress binaryDialog shown only when downloading an updated db file.
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage(getContext().getString(R.string.syncProgress));
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();
+            } catch (Exception ex) {
+                Timber.e(ex, "displaying sync progress binaryDialog");
+            }
         }
+
+        Messenger messenger = new SyncMessengerFactory(getContext())
+                .createMessenger(progressDialog, getRemotePath());
+
+        return messenger;
     }
 
     /**
@@ -683,7 +578,7 @@ public class SyncManager {
      */
     private boolean download(CloudMetaData remoteFile, File localFile) {
         try {
-            InputStream inputStream = getProvider().download(remoteFile.getPath());
+            InputStream inputStream = mStorageClient.download(remoteFile.getPath());
             OutputStream outputStream = new FileOutputStream(localFile, false);
 
             IOUtils.copy(inputStream, outputStream);
@@ -692,7 +587,7 @@ public class SyncManager {
             outputStream.close();
 
             // save any renewed tokens
-            this.storePersistent();
+            mStorageClient.cacheCredentials();
         } catch (Exception e) {
             Timber.e(e, "downloading from the cloud");
             return false;
@@ -703,30 +598,6 @@ public class SyncManager {
         abortScheduledUpload();
 
         return true;
-    }
-
-    private SyncPreferences getPreferences() {
-        if (mPreferences == null) {
-            mPreferences = new SyncPreferences(getContext());
-        }
-        return mPreferences;
-    }
-
-    private void init() {
-        // Do not initialize providers if the network is not present.
-        NetworkUtils network = new NetworkUtils(getContext());
-        if (!network.isOnline()) return;
-
-        createProviders();
-        restoreProviderCache();
-
-        // Use current provider.
-        String providerCode = getPreferences().loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
-        CloudStorageProviderEnum provider = CloudStorageProviderEnum.DROPBOX;
-        if (CloudStorageProviderEnum.contains(providerCode)) {
-            provider = CloudStorageProviderEnum.valueOf(providerCode);
-        }
-        setProvider(provider);
     }
 
     private File getExternalStorageDirectoryForSync() {
@@ -748,8 +619,11 @@ public class SyncManager {
         }
     }
 
-    private CloudStorage getProvider() {
-        return currentProvider.get();
+    private SyncPreferences getPreferences() {
+        if (mPreferences == null) {
+            mPreferences = new SyncPreferences(getContext());
+        }
+        return mPreferences;
     }
 
     private void invokeSyncServiceInternal(String action, boolean showProgressbar) {
@@ -775,56 +649,39 @@ public class SyncManager {
         // once done, the message is sent out via messenger. See Messenger definition in factory.
     }
 
-    private Messenger createMessenger(boolean showProgressbar) {
-        ProgressDialog progressDialog = null;
-        // Create progress binaryDialog only if called from the UI.
-        if (showProgressbar && (getContext() instanceof Activity)) {
-            try {
-                //progress binaryDialog shown only when downloading an updated db file.
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setCancelable(false);
-                progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-                progressDialog.setIndeterminate(true);
-                progressDialog.show();
-            } catch (Exception ex) {
-                Timber.e(ex, "displaying sync progress binaryDialog");
-            }
-        }
-
-        Messenger messenger = new SyncMessengerFactory(getContext())
-                .createMessenger(progressDialog, getRemotePath());
-
-        return messenger;
-    }
-
-    private void restoreProviderCache() {
-        try {
-            String persistent = getPreferences().loadPreference(R.string.pref_dropbox_persistent, null);
-            if (persistent != null) dropbox.get().loadAsString(persistent);
-
-            persistent = getPreferences().loadPreference(R.string.pref_box_persistent, null);
-            if (persistent != null) box.get().loadAsString(persistent);
-
-            persistent = getPreferences().loadPreference(R.string.pref_gdrive_persistent, null);
-            if (persistent != null) googledrive.get().loadAsString(persistent);
-
-            persistent = getPreferences().loadPreference(R.string.pref_onedrive_persistent, null);
-            if (persistent != null) onedrive.get().loadAsString(persistent);
-        } catch (Exception e) {
-            if (e instanceof ParseException) {
-                Timber.w(e.getMessage());
-            } else {
-                Timber.e(e, "restoring providers from cache");
-            }
-        }
-    }
+//    /**
+//     * Start the delayed upload service.
+//    This gets the app killed before the service starts.
+//     */
+//    private void scheduleDelayedUpload() {
+//        Intent service = new Intent(getContext(), DelayedUploadService.class);
+//        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
+//        getContext().startService(service);
+//    }
 
     /**
-     * Start the delayed upload service.
+     * Schedule delayed upload via timer.
      */
     private void scheduleDelayedUpload() {
-        Intent service = new Intent(getContext(), DelayedUploadService.class);
-        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
-        getContext().startService(service);
+        PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
+        AlarmManager alarm = getAlarmManager();
+        // start the sync service after 30 seconds.
+        alarm.set(AlarmManager.RTC_WAKEUP, DateTime.now().getMillis() + 30*1000, pendingIntent);
+    }
+
+    private PendingIntent getPendingIntentForDelayedUpload() {
+        Intent intent = new Intent(getContext(), SyncService.class);
+
+        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, getLocalPath());
+        intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
+
+        PendingIntent pintent = PendingIntent.getService(getContext(), SyncConstants.REQUEST_DELAYED_UPLOAD,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        return pintent;
+    }
+
+    private AlarmManager getAlarmManager() {
+        return (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
     }
 }

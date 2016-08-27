@@ -108,8 +108,6 @@ public class SyncPreferenceFragment
     @Override
     public void onStop() {
         super.onStop();
-        // this is probably redundant now.
-        getSyncManager().storePersistent();
 
         EventBus.getDefault().unregister(this);
     }
@@ -202,14 +200,13 @@ public class SyncPreferenceFragment
 
                 // log in to the provider immediately and save to persistence.
                 ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
-                    sync.loginObservable()
+                    sync.login()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new SingleSubscriber<Void>() {
                                 @Override
                                 public void onSuccess(Void value) {
                                     result[0] = true;
-                                    sync.storePersistent();
                                 }
 
                                 @Override
@@ -232,8 +229,6 @@ public class SyncPreferenceFragment
         viewHolder.remoteFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                getSyncManager().storePersistent();
-
                 // show the file browser/picker.
                 Intent intent = new Intent(getActivity(), CloudFilePickerActivity.class);
                 startActivityForResult(intent, REQUEST_REMOTE_FILE);
@@ -302,7 +297,7 @@ public class SyncPreferenceFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 final SyncManager sync = getSyncManager();
-                sync.logoutObservable()
+                sync.logout()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleSubscriber<Void>() {

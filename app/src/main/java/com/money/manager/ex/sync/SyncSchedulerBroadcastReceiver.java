@@ -44,7 +44,7 @@ import timber.log.Timber;
 
 /**
  * Schedules the periodic alarm (sync heartbeat) that triggers cloud synchronization.
- * Scheduled run from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
+ * Called from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
     extends BroadcastReceiver {
@@ -63,7 +63,8 @@ public class SyncSchedulerBroadcastReceiver
         }
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
-        PendingIntent pendingSyncIntent = PendingIntent.getBroadcast(context, 0, syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingSyncIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_PERIODIC_SYNC,
+                syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         // PendingIntent.FLAG_CANCEL_CURRENT, FLAG_UPDATE_CURRENT
 
         AlarmManager alarmManager = getAlarmManager(context);
