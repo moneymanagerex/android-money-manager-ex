@@ -189,6 +189,7 @@ public class SyncPreferenceFragment
             }
         });
 
+
         // provider
         viewHolder.providerList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -203,22 +204,22 @@ public class SyncPreferenceFragment
                     sync.login()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .toBlocking();
-//                            .subscribe(new SingleSubscriber<Void>() {
-//                                @Override
-//                                public void onSuccess(Void value) {
-////                                    result[0] = true;
-//                                }
-//
-//                                @Override
-//                                public void onError(Throwable error) {
-//                                    if (error.getMessage().equals("Authentication was cancelled")) {
-//                                        Timber.w("authentication cancelled");
-//                                    } else {
-//                                        Timber.e(error, "logging in to cloud provider");
-//                                    }
-//                                }
-//                            })
+//                            .toBlocking().value();
+                            .subscribe(new SingleSubscriber<Void>() {
+                                @Override
+                                public void onSuccess(Void value) {
+//                                    result[0] = true;
+                                }
+
+                                @Override
+                                public void onError(Throwable error) {
+                                    if (error.getMessage().equals("Authentication was cancelled")) {
+                                        Timber.w("authentication cancelled");
+                                    } else {
+                                        Timber.e(error, "logging in to cloud provider");
+                                    }
+                                }
+                            });
 //                );
 
                 return true;

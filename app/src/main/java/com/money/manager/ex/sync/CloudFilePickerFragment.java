@@ -153,6 +153,8 @@ public class CloudFilePickerFragment
             public void onError(Throwable error) {
                 progressDialog.dismiss();
                 Timber.e(error, "retrieving the remote folder contents");
+                // Close activity.
+                getActivity().finish();
             }
         });
 
