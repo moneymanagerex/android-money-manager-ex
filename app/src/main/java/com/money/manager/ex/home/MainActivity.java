@@ -162,7 +162,7 @@ public class MainActivity
     // state dual panel
     private boolean mIsDualPanel = false;
     private RecentDatabasesProvider recentDbs;
-    private boolean isSynchronizing = false;
+    private MenuItem mSyncMenuItem = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -331,14 +331,34 @@ public class MainActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-//        menu.clear();
+        if (new SyncManager(this).isActive()) {
+            // add rotating icon
+            if (menu.findItem(Menu.FIRST) == null) {
+                boolean hasAnimation = false;
 
-//        if (new SyncManager(this).isActive()) {
-//            // add rotating icon
-//            MenuItem syncItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
-//            syncItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-//            setSyncImage(syncItem);
-//        }
+                if (mSyncMenuItem != null && mSyncMenuItem.getActionView() != null) {
+                    hasAnimation = true;
+                    // There is a running animation. Clear it on the old reference.
+                    stopSyncIconRotation(mSyncMenuItem);
+                }
+
+                // create (new) menu item.
+                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
+                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
+                mSyncMenuItem.setIcon(syncIcon);
+
+                if (hasAnimation) {
+                    // continue animation.
+                    startSyncIconRotation(mSyncMenuItem);
+                }
+            }
+        } else {
+            if (mSyncMenuItem != null) {
+                stopSyncIconRotation(mSyncMenuItem);
+                mSyncMenuItem = null;
+            }
+        }
 
         return true;
     }
@@ -634,35 +654,33 @@ public class MainActivity
         setDrawerTotalAccounts(event.amount);
     }
 
-//    @Subscribe
-//    public void onEvent(SyncStartingEvent event) {
-//        Single.fromCallable(new Callable<Void>() {
-//            @Override
-//            public Void call() throws Exception {
-//                isSynchronizing = true;
-//                invalidateOptionsMenu();
-//                return null;
-//            }
-//        })
-//                .subscribeOn(AndroidSchedulers.mainThread())
-////                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe();
-//    }
-//
-//    @Subscribe
-//    public void onEvent(SyncStoppingEvent event) {
-//        Single.fromCallable(new Callable<Void>() {
-//            @Override
-//            public Void call() throws Exception {
-//                isSynchronizing = false;
-//                invalidateOptionsMenu();
-//                return null;
-//            }
-//        })
-//            .subscribeOn(AndroidSchedulers.mainThread())
-////            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe();
-//    }
+    @Subscribe
+    public void onEvent(SyncStartingEvent event) {
+        Single.fromCallable(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                startSyncIconRotation(mSyncMenuItem);
+                return null;
+            }
+        })
+                .subscribeOn(AndroidSchedulers.mainThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    @Subscribe
+    public void onEvent(SyncStoppingEvent event) {
+        Single.fromCallable(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                stopSyncIconRotation(mSyncMenuItem);
+                return null;
+            }
+        })
+            .subscribeOn(AndroidSchedulers.mainThread())
+//            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe();
+    }
 
     /**
      * A newer database file has just been downloaded. Reload.
@@ -1386,30 +1404,11 @@ public class MainActivity
         if (item == null) return;
 
         // stop animation
-        View actionView = MenuItemCompat.getActionView(item);
+        View actionView = item.getActionView();
         if (actionView == null) return;
-
-//        ImageView imageView = (ImageView) item.getActionView().findViewById(R.id.refreshButton);
-//        imageView.clearAnimation();
 
         actionView.clearAnimation();
         item.setActionView(null);
-    }
-
-    private void setSyncImage(MenuItem item) {
-        //invalidateOptionsMenu();
-
-//        item.setActionView(R.layout.toolbar_icon_sync);
-
-        if (isSynchronizing) {
-            startSyncIconRotation(item);
-        } else {
-            stopSyncIconRotation(item);
-
-            Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
-            item.setActionView(null);
-            item.setIcon(syncIcon);
-        }
     }
 
     /**
