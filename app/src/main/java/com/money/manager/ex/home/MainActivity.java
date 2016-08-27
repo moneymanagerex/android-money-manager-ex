@@ -30,18 +30,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -50,7 +48,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -64,13 +61,11 @@ import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
-import com.money.manager.ex.sync.SyncServiceMessage;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
@@ -112,11 +107,10 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
-import rx.SingleSubscriber;
-import rx.Subscriber;
+import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -168,6 +162,7 @@ public class MainActivity
     // state dual panel
     private boolean mIsDualPanel = false;
     private RecentDatabasesProvider recentDbs;
+    private boolean isSynchronizing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -334,16 +329,16 @@ public class MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.more_tab_menu, menu);
+        super.onCreateOptionsMenu(menu);
 
-        // add rotating icon
-        MenuItem syncItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "test");
-        Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
-        syncItem.setIcon(syncIcon);
-        syncItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//        menu.clear();
 
-//        MenuHelper helper = new MenuHelper(this);
+//        if (new SyncManager(this).isActive()) {
+//            // add rotating icon
+//            MenuItem syncItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
+//            syncItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//            setSyncImage(syncItem);
+//        }
 
         return true;
     }
@@ -353,7 +348,6 @@ public class MainActivity
 
         switch (item.getItemId()) {
             case Menu.FIRST:
-                rotateSyncIcon();
                 new SyncManager(this).triggerSynchronization(false);
                 break;
 
@@ -640,15 +634,35 @@ public class MainActivity
         setDrawerTotalAccounts(event.amount);
     }
 
-    @Subscribe
-    public void onEvent(SyncStartingEvent event) {
-        rotateSyncIcon();
-    }
-
-    @Subscribe
-    public void onEvent(SyncStoppingEvent event) {
-        stopSyncIconRotation();
-    }
+//    @Subscribe
+//    public void onEvent(SyncStartingEvent event) {
+//        Single.fromCallable(new Callable<Void>() {
+//            @Override
+//            public Void call() throws Exception {
+//                isSynchronizing = true;
+//                invalidateOptionsMenu();
+//                return null;
+//            }
+//        })
+//                .subscribeOn(AndroidSchedulers.mainThread())
+////                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe();
+//    }
+//
+//    @Subscribe
+//    public void onEvent(SyncStoppingEvent event) {
+//        Single.fromCallable(new Callable<Void>() {
+//            @Override
+//            public Void call() throws Exception {
+//                isSynchronizing = false;
+//                invalidateOptionsMenu();
+//                return null;
+//            }
+//        })
+//            .subscribeOn(AndroidSchedulers.mainThread())
+////            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe();
+//    }
 
     /**
      * A newer database file has just been downloaded. Reload.
@@ -1338,9 +1352,14 @@ public class MainActivity
         }
     }
 
-    private void rotateSyncIcon() {
-        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
+    private void startSyncIconRotation(MenuItem item) {
+//        stopSyncIconRotation();
+//        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
         if (item == null) return;
+
+//        ImageView imageView = (ImageView) item.getActionView().findViewById(R.id.refreshButton);
+
+//        Animation x = imageView.getAnimation();
 
         // define the animation for rotation
         Animation animation = new RotateAnimation(0.0f, 360.0f,
@@ -1351,22 +1370,46 @@ public class MainActivity
 
         animation.setRepeatCount(Animation.INFINITE);
 
-//        Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
-//        item.setIcon(syncIcon);
-
         ImageView imageView = new ImageView(this);
         imageView.setImageDrawable(UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh));
-//        imageView.setImageDrawable(syncIcon);
+        imageView.setPadding(0, 0, 0, 0);
+//        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
         imageView.startAnimation(animation);
         item.setActionView(imageView);
+
+//        return imageView;
     }
 
-    private void stopSyncIconRotation() {
-        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
+    private void stopSyncIconRotation(MenuItem item) {
+//        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
+        if (item == null) return;
+
         // stop animation
-        item.getActionView().clearAnimation();
-//        item.setActionView(null);
+        View actionView = MenuItemCompat.getActionView(item);
+        if (actionView == null) return;
+
+        ImageView imageView = (ImageView) item.getActionView().findViewById(R.id.refreshButton);
+        imageView.clearAnimation();
+
+        actionView.clearAnimation();
+        item.setActionView(null);
+    }
+
+    private void setSyncImage(MenuItem item) {
+        //invalidateOptionsMenu();
+
+        item.setActionView(R.layout.toolbar_icon_sync);
+
+        if (isSynchronizing) {
+            startSyncIconRotation(item);
+        } else {
+            stopSyncIconRotation(item);
+
+            Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
+            item.setActionView(null);
+            item.setIcon(syncIcon);
+        }
     }
 
     /**
@@ -1490,5 +1533,4 @@ public class MainActivity
 
         onDrawerItemSubDialogs(adapter, text);
     }
-
 }
