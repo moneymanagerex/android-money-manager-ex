@@ -370,30 +370,6 @@ public class SyncManager {
         mStorageClient.cacheCredentials();
     }
 
-//    private void scheduleUpload() {
-//        // Create task/runnable for synchronization.
-//        if (mRunSyncRunnable == null) {
-//            mRunSyncRunnable = new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (BuildConfig.DEBUG) {
-//                        Log.d("SyncManager", "Starting delayed upload");
-//                    }
-//
-//                    invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
-//                }
-//            };
-//        }
-//
-//        // Schedule delayed execution of the sync task.
-//        Timber.d("Scheduling delayed upload to the cloud storage.");
-//
-//        mDelayedHandler = new Handler();
-//
-//        // Synchronize after 30 seconds.
-//        mDelayedHandler.postDelayed(mRunSyncRunnable, 30 * 1000);
-//    }
-
     public void setEnabled(boolean enabled) {
         getPreferences().setSyncEnabled(enabled);
     }
