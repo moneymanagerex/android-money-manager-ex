@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.IIcon;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncManager;
@@ -99,6 +103,15 @@ public class UIHelper {
                 dialog.show();
             }
         });
+    }
+
+    public static IconicsDrawable getIcon(Context context, IIcon icon) {
+        UIHelper uiHelper = new UIHelper(context);
+
+        return new IconicsDrawable(context)
+                .icon(icon)
+                .color(uiHelper.getPrimaryColor())
+                .sizeDp(uiHelper.getToolbarIconSize());
     }
 
     /*

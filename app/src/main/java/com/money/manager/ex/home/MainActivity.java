@@ -35,11 +35,16 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +100,8 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.sync.events.SyncStartingEvent;
+import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -330,36 +337,42 @@ public class MainActivity
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.more_tab_menu, menu);
 
-        UIHelper uiHelper = new UIHelper(this);
-
         // add rotating icon
         MenuItem syncItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "test");
-        Drawable syncIcon = new IconicsDrawable(this)
-                .icon(MMEXIconFont.Icon.mmx_refresh)
-                .color(uiHelper.getPrimaryColor())
-                .sizeDp(uiHelper.getToolbarIconSize());
+        Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
         syncItem.setIcon(syncIcon);
+        syncItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 //        MenuHelper helper = new MenuHelper(this);
-//        helper.addToContextMenu()
 
-        // return true so that the menu pop up is opened
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // toggle drawer with the menu hardware button.
-        if (item.getItemId() == android.R.id.home) {
-            if (mDrawer != null) {
-                if (mDrawer.isDrawerOpen(mDrawerLayout)) {
-                    mDrawer.closeDrawer(mDrawerLayout);
-                } else {
-                    mDrawer.openDrawer(mDrawerLayout);
+
+        switch (item.getItemId()) {
+            case Menu.FIRST:
+                rotateSyncIcon();
+                new SyncManager(this).triggerSynchronization(false);
+                break;
+
+            case android.R.id.home:
+                // toggle drawer with the menu hardware button.
+                if (mDrawer != null) {
+                    if (mDrawer.isDrawerOpen(mDrawerLayout)) {
+                        mDrawer.closeDrawer(mDrawerLayout);
+                    } else {
+                        mDrawer.openDrawer(mDrawerLayout);
+                    }
                 }
-            }
-            return true;
+                return true;
+
+            default:
+                // nothing
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -625,6 +638,16 @@ public class MainActivity
     @Subscribe
     public void onEvent(AccountsTotalLoadedEvent event) {
         setDrawerTotalAccounts(event.amount);
+    }
+
+    @Subscribe
+    public void onEvent(SyncStartingEvent event) {
+        rotateSyncIcon();
+    }
+
+    @Subscribe
+    public void onEvent(SyncStoppingEvent event) {
+        stopSyncIconRotation();
     }
 
     /**
@@ -1313,6 +1336,37 @@ public class MainActivity
         if (savedInstanceState.containsKey(KEY_HAS_STARTED)) {
             this.dbUpdateCheckDone = savedInstanceState.getBoolean(KEY_HAS_STARTED);
         }
+    }
+
+    private void rotateSyncIcon() {
+        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
+        if (item == null) return;
+
+        // define the animation for rotation
+        Animation animation = new RotateAnimation(0.0f, 360.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(700);
+//        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
+
+        animation.setRepeatCount(Animation.INFINITE);
+
+//        Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
+//        item.setIcon(syncIcon);
+
+        ImageView imageView = new ImageView(this);
+        imageView.setImageDrawable(UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh));
+//        imageView.setImageDrawable(syncIcon);
+
+        imageView.startAnimation(animation);
+        item.setActionView(imageView);
+    }
+
+    private void stopSyncIconRotation() {
+        MenuItem item = getToolbar().getMenu().findItem(Menu.FIRST);
+        // stop animation
+        item.getActionView().clearAnimation();
+//        item.setActionView(null);
     }
 
     /**

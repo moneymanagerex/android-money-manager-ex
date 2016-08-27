@@ -34,9 +34,12 @@ import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
+import com.money.manager.ex.sync.events.SyncStartingEvent;
+import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -79,6 +82,7 @@ public class SyncService
 //        String intentString = intent != null ? intent.toString() : "null";
         String action = intent.getAction();
         Timber.d("Running sync service: %s", action);
+        sendStartEvent();
 
         // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
@@ -218,12 +222,14 @@ public class SyncService
                         public void onSuccess(Void value) {
                             onDownloadHandler.onPostExecute(true);
                             sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
+                            sendStopEvent();
                         }
 
                         @Override
                         public void onError(Throwable error) {
                             Timber.e(error, "async download");
                             sendMessage(SyncServiceMessage.ERROR);
+                            sendStopEvent();
                         }
                     })
         );
@@ -242,6 +248,7 @@ public class SyncService
         // notification, upload complete
         showNotificationUploadComplete(result, localFile);
         sendMessage(SyncServiceMessage.UPLOAD_COMPLETE);
+        sendStopEvent();
     }
 
     private void showNotificationUploadComplete(boolean result, File localFile) {
@@ -278,12 +285,14 @@ public class SyncService
 
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
+            sendStopEvent();
             return;
         }
         // if both changed, there is a conflict!
         if (isLocalModified && isRemoteModified) {
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(SyncServiceMessage.CONFLICT);
+            sendStopEvent();
             return;
         }
         if (isRemoteModified) {
@@ -316,6 +325,20 @@ public class SyncService
             return false;
         }
         return true;
+    }
+
+    private void sendStartEvent() {
+        // send notification via event bus
+        if (EventBus.getDefault().hasSubscriberForEvent(SyncStartingEvent.class)) {
+            EventBus.getDefault().post(new SyncStartingEvent());
+        }
+    }
+
+    private void sendStopEvent() {
+        if (EventBus.getDefault().hasSubscriberForEvent(SyncStoppingEvent.class)) {
+            EventBus.getDefault().post(new SyncStoppingEvent());
+        }
+
     }
 
     private void showNotificationUploading() {
