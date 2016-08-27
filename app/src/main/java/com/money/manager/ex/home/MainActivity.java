@@ -19,19 +19,24 @@ package com.money.manager.ex.home;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -40,6 +45,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -52,8 +59,11 @@ import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncServiceMessage;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -108,7 +118,6 @@ import timber.log.Timber;
 public class MainActivity
     extends BaseFragmentActivity {
 
-    public static final int REQUEST_PICKFILE = 1;
     public static final int REQUEST_PASSCODE = 2;
     public static final int REQUEST_PASSWORD = 3;
 
@@ -165,14 +174,13 @@ public class MainActivity
         // Layout
         setContentView(R.layout.main_activity);
 
-        // IoC
-//        MoneyManagerApplication.getApp().iocComponent.inject(this);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) setSupportActionBar(toolbar);
 
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
+
+        handleIntent();
 
         // Restore state. Check authentication, etc.
         if (savedInstanceState != null) {
@@ -183,16 +191,13 @@ public class MainActivity
         initializeRecentDatabaseList();
 
         // Close any existing notifications.
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
-
-        handleIntent();
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
         // show change log binaryDialog
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) core.showChangelog();
 
-        MoneyManagerApplication.showCurrentDatabasePath(getApplicationContext());
+        showCurrentDatabasePath(this);
 
         // check if we require a password.
 //        String dbPath = MoneyManagerApplication.getDatabasePath(this);
@@ -263,7 +268,7 @@ public class MainActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_PICKFILE:
+            case RequestCode.SELECT_FILE:
                 if (resultCode != RESULT_OK) return;
 
                 String selectedPath = UIHelper.getSelectedFile(data);
@@ -319,6 +324,28 @@ public class MainActivity
     }
 
     // Menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.more_tab_menu, menu);
+
+        UIHelper uiHelper = new UIHelper(this);
+
+        // add rotating icon
+        MenuItem syncItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "test");
+        Drawable syncIcon = new IconicsDrawable(this)
+                .icon(MMEXIconFont.Icon.mmx_refresh)
+                .color(uiHelper.getPrimaryColor())
+                .sizeDp(uiHelper.getToolbarIconSize());
+        syncItem.setIcon(syncIcon);
+
+//        MenuHelper helper = new MenuHelper(this);
+//        helper.addToContextMenu()
+
+        // return true so that the menu pop up is opened
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -843,14 +870,16 @@ public class MainActivity
 
         // Environment.getDefaultDatabaseDirectory().getPath()
         try {
-            UIHelper.pickFileDialog(this, dbDirectory, REQUEST_PICKFILE);
+            UIHelper.pickFileDialog(this, dbDirectory, RequestCode.SELECT_FILE);
         } catch (Exception e) {
             Timber.e(e, "displaying the open-database picker");
         }
         // continues in onActivityResult
     }
 
-    // Private
+    /*
+        Private
+     */
 
     private void createExpandableDrawer() {
         // Menu.
@@ -1283,6 +1312,31 @@ public class MainActivity
 
         if (savedInstanceState.containsKey(KEY_HAS_STARTED)) {
             this.dbUpdateCheckDone = savedInstanceState.getBoolean(KEY_HAS_STARTED);
+        }
+    }
+
+    /**
+     * Shown database path with toast message
+     * @param context Executing context.
+     */
+    private void showCurrentDatabasePath(Context context) {
+        String currentPath = MoneyManagerApplication.getDatabasePath(context);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
+
+        if (!lastPath.equals(currentPath)) {
+            preferences.edit()
+                    .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
+                    .apply();
+//                    .commit();
+            try {
+                Toast.makeText(context,
+                        Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")),
+                        Toast.LENGTH_LONG)
+                    .show();
+            } catch (Exception e) {
+                Timber.e(e, "showing the current database path");
+            }
         }
     }
 

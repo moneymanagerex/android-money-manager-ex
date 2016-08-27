@@ -141,30 +141,6 @@ public class MoneyManagerApplication
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
-    /**
-     * Shown database path with toast message
-     * todo: move this out of the application class, somewhere with access to UI!
-     * @param context Executing context.
-     */
-    public static void showCurrentDatabasePath(Context context) {
-        String currentPath = getDatabasePath(context);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
-
-        if (!lastPath.equals(currentPath)) {
-            preferences.edit()
-                    .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
-                    .apply();
-//                    .commit();
-            try {
-                Toast.makeText(context, Html.fromHtml(context.getString(R.string.path_database_using, "<b>" + currentPath + "</b>")), Toast.LENGTH_LONG)
-                        .show();
-            } catch (Exception e) {
-                Timber.e(e, "showing the current database path");
-            }
-        }
-    }
-
     // Instance fields.
 
     public MmexComponent iocComponent;

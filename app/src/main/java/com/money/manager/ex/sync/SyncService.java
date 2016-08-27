@@ -30,6 +30,7 @@ import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.settings.SyncPreferences;
@@ -190,7 +191,7 @@ public class SyncService
                 // intent is passed to the notification and called if clicked on.
                 Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                        MainActivity.REQUEST_PICKFILE, intent, 0);
+                        RequestCode.SELECT_FILE, intent, 0);
                 // create builder
                 final NotificationCompat.Builder notification =
                         new SyncNotificationFactory(getApplicationContext())
@@ -254,7 +255,7 @@ public class SyncService
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setData(Uri.fromFile(localFile));
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), MainActivity.REQUEST_PICKFILE, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), RequestCode.SELECT_FILE, intent, 0);
         // notification
         NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationBuilderUploadComplete(pendingIntent);

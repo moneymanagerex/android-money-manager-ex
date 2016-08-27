@@ -212,7 +212,7 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , "com.mikepenz:iconics-core:2.8.0@aar"
+            , "com.mikepenz:iconics-core:2.8.1@aar" // also update in the icon module.
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
@@ -230,10 +230,6 @@ dependencies {
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
             'org.robolectric:robolectric:3.1',
-//    testCompile('org.robolectric:robolectric:3.0') {
-//        exclude group: 'commons-logging', module: 'commons-logging'
-//        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-//    }
             'org.robolectric:shadows-support-v4:3.1',
             'org.robolectric:shadows-multidex:3.1',
             'org.robolectric:shadows-httpclient:3.1',
