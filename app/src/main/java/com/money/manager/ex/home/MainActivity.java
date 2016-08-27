@@ -30,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -390,7 +389,7 @@ public class MainActivity
     protected void onSaveInstanceState(Bundle outState) {
         Core core = new Core(getApplicationContext());
         if (core.isTablet()) {
-            Fragment fragment = getSupportFragmentManager().findFragmentById(getResIdLayoutContent());
+            Fragment fragment = getSupportFragmentManager().findFragmentById(getContentId());
             if (fragment != null) {
                 if (fragment instanceof AccountTransactionListFragment) {
                     outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionListFragment) fragment).getFragmentName());
@@ -485,7 +484,7 @@ public class MainActivity
         return mIsDualPanel;
     }
 
-    public int getResIdLayoutContent() {
+    public int getContentId() {
         return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
     }
 
@@ -782,7 +781,7 @@ public class MainActivity
         if (fragmentClass == null) return;
 
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentClass.getName());
-        if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
+        if (fragment == null || fragment.getId() != getContentId()) {
             ClassLoader loader = getClassLoader();
             if (loader != null) {
                 try {
@@ -810,11 +809,11 @@ public class MainActivity
      * Displays the fragment and associate the tag
      *
      * @param fragment    Fragment to display
-     * @param tagFragment Tag/name to search for.
+     * @param tag Tag/name to search for.
      */
-    public void showFragment(Fragment fragment, String tagFragment) {
+    public void showFragment(Fragment fragment, String tag) {
         try {
-            showFragment_Internal(fragment, tagFragment);
+            showFragment_Internal(fragment, tag);
         } catch (Exception e) {
             Timber.e(e, "showing fragment with tag");
         }
@@ -829,7 +828,7 @@ public class MainActivity
     public void showAccountFragment(int accountId) {
         String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
         AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
+        if (fragment == null || fragment.getId() != getContentId()) {
             fragment = AccountTransactionListFragment.newInstance(accountId);
         }
         showFragment(fragment, tag);
@@ -847,7 +846,7 @@ public class MainActivity
     public void showWatchlistFragment(int accountId) {
         String tag = WatchlistFragment.class.getSimpleName() + "_" + Integer.toString(accountId);
         WatchlistFragment fragment = (WatchlistFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment == null || fragment.getId() != getResIdLayoutContent()) {
+        if (fragment == null || fragment.getId() != getContentId()) {
             fragment = WatchlistFragment.newInstance(accountId);
         }
         showFragment(fragment, tag);
@@ -1086,7 +1085,7 @@ public class MainActivity
 
                 // create (new) menu item.
                 MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.menu_sync_progress, menu);
+                inflater.inflate(R.menu.menu_item_sync_progress, menu);
                 mSyncMenuItem = menu.findItem(id);
 //                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
 //                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -1310,12 +1309,12 @@ public class MainActivity
             fragment = new HomeFragment();
             // add to stack
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
                     //.commit();
                     .commitAllowingStateLoss();
         } else if (core.isTablet()) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, fragment, HomeFragment.class.getSimpleName())
+                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
                     //.commit();
                     .commitAllowingStateLoss();
         }

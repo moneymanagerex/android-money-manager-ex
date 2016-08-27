@@ -212,7 +212,8 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:0.6.1'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , "com.mikepenz:iconics-core:2.8.1@aar" // also update in the icon module.
+            , 'com.mikepenz:iconics-core:2.8.1@aar' // also update in the icon module.
+            , 'com.roomorama:caldroid:3.0.1'
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;

@@ -20,17 +20,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
@@ -45,7 +50,10 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
+import com.roomorama.caldroid.CaldroidFragment;
 import com.shamanland.fonticon.FontIconDrawable;
+
+import java.util.Calendar;
 
 /**
  * The recurring transactions list fragment.
@@ -90,12 +98,44 @@ public class RecurringTransactionListFragment
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onFloatingActionButtonClickListener() {
         // create new recurring transaction.
         startRecurringTransactionEditActivity(null, REQUEST_ADD_REPEATING_TRANSACTION);
     }
 
     // Menu
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+//        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_item_calendar, menu);
+        MenuItem calendar = menu.findItem(R.id.menuCalendar);
+        if (calendar != null) {
+            Drawable icon = UIHelper.getIcon(getActivity(), MMEXIconFont.Icon.mmx_calendar);
+            calendar.setIcon(icon);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle calendar
+        switch (item.getItemId()) {
+            case R.id.menuCalendar:
+                showCaldroidFragment();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -296,6 +336,21 @@ public class RecurringTransactionListFragment
                 }
             });
         alertDialog.create().show();
+    }
+
+    private void showCaldroidFragment() {
+        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        caldroidFragment.setArguments(args);
+
+        android.support.v4.app.FragmentTransaction t = getActivity().getSupportFragmentManager()
+                .beginTransaction();
+        t.replace(R.id.fragmentContent, caldroidFragment);
+        t.addToBackStack(null);
+        t.commit();
     }
 
     private void showCreateTransactionActivity(int recurringTransactionId) {

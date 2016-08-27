@@ -17,15 +17,27 @@
 package com.money.manager.ex.recurring.transactions;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.UIHelper;
+import com.roomorama.caldroid.CaldroidFragment;
 
+import java.util.Calendar;
+
+/**
+ * Not used.
+ */
 public class RecurringTransactionListActivity
     extends BaseFragmentActivity {
 
@@ -54,6 +66,7 @@ public class RecurringTransactionListActivity
         }
         // set actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // set fragment and fragment manager
         FragmentManager fm = getSupportFragmentManager();
         listFragment = new RecurringTransactionListFragment();
