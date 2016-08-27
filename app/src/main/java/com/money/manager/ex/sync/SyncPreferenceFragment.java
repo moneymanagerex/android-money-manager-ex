@@ -196,31 +196,32 @@ public class SyncPreferenceFragment
                 final SyncManager sync = getSyncManager();
                 // set the new provider
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
-                final boolean[] result = new boolean[1];
+//                final boolean[] result = new boolean[1];
 
                 // log in to the provider immediately and save to persistence.
-                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+//                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
                     sync.login()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new SingleSubscriber<Void>() {
-                                @Override
-                                public void onSuccess(Void value) {
-                                    result[0] = true;
-                                }
+                            .toBlocking();
+//                            .subscribe(new SingleSubscriber<Void>() {
+//                                @Override
+//                                public void onSuccess(Void value) {
+////                                    result[0] = true;
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable error) {
+//                                    if (error.getMessage().equals("Authentication was cancelled")) {
+//                                        Timber.w("authentication cancelled");
+//                                    } else {
+//                                        Timber.e(error, "logging in to cloud provider");
+//                                    }
+//                                }
+//                            })
+//                );
 
-                                @Override
-                                public void onError(Throwable error) {
-                                    if (error.getMessage().equals("Authentication was cancelled")) {
-                                        Timber.w("authentication cancelled");
-                                    } else {
-                                        Timber.e(error, "logging in to cloud provider");
-                                    }
-                                }
-                            })
-                );
-
-                return result[0];
+                return true;
             }
         });
 

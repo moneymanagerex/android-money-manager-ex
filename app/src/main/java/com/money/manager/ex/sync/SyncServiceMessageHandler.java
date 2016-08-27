@@ -93,6 +93,11 @@ public class SyncServiceMessageHandler
                 new UIHelper(getContext()).showToast(R.string.upload_file_complete, Toast.LENGTH_LONG);
                 break;
 
+            case CONFLICT:
+                closeDialog(progressDialog);
+                UIHelper.showToast(getContext(), R.string.both_files_modified);
+                break;
+
             case ERROR:
                 closeDialog(progressDialog);
                 new UIHelper(getContext()).showToast(R.string.error, Toast.LENGTH_SHORT);

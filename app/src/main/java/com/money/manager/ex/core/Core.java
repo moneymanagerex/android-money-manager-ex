@@ -27,7 +27,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -38,6 +40,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -64,30 +70,57 @@ import timber.log.Timber;
 public class Core {
 
     /**
-     * Shown alert binaryDialog
+     * Shown alert.
      * @param resId id of string
      */
-    public static void alertDialog(Context ctx, int resId) {
-        alertDialog(ctx, ctx.getString(resId));
+    public static void alertDialog(Context context, int resId) {
+//        alertDialog(ctx, ctx.getString(resId));
+        alert(context, Constants.NOT_SET, resId);
     }
 
-    /**
-     * Shown alert binaryDialog
-     * @param text to display
-     */
-    public static void alertDialog(Context context, String text) {
-        new AlertDialogWrapper.Builder(context)
-            // setting alert binaryDialog
-            .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
-            .setTitle(R.string.attention)
-            .setMessage(text)
-            .setPositiveButton(android.R.string.ok, new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+//    /**
+//     * Shown alert binaryDialog
+//     * @param text to display
+//     */
+//    public static void alertDialog(Context context, String text) {
+//        new AlertDialogWrapper.Builder(context)
+//            // setting alert binaryDialog
+//            .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
+//            .setTitle(R.string.attention)
+//            .setMessage(text)
+//            .setPositiveButton(android.R.string.ok, new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                    }
+//            })
+//            .show();
+//    }
+
+    public static void alert(Context context, int title, int text) {
+        if (title == Constants.NOT_SET) {
+            title = R.string.attention;
+        }
+
+        UIHelper uiHelper = new UIHelper(context);
+        Drawable icon = new IconicsDrawable(context)
+                .icon(MMEXIconFont.Icon.mmx_alert)
+                .color(uiHelper.getPrimaryColor())
+                .sizeDp(uiHelper.getToolbarIconSize());
+
+        new MaterialDialog.Builder(context)
+                .icon(icon)
+                .title(title)
+                .content(text)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
                     }
-            })
-            .show();
+                })
+//                .negativeText(R.string.disagree)
+                .show();
     }
 
     /**

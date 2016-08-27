@@ -285,7 +285,7 @@ public class SyncService
         // if both changed, there is a conflict!
         if (isLocalModified && isRemoteModified) {
             Timber.w(getString(R.string.both_files_modified));
-            sendMessage(SyncServiceMessage.ERROR);
+            sendMessage(SyncServiceMessage.CONFLICT);
             return;
         }
         if (isRemoteModified) {

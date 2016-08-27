@@ -48,6 +48,8 @@ import timber.log.Timber;
 class CloudStorageClient {
 
     public CloudStorageClient(Context context) {
+        mContext = context;
+
         // Do not initialize providers if the network is not present.
         NetworkUtils network = new NetworkUtils(getContext());
         if (!network.isOnline()) return;
