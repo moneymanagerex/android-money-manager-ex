@@ -1372,7 +1372,7 @@ public class MainActivity
 
         ImageView imageView = new ImageView(this);
         imageView.setImageDrawable(UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh));
-        imageView.setPadding(0, 0, 0, 0);
+        imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
         imageView.startAnimation(animation);
@@ -1389,8 +1389,8 @@ public class MainActivity
         View actionView = MenuItemCompat.getActionView(item);
         if (actionView == null) return;
 
-        ImageView imageView = (ImageView) item.getActionView().findViewById(R.id.refreshButton);
-        imageView.clearAnimation();
+//        ImageView imageView = (ImageView) item.getActionView().findViewById(R.id.refreshButton);
+//        imageView.clearAnimation();
 
         actionView.clearAnimation();
         item.setActionView(null);
@@ -1399,7 +1399,7 @@ public class MainActivity
     private void setSyncImage(MenuItem item) {
         //invalidateOptionsMenu();
 
-        item.setActionView(R.layout.toolbar_icon_sync);
+//        item.setActionView(R.layout.toolbar_icon_sync);
 
         if (isSynchronizing) {
             startSyncIconRotation(item);
