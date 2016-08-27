@@ -201,6 +201,8 @@ public class WatchlistItemsFragment
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+        if (!(menuInfo instanceof AdapterView.AdapterContextMenuInfo)) return false;
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 //        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) ;
 
