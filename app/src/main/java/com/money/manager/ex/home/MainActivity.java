@@ -1052,8 +1052,11 @@ public class MainActivity
             new MmxDatabaseUtils(this)
                     .useDatabase(localPath, remotePath);
         } catch (Exception e) {
-            //if (e instanceof )
-            Timber.e(e, "changing the database");
+            if (e instanceof IllegalArgumentException) {
+                Timber.w(e.getMessage());
+            } else {
+                Timber.e(e, "changing the database");
+            }
             return;
         }
 
