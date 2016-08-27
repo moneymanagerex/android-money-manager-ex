@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="">
+    <changelogversion versionName="2016.08.27.902">
+        <changelogtext>Adding a sync indicator in the toolbar. Active only during synchronization.</changelogtext>
         <changelogtext>Using a service for delayed upload to ensure execution.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.08.26.901">
