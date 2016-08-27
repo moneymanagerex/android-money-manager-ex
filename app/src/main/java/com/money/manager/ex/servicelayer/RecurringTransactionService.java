@@ -175,7 +175,7 @@ public class RecurringTransactionService
      */
     public void moveNextOccurrence() {
         if (!load()) return;
-        
+
         Integer recurrenceType = mRecurringTransaction.getRecurrenceInt();
         if (recurrenceType == null) {
             String message = getContext().getString(R.string.recurrence_type_not_set);

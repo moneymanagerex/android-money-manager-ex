@@ -37,7 +37,6 @@ public class SyncBroadcastReceiver
         Timber.d("receiving a sync intent");
 
 		SyncManager sync = new SyncManager(context);
-
         if (!sync.canSync()) return;
 
 		// check sync interval.
@@ -53,5 +52,4 @@ public class SyncBroadcastReceiver
 
 		context.startService(service);
 	}
-
 }

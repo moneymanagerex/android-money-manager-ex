@@ -82,7 +82,9 @@ public class HomeAccountsExpandableAdapter
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mAccountsByType.get(mAccountTypes.get(groupPosition)).get(childPosition);
+        String accountType = mAccountTypes.get(groupPosition);
+        List<QueryAccountBills> group = mAccountsByType.get(accountType);
+        return group.get(childPosition);
     }
 
     @Override
