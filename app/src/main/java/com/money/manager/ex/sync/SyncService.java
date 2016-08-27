@@ -74,8 +74,9 @@ public class SyncService
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String intentString = intent != null ? intent.toString() : "null";
-        Timber.d("Running sync service: %s", intentString);
+//        String intentString = intent != null ? intent.toString() : "null";
+        String action = intent.getAction();
+        Timber.d("Running sync service: %s", action);
 
         // Check if there is a messenger. Used to send the messages back.
         if (intent.getExtras().containsKey(SyncService.INTENT_EXTRA_MESSENGER)) {
@@ -127,7 +128,6 @@ public class SyncService
         }
 
         // Execute action.
-        String action = intent.getAction();
         switch (action) {
             case SyncConstants.INTENT_ACTION_DOWNLOAD:
                 triggerDownload(localFile, remoteFile);

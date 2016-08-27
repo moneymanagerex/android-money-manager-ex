@@ -74,6 +74,8 @@ public class SyncManager {
     private boolean mAutoUploadDisabled = false;
 
     public void abortScheduledUpload() {
+        Timber.d("Aborting scheduled download");
+
 //        Intent service = new Intent(getContext(), DelayedUploadService.class);
 //        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
 //        getContext().startService(service);
@@ -665,12 +667,17 @@ public class SyncManager {
     private void scheduleDelayedUpload() {
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         AlarmManager alarm = getAlarmManager();
+
+        Timber.d("Setting delayed upload alarm.");
+
         // start the sync service after 30 seconds.
         alarm.set(AlarmManager.RTC_WAKEUP, DateTime.now().getMillis() + 30*1000, pendingIntent);
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
         Intent intent = new Intent(getContext(), SyncService.class);
+
+        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
 
         intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, getLocalPath());
         intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
