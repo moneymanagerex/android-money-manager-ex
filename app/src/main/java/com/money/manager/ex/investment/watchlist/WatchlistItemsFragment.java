@@ -430,11 +430,11 @@ public class WatchlistItemsFragment
 
         label.setText(getString(R.string.cash));
 
-        if (account != null) {
-            FormatUtilities formatter = new FormatUtilities(getActivity());
-            textView.setText(formatter.getValueFormatted(
-                account.getInitialBalance(), account.getCurrencyId()));
-        }
+        if (account == null) return;
+
+        FormatUtilities formatter = new FormatUtilities(getActivity());
+        textView.setText(formatter.getValueFormatted(
+            account.getInitialBalance(), account.getCurrencyId()));
     }
 
     private boolean hasHeaderRow() {

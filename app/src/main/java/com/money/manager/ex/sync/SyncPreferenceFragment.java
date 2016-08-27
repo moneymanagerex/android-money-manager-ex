@@ -198,10 +198,9 @@ public class SyncPreferenceFragment
                 final SyncManager sync = getSyncManager();
                 // set the new provider
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
-//                final boolean[] result = new boolean[1];
 
                 // log in to the provider immediately and save to persistence.
-//                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
                     sync.login()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -209,7 +208,7 @@ public class SyncPreferenceFragment
                             .subscribe(new SingleSubscriber<Void>() {
                                 @Override
                                 public void onSuccess(Void value) {
-//                                    result[0] = true;
+                                    // nothing.
                                 }
 
                                 @Override
@@ -221,8 +220,8 @@ public class SyncPreferenceFragment
                                         Timber.e(error, "logging in to cloud provider");
                                     }
                                 }
-                            });
-//                );
+                            })
+                );
 
                 return true;
             }
@@ -242,20 +241,20 @@ public class SyncPreferenceFragment
         });
 
         // interval
-//        if (BuildConfig.DEBUG) {
-//            // insert a 1-minute in debug mode
-//            CharSequence[] entries = viewHolder.syncInterval.getEntries();
-//            String[] newEntries = new String[entries.length + 1];
-//            newEntries[0] = "1-minute";
-//            System.arraycopy(entries, 0, newEntries, 1, entries.length);
-//            viewHolder.syncInterval.setEntries(newEntries);
-//            // values
-//            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
-//            String[] newValues = new String[values.length + 1];
-//            newValues[0] = "1";
-//            System.arraycopy(values, 0, newValues, 1, values.length);
-//            viewHolder.syncInterval.setEntryValues(newValues);
-//        }
+        if (BuildConfig.DEBUG) {
+            // Insert a 1-minute in debug mode.
+            CharSequence[] entries = viewHolder.syncInterval.getEntries();
+            String[] newEntries = new String[entries.length + 1];
+            newEntries[0] = "1-minute";
+            System.arraycopy(entries, 0, newEntries, 1, entries.length);
+            viewHolder.syncInterval.setEntries(newEntries);
+            // values
+            CharSequence[] values = viewHolder.syncInterval.getEntryValues();
+            String[] newValues = new String[values.length + 1];
+            newValues[0] = "1";
+            System.arraycopy(values, 0, newValues, 1, values.length);
+            viewHolder.syncInterval.setEntryValues(newValues);
+        }
 
         viewHolder.syncInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -357,18 +356,10 @@ public class SyncPreferenceFragment
     }
 
     private void forceUpload() {
-        String localFile = MoneyManagerApplication.getDatabasePath(getActivity());
-        String remoteFile = getSyncManager().getRemotePath();
+        new SyncManager(getActivity()).triggerUpload();
 
-        // trigger upload
-        Intent service = new Intent(getActivity().getApplicationContext(), SyncService.class);
-        service.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
-        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
-        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
         // toast to show
-        Toast.makeText(getActivity().getApplicationContext(), R.string.sync_uploading, Toast.LENGTH_LONG).show();
-        // start service
-        getActivity().startService(service);
+        UIHelper.showToast(getActivity(), R.string.sync_uploading);
     }
 
     private void storeLocalFileSetting(String remoteFile) {

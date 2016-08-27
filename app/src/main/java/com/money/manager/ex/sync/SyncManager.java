@@ -458,6 +458,21 @@ public class SyncManager {
         invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD, showProgressbar);
     }
 
+    public void triggerUpload() {
+        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
+//        getLocalPath()
+        String remoteFile = getRemotePath();
+
+        // trigger upload
+        Intent service = new Intent(getContext(), SyncService.class);
+        service.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
+        service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+        service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
+
+        // start service
+        getContext().startService(service);
+    }
+
     /**
      * Upload the file to cloud storage.
      * @param localPath The path to the file to upload.
