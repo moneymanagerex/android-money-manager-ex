@@ -32,7 +32,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
@@ -54,9 +56,11 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -139,7 +143,6 @@ public class RecurringTransactionListFragment
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -352,13 +355,62 @@ public class RecurringTransactionListFragment
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxDateTimeUtils.getFirstDayOfWeek());
+        args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
+        // disable switching month for now.
+        args.putBoolean(CaldroidFragment.SHOW_NAVIGATION_ARROWS, Boolean.FALSE);
+        args.putBoolean(CaldroidFragment.ENABLE_SWIPE, Boolean.FALSE);
         caldroidFragment.setArguments(args);
+
+        // add different background for dates with events.
+        showDatesWithEvents(caldroidFragment);
+
+        // behaviour
+        caldroidFragment.setCaldroidListener(getCalendarListener());
 
         android.support.v4.app.FragmentTransaction t = getActivity().getSupportFragmentManager()
                 .beginTransaction();
         t.replace(R.id.fragmentContent, caldroidFragment);
         t.addToBackStack(null);
         t.commit();
+    }
+
+    private CaldroidListener getCalendarListener() {
+        return new CaldroidListener() {
+
+            @Override
+            public void onSelectDate(Date date, View view) {
+//                fragment.setCalendarDate(date);
+                // todo show the recurring transactions on this date.
+            }
+
+            @Override
+            public void onChangeMonth(int month, int year) {
+            }
+
+            @Override
+            public void onLongClickDate(Date date, View view) {
+            }
+
+            @Override
+            public void onCaldroidViewCreated() {
+            }
+
+        };
+    }
+
+    private void showDatesWithEvents(CaldroidFragment caldroid) {
+        ListAdapter adapter = getListAdapter();
+        int count = adapter.getCount();
+
+        ColorDrawable orange = new ColorDrawable(getResources().getColor(R.color.material_deep_orange_50));
+        RecurringTransaction tx = RecurringTransaction.createInstance();
+
+        for (int i = 0; i < count; i++) {
+            Cursor cursor = (Cursor) adapter.getItem(i);
+            tx.loadFromCursor(cursor);
+
+            caldroid.setBackgroundDrawableForDate(orange, tx.getPaymentDate().toDate());
+        }
     }
 
     private void showCreateTransactionActivity(int recurringTransactionId) {
