@@ -236,7 +236,7 @@ public class RecurringTransactionService
         RecurringTransactionRepository repo = getRepository();
         boolean updated = repo.update(mRecurringTransaction);
         if (!updated) {
-            UIHelper.showToast(getContext(), R.string.error_saving_record);
+            new UIHelper(getContext()).showToast(R.string.error_saving_record);
         }
     }
 

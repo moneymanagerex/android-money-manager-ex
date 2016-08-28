@@ -359,7 +359,7 @@ public class SyncPreferenceFragment
         new SyncManager(getActivity()).triggerUpload();
 
         // toast to show
-        UIHelper.showToast(getActivity(), R.string.sync_uploading);
+        new UIHelper(getActivity()).showToast(R.string.sync_uploading);
     }
 
     private void storeLocalFileSetting(String remoteFile) {

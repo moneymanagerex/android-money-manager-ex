@@ -182,7 +182,7 @@ public class EditTransactionCommonFunctions {
         AccountRepository repo = new AccountRepository(getContext());
         Integer currencyId = repo.loadCurrencyIdFor(accountId);
         if (currencyId == null) {
-            UIHelper.showToast(getContext(), R.string.error_loading_currency);
+            new UIHelper(getContext()).showToast(R.string.error_loading_currency);
 
             currencyId = Constants.NOT_SET;
         }
@@ -470,7 +470,7 @@ public class EditTransactionCommonFunctions {
                     .setOnDateSetListener(listener)
                     .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                     .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
-                if (UIHelper.isDarkTheme(getContext())) {
+                if (new UIHelper(getContext()).isDarkTheme()) {
                     datePicker.setThemeDark();
                 }
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);

@@ -34,7 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 
 /**
  * Handler for the messages received from the sync service.
- * Updates the UI based on the messages received. The messages state the progres of the
+ * Updates the UI based on the messages received. The messages state the progress of the
  * synchronisation.
  */
 
@@ -94,7 +94,7 @@ public class SyncServiceMessageHandler
 
             case CONFLICT:
                 closeDialog(progressDialog);
-                UIHelper.showToast(getContext(), R.string.both_files_modified);
+                new UIHelper(getContext()).showToast(R.string.both_files_modified);
                 break;
 
             case ERROR:

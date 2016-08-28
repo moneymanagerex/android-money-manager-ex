@@ -67,7 +67,7 @@ public class OnDateButtonClickListener
             .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
             .setOnDateSetListener(mDateSetListener)
             .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
-        if (UIHelper.isDarkTheme(mParent)) {
+        if (new UIHelper(mParent).isDarkTheme()) {
             datePicker.setThemeDark();
         }
         datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);

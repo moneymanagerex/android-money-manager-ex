@@ -316,7 +316,7 @@ public class AccountService
 
         Cursor cursor = getCursor(openOnly, favoriteOnly, accountTypes);
         if (cursor == null) {
-            UIHelper.showToast(getContext(), "Error reading accounts list!");
+            new UIHelper(getContext()).showToast("Error reading accounts list!");
             return result;
         }
 

@@ -177,7 +177,7 @@ public class AssetAllocationFragment
         // check which item to create
         ItemType type = assetClass.getType();
         if (type == null) {
-            UIHelper.showToast(getActivity(), "Item type not set.");
+            new UIHelper(getActivity()).showToast("Item type not set.");
             return;
         }
 

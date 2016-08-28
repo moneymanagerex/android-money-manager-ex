@@ -472,7 +472,7 @@ public class WatchlistItemsFragment
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         StockRepository repo = new StockRepository(getActivity());
                         if (!repo.delete(id)) {
-                            UIHelper.showToast(getActivity(), R.string.db_delete_failed);
+                            new UIHelper(getActivity()).showToast(R.string.db_delete_failed);
                         }
 
                         // restart loader

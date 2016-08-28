@@ -410,7 +410,7 @@ public class SyncManager {
         // Make sure that the current database is also the one linked in the cloud.
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         if (TextUtils.isEmpty(localPath)) {
-            UIHelper.showToast(getContext(), R.string.filenames_differ);
+            new UIHelper(getContext()).showToast(R.string.filenames_differ);
             return;
         }
 

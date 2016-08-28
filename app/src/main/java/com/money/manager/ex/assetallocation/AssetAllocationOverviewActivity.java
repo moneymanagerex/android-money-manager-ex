@@ -151,7 +151,7 @@ public class AssetAllocationOverviewActivity
             Timber.e(e, "creating temp file");
         }
         if (outFile == null) {
-            UIHelper.showToast(this, "File could not be created.");
+            new UIHelper(this).showToast("File could not be created.");
             return;
         }
 
@@ -371,7 +371,7 @@ public class AssetAllocationOverviewActivity
 
     private void createWebPrintJob(WebView webView) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            UIHelper.showToast(this, R.string.min_19);
+            new UIHelper(this).showToast(R.string.min_19);
             return;
         } else {
             // Get a PrintManager instance

@@ -409,7 +409,7 @@ public class CurrencyListFragment
                                 ArrayList<String> symbols = new ArrayList<>();
                                 for (Currency currency : usedCurrencies) {
                                     if (currency == null) {
-                                        UIHelper.showToast(getActivity(), R.string.currency_not_found);
+                                        new UIHelper(getActivity()).showToast(R.string.currency_not_found);
                                     } else {
                                         symbols.add(currency.getCode());
                                     }

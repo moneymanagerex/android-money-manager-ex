@@ -44,7 +44,7 @@ public class BaseSettingsFragmentActivity
 
     @Subscribe
     public void onEvent(ErrorRaisedEvent event) {
-        UIHelper.showToast(this, event.message);
+        new UIHelper(this).showToast(event.message);
     }
 
 //    @Override

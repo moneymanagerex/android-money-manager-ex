@@ -141,7 +141,7 @@ public class AssetClassEditActivity
                 AssetClassRepository repo = new AssetClassRepository(this);
                 assetClass = repo.load(id);
                 if (assetClass == null) {
-                    UIHelper.showToast(this, "No asset class found in the database!");
+                    new UIHelper(this).showToast("No asset class found in the database!");
                     // todo: show error message and return (close edit activity)
                     return;
                 }

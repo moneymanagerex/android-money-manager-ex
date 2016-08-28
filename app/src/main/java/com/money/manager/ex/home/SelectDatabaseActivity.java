@@ -68,7 +68,7 @@ public class SelectDatabaseActivity
                 if (resultCode != RESULT_OK) return;
                 String selectedPath = UIHelper.getSelectedFile(data);
                 if(StringUtils.isEmpty(selectedPath)) {
-                    UIHelper.showToast(this, R.string.invalid_database);
+                    new UIHelper(this).showToast(R.string.invalid_database);
                     return;
                 }
 
@@ -118,7 +118,7 @@ public class SelectDatabaseActivity
         // check if the file is a valid database
 //        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
         if (!MmxDatabaseUtils.isValidDbFile(dbPath)) {
-            UIHelper.showToast(this, R.string.invalid_database);
+            new UIHelper(this).showToast(R.string.invalid_database);
             return;
         }
 

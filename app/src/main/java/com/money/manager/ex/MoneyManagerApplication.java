@@ -117,9 +117,9 @@ public class MoneyManagerApplication
 
         // Show notification
         if (databasePath.equals(defaultPath)) {
-            UIHelper.showToast(context, "Default database file will be created at " + defaultPath);
+            new UIHelper(context).showToast("Default database file will be created at " + defaultPath);
         } else {
-            UIHelper.showToast(context, "Database " + databasePath + " not found. Using default:" + defaultPath);
+            new UIHelper(context).showToast("Database " + databasePath + " not found. Using default:" + defaultPath);
         }
 
         return defaultPath;

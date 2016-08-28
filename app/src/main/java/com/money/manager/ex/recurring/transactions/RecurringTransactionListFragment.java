@@ -35,7 +35,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
@@ -47,7 +46,6 @@ import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
-import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
@@ -357,7 +355,7 @@ public class RecurringTransactionListFragment
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxDateTimeUtils.getFirstDayOfWeek());
-        if (UIHelper.isDarkTheme(getActivity())) {
+        if (new UIHelper(getActivity()).isDarkTheme()) {
             args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
         }
         // disable switching month for now.

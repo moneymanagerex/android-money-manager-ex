@@ -341,7 +341,7 @@ public class InvestmentTransactionEditActivity
                         .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                if (UIHelper.isDarkTheme(InvestmentTransactionEditActivity.this)) {
+                if (new UIHelper(InvestmentTransactionEditActivity.this).isDarkTheme()) {
                     datePicker.setThemeDark();
                 }
                 datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
@@ -450,7 +450,7 @@ public class InvestmentTransactionEditActivity
     private boolean validate() {
         // symbol must not be empty.
         if (StringUtils.isEmpty(mStock.getSymbol())) {
-            UIHelper.showToast(this, getString(R.string.symbol_required));
+            new UIHelper(this).showToast(getString(R.string.symbol_required));
             return false;
         }
 

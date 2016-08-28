@@ -153,7 +153,7 @@ public class MorningstarPriceUpdater
                     public void onCompleted() {
                         closeProgressDialog();
 
-                        UIHelper.showToast(getContext(), R.string.download_complete);
+                        new UIHelper(getContext()).showToast(R.string.download_complete);
 
                         compositeSubscription.unsubscribe();
 
@@ -265,7 +265,7 @@ public class MorningstarPriceUpdater
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        UIHelper.showToast(getContext(), R.string.download_complete);
+        new UIHelper(getContext()).showToast(R.string.download_complete);
 
         // fire an event so that the data can be reloaded.
         EventBus.getDefault().post(new AllPricesDownloadedEvent());

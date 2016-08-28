@@ -390,17 +390,19 @@ public class MmxOpenHelper
             currencyId = 2;
         }
 
+        UIHelper uiHelper = new UIHelper(getContext());
+
         // Insert/update base currency record into info table.
         if (!recordExists) {
             long newId = infoService.insertRaw(db, InfoKeys.BASECURRENCYID, currencyId);
             if (newId <= 0) {
-                UIHelper.showToast(getContext(), "error inserting base currency on init");
+                uiHelper.showToast("error inserting base currency on init");
             }
         } else {
             // Update the (by default empty) record to the default currency.
             long updatedRecords = infoService.updateRaw(db, recordId, InfoKeys.BASECURRENCYID, currencyId);
             if (updatedRecords <= 0) {
-                UIHelper.showToast(getContext(), "error updating base currency on init");
+                uiHelper.showToast("error updating base currency on init");
             }
         }
 

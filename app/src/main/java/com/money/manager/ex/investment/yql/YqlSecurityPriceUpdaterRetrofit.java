@@ -114,8 +114,10 @@ public class YqlSecurityPriceUpdaterRetrofit
      * Here we have all the prices.
      */
     public void onContentDownloaded(JsonElement response) {
+        UIHelper uiHelper = new UIHelper(getContext());
+
         if (response == null) {
-            UIHelper.showToast(getContext(), R.string.error_updating_rates);
+            uiHelper.showToast(R.string.error_updating_rates);
             closeProgressDialog();
             return;
         }
@@ -123,7 +125,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         // parse Json results
         List<SecurityPriceModel> pricesList = getPricesFromJson(response.getAsJsonObject());
         if (pricesList == null) {
-            UIHelper.showToast(getContext(), R.string.error_no_price_found_for_symbol);
+            uiHelper.showToast(R.string.error_no_price_found_for_symbol);
         } else {
             // Send the parsed price data to the listener(s).
             for (SecurityPriceModel model : pricesList) {
@@ -134,7 +136,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        UIHelper.showToast(getContext(), R.string.download_complete);
+        uiHelper.showToast(R.string.download_complete);
     }
 
     private List<SecurityPriceModel> getPricesFromJson(JsonObject root) {

@@ -101,18 +101,19 @@ public class SecuritySettingsFragment
                 break;
 
             case REQUEST_REINSERT_PASSCODE:
+                UIHelper uiHelper = new UIHelper(getActivity());
+
                 String sentPasscode = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
                 if (sentPasscode == null) {
-                    UIHelper.showToast(getActivity(), "passcode not retrieved");
+                    uiHelper.showToast("passcode not retrieved");
                     return;
                 }
                 if (passcode != null && passcode.equals(sentPasscode)) {
                     if (!pass.setPasscode(passcode)) {
-//                                Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
-                        UIHelper.showToast(getActivity(), R.string.passcode_not_update);
+                        uiHelper.showToast(R.string.passcode_not_update);
                     }
                 } else {
-                    Toast.makeText(getActivity(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
+                    uiHelper.showToast(R.string.passocde_no_macth, Toast.LENGTH_LONG);
                 }
                 break;
 

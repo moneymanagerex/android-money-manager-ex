@@ -488,7 +488,7 @@ public class CheckingTransactionEditActivity
                 Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
                 if (defaultAccountId == null) {
                     // Show toast message.
-                    UIHelper.showToast(this, getString(R.string.default_account_not_set));
+                    new UIHelper(this).showToast(getString(R.string.default_account_not_set));
                     return false;
                 } else {
                     mCommonFunctions.transactionEntity.setAccountId(defaultAccountId);

@@ -153,7 +153,7 @@ public class PerDatabaseFragment
                     try {
                         day = Integer.parseInt((String) newValue);
                     } catch (NumberFormatException e) {
-                        UIHelper.showToast(getActivity(), R.string.error_parsing_value);
+                        new UIHelper(getActivity()).showToast(R.string.error_parsing_value);
                         return false;
                     }
 

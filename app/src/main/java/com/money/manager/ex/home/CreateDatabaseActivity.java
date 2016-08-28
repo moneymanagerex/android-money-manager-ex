@@ -81,7 +81,7 @@ public class CreateDatabaseActivity
         // show message
 
         statusReportView.setVisibility(View.VISIBLE);
-        UIHelper.showToast(this, R.string.create_db_success);
+        new UIHelper(this).showToast(R.string.create_db_success);
         dbPathTextView.setText(dbPath);
 
         // enable run button

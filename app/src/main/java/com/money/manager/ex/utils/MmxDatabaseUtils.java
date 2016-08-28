@@ -289,7 +289,7 @@ public class MmxDatabaseUtils {
                 message.append(table);
                 message.append(" ");
             }
-            UIHelper.showToast(getContext(), message.toString());
+            new UIHelper(getContext()).showToast(message.toString());
         } else {
             // everything matches
             result = true;

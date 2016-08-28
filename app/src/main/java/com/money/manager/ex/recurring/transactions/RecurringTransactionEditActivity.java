@@ -347,7 +347,7 @@ public class RecurringTransactionEditActivity
                         .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
-                if (UIHelper.isDarkTheme(RecurringTransactionEditActivity.this)) {
+                if (new UIHelper(RecurringTransactionEditActivity.this).isDarkTheme()) {
                     datePicker.setThemeDark();
                 }
                 datePicker.show(getSupportFragmentManager(), TAG_DATEPICKER);

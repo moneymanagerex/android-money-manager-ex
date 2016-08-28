@@ -284,7 +284,7 @@ public class WatchlistFragment
 
     @Subscribe
     public void onEvent(ErrorRaisedEvent event) {
-        UIHelper.showToast(getActivity(), event.message);
+        new UIHelper(getActivity()).showToast(event.message);
     }
 
     /**

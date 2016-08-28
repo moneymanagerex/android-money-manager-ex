@@ -142,7 +142,7 @@ public abstract class BaseFragmentActivity
     @Subscribe
     public void onEvent(ErrorRaisedEvent event) {
         // display the error to the user
-        UIHelper.showToast(this, event.message);
+        new UIHelper(this).showToast(event.message);
     }
 
     /**

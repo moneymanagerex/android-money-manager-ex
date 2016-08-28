@@ -34,11 +34,6 @@ import rx.subscriptions.Subscriptions;
  */
 public class UIHelper {
 
-    public static boolean isDarkTheme(Context context) {
-        Core core = new Core(context);
-        return core.getThemeId() == R.style.Theme_Money_Manager_Dark;
-    }
-
     public static void pickFileDialog(Activity activity, String location, int requestCode) {
 // This always works
         Intent i = new Intent(activity, FilePickerActivity.class);
@@ -76,38 +71,6 @@ public class UIHelper {
 //        return data.getData().toString();
         return filePath;
     }
-
-    public static void showToast(Context context, String message) {
-        new UIHelper(context).showToast(message, Toast.LENGTH_SHORT);
-    }
-
-    public static void showToast(Context context, int stringResourceId) {
-        String message = context.getString(stringResourceId);
-        showToast(context, message);
-    }
-
-//    public static void showDiffNotificationDialog(final Context context) {
-//        new AlertDialogWrapper.Builder(context)
-//                // setting alert binaryDialog
-//                .setIcon(FontIconDrawable.inflate(context, R.xml.ic_alert))
-//                .setTitle(R.string.update_available)
-//                .setMessage(R.string.update_available_online)
-//                .setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        new SyncManager(context).triggerSynchronization(true);
-//
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .show();
-//    }
 
     public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
@@ -198,6 +161,11 @@ public class UIHelper {
         return getDimenInDp(R.dimen.mmx_toolbar_icon_size);
     }
 
+    public boolean isDarkTheme() {
+        Core core = new Core(getContext());
+        return core.getThemeId() == R.style.Theme_Money_Manager_Dark;
+    }
+
     /**
      * Resolve the id attribute into int value
      * @param attr id attribute
@@ -211,17 +179,17 @@ public class UIHelper {
             return Constants.NOT_SET;
     }
 
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
-    }
-
-    public int pxToDp(int px) {
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return dp;
-    }
+//    public int dpToPx(int dp) {
+//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+//        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+//        return px;
+//    }
+//
+//    public int pxToDp(int px) {
+//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+//        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+//        return dp;
+//    }
 
 //    /**
 //     * Pick a database file using built-in file picker.
@@ -246,6 +214,10 @@ public class UIHelper {
 
     public void showToast(int messageId) {
         showToast(messageId, Toast.LENGTH_SHORT);
+    }
+
+    public void showToast(String message) {
+        showToast(message, Toast.LENGTH_SHORT);
     }
 
     public void showToast(final int message, final int length) {
@@ -275,5 +247,4 @@ public class UIHelper {
             }
         });
     }
-
 }

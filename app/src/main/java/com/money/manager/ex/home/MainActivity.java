@@ -185,6 +185,7 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
+        // Intent
         handleIntent();
 
         // Restore state. Check authentication, etc.
@@ -278,7 +279,7 @@ public class MainActivity
 
                 String selectedPath = UIHelper.getSelectedFile(data);
                 if(StringUtils.isEmpty(selectedPath)) {
-                    UIHelper.showToast(this, R.string.invalid_database);
+                    new UIHelper(this).showToast(R.string.invalid_database);
                     return;
                 }
 
