@@ -23,6 +23,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
@@ -401,8 +402,7 @@ public class RecurringTransactionListFragment
     private void showDatesWithEvents(CaldroidFragment caldroid) {
         ListAdapter adapter = getListAdapter();
         int count = adapter.getCount();
-
-        ColorDrawable orange = new ColorDrawable(getResources().getColor(R.color.material_deep_orange_50));
+        ColorDrawable orange = new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.holo_orange_dark));
         RecurringTransaction tx = RecurringTransaction.createInstance();
 
         for (int i = 0; i < count; i++) {
