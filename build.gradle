@@ -53,6 +53,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.fabric.io/public' }          // fabric
         maven { url 'http://maven.cloudrail.com' }              // cloudrail
+        maven {url "https://clojars.org/repo/"}                 // icepick
 //        flatDir {
 //            // use libs directory as a Maven repository.
 //            dirs 'libs'

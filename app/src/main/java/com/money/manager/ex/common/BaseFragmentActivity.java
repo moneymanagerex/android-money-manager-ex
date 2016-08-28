@@ -32,6 +32,7 @@ import com.money.manager.ex.settings.AppSettings;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import icepick.Icepick;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -46,15 +47,7 @@ public abstract class BaseFragmentActivity
     private boolean mDisplayHomeAsUpEnabled = false;
 
     @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar != null) setSupportActionBar(mToolbar);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstance) {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme();
 
         AppSettings settings = new AppSettings(this);
@@ -69,7 +62,17 @@ public abstract class BaseFragmentActivity
 
         this.compositeSubscription = new CompositeSubscription();
 
-        super.onCreate(savedInstance);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) setSupportActionBar(mToolbar);
     }
 
     @Override
@@ -118,6 +121,13 @@ public abstract class BaseFragmentActivity
         EventBus.getDefault().unregister(this);
 
         super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

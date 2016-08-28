@@ -109,6 +109,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
+import icepick.State;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -164,7 +165,8 @@ public class MainActivity
     private RecentDatabasesProvider recentDbs;
     // sync rotating icon
     private MenuItem mSyncMenuItem = null;
-    private boolean mIsSynchronizing = false;
+    @State
+    boolean mIsSynchronizing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

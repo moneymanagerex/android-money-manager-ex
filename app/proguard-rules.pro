@@ -99,6 +99,15 @@
 #    <init>(java.lang.Throwable);
 #}
 
+# IcePick
+-dontwarn icepick.**
+-keep class icepick.** { *; }
+-keep class **$$Icepick { *; }
+-keepclasseswithmembernames class * {
+    @icepick.* <fields>;
+}
+-keepnames class * { @icepick.State *;}
+
 #SQLCipher
 #-keep class net.sqlcipher.** { *; }
 
