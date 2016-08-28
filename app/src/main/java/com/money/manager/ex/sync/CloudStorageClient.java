@@ -121,11 +121,18 @@ class CloudStorageClient {
 
                     @Override
                     public void onError(Throwable error) {
-                        // todo handle DNS exceptions by just showing a message?
-                        //if (error instanceof RuntimeException && error.getMessage().equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname"))
-                        // Unable to resolve host "www.googleapis.com": No address associated with hostname
-
-                        Timber.e(error, "fetching remote metadata");
+                        // handle DNS exceptions by just showing a message?
+                        String errorMessage = error.getMessage();
+                        if (error instanceof RuntimeException && errorMessage != null &&
+                                (
+                                    errorMessage.equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname") ||
+                                    errorMessage.equals("Unable to resolve host \"www.googleapis.com\": No address associated with hostname")
+                                )
+                        ) {
+                            Timber.w("Unable to contact remote provider");
+                        } else {
+                            Timber.e(error, "fetching remote metadata");
+                        }
                     }
                 });
 
