@@ -354,7 +354,6 @@ public class Core {
 
     /**
      * Function that determines if the application is running on tablet
-     *
      * @return true if running on the tablet, otherwise false
      */
     public boolean isTablet() {
@@ -365,7 +364,6 @@ public class Core {
 
     /**
      * Resolves the id attribute in color
-     *
      * @param attr id attribute
      * @return color
      */

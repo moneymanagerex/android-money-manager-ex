@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -138,21 +139,21 @@ public class MainActivity
 
     // private
 
-    private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
-    private static final String KEY_CLASS_FRAGMENT_CONTENT = "MainActivity:Fragment";
-    private static final String KEY_ORIENTATION = "MainActivity:Orientation";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
-    private static final String KEY_HAS_STARTED = "MainActivity:dbUpdateCheckDone";
+
     // state if restart activity
     private static boolean mRestartActivity = false;
 
 //    @Inject SharedPreferences preferences;
 
-    private boolean isAuthenticated = false;
+    @State boolean dbUpdateCheckDone = false;
+    @State boolean mIsSynchronizing = false;
+    @State boolean isAuthenticated = false;
+    @State int deviceOrientation = Constants.NOT_SET;
+
     private boolean isInAuthentication = false;
     private boolean isRecurringTransactionStarted = false;
-    private boolean dbUpdateCheckDone = false;
     // navigation drawer
     private LinearLayout mDrawerLayout;
     private DrawerLayout mDrawer;
@@ -164,8 +165,6 @@ public class MainActivity
     private RecentDatabasesProvider recentDbs;
     // sync rotating icon
     private MenuItem mSyncMenuItem = null;
-    @State
-    boolean mIsSynchronizing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +184,11 @@ public class MainActivity
         LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
         setDualPanel(fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE);
 
+        // Initialize current device orientation.
+        if (deviceOrientation == Constants.NOT_SET) {
+            deviceOrientation = getResources().getConfiguration().orientation;
+        }
+
         // Intent
         handleIntent();
 
@@ -192,6 +196,8 @@ public class MainActivity
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
+
+        handleDeviceRotation();
 
         // Initialize the map for recent entries that link to drawer menu items.
         initializeRecentDatabaseList();
@@ -210,9 +216,29 @@ public class MainActivity
 //        if (MmxDatabaseUtils.isEncryptedDatabase(dbPath)) {
 //            // todo: && !MmxOpenHelper.getInstance(this).hasPassword()
 //            requestDatabasePassword();
-//        } else {
-        initializeDatabaseAccess(savedInstanceState);
 //        }
+        // Read something from the database at this stage so that the db file gets created.
+        InfoService infoService = new InfoService(getApplicationContext());
+        String username = infoService.getInfoValue(InfoKeys.USERNAME);
+
+        // fragments
+//        originalShowFragment(savedInstanceState);
+        showHomeFragment();
+
+        // start notification for recurring transaction
+        if (!isRecurringTransactionStarted) {
+            AppSettings settings = new AppSettings(this);
+            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
+            if (showNotification) {
+                RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
+                notifications.notifyRepeatingTransaction();
+                isRecurringTransactionStarted = true;
+            }
+        }
+
+        // notification send broadcast
+        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
+        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
 
         initializeDrawer();
 
@@ -389,23 +415,21 @@ public class MainActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Core core = new Core(getApplicationContext());
-        if (core.isTablet()) {
-            Fragment fragment = getSupportFragmentManager().findFragmentById(getContentId());
-            if (fragment != null) {
-                if (fragment instanceof AccountTransactionListFragment) {
-                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionListFragment) fragment).getFragmentName());
-                } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
-                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
-                }
-                // move pop stack in onCreate event
-            }
-        }
-        outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
+//        Core core = new Core(getApplicationContext());
+//        if (core.isTablet()) {
+//            Fragment fragment = getSupportFragmentManager().findFragmentById(getContentId());
+//            if (fragment != null) {
+//                if (fragment instanceof AccountTransactionListFragment) {
+//                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionListFragment) fragment).getFragmentName());
+//                } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
+//                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
+//                }
+//                // move pop stack in onCreate event
+//            }
+//        }
+
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
-        outState.putInt(KEY_ORIENTATION, getResources().getConfiguration().orientation);
-        outState.putBoolean(KEY_HAS_STARTED, this.dbUpdateCheckDone);
 
         super.onSaveInstanceState(outState);
     }
@@ -689,32 +713,6 @@ public class MainActivity
     }
 
     // Private.
-
-    private void initializeDatabaseAccess(Bundle savedInstanceState) {
-        // Read something from the database at this stage so that the db file gets created.
-        InfoService infoService = new InfoService(getApplicationContext());
-        String username = infoService.getInfoValue(InfoKeys.USERNAME);
-
-        // fragments
-//        displayDefaultFragment();
-//        displayLastViewedFragment(savedInstanceState);
-        originalShowFragment(savedInstanceState);
-
-        // start notification for recurring transaction
-        if (!isRecurringTransactionStarted) {
-            AppSettings settings = new AppSettings(this);
-            boolean showNotification = settings.getBehaviourSettings().getNotificationRecurringTransaction();
-            if (showNotification) {
-                RecurringTransactionNotifications notifications = new RecurringTransactionNotifications(this);
-                notifications.notifyRepeatingTransaction();
-                isRecurringTransactionStarted = true;
-            }
-        }
-
-        // notification send broadcast
-        Intent serviceRepeatingTransaction = new Intent(getApplicationContext(), RecurringTransactionBootReceiver.class);
-        getApplicationContext().sendBroadcast(serviceRepeatingTransaction);
-    }
 
     private void initializeSync() {
         // Check cloud storage for updates?
@@ -1237,6 +1235,24 @@ public class MainActivity
         return childDatabases;
     }
 
+    private void handleDeviceRotation() {
+        // Remove items from back stack on device rotation.
+//        int savedOrientation = savedInstanceState.containsKey(KEY_ORIENTATION)
+//                ? savedInstanceState.getInt(KEY_ORIENTATION)
+//                : Constants.NOT_SET;
+        int currentOrientation = getResources().getConfiguration().orientation;
+        boolean isTablet = new Core(this).isTablet();
+
+        if (isTablet && deviceOrientation != currentOrientation) {
+            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+
+        // save the current orientation.
+        deviceOrientation = currentOrientation;
+    }
+
     private void handleIntent() {
         Intent intent = getIntent();
         if (intent == null) return;
@@ -1309,45 +1325,45 @@ public class MainActivity
         requestDatabaseChange(recentDb.filePath, remotePath);
     }
 
-    private void originalShowFragment(Bundle savedInstanceState) {
-        Core core = new Core(this);
-
-        // show home fragment
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
-        if (fragment == null) {
-            // fragment create
-            fragment = new HomeFragment();
-            // add to stack
-            getSupportFragmentManager().beginTransaction()
-                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
-                    //.commit();
-                    .commitAllowingStateLoss();
-        } else if (core.isTablet()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
-                    //.commit();
-                    .commitAllowingStateLoss();
-        }
-
-        // manage fragment
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
-            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-            // check if className is null, then setting Home Fragment
-            if (TextUtils.isEmpty(className)) {
-                className = HomeFragment.class.getName();
-            }
-            if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
-                // changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-            } else {
-                try {
-                    showFragment(Class.forName(className));
-                } catch (ClassNotFoundException e) {
-                    Timber.e(e, "showing fragment %s", className);
-                }
-            }
-        }
-    }
+//    private void originalShowFragment(Bundle savedInstanceState) {
+//        Core core = new Core(this);
+//
+//        // show home fragment
+//        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
+//        if (fragment == null) {
+//            // fragment create
+//            fragment = new HomeFragment();
+//            // add to stack
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
+//                    //.commit();
+//                    .commitAllowingStateLoss();
+//        } else if (core.isTablet()) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
+//                    //.commit();
+//                    .commitAllowingStateLoss();
+//        }
+//
+////        // manage fragment
+////        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
+////            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
+////            // check if className is null, then setting Home Fragment
+////            if (TextUtils.isEmpty(className)) {
+////                className = HomeFragment.class.getName();
+////            }
+////            if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
+////                // changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+////                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
+////            } else {
+////                try {
+////                    showFragment(Class.forName(className));
+////                } catch (ClassNotFoundException e) {
+////                    Timber.e(e, "showing fragment %s", className);
+////                }
+////            }
+////        }
+//    }
 
 //    /**
 //     * Pick the database file to use with any registered provider in the user's system.
@@ -1402,26 +1418,10 @@ public class MainActivity
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
-            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
         if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
             isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
         if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
             isRecurringTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
-        }
-
-        // todo: this code is suspicious. Try opening another activity, then rotate device,
-        // and then come back to this activity and see what this does. Lots of crashes report this.
-        Core core = new Core(this);
-        if (savedInstanceState.containsKey(KEY_ORIENTATION) && core.isTablet()
-                && savedInstanceState.getInt(KEY_ORIENTATION) != getResources().getConfiguration().orientation) {
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
-                getSupportFragmentManager().popBackStack();
-            }
-        }
-
-        if (savedInstanceState.containsKey(KEY_HAS_STARTED)) {
-            this.dbUpdateCheckDone = savedInstanceState.getBoolean(KEY_HAS_STARTED);
         }
     }
 
@@ -1481,13 +1481,6 @@ public class MainActivity
         }
     }
 
-    private void showSelectDatabaseActivity() {
-        Intent intent = new Intent(this, SelectDatabaseActivity.class);
-        // make top-level so there's no going back.
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
-
     private void showFragment_Internal(Fragment fragment, String tag) {
         // Check if fragment is already added.
         if (fragment.isAdded()) return;
@@ -1512,6 +1505,18 @@ public class MainActivity
         // use this call to prevent exception in some cases -> commitAllowingStateLoss()
         // The exception is "fragment already added".
 //        transaction.commitAllowingStateLoss();
+    }
+
+    private void showHomeFragment() {
+        HomeFragment fragment = new HomeFragment();
+        String tag = HomeFragment.class.getSimpleName();
+
+        int containerId = isDualPanel() ? getNavigationId() : getContentId();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(containerId, fragment, tag)
+                .commit();
+//                .commitAllowingStateLoss();
     }
 
     /**
@@ -1576,5 +1581,12 @@ public class MainActivity
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
 
         onDrawerItemSubDialogs(adapter, text);
+    }
+
+    private void showSelectDatabaseActivity() {
+        Intent intent = new Intent(this, SelectDatabaseActivity.class);
+        // make top-level so there's no going back.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }
