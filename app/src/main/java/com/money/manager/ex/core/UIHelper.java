@@ -34,6 +34,11 @@ import rx.subscriptions.Subscriptions;
  */
 public class UIHelper {
 
+    public static boolean isDarkTheme(Context context) {
+        Core core = new Core(context);
+        return core.getThemeId() == R.style.Theme_Money_Manager_Dark;
+    }
+
     public static void showToast(Context context, String message) {
         new UIHelper(context).showToast(message, Toast.LENGTH_SHORT);
     }

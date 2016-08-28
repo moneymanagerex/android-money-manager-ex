@@ -350,13 +350,16 @@ public class RecurringTransactionListFragment
         Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
         CaldroidFragment caldroidFragment = new CaldroidFragment();
 
+
         // Customization
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance(appLocale);
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxDateTimeUtils.getFirstDayOfWeek());
-        args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
+        if (UIHelper.isDarkTheme(getActivity())) {
+            args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
+        }
         // disable switching month for now.
         args.putBoolean(CaldroidFragment.SHOW_NAVIGATION_ARROWS, Boolean.FALSE);
         args.putBoolean(CaldroidFragment.ENABLE_SWIPE, Boolean.FALSE);
