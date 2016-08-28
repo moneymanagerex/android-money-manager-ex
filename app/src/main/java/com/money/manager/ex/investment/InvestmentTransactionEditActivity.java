@@ -340,8 +340,10 @@ public class InvestmentTransactionEditActivity
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
-                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-                        .setThemeDark();
+                        .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                if (UIHelper.isDarkTheme(InvestmentTransactionEditActivity.this)) {
+                    datePicker.setThemeDark();
+                }
                 datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });

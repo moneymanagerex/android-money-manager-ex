@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -65,8 +66,10 @@ public class OnDateButtonClickListener
         CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
             .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
             .setOnDateSetListener(mDateSetListener)
-            .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
-            .setThemeDark();
+            .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+        if (UIHelper.isDarkTheme(mParent)) {
+            datePicker.setThemeDark();
+        }
         datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
     }
 

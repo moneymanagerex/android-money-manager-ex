@@ -469,8 +469,10 @@ public class EditTransactionCommonFunctions {
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
                     .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
-                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth())
-                    .setThemeDark();
+                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+                if (UIHelper.isDarkTheme(getContext())) {
+                    datePicker.setThemeDark();
+                }
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
