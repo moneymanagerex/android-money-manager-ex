@@ -126,7 +126,8 @@ class CloudStorageClient {
                         if (error instanceof RuntimeException && errorMessage != null &&
                                 (
                                     errorMessage.equals("Unable to resolve host \"api.dropboxapi.com\": No address associated with hostname") ||
-                                    errorMessage.equals("Unable to resolve host \"www.googleapis.com\": No address associated with hostname")
+                                    errorMessage.equals("Unable to resolve host \"www.googleapis.com\": No address associated with hostname") ||
+                                    errorMessage.equals("Unable to resolve host \"login.live.com\": Unknown error")
                                 )
                         ) {
                             Timber.w("Unable to contact remote provider");
@@ -135,7 +136,6 @@ class CloudStorageClient {
                         }
                     }
                 });
-
         // .toBlocking().value()
 
         return result[0];
