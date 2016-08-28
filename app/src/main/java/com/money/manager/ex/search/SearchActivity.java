@@ -92,7 +92,7 @@ public class SearchActivity
 
         // add to stack
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContent, searchFragment, SearchFragment.class.getSimpleName())
+                .add(R.id.fragmentNavigation, searchFragment, SearchFragment.class.getSimpleName())
                 .commit();
 
         return searchFragment;
@@ -172,7 +172,7 @@ public class SearchActivity
             transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
         } else {
             // transaction.remove()
-            transaction.replace(R.id.fragmentContent, searchResultsFragment, AllDataListFragment.class.getSimpleName());
+            transaction.replace(R.id.fragmentNavigation, searchResultsFragment, AllDataListFragment.class.getSimpleName());
             transaction.addToBackStack(null);
         }
         // Commit the transaction

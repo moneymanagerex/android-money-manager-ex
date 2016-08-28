@@ -46,8 +46,8 @@ public class PayeesReportActivity
         PayeeReportFragment fragment = new PayeeReportFragment();
         FragmentManager fm = getSupportFragmentManager();
 
-        if (fm.findFragmentById(R.id.fragmentContent) == null) {
-            fm.beginTransaction().add(R.id.fragmentContent, fragment, PayeeReportFragment.class.getSimpleName()).commit();
+        if (fm.findFragmentById(R.id.fragmentNavigation) == null) {
+            fm.beginTransaction().add(R.id.fragmentNavigation, fragment, PayeeReportFragment.class.getSimpleName()).commit();
         }
     }
 

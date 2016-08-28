@@ -255,7 +255,7 @@ public class PayeeReportFragment
             if (((PayeesReportActivity) getActivity()).mIsDualPanel) {
                 fragmentTransaction.replace(R.id.fragmentChart, fragment, PieChartFragment.class.getSimpleName());
             } else {
-                fragmentTransaction.replace(R.id.fragmentContent, fragment, PieChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentNavigation, fragment, PieChartFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.commit();

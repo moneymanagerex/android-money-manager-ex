@@ -47,9 +47,9 @@ public class IncomeVsExpensesActivity extends BaseFragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment activity
-        if (fm.findFragmentById(R.id.fragmentContent) == null) {
+        if (fm.findFragmentById(R.id.fragmentNavigation) == null) {
             fm.beginTransaction()
-                    .replace(R.id.fragmentContent, listFragment, IncomeVsExpensesListFragment.class.getSimpleName())
+                    .replace(R.id.fragmentNavigation, listFragment, IncomeVsExpensesListFragment.class.getSimpleName())
                     .commit();
         }
     }

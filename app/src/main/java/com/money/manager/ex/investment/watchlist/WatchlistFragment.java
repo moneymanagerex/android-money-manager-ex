@@ -167,7 +167,7 @@ public class WatchlistFragment
         mDataFragment.setAutoStarLoader(false);
 
         // add fragment
-        transaction.replace(R.id.fragmentContent, mDataFragment, getFragmentName());
+        transaction.replace(R.id.fragmentNavigation, mDataFragment, getFragmentName());
         transaction.commit();
 
         // refresh user interface

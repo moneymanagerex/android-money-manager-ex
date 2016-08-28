@@ -487,7 +487,15 @@ public class MainActivity
     }
 
     public int getContentId() {
-        return isDualPanel() ? R.id.fragmentDetail : R.id.fragmentContent;
+        return isDualPanel()
+                ? R.id.fragmentDetail
+                : R.id.fragmentNavigation;
+    }
+
+    public int getNavigationId() {
+        return isDualPanel()
+                ? R.id.fragmentNavigation
+                : R.id.fragmentDetail;
     }
 
     /**
@@ -1496,7 +1504,7 @@ public class MainActivity
         if (isDualPanel()) {
             transaction.replace(R.id.fragmentDetail, fragment, tag);
         } else {
-            transaction.replace(R.id.fragmentContent, fragment, tag);
+            transaction.replace(R.id.fragmentNavigation, fragment, tag);
         }
         transaction.addToBackStack(null);
         // Commit the transaction

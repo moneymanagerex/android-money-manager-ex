@@ -848,7 +848,7 @@ public class AccountTransactionListFragment
         mAllDataListFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
-        transaction.replace(R.id.fragmentContent, mAllDataListFragment, getFragmentName());
+        transaction.replace(R.id.fragmentNavigation, mAllDataListFragment, getFragmentName());
         transaction.commit();
     }
 
