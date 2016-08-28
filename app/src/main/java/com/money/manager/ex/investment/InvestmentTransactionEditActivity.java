@@ -383,6 +383,9 @@ public class InvestmentTransactionEditActivity
         View.OnClickListener onAmountClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // validation
+                if (mAccount == null) return;
+
                 AmountInputDialog dialog = AmountInputDialog.getInstance(ID_PURCHASE_PRICE,
                         mStock.getPurchasePrice(), mAccount.getCurrencyId(), false);
                 dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
