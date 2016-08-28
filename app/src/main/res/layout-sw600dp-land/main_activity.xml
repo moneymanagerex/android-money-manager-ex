@@ -51,9 +51,8 @@
                 android:padding="@dimen/mmex_padding"/>
         </LinearLayout>
     </LinearLayout>
+
     <!-- Navigation Drawer -->
-
     <include layout="@layout/merge_drawer"/>
-
 
 </android.support.v4.widget.DrawerLayout>

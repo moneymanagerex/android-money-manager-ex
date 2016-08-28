@@ -129,7 +129,7 @@ public class RecurringTransactionListFragment
         inflater.inflate(R.menu.menu_item_calendar, menu);
         MenuItem calendar = menu.findItem(R.id.menuCalendar);
         if (calendar != null) {
-            Drawable icon = UIHelper.getIcon(getActivity(), MMEXIconFont.Icon.mmx_calendar);
+            Drawable icon = new UIHelper(getActivity()).getIcon(MMEXIconFont.Icon.mmx_calendar);
             calendar.setIcon(icon);
         }
     }

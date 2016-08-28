@@ -39,6 +39,44 @@ public class UIHelper {
         return core.getThemeId() == R.style.Theme_Money_Manager_Dark;
     }
 
+    public static void pickFileDialog(Activity activity, String location, int requestCode) {
+// This always works
+        Intent i = new Intent(activity, FilePickerActivity.class);
+        // This works if you defined the intent filter
+        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+
+        // Set these depending on your use case. These are the defaults.
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
+
+        // Configure initial directory by specifying a String.
+        // You could specify a String like "/storage/emulated/0/", but that can
+        // dangerous. Always use Android's API calls to get paths to the SD-card or
+        // internal memory.
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, location);
+        // Environment.getExternalStorageDirectory().getPath()
+
+        activity.startActivityForResult(i, requestCode);
+    }
+
+    public static String getSelectedFile(Intent data) {
+        if (data == null) return null;
+
+//        ArrayList<String> files = data.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
+//        if (files == null || files.size() == 0) return;
+        // files.get(0)
+
+//        return data.getStringExtra(FilePickerActivity.EXTRA_PATHS);
+        String filePath = data.getData().getPath();
+
+        // check if the db file is valid
+        if (!MmxDatabaseUtils.isValidDbFile(filePath)) return null;
+
+//        return data.getData().toString();
+        return filePath;
+    }
+
     public static void showToast(Context context, String message) {
         new UIHelper(context).showToast(message, Toast.LENGTH_SHORT);
     }
@@ -110,15 +148,6 @@ public class UIHelper {
         });
     }
 
-    public static IconicsDrawable getIcon(Context context, IIcon icon) {
-        UIHelper uiHelper = new UIHelper(context);
-
-        return new IconicsDrawable(context)
-                .icon(icon)
-                .color(uiHelper.getPrimaryColor())
-                .sizeDp(uiHelper.getToolbarIconSize());
-    }
-
     /*
         Instance
      */
@@ -150,12 +179,23 @@ public class UIHelper {
         return sizeInDp;
     }
 
-    public int getToolbarIconSize() {
-        return getDimenInDp(R.dimen.mmx_toolbar_icon_size);
+    public IconicsDrawable getIcon(IIcon icon) {
+        Context context = getContext();
+
+        UIHelper uiHelper = new UIHelper(context);
+
+        return new IconicsDrawable(context)
+                .icon(icon)
+                .color(uiHelper.getPrimaryColor())
+                .sizeDp(uiHelper.getToolbarIconSize());
     }
 
     public int getPrimaryColor() {
         return getColor(R.attr.toolbarItemColor);
+    }
+
+    public int getToolbarIconSize() {
+        return getDimenInDp(R.dimen.mmx_toolbar_icon_size);
     }
 
     /**
@@ -203,44 +243,6 @@ public class UIHelper {
 //
 //        // continues in onActivityResult in the parent activity
 //    }
-
-    public static void pickFileDialog(Activity activity, String location, int requestCode) {
-// This always works
-        Intent i = new Intent(activity, FilePickerActivity.class);
-        // This works if you defined the intent filter
-        // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-
-        // Set these depending on your use case. These are the defaults.
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-
-        // Configure initial directory by specifying a String.
-        // You could specify a String like "/storage/emulated/0/", but that can
-        // dangerous. Always use Android's API calls to get paths to the SD-card or
-        // internal memory.
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, location);
-        // Environment.getExternalStorageDirectory().getPath()
-
-        activity.startActivityForResult(i, requestCode);
-    }
-
-    public static String getSelectedFile(Intent data) {
-        if (data == null) return null;
-
-//        ArrayList<String> files = data.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
-//        if (files == null || files.size() == 0) return;
-        // files.get(0)
-
-//        return data.getStringExtra(FilePickerActivity.EXTRA_PATHS);
-        String filePath = data.getData().getPath();
-
-        // check if the db file is valid
-        if (!MmxDatabaseUtils.isValidDbFile(filePath)) return null;
-
-//        return data.getData().toString();
-        return filePath;
-    }
 
     public void showToast(int messageId) {
         showToast(messageId, Toast.LENGTH_SHORT);

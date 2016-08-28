@@ -19,6 +19,7 @@ package com.money.manager.ex.account;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
@@ -466,10 +469,12 @@ public class AccountTransactionListFragment
         MenuItem item = menu.findItem(R.id.menuTransactionFilters);
 
         // Use a font icon.
-        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_chevron_down);
+//        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_chevron_down);
+        Drawable icon = new UIHelper(getActivity()).getIcon(MMEXIconFont.Icon.mmx_chevron_down);
+
         // get the toolbar item color.
-        UIHelper uiHelper = new UIHelper(getActivity());
-        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor)); // Color.RED
+//        UIHelper uiHelper = new UIHelper(getActivity());
+//        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor)); // Color.RED
         item.setIcon(icon);
 
         // selection handled in onOptionsItemSelected

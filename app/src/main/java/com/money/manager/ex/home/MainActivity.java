@@ -33,7 +33,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1099,7 +1098,7 @@ public class MainActivity
                 mSyncMenuItem = menu.findItem(id);
 //                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
 //                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                Drawable syncIcon = UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh);
+                Drawable syncIcon = new UIHelper(this).getIcon(MMEXIconFont.Icon.mmx_refresh);
                 mSyncMenuItem.setIcon(syncIcon);
 
                 if (hasAnimation) {
@@ -1438,7 +1437,7 @@ public class MainActivity
         animation.setRepeatCount(Animation.INFINITE);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageDrawable(UIHelper.getIcon(this, MMEXIconFont.Icon.mmx_refresh));
+        imageView.setImageDrawable(new UIHelper(this).getIcon(MMEXIconFont.Icon.mmx_refresh));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
