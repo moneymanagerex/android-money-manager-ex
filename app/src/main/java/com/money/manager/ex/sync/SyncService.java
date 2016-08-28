@@ -94,6 +94,7 @@ public class SyncService
         if (!network.isOnline()) {
             Timber.i("Can't sync. Device not online.");
             sendMessage(SyncServiceMessage.NOT_ON_WIFI);
+            sendStopEvent();
             return;
         }
 
@@ -102,11 +103,15 @@ public class SyncService
         String localFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE);
         String remoteFilename = intent.getStringExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE);
         // check if file is correct
-        if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
+        if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) {
+            sendStopEvent();
+            return;
+        }
 
         CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
         if (remoteFile == null) {
             sendMessage(SyncServiceMessage.ERROR);
+            sendStopEvent();
             return;
         }
         File localFile = new File(localFilename);
@@ -130,6 +135,7 @@ public class SyncService
         if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
             Timber.w("Local filename different from the remote!");
             sendMessage(SyncServiceMessage.ERROR);
+            sendStopEvent();
             return;
         }
 
