@@ -16,7 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.27.902">
+    <changelogversion versionName="2016.08.27.903">
+        <changelogtext>Using matching themes for date picker and calendar view.</changelogtext>
+        <changelogtext>Preview of the calendar view for recurring transactions.</changelogtext>
         <changelogtext>Adding a sync indicator in the toolbar. Active only during synchronization.</changelogtext>
         <changelogtext>Using a service for delayed upload to ensure execution.</changelogtext>
     </changelogversion>
