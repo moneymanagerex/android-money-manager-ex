@@ -30,16 +30,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.melnykov.fab.FloatingActionButton;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AbsListFragment;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.SearchViewFormatter;
 import com.money.manager.ex.fragment.TipsDialogFragment;
 import com.money.manager.ex.settings.PreferenceConstants;
-
-import timber.log.Timber;
 
 /**
  *
@@ -63,13 +59,13 @@ public abstract class BaseListFragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // set theme
-        Core core = new Core(getActivity().getApplicationContext());
-        try {
-            getActivity().setTheme(core.getThemeId());
-        } catch (Exception e) {
-            Timber.e(e, "setting app theme");
-        }
+        // set theme <- this is already done in the activity.
+//        Core core = new Core(getActivity().getApplicationContext());
+//        try {
+//            getActivity().setTheme(core.getThemeId());
+//        } catch (Exception e) {
+//            Timber.e(e, "setting app theme");
+//        }
         super.onCreate(savedInstanceState);
     }
 
@@ -80,7 +76,7 @@ public abstract class BaseListFragment
             mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onFloatingActionButtonClickListener();
+                    onFloatingActionButtonClicked();
                 }
             });
         }
@@ -93,22 +89,20 @@ public abstract class BaseListFragment
         super.onActivityCreated(savedInstanceState);
 
         // set animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getListView().setLayoutTransition(new LayoutTransition());
+        }
         // saved instance
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD))
-                isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
+            isShowTipsWildcard = savedInstanceState.getBoolean(KEY_SHOWN_TIPS_WILDCARD);
         }
 
         // set subtitle in actionbar
         String subTitle = getSubTitle();
-        if (!(TextUtils.isEmpty(subTitle))) {
-            if (getActivity() instanceof AppCompatActivity) {
-                AppCompatActivity activity = (AppCompatActivity) getActivity();
-                if (activity != null) {
-                    activity.getSupportActionBar().setSubtitle(subTitle);
-                }
+        if (!(TextUtils.isEmpty(subTitle)) && getActivity() instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            if (activity != null) {
+                activity.getSupportActionBar().setSubtitle(subTitle);
             }
         }
     }
@@ -121,7 +115,7 @@ public abstract class BaseListFragment
         Boolean searchType = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE);
 
-        if (isShowMenuItemSearch() && !searchType && !isShowTipsWildcard) {
+        if (isSearchMenuVisible() && !searchType && !isShowTipsWildcard) {
             // show tooltip for wildcard
             TipsDialogFragment tipsSync = TipsDialogFragment.getInstance(getActivity().getApplicationContext(), "lookupswildcard");
             if (tipsSync != null) {
@@ -135,7 +129,7 @@ public abstract class BaseListFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (isShowMenuItemSearch() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
+        if (isSearchMenuVisible() && getActivity() != null && getActivity() instanceof AppCompatActivity) {
             // Place an action bar item for searching.
             final MenuItem itemSearch = menu.add(Menu.NONE, R.id.menu_query_mode, 1000, R.string.search);
             itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -204,11 +198,11 @@ public abstract class BaseListFragment
         super.onSaveInstanceState(outState);
     }
 
-    public boolean isShowMenuItemSearch() {
+    public boolean isSearchMenuVisible() {
         return mShowMenuItemSearch;
     }
 
-    public void setShowMenuItemSearch(boolean mShowMenuItemSearch) {
+    public void setSearchMenuVisible(boolean mShowMenuItemSearch) {
         this.mShowMenuItemSearch = mShowMenuItemSearch;
     }
 
@@ -250,13 +244,13 @@ public abstract class BaseListFragment
         }
     }
 
-    public void setFloatingActionButtonAttachListView(boolean attachListView) {
+    public void attachFloatingActionButtonToListView() {
         if (mFloatingActionButton != null) {
             mFloatingActionButton.attachToListView(getListView());
         }
     }
 
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         return;
     }
 

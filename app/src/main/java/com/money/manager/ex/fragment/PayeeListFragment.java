@@ -80,7 +80,7 @@ public class PayeeListFragment
 
         mContext = getActivity();
 
-        setShowMenuItemSearch(true);
+        setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(mContext);
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
@@ -112,7 +112,7 @@ public class PayeeListFragment
 
         // set floating button visible
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
     }
 
     // Menu
@@ -438,7 +438,7 @@ public class PayeeListFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         String payeeSearch = !TextUtils.isEmpty(mCurFilter) ? mCurFilter.replace("%", "") : "";
         showDialogEditPayeeName(SQLTypeTransaction.INSERT, 0, payeeSearch);
     }

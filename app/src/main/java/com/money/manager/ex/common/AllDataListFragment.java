@@ -195,7 +195,7 @@ public class AllDataListFragment
         if (showAddButton) {
             // Show floating action button.
             setFloatingActionButtonVisible(true);
-            setFloatingActionButtonAttachListView(true);
+            attachFloatingActionButtonToListView();
         }
 
         // start loader if asked to do so by the caller.
@@ -406,7 +406,7 @@ public class AllDataListFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         startEditAccountTransactionActivity(null);
     }
 

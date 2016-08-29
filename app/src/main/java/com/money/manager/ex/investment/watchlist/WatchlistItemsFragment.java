@@ -167,7 +167,7 @@ public class WatchlistItemsFragment
         }
 
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
     }
 
     // context menu
@@ -344,7 +344,7 @@ public class WatchlistItemsFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         openEditInvestmentActivity();
     }
 

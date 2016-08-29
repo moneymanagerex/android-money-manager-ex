@@ -101,7 +101,7 @@ public class RecurringTransactionListFragment
 
         // show floating button.
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
     }
 
     @Override
@@ -112,7 +112,7 @@ public class RecurringTransactionListFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         // create new recurring transaction.
         startRecurringTransactionEditActivity(null, REQUEST_ADD_REPEATING_TRANSACTION);
     }

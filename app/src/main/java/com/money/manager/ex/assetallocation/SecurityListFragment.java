@@ -72,7 +72,7 @@ public class SecurityListFragment
         super.onActivityCreated(savedInstanceState);
 
         // set show search
-        setShowMenuItemSearch(true);
+        setSearchMenuVisible(true);
         // set default value
         setEmptyText(getActivity().getResources().getString(R.string.no_records_found_create));
         setHasOptionsMenu(true);
@@ -100,7 +100,7 @@ public class SecurityListFragment
         // set icon searched
 //        setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(this.action));
 //        setFloatingActionButtonVisible(true);
-//        setFloatingActionButtonAttachListView(true);
+//        attachFloatingActionButtonToListView(true);
     }
 
     @Override

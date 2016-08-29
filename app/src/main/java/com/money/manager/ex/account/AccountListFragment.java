@@ -62,7 +62,7 @@ public class AccountListFragment
         super.onActivityCreated(savedInstanceState);
 
         // set show search
-        setShowMenuItemSearch(true);
+        setSearchMenuVisible(true);
         // set default value
         setEmptyText(getActivity().getResources().getString(R.string.account_empty_list));
         setHasOptionsMenu(true);
@@ -89,7 +89,7 @@ public class AccountListFragment
         // set icon searched
         setMenuItemSearchIconified(!Intent.ACTION_PICK.equals(mAction));
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
     }
 
     @Override
@@ -247,7 +247,7 @@ public class AccountListFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         startAccountListEditActivity();
     }
 

@@ -20,6 +20,7 @@ package com.money.manager.ex.core.ioc;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.currency.list.CurrencyListFragment;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
@@ -52,6 +53,7 @@ public interface MmexComponent {
 
     // Fragments
     void inject(DatabaseSettingsFragment fragment);
+    void inject(CurrencyListFragment fragment);
 
     // Custom objects
     void inject(ISecurityPriceUpdater updater);

@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.BaseListFragment;
@@ -61,6 +62,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  *  Currency list.
  */
@@ -72,15 +75,18 @@ public class CurrencyListFragment
     // Store previous device orientation when showing other screens (chart, etc.)
     public int mPreviousOrientation = Constants.NOT_SET;
 
+    @Inject CurrencyService mCurrencyService;
+
     private String mAction = Intent.ACTION_EDIT;
     private String mCurFilter;
-    private CurrencyService mCurrencyService;
     private boolean mShowOnlyUsedCurrencies;
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         mAction = getActivity().getIntent().getAction();
         if (mAction.equals(Intent.ACTION_MAIN)) {
@@ -91,6 +97,8 @@ public class CurrencyListFragment
         mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);
 
         loaderCallbacks = initLoaderCallbacks();
+
+        initializeSwipeToRefresh();
     }
 
     @Override
@@ -111,7 +119,7 @@ public class CurrencyListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setShowMenuItemSearch(true);
+        setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
@@ -131,7 +139,7 @@ public class CurrencyListFragment
         loadData();
 
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
     }
 
     @Override
@@ -306,7 +314,7 @@ public class CurrencyListFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
         ui.startCurrencyEditActivity(null);
     }
@@ -385,9 +393,9 @@ public class CurrencyListFragment
     }
 
     private CurrencyService getService() {
-        if(mCurrencyService == null) {
-            mCurrencyService = new CurrencyService(getActivity());
-        }
+//        if(mCurrencyService == null) {
+//            mCurrencyService = new CurrencyService(getActivity());
+//        }
         return mCurrencyService;
     }
 
@@ -478,6 +486,10 @@ public class CurrencyListFragment
             }
         };
         return callbacks;
+    }
+
+    private void initializeSwipeToRefresh() {
+
     }
 
     private void loadData() {

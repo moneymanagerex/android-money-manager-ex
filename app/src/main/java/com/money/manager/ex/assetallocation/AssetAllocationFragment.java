@@ -122,7 +122,7 @@ public class AssetAllocationFragment
         setListShown(false);
 
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
 
         showData();
     }
@@ -171,7 +171,7 @@ public class AssetAllocationFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         AssetClass assetClass = retrieveData();
 
         // check which item to create

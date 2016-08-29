@@ -117,11 +117,11 @@ public class PortfolioFragment
 //        }
 
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         openEditInvestmentActivity(null);
     }
 

@@ -1390,7 +1390,7 @@ public class MainActivity
         Animation animation = new RotateAnimation(0.0f, 360.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(1000);
+        animation.setDuration(1200);
         animation.setInterpolator(new LinearInterpolator());
 //        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
 

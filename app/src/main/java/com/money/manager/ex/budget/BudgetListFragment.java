@@ -89,7 +89,7 @@ public class BudgetListFragment
         super.onActivityCreated(savedInstanceState);
 
         setFloatingActionButtonVisible(true);
-        setFloatingActionButtonAttachListView(true);
+        attachFloatingActionButtonToListView();
 
         registerForContextMenu(getListView());
     }
@@ -119,7 +119,6 @@ public class BudgetListFragment
                 getLoaderManager().restartLoader(LOADER_BUDGETS, null, this);
                 break;
         }
-
     }
 
     @Override
@@ -239,7 +238,7 @@ public class BudgetListFragment
     }
 
     @Override
-    public void onFloatingActionButtonClickListener() {
+    public void onFloatingActionButtonClicked() {
         createBudget();
     }
 

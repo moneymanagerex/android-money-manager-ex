@@ -112,7 +112,7 @@ public class CurrencyRecyclerListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // todo setShowMenuItemSearch(true);
+        // todo setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
         AppSettings settings = new AppSettings(getActivity());
         boolean focusOnSearch = settings.getBehaviourSettings().getFilterInSelectors();
@@ -123,7 +123,7 @@ public class CurrencyRecyclerListFragment
         setHasOptionsMenu(true);
 
         // todo setFloatingActionButtonVisible(true);
-        // todo setFloatingActionButtonAttachListView(true);
+        // todo attachFloatingActionButtonToListView(true);
 
         initializeList();
     }
@@ -315,7 +315,7 @@ public class CurrencyRecyclerListFragment
     }
 
 //    @Override
-//    public void onFloatingActionButtonClickListener() {
+//    public void onFloatingActionButtonClicked() {
 //        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
 //        ui.startCurrencyEditActivity(null);
 //    }

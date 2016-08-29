@@ -67,7 +67,7 @@ public class CategoriesReportFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
-        setShowMenuItemSearch(true);
+        setSearchMenuVisible(true);
 
         //create header view
         LinearLayout mListViewHeader = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
