@@ -26,6 +26,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.utils.NetworkUtils;
+import com.squareup.picasso.Picasso;
 
 public class CurrencyChartActivity
     extends BaseFragmentActivity {
@@ -86,6 +87,6 @@ public class CurrencyChartActivity
 
         ImageView imageView = (ImageView) findViewById(R.id.imageChart);
 
-        new ImageLoadTask(url, imageView).execute();
+        Picasso.with(this).load(url).into(imageView);
     }
 }
