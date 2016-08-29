@@ -42,6 +42,7 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import timber.log.Timber;
 
 /**
+ *
  */
 public abstract class BaseListFragment
     extends AbsListFragment {

@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.29.904">
+    <changelogversion versionName="2016.08.29.905">
+        <changelogtext>Correction: Processing recurring transaction after entry.</changelogtext>
         <changelogtext>Rewriting the behaviour of the home screen on device rotation.</changelogtext>
         <changelogtext>Using matching themes for date picker and calendar view.</changelogtext>
         <changelogtext>Preview of the calendar view for recurring transactions.</changelogtext>
