@@ -26,10 +26,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -99,8 +101,13 @@ public class CurrencyListFragment
         mShowOnlyUsedCurrencies = !mAction.equals(Intent.ACTION_PICK);
 
         loaderCallbacks = initLoaderCallbacks();
+    }
 
-        initializeSwipeToRefresh();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // todo initializeSwipeToRefresh();
+
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override

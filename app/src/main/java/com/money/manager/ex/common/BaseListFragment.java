@@ -58,18 +58,6 @@ public abstract class BaseListFragment
     public abstract String getSubTitle();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        // set theme <- this is already done in the activity.
-//        Core core = new Core(getActivity().getApplicationContext());
-//        try {
-//            getActivity().setTheme(core.getThemeId());
-//        } catch (Exception e) {
-//            Timber.e(e, "setting app theme");
-//        }
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         if (mFloatingActionButton != null) {
@@ -180,18 +168,6 @@ public abstract class BaseListFragment
         }
     }
 
-    protected boolean onPreQueryTextChange(String newText) {
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
-            newText = "%" + newText;
-
-        return onQueryTextChange(newText);
-    }
-
-    protected boolean onQueryTextChange(String newText) {
-        return true;
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_SHOWN_TIPS_WILDCARD, isShowTipsWildcard);
@@ -205,11 +181,6 @@ public abstract class BaseListFragment
     public void setSearchMenuVisible(boolean mShowMenuItemSearch) {
         this.mShowMenuItemSearch = mShowMenuItemSearch;
     }
-
-    /**
-     * metodo per l'implementazione del ritorno dei dati
-     */
-    protected void setResult() { }
 
     public void setResultAndFinish() {
         this.setResult();
@@ -255,4 +226,21 @@ public abstract class BaseListFragment
     }
 
     // End floating button methods.
+
+    protected boolean onPreQueryTextChange(String newText) {
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(getString(PreferenceConstants.PREF_TEXT_SEARCH_TYPE), Boolean.TRUE))
+            newText = "%" + newText;
+
+        return onQueryTextChange(newText);
+    }
+
+    protected boolean onQueryTextChange(String newText) {
+        return true;
+    }
+
+    /**
+     * metodo per l'implementazione del ritorno dei dati
+     */
+    protected void setResult() { }
 }
