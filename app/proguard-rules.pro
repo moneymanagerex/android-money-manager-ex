@@ -62,15 +62,20 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
+
+# MMEX classes
+#-keep class com.money.manager.ex.**
+#-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
+#-keep class com.money.manager.ex.home.**
+# The variable names are JSON key values and should not be obfuscated
+-keepclassmembers class com.money.manager.ex.home.RecentDatabaseEntry { <fields>; }
+
+
 #Icon font
 -keep class .R
 -keep class **.R$* {
     <fields>;
 }
-
-# MMEX classes
-#-keep class com.money.manager.ex.**
-#-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
 
 # Parceler library
 -keep class * implements android.os.Parcelable {
@@ -91,13 +96,19 @@
 -keepattributes Exceptions
 
 # EventBus
--keepclassmembers class ** {
-    public void onEvent*(***);
-}
+#-keepclassmembers class ** {
+#    public void onEvent*(***);
+#}
 # Only required if you use AsyncExecutor
 #-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
 #    <init>(java.lang.Throwable);
 #}
+# EventBus 3.0
+-keep class de.greenrobot.event.** { *; }
+-keep class * {
+    @de.greenrobot.event.* <methods>;
+}
+-keep enum de.greenrobot.event.ThreadMode { *; }
 
 # IcePick
 -dontwarn icepick.**
@@ -107,6 +118,19 @@
     @icepick.* <fields>;
 }
 -keepnames class * { @icepick.State *;}
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+##---------------End: proguard configuration for Gson  ----------
 
 #SQLCipher
 #-keep class net.sqlcipher.** { *; }
@@ -128,4 +152,4 @@
 #-dontobfuscate
 
 # ?
--keepattributes InnerClasses
+#-keepattributes InnerClasses

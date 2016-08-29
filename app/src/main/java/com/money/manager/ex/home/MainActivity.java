@@ -1170,9 +1170,7 @@ public class MainActivity
             for (RecentDatabaseEntry entry : this.recentDbs.map.values()) {
                 String title = entry.getFileName();
 
-                DrawerMenuItem item = new DrawerMenuItem()
-                        .withText(title);
-
+                DrawerMenuItem item = new DrawerMenuItem().withText(title);
                 item.setTag(entry.filePath);
 
                 if (entry.linkedToCloud) {
