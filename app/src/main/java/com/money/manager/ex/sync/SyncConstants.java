@@ -33,5 +33,5 @@ public class SyncConstants {
     public static final int NOTIFICATION_SYNC_OPEN_FILE = 0xDDDD;
 
     public static final int REQUEST_PERIODIC_SYNC = 0;
-    public static final int REQUEST_DELAYED_UPLOAD = 1;
+    public static final int REQUEST_DELAYED_SYNC = 1;
 }

@@ -53,9 +53,6 @@ public class DelayedUploadService
         // validation.
         if (intent == null) return;
 
-        // Cancel any existing subscriptions.
-//        unsubscribe();
-
         String action = intent.getAction();
         if (TextUtils.isEmpty(action)) return;
 
@@ -64,7 +61,7 @@ public class DelayedUploadService
             return;
         }
 
-        // schedule a delayed upload.
+        // schedule a delayed sync.
         scheduleUpload();
     }
 
@@ -76,33 +73,6 @@ public class DelayedUploadService
         return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
-//    /**
-//     * Schedules via Rx timer. The drawback is that, if the app is closed, this timer will
-//     * never execute.
-//     */
-//    private void scheduleRx() {
-//        delayedSubscription = Observable.timer(30, TimeUnit.SECONDS)
-//                .subscribeOn(Schedulers.io())
-////                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<Long>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        unsubscribe();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Timber.e(e, "scheduled upload");
-//                    }
-//
-//                    @Override
-//                    public void onNext(Long aLong) {
-//                        // Run sync.
-//                        upload();
-//                    }
-//                });
-//    }
-
     /**
      * Schedules a system timer for the upload action.
      */
@@ -110,7 +80,8 @@ public class DelayedUploadService
         Context context = getApplicationContext();
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_DELAYED_UPLOAD,
+        // trigger sync to avoid overwriting.
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_DELAYED_SYNC,
                 syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = getAlarmManager(context);
 
@@ -118,17 +89,5 @@ public class DelayedUploadService
         alarmManager.set(AlarmManager.RTC_WAKEUP,
                 DateTime.now().getMillis() + 30000,
                 pendingIntent);
-    }
-
-//    private void unsubscribe() {
-//        if (delayedSubscription == null) return;
-//        if (delayedSubscription.isUnsubscribed()) return;
-//
-//        delayedSubscription.unsubscribe();
-//    }
-
-    private void upload() {
-        new SyncManager(getApplicationContext())
-                .invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
     }
 }
