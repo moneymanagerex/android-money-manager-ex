@@ -174,9 +174,7 @@ public class RecurringTransactionService
      * If not, the recurring transaction is deleted.
      */
     public void moveNextOccurrence() {
-        if (!load()) return;
-
-        Integer recurrenceType = mRecurringTransaction.getRecurrenceInt();
+        Integer recurrenceType = getRecurringTransaction().getRecurrenceInt();
         if (recurrenceType == null) {
             String message = getContext().getString(R.string.recurrence_type_not_set);
             throw new IllegalArgumentException(message);
@@ -349,9 +347,11 @@ public class RecurringTransactionService
     // Private.
 
     private void decreasePaymentsLeft() {
-        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
+        RecurringTransaction tx = getRecurringTransaction();
+
+        Integer paymentsLeft = tx.getPaymentsLeft();
         if (paymentsLeft == null) {
-            mRecurringTransaction.setPaymentsLeft(0);
+            tx.setPaymentsLeft(0);
             return;
         }
 
@@ -359,13 +359,15 @@ public class RecurringTransactionService
             paymentsLeft = paymentsLeft - 1;
         }
 
-        mRecurringTransaction.setPaymentsLeft(paymentsLeft);
+        tx.setPaymentsLeft(paymentsLeft);
     }
 
     private void deleteIfLastPayment() {
-        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
+        RecurringTransaction tx = getRecurringTransaction();
+
+        Integer paymentsLeft = tx.getPaymentsLeft();
         if (paymentsLeft == null) {
-            mRecurringTransaction.setPaymentsLeft(0);
+            tx.setPaymentsLeft(0);
             return;
         }
 
@@ -389,14 +391,11 @@ public class RecurringTransactionService
             SplitRecurringCategory.SPLITTRANSID);
     }
 
-    private boolean load() {
-        if (mRecurringTransaction != null) return true;
-
-        RecurringTransactionRepository repo = getRepository();
-
-        mRecurringTransaction = repo.load(this.recurringTransactionId);
-
-        return (mRecurringTransaction == null);
+    private RecurringTransaction getRecurringTransaction() {
+        if (mRecurringTransaction == null) {
+            mRecurringTransaction = getRepository().load(recurringTransactionId);
+        }
+        return mRecurringTransaction;
     }
 
     /**
@@ -404,35 +403,36 @@ public class RecurringTransactionService
      * Saves changes to the database.
      */
     private void moveDatesForward() {
-        load();
-
         // Due date.
 
         moveDueDateForward();
 
         // Payment date.
 
-        Recurrence repeatType = Recurrence.valueOf(mRecurringTransaction.getRecurrenceInt());
-        DateTime newPaymentDate = mRecurringTransaction.getPaymentDate();
-        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
+        RecurringTransaction tx = getRecurringTransaction();
+        Recurrence repeatType = Recurrence.valueOf(tx.getRecurrenceInt());
+        DateTime newPaymentDate = tx.getPaymentDate();
+        Integer paymentsLeft = tx.getPaymentsLeft();
 
         // calculate the next payment date
         newPaymentDate = getNextScheduledDate(newPaymentDate, repeatType, paymentsLeft);
 
         if (newPaymentDate != null) {
-            mRecurringTransaction.setPaymentDate(newPaymentDate);
+            tx.setPaymentDate(newPaymentDate);
         }
     }
 
     private void moveDueDateForward() {
-        Recurrence repeats = Recurrence.valueOf(mRecurringTransaction.getRecurrenceInt());
-        DateTime dueDate = mRecurringTransaction.getDueDate();
-        Integer paymentsLeft = mRecurringTransaction.getPaymentsLeft();
+        RecurringTransaction tx = getRecurringTransaction();
+
+        Recurrence repeats = Recurrence.valueOf(tx.getRecurrenceInt());
+        DateTime dueDate = tx.getDueDate();
+        Integer paymentsLeft = tx.getPaymentsLeft();
 
         DateTime newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
 
         if (newDueDate != null) {
-            mRecurringTransaction.setDueDate(newDueDate);
+            tx.setDueDate(newDueDate);
         }
     }
 }
