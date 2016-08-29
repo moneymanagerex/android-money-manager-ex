@@ -112,7 +112,8 @@ public class CurrencyService
 
         Currency currency = this.getCurrency(baseCurrencyId);
         if (currency == null) {
-            new UIHelper(getContext()).showToast(R.string.base_currency_not_set);
+//            new UIHelper(getContext()).showToast(R.string.base_currency_not_set);
+            Timber.w(getContext().getString(R.string.base_currency_not_set));
             return null;
         }
         return currency.getCode();

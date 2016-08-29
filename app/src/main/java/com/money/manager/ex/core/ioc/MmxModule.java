@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.core.ioc;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -39,14 +40,19 @@ import dagger.Provides;
         RepositoryModule.class
     }
 )
-public final class MmexModule {
+public final class MmxModule {
     private final MoneyManagerApplication application;
 
-    public MmexModule(MoneyManagerApplication application) {
+    public MmxModule(MoneyManagerApplication application) {
         this.application = application;
     }
 
     @Provides @Singleton MoneyManagerApplication provideApplication() {
+        return application;
+    }
+
+    @Provides @Singleton
+    Context provideAppContext() {
         return application;
     }
 

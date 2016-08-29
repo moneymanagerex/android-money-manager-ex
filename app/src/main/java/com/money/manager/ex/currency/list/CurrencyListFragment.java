@@ -64,6 +64,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
+
 /**
  *  Currency list.
  */
@@ -75,7 +77,7 @@ public class CurrencyListFragment
     // Store previous device orientation when showing other screens (chart, etc.)
     public int mPreviousOrientation = Constants.NOT_SET;
 
-    @Inject CurrencyService mCurrencyService;
+    @Inject Lazy<CurrencyService> mCurrencyService;
 
     private String mAction = Intent.ACTION_EDIT;
     private String mCurFilter;
@@ -393,10 +395,7 @@ public class CurrencyListFragment
     }
 
     private CurrencyService getService() {
-//        if(mCurrencyService == null) {
-//            mCurrencyService = new CurrencyService(getActivity());
-//        }
-        return mCurrencyService;
+        return mCurrencyService.get();
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> initLoaderCallbacks() {

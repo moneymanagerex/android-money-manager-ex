@@ -41,7 +41,7 @@ import dagger.Component;
  * Component consumes functionality.
  */
 @Singleton
-@Component(modules = MmexModule.class)
+@Component(modules = MmxModule.class)
 public interface MmexComponent {
     // Example on how to expose a provision method.
 //    MmxOpenHelper getHelper();

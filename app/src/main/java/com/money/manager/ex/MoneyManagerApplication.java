@@ -22,9 +22,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
-import android.text.Html;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -33,11 +31,11 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.ioc.MmxModule;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
 import com.money.manager.ex.core.ioc.DaggerMmexComponent;
 import com.money.manager.ex.core.ioc.MmexComponent;
-import com.money.manager.ex.core.ioc.MmexModule;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.log.DebugTree;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -192,7 +190,7 @@ public class MoneyManagerApplication
     private void initializeDependencyInjection() {
         // Dependency Injection. IoC
         iocComponent = DaggerMmexComponent.builder()
-                .mmexModule(new MmexModule(appInstance))
+                .mmxModule(new MmxModule(appInstance))
                 .build();
     }
 
