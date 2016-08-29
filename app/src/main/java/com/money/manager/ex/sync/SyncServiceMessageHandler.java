@@ -69,6 +69,9 @@ public class SyncServiceMessageHandler
                 break;
 
             case STARTING_DOWNLOAD:
+                // Show progressbar only on download.
+                showProgressDialog();
+
                 new UIHelper(getContext()).showToast(R.string.sync_downloading, Toast.LENGTH_LONG);
                 break;
 
@@ -115,6 +118,12 @@ public class SyncServiceMessageHandler
         if (progressDialog != null && progressDialog.isShowing()) {
             DialogUtils.closeProgressDialog(progressDialog);
         }
+    }
+
+    private void showProgressDialog() {
+        if (progressDialog == null) return;
+
+        progressDialog.show();
     }
 
     private void storeRecentDb(String remoteFile) {

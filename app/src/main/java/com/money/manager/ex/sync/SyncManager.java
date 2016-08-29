@@ -302,12 +302,45 @@ public class SyncManager {
         return mRemoteFile;
     }
 
-    public void invokeSyncService(String action, boolean showProgressbar) {
-        try {
-            invokeSyncServiceInternal(action, showProgressbar);
-        } catch (Exception e) {
-            Timber.e(e, "invoking sync service");
+    public void invokeSyncService(String action) {
+        // Validation.
+        String remoteFile = getRemotePath();
+        // We need a value in remote file name settings.
+        if (TextUtils.isEmpty(remoteFile)) return;
+
+        // Action
+
+        ProgressDialog progressDialog = null;
+        // Create progress dialog only if called from the UI.
+        if ((getContext() instanceof Activity)) {
+            try {
+                //progress binaryDialog shown only when downloading an updated db file.
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage(getContext().getString(R.string.syncProgress));
+                progressDialog.setIndeterminate(true);
+//                progressDialog.show();
+            } catch (Exception ex) {
+                Timber.e(ex, "displaying sync progress binaryDialog");
+            }
         }
+        Messenger messenger = null;
+        if (getContext() instanceof Activity) {
+            // Messenger handles received messages from the sync service. Can run only in a looper thread.
+            messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
+        }
+
+        String localFile = getLocalPath();
+
+        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
+                remoteFile, messenger);
+        // start service
+        getContext().startService(syncServiceIntent);
+
+        // Reset any other scheduled uploads as the current operation will modify the files.
+        abortScheduledUpload();
+
+        // The messages from the service are received via messenger.
     }
 
     /**
@@ -404,7 +437,7 @@ public class SyncManager {
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    public void triggerSynchronization(boolean showProgressbar) {
+    public void triggerSynchronization() {
         if (!isActive())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
@@ -427,11 +460,11 @@ public class SyncManager {
             return;
         }
 
-        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC, showProgressbar);
+        invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
     }
 
-    public void triggerDownload(boolean showProgressbar) {
-        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD, showProgressbar);
+    public void triggerDownload() {
+        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
     }
 
     public void triggerUpload() {
@@ -557,28 +590,6 @@ public class SyncManager {
         getPreferences().set(file.getPath(), date.toString());
     }
 
-    private Messenger createMessenger(boolean showProgressbar) {
-        ProgressDialog progressDialog = null;
-        // Create progress binaryDialog only if called from the UI.
-        if (showProgressbar && (getContext() instanceof Activity)) {
-            try {
-                //progress binaryDialog shown only when downloading an updated db file.
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setCancelable(false);
-                progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-                progressDialog.setIndeterminate(true);
-                progressDialog.show();
-            } catch (Exception ex) {
-                Timber.e(ex, "displaying sync progress binaryDialog");
-            }
-        }
-
-        Messenger messenger = new SyncMessengerFactory(getContext())
-                .createMessenger(progressDialog, getRemotePath());
-
-        return messenger;
-    }
-
     /**
      * Downloads the file from the storage service.
      * @param remoteFile Remote file entry
@@ -620,39 +631,6 @@ public class SyncManager {
         }
         return mPreferences;
     }
-
-    private void invokeSyncServiceInternal(String action, boolean showProgressbar) {
-        // Validation.
-        String remoteFile = getRemotePath();
-        // We need a value in remote file name settings.
-        if (TextUtils.isEmpty(remoteFile)) return;
-
-        // Action
-
-        Messenger messenger = createMessenger(showProgressbar);
-        String localFile = getLocalPath();
-
-        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
-                remoteFile, messenger);
-
-        // start service
-        getContext().startService(syncServiceIntent);
-
-        // Reset any other scheduled uploads as the current operation will modify the files.
-        abortScheduledUpload();
-
-        // once done, the message is sent out via messenger. See Messenger definition in factory.
-    }
-
-//    /**
-//     * Start the delayed upload service.
-//    This gets the app killed before the service starts.
-//     */
-//    private void scheduleDelayedUpload() {
-//        Intent service = new Intent(getContext(), DelayedUploadService.class);
-//        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
-//        getContext().startService(service);
-//    }
 
     private void resetLocalChanges() {
         new SyncPreferences(getContext()).setLocalFileChanged(false);

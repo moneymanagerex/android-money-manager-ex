@@ -46,7 +46,7 @@ public class DelayedUploadService
 
     }
 
-    private static Subscription delayedSubscription;
+//    private static Subscription delayedSubscription;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -76,32 +76,32 @@ public class DelayedUploadService
         return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
-    /**
-     * Schedules via Rx timer. The drawback is that, if the app is closed, this timer will
-     * never execute.
-     */
-    private void scheduleRx() {
-        delayedSubscription = Observable.timer(30, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-                        unsubscribe();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.e(e, "scheduled upload");
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        // Run sync.
-                        upload();
-                    }
-                });
-    }
+//    /**
+//     * Schedules via Rx timer. The drawback is that, if the app is closed, this timer will
+//     * never execute.
+//     */
+//    private void scheduleRx() {
+//        delayedSubscription = Observable.timer(30, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+////                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<Long>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        unsubscribe();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Timber.e(e, "scheduled upload");
+//                    }
+//
+//                    @Override
+//                    public void onNext(Long aLong) {
+//                        // Run sync.
+//                        upload();
+//                    }
+//                });
+//    }
 
     /**
      * Schedules a system timer for the upload action.
@@ -113,25 +113,22 @@ public class DelayedUploadService
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_DELAYED_UPLOAD,
                 syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = getAlarmManager(context);
+
         // Trigger in 30 seconds from now.
         alarmManager.set(AlarmManager.RTC_WAKEUP,
                 DateTime.now().getMillis() + 30000,
                 pendingIntent);
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-//                DateTime.now().toDateTime().getMillis(),
-//                30 * 1000,
-//                pendingIntent);
     }
 
-    private void unsubscribe() {
-        if (delayedSubscription == null) return;
-        if (delayedSubscription.isUnsubscribed()) return;
-
-        delayedSubscription.unsubscribe();
-    }
+//    private void unsubscribe() {
+//        if (delayedSubscription == null) return;
+//        if (delayedSubscription.isUnsubscribed()) return;
+//
+//        delayedSubscription.unsubscribe();
+//    }
 
     private void upload() {
         new SyncManager(getApplicationContext())
-                .invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD, false);
+                .invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
     }
 }

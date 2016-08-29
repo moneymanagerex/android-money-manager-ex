@@ -352,7 +352,7 @@ public class SyncPreferenceFragment
     }
 
     private void forceDownload() {
-        getSyncManager().triggerDownload(true);
+        getSyncManager().triggerDownload();
     }
 
     private void forceUpload() {
