@@ -24,11 +24,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
 
 /**
- * Creates sync notifications.
+ * Creates notifications for sync messages.
  */
 public class SyncNotificationFactory {
     public SyncNotificationFactory(Context context) {
@@ -45,7 +49,7 @@ public class SyncNotificationFactory {
      * Get the builder of a notification for download
      * @return notification
      */
-    public NotificationCompat.Builder getNotificationBuilderForDownload() {
+    public Notification getNotificationForDownload() {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
@@ -54,19 +58,21 @@ public class SyncNotificationFactory {
                 //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_dropbox_dark))
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(getContext().getResources().getColor(R.color.md_primary));
+
         // only for previous version!
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             Intent intent = new Intent(getContext(), MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
             notification.setContentIntent(pendingIntent);
         }
-        return notification;
+
+        return notification.build();
     }
 
     /**
      * Get notification builder for download complete
      */
-    public NotificationCompat.Builder getNotificationBuilderDownloadComplete(PendingIntent pendingIntent) {
+    public Notification getNotificationDownloadComplete(PendingIntent pendingIntent) {
         // compose notification big view
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(getContext().getString(R.string.sync_notification_title));
@@ -83,13 +89,14 @@ public class SyncNotificationFactory {
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setTicker(getContext().getString(R.string.dropbox_file_ready_for_use))
                 .setStyle(inboxStyle)
-                .setColor(getContext().getResources().getColor(R.color.md_primary));
+                .setColor(getContext().getResources().getColor(R.color.md_primary))
+                .build();
     }
 
     /**
      * Get the builder of a notification for upload
      */
-    public NotificationCompat.Builder getNotificationBuilderUploading() {
+    public Notification getNotificationUploading() {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
@@ -105,19 +112,20 @@ public class SyncNotificationFactory {
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
             notification.setContentIntent(pendingIntent);
         }
-        return notification;
+
+        return notification.build();
     }
 
     /**
      * Get notification builder for upload complete
      */
-    public NotificationCompat.Builder getNotificationBuilderUploadComplete(PendingIntent pendingIntent) {
+    public Notification getNotificationUploadComplete(PendingIntent pendingIntent) {
         // compose notification big view
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(getContext().getString(R.string.sync_notification_title));
         inboxStyle.addLine(getContext().getString(R.string.upload_file_complete));
-        // compose builder
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
+
+        Notification notification = new NotificationCompat.Builder(getContext())
                 //.addAction(R.drawable.ic_action_folder_open_dark, context.getString(R.string.open_database), pendingIntent)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
@@ -127,7 +135,8 @@ public class SyncNotificationFactory {
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setStyle(inboxStyle)
                 .setTicker(getContext().getString(R.string.upload_file_complete))
-                .setColor(getContext().getResources().getColor(R.color.md_primary));
+                .setColor(getContext().getResources().getColor(R.color.md_primary))
+                .build();
 
         return notification;
     }
@@ -137,13 +146,39 @@ public class SyncNotificationFactory {
      * @param notification existing builder
      * @param totalBytes   total bytes to transfer
      * @param bytes        bytes transfer
-     * @return
+     * @return notification
      */
-    public NotificationCompat.Builder getNotificationBuilderProgress(NotificationCompat.Builder notification, int totalBytes, int bytes) {
+    public Notification getNotificationBuilderProgress(NotificationCompat.Builder notification, int totalBytes, int bytes) {
         notification.setProgress(totalBytes, bytes, false);
         notification.setContentInfo(String.format("%1dKB/%2dKB", bytes / 1024, totalBytes / 1024));
 
-        return notification;
+        return notification.build();
+    }
+
+    public Notification getNotificationForConflict() {
+        UIHelper uiHelper = new UIHelper(getContext());
+        IconicsDrawable icon = new IconicsDrawable(getContext())
+                .icon(MMEXIconFont.Icon.mmx_alert)
+                .color(uiHelper.getPrimaryColor())
+                .sizeDp(Constants.NotificationIconSize);
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
+                .setContentTitle(getContext().getString(R.string.sync_notification_title))
+                .setAutoCancel(false)
+//                .setContentInfo(getContext().getString(R.string.sync_uploading))
+                .setContentText(getContext().getString(R.string.both_files_modified))
+                .setLargeIcon(icon.toBitmap())
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setColor(uiHelper.getColor(R.color.md_primary));
+
+        // only for previous version!
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+            notification.setContentIntent(pendingIntent);
+        }
+
+        return notification.build();
     }
 
 }

@@ -98,6 +98,8 @@ public class SyncServiceMessageHandler
             case CONFLICT:
                 closeDialog(progressDialog);
                 new UIHelper(getContext()).showToast(R.string.both_files_modified);
+                // todo Show the conflict notification.
+
                 break;
 
             case ERROR:

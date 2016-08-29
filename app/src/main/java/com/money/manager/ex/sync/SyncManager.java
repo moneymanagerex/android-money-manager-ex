@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
@@ -52,9 +51,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import rx.Observable;
 import rx.Single;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import timber.log.Timber;
 
@@ -652,12 +649,13 @@ public class SyncManager {
     private PendingIntent getPendingIntentForDelayedUpload() {
         Intent intent = new Intent(getContext(), SyncService.class);
 
-        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
+//        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
+        intent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
         intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, getLocalPath());
         intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
 
-        PendingIntent pintent = PendingIntent.getService(getContext(), SyncConstants.REQUEST_DELAYED_UPLOAD,
+        PendingIntent pintent = PendingIntent.getService(getContext(), SyncConstants.REQUEST_DELAYED_SYNC,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         return pintent;

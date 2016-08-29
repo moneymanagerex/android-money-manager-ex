@@ -18,6 +18,7 @@
 package com.money.manager.ex.sync;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -168,8 +169,8 @@ public class SyncService
     private void triggerDownload(final File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
 
-        final android.support.v4.app.NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationBuilderForDownload();
+        final Notification notification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationForDownload();
 
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -202,19 +203,19 @@ public class SyncService
                 Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                         RequestCode.SELECT_FILE, intent, 0);
-                // create builder
-                final NotificationCompat.Builder notification =
-                        new SyncNotificationFactory(getApplicationContext())
-                                .getNotificationBuilderDownloadComplete(pendingIntent);
+
+                Notification notification = new SyncNotificationFactory(getApplicationContext())
+                    .getNotificationDownloadComplete(pendingIntent);
+
                 // notify
-                notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
+                notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification);
             }
         };
         Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
 //        onDownloadHandler.onPreExecute();
         if (notification != null && notificationManager != null) {
-            notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
+            notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification);
         }
         sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
@@ -270,10 +271,10 @@ public class SyncService
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), RequestCode.SELECT_FILE, intent, 0);
         // notification
-        NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationBuilderUploadComplete(pendingIntent);
+        Notification notification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationUploadComplete(pendingIntent);
         // notify
-        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification.build());
+        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification);
 
     }
 
@@ -299,6 +300,7 @@ public class SyncService
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(SyncServiceMessage.CONFLICT);
             sendStopEvent();
+            showNotificationForConflict();
             return;
         }
         if (isRemoteModified) {
@@ -344,16 +346,22 @@ public class SyncService
         if (EventBus.getDefault().hasSubscriberForEvent(SyncStoppingEvent.class)) {
             EventBus.getDefault().post(new SyncStoppingEvent());
         }
-
     }
 
     private void showNotificationUploading() {
-        NotificationCompat.Builder notification = new SyncNotificationFactory(getApplicationContext())
-                .getNotificationBuilderUploading();
+        Notification notification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationUploading();
 
         // send notification, upload starting
         if (notification == null || mNotificationManager == null) return;
 
-        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification.build());
+        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification);
+    }
+
+    private void showNotificationForConflict() {
+        Notification notification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationForConflict();
+
+        mNotificationManager.notify(SyncConstants.NOTIFICATION_SYNC_ERROR, notification);
     }
 }
