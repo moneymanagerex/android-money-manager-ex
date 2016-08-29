@@ -8,13 +8,13 @@
 # Optimization is turned off by default. Dex does not like code run
 # through the ProGuard optimize and preverify steps (and performs some
 # of these optimizations on its own).
-#-dontoptimize
+-dontoptimize
 #-dontpreverify
 
 # If you want to enable optimization, you should include the
 # following:
--optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
--optimizationpasses 5
+#-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+#-optimizationpasses 5
 -allowaccessmodification
 
 -keep public class * extends android.app.Activity
@@ -118,9 +118,14 @@
 -dontwarn sun.misc.Unsafe
 # https://github.com/square/okio/issues/60
 -dontwarn okio.**
+# picasso
+-dontwarn com.squareup.okhttp.**
 
 # Test for debugging
 #-renamesourcefileattribute SourceFile
 #-keepattributes SourceFile,LineNumberTable
 #-printmapping build/outputs/mapping/release/mapping.txt
 #-dontobfuscate
+
+# ?
+-keepattributes InnerClasses
