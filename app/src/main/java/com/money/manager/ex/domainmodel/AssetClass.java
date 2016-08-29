@@ -255,6 +255,8 @@ public class AssetClass
      * @return difference expressed as a percentage of set allocation
      */
     public Money getDiffAsPercentOfSet() {
+        if (getDifference() == null) return MoneyFactory.fromDouble(-1);
+
         Money diffPercentage = this.getDifference()
             .multiply(100)
             .divide(this.getValue().toDouble(), 2);
