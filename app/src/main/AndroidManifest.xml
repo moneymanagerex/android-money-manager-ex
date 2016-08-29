@@ -370,13 +370,6 @@
                 <action android:name="${applicationId}.sync.action.UPLOAD" />
             </intent-filter>
         </service>
-        <service android:name=".sync.DelayedUploadService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="${applicationId}.intent.action.START_SYNC_SERVICE" />
-                <action android:name="${applicationId}.intent.action.STOP_SYNC_SERVICE" />
-            </intent-filter>
-        </service>
         <!-- authenticator service for the sync framework -->
         <service android:name=".sync.adapter.AuthenticatorService"
             android:exported="false">

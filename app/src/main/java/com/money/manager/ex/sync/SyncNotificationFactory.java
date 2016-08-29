@@ -160,23 +160,17 @@ public class SyncNotificationFactory {
         IconicsDrawable icon = new IconicsDrawable(getContext())
                 .icon(MMEXIconFont.Icon.mmx_alert)
                 .color(uiHelper.getPrimaryColor())
-                .sizeDp(Constants.NotificationIconSize);
+                .sizeDp(Constants.NotificationBigIconSize);
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
+                .setSubText(getContext().getString(R.string.sync_conflict))
 //                .setContentInfo(getContext().getString(R.string.sync_uploading))
                 .setContentText(getContext().getString(R.string.both_files_modified))
-                .setLargeIcon(icon.toBitmap())
+//                .setLargeIcon(icon.toBitmap())
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setColor(uiHelper.getColor(R.color.md_primary));
-
-        // only for previous version!
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
-            notification.setContentIntent(pendingIntent);
-        }
 
         return notification.build();
     }

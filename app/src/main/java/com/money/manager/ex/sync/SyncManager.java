@@ -75,10 +75,6 @@ public class SyncManager {
     public void abortScheduledUpload() {
         Timber.d("Aborting scheduled download");
 
-//        Intent service = new Intent(getContext(), DelayedUploadService.class);
-//        service.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
-//        getContext().startService(service);
-
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         getAlarmManager().cancel(pendingIntent);
     }
@@ -111,89 +107,12 @@ public class SyncManager {
         return true;
     }
 
-//    public Single<SyncServiceMessage> compareFilesAsync() {
-//        return Single.fromCallable(new Callable<SyncServiceMessage>() {
-//            @Override
-//            public SyncServiceMessage call() throws Exception {
-//                return compareFilesForSync();
-//            }
-//        });
-//    }
-
     public boolean isRemoteFileModified(CloudMetaData remoteFile) {
         DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile);
         DateTime remoteLastModified = getModificationDate(remoteFile);
 
         return !remoteLastModified.isEqual(cachedLastModified);
     }
-
-//    /**
-//     * Compares the remote file last-changed-date with the locally cached data.
-//     * @return An indicator if the remote file has changed since the last synchronization.
-//     */
-//    private boolean isRemoteFileModified(String localPath) {
-//        String remotePath = getRemotePath();
-//
-//        // validations
-//        if (TextUtils.isEmpty(remotePath)) {
-//            throw new IllegalArgumentException("remote file not set");
-//        }
-//
-//        CloudMetaData remoteFile = loadMetadata(remotePath);
-//        if (remoteFile == null) {
-//            throw new RuntimeException("remote metadata could not be retrieved");
-//        }
-
-//    // Compare the local cache and the remote info.
-//    DateTime localLastModified;
-//    DateTime remoteLastModified;
-//    File localFile = new File(localPath);
-//
-//    localLastModified = getCachedLastModifiedDateFor(remoteFile);
-//    if (localLastModified == null) {
-//        localLastModified = new DateTime(localFile.lastModified());
-//    }
-//    remoteLastModified = new DateTime(remoteFile.getModifiedAt());
-//
-//    }
-
-//    /**
-//     * This function returns if the local database file is synchronized or not.
-//     * @return int
-//     */
-//    private SyncServiceMessage compareFilesForSync() {
-//        // todo: reuse the logic from SyncService.triggerSync!
-//
-//        if (!isActive()) {
-//            return SyncServiceMessage.SYNC_DISABLED;
-//        }
-//
-//        // Is local file changed?
-//        boolean localChanged = getPreferences().isLocalFileChanged();
-//        boolean remoteChanged;
-//        try {
-//            remoteChanged = isRemoteFileModified();
-//        } catch (Exception e) {
-//            Timber.e(e, "error checking for remote changes");
-//            return SyncServiceMessage.ERROR;
-//        }
-//
-//        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-//
-//        // check if we have the file names.
-//        if (TextUtils.isEmpty(localPath)) {
-//            return SyncServiceMessage.ERROR;
-//        }
-//        // todo if (!areFileNamesSame(localPath, remotePath)) return SyncServiceMessage.ERROR;
-//
-//        if (remoteLastModified.isAfter(localLastModified)) {
-//            return SyncServiceMessage.STARTING_DOWNLOAD;
-//        } else if (remoteLastModified.isBefore(localLastModified)) {
-//            return SyncServiceMessage.STARTING_UPLOAD;
-//        } else {
-//            return SyncServiceMessage.FILE_NOT_CHANGED;
-//        }
-//    }
 
     public void disableAutoUpload() {
         mAutoUploadDisabled = true;

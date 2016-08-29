@@ -45,4 +45,5 @@ public class Constants {
 
     // UI
     public static final int NotificationIconSize = 25;
+    public static final int NotificationBigIconSize = 48;
 }
