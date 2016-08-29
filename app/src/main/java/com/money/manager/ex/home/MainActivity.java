@@ -39,6 +39,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -1389,7 +1390,8 @@ public class MainActivity
         Animation animation = new RotateAnimation(0.0f, 360.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(700);
+        animation.setDuration(1000);
+        animation.setInterpolator(new LinearInterpolator());
 //        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
 
         animation.setRepeatCount(Animation.INFINITE);
