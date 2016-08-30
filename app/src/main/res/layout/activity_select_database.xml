@@ -30,6 +30,14 @@
 
     <include layout="@layout/toolbar"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <!-- Intro -->
     <com.money.manager.ex.view.RobotoTextView
         android:layout_width="match_parent"
@@ -88,4 +96,6 @@
             android:text="@string/configure_sync" />
     </android.support.v7.widget.CardView>
 
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

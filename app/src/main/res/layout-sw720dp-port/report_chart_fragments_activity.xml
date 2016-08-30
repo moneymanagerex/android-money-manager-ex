@@ -31,7 +31,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/fragmentNavigation"
+            android:id="@+id/fragmentMain"
             android:layout_width="336dp"
             android:layout_height="match_parent"
             android:orientation="vertical"/>

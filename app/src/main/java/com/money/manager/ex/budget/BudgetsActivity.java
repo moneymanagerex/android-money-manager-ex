@@ -123,12 +123,12 @@ public class BudgetsActivity
 
             // add to stack
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentNavigation, fragment, BudgetListFragment.class.getSimpleName())
+                    .replace(R.id.fragmentMain, fragment, BudgetListFragment.class.getSimpleName())
                     .commit();
         } else {
             if (core.isTablet()) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentNavigation, fragment, BudgetListFragment.class.getSimpleName())
+                        .replace(R.id.fragmentMain, fragment, BudgetListFragment.class.getSimpleName())
                         .commit();
             }
         }
@@ -167,7 +167,7 @@ public class BudgetsActivity
             transaction.replace(R.id.fragmentDetail, fragment, tagFragment);
         } else {
             // Single panel UI.
-            transaction.replace(R.id.fragmentNavigation, fragment, tagFragment);
+            transaction.replace(R.id.fragmentMain, fragment, tagFragment);
 
             // todo: enable going back only if showing the list.
 //            boolean showingList = tagFragment.equals(BudgetListFragment.class.getName());

@@ -371,7 +371,7 @@ public class RecurringTransactionListFragment
 
         android.support.v4.app.FragmentTransaction t = getActivity().getSupportFragmentManager()
                 .beginTransaction();
-        t.replace(R.id.fragmentNavigation, caldroidFragment);
+        t.replace(R.id.fragmentMain, caldroidFragment);
         t.addToBackStack(null);
         t.commit();
     }

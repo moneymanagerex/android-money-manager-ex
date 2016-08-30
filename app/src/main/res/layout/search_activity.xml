@@ -26,7 +26,7 @@
     <include layout="@layout/toolbar_actionbar_button_search_bar"/>
 
     <LinearLayout
-        android:id="@+id/fragmentNavigation"
+        android:id="@+id/fragmentMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"/>

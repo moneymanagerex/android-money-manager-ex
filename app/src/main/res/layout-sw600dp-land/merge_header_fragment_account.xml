@@ -30,7 +30,7 @@
         android:ellipsize="end"
         android:gravity="right"
         android:paddingLeft="6dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/account_balance"/>
 
     <com.money.manager.ex.view.RobotoTextView
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textStyle="bold"/>
 
     <com.money.manager.ex.view.RobotoTextView
@@ -49,7 +49,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="2dp"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/account_reconciled_balance"/>
 
     <com.money.manager.ex.view.RobotoTextView
@@ -58,8 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-        android:singleLine="true"
-        android:textStyle="bold"/>
+        android:maxLines="1"
+        android:textStyle="bold" />
 
     <com.money.manager.ex.view.RobotoTextView
         style="@style/Money.TextView.Body2.Inverse"

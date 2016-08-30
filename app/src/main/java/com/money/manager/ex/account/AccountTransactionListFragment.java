@@ -43,7 +43,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
@@ -71,7 +70,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -853,7 +851,7 @@ public class AccountTransactionListFragment
         mAllDataListFragment.setSearResultFragmentLoaderCallbacks(this);
 
         // add fragment
-        transaction.replace(R.id.fragmentNavigation, mAllDataListFragment, getFragmentName());
+        transaction.replace(R.id.fragmentMain, mAllDataListFragment, getFragmentName());
         transaction.commit();
     }
 

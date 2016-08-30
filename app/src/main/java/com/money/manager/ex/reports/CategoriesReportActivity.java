@@ -59,9 +59,9 @@ public class CategoriesReportActivity
         CategoriesReportFragment fragment = new CategoriesReportFragment();
         FragmentManager fm = getSupportFragmentManager();
         //insert fragment
-        if (fm.findFragmentById(R.id.fragmentNavigation) == null) {
+        if (fm.findFragmentById(R.id.fragmentMain) == null) {
             fm.beginTransaction()
-                .add(R.id.fragmentNavigation, fragment, CategoriesReportFragment.class.getSimpleName())
+                .add(R.id.fragmentMain, fragment, CategoriesReportFragment.class.getSimpleName())
                 .commit();
         }
     }

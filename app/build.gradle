@@ -156,7 +156,6 @@ dependencies {
             fileTree(dir: 'libs', include: ['*.jar'])
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
-//        'com.caverock:androidsvg:1.2.2-beta-1',
             , project(path: ':money')
             , 'com.cloudrail:cloudrail-si-android:2.6.7'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'

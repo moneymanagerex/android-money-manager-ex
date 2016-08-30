@@ -350,7 +350,7 @@ public class CategoriesReportFragment
             if (((CategoriesReportActivity) getActivity()).mIsDualPanel) {
                 fragmentTransaction.replace(R.id.fragmentChart, fragment, PieChartFragment.class.getSimpleName());
             } else {
-                fragmentTransaction.replace(R.id.fragmentNavigation, fragment, PieChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentMain, fragment, PieChartFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.commit();

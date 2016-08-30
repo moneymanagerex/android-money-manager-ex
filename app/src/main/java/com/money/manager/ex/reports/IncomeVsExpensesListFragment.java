@@ -490,7 +490,7 @@ public class IncomeVsExpensesListFragment
             if (((IncomeVsExpensesActivity) getActivity()).mIsDualPanel) {
                 fragmentTransaction.replace(R.id.fragmentChart, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
             } else {
-                fragmentTransaction.replace(R.id.fragmentNavigation, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.fragmentMain, fragment, IncomeVsExpensesChartFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
             }
             fragmentTransaction.commit();

@@ -16,12 +16,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+              <!--android:layout_width="match_parent"-->
+              <!--android:layout_height="wrap_content"-->
+              <!--android:orientation="vertical">-->
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/headerRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,30 +29,30 @@
         android:animateLayoutChanges="true"
         android:orientation="horizontal">
 
-    <include
-        layout="@layout/merge_header_fragment_account"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="@dimen/mmex_margin"
-        android:layout_marginTop="@dimen/mmex_margin"
-        android:layout_weight="1"/>
+        <include
+            layout="@layout/merge_header_fragment_account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/mmex_margin"
+            android:layout_marginTop="@dimen/mmex_margin"
+            android:layout_weight="1"/>
 
-    <ImageView
-        android:id="@+id/imageViewGotoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/ic_action_editor_mode_edit_dark"/>
+        <ImageView
+            android:id="@+id/imageViewGotoAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_action_editor_mode_edit_dark"/>
 
-    <ImageView
-        android:id="@+id/imageViewAccountFav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginRight="16dp"
-        android:background="@android:drawable/star_off"/>
+        <ImageView
+            android:id="@+id/imageViewAccountFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:background="@android:drawable/star_off"/>
 
     </LinearLayout>
-</LinearLayout>
+<!--</LinearLayout>-->

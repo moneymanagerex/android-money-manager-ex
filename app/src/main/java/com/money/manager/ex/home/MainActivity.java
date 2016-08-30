@@ -471,12 +471,12 @@ public class MainActivity
     public int getContentId() {
         return isDualPanel()
                 ? R.id.fragmentDetail
-                : R.id.fragmentNavigation;
+                : R.id.fragmentMain;
     }
 
     public int getNavigationId() {
         return isDualPanel()
-                ? R.id.fragmentNavigation
+                ? R.id.fragmentMain
                 : R.id.fragmentDetail;
     }
 
@@ -1454,7 +1454,7 @@ public class MainActivity
         if (isDualPanel()) {
             transaction.replace(R.id.fragmentDetail, fragment, tag);
         } else {
-            transaction.replace(R.id.fragmentNavigation, fragment, tag);
+            transaction.replace(R.id.fragmentMain, fragment, tag);
         }
         transaction.addToBackStack(null);
         // Commit the transaction
@@ -1465,8 +1465,14 @@ public class MainActivity
     }
 
     private void showHomeFragment() {
-        HomeFragment fragment = new HomeFragment();
         String tag = HomeFragment.class.getSimpleName();
+
+        // See if the fragment is already there.
+        Fragment existingFragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (existingFragment != null) return;
+
+        // Create new Home fragment.
+        HomeFragment fragment = new HomeFragment();
 
         int containerId = isDualPanel() ? getNavigationId() : getContentId();
 
