@@ -55,7 +55,7 @@ public class BudgetEditActivity
         // this handles OK/Cancel button clicks in the toolbar.
         showStandardToolbarActions();
 
-        handleIntent();
+        initializeModel();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class BudgetEditActivity
             year = currentYear;
         }
 
-        NumberPickerBuilder npb = new NumberPickerBuilder()
+        new NumberPickerBuilder()
             .setFragmentManager(getSupportFragmentManager())
             .setStyleResId(R.style.BetterPickersDialogFragment)
             .setLabelText(getString(R.string.year))
@@ -106,8 +106,8 @@ public class BudgetEditActivity
                 public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                     mModel.setYear(number.intValue());
                 }
-            });
-        npb.show();
+            })
+            .show();
     }
 
     public void onSelectMonth(View v) {
@@ -118,7 +118,7 @@ public class BudgetEditActivity
             month = MmxDateTimeUtils.today().getMonthOfYear();
         }
 
-        NumberPickerBuilder npb = new NumberPickerBuilder()
+        new NumberPickerBuilder()
             .setFragmentManager(getSupportFragmentManager())
             .setStyleResId(R.style.BetterPickersDialogFragment)
             .setLabelText(getString(R.string.month))
@@ -132,8 +132,8 @@ public class BudgetEditActivity
                 public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                     mModel.setMonth(number.intValue());
                 }
-            });
-        npb.show();
+            })
+            .show();
     }
 
     // Private
@@ -142,7 +142,7 @@ public class BudgetEditActivity
         return getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
     }
 
-    private void handleIntent() {
+    private void initializeModel() {
         Budget budget = null;
         Intent intent = getIntent();
         if (intent == null) return;
