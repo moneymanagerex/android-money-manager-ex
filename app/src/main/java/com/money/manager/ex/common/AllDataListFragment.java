@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -46,7 +47,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
@@ -730,17 +731,18 @@ public class AllDataListFragment
      */
     private void showDialogDeleteCheckingAccount(final ArrayList<Integer> transactionIds) {
         // create alert binaryDialog and set title and message
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.delete_transaction)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-            .setMessage(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
+        MaterialDialog.Builder alertDialog = new MaterialDialog.Builder(getContext())
+            .title(R.string.delete_transaction)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+            .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
                     transactionIds.size(), transactionIds.size()));
 //        alertDialog.setIcon(R.drawable.ic_action_warning_light);
 
         // set listener button positive
-        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        alertDialog.positiveText(android.R.string.ok);
+        alertDialog.onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 SyncManager sync = new SyncManager(getActivity());
 
                 // Pause sync notification while bulk processing.
@@ -750,14 +752,14 @@ public class AllDataListFragment
                     // First delete any splits. See if there are any split records.
                     SplitCategoriesRepository splitRepo = new SplitCategoriesRepository(getActivity());
                     Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
-                        SplitCategory.TRANSID + "=" + Integer.toString(transactionId),
-                        null, SplitCategory.SPLITTRANSID);
+                            SplitCategory.TRANSID + "=" + Integer.toString(transactionId),
+                            null, SplitCategory.SPLITTRANSID);
                     int splitCount = curSplit.getCount();
                     curSplit.close();
 
                     if (splitCount > 0) {
                         int deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),
-                            SplitCategory.TRANSID + "=?",
+                                SplitCategory.TRANSID + "=?",
                                 new String[]{Integer.toString(transactionId)});
                         if (deleteResult != splitCount) {
                             Toast.makeText(getActivity(), R.string.db_delete_failed, Toast.LENGTH_SHORT).show();
@@ -797,16 +799,15 @@ public class AllDataListFragment
             }
         });
         // set listener negative button
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        alertDialog.negativeText(android.R.string.cancel);
+        alertDialog.onNegative(new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // close binaryDialog
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 dialog.cancel();
             }
         });
 
-        alertDialog.create();
-        alertDialog.show();
+        alertDialog.build().show();
     }
 
     /**

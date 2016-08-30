@@ -45,7 +45,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -55,7 +54,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.io.File;
 import java.text.DateFormatSymbols;
