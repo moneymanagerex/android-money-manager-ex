@@ -273,6 +273,8 @@ public class FullAssetAllocationActivity
     }
 
     private void showTotal(AssetClass assetAllocation) {
+        if (assetAllocation == null) return;
+        
         RobotoTextView totalView = (RobotoTextView) findViewById(R.id.totalAmountTextView);
         if (totalView == null) return;
 
