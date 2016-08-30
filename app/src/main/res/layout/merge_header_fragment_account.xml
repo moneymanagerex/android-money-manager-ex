@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:paddingLeft="6dp"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="@string/account_balance"/>
 
         <com.money.manager.ex.view.RobotoTextView
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:paddingLeft="6dp"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="@string/account_reconciled_balance"/>
 
         <com.money.manager.ex.view.RobotoTextView
