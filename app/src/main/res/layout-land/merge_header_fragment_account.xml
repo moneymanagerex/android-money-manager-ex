@@ -21,7 +21,7 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-    <!--android:layout_marginLeft="55dp"-->
+    <!-- Account Balance title -->
     <com.money.manager.ex.view.RobotoTextView
         style="@style/Money.TextView.Body2.Inverse"
         android:layout_width="wrap_content"
@@ -30,7 +30,6 @@
         android:gravity="right"
         android:paddingLeft="6dp"
         android:text="@string/account_balance"/>
-
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAccountBalance"
         style="@style/Money.TextView.Body2.Inverse"
@@ -39,6 +38,7 @@
         android:layout_marginLeft="2dp"
         android:textStyle="bold"/>
 
+    <!-- Reconciled Balance title -->
     <com.money.manager.ex.view.RobotoTextView
         style="@style/Money.TextView.Body2.Inverse"
         android:layout_width="wrap_content"
@@ -46,7 +46,6 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="2dp"
         android:text="@string/account_reconciled_balance"/>
-
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewAccountReconciled"
         style="@style/Money.TextView.Body2.Inverse"
@@ -55,9 +54,10 @@
         android:layout_marginLeft="2dp"
         android:textStyle="bold"/>
 
+    <!-- Difference title -->
     <com.money.manager.ex.view.RobotoTextView
         style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -66,11 +66,10 @@
         android:textSize="@dimen/mmex_text_view_size_micro"
         android:visibility="gone"/>
     <!--android:layout_column="0"-->
-
     <com.money.manager.ex.view.RobotoTextView
         android:id="@+id/textViewDifference"
         style="@style/Money.TextView.Body2.Inverse"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:layout_weight="1"
