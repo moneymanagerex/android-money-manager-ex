@@ -103,14 +103,15 @@ public class AccountEditActivity
         }
 
         // Get Intent extras
-        if (getIntent() != null) {
-            if (savedInstanceState == null) {
-                mIntentAction = getIntent().getAction();
-                if (mIntentAction != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                    int accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
-                    if (accountId != Constants.NOT_SET) {
-                        // Load account
-                        loadAccount(accountId);
+        if (getIntent() != null && savedInstanceState == null) {
+            mIntentAction = getIntent().getAction();
+            if (mIntentAction != null && Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                int accountId = getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET);
+                if (accountId != Constants.NOT_SET) {
+                    // Load account or exit if one not found
+                    if (!loadAccount(accountId)) {
+                        finish();
+                        return;
                     }
                 }
             }
