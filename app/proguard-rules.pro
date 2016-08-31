@@ -99,16 +99,20 @@
 #-keepclassmembers class ** {
 #    public void onEvent*(***);
 #}
-# Only required if you use AsyncExecutor
-#-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
-#    <init>(java.lang.Throwable);
+# EventBus 3.0, http://greenrobot.org/eventbus/documentation/proguard/
+#-keep class de.greenrobot.event.** { *; }
+#-keep class * {
+#    @de.greenrobot.event.* <methods>;
 #}
-# EventBus 3.0
--keep class de.greenrobot.event.** { *; }
--keep class * {
-    @de.greenrobot.event.* <methods>;
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
 }
--keep enum de.greenrobot.event.ThreadMode { *; }
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
 
 # IcePick
 -dontwarn icepick.**
@@ -134,6 +138,9 @@
 
 #SQLCipher
 #-keep class net.sqlcipher.** { *; }
+
+#CloudRail, https://github.com/CloudRail/cloudrail-si-android-sdk/issues/34
+-keep class com.cloudrail.** { *; }
 
 # Ignore warnings
 -dontwarn org.apache.**
