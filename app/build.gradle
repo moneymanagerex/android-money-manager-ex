@@ -199,8 +199,8 @@ dependencies {
             , 'com.android.support:multidex:1.0.0'  // multidex support
             , 'com.nononsenseapps:filepicker:3.0.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-            , 'io.reactivex:rxjava:1.1.9'
-//            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
+//            , 'io.reactivex:rxjava:1.1.9'
+            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
             , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
             , 'com.jakewharton.timber:timber:4.3.0'
             , 'com.jakewharton.rxbinding:rxbinding:0.4.0'    // RxBinding
