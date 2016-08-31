@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 907
+        versionCode 908
         versionName getVersionAsDate() + "." + versionCode
 
 //        minSdkVersion rootProject.ext.minSdkVersion
@@ -79,7 +79,7 @@ android {
             applicationIdSuffix ".debug"
             
             minifyEnabled false
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Disable fabric build id for debug builds
@@ -89,13 +89,13 @@ android {
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
 
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             applicationVariants.all { variant ->
