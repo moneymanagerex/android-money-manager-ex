@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -33,7 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -327,32 +328,28 @@ public class AssetAllocationFragment
     }
 
     private void confirmDelete(final MatrixCursorColumns item) {
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.delete)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.confirmDelete);
-
-        alertDialog.setPositiveButton(android.R.string.ok,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (item.type.equals(ItemType.Stock)) {
-                        deleteStockLink(item);
-                    } else {
-                        deleteAllocation(item);
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.delete)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.confirmDelete)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (item.type.equals(ItemType.Stock)) {
+                            deleteStockLink(item);
+                        } else {
+                            deleteAllocation(item);
+                        }
                     }
-                }
-            });
-
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // close binaryDialog
-                dialog.cancel();
-            }
-        });
-        // show binaryDialog
-        alertDialog.create().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();                    }
+                })
+                .build().show();
     }
 
     private void startEditAssetClassActivityForInsert() {

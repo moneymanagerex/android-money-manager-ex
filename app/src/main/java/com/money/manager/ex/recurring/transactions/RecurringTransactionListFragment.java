@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -36,7 +37,8 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.common.MmxCursorLoader;
@@ -295,14 +297,14 @@ public class RecurringTransactionListFragment
 
     private void confirmDelete(final int id) {
         // create alert binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.delete_repeating_transaction)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.confirmDelete);
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.delete_repeating_transaction)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.confirmDelete)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
                         recurringTransaction.delete();
 
@@ -310,38 +312,40 @@ public class RecurringTransactionListFragment
                         getLoaderManager().restartLoader(ID_LOADER_REPEATING,
                                 null, RecurringTransactionListFragment.this);
                     }
-                });
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.create().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+            .build().show();
     }
 
     private void confirmSkip(final int id) {
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.skip_next_occurrence)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.skip_next_occurrence_confirmation)
-            .setPositiveButton(android.R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
-                            recurringTransaction.moveNextOccurrence();
-                            getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
-                                    RecurringTransactionListFragment.this);
-                        }
-                    })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-        alertDialog.create().show();
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.skip_next_occurrence)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.skip_next_occurrence_confirmation)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        RecurringTransactionService recurringTransaction = new RecurringTransactionService(id, getActivity());
+                        recurringTransaction.moveNextOccurrence();
+                        getLoaderManager().restartLoader(ID_LOADER_REPEATING, null,
+                                RecurringTransactionListFragment.this);
+                    }
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+            .build().show();
     }
 
     private void showCaldroidFragment() {

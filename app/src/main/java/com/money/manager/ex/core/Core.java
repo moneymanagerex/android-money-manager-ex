@@ -40,7 +40,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -390,20 +389,18 @@ public class Core {
         // create layout
         View view = LayoutInflater.from(getContext()).inflate(R.layout.changelog_layout, null);
         //create binaryDialog
-        new AlertDialogWrapper.Builder(getContext())
-            .setCancelable(false)
-            .setTitle(R.string.changelog)
-            .setView(view)
-            .setNeutralButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
+        new MaterialDialog.Builder(getContext())
+            .cancelable(false)
+            .title(R.string.changelog)
+            .customView(view, true)
+            .neutralText(android.R.string.ok)
+            .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
                 }
-            )
-            // show binaryDialog
-            .create().show();
+            })
+            .build().show();
         return true;
     }
 

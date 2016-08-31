@@ -22,10 +22,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
@@ -57,26 +59,27 @@ public class DonateDialogUtils {
                 //get text donate
                 String donateText = context.getString(R.string.donate_header);
                 //create binaryDialog
-                AlertDialogWrapper.Builder showDialog = new AlertDialogWrapper.Builder(context)
-                    .setCancelable(false)
-                    .setTitle(R.string.donate)
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setMessage(Html.fromHtml(donateText));
-                showDialog.setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                showDialog.setPositiveButton(R.string.donate_exlamation, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        context.startActivity(new Intent(context, DonateActivity.class));
-                        dialog.dismiss();
-                    }
-                });
-                // show binaryDialog
-                showDialog.create().show();
+                new MaterialDialog.Builder(context)
+                    .cancelable(false)
+                    .title(R.string.donate)
+                    .iconRes(R.mipmap.ic_launcher)
+                    .content(Html.fromHtml(donateText))
+                    .negativeText(R.string.no_thanks)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                        .positiveText(R.string.donate_exlamation)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                context.startActivity(new Intent(context, DonateActivity.class));
+                                dialog.dismiss();
+                            }
+                        })
+                .build().show();
             }
             return true;
         } else

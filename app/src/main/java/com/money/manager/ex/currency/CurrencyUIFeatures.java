@@ -21,10 +21,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
@@ -68,17 +70,18 @@ public class CurrencyUIFeatures {
     }
 
     public void notifyCurrencyCanNotBeDeleted() {
-        new AlertDialogWrapper.Builder(getContext())
-                .setTitle(R.string.attention)
-                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-                .setMessage(R.string.currency_can_not_deleted)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.attention)
+                .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+                .content(R.string.currency_can_not_deleted)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
                     }
                 })
-                .create().show();
+                .build().show();
     }
 
     /**

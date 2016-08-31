@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -468,19 +470,18 @@ public class CategoryListFragment
             canDelete = !service.isSubcategoryUsed(categoryIds.categId);
         }
         if (!(canDelete)) {
-            new AlertDialogWrapper.Builder(getContext())
-                    .setTitle(R.string.attention)
-                    .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-                    .setMessage(R.string.category_can_not_deleted)
-                    .setPositiveButton(android.R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(
-                                        DialogInterface dialog,
-                                        int which) {
-                                    dialog.dismiss();
-                                }
-                            }).create().show();
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.attention)
+                    .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+                    .content(R.string.category_can_not_deleted)
+                    .positiveText(android.R.string.ok)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .build().show();
             return;
         }
 

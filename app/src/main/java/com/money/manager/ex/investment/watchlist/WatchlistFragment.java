@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -37,7 +38,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountEditActivity;
@@ -438,34 +439,36 @@ public class WatchlistFragment
     }
 
     private void confirmPriceUpdate() {
-        new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.download)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.confirm_price_download)
-            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // get the list of symbols
-                    String[] symbols = getAllShownSymbols();
-                    mToUpdateTotal = symbols.length;
-                    mUpdateCounter = 0;
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.download)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.confirm_price_download)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // get the list of symbols
+                        String[] symbols = getAllShownSymbols();
+                        mToUpdateTotal = symbols.length;
+                        mUpdateCounter = 0;
 
-                    // update security prices
-                    ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
-                            .getUpdaterInstance(getContext());
-                    updater.downloadPrices(Arrays.asList(symbols));
-                    // results received via event
+                        // update security prices
+                        ISecurityPriceUpdater updater = SecurityPriceUpdaterFactory
+                                .getUpdaterInstance(getContext());
+                        updater.downloadPrices(Arrays.asList(symbols));
+                        // results received via event
 
-                    dialog.dismiss();
-                }
-            })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            })
-            .create()
+                        dialog.dismiss();
+                    }
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+            .build()
             .show();
     }
 
@@ -594,37 +597,38 @@ public class WatchlistFragment
     }
 
     private void purgePriceHistory() {
-        new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.purge_history)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.purge_history_confirmation)
-            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    StockHistoryRepository history = new StockHistoryRepository(getActivity());
-                    int deleted = history.deleteAllPriceHistory();
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.purge_history)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.purge_history_confirmation)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        StockHistoryRepository history = new StockHistoryRepository(getActivity());
+                        int deleted = history.deleteAllPriceHistory();
 
-                    if (deleted > 0) {
-                        new SyncManager(getActivity()).dataChanged();
-                        Toast.makeText(getActivity(),
-                            getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
-                            .show();
-                    } else {
-                        Toast.makeText(getActivity(),
-                            getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
-                            .show();
+                        if (deleted > 0) {
+                            new SyncManager(getActivity()).dataChanged();
+                            Toast.makeText(getActivity(),
+                                    getActivity().getString(R.string.purge_history_complete), Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            Toast.makeText(getActivity(),
+                                    getActivity().getString(R.string.purge_history_failed), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        dialog.dismiss();
                     }
-
-                    dialog.dismiss();
-                }
-            })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            })
-            .create()
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();                    }
+                })
+            .build()
             .show();
     }
 
