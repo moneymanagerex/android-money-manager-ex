@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.29.906">
+    <changelogversion versionName="2016.08.31.907">
+        <changelogtext>Updating multiple libraries and adapting code.</changelogtext>
         <changelogtext>Using delayed sync instead of upload to avoid conflicts.</changelogtext>
         <changelogtext>Showing a notification on sync conflicts.</changelogtext>
         <changelogtext>Showing a progress bar only when the database is being downloaded.</changelogtext>
