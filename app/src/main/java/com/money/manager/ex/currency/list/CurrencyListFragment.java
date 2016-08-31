@@ -79,7 +79,8 @@ public class CurrencyListFragment
     // Store previous device orientation when showing other screens (chart, etc.)
     public int mPreviousOrientation = Constants.NOT_SET;
 
-    @Inject Lazy<CurrencyService> mCurrencyService;
+//    @Inject Lazy<CurrencyService> mCurrencyService;
+    private CurrencyService mCurrencyService;
 
     private String mAction = Intent.ACTION_EDIT;
     private String mCurFilter;
@@ -402,7 +403,12 @@ public class CurrencyListFragment
     }
 
     private CurrencyService getService() {
-        return mCurrencyService.get();
+        // todo: redo the currency service to remove any UI interaction (dialog) and then use IoC.
+//        return mCurrencyService.get();
+        if (mCurrencyService == null) {
+            mCurrencyService = new CurrencyService(getActivity());
+        }
+        return mCurrencyService;
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> initLoaderCallbacks() {

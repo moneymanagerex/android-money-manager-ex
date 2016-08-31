@@ -16,8 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.08.31.908">
-        <changelogtext>Reducing the output file size.</changelogtext>
+    <changelogversion versionName="2016.08.31.911">
+        <changelogtext>Reducing the app file size.</changelogtext>
         <changelogtext>Updating multiple libraries and adapting code.</changelogtext>
         <changelogtext>Using delayed sync instead of upload to avoid conflicts.</changelogtext>
         <changelogtext>Showing a notification on sync conflicts.</changelogtext>

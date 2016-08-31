@@ -49,6 +49,7 @@ public class PriceUpdaterBase
     }
 
     protected void showProgressDialog(Integer max) {
+//        Context context = getContext();
         mDialog = new ProgressDialog(getContext());
 
         mDialog.setMessage(getContext().getString(R.string.starting_price_update));
