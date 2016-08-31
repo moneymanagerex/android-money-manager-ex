@@ -67,9 +67,8 @@
 #-keep class com.money.manager.ex.**
 #-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
 #-keep class com.money.manager.ex.home.**
-# The variable names are JSON key values and should not be obfuscated
 -keepclassmembers class com.money.manager.ex.home.RecentDatabaseEntry { <fields>; }
-
+-keepclassmembers class com.money.manager.ex.datalayer.StockFields { public *; }
 
 #Icon font
 -keep class .R
@@ -160,3 +159,17 @@
 
 # ?
 #-keepattributes InnerClasses
+
+# RxJava
+#-dontwarn sun.misc.**
+-dontwarn sun.misc.Unsafe
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
