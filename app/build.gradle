@@ -182,8 +182,8 @@ dependencies {
             , 'com.code-troopers.betterpickers:library:3.0.1'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
-//            , 'javax.money:money-api-bp:1.0.1'
-//        'org.javamoney:moneta-bp:1.0',
+            , 'javax.money:money-api-bp:1.0.1'
+            , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.7'
             , 'com.squareup.retrofit2:retrofit:2.1.0'            // Retrofit
@@ -199,8 +199,8 @@ dependencies {
             , 'com.android.support:multidex:1.0.0'  // multidex support
             , 'com.nononsenseapps:filepicker:3.0.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-//            , 'io.reactivex:rxjava:1.1.9'
-            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
+            , 'io.reactivex:rxjava:1.1.9'
+//            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
             , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
             , 'com.jakewharton.timber:timber:4.3.0'
             , 'com.jakewharton.rxbinding:rxbinding:0.4.0'    // RxBinding
@@ -234,10 +234,10 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.1',
-            'org.robolectric:shadows-support-v4:3.1',
-            'org.robolectric:shadows-multidex:3.1',
-            'org.robolectric:shadows-httpclient:3.1',
+            'org.robolectric:robolectric:3.1.2',
+            'org.robolectric:shadows-support-v4:3.1.2',
+            'org.robolectric:shadows-multidex:3.1.2',
+            'org.robolectric:shadows-httpclient:3.1.2',
             'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',

@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.parceler.Parcels;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
@@ -34,10 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests for Split Categories activity.
- *
- * Created by Alen Siljak on 28/09/2015.
  */
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class SplitCategoriesActivityTests {
 

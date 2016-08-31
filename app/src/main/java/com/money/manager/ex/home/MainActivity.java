@@ -224,7 +224,7 @@ public class MainActivity
 
         // fragments
 //        originalShowFragment(savedInstanceState);
-        showHomeFragment();
+        initHomeFragment();
 
         // start notification for recurring transaction
         if (!isRecurringTransactionStarted) {
@@ -1464,7 +1464,7 @@ public class MainActivity
 //        transaction.commitAllowingStateLoss();
     }
 
-    private void showHomeFragment() {
+    private void initHomeFragment() {
         String tag = HomeFragment.class.getSimpleName();
 
         // See if the fragment is already there.

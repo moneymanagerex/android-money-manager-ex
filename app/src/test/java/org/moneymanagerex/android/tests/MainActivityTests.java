@@ -37,6 +37,7 @@ import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
@@ -49,7 +50,7 @@ import static org.robolectric.Shadows.shadowOf;
 /**
  * Test the MainActivity.
  */
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class MainActivityTests {
 
