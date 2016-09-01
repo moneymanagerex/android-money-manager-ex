@@ -235,9 +235,9 @@ public class Core {
         return "n/a";
     }
 
-    public String getFullAppVersion() {
-        return getAppVersionName() + "." + getAppVersionBuild();
-    }
+//    public String getFullAppVersion() {
+//        return getAppVersionName() + "." + getAppVersionBuild();
+//    }
 
     public Context getContext() {
         return mContext;
@@ -375,7 +375,7 @@ public class Core {
     public boolean isToDisplayChangelog() {
         int currentVersionCode = getAppVersionCode();
         int lastVersionCode = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getInt(getContext().getString(PreferenceConstants.PREF_LAST_VERSION_KEY), Constants.NOT_SET);
+                .getInt(getContext().getString(R.string.pref_last_version_key), Constants.NOT_SET);
 
         return lastVersionCode != currentVersionCode;
     }
@@ -383,8 +383,8 @@ public class Core {
     public boolean showChangelog() {
         int currentVersionCode = getAppVersionCode();
         PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
-                .putInt(getContext().getString(PreferenceConstants.PREF_LAST_VERSION_KEY), currentVersionCode)
-                .commit();
+                .putInt(getContext().getString(R.string.pref_last_version_key), currentVersionCode)
+                .apply();
 
         // create layout
         View view = LayoutInflater.from(getContext()).inflate(R.layout.changelog_layout, null);
@@ -424,19 +424,18 @@ public class Core {
         pattern = pattern.replace("yyyy", "%Y");
         pattern = pattern.replace("yy", "%y");
         // check if exists in format definition
-        boolean find = false;
+        boolean found = false;
         String[] availableDateFormats = getContext().getResources().getStringArray(R.array.date_format_mask);
         for (int i = 0; i < availableDateFormats.length; i++) {
             if (pattern.equals(availableDateFormats[i])) {
-                find = true;
+                found = true;
                 break;
             }
         }
 
-        String result = find
+        return found
             ? pattern
             : null;
-        return result;
     }
 
     public int getColourFromAttribute(int attribute) {
