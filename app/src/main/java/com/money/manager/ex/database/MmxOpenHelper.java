@@ -288,54 +288,56 @@ public class MmxOpenHelper
     private void initCategories(SQLiteDatabase database) {
         try {
             Cursor countCategories = database.rawQuery("SELECT * FROM CATEGORY_V1", null);
-            if (countCategories != null && countCategories.getCount() <= 0) {
-                int keyCategory = 0;
-                String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1",
-                        "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5",
-                        "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7",
-                        "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
-                        "37;10", "38;10", "39;13", "40;13", "41;13"};
+            if (countCategories == null || countCategories.getCount() > 0) return;
 
-                for (String item : categories) {
-                    int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
-                    int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));
-                    if (categoryId != keyCategory) {
-                        keyCategory = categoryId;
-                        int idStringCategory = mContext.getResources()
-                                .getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
-                        if (idStringCategory > 0) {
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(Category.CATEGID, categoryId);
-                            contentValues.put(Category.CATEGNAME, mContext.getString(idStringCategory));
-                            //long newCategoryId = database.insert(tableCategory, null, contentValues);
+            int keyCategory = 0;
+            String[] categories = new String[]{"1;1", "2;1", "3;1", "4;1", "5;1", "6;1", "7;1",
+                    "8;2", "9;2", "10;3", "11;3", "12;3", "13;4", "14;4", "15;4", "16;4", "17;5",
+                    "18;5", "19;5", "20;6", "21;6", "22;6", "23;7", "24;7", "25;7", "26;7", "27;7",
+                    "28;8", "29;8", "30;8", "31;8", "32;9", "33;9", "34;9", "35;10", "36;10",
+                    "37;10", "38;10", "39;13", "40;13", "41;13"};
 
-                            // Update existing records, inserted via the db creation script.
-                            int updated = database.update(CategoryRepository.tableName, contentValues,
-                                    Category.CATEGID + "=?", new String[] { Integer.toString(categoryId) });
-                            if (updated <= 0) {
-                                Timber.e("updating %s for category %s", contentValues.toString(), Integer.toString(categoryId));
-                            }
-                        }
-                    }
-                    int idStringSubcategory = mContext.getResources()
-                            .getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
-                    if (idStringSubcategory > 0) {
+            for (String item : categories) {
+                int subCategoryId = Integer.parseInt(item.substring(0, item.indexOf(";")));
+                int categoryId = Integer.parseInt(item.substring(item.indexOf(";") + 1));
+
+                if (categoryId != keyCategory) {
+                    keyCategory = categoryId;
+                    int idStringCategory = mContext.getResources()
+                            .getIdentifier("category_" + Integer.toString(categoryId), "string", mContext.getPackageName());
+
+                    if (idStringCategory > 0) {
                         ContentValues contentValues = new ContentValues();
-                        contentValues.put(Subcategory.SUBCATEGID, subCategoryId);
-                        contentValues.put(Subcategory.CATEGID, categoryId);
-                        contentValues.put(Subcategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
-//                        long newSubCategoryId = database.insert(tableSubcategory, null, contentValues);
-                        int updated = database.update(SubcategoryRepository.tableName, contentValues,
-                                Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
+                        contentValues.put(Category.CATEGID, categoryId);
+                        contentValues.put(Category.CATEGNAME, mContext.getString(idStringCategory));
+
+                        // Update existing records, inserted via the db creation script.
+                        int updated = database.update(CategoryRepository.tableName, contentValues,
+                                Category.CATEGID + "=?", new String[] { Integer.toString(categoryId) });
                         if (updated <= 0) {
-                            Timber.w("update failed, %s for subcategory %s", contentValues.toString(),
-                                    Integer.toString(subCategoryId));
+                            Timber.w("updating %s for category %s", contentValues.toString(), Integer.toString(categoryId));
                         }
                     }
                 }
 
-                countCategories.close();
+                int idStringSubcategory = mContext.getResources()
+                        .getIdentifier("subcategory_" + Integer.toString(subCategoryId), "string", mContext.getPackageName());
+                if (idStringSubcategory > 0) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(Subcategory.SUBCATEGID, subCategoryId);
+                    contentValues.put(Subcategory.CATEGID, categoryId);
+                    contentValues.put(Subcategory.SUBCATEGNAME, mContext.getString(idStringSubcategory));
+
+                    int updated = database.update(SubcategoryRepository.tableName, contentValues,
+                            Subcategory.SUBCATEGID + "=?", new String[]{ Integer.toString(subCategoryId)});
+                    if (updated <= 0) {
+                        Timber.w("update failed, %s for subcategory %s", contentValues.toString(),
+                                Integer.toString(subCategoryId));
+                    }
+                }
             }
+
+            countCategories.close();
         } catch (Exception e) {
             Timber.e(e, "init database, categories");
         }
