@@ -18,9 +18,13 @@
 package com.money.manager.ex.assetallocation;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * ViewHolder for Asset Class editing screen.
@@ -28,8 +32,10 @@ import com.money.manager.ex.view.RobotoTextViewFontIcon;
 public class AssetClassEditViewHolder {
     public AssetClassEditViewHolder(View view) {
         // initialize
-        parentAssetClass = (RobotoTextViewFontIcon) view.findViewById(R.id.parentAssetClass);
+//        parentAssetClass = (RobotoTextViewFontIcon) view.findViewById(R.id.parentAssetClass);
+        ButterKnife.bind(this, view);
     }
 
-    public RobotoTextViewFontIcon parentAssetClass;
+    @BindView(R.id.parentAssetClass) RobotoTextViewFontIcon parentAssetClass;
+    @BindView(R.id.allocationEdit) TextView allocationTextView;
 }

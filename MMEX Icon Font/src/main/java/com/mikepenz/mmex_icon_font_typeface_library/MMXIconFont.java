@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class MMEXIconFont implements ITypeface {
+public class MMXIconFont implements ITypeface {
     private static final String TTF_FILE = "mmex-icon-font-font-v1.0.0.0.ttf";
     private static Typeface typeface = null;
     private static HashMap<String, Character> mChars;
@@ -191,7 +191,7 @@ public class MMEXIconFont implements ITypeface {
 
         public ITypeface getTypeface() {
             if (typeface == null) {
-                typeface = new MMEXIconFont();
+                typeface = new MMXIconFont();
             }
             return typeface;
         }

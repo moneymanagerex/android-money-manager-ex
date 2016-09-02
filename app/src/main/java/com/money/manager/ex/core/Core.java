@@ -18,8 +18,6 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -43,14 +41,13 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
 
@@ -84,7 +81,7 @@ public class Core {
 
         UIHelper uiHelper = new UIHelper(context);
         Drawable icon = new IconicsDrawable(context)
-                .icon(MMEXIconFont.Icon.mmx_alert)
+                .icon(MMXIconFont.Icon.mmx_alert)
                 .color(uiHelper.getPrimaryColor())
                 .sizeDp(uiHelper.getToolbarIconSize());
 

@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.mikepenz.iconics.Iconics;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
@@ -356,7 +356,7 @@ public class MoneyManagerApplication
         String iconFontPath = "fonts/mmex.ttf";
 
         // Font icons
-        Iconics.registerFont(new MMEXIconFont());
+        Iconics.registerFont(new MMXIconFont());
 
         // Initialize font icons support.
         FontIconTypefaceHolder.init(getAssets(), iconFontPath);

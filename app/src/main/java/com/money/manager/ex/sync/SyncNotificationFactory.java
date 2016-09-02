@@ -25,7 +25,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
@@ -158,7 +158,7 @@ public class SyncNotificationFactory {
     public Notification getNotificationForConflict() {
         UIHelper uiHelper = new UIHelper(getContext());
         IconicsDrawable icon = new IconicsDrawable(getContext())
-                .icon(MMEXIconFont.Icon.mmx_alert)
+                .icon(MMXIconFont.Icon.mmx_alert)
                 .color(uiHelper.getPrimaryColor())
                 .sizeDp(Constants.NotificationBigIconSize);
 

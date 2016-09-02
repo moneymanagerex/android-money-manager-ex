@@ -40,6 +40,7 @@ import com.money.manager.ex.servicelayer.AssetAllocationService;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import butterknife.BindView;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -82,7 +83,7 @@ public class AssetClassEditFragment
         View view = getView();
         initializeParentEdit(view);
         initializeNameEdit(view);
-        initializeAllocationPicker(view);
+        initializeAllocationPicker();
         initializeSortOrderInput(view);
     }
 
@@ -199,13 +200,16 @@ public class AssetClassEditFragment
         });
     }
 
-    private void initializeAllocationPicker(View view) {
-        TextView textView = (TextView) view.findViewById(R.id.allocationEdit);
-        if (textView == null) return;
+    private void initializeAllocationPicker() {
+        TextView view = viewHolder.allocationTextView;
+        if (view == null) return;
 
-        textView.setText(assetClass.getAllocation().toString());
+        view.setText(assetClass.getAllocation().toString());
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        TextDrawable1 drawable = new TextDrawable1("%", 32.0f);
+        view.setCompoundDrawables(drawable, null, null, null);
+
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AmountInputDialog dialog = AmountInputDialog.getInstance(INPUT_ALLOCATION,
@@ -261,12 +265,10 @@ public class AssetClassEditFragment
         View view = getView();
         if (view == null) return;
 
-        TextView textView = (TextView) view.findViewById(R.id.allocationEdit);
-        if (textView != null) {
+        if (viewHolder.allocationTextView != null) {
             Money allocation = assetClass.getAllocation();
-//            FormatUtilities.formatAmountTextView();
-            textView.setText(allocation.toString());
-            textView.setTag(allocation.toString());
+            viewHolder.allocationTextView.setText(allocation.toString());
+            viewHolder.allocationTextView.setTag(allocation.toString());
         }
     }
 

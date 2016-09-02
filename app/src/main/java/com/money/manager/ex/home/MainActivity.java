@@ -48,7 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
@@ -1055,7 +1055,7 @@ public class MainActivity
                 mSyncMenuItem = menu.findItem(id);
 //                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
 //                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                Drawable syncIcon = new UIHelper(this).getIcon(MMEXIconFont.Icon.mmx_refresh);
+                Drawable syncIcon = new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_refresh);
                 mSyncMenuItem.setIcon(syncIcon);
 
                 if (hasAnimation) {
@@ -1395,7 +1395,7 @@ public class MainActivity
         animation.setRepeatCount(Animation.INFINITE);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageDrawable(new UIHelper(this).getIcon(MMEXIconFont.Icon.mmx_refresh));
+        imageView.setImageDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_refresh));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 

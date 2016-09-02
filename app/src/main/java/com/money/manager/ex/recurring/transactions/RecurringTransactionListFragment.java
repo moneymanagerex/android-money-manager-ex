@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.recurring.transactions;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -39,7 +38,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.log.ExceptionHandler;
@@ -129,7 +128,7 @@ public class RecurringTransactionListFragment
         inflater.inflate(R.menu.menu_item_calendar, menu);
         MenuItem calendar = menu.findItem(R.id.menuCalendar);
         if (calendar != null) {
-            Drawable icon = new UIHelper(getActivity()).getIcon(MMEXIconFont.Icon.mmx_calendar);
+            Drawable icon = new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_calendar);
             calendar.setIcon(icon);
         }
     }

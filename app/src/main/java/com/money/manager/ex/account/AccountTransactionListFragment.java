@@ -43,7 +43,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
@@ -468,7 +468,7 @@ public class AccountTransactionListFragment
 
         // Use a font icon.
 //        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_chevron_down);
-        Drawable icon = new UIHelper(getActivity()).getIcon(MMEXIconFont.Icon.mmx_chevron_down);
+        Drawable icon = new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_chevron_down);
 
         // get the toolbar item color.
 //        UIHelper uiHelper = new UIHelper(getActivity());
@@ -503,7 +503,7 @@ public class AccountTransactionListFragment
         // todo Use a font icon.
 //        UIHelper uiHelper = new UIHelper(getActivity());
 //        IconicsDrawable icon = new IconicsDrawable(getActivity())
-//                .icon(MMEXIconFont.Icon.mmx_filter)
+//                .icon(MMXIconFont.Icon.mmx_filter)
 //                .color(uiHelper.getPrimaryColor())
 //                .sizeDp(uiHelper.getToolbarIconSize());
 

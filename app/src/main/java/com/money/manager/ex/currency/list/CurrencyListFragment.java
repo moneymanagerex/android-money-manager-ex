@@ -37,7 +37,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -63,10 +63,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
-
-import dagger.Lazy;
 
 /**
  *  Currency list.
@@ -241,7 +237,7 @@ public class CurrencyListFragment
         // Customize with font icon, if needed.
         MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
         Drawable icon = new IconicsDrawable(getActivity())
-                .icon(MMEXIconFont.Icon.mmx_share_square)
+                .icon(MMXIconFont.Icon.mmx_share_square)
                 .color(uiHelper.getPrimaryColor())
                 .sizeDp(uiHelper.getToolbarIconSize());
         item.setIcon(icon);
