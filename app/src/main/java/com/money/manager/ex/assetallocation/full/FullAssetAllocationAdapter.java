@@ -19,6 +19,8 @@ package com.money.manager.ex.assetallocation.full;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,9 +117,8 @@ public class FullAssetAllocationAdapter
     @Override
     public void onViewRecycled(FullAssetClassViewHolder holder) {
         // reset the text color for diff
-        int defaultTextColor = holder.allocationDiffTextView.getTextColors().getDefaultColor();
+        int defaultTextColor = ContextCompat.getColor(getContext(), android.R.color.primary_text_dark);
         holder.allocationDiffTextView.setTextColor(defaultTextColor);
-
     }
 
     @Override
@@ -137,4 +138,8 @@ public class FullAssetAllocationAdapter
 //        expandedPosition = holder.getPosition();
 //        notifyItemChanged(expandedPosition);
 //    }
+
+    private Context getContext() {
+        return this.context;
+    }
 }
