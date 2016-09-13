@@ -17,6 +17,7 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxFileUtils;
@@ -87,7 +88,7 @@ public class ViewMobileData
         String source = MmxFileUtils.getRawAsString(context, R.raw.query_mobiledata);
 
         // insert WHERE statement, filter.
-        if(!StringUtils.isEmpty(where)) {
+        if(!TextUtils.isEmpty(where)) {
             source += " WHERE ";
             source += where;
         }
