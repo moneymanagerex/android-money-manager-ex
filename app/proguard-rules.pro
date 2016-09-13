@@ -173,3 +173,6 @@
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
+
+# Changelog
+-keep class it.gmariotti.changelibs.library.internal.ChangeLogAdapter { *; }
