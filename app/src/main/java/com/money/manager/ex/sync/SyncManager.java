@@ -33,6 +33,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.NetworkUtils;
@@ -153,7 +155,8 @@ public class SyncManager {
         String remotePath = getRemotePath();
         if (StringUtils.isEmpty(remotePath)) return;
 
-        new SyncPreferences(getContext()).setLocalFileChanged(true);
+        // Mark local file as changed.
+        markLocalFileChanged(true);
 
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
@@ -165,8 +168,6 @@ public class SyncManager {
         // Should we schedule an upload?
         SyncPreferences preferences = new SyncPreferences(getContext());
         if (preferences.getUploadImmediately()) {
-//            abortScheduledUpload();
-//            scheduleUpload();
             scheduleDelayedUpload();
         }
     }
@@ -548,8 +549,19 @@ public class SyncManager {
         return mPreferences;
     }
 
+    private void markLocalFileChanged(boolean changed) {
+        String localPath = getLocalPath();
+        RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
+        RecentDatabaseEntry currentDbEntry = recents.get(localPath);
+
+        currentDbEntry.isLocalFileChanged = changed;
+
+        recents.save();
+    }
+
     private void resetLocalChanges() {
-        new SyncPreferences(getContext()).setLocalFileChanged(false);
+//        new SyncPreferences(getContext()).setLocalFileChanged(false);
+        markLocalFileChanged(false);
     }
 
     /**

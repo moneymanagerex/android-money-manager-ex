@@ -62,14 +62,6 @@ public class SyncPreferences
         return getContext().getSharedPreferences(PreferenceConstants.SYNC_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    public boolean isLocalFileChanged() {
-        return get(R.string.pref_is_local_file_changed, false);
-    }
-
-    public void setLocalFileChanged(boolean value) {
-        set(R.string.pref_is_local_file_changed, value);
-    }
-
     public boolean isSyncEnabled() {
         return get(R.string.pref_sync_enabled, false);
     }

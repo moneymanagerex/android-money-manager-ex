@@ -53,6 +53,8 @@ public class RecentDatabaseEntryComparator
         if (rhs.remoteFileName == null) rhs.remoteFileName = "";
         if (!lhs.remoteFileName.equals(rhs.remoteFileName)) return 1;
 
+        if (lhs.isLocalFileChanged != rhs.isLocalFileChanged) return 1;
+
         return 0;
     }
 }

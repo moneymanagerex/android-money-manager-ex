@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
@@ -34,6 +33,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
@@ -41,14 +42,11 @@ import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
 
 import rx.SingleSubscriber;
-import rx.Subscriber;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -280,10 +278,11 @@ public class SyncService
 
     private void triggerSync(File localFile, CloudMetaData remoteFile) {
         SyncManager sync = new SyncManager(getApplicationContext());
-        SyncPreferences preferences = new SyncPreferences(getApplicationContext());
 
         // are there local changes?
-        boolean isLocalModified = preferences.isLocalFileChanged();
+        RecentDatabaseEntry currentDb = new RecentDatabasesProvider(getApplicationContext())
+                .get(localFile.getAbsolutePath());
+        boolean isLocalModified = currentDb.isLocalFileChanged;
         Timber.d("local file has changes: %b", isLocalModified);
 
         // are there remote changes?
@@ -304,14 +303,12 @@ public class SyncService
             return;
         }
         if (isRemoteModified) {
-            // remoteLastModified.isAfter(localLastModified)
             Timber.d("Remote file %s changed. Triggering download.", remoteFile.getPath());
             // download file
             triggerDownload(localFile, remoteFile);
             return;
         }
         if (isLocalModified) {
-            // remoteLastModified.isBefore(localLastModified)
             Timber.d("Local file %s has changed. Triggering upload.", localFile.getPath());
             // upload file
             triggerUpload(localFile, remoteFile);

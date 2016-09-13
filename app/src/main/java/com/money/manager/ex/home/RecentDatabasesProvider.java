@@ -46,6 +46,12 @@ public class RecentDatabasesProvider {
 
     private Context context;
 
+    /**
+     * Persists a recent database entry.
+     * @param key Local file path is used as the key.
+     * @param value The recent database object.
+     * @return Indicator if the value was saved successfully.
+     */
     public boolean add(String key, RecentDatabaseEntry value) {
         // check if this item already exist.
         if (contains(value)) {
@@ -81,6 +87,12 @@ public class RecentDatabasesProvider {
         return true;
     }
 
+    /**
+     * This method will find an existing item by comparing another object by its properties.
+     * The returned value is used when removing the entry from the collection (reference).
+     * @param entry Object to compare to.
+     * @return Existing entry.
+     */
     public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
         RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
 
@@ -90,6 +102,10 @@ public class RecentDatabasesProvider {
             }
         }
         return null;
+    }
+
+    public RecentDatabaseEntry get(String key) {
+        return this.map.get(key);
     }
 
     public boolean remove(RecentDatabaseEntry entry) {
@@ -136,10 +152,8 @@ public class RecentDatabasesProvider {
         }
 
         if (map == null) {
-//            this.queue = new ArrayDeque<>(5);
             this.map = new LinkedHashMap<>();
         } else {
-//            this.queue = queue;
             this.map = map;
         }
     }

@@ -45,6 +45,7 @@ public class RecentDatabaseEntry {
     public String filePath;
     public String remoteFileName;
     public boolean linkedToCloud;
+    public boolean isLocalFileChanged;
 
     public String getFileName() {
         File file = new File(this.filePath);
