@@ -16,6 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
+    <changelogversion versionName="2016.09.13.912">
+        <changelogtext>Replacing StringUtils with TextUtils to work around the MIUI bug.</changelogtext>
+        <changelogtext>Updating a couple of libraries.</changelogtext>
+    </changelogversion>
     <changelogversion versionName="2016.08.31.911">
         <changelogtext>Reducing the app file size.</changelogtext>
         <changelogtext>Updating multiple libraries and adapting code.</changelogtext>
