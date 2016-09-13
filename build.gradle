@@ -21,7 +21,7 @@ ext {
     buildToolsVersion = '24.0.2'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
-    supportLibrary = '24.2.0'
+    supportLibrary = '24.2.1'
     supportDependencies = [
             support             :       "com.android.support:support-v4:${supportLibrary}",
             appCompat        :         "com.android.support:appcompat-v7:${supportLibrary}",
@@ -39,7 +39,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }  // Fabric
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-rc1'
+        classpath 'com.android.tools.build:gradle:2.2.0-rc2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'io.fabric.tools:gradle:1.+'                  // Fabric
     }

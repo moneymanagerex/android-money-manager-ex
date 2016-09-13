@@ -157,7 +157,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.6.7'
+            , 'com.cloudrail:cloudrail-si-android:2.6.8'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
@@ -199,7 +199,7 @@ dependencies {
             , 'com.android.support:multidex:1.0.0'  // multidex support
             , 'com.nononsenseapps:filepicker:3.0.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-            , 'io.reactivex:rxjava:1.1.9'
+            , 'io.reactivex:rxjava:1.1.10'
 //            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
             , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
             , 'com.jakewharton.timber:timber:4.3.0'
