@@ -238,14 +238,11 @@ public class MmxDatabaseUtils {
 
         // check if valid
         if (!isValidDbFile(dbPath)) {
-            // getContext().getString(R.string.database_can_not_open_write)
             throw new IllegalArgumentException("Not a valid database file!");
-//            throw new RuntimeException();
         }
 
         // Store a Recent Database entry.
-        boolean linkedToCloud = !TextUtils.isEmpty(remotePath);
-        RecentDatabaseEntry recentDb = RecentDatabaseEntry.getInstance(dbPath, linkedToCloud, remotePath);
+        RecentDatabaseEntry recentDb = RecentDatabaseEntry.getInstance(dbPath, remotePath);
         RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
         boolean added = recentDbs.add(recentDb);
         if (!added) {

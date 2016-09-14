@@ -16,6 +16,8 @@
  */
 package com.money.manager.ex.home;
 
+import android.text.TextUtils;
+
 import java.io.File;
 
 /**
@@ -23,12 +25,11 @@ import java.io.File;
  */
 public class RecentDatabaseEntry {
 
-    public static RecentDatabaseEntry getInstance(String filePath, boolean linkedToCloud, String remoteFileName) {
+    public static RecentDatabaseEntry getInstance(String filePath, String remoteFileName) {
         //todo use TextUtils.isEmpty(remotePath) to identify if the entry is linked to a remote file.
 
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
         entry.filePath = filePath;
-        entry.linkedToCloud = linkedToCloud;
         entry.remoteFileName = remoteFileName;
         return entry;
     }
@@ -39,16 +40,20 @@ public class RecentDatabaseEntry {
      * @return Recent entry record that is not linked to a remote location.
      */
     public static RecentDatabaseEntry fromPath(String filePath) {
-        return getInstance(filePath, false, "");
+        return getInstance(filePath, "");
     }
 
     public String filePath;
     public String remoteFileName;
-    public boolean linkedToCloud;
+//    public boolean linkedToCloud;
     public boolean isLocalFileChanged;
 
     public String getFileName() {
         File file = new File(this.filePath);
         return file.getName();
+    }
+
+    public boolean isSynchronised() {
+        return !TextUtils.isEmpty(remoteFileName);
     }
 }

@@ -1173,7 +1173,7 @@ public class MainActivity
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
                 item.setTag(entry.filePath);
 
-                if (entry.linkedToCloud) {
+                if (entry.isSynchronised()) {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
                 } else {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_floppy_disk));
@@ -1273,7 +1273,7 @@ public class MainActivity
         if (recentDb.filePath.equals(currentDb)) return;
 
         // set the remote file path, if any.
-        String remotePath = recentDb.linkedToCloud
+        String remotePath = recentDb.isSynchronised()
                 ? recentDb.remoteFileName
                 : "";
         new SyncManager(this).setRemotePath(remotePath);

@@ -132,7 +132,7 @@ public class SyncServiceMessageHandler
         RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
 
         String localPath = new SyncManager(getContext()).getLocalPath();
-        RecentDatabaseEntry entry = RecentDatabaseEntry.getInstance(localPath, true, remoteFile);
+        RecentDatabaseEntry entry = RecentDatabaseEntry.getInstance(localPath, remoteFile);
 
         recents.add(entry);
     }

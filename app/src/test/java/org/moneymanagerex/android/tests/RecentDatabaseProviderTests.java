@@ -97,6 +97,11 @@ public class RecentDatabaseProviderTests {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test public void testDefaultItem() {
+        // the provider is newly created and should contain the default item
+        assertThat(_testObject.count()).isEqualTo(1);
+    }
+
     // Private
 
     private LinkedHashMap<String, RecentDatabaseEntry> getEntries() {
@@ -116,10 +121,8 @@ public class RecentDatabaseProviderTests {
         String unique = useRandomPath ? Double.toString(Math.random()) : "";
 
         entry.remoteFileName = "";
-        entry.linkedToCloud = false;
         entry.filePath = "filename" + unique + ".mmb";
 
         return entry;
     }
-
 }

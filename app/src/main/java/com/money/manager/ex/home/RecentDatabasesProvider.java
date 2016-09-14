@@ -96,6 +96,10 @@ public class RecentDatabasesProvider {
         return true;
     }
 
+    public int count() {
+        return this.map.size();
+    }
+
     /**
      * This method will find an existing item by comparing another object by its properties.
      * The returned value is used when removing the entry from the collection (reference).
