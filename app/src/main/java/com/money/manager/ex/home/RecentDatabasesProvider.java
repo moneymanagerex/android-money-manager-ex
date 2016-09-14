@@ -203,4 +203,19 @@ public class RecentDatabasesProvider {
 
         this.map.remove(firstKey);
     }
+
+    /*
+        Private
+     */
+
+    private RecentDatabaseEntry createDefaultEntry() {
+        RecentDatabaseEntry result = new RecentDatabaseEntry();
+
+        // todo: create the default entry.
+
+        // result.filePath = geta
+        // result.remoteFileName =
+
+        return result;
+    }
 }
