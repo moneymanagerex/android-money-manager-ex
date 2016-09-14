@@ -27,7 +27,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -79,7 +78,7 @@ public class RecentDatabaseProviderTests {
         // compare individual elements.
         
         for (RecentDatabaseEntry entry : actual.values()) {
-            RecentDatabaseEntry expected = testEntries.get(entry.filePath);
+            RecentDatabaseEntry expected = testEntries.get(entry.localPath);
             assertThat(gson.toJson(entry))
                     .isEqualTo(gson.toJson(expected));
         }
@@ -88,7 +87,7 @@ public class RecentDatabaseProviderTests {
     @Test
     public void testInsert() {
         RecentDatabaseEntry entry = getEntry(false);
-        String expected = "{\"filename.mmb\":{\"filePath\":\"filename.mmb\",\"remoteFileName\":\"\",\"linkedToCloud\":false}}";
+        String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remoteFileName\":\"\",\"linkedToCloud\":false}}";
 
         _testObject.add(entry);
 
@@ -102,6 +101,16 @@ public class RecentDatabaseProviderTests {
         assertThat(_testObject.count()).isEqualTo(1);
     }
 
+    @Test public void createDefaultItem() {
+        RecentDatabaseEntry empty = _testObject.createDefaultEntry();
+    }
+
+    @Test public void testGetCurrent() {
+        RecentDatabaseEntry current = _testObject.getCurrent();
+
+        assertThat(current).isNotNull();
+    }
+
     // Private
 
     private LinkedHashMap<String, RecentDatabaseEntry> getEntries() {
@@ -109,7 +118,7 @@ public class RecentDatabaseProviderTests {
 
         for(int i = 0; i < 3; i++) {
             RecentDatabaseEntry entry = getEntry(true);
-            map.put(entry.filePath, entry);
+            map.put(entry.localPath, entry);
         }
 
         return map;
@@ -121,7 +130,7 @@ public class RecentDatabaseProviderTests {
         String unique = useRandomPath ? Double.toString(Math.random()) : "";
 
         entry.remoteFileName = "";
-        entry.filePath = "filename" + unique + ".mmb";
+        entry.localPath = "filename" + unique + ".mmb";
 
         return entry;
     }

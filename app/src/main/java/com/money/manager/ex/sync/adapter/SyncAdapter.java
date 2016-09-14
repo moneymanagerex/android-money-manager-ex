@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.SyncManager;
 
@@ -100,7 +101,8 @@ public class SyncAdapter
         AppSettings settings = new AppSettings(getContext());
 
 //        String localFilename = settings.getDatabaseSettings().getDatabasePath();
-        String localFilename = sync.getLocalPath();
+//        String localFilename = sync.getLocalPath();
+        String localFilename = MoneyManagerApplication.getDatabasePath(getContext());
         String remoteFilename = sync.getRemotePath();
 
         // check if file is correct

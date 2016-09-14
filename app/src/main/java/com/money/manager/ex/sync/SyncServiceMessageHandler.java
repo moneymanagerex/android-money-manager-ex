@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.RecentDatabaseEntry;
@@ -131,7 +132,7 @@ public class SyncServiceMessageHandler
     private void storeRecentDb(String remoteFile) {
         RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
 
-        String localPath = new SyncManager(getContext()).getLocalPath();
+        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         RecentDatabaseEntry entry = RecentDatabaseEntry.getInstance(localPath, remoteFile);
 
         recents.add(entry);

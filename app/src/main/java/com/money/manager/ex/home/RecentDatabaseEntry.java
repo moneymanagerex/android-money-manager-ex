@@ -29,7 +29,7 @@ public class RecentDatabaseEntry {
 
     public static RecentDatabaseEntry getInstance(String filePath, String remoteFileName) {
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
-        entry.filePath = filePath;
+        entry.localPath = filePath;
         entry.remoteFileName = remoteFileName;
         return entry;
     }
@@ -43,13 +43,13 @@ public class RecentDatabaseEntry {
         return getInstance(filePath, "");
     }
 
-    public String filePath;
+    public String localPath;
     public boolean isLocalFileChanged;
     public String remoteFileName;
     public DateTime remoteLastChangedOn;
 
     public String getFileName() {
-        File file = new File(this.filePath);
+        File file = new File(this.localPath);
         return file.getName();
     }
 

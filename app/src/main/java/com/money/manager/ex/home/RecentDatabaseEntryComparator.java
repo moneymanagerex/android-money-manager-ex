@@ -47,7 +47,7 @@ public class RecentDatabaseEntryComparator
     @Override
     public int compare(RecentDatabaseEntry lhs, RecentDatabaseEntry rhs) {
         if (lhs.isSynchronised() != rhs.isSynchronised()) return 1;
-        if (!lhs.filePath.equals(rhs.filePath)) return 1;
+        if (!lhs.localPath.equals(rhs.localPath)) return 1;
 
         if (lhs.remoteFileName == null) lhs.remoteFileName = "";
         if (rhs.remoteFileName == null) rhs.remoteFileName = "";

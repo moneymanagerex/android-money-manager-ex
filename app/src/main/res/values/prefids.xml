@@ -97,7 +97,6 @@
     <!-- synchronization -->
     <string name="pref_dropbox_link">dropbox2link</string>
     <string name="pref_dropbox_unlink">dropbox2unlink</string>
-    <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
     <string name="pref_sync_enabled">pref_sync_enabled</string>
     <string name="pref_sync_provider">pref_sync_provider</string>
     <string name="pref_sync_via_wifi">pref_sync_via_wifi</string>
@@ -112,4 +111,7 @@
     <string name="pref_sync_upload">pref_sync_upload</string>
     <string name="pref_upload_immediately">pref_upload_immediately</string>
     <string name="pref_sync_on_app_start">pref_sync_on_app_start</string>
+    <!-- deprecated -->
+    <string name="pref_is_local_file_changed">pref_is_local_file_changed</string>
+    <string name="pref_dropbox_linked_file">dropbox2linkedfile</string>
 </resources>

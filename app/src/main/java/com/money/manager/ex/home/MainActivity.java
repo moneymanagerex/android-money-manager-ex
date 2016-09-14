@@ -1171,7 +1171,7 @@ public class MainActivity
                 String title = entry.getFileName();
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
-                item.setTag(entry.filePath);
+                item.setTag(entry.localPath);
 
                 if (entry.isSynchronised()) {
                     item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
@@ -1270,7 +1270,7 @@ public class MainActivity
     private void onOpenDatabaseClick(RecentDatabaseEntry recentDb) {
         // do nothing if selecting the currently open database
         String currentDb = MoneyManagerApplication.getDatabasePath(this);
-        if (recentDb.filePath.equals(currentDb)) return;
+        if (recentDb.localPath.equals(currentDb)) return;
 
         // set the remote file path, if any.
         String remotePath = recentDb.isSynchronised()
@@ -1278,7 +1278,7 @@ public class MainActivity
                 : "";
         new SyncManager(this).setRemotePath(remotePath);
 
-        requestDatabaseChange(recentDb.filePath, remotePath);
+        requestDatabaseChange(recentDb.localPath, remotePath);
     }
 
 //    private void originalShowFragment(Bundle savedInstanceState) {

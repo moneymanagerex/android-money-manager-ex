@@ -94,6 +94,8 @@ public class MoneyManagerApplication
      * @return Full path to the current database file.
      */
     public static String getDatabasePath(Context context) {
+        // todo: move this to the recent db provider
+
         DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
         String databasePath = dbSettings.getDatabasePath();
 

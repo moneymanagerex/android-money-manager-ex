@@ -22,8 +22,10 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.sync.SyncManager;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -63,9 +65,9 @@ public class RecentDatabasesProvider {
      */
     public boolean add(String key, RecentDatabaseEntry value) {
         // check if this item already exist.
-        if (contains(value)) {
+        if (contains(value.localPath)) {
             // Put as the last if it does.
-            remove(value);
+            remove(key);
         }
 
         this.map.put(key, value);
@@ -81,7 +83,7 @@ public class RecentDatabasesProvider {
     }
 
     public boolean add(RecentDatabaseEntry entry) {
-        return add(entry.filePath, entry);
+        return add(entry.localPath, entry);
     }
 
     /**
@@ -101,28 +103,54 @@ public class RecentDatabasesProvider {
     }
 
     /**
-     * This method will find an existing item by comparing another object by its properties.
-     * The returned value is used when removing the entry from the collection (reference).
-     * @param entry Object to compare to.
-     * @return Existing entry.
+     * Creates a database entry from the current settings. Used for transition from preferences
+     * to Database metadata entries.
+     * @return A database record that represents the current settings (local/remote db paths).
      */
-    public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
-        RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
+    public RecentDatabaseEntry createDefaultEntry() {
+        RecentDatabaseEntry entry = new RecentDatabaseEntry();
 
-        for (RecentDatabaseEntry existing : this.map.values()) {
-            if (comparator.compare(existing, entry) == 0) {
-                return existing;
-            }
-        }
-        return null;
+        entry.localPath = MoneyManagerApplication.getDatabasePath(getContext());
+        entry.isLocalFileChanged = new AppSettings(getContext()).get(R.string.pref_is_local_file_changed, false);
+        entry.remoteFileName = new SyncManager(getContext()).getRemotePath();
+
+        return entry;
     }
+
+//    /**
+//     * This method will find an existing item by comparing another object by its properties.
+//     * The returned value is used when removing the entry from the collection (reference).
+//     * @param entry Object to compare to.
+//     * @return Existing entry.
+//     */
+//    public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
+//        RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
+//
+//        for (RecentDatabaseEntry existing : this.map.values()) {
+//            if (comparator.compare(existing, entry) == 0) {
+//                return existing;
+//            }
+//        }
+//        return null;
+//    }
 
     public RecentDatabaseEntry get(String key) {
         return this.map.get(key);
     }
 
-    public boolean remove(RecentDatabaseEntry entry) {
-        RecentDatabaseEntry existing = find(entry);
+    public Context getContext() {
+        return this.context;
+    }
+
+    public RecentDatabaseEntry getCurrent() {
+        // todo find and return the current database
+        //this.map
+
+        return null;
+    }
+
+    public boolean remove(String localPath) {
+        RecentDatabaseEntry existing = get(localPath);
         if (existing != null) {
             this.map.remove(existing);
             return true;
@@ -132,17 +160,6 @@ public class RecentDatabasesProvider {
 
     public boolean contains(String path) {
         return this.map.containsKey(path);
-    }
-
-    public boolean contains(RecentDatabaseEntry entry) {
-        boolean found = false;
-
-        RecentDatabaseEntry existing = find(entry);
-        if (existing != null) {
-            found = true;
-        }
-
-        return found;
     }
 
     public SharedPreferences getPreferences() {
@@ -206,20 +223,5 @@ public class RecentDatabasesProvider {
         }
 
         this.map.remove(firstKey);
-    }
-
-    /*
-        Private
-     */
-
-    private RecentDatabaseEntry createDefaultEntry() {
-        RecentDatabaseEntry result = new RecentDatabaseEntry();
-
-        // todo: create the default entry.
-
-        // result.filePath = geta
-        // result.remoteFileName =
-
-        return result;
     }
 }

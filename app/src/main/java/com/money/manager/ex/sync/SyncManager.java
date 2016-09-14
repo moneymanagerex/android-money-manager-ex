@@ -161,7 +161,7 @@ public class SyncManager {
         // Should we upload automatically?
         if (mAutoUploadDisabled) return;
         if (!canSync()) {
-            Timber.i("Not on WiFi connection. Not synchronizing.");
+            Timber.i("No network connection. Not synchronizing.");
             return;
         }
 
@@ -180,7 +180,7 @@ public class SyncManager {
      * Assembles the path where the local synchronised file is expected to be found.
      * @return The path of the local cached copy of the remote database.
      */
-    public String getLocalPath() {
+    public String getDefaultLocalPath() {
         String remoteFile = getRemotePath();
         // now get only the file name
         String remoteFileName = new File(remoteFile).getName();
@@ -247,7 +247,8 @@ public class SyncManager {
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
         }
 
-        String localFile = getLocalPath();
+//        String localFile = getLocalPath();
+        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
                 remoteFile, messenger);
@@ -460,7 +461,8 @@ public class SyncManager {
         if (!(getContext() instanceof Activity)) return;
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        boolean isDbSet = dbUtils.useDatabase(getLocalPath(), getRemotePath());
+        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
+        boolean isDbSet = dbUtils.useDatabase(localFile, getRemotePath());
 
         if (!isDbSet) {
             Timber.w("could not change the database");
@@ -550,7 +552,7 @@ public class SyncManager {
     }
 
     private void markLocalFileChanged(boolean changed) {
-        String localPath = getLocalPath();
+        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
         RecentDatabaseEntry currentDbEntry = recents.get(localPath);
 
@@ -560,7 +562,6 @@ public class SyncManager {
     }
 
     private void resetLocalChanges() {
-//        new SyncPreferences(getContext()).setLocalFileChanged(false);
         markLocalFileChanged(false);
     }
 
@@ -583,7 +584,9 @@ public class SyncManager {
 //        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
         intent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, getLocalPath());
+        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
+        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+
         intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
 
         PendingIntent pintent = PendingIntent.getService(getContext(), SyncConstants.REQUEST_DELAYED_SYNC,

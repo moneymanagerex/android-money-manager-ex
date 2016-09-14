@@ -123,6 +123,7 @@ public class SelectDatabaseActivity
         }
 
         // store db setting
+        // todo new RecentDatabasesProvider(this).
         new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
 
         // open the main activity

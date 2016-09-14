@@ -28,7 +28,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -158,7 +157,7 @@ public class SyncPreferenceFragment
                     @Override
                     public void call(Boolean aBoolean) {
                         // download db from the cloud storage
-                        checkIfLocalFileExists();
+                        checkIfLocalFileExistsAndDownload();
                     }
                 })
         );
@@ -323,8 +322,8 @@ public class SyncPreferenceFragment
         });
     }
 
-    private void checkIfLocalFileExists() {
-        String local = getSyncManager().getLocalPath();
+    private void checkIfLocalFileExistsAndDownload() {
+        String local = MoneyManagerApplication.getDatabasePath(getActivity());
 
         // check if the file exists and prompt the user.
         if (new File(local).exists()) {
@@ -371,6 +370,7 @@ public class SyncPreferenceFragment
         String dbPath = dbDirectory.concat(File.separator).concat(fileName);
 
         // save preference
+        // todo: use recent files
         new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
     }
 }
