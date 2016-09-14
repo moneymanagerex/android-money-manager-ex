@@ -61,7 +61,8 @@ public class RecentDatabaseProviderTests {
         _testObject.save();
         // test
         String preference = _testObject.readPreference();
-        Assert.assertEquals("{}", preference);
+//        Assert.assertEquals("{}", preference);
+        assertThat(preference).isEqualTo("{}");
 
         // save full collection
 

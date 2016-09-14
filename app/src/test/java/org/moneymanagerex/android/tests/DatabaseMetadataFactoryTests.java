@@ -20,7 +20,6 @@ package org.moneymanagerex.android.tests;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabaseEntry;
-import com.money.manager.ex.home.RecentDatabasesProvider;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +28,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test the factory
