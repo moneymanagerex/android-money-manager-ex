@@ -97,12 +97,9 @@ public class RecentDatabaseProviderTests {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test public void testDefaultItem() {
-        // the provider is newly created and should contain the default item
-        assertThat(_testObject.count()).isEqualTo(1);
-    }
-
     @Test public void testGetCurrent() {
+        // todo prepare conditions
+
         RecentDatabaseEntry current = _testObject.getCurrent();
 
         assertThat(current).isNotNull();

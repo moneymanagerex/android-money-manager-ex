@@ -123,8 +123,11 @@ public class SelectDatabaseActivity
         }
 
         // store db setting
-        // todo new RecentDatabasesProvider(this).
         new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
+        // Add the current db to the recent db list.
+        RecentDatabasesProvider databases = new RecentDatabasesProvider(this);
+        RecentDatabaseEntry currentDb = databases.getCurrent();
+        databases.add(currentDb);
 
         // open the main activity
         Intent intent = IntentFactory.getMainActivityNew(this);

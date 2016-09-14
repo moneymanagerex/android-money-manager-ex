@@ -110,7 +110,7 @@ public class SyncManager {
     }
 
     public boolean isRemoteFileModified(CloudMetaData remoteFile) {
-        DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile);
+        DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile.getPath());
         DateTime remoteLastModified = getModificationDate(remoteFile);
 
         return !remoteLastModified.isEqual(cachedLastModified);
@@ -201,8 +201,8 @@ public class SyncManager {
      * @param file file name, key
      * @return date of last modification
      */
-    public DateTime getCachedLastModifiedDateFor(CloudMetaData file) {
-        String dateString = getPreferences().get(file.getPath(), null);
+    public DateTime getCachedLastModifiedDateFor(String remotePath) {
+        String dateString = getPreferences().get(remotePath, null);
         if (TextUtils.isEmpty(dateString)) return null;
 
         return new DateTime(dateString);

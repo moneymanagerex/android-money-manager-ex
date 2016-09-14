@@ -47,8 +47,12 @@ public class DatabaseMetadataFactory {
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
 
         entry.localPath = MoneyManagerApplication.getDatabasePath(getContext());
+        // todo remove the local change preference after upgrade.
         entry.isLocalFileChanged = new AppSettings(getContext()).get(R.string.pref_is_local_file_changed, false);
-        entry.remoteFileName = new SyncManager(getContext()).getRemotePath();
+
+        SyncManager syncManager = new SyncManager(getContext());
+        entry.remoteFileName = syncManager.getRemotePath();
+        entry.remoteLastChangedOn = syncManager.getCachedLastModifiedDateFor(entry.remoteFileName);
 
         return entry;
     }

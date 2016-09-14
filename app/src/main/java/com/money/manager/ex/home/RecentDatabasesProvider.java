@@ -18,12 +18,14 @@ package com.money.manager.ex.home;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.sync.SyncManager;
 
@@ -127,11 +129,21 @@ public class RecentDatabasesProvider {
         return this.context;
     }
 
+    /**
+     * find and return the current database
+     * @return The current database metadata, if any, or null.
+     */
     public RecentDatabaseEntry getCurrent() {
-        // todo find and return the current database
-        //this.map
+        String dbPath = new AppSettings(getContext()).getDatabaseSettings().getDatabasePath();
+        if (TextUtils.isEmpty(dbPath)) return null;
 
-        return null;
+        if (contains(dbPath)) {
+            return map.get(dbPath);
+        }
+
+        // otherwise create the default entry for the existing path.
+        RecentDatabaseEntry defaultDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
+        return defaultDb;
     }
 
     public boolean remove(String localPath) {
