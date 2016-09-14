@@ -280,22 +280,27 @@ public class SyncService
         SyncManager sync = new SyncManager(getApplicationContext());
 
         // are there local changes?
+        boolean isLocalModified = false;
         RecentDatabaseEntry currentDb = new RecentDatabasesProvider(getApplicationContext())
-                .get(localFile.getAbsolutePath());
-        boolean isLocalModified = currentDb.isLocalFileChanged;
+            .get(localFile.getAbsolutePath());
+        if (currentDb != null) {
+            isLocalModified = currentDb.isLocalFileChanged;
+        }
         Timber.d("local file has changes: %b", isLocalModified);
 
         // are there remote changes?
         boolean isRemoteModified = sync.isRemoteFileModified(remoteFile);
         Timber.d("Remote file has changes: %b", isRemoteModified);
 
+        // possible outcomes:
+
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
             sendStopEvent();
             return;
         }
-        // if both changed, there is a conflict!
         if (isLocalModified && isRemoteModified) {
+            // if both changed, there is a conflict!
             Timber.w(getString(R.string.both_files_modified));
             sendMessage(SyncServiceMessage.CONFLICT);
             sendStopEvent();
