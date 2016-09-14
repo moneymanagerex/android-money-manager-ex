@@ -610,7 +610,7 @@ public class MainActivity
                 SyncManager sync = new SyncManager(this);
                 sync.triggerSynchronization();
                 // re-set the sync timer.
-                sync.startSyncServiceAlarm();
+                sync.startSyncServiceHeartbeat();
                 break;
             case R.id.menu_open_database:
                 openDatabasePicker();
@@ -707,7 +707,7 @@ public class MainActivity
             dbUpdateCheckDone = true;
 
             // re-set sync timer.
-            sync.startSyncServiceAlarm();
+            sync.startSyncServiceHeartbeat();
         }
     }
 

@@ -329,17 +329,17 @@ public class SyncManager {
         mStorageClient.setProvider(provider);
     }
 
-    public void setRemotePath(String value) {
-        mRemoteFile = value;
-
-        getPreferences().set(R.string.pref_remote_file, value);
-    }
+//    public void setRemotePath(String value) {
+//        mRemoteFile = value;
+//
+////        getPreferences().set(R.string.pref_remote_file, value);
+//    }
 
     public void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
     }
 
-    public void startSyncServiceAlarm() {
+    public void startSyncServiceHeartbeat() {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
@@ -442,10 +442,10 @@ public class SyncManager {
         // Reset local changes indicator. todo this must handle changes made during the upload!
         resetLocalChanges();
 
-        // set remote file, if not set (setLinkedRemoteFile)
-        if (TextUtils.isEmpty(getRemotePath())) {
-            setRemotePath(remoteFile);
-        }
+//        // set remote file, if not set (setLinkedRemoteFile)
+//        if (TextUtils.isEmpty(getRemotePath())) {
+//            setRemotePath(remoteFile);
+//        }
 
         // save any renewed tokens
         mStorageClient.cacheCredentials();

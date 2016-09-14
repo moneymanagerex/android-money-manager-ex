@@ -35,6 +35,8 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
+import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -134,14 +136,14 @@ public class SyncPreferenceFragment
         // show selected value
         viewHolder.remoteFile.setSummary(remoteFile);
 
-        // Save the selection into preferences.
-        getSyncManager().setRemotePath(remoteFile);
+//        // Save the selection into preferences.
+//        getSyncManager().setRemotePath(remoteFile);
+
+        // save recent db.
+        saveDatabaseMetadata(remoteFile);
 
         // start sync service
-        getSyncManager().startSyncServiceAlarm();
-
-        // save local path.
-        storeLocalFileSetting(remoteFile);
+        getSyncManager().startSyncServiceHeartbeat();
 
         ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
             UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download)
@@ -152,7 +154,6 @@ public class SyncPreferenceFragment
                             return aBoolean;
                         }
                     })
-    //                .toBlocking().single();
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean aBoolean) {
@@ -181,7 +182,7 @@ public class SyncPreferenceFragment
                 Boolean enabled = (Boolean) o;
                 getSyncManager().setEnabled(enabled);
                 if (enabled) {
-                    getSyncManager().startSyncServiceAlarm();
+                    getSyncManager().startSyncServiceHeartbeat();
                 } else {
                     getSyncManager().stopSyncServiceAlarm();
                 }
@@ -267,7 +268,7 @@ public class SyncPreferenceFragment
                 sync.stopSyncServiceAlarm();
                 if (interval > 0) {
                     // don't start sync service if the interval is set to 0.
-                    sync.startSyncServiceAlarm();
+                    sync.startSyncServiceHeartbeat();
                 }
                 return true;
             }
@@ -361,7 +362,7 @@ public class SyncPreferenceFragment
         new UIHelper(getActivity()).showToast(R.string.sync_uploading);
     }
 
-    private void storeLocalFileSetting(String remoteFile) {
+    private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getActivity());
@@ -369,8 +370,10 @@ public class SyncPreferenceFragment
 
         String dbPath = dbDirectory.concat(File.separator).concat(fileName);
 
+        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
+        // todo: save changed date?
+
         // save preference
-        // todo: use recent files
         new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
     }
 }
