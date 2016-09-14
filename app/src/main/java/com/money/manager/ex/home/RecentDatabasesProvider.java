@@ -102,21 +102,6 @@ public class RecentDatabasesProvider {
         return this.map.size();
     }
 
-    /**
-     * Creates a database entry from the current settings. Used for transition from preferences
-     * to Database metadata entries.
-     * @return A database record that represents the current settings (local/remote db paths).
-     */
-    public RecentDatabaseEntry createDefaultEntry() {
-        RecentDatabaseEntry entry = new RecentDatabaseEntry();
-
-        entry.localPath = MoneyManagerApplication.getDatabasePath(getContext());
-        entry.isLocalFileChanged = new AppSettings(getContext()).get(R.string.pref_is_local_file_changed, false);
-        entry.remoteFileName = new SyncManager(getContext()).getRemotePath();
-
-        return entry;
-    }
-
 //    /**
 //     * This method will find an existing item by comparing another object by its properties.
 //     * The returned value is used when removing the entry from the collection (reference).

@@ -101,10 +101,6 @@ public class RecentDatabaseProviderTests {
         assertThat(_testObject.count()).isEqualTo(1);
     }
 
-    @Test public void createDefaultItem() {
-        RecentDatabaseEntry empty = _testObject.createDefaultEntry();
-    }
-
     @Test public void testGetCurrent() {
         RecentDatabaseEntry current = _testObject.getCurrent();
 
