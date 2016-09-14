@@ -137,7 +137,7 @@ public class SyncManager {
                 // save any renewed tokens
                 mStorageClient.cacheCredentials();
 
-                cacheRemoteLastModifiedDate(remoteFile);
+                saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
 
                 abortScheduledUpload();
             }
@@ -198,7 +198,7 @@ public class SyncManager {
 
     /**
      * Gets last saved datetime of the remote file modification from the preferences.
-     * @param file file name, key
+     * @param remotePath file name, key
      * @return date of last modification
      */
     public DateTime getCachedLastModifiedDateFor(String remotePath) {
@@ -231,7 +231,7 @@ public class SyncManager {
         // Create progress dialog only if called from the UI.
         if ((getContext() instanceof Activity)) {
             try {
-                //progress binaryDialog shown only when downloading an updated db file.
+                //progress dialog shown only when downloading an updated db file.
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage(getContext().getString(R.string.syncProgress));
@@ -247,7 +247,6 @@ public class SyncManager {
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
         }
 
-//        String localFile = getLocalPath();
         String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
@@ -437,7 +436,7 @@ public class SyncManager {
             Timber.w("Could not retrieve metadata after upload! Aborting.");
             return false;
         }
-        cacheRemoteLastModifiedDate(remoteFileMetadata);
+        saveRemoteLastModifiedDate(localPath, remoteFileMetadata);
 
         // Reset local changes indicator. todo this must handle changes made during the upload!
         resetLocalChanges();
@@ -501,12 +500,16 @@ public class SyncManager {
      * the synchronization.
      * @param file file name
      */
-    private void cacheRemoteLastModifiedDate(CloudMetaData file) {
+    private void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
         DateTime date = new DateTime(file.getModifiedAt());
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
-        getPreferences().set(file.getPath(), date.toString());
+//        getPreferences().set(file.getPath(), date.toString());
+        RecentDatabasesProvider databases = new RecentDatabasesProvider(getContext());
+        RecentDatabaseEntry currentDb = databases.getCurrent();
+        currentDb.remoteLastChangedOn = date;
+        databases.save();
     }
 
     /**

@@ -35,6 +35,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
@@ -228,29 +229,30 @@ public class MmxDatabaseUtils {
      * Change the database used by the app.
      * Sets the given database path (full path to the file) as the current database. Adds it to the
      * recent files. Resets the data layer.
-     * All that is needed after this call is to start the Main Activity.
+     * All that is needed after this method is to (re-)start the Main Activity, which will read all
+     * the stored settings.
      * @param dbPath The path to the database file to use.
      * @param remotePath The path to the remote file location in the cloud storage.
      * @return Indicator whether the database is valid for use.
      */
     public boolean useDatabase(@NonNull String dbPath, @NonNull String remotePath) {
-        //todo handle encrypted files by accepting password as an argument.
-
-        // check if valid
+        // check if the file is a valid database.
         if (!isValidDbFile(dbPath)) {
             throw new IllegalArgumentException("Not a valid database file!");
         }
 
+        // Set path in preferences.
+        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(dbPath);
+
         // Store a Recent Database entry.
-        RecentDatabaseEntry recentDb = RecentDatabaseEntry.getInstance(dbPath, remotePath);
+        RecentDatabaseEntry recentDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
+        recentDb.remoteFileName = remotePath;
+        //  RecentDatabaseEntry.getInstance(dbPath, remotePath);
         RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
         boolean added = recentDbs.add(recentDb);
         if (!added) {
             throw new RuntimeException("could not add to recent files");
         }
-
-        // Set path in preferences.
-        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(dbPath);
 
         // Switch database in the active data layer.
         MoneyManagerApplication.getApp().initDb(dbPath);

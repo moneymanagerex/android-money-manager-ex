@@ -203,8 +203,8 @@ public class SyncService
                     return;
                 }
 
-                // create notification for open file
-                // intent is passed to the notification and called if clicked on.
+                // Create the notification for opening of the downloaded file.
+                // The Intent is passed to the notification and called if clicked on.
                 Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                         RequestCode.SELECT_FILE, intent, 0);
@@ -218,13 +218,11 @@ public class SyncService
         };
         Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
-//        onDownloadHandler.onPreExecute();
         if (notification != null && notificationManager != null) {
             notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS, notification);
         }
         sendMessage(SyncServiceMessage.STARTING_DOWNLOAD);
 
-//        boolean ret = sync.download(remoteFile, tempFile);
         compositeSubscription.add(
             sync.downloadSingle(remoteFile, tempFile)
                     // do not run on another thread as then the service will be destroyed.
