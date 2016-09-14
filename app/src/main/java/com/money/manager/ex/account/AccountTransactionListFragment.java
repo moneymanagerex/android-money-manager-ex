@@ -427,7 +427,7 @@ public class AccountTransactionListFragment
         settings.setShowTransactions(range.key);
 
         // Save the selected period.
-        mFilter.dateRange = MmxDateTimeUtils.getDateRangeForPeriod(getActivity(), stringId);
+        mFilter.dateRange = new MmxDateTimeUtils(getActivity()).getDateRangeForPeriod(stringId);
 
         item.setChecked(true);
 
@@ -897,7 +897,7 @@ public class AccountTransactionListFragment
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = ranges.get(rangeName);
 
-        mFilter.dateRange = MmxDateTimeUtils.getDateRangeForPeriod(getActivity(), range.nameResourceId);
+        mFilter.dateRange = new MmxDateTimeUtils(getActivity()).getDateRangeForPeriod(range.nameResourceId);
     }
 
     private void updateAllDataListFragmentShowBalance() {

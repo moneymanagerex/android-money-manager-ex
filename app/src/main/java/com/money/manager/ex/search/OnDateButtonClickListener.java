@@ -58,7 +58,7 @@ public class OnDateButtonClickListener
         String calendarValue = mTextView.getText().toString();
 
         if (!TextUtils.isEmpty(calendarValue)) {
-            String userDatePattern = MmxDateTimeUtils.getUserDatePattern(mParent.getApplicationContext());
+            String userDatePattern = new MmxDateTimeUtils(mParent.getApplicationContext()).getUserDatePattern();
             DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
             dateTime = formatter.parseDateTime(calendarValue);
         }
@@ -83,7 +83,7 @@ public class OnDateButtonClickListener
                 mTextView.setTag(dateString);
 
                 DateTime date = new DateTime(dateString);
-                String displayText = MmxDateTimeUtils.getUserStringFromDateTime(mParent.getApplicationContext(), date);
+                String displayText = new MmxDateTimeUtils(mParent.getApplicationContext()).getUserStringFromDateTime(date);
                 mTextView.setText(displayText);
             } catch (Exception e) {
                 Timber.e(e, "date selected in search");

@@ -543,10 +543,10 @@ public class SearchFragment
         else {
             txtDateFrom.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
         }
-        txtDateFrom.setText(MmxDateTimeUtils.getUserStringFromDateTime(getContext(), searchParameters.dateFrom));
+        txtDateFrom.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateFrom));
         // Date to
         txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
-        txtDateTo.setText(MmxDateTimeUtils.getUserStringFromDateTime(getContext(), searchParameters.dateTo));
+        txtDateTo.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateTo));
 
         // Payee
         txtSelectPayee.setTag(searchParameters.payeeId);

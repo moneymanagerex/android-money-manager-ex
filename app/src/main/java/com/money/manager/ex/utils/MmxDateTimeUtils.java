@@ -134,16 +134,22 @@ public class MmxDateTimeUtils {
             .dayOfMonth().withMaximumValue();
     }
 
-    public static String getUserStringFromDateTime(Context ctx, DateTime dateTime) {
-        if (dateTime == null) return "";
-
-        String userDatePattern = getUserDatePattern(ctx);
-
-        return dateTime.toString(userDatePattern);
-    }
-
     public static void setDatePicker(DateTime date, DatePicker datePicker) {
         datePicker.updateDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
+    }
+
+    /*
+        Non-static methods
+     */
+
+    public MmxDateTimeUtils(Context context) {
+        this.context = context;
+    }
+
+    private Context context;
+
+    private Context getContext() {
+        return context;
     }
 
     /**
@@ -151,9 +157,9 @@ public class MmxDateTimeUtils {
      * @param resourceId String Id for name of the period.
      * @return Date range that matches the period selected.
      */
-    public static DateRange getDateRangeForPeriod(Context context, int resourceId) {
-        String value = context.getString(resourceId);
-        return getDateRangeForPeriod(context, value);
+    public DateRange getDateRangeForPeriod(int resourceId) {
+        String value = getContext().getString(resourceId);
+        return getDateRangeForPeriod(value);
     }
 
     /**
@@ -162,7 +168,7 @@ public class MmxDateTimeUtils {
      * @param period Period name in local language.
      * @return Date Range object.
      */
-    public static DateRange getDateRangeForPeriod(Context context, String period) {
+    public DateRange getDateRangeForPeriod(String period) {
         if (StringUtils.isEmpty(period)) return null;
 
         DateTime dateFrom;
@@ -170,8 +176,8 @@ public class MmxDateTimeUtils {
 
         // we ignore the minutes at the moment, since the field in the db only stores the date value.
 
-        if (period.equalsIgnoreCase(context.getString(R.string.all_transaction)) ||
-            period.equalsIgnoreCase(context.getString(R.string.all_time))) {
+        if (period.equalsIgnoreCase(getContext().getString(R.string.all_transaction)) ||
+                period.equalsIgnoreCase(context.getString(R.string.all_time))) {
             // All transactions.
             dateFrom = MmxDateTimeUtils.today().minusYears(1000);
             dateTo = MmxDateTimeUtils.today().plusYears(1000);
@@ -192,17 +198,17 @@ public class MmxDateTimeUtils {
             dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last3months))) {
             dateFrom = MmxDateTimeUtils.today().minusMonths(3)
-                .dayOfMonth().withMinimumValue();
+                    .dayOfMonth().withMinimumValue();
             dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.last6months))) {
             dateFrom = MmxDateTimeUtils.today().minusMonths(6)
-                .dayOfMonth().withMinimumValue();
+                    .dayOfMonth().withMinimumValue();
             dateTo = MmxDateTimeUtils.today();
         } else if (period.equalsIgnoreCase(context.getString(R.string.current_year))) {
             dateFrom = MmxDateTimeUtils.today().monthOfYear().withMinimumValue()
-                .dayOfMonth().withMinimumValue();
+                    .dayOfMonth().withMinimumValue();
             dateTo = MmxDateTimeUtils.today().monthOfYear().withMaximumValue()
-                .dayOfMonth().withMaximumValue();
+                    .dayOfMonth().withMaximumValue();
         } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
             // Future transactions
             dateFrom = MmxDateTimeUtils.today().plusDays(1);
@@ -220,26 +226,34 @@ public class MmxDateTimeUtils {
      * Get pattern defined by the user.
      * @return pattern user define
      */
-    public static String getUserDatePattern(Context context) {
-        InfoService service = new InfoService(context);
+    public String getUserDatePattern() {
+        InfoService service = new InfoService(getContext());
         String pattern = service.getInfoValue(InfoKeys.DATEFORMAT);
 
         if (!StringUtils.isEmpty(pattern)) {
             //replace part of pattern
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
-                .replace("%y", "yy").replace("%Y", "yyyy")
-                .replace("'", "''");
+                    .replace("%y", "yy").replace("%Y", "yyyy")
+                    .replace("'", "''");
         }
 
+        // && getContext().getResources().getStringArray(R.array.date_format_mask) != null
         if (StringUtils.isEmpty(pattern)
-            && context.getResources().getStringArray(R.array.date_format_mask) != null
-            && context.getResources().getStringArray(R.array.date_format_mask).length > 0){
-            pattern= context.getResources().getStringArray(R.array.date_format_mask)[0];
+                && getContext().getResources().getStringArray(R.array.date_format_mask).length > 0){
+            pattern= getContext().getResources().getStringArray(R.array.date_format_mask)[0];
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
-                .replace("%y", "yy").replace("%Y", "yyyy")
-                .replace("'", "''");
+                    .replace("%y", "yy").replace("%Y", "yyyy")
+                    .replace("'", "''");
         }
 
         return pattern;
+    }
+
+    public String getUserStringFromDateTime(DateTime dateTime) {
+        if (dateTime == null) return "";
+
+        String userDatePattern = getUserDatePattern();
+
+        return dateTime.toString(userDatePattern);
     }
 }
