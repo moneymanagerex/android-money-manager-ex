@@ -17,7 +17,7 @@
   -->
 <changelog bulletedList="true">
     <changelogversion versionName="2016.09.14.913">
-        <changelogtext>Handling potential minification issues for DateTime parsing.</changelogtext>
+        <changelogtext>Removing minification.</changelogtext>
         <changelogtext>Replacing StringUtils with TextUtils to work around the MIUI bug.</changelogtext>
         <changelogtext>Updating a couple of libraries.</changelogtext>
     </changelogversion>
