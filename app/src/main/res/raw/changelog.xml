@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.09.13.912">
+    <changelogversion versionName="2016.09.14.913">
+        <changelogtext>Handling potential minification issues for DateTime parsing.</changelogtext>
         <changelogtext>Replacing StringUtils with TextUtils to work around the MIUI bug.</changelogtext>
         <changelogtext>Updating a couple of libraries.</changelogtext>
     </changelogversion>
