@@ -29,6 +29,7 @@ import android.os.Messenger;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
@@ -78,6 +79,8 @@ public class SyncService
 
         compositeSubscription = new CompositeSubscription();
         mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     @Override
@@ -285,9 +288,9 @@ public class SyncService
 
         // are there local changes?
         boolean isLocalModified = false;
-//        RecentDatabaseEntry currentDb = new RecentDatabasesProvider(getApplicationContext())
         RecentDatabaseEntry currentDb = this.recentDatabasesProvider
             .get(localFile.getAbsolutePath());
+        // todo remove the null-check below after the default record is established.
         if (currentDb != null) {
             isLocalModified = currentDb.isLocalFileChanged;
         }
