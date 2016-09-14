@@ -76,7 +76,8 @@ public class CreateDatabaseActivity
         String dbPath = dbUtils.createDatabase();
         if (TextUtils.isEmpty(dbPath)) return;
 
-        dbUtils.useDatabase(dbPath, "");
+        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath);
+        dbUtils.useDatabase(db);
 
         // show message
 

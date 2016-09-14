@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
+import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -228,7 +230,8 @@ public class DatabaseSettingsFragment
         String dbPath = dbUtils.createDatabase(filename);
         if (TextUtils.isEmpty(dbPath)) return false;
 
-        boolean isSet = dbUtils.useDatabase(dbPath, "");
+        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath);
+        boolean isSet = dbUtils.useDatabase(db);
         if (!isSet) return false;
 
         // set main activity to reload, to open the new db file.

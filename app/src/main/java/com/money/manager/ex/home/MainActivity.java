@@ -310,7 +310,8 @@ public class MainActivity
                     return;
                 }
 
-                requestDatabaseChange(selectedPath, "");
+                RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(selectedPath);
+                changeDatabase(db);
                 break;
 
             case REQUEST_PASSCODE:
@@ -457,9 +458,109 @@ public class MainActivity
         }
     }
 
+    // Events (EventBus)
+
+    @Subscribe
+    public void onEvent(RequestAccountFragmentEvent event) {
+        showAccountFragment(event.accountId);
+    }
+
+    @Subscribe
+    public void onEvent(RequestWatchlistFragmentEvent event) {
+        showWatchlistFragment(event.accountId);
+    }
+
+    @Subscribe
+    public void onEvent(RequestPortfolioFragmentEvent event) {
+        showPortfolioFragment(event.accountId);
+    }
+
+    @Subscribe
+    public void onEvent(RequestOpenDatabaseEvent event) {
+        openDatabasePicker();
+    }
+
+    @Subscribe
+    public void onEvent(UsernameLoadedEvent event) {
+        setDrawerUserName(MoneyManagerApplication.getApp().getUserName());
+    }
+
+    @Subscribe
+    public void onEvent(AccountsTotalLoadedEvent event) {
+        setDrawerTotalAccounts(event.amount);
+    }
+
+    /**
+     * Force execution on the main thread as the event can be received on the service thread.
+     * @param event Sync started event.
+     */
+    @Subscribe
+    public void onEvent(SyncStartingEvent event) {
+        Single.fromCallable(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                mIsSynchronizing = true;
+                invalidateOptionsMenu();
+                return null;
+            }
+        })
+                .subscribeOn(AndroidSchedulers.mainThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    /**
+     * Force execution on the main thread as the event can be received on the service thread.
+     * @param event Sync stopped event.
+     */
+    @Subscribe
+    public void onEvent(SyncStoppingEvent event) {
+        Single.fromCallable(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                mIsSynchronizing = false;
+                invalidateOptionsMenu();
+                return null;
+            }
+        })
+            .subscribeOn(AndroidSchedulers.mainThread())
+//            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe();
+    }
+
+    /**
+     * A newer database file has just been downloaded. Reload.
+     */
+    @Subscribe
+    public void onEvent(DbFileDownloadedEvent event) {
+        // open the new database.
+        new SyncManager(this).useDownloadedDatabase();
+    }
+
     /*
         Custom methods
      */
+
+    public void changeDatabase(@NonNull RecentDatabaseEntry database) {
+        // String localPath, @NonNull String remotePath
+        try {
+            new MmxDatabaseUtils(this)
+                    .useDatabase(database);
+        } catch (Exception e) {
+            if (e instanceof IllegalArgumentException) {
+                Timber.w(e.getMessage());
+            } else {
+                Timber.e(e, "changing the database");
+            }
+            return;
+        }
+
+        // Refresh the recent files list.
+        initializeRecentDatabaseList();
+
+        setRestartActivity(true);
+        restartActivity();
+    }
 
     /**
      * @return the mIsDualPanel
@@ -589,85 +690,6 @@ public class MainActivity
         }
 
         return result;
-    }
-
-    // Events (EventBus)
-
-    @Subscribe
-    public void onEvent(RequestAccountFragmentEvent event) {
-        showAccountFragment(event.accountId);
-    }
-
-    @Subscribe
-    public void onEvent(RequestWatchlistFragmentEvent event) {
-        showWatchlistFragment(event.accountId);
-    }
-
-    @Subscribe
-    public void onEvent(RequestPortfolioFragmentEvent event) {
-        showPortfolioFragment(event.accountId);
-    }
-
-    @Subscribe
-    public void onEvent(RequestOpenDatabaseEvent event) {
-        openDatabasePicker();
-    }
-
-    @Subscribe
-    public void onEvent(UsernameLoadedEvent event) {
-        setDrawerUserName(MoneyManagerApplication.getApp().getUserName());
-    }
-
-    @Subscribe
-    public void onEvent(AccountsTotalLoadedEvent event) {
-        setDrawerTotalAccounts(event.amount);
-    }
-
-    /**
-     * Force execution on the main thread as the event can be received on the service thread.
-     * @param event Sync started event.
-     */
-    @Subscribe
-    public void onEvent(SyncStartingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = true;
-                invalidateOptionsMenu();
-                return null;
-            }
-        })
-                .subscribeOn(AndroidSchedulers.mainThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
-
-    /**
-     * Force execution on the main thread as the event can be received on the service thread.
-     * @param event Sync stopped event.
-     */
-    @Subscribe
-    public void onEvent(SyncStoppingEvent event) {
-        Single.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                mIsSynchronizing = false;
-                invalidateOptionsMenu();
-                return null;
-            }
-        })
-            .subscribeOn(AndroidSchedulers.mainThread())
-//            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe();
-    }
-
-    /**
-     * A newer database file has just been downloaded. Reload.
-     */
-    @Subscribe
-    public void onEvent(DbFileDownloadedEvent event) {
-        // open the new database.
-        new SyncManager(this).useDownloadedDatabase();
     }
 
     // Private.
@@ -1012,26 +1034,6 @@ public class MainActivity
         });
     }
 
-    private void changeDatabase(String localPath, String remotePath) {
-        try {
-            new MmxDatabaseUtils(this)
-                    .useDatabase(localPath, remotePath);
-        } catch (Exception e) {
-            if (e instanceof IllegalArgumentException) {
-                Timber.w(e.getMessage());
-            } else {
-                Timber.e(e, "changing the database");
-            }
-            return;
-        }
-
-        // Refresh the recent files list.
-        initializeRecentDatabaseList();
-
-        setRestartActivity(true);
-        restartActivity();
-    }
-
     private void createSyncToolbarItem(Menu menu) {
 //        Menu menu = getToolbar().getMenu();
         if (menu == null) return;
@@ -1218,10 +1220,12 @@ public class MainActivity
             String pathFile = getIntent().getData().getEncodedPath();
             // decode
             try {
-                pathFile = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
-                Timber.d("Path intent file to open: %s", pathFile);
+                String filePath = URLDecoder.decode(pathFile, "UTF-8"); // decode file path
+                Timber.d("Path intent file to open: %s", filePath);
+
                 // Open this database.
-                requestDatabaseChange(pathFile, "");
+                RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(filePath);
+                changeDatabase(db);
                 return;
             } catch (Exception e) {
                 Timber.e(e, "opening database from intent");
@@ -1230,6 +1234,24 @@ public class MainActivity
 
         boolean skipRemoteCheck = intent.getBooleanExtra(EXTRA_SKIP_REMOTE_CHECK, false);
         this.dbUpdateCheckDone = skipRemoteCheck;
+    }
+
+    private void initHomeFragment() {
+        String tag = HomeFragment.class.getSimpleName();
+
+        // See if the fragment is already there.
+        Fragment existingFragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (existingFragment != null) return;
+
+        // Create new Home fragment.
+        HomeFragment fragment = new HomeFragment();
+
+        int containerId = isDualPanel() ? getNavigationId() : getContentId();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(containerId, fragment, tag)
+                .commit();
+//                .commitAllowingStateLoss();
     }
 
     private void initializeDrawerVariables() {
@@ -1272,54 +1294,14 @@ public class MainActivity
         String currentDb = MoneyManagerApplication.getDatabasePath(this);
         if (recentDb.localPath.equals(currentDb)) return;
 
-        // set the remote file path, if any.
-        String remotePath = recentDb.isSynchronised()
-                ? recentDb.remoteFileName
-                : "";
-        new SyncManager(this).setRemotePath(remotePath);
+//        // set the remote file path, if any.
+//        String remotePath = recentDb.isSynchronised()
+//                ? recentDb.remoteFileName
+//                : "";
+//        new SyncManager(this).setRemotePath(remotePath);
 
-        requestDatabaseChange(recentDb.localPath, remotePath);
+        changeDatabase(recentDb);
     }
-
-//    private void originalShowFragment(Bundle savedInstanceState) {
-//        Core core = new Core(this);
-//
-//        // show home fragment
-//        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName());
-//        if (fragment == null) {
-//            // fragment create
-//            fragment = new HomeFragment();
-//            // add to stack
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
-//                    //.commit();
-//                    .commitAllowingStateLoss();
-//        } else if (core.isTablet()) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(getContentId(), fragment, HomeFragment.class.getSimpleName())
-//                    //.commit();
-//                    .commitAllowingStateLoss();
-//        }
-//
-////        // manage fragment
-////        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CLASS_FRAGMENT_CONTENT)) {
-////            String className = savedInstanceState.getString(KEY_CLASS_FRAGMENT_CONTENT);
-////            // check if className is null, then setting Home Fragment
-////            if (TextUtils.isEmpty(className)) {
-////                className = HomeFragment.class.getName();
-////            }
-////            if (className.contains(AccountTransactionListFragment.class.getSimpleName())) {
-////                // changeFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-////                showAccountFragment(Integer.parseInt(className.substring(className.indexOf("_") + 1)));
-////            } else {
-////                try {
-////                    showFragment(Class.forName(className));
-////                } catch (ClassNotFoundException e) {
-////                    Timber.e(e, "showing fragment %s", className);
-////                }
-////            }
-////        }
-//    }
 
 //    /**
 //     * Pick the database file to use with any registered provider in the user's system.
@@ -1343,22 +1325,6 @@ public class MainActivity
 //
 //        // Note that the selected file is handled in onActivityResult.
 //    }
-
-    /**
-     * Change the database.
-     *
-     * @param dbFilePath The path to the database file.
-     */
-    private void requestDatabaseChange(String dbFilePath, @NonNull String remotePath) {
-        Timber.v("Changing database to: %s", dbFilePath);
-
-        // e encrypted database(s)
-//        if (MmxDatabaseUtils.isEncryptedDatabase(dbFilePath)) {
-//            requestDatabasePassword(dbFilePath);
-//        } else {
-            changeDatabase(dbFilePath, remotePath);
-//        }
-    }
 
     private void requestDatabasePassword() {
         // request password for the current database.
@@ -1462,24 +1428,6 @@ public class MainActivity
         // use this call to prevent exception in some cases -> commitAllowingStateLoss()
         // The exception is "fragment already added".
 //        transaction.commitAllowingStateLoss();
-    }
-
-    private void initHomeFragment() {
-        String tag = HomeFragment.class.getSimpleName();
-
-        // See if the fragment is already there.
-        Fragment existingFragment = getSupportFragmentManager().findFragmentByTag(tag);
-        if (existingFragment != null) return;
-
-        // Create new Home fragment.
-        HomeFragment fragment = new HomeFragment();
-
-        int containerId = isDualPanel() ? getNavigationId() : getContentId();
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(containerId, fragment, tag)
-                .commit();
-//                .commitAllowingStateLoss();
     }
 
     /**

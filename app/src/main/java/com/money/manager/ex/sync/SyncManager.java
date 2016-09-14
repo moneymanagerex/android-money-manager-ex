@@ -32,6 +32,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
@@ -461,7 +462,10 @@ public class SyncManager {
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String localFile = MoneyManagerApplication.getDatabasePath(getContext());
-        boolean isDbSet = dbUtils.useDatabase(localFile, getRemotePath());
+
+        // todo: remote change date missing here!
+        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(localFile, getRemotePath());
+        boolean isDbSet = dbUtils.useDatabase(db);
 
         if (!isDbSet) {
             Timber.w("could not change the database");
@@ -507,7 +511,7 @@ public class SyncManager {
 
 //        getPreferences().set(file.getPath(), date.toString());
         RecentDatabasesProvider databases = new RecentDatabasesProvider(getContext());
-        RecentDatabaseEntry currentDb = databases.getCurrent();
+        RecentDatabaseEntry currentDb = databases.get(localPath);
         currentDb.remoteLastChangedOn = date;
         databases.save();
     }

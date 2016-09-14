@@ -47,20 +47,19 @@ public class UIHelper {
         activity.startActivityForResult(i, requestCode);
     }
 
+    /**
+     * Extracts the path to the selected database file.
+     * @param data Intent
+     * @return Path to the selected file.
+     */
     public static String getSelectedFile(Intent data) {
         if (data == null) return null;
 
-//        ArrayList<String> files = data.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
-//        if (files == null || files.size() == 0) return;
-        // files.get(0)
-
-//        return data.getStringExtra(FilePickerActivity.EXTRA_PATHS);
         String filePath = data.getData().getPath();
 
         // check if the db file is valid
         if (!MmxDatabaseUtils.isValidDbFile(filePath)) return null;
 
-//        return data.getData().toString();
         return filePath;
     }
 

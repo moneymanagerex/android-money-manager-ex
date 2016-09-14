@@ -27,22 +27,6 @@ import java.io.File;
  */
 public class RecentDatabaseEntry {
 
-    public static RecentDatabaseEntry getInstance(String filePath, String remoteFileName) {
-        RecentDatabaseEntry entry = new RecentDatabaseEntry();
-        entry.localPath = filePath;
-        entry.remoteFileName = remoteFileName;
-        return entry;
-    }
-
-    /**
-     * Creates an entry for a local file.
-     * @param filePath Path to the local file.
-     * @return Recent entry record that is not linked to a remote location.
-     */
-    public static RecentDatabaseEntry fromPath(String filePath) {
-        return getInstance(filePath, "");
-    }
-
     public String localPath;
     public boolean isLocalFileChanged;
     public String remoteFileName;

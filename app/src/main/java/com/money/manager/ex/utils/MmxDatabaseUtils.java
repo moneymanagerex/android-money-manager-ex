@@ -231,31 +231,28 @@ public class MmxDatabaseUtils {
      * recent files. Resets the data layer.
      * All that is needed after this method is to (re-)start the Main Activity, which will read all
      * the stored settings.
-     * @param dbPath The path to the database file to use.
-     * @param remotePath The path to the remote file location in the cloud storage.
      * @return Indicator whether the database is valid for use.
      */
-    public boolean useDatabase(@NonNull String dbPath, @NonNull String remotePath) {
+    public boolean useDatabase(@NonNull RecentDatabaseEntry database) {
+        // String dbPath, @NonNull String remotePath
+
         // check if the file is a valid database.
-        if (!isValidDbFile(dbPath)) {
+        if (!isValidDbFile(database.localPath)) {
             throw new IllegalArgumentException("Not a valid database file!");
         }
 
         // Set path in preferences.
-        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(dbPath);
+        new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(database.localPath);
 
-        // Store a Recent Database entry.
-        RecentDatabaseEntry recentDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
-        recentDb.remoteFileName = remotePath;
-        //  RecentDatabaseEntry.getInstance(dbPath, remotePath);
+        // Store the Recent Database entry.
         RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
-        boolean added = recentDbs.add(recentDb);
+        boolean added = recentDbs.add(database);
         if (!added) {
             throw new RuntimeException("could not add to recent files");
         }
 
         // Switch database in the active data layer.
-        MoneyManagerApplication.getApp().initDb(dbPath);
+        MoneyManagerApplication.getApp().initDb(database.localPath);
 
         resetContentProvider();
 

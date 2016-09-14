@@ -17,6 +17,7 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -28,6 +29,25 @@ import com.money.manager.ex.sync.SyncManager;
  */
 
 public class DatabaseMetadataFactory {
+
+    public static RecentDatabaseEntry getInstance(String localPath) {
+        RecentDatabaseEntry db = new RecentDatabaseEntry();
+        db.localPath = localPath;
+        db.remoteFileName = "";
+        return db;
+    }
+
+    public static RecentDatabaseEntry getInstance(String filePath, @NonNull String remoteFileName) {
+        RecentDatabaseEntry entry = new RecentDatabaseEntry();
+        entry.localPath = filePath;
+        entry.remoteFileName = remoteFileName;
+        return entry;
+    }
+
+    /*
+        dynamic
+     */
+
     public DatabaseMetadataFactory(Context context) {
         this.context = context;
     }
