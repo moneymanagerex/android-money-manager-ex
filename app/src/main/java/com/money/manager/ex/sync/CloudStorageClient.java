@@ -19,6 +19,7 @@ package com.money.manager.ex.sync;
 
 import android.content.Context;
 
+import com.cloudrail.si.CloudRail;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -54,10 +55,13 @@ class CloudStorageClient {
         NetworkUtils network = new NetworkUtils(getContext());
         if (!network.isOnline()) return;
 
+        CloudRail.setAppKey("57d9a85c40cb6c08612de98f");
+
         createProviders();
         restoreProviderCache();
 
         // Use current provider.
+        // todo read from the current db entry
         String providerCode = getPreferences().loadPreference(R.string.pref_sync_provider, CloudStorageProviderEnum.DROPBOX.name());
         CloudStorageProviderEnum provider = CloudStorageProviderEnum.DROPBOX;
         if (CloudStorageProviderEnum.contains(providerCode)) {
