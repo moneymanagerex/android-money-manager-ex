@@ -176,3 +176,12 @@
 
 # Changelog
 -keep class it.gmariotti.changelibs.library.internal.ChangeLogAdapter { *; }
+
+# Joda Time. This is supposedly included in the lib itself(?).
+-dontwarn org.joda.convert.**
+-dontwarn org.joda.time.**
+-keep class org.joda.time.** { *; }
+-keep interface org.joda.time.** { *; }
+
+# fix for build errors
+-keepattributes EnclosingMethod
