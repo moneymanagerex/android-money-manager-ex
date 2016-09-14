@@ -18,6 +18,8 @@ package com.money.manager.ex.home;
 
 import android.text.TextUtils;
 
+import org.joda.time.DateTime;
+
 import java.io.File;
 
 /**
@@ -26,8 +28,6 @@ import java.io.File;
 public class RecentDatabaseEntry {
 
     public static RecentDatabaseEntry getInstance(String filePath, String remoteFileName) {
-        //todo use TextUtils.isEmpty(remotePath) to identify if the entry is linked to a remote file.
-
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
         entry.filePath = filePath;
         entry.remoteFileName = remoteFileName;
@@ -44,9 +44,9 @@ public class RecentDatabaseEntry {
     }
 
     public String filePath;
-    public String remoteFileName;
-//    public boolean linkedToCloud;
     public boolean isLocalFileChanged;
+    public String remoteFileName;
+    public DateTime remoteLastChangedOn;
 
     public String getFileName() {
         File file = new File(this.filePath);
