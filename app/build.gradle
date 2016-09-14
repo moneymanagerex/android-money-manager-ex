@@ -79,7 +79,7 @@ android {
             applicationIdSuffix ".debug"
             
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Disable fabric build id for debug builds
