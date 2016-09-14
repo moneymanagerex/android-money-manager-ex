@@ -29,6 +29,7 @@ import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
+import com.money.manager.ex.sync.SyncService;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
@@ -42,7 +43,7 @@ import dagger.Component;
  */
 @Singleton
 @Component(modules = MmxModule.class)
-public interface MmexComponent {
+public interface MmxComponent {
     // Example on how to expose a provision method.
 //    MmxOpenHelper getHelper();
 
@@ -63,8 +64,11 @@ public interface MmexComponent {
     void inject(MmxContentProvider provider);
     void inject(MmxDatabaseUtils utils);
 
-    // Services
+    // Business Services
     void inject(CurrencyService service);
+
+    // Intent Services
+    void inject(SyncService service);
 
     // Repositories
     void inject(StockRepositorySql repository);

@@ -46,6 +46,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import rx.SingleSubscriber;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -63,6 +65,8 @@ public class SyncService
     public SyncService() {
         super("com.money.manager.ex.sync.SyncService");
     }
+
+    @Inject RecentDatabasesProvider recentDatabasesProvider;
 
     private CompositeSubscription compositeSubscription;
     private Messenger mOutMessenger;
@@ -281,7 +285,8 @@ public class SyncService
 
         // are there local changes?
         boolean isLocalModified = false;
-        RecentDatabaseEntry currentDb = new RecentDatabasesProvider(getApplicationContext())
+//        RecentDatabaseEntry currentDb = new RecentDatabasesProvider(getApplicationContext())
+        RecentDatabaseEntry currentDb = this.recentDatabasesProvider
             .get(localFile.getAbsolutePath());
         if (currentDb != null) {
             isLocalModified = currentDb.isLocalFileChanged;

@@ -21,11 +21,14 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.settings.PreferenceConstants;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -35,6 +38,12 @@ import timber.log.Timber;
 public class RecentDatabasesProvider {
 
     private static final String PREF_KEY = "LIST";
+
+    @Inject
+    public RecentDatabasesProvider(MoneyManagerApplication app) {
+        this.context = app;
+        load();
+    }
 
     public RecentDatabasesProvider(Context context) {
         this.context = context.getApplicationContext();
@@ -148,11 +157,12 @@ public class RecentDatabasesProvider {
         try {
             map = parseStorageContent(value);
         } catch (Exception e) {
-            Timber.e(e, "parsing recents");
+            Timber.e(e, "parsing recent databases content");
         }
 
         if (map == null) {
             this.map = new LinkedHashMap<>();
+            // todo: create the default entry for the current database, if any.
         } else {
             this.map = map;
         }
