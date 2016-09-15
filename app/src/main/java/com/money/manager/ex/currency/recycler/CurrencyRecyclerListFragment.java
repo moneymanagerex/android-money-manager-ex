@@ -232,7 +232,7 @@ public class CurrencyRecyclerListFragment
         boolean updated = ui.onPriceDownloaded(event.symbol, event.price, event.date);
         if (!updated) {
             // show error msg
-            new UIHelper(getActivity()).showToast("could not save the price!");
+            new UIHelper(getActivity()).showToast("could not update the price!");
         }
     }
 

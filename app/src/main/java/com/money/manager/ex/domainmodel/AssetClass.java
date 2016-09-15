@@ -88,7 +88,7 @@ public class AssetClass
 //    public void writeToParcel(Parcel dest, int flags) {
 //        super.writeToParcel(dest, flags);
 //
-//        // now just save calculated fields
+//        // now just update calculated fields
 //
 //        dest.writeString(getValue().toString());
 //        dest.writeString(getCurrentAllocation().toString());

@@ -144,7 +144,7 @@ public class SyncPreferenceFragment
         // show selected value
         viewHolder.remoteFile.setSummary(remoteFile);
 
-        // save recent db.
+        // update recent db.
         saveDatabaseMetadata(remoteFile);
 
         // start sync service
@@ -208,7 +208,7 @@ public class SyncPreferenceFragment
                 // set the new provider
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
 
-                // log in to the provider immediately and save to persistence.
+                // log in to the provider immediately and update to persistence.
                 ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
                     sync.login()
                             .subscribeOn(Schedulers.io())
@@ -377,7 +377,7 @@ public class SyncPreferenceFragment
                 .getDefaultDatabaseDirectory()
                 .concat(File.separator).concat(fileName);
 
-        // save current database path
+        // update current database path
         new AppSettings(getActivity()).set(R.string.pref_database_path, localPath);
 
         DatabaseMetadata db = DatabaseMetadataFactory.getInstance(localPath, remoteFile);

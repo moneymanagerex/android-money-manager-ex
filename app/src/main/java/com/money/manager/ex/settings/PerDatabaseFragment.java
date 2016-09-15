@@ -127,7 +127,7 @@ public class PerDatabaseFragment
                     if (infoService.setInfoValue(InfoKeys.DATEFORMAT, (String) newValue)) {
                         lstDateFormat.setSummary(getDateFormatFromMask((String) newValue));
                     }
-                    // Do not save to preferences file.
+                    // Do not update to preferences file.
                     return false;
                 }
             });

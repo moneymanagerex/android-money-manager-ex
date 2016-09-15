@@ -164,7 +164,7 @@ public class Encryptor {
     private byte[] retrieveSalt() {
         // Salt must be at least the same size as the key.
         byte[] salt = new byte[KEY_SIZE];
-        // Create a random salt if encrypting for the first time, and save it for future use.
+        // Create a random salt if encrypting for the first time, and update it for future use.
         readFromFileOrCreateRandom("salt", salt);
         return salt;
     }

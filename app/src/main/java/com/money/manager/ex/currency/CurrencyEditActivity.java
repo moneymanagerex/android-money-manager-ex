@@ -40,7 +40,7 @@ public class CurrencyEditActivity
 
     // key intent
     public static final String KEY_CURRENCY_ID = "CurrencyEditActivity:CurrencyId";
-    // save-instance key
+    // update-instance key
     private static final String KEY_CURRENCY_NAME = "CurrencyEditActivity:CurrencyName";
     private static final String KEY_CURRENCY_SYMBOL = "CurrencyEditActivity:CurrencySymbol";
     private static final String KEY_UNIT_NAME = "CurrencyEditActivity:UnitName";
@@ -84,7 +84,7 @@ public class CurrencyEditActivity
 
         this.holder = CurrencyEditViewHolder.initialize(this);
 
-        // save instance
+        // update instance
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
@@ -200,7 +200,7 @@ public class CurrencyEditActivity
     }
 
     /**
-     * This method save data into database
+     * This method update data into database
      * @return true if data is update into database
      */
     private boolean save() {

@@ -32,7 +32,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
-import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
@@ -90,6 +90,7 @@ public class MmxDatabaseUtils {
 
     // Dynamic
 
+    @Inject
     public MmxDatabaseUtils(Context context){
         mContext = context;
 
@@ -99,6 +100,7 @@ public class MmxDatabaseUtils {
 
     @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
     @Inject Lazy<MmxOpenHelper> openHelper;
+    @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
     private Context mContext;
 
     public Context getContext() {
@@ -154,7 +156,7 @@ public class MmxDatabaseUtils {
         boolean result = false;
 
         // check if there are duplicate records in Info Table
-        InfoRepository repo = new InfoRepository(getContext());
+        InfoRepositorySql repo = infoRepositorySqlLazy.get(); //new InfoRepositorySql(getContext());
         List<Info> results = repo.loadAll(InfoKeys.DATEFORMAT);
         if (results == null) return false;
 

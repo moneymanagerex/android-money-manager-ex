@@ -322,7 +322,7 @@ public class WatchlistFragment
         StockRepository repo = getStockRepository();
         repo.updateCurrentPrice(symbol, price);
 
-        // save price history record.
+        // update price history record.
         StockHistoryRepository historyRepo = mDataFragment.getStockHistoryRepository();
         historyRepo.addStockHistoryRecord(symbol, price, date);
 

@@ -69,7 +69,7 @@ public class AccountService
                                  boolean favourite, int currencyId) {
         Account account = Account.create(name, accountType, status, favourite, currencyId);
 
-        // save
+        // update
         AccountRepository repo = new AccountRepository(getContext());
         repo.save(account);
 

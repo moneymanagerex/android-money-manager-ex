@@ -253,7 +253,7 @@ public class CategoryListFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case ID_LOADER_CATEGORYSUB:
-                // save id selected
+                // update id selected
                 if (getExpandableListAdapter() != null && getExpandableListAdapter().getGroupCount() > 0) {
                     CategoryExpandableListAdapter adapter = (CategoryExpandableListAdapter) getExpandableListAdapter();
                     mIdGroupChecked = adapter.getIdGroupChecked();
@@ -402,7 +402,7 @@ public class CategoryListFragment
                 if (mCategories.size() > 0 && listSubCategories != null) {
                     mSubCategories.put(mCategories.get(mCategories.size() - 1), listSubCategories);
                 }
-                // save key
+                // update key
                 key = data.getInt(data.getColumnIndex(QueryCategorySubCategory.CATEGID));
 
                 // create instance category

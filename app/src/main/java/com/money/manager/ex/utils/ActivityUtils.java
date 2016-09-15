@@ -32,7 +32,7 @@ public class ActivityUtils {
     public static int forceCurrentOrientation(Activity activity) {
         int prevOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         if (activity != null) {
-            prevOrientation = activity.getRequestedOrientation(); // save current position
+            prevOrientation = activity.getRequestedOrientation(); // update current position
 
             if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 if (activity.getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0 ||

@@ -115,7 +115,7 @@ public class EditTransactionTests {
 
         // TODO: change date
 
-        // TODO: 25/09/2015 save
+        // TODO: 25/09/2015 update
         // TODO: 25/09/2015 check that the transaction exists with today's date
 
         // not finished and probably won't be as we can't select the correct date.

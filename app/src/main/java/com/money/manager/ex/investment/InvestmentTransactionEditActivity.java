@@ -435,7 +435,7 @@ public class InvestmentTransactionEditActivity
 
         if (!validate()) return false;
 
-        // save
+        // update
         StockRepository repository = new StockRepository(getApplicationContext());
         if (mStock.getId() != null) {
             repository.save(mStock);

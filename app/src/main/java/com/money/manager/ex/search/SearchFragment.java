@@ -218,7 +218,7 @@ public class SearchFragment
                     categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
                     categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
                     categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
-                    //save into button
+                    //update into button
                     displayCategory(categorySub);
                 }
         }
@@ -250,7 +250,7 @@ public class SearchFragment
         if (view != null && view instanceof TextView) {
             TextView textView = (TextView) view;
 
-            // save the value in tag?
+            // update the value in tag?
             String value = event.amount.toString();
             textView.setTag(value);
 

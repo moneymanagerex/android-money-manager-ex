@@ -151,7 +151,7 @@ public class MoneyManagerApplication
     public void onCreate() {
         super.onCreate();
 
-        // save instance of application
+        // update instance of application
         appInstance = this;
 
         // set default text size.
@@ -268,7 +268,7 @@ public class MoneyManagerApplication
 
     /**
      * @param userName the userName to set
-     * @param save     save into database
+     * @param save     update into database
      */
     public boolean setUserName(String userName, boolean save) {
         MoneyManagerApplication.userName = userName;

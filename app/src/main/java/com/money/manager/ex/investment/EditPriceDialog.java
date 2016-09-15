@@ -103,7 +103,7 @@ public class EditPriceDialog
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //save price
+                //update price
                 StockRepository repo = new StockRepository(getContext());
                 repo.updateCurrentPrice(mPrice.symbol, mPrice.price);
 

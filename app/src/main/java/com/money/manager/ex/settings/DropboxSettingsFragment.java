@@ -311,7 +311,7 @@
 //
 //        if (newFile == null) return;
 //
-//        // save value
+//        // update value
 //        mDropboxHelper.setLinkedRemoteFile(newFile.toString());
 //        pDropboxFile.setSummary(newFile);
 //        // check if files is modified

@@ -30,6 +30,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
+import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Info;
@@ -362,8 +363,6 @@ public class MmxOpenHelper
     }
 
     private void initBaseCurrency(SQLiteDatabase db) {
-        Cursor currencyCursor;
-
         // currencies
         CurrencyService currencyService = new CurrencyService(getContext());
         Currency systemCurrency = currencyService.getSystemDefaultCurrency();
@@ -371,8 +370,15 @@ public class MmxOpenHelper
 
         InfoService infoService = new InfoService(getContext());
 
-        currencyCursor = db.rawQuery(
-            "SELECT * FROM " + infoService.repository.getSource() +
+        // todo: try query generator.
+//        String sql = new Query()
+//                .select()
+//                .from(InfoRepositorySql.TABLE_NAME)
+//                .where(Info.INFONAME + "=?", InfoKeys.BASECURRENCYID)
+//                .toString();
+
+        Cursor currencyCursor = db.rawQuery(
+            "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
             " WHERE " + Info.INFONAME + "=?",
             new String[]{ InfoKeys.BASECURRENCYID});
         if (currencyCursor == null) return;

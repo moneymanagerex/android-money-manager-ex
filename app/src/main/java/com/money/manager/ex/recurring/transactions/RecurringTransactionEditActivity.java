@@ -104,7 +104,7 @@ public class RecurringTransactionEditActivity
 
         showStandardToolbarActions();
 
-        // manage save instance
+        // manage update instance
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
@@ -154,7 +154,7 @@ public class RecurringTransactionEditActivity
 
         outState.putParcelable(KEY_MODEL, Parcels.wrap(mCommonFunctions.transactionEntity));
 
-        // save the state interface
+        // update the state interface
         outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(KEY_TRANS_STATUS, mCommonFunctions.transactionEntity.getStatus());

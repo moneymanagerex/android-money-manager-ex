@@ -38,6 +38,10 @@ public class Query {
 //        this.from = table;
 //    }
 
+    public Query select() {
+        return this;
+    }
+
     /**
      * Sets the projection.
      * @param projection The projection to use. The fields to fetch.

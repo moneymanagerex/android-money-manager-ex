@@ -1167,7 +1167,7 @@ public class EditTransactionCommonFunctions {
     /**
      * Check if there is only one Split Category and transforms the transaction to a non-split
      * transaction, removing the split category record.
-     * @return True if there is only one split. Need to save the transaction.
+     * @return True if there is only one split. Need to update the transaction.
      */
     public boolean convertOneSplitIntoRegularTransaction() {
         if (getSplitTransactions().size() != 1) return false;

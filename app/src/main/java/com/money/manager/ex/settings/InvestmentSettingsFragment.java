@@ -138,7 +138,7 @@ public class InvestmentSettingsFragment
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                // save
+                // update
                 String name = (String) o;
                 QuoteProviders provider = QuoteProviders.valueOf(name);
                 settings.setQuoteProvider(provider);
@@ -168,7 +168,7 @@ public class InvestmentSettingsFragment
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                // save
+                // update
                 String name = (String) o;
                 QuoteProviders provider = QuoteProviders.valueOf(name);
                 settings.setExchangeRateProvider(provider);

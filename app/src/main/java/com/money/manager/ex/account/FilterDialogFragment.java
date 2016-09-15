@@ -178,7 +178,7 @@ public class FilterDialogFragment
                 // un/set favourite flag
                 boolean favourite = mAccount.getFavorite();
                 mAccount.setFavorite(!favourite);
-                // save
+                // update
                 AccountRepository repo = new AccountRepository(getActivity());
                 boolean updated = repo.save(mAccount);
                 if (!updated) {

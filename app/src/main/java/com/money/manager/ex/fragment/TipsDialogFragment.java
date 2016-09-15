@@ -40,7 +40,7 @@ import com.money.manager.ex.utils.MmxFileUtils;
 
 public class TipsDialogFragment extends DialogFragment {
     public static final String PREF_DIALOG = "com.money.manager.ex_tips_dialog_preferences";
-    //Constant save instance
+    //Constant update instance
     private static final String KEY_KEY = "TipsDialogFragment:Key";
     private static final String KEY_TITLE = "TipsDialogFragment:Title";
     private static final String KEY_TIPS = "TipsDialogFragment:Tips";

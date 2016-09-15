@@ -106,7 +106,7 @@
 //        if (mHelper == null) return;
 //        if (!mHelper.isLinked()) return;
 //
-//        // save the last modified date so that we can correctly synchronize later.
+//        // update the last modified date so that we can correctly synchronize later.
 //        File database = new File(MoneyManagerApplication.getDatabasePath(mContext));
 //        mHelper.setDateLastModified(database.getName(), Calendar.getInstance().getTime());
 //
@@ -329,7 +329,7 @@
 //                // complete authentication
 //                session.finishAuthentication();
 //
-//                // save login credentials
+//                // update login credentials
 //                TokenPair tokens = session.getAccessTokenPair();
 //                if (tokens != null) {
 //                    storeKeysToken(tokens.key, tokens.secret);
@@ -580,7 +580,7 @@
 //            @Override
 //            protected void onPostExecute(Boolean result) {
 //                super.onPostExecute(result);
-//                //save date last modified
+//                //update date last modified
 //                if (result) {
 //                    setDateLastModified(dropboxFile.fileName(), RESTUtility.parseDate(dropboxFile.modified));
 //                }
@@ -621,7 +621,7 @@
 //            @Override
 //            protected void onPostExecute(Boolean result) {
 //                super.onPostExecute(result);
-//                //save date last modified
+//                //update date last modified
 //                if (result && mEntryDropboxFile != null) {
 //                    setDateLastModified(mEntryDropboxFile.fileName(), RESTUtility.parseDate(mEntryDropboxFile.modified));
 //                }

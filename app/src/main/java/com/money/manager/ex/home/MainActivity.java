@@ -1213,7 +1213,7 @@ public class MainActivity
             }
         }
 
-        // save the current orientation.
+        // update the current orientation.
         deviceOrientation = currentOrientation;
     }
 

@@ -143,7 +143,7 @@ public class MorningstarPriceUpdater
                 .doOnNext(new Action1<PriceDownloadedEvent>() {
                     @Override
                     public void call(PriceDownloadedEvent priceDownloadedEvent) {
-                        // save to database
+                        // update to database
                         savePrice(priceDownloadedEvent);
                     }
                 })
@@ -277,7 +277,7 @@ public class MorningstarPriceUpdater
         // update the current price of the stock.
         stockRepository.get().updateCurrentPrice(event.symbol, event.price);
 
-        // save price history record.
+        // update price history record.
         stockHistoryRepository.get().addStockHistoryRecord(event.symbol,
                 event.price, event.date);
 

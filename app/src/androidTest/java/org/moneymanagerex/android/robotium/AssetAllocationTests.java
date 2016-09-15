@@ -107,7 +107,7 @@ public class AssetAllocationTests
         robot.enterInNumericInput("2.54");
         solo.clickOnText("OK");
 
-        // save
+        // update
         robot.clickDone();
 
         // confirm that the new item is listed

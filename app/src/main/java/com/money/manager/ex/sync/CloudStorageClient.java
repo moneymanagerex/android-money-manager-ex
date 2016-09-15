@@ -93,7 +93,7 @@ class CloudStorageClient {
                 .doOnCompleted(new Action0() {
                     @Override
                     public void call() {
-                        // save any renewed tokens
+                        // update any renewed tokens
                         cacheCredentials();
                     }
                 })
@@ -117,7 +117,7 @@ class CloudStorageClient {
                 .subscribe(new SingleSubscriber<CloudMetaData>() {
                     @Override
                     public void onSuccess(CloudMetaData value) {
-                        // save any renewed tokens
+                        // update any renewed tokens
                         CloudStorageClient.this.cacheCredentials();
 
                         result[0] = value;

@@ -220,7 +220,7 @@ public class AssetAllocationService
 //            bulk.add(down);
 //        }
 //
-//        // save in transaction
+//        // update in transaction
 //        repository.bulkUpdate(bulk);
 
         // for now, just increase the sort order on the selected item

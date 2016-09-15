@@ -122,7 +122,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
             Timber.w("update failed, %s, values: %s", tableName, entity.contentValues);
         }
 
-        return  result;
+        return result;
     }
 
     /**

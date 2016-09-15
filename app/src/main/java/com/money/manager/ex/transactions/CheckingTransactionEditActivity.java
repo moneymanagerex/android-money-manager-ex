@@ -130,7 +130,7 @@ public class CheckingTransactionEditActivity
         outState.putParcelable(EditTransactionActivityConstants.KEY_TRANSACTION_ENTITY,
                 Parcels.wrap(mCommonFunctions.transactionEntity));
 
-        // save the state interface
+        // update the state interface
         outState.putString(EditTransactionActivityConstants.KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
         outState.putString(EditTransactionActivityConstants.KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
         outState.putString(EditTransactionActivityConstants.KEY_PAYEE_NAME, mCommonFunctions.payeeName);
@@ -226,7 +226,7 @@ public class CheckingTransactionEditActivity
 
         // Remove transaction id in split categories.
         if (mCommonFunctions.mSplitTransactions != null) {
-            // Reset ids so that the transactions get inserted on save.
+            // Reset ids so that the transactions get inserted on update.
             for (ISplitTransaction split : mCommonFunctions.mSplitTransactions) {
                 split.setId(Constants.NOT_SET);
             }

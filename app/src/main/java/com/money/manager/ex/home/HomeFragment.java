@@ -48,10 +48,11 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
-import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
@@ -62,6 +63,7 @@ import com.money.manager.ex.home.events.UsernameLoadedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
@@ -89,9 +91,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -101,12 +111,14 @@ public class HomeFragment
     extends Fragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOADER_USER_NAME = 1;
+//    private static final int LOADER_USER_NAME = 1;
     private static final int LOADER_ACCOUNT_BILLS = 2;
     private static final int LOADER_INCOME_EXPENSES = 4;
 
     private static final String TAG_BALANCE_ACCOUNT = "HomeFragment:BalanceAccount";
     private static final int REQUEST_BALANCE_ACCOUNT = 1;
+
+    @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
 
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
@@ -134,6 +146,8 @@ public class HomeFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
 
@@ -207,13 +221,13 @@ public class HomeFragment
         Query query = new Query();
 
         switch (id) {
-            case LOADER_USER_NAME:
-                // todo This should be on the activity, not in this fragment!
-                InfoRepository repo = new InfoRepository(getActivity());
-                query.select(new String[]{ Info.INFONAME, Info.INFOVALUE });
-
-                result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
-                break;
+//            case LOADER_USER_NAME:
+//                // todo This should be on the activity, not in this fragment!
+//                InfoRepositorySql repo = new InfoRepositorySql(getActivity());
+//                query.select(new String[]{ Info.INFONAME, Info.INFOVALUE });
+//
+//                result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
+//                break;
 
             case LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
@@ -279,21 +293,20 @@ public class HomeFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-            case LOADER_USER_NAME:
-                // todo This should be on the activity, not in this fragment!
-                if (data != null) {
-                    while (data.moveToNext()) {
-                        String username;
-                        String infoValue = data.getString(data.getColumnIndex(Info.INFONAME));
-                        // save into preferences username and base currency id
-                        if (InfoKeys.USERNAME.equalsIgnoreCase(infoValue)) {
-                            username = data.getString(data.getColumnIndex(Info.INFOVALUE));
-                            MoneyManagerApplication.getApp().setUserName(username);
-                        }
-                    }
-                }
-                EventBus.getDefault().post(new UsernameLoadedEvent());
-                break;
+//            case LOADER_USER_NAME:
+//                if (data != null) {
+//                    while (data.moveToNext()) {
+//                        String username;
+//                        String infoValue = data.getString(data.getColumnIndex(Info.INFONAME));
+//                        // update into preferences username and base currency id
+//                        if (InfoKeys.USERNAME.equalsIgnoreCase(infoValue)) {
+//                            username = data.getString(data.getColumnIndex(Info.INFOVALUE));
+//                            MoneyManagerApplication.getApp().setUserName(username);
+//                        }
+//                    }
+//                }
+//                EventBus.getDefault().post(new UsernameLoadedEvent());
+//                break;
 
             case LOADER_ACCOUNT_BILLS:
                 try {
@@ -534,7 +547,8 @@ public class HomeFragment
 
     public void startLoaders() {
         LoaderManager loaderManager = getLoaderManager();
-        loaderManager.restartLoader(LOADER_USER_NAME, null, this);
+//        loaderManager.restartLoader(LOADER_USER_NAME, null, this);
+        loadUsername();
         loaderManager.restartLoader(LOADER_ACCOUNT_BILLS, null, this);
         loaderManager.restartLoader(LOADER_INCOME_EXPENSES, null, this);
     }
@@ -629,58 +643,42 @@ public class HomeFragment
         setUpMigrationButton(view);
     }
 
-//    private String[] mLanguageCodes;
-
-//    private void initLanguageDropdown(View view) {
-//        TextView languageSelectorHeader = (TextView) view.findViewById(R.id.languageHeaderTextView);
-//        if (languageSelectorHeader != null) {
-//            languageSelectorHeader.setText(getString(R.string.locale_application));
-//        }
-//        AppCompatSpinner languageSpinner = (AppCompatSpinner) view.findViewById(R.id.languageSpinner);
-//        if (languageSpinner != null) {
-//            // populate languages.
-//            ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(getActivity(),
-//                    R.array.application_locale_entries, android.R.layout.simple_spinner_item);
-//            languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            languageSpinner.setAdapter(languageAdapter);
-//
-//            mLanguageCodes = getResources().getStringArray(R.array.application_locale_values);
-//
-//            // Select the current language.
-//
-//            String currentLanguage = new GeneralSettings(getActivity()).getApplicationLanguage();
-//            int currentPosition = Arrays.asList(mLanguageCodes).indexOf(currentLanguage);
-//            languageSpinner.setSelection(currentPosition);
-//
-//            // e selection.
-//
-//            languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    // Set the app language.
-//                    String languageCode = mLanguageCodes[position];
-//                    String currentLanguage = new GeneralSettings(getActivity()).getApplicationLanguage();
-//                    if (languageCode.equals(currentLanguage)) return;
-//
-//                    new GeneralSettings(getActivity()).setApplicationLanguage(languageCode);
-//
-//                    EventBus.getDefault().post(new AppRestartRequiredEvent());
-//                    ((MainActivity) getActivity()).restartActivity();
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//                }
-//            });
-//        }
-//    }
-
     private QueryAccountBills getAccountBeingBalanced() {
         if (this.accountBeingBalanced == null) {
             AccountRepository repository = new AccountRepository(getContext());
             this.accountBeingBalanced = repository.loadAccountBills(this.accountBalancedId);
         }
         return this.accountBeingBalanced;
+    }
+
+    /**
+     * Load username on the background thread, set the username and then fire an event.
+     * This should be moved to the MainActivity, which actually handles the event and updates the UI.
+     */
+    private void loadUsername() {
+        ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+        Single.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                InfoService infoService = new InfoService(getActivity());
+                return infoService.getInfoValue(InfoKeys.USERNAME);
+            }
+        })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new SingleSubscriber<String>() {
+                @Override
+                public void onSuccess(String value) {
+                    MoneyManagerApplication.getApp().setUserName(value);
+                    EventBus.getDefault().post(new UsernameLoadedEvent());
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    Timber.e(error, "error loading username");
+                }
+            })
+        );
     }
 
     private void setAccountBeingBalanced(QueryAccountBills account) {
@@ -732,9 +730,9 @@ public class HomeFragment
         mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                // save collapsed group setting
+                // update collapsed group setting
                 final boolean groupVisible = false;
-                // save each group visibility into its own settings.
+                // update each group visibility into its own settings.
                 AppSettings settings = new AppSettings(getActivity());
                 String key = getSettingsKeyFromGroupPosition(groupPosition);
                 // store value.
@@ -744,9 +742,9 @@ public class HomeFragment
         mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                // save expanded group setting
+                // update expanded group setting
                 final boolean groupVisible = true;
-                // save each group visibility into its own settings.
+                // update each group visibility into its own settings.
                 AppSettings settings = new AppSettings(getActivity());
                 String key = getSettingsKeyFromGroupPosition(groupPosition);
                 // store value.

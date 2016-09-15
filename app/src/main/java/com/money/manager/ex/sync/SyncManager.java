@@ -149,7 +149,7 @@ public class SyncManager {
                 // clear local changes
                 resetLocalChanges();
 
-                // save any renewed tokens
+                // update any renewed tokens
                 mStorageClient.cacheCredentials();
 
                 abortScheduledUpload();
@@ -451,7 +451,7 @@ public class SyncManager {
 //            setRemotePath(remoteFile);
 //        }
 
-        // save any renewed tokens
+        // update any renewed tokens
         mStorageClient.cacheCredentials();
 
         return true;

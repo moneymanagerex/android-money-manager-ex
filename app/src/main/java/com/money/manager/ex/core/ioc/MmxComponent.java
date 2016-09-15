@@ -19,15 +19,18 @@ package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.list.CurrencyListFragment;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
+import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.SelectDatabaseActivity;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
+import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.sync.SyncManager;
@@ -61,6 +64,7 @@ public interface MmxComponent {
     void inject(DatabaseSettingsFragment fragment);
     void inject(CurrencyListFragment fragment);
     void inject(SyncPreferenceFragment fragment);
+    void inject(HomeFragment fragment);
 
     // Custom objects
     void inject(ISecurityPriceUpdater updater);
@@ -71,9 +75,11 @@ public interface MmxComponent {
     void inject(MmxDatabaseUtils utils);
     void inject(SyncManager sync);
     void inject(SyncServiceMessageHandler handler);
+    void inject(Passcode object);
 
     // Business Services
     void inject(CurrencyService service);
+    void inject(InfoService service);
 
     // Intent Services
     void inject(SyncService service);

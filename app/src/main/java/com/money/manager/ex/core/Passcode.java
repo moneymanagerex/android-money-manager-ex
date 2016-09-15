@@ -16,37 +16,37 @@
  */
 package com.money.manager.ex.core;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.passcode.Encryptor;
 import com.money.manager.ex.passcode.SimpleCrypto;
 import com.money.manager.ex.servicelayer.InfoService;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import timber.log.Timber;
 
 public class Passcode {
 
     private static final String KEY = "6c2a6f30726b3447747559525162665768412370297c5573342324705b";
-    private static final String LOGCAT = Passcode.class.getSimpleName();
+//    private static final String LOGCAT = Passcode.class.getSimpleName();
 
-    private Context mContext;
-
-    /**
-     * Constructor of class
-     *
-     * @param context executing context
-     */
     public Passcode(Context context) {
         this.mContext = context.getApplicationContext();
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
+
+    private Context mContext;
+    @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
 
     /**
      * Decrypt pass-code.
@@ -56,7 +56,11 @@ public class Passcode {
     private String decrypt(String s) {
         String ret = null;
         try {
-            ret = SimpleCrypto.decrypt(KEY, s);
+            if (Build.VERSION.SDK_INT <= 23) {
+                ret = SimpleCrypto.decrypt(KEY, s);
+            } else {
+                return s;
+            }
         } catch (Exception e) {
             Timber.e(e, "encrypting passcode");
         }
@@ -78,13 +82,13 @@ public class Passcode {
                 return s;
             }
         } catch (Exception e) {
-            Timber.e(LOGCAT, e.getMessage());
+            Timber.e(e, "encrypting passcode");
         }
         return ret;
     }
 
     /**
-     * Get decrypt passcode
+     * Get decrypt pass-code
      * @return null if not set passcode else passcode
      */
     public String getPasscode() {
@@ -115,9 +119,7 @@ public class Passcode {
 
     private String retrievePasscodeInternal() {
         InfoService service = new InfoService(mContext);
-        String ret = service.getInfoValue(InfoKeys.PASSCODE);
-
-        return ret;
+        return service.getInfoValue(InfoKeys.PASSCODE);
     }
 
     /**
@@ -134,23 +136,20 @@ public class Passcode {
      * @param passcode passcode to use
      */
     private boolean updatePasscode(String passcode) {
-        // content values
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Info.INFONAME, InfoKeys.PASSCODE);
-        contentValues.put(Info.INFOVALUE, passcode);
+        Info entity = new Info();
+        entity.setName(InfoKeys.PASSCODE);
+        entity.setValue(passcode);
 
-        InfoRepository repo = new InfoRepository(mContext);
+        InfoRepositorySql repo = infoRepositorySqlLazy.get();
 
         if (hasPasscode()) {
-            // update data
-            if (mContext.getContentResolver().update(repo.getUri(),
-                    contentValues, Info.INFONAME + "=?", new String[]{InfoKeys.PASSCODE}) <= 0) {
+            if (!repo.update(entity)) {
                 Toast.makeText(mContext, R.string.db_update_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
         } else {
-            // insert data
-            if (mContext.getContentResolver().insert(repo.getUri(), contentValues) == null) {
+            // insert
+            if (repo.insert(entity) <= 0) {
                 Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -172,8 +171,10 @@ public class Passcode {
     }
 
     private boolean cleanPasscode_Internal() {
-        if (mContext.getContentResolver().delete(new InfoRepository(mContext).getUri(),
-            Info.INFONAME + "=?", new String[]{ InfoKeys.PASSCODE }) <= 0) {
+        InfoRepositorySql repo = infoRepositorySqlLazy.get();
+        if (repo.delete(Info.INFONAME + "=?", InfoKeys.PASSCODE) <= 0) {
+//        if (mContext.getContentResolver().delete(new InfoRepositorySql(mContext).getUri(),
+//            Info.INFONAME + "=?", new String[]{ InfoKeys.PASSCODE }) <= 0) {
             Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_LONG).show();
             return false;
         } else

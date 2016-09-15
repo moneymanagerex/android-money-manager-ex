@@ -25,8 +25,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.money.manager.ex.datalayer.InfoRepository;
+import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.datalayer.InfoRepositorySql;
+import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.domainmodel.Info;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -39,10 +43,12 @@ public class InfoService
     public InfoService(Context context) {
         super(context);
 
-        repository = new InfoRepository(context);
+//        repository = new InfoRepositorySql(context);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    public InfoRepository repository;
+    @Inject
+    public InfoRepositorySql repository;
 
     public long insertRaw(SQLiteDatabase db, String key, Integer value) {
         ContentValues values = new ContentValues();
@@ -50,7 +56,7 @@ public class InfoService
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.insert(repository.getSource(), null, values);
+        return db.insert(InfoRepositorySql.TABLE_NAME, null, values);
     }
 
     public long insertRaw(SQLiteDatabase db, String key, String value) {
@@ -59,7 +65,7 @@ public class InfoService
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.insert(repository.getSource(), null, values);
+        return db.insert(InfoRepositorySql.TABLE_NAME, null, values);
     }
 
     /**
@@ -75,7 +81,7 @@ public class InfoService
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.update(repository.getSource(),
+        return db.update(InfoRepositorySql.TABLE_NAME,
                 values,
             Info.INFOID + "=?",
                 new String[] { Integer.toString(recordId)}
@@ -87,7 +93,7 @@ public class InfoService
         values.put(Info.INFONAME, key);
         values.put(Info.INFOVALUE, value);
 
-        return db.update(repository.getSource(), values,
+        return db.update(InfoRepositorySql.TABLE_NAME, values,
             Info.INFONAME + "=?",
                 new String[] { key });
     }
@@ -103,11 +109,16 @@ public class InfoService
         String ret = null;
 
         try {
-            cursor = getContext().getContentResolver().query(repository.getUri(),
-                null,
-                Info.INFONAME + "=?",
-                new String[]{ info },
-                null);
+//            cursor = getContext().getContentResolver().query(repository.getUri(),
+//                null,
+//                Info.INFONAME + "=?",
+//                new String[]{ info },
+//                null);
+            String sql = new Query()
+                    .from(InfoRepositorySql.TABLE_NAME)
+                    .where(Info.INFONAME + "=?", info)
+                    .toString();
+            cursor = repository.query(sql);
             if (cursor == null) return null;
 
             if (cursor.moveToFirst()) {
@@ -133,21 +144,25 @@ public class InfoService
         // check if info exists
         boolean exists = (getInfoValue(key) != null);
 
-        ContentValues values = new ContentValues();
-        values.put(Info.INFOVALUE, value);
+//        ContentValues values = new ContentValues();
+//        values.put(Info.INFOVALUE, value);
+        Info entity = Info.create(key, value);
 
         try {
             if (exists) {
-                int updated = getContext().getContentResolver().update(repository.getUri(),
-                        values,
-                    Info.INFONAME + "=?",
-                        new String[]{key});
-                result = updated >= 0;
+//                int updated = getContext().getContentResolver().update(repository.getUri(),
+//                        values,
+//                    Info.INFONAME + "=?",
+//                        new String[]{key});
+//                result = updated >= 0;
+                result = repository.update(entity);
             } else {
-                values.put(Info.INFONAME, key);
-                Uri insertUri = getContext().getContentResolver().insert(repository.getUri(),
-                        values);
-                long id = ContentUris.parseId(insertUri);
+//                values.put(Info.INFONAME, key);
+//                Uri insertUri = getContext().getContentResolver().insert(repository.getUri(),
+//                        values);
+//                long id = ContentUris.parseId(insertUri);
+//                result = id > 0;
+                long id = repository.insert(entity);
                 result = id > 0;
             }
         } catch (Exception e) {

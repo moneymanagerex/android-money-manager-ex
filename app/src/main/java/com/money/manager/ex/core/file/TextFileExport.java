@@ -44,7 +44,7 @@ public class TextFileExport {
     /**
      * Export text contents as a file.
      * @param fileName The name of the file only (i.e. name + extension).
-     * @param contents Text contents to save into the file.
+     * @param contents Text contents to update into the file.
      * @param dialogTitle The title to use for the export binaryDialog.
      * @return Indicator whether the operation was successful.
      * @throws IOException
@@ -53,7 +53,7 @@ public class TextFileExport {
         // clear previously exported files.
         this.clearCache();
 
-        // save into temp file.
+        // update into temp file.
         File file = createExportFile(fileName);
         if (file == null) {
             Timber.e("Error creating qif file in cache.");

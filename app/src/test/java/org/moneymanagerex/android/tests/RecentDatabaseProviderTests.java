@@ -67,7 +67,7 @@ public class RecentDatabaseProviderTests {
 //        Assert.assertEquals("{}", preference);
         assertThat(preference).isEqualTo("{}");
 
-        // save full collection
+        // update full collection
 
         LinkedHashMap<String, DatabaseMetadata> testEntries = getEntries();
         _testObject.map = testEntries;

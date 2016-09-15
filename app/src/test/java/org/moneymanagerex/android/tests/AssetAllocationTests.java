@@ -78,7 +78,7 @@ public class AssetAllocationTests {
         Money expectedAllocation = MoneyFactory.fromDouble(14.28);
         int expectedAssetClassId = 1;
 
-        // save
+        // update
         createRecords(context);
 
         // When

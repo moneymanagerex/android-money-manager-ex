@@ -321,7 +321,7 @@ public class DatabaseSettingsFragment
                         Toast.makeText(getActivity(), Html.fromHtml(getString(R.string.database_has_been_moved,
                                 "<b>" + newDatabases.getAbsolutePath() + "</b>")), Toast.LENGTH_LONG).show();
                         //MainActivity.changeDatabase(newDatabases.getAbsolutePath());
-                        // save the database file
+                        // update the database file
 //                        MoneyManagerApplication.setDatabasePath(getActivity().getApplicationContext(),
 //                                newDatabases.getAbsolutePath());
                         new AppSettings(getActivity().getApplicationContext()).getDatabaseSettings()

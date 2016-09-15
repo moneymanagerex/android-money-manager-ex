@@ -108,7 +108,7 @@ public class SplitCategoriesTests
 
         assertThat(solo.searchText("38.5"));
 
-        // save transaction
+        // update transaction
         solo.clickOnView(solo.getView(R.id.action_done));
 
         deleteSplitTransaction();
