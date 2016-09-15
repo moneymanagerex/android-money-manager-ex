@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="2016.09.14.913">
+    <changelogversion versionName="beta 914">
+        <changelogtext>Storing remote change date per database file.</changelogtext>
         <changelogtext>Removing minification.</changelogtext>
         <changelogtext>Replacing StringUtils with TextUtils to work around the MIUI bug.</changelogtext>
         <changelogtext>Updating a couple of libraries.</changelogtext>
