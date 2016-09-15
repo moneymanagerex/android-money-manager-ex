@@ -48,6 +48,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -68,12 +70,16 @@ public class SyncPreferenceFragment
         // Required empty public constructor
     }
 
+    @Inject RecentDatabasesProvider mDatabases;
+
     private SyncPreferencesViewHolder viewHolder;
     private SyncManager mSyncManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         // Use a separate sync preference file.
         PreferenceManager prefMgr = getPreferenceManager();
@@ -371,7 +377,7 @@ public class SyncPreferenceFragment
         new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
 
         RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
-        RecentDatabasesProvider databases = new RecentDatabasesProvider(getActivity());
-        databases.add(db);
+        //RecentDatabasesProvider databases = new RecentDatabasesProvider(getActivity());
+        mDatabases.add(db);
     }
 }

@@ -29,6 +29,8 @@ import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
+import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.sync.SyncPreferenceFragment;
 import com.money.manager.ex.sync.SyncService;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -55,6 +57,7 @@ public interface MmxComponent {
     // Fragments
     void inject(DatabaseSettingsFragment fragment);
     void inject(CurrencyListFragment fragment);
+    void inject(SyncPreferenceFragment fragment);
 
     // Custom objects
     void inject(ISecurityPriceUpdater updater);
@@ -63,6 +66,7 @@ public interface MmxComponent {
     void inject(Core core);
     void inject(MmxContentProvider provider);
     void inject(MmxDatabaseUtils utils);
+    void inject(SyncManager sync);
 
     // Business Services
     void inject(CurrencyService service);

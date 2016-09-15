@@ -54,6 +54,8 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import rx.Single;
 import rx.functions.Action1;
 import timber.log.Timber;
@@ -66,11 +68,14 @@ public class SyncManager {
     public SyncManager(Context context) {
         mContext = context;
         mStorageClient = new CloudStorageClient(context);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
+
+    @Inject RecentDatabasesProvider mDatabases;
 
     private Context mContext;
     CloudStorageClient mStorageClient;
-//    private String mRemoteFile;
     private SyncPreferences mPreferences;
     // Used to temporarily disable auto-upload while performing batch updates.
     private boolean mAutoUploadDisabled = false;
@@ -555,8 +560,6 @@ public class SyncManager {
         return mPreferences;
     }
 
-    private RecentDatabasesProvider mDatabases;
-
     private RecentDatabasesProvider getDatabases() {
         if (mDatabases == null) {
             mDatabases = new RecentDatabasesProvider(getContext());
@@ -596,15 +599,13 @@ public class SyncManager {
 
         Intent intent = new Intent(getContext(), SyncService.class);
 
-//        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
         intent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-//        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
         intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, db.localPath);
-
         intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, db.remotePath);
 
-        PendingIntent pintent = PendingIntent.getService(getContext(), SyncConstants.REQUEST_DELAYED_SYNC,
+        PendingIntent pintent = PendingIntent.getService(getContext(),
+                SyncConstants.REQUEST_DELAYED_SYNC,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         return pintent;
