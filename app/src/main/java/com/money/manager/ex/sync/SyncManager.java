@@ -127,6 +127,12 @@ public class SyncManager {
         mAutoUploadDisabled = true;
     }
 
+    /**
+     * Download the remote file into the local path.
+     * @param remoteFile The remote file metadata.
+     * @param localFile Local file path. Normally a temp file.
+     * @return RxJava Single
+     */
     public Single<Void> downloadSingle(final CloudMetaData remoteFile, final File localFile) {
         return Single.fromCallable(new Callable<Void>() {
             @Override
@@ -143,8 +149,6 @@ public class SyncManager {
 
                 // save any renewed tokens
                 mStorageClient.cacheCredentials();
-
-                saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
 
                 abortScheduledUpload();
             }
@@ -509,7 +513,7 @@ public class SyncManager {
      * the synchronization.
      * @param file file name
      */
-    private void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
+    void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
         DateTime date = new DateTime(file.getModifiedAt());
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);

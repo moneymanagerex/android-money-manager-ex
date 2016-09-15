@@ -170,8 +170,8 @@ public class SyncService
 
     // private
 
-    private void triggerDownload(final File localFile, CloudMetaData remoteFile) {
-        SyncManager sync = new SyncManager(getApplicationContext());
+    private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
+        final SyncManager sync = new SyncManager(getApplicationContext());
 
         final Notification notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationForDownload();
@@ -201,6 +201,8 @@ public class SyncService
                     Timber.e(e, "copying downloaded database file");
                     return;
                 }
+
+                sync.saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
 
                 // Create the notification for opening of the downloaded file.
                 // The Intent is passed to the notification and called if clicked on.
