@@ -50,6 +50,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -70,7 +71,7 @@ public class SyncPreferenceFragment
         // Required empty public constructor
     }
 
-    @Inject RecentDatabasesProvider mDatabases;
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     private SyncPreferencesViewHolder viewHolder;
     private SyncManager mSyncManager;
@@ -173,6 +174,10 @@ public class SyncPreferenceFragment
             mSyncManager = new SyncManager(getActivity());
         }
         return mSyncManager;
+    }
+
+    private RecentDatabasesProvider getDatabases() {
+        return mDatabases.get();
     }
 
     private void initializePreferences() {
@@ -327,8 +332,7 @@ public class SyncPreferenceFragment
     }
 
     private void checkIfLocalFileExistsAndDownload() {
-        //String local = MoneyManagerApplication.getDatabasePath(getActivity());
-        String local = new RecentDatabasesProvider(getActivity()).getCurrent().localPath;
+        String local = getDatabases().getCurrent().localPath;
 
         // check if the file exists and prompt the user.
         if (new File(local).exists()) {
@@ -378,6 +382,6 @@ public class SyncPreferenceFragment
 
         RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
         //RecentDatabasesProvider databases = new RecentDatabasesProvider(getActivity());
-        mDatabases.add(db);
+        getDatabases().add(db);
     }
 }

@@ -160,7 +160,7 @@ public class RecentDatabasesProvider {
     }
 
     public SharedPreferences getPreferences() {
-        SharedPreferences prefs = this.context.getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
+        SharedPreferences prefs = getContext().getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
         return prefs;
     }
 

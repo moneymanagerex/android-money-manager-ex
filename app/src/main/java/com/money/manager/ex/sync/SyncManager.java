@@ -55,6 +55,7 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
 import rx.Single;
 import rx.functions.Action1;
 import timber.log.Timber;
@@ -71,7 +72,7 @@ public class SyncManager {
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    @Inject RecentDatabasesProvider mDatabases;
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     private Context mContext;
     CloudStorageClient mStorageClient;
@@ -218,13 +219,16 @@ public class SyncManager {
     }
 
     public String getRemotePath() {
-        String fileName = mDatabases.getCurrent().remotePath;
+        RecentDatabaseEntry db = getDatabases().getCurrent();
+        if (db == null) return null;
+
+        String fileName = db.remotePath;
         return fileName;
     }
 
     public void invokeSyncService(String action) {
         // Validation.
-        String remoteFile = mDatabases.getCurrent().remotePath;
+        String remoteFile = getRemotePath();
         // We need a value in remote file name settings.
         if (TextUtils.isEmpty(remoteFile)) return;
 
@@ -252,8 +256,8 @@ public class SyncManager {
 
         String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
-        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action, localFile,
-                remoteFile, messenger);
+        Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
+                localFile, remoteFile, messenger);
         // start service
         getContext().startService(syncServiceIntent);
 
@@ -382,8 +386,7 @@ public class SyncManager {
     }
 
     public void triggerUpload() {
-        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
-//        getLocalPath()
+        String localFile = getDatabases().getCurrent().localPath;
         String remoteFile = getRemotePath();
 
         // trigger upload
@@ -495,6 +498,10 @@ public class SyncManager {
         return localName.equalsIgnoreCase(remoteName);
     }
 
+    private RecentDatabasesProvider getDatabases() {
+        return mDatabases.get();
+    }
+
     /**
      * Save the last modified datetime of the remote file into Settings for comparison during
      * the synchronization.
@@ -505,7 +512,6 @@ public class SyncManager {
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
-//        getPreferences().set(file.getPath(), date.toString());
         RecentDatabasesProvider databases = new RecentDatabasesProvider(getContext());
         RecentDatabaseEntry currentDb = databases.get(localPath);
         currentDb.remoteLastChangedOn = date;
@@ -582,7 +588,7 @@ public class SyncManager {
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
-        RecentDatabaseEntry db = mDatabases.getCurrent();
+        RecentDatabaseEntry db = getDatabases().getCurrent();
 
         Intent intent = new Intent(getContext(), SyncService.class);
 

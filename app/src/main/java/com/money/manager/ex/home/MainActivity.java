@@ -110,6 +110,9 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import icepick.State;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
@@ -147,6 +150,7 @@ public class MainActivity
     private static boolean mRestartActivity = false;
 
 //    @Inject SharedPreferences preferences;
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     @State boolean dbUpdateCheckDone = false;
     @State boolean mIsSynchronizing = false;
@@ -163,13 +167,14 @@ public class MainActivity
     private TextView mDrawerTextTotalAccounts;
     // state dual panel
     private boolean mIsDualPanel = false;
-    private RecentDatabasesProvider recentDbs;
     // sync rotating icon
     private MenuItem mSyncMenuItem = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         if (showPrerequisite()) {
             finish();
@@ -199,9 +204,6 @@ public class MainActivity
         }
 
         handleDeviceRotation();
-
-        // Initialize the map for recent entries that link to drawer menu items.
-        initializeRecentDatabaseList();
 
         // Close any existing notifications.
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
@@ -556,7 +558,7 @@ public class MainActivity
         }
 
         // Refresh the recent files list.
-        initializeRecentDatabaseList();
+        getDatabases().load();
 
         setRestartActivity(true);
         restartActivity();
@@ -595,7 +597,7 @@ public class MainActivity
 
         if (item.getId() == null && item.getTag() != null) {
             String key = item.getTag().toString();
-            RecentDatabaseEntry recentDb = this.recentDbs.map.get(key);
+            RecentDatabaseEntry recentDb = getDatabases().get(key);
             if (recentDb != null) {
                 onOpenDatabaseClick(recentDb);
             }
@@ -1089,6 +1091,10 @@ public class MainActivity
         }
     }
 
+    private RecentDatabasesProvider getDatabases() {
+        return mDatabases.get();
+    }
+
     private Drawable getDrawableFromResource(int resourceId) {
         Drawable icon;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1168,8 +1174,8 @@ public class MainActivity
     private ArrayList<DrawerMenuItem> getRecentDatabases() {
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
 
-        if (this.recentDbs.map != null) {
-            for (RecentDatabaseEntry entry : this.recentDbs.map.values()) {
+        if (getDatabases().map != null) {
+            for (RecentDatabaseEntry entry : getDatabases().map.values()) {
                 String title = entry.getFileName();
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
@@ -1267,10 +1273,6 @@ public class MainActivity
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }
 
-    private void initializeRecentDatabaseList() {
-        this.recentDbs = new RecentDatabasesProvider(this);
-    }
-
     private boolean isDatabaseAvailable() {
         // Do we have a database set?
         String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
@@ -1293,12 +1295,6 @@ public class MainActivity
         // do nothing if selecting the currently open database
         String currentDb = MoneyManagerApplication.getDatabasePath(this);
         if (recentDb.localPath.equals(currentDb)) return;
-
-//        // set the remote file path, if any.
-//        String remotePath = recentDb.isSynchronised()
-//                ? recentDb.remotePath
-//                : "";
-//        new SyncManager(this).setRemotePath(remotePath);
 
         changeDatabase(recentDb);
     }
