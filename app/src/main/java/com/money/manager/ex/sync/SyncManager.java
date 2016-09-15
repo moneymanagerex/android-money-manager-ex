@@ -219,18 +219,13 @@ public class SyncManager {
     }
 
     public String getRemotePath() {
-//        if (StringUtils.isEmpty(mRemoteFile)) {
-//            mRemoteFile = getPreferences().loadPreference(R.string.pref_remote_file, "");
-//        }
-//        return mRemoteFile;
-        String fileName = getDatabases().getCurrent().remotePath;
+        String fileName = mDatabases.getCurrent().remotePath;
         return fileName;
     }
 
     public void invokeSyncService(String action) {
         // Validation.
-//        String remoteFile = getRemotePath();
-        String remoteFile = getDatabases().getCurrent().remotePath;
+        String remoteFile = mDatabases.getCurrent().remotePath;
         // We need a value in remote file name settings.
         if (TextUtils.isEmpty(remoteFile)) return;
 
@@ -560,13 +555,6 @@ public class SyncManager {
         return mPreferences;
     }
 
-    private RecentDatabasesProvider getDatabases() {
-        if (mDatabases == null) {
-            mDatabases = new RecentDatabasesProvider(getContext());
-        }
-        return mDatabases;
-    }
-
     private void markLocalFileChanged(boolean changed) {
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
@@ -595,7 +583,7 @@ public class SyncManager {
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
-        RecentDatabaseEntry db = getDatabases().getCurrent();
+        RecentDatabaseEntry db = mDatabases.getCurrent();
 
         Intent intent = new Intent(getContext(), SyncService.class);
 
