@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.home;
 
-import android.content.SyncAdapterType;
 import android.text.TextUtils;
 
 import org.joda.time.DateTime;
@@ -47,6 +46,10 @@ public class DatabaseMetadata {
     }
 
     public void setRemoteLastChangedDate(DateTime value) {
-        this.remoteLastChangedDate = value.toString();
+        if (value == null) {
+            this.remoteLastChangedDate = null;
+        } else {
+            this.remoteLastChangedDate = value.toString();
+        }
     }
 }
