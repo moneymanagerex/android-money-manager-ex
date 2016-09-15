@@ -49,10 +49,9 @@ public class Passcode {
     }
 
     /**
-     * Decrypt passcode
-     *
-     * @param s passcode crypted
-     * @return passcode
+     * Decrypt pass-code.
+     * @param s encrypted pass-code
+     * @return pass-code
      */
     private String decrypt(String s) {
         String ret = null;
@@ -65,14 +64,14 @@ public class Passcode {
     }
 
     /**
-     * Encrypt clear passcode
-     * @param s clear passcode
+     * Encrypt clear pass-code
+     * @param s clear pass-code
      * @return encrypted string
      */
     private String encrypt(String s) {
         String ret = null;
         try {
-            if (Build.VERSION.SDK_INT <= 24) {
+            if (Build.VERSION.SDK_INT <= 23) {
                 ret = SimpleCrypto.encrypt(KEY, s);
             } else {
                 // todo Encryptor.enc
