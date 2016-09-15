@@ -70,7 +70,7 @@ public class SyncManager {
 
     private Context mContext;
     CloudStorageClient mStorageClient;
-    private String mRemoteFile;
+//    private String mRemoteFile;
     private SyncPreferences mPreferences;
     // Used to temporarily disable auto-upload while performing batch updates.
     private boolean mAutoUploadDisabled = false;
@@ -214,15 +214,18 @@ public class SyncManager {
     }
 
     public String getRemotePath() {
-        if (StringUtils.isEmpty(mRemoteFile)) {
-            mRemoteFile = getPreferences().loadPreference(R.string.pref_remote_file, "");
-        }
-        return mRemoteFile;
+//        if (StringUtils.isEmpty(mRemoteFile)) {
+//            mRemoteFile = getPreferences().loadPreference(R.string.pref_remote_file, "");
+//        }
+//        return mRemoteFile;
+        String fileName = getDatabases().getCurrent().remotePath;
+        return fileName;
     }
 
     public void invokeSyncService(String action) {
         // Validation.
-        String remoteFile = getRemotePath();
+//        String remoteFile = getRemotePath();
+        String remoteFile = getDatabases().getCurrent().remotePath;
         // We need a value in remote file name settings.
         if (TextUtils.isEmpty(remoteFile)) return;
 
@@ -328,12 +331,6 @@ public class SyncManager {
     public void setProvider(CloudStorageProviderEnum provider) {
         mStorageClient.setProvider(provider);
     }
-
-//    public void setRemotePath(String value) {
-//        mRemoteFile = value;
-//
-////        getPreferences().set(R.string.pref_remote_file, value);
-//    }
 
     public void setSyncInterval(int minutes) {
         getPreferences().setSyncInterval(minutes);
@@ -558,6 +555,15 @@ public class SyncManager {
         return mPreferences;
     }
 
+    private RecentDatabasesProvider mDatabases;
+
+    private RecentDatabasesProvider getDatabases() {
+        if (mDatabases == null) {
+            mDatabases = new RecentDatabasesProvider(getContext());
+        }
+        return mDatabases;
+    }
+
     private void markLocalFileChanged(boolean changed) {
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
         RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
@@ -586,15 +592,17 @@ public class SyncManager {
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
+        RecentDatabaseEntry db = getDatabases().getCurrent();
+
         Intent intent = new Intent(getContext(), SyncService.class);
 
 //        intent.setAction(SyncConstants.INTENT_ACTION_UPLOAD);
         intent.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
-        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, localFile);
+//        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
+        intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, db.localPath);
 
-        intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, getRemotePath());
+        intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, db.remotePath);
 
         PendingIntent pintent = PendingIntent.getService(getContext(), SyncConstants.REQUEST_DELAYED_SYNC,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);

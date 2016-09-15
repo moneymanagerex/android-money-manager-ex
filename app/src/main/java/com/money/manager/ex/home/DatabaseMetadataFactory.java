@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncManager;
 
 /**
@@ -33,14 +34,14 @@ public class DatabaseMetadataFactory {
     public static RecentDatabaseEntry getInstance(String localPath) {
         RecentDatabaseEntry db = new RecentDatabaseEntry();
         db.localPath = localPath;
-        db.remoteFileName = "";
+        db.remotePath = "";
         return db;
     }
 
     public static RecentDatabaseEntry getInstance(String filePath, @NonNull String remoteFileName) {
         RecentDatabaseEntry entry = new RecentDatabaseEntry();
         entry.localPath = filePath;
-        entry.remoteFileName = remoteFileName;
+        entry.remotePath = remoteFileName;
         return entry;
     }
 
@@ -59,8 +60,8 @@ public class DatabaseMetadataFactory {
     }
 
     /**
-     * Creates a database entry from the current settings. Used for transition from preferences
-     * to Database metadata entries.
+     * Creates a database entry from the current preferences. Used for transition from preferences
+     * to Database metadata records.
      * @return A database record that represents the current settings (local/remote db paths).
      */
     public RecentDatabaseEntry createDefaultEntry() {
@@ -71,8 +72,10 @@ public class DatabaseMetadataFactory {
         entry.isLocalFileChanged = new AppSettings(getContext()).get(R.string.pref_is_local_file_changed, false);
 
         SyncManager syncManager = new SyncManager(getContext());
-        entry.remoteFileName = syncManager.getRemotePath();
-        entry.remoteLastChangedOn = syncManager.getCachedLastModifiedDateFor(entry.remoteFileName);
+        //entry.remotePath = syncManager.getRemotePath();
+        // todo remove the remote file preference after upgrade
+        entry.remotePath = new SyncPreferences(getContext()).loadPreference(R.string.pref_remote_file, "");
+        entry.remoteLastChangedOn = syncManager.getCachedLastModifiedDateFor(entry.remotePath);
 
         return entry;
     }

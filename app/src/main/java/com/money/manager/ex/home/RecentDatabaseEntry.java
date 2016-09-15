@@ -29,7 +29,7 @@ public class RecentDatabaseEntry {
 
     public String localPath;
     public boolean isLocalFileChanged;
-    public String remoteFileName;
+    public String remotePath;
     public DateTime remoteLastChangedOn;
 
     public String getFileName() {
@@ -38,6 +38,6 @@ public class RecentDatabaseEntry {
     }
 
     public boolean isSynchronised() {
-        return !TextUtils.isEmpty(remoteFileName);
+        return !TextUtils.isEmpty(remotePath);
     }
 }

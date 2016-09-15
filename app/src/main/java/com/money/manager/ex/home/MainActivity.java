@@ -1296,7 +1296,7 @@ public class MainActivity
 
 //        // set the remote file path, if any.
 //        String remotePath = recentDb.isSynchronised()
-//                ? recentDb.remoteFileName
+//                ? recentDb.remotePath
 //                : "";
 //        new SyncManager(this).setRemotePath(remotePath);
 

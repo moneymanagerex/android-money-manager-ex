@@ -18,6 +18,7 @@ package org.moneymanagerex.android.tests;
 
 import com.google.gson.Gson;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 
@@ -88,7 +89,7 @@ public class RecentDatabaseProviderTests {
     @Test
     public void testInsert() {
         RecentDatabaseEntry entry = getEntry(false);
-        String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remoteFileName\":\"\",\"linkedToCloud\":false}}";
+        String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remotePath\":\"\",\"linkedToCloud\":false}}";
 
         _testObject.add(entry);
 
@@ -103,6 +104,20 @@ public class RecentDatabaseProviderTests {
         RecentDatabaseEntry current = _testObject.getCurrent();
 
         assertThat(current).isNotNull();
+    }
+
+    @Test public void add_does_not_create_duplicate() {
+        RecentDatabaseEntry entry1 = DatabaseMetadataFactory.getInstance("path1");
+        _testObject.add(entry1);
+
+        RecentDatabaseEntry entry2 = DatabaseMetadataFactory.getInstance("path2");
+        _testObject.add(entry2);
+
+        RecentDatabaseEntry entry1Duplicate = DatabaseMetadataFactory.getInstance("path1");
+        _testObject.add(entry1Duplicate);
+
+        // _testObject.get("path1");
+        assertThat(_testObject.count()).isEqualTo(2);
     }
 
     // Private
@@ -123,7 +138,7 @@ public class RecentDatabaseProviderTests {
 
         String unique = useRandomPath ? Double.toString(Math.random()) : "";
 
-        entry.remoteFileName = "";
+        entry.remotePath = "";
         entry.localPath = "filename" + unique + ".mmb";
 
         return entry;

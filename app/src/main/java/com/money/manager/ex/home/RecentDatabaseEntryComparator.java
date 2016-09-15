@@ -49,9 +49,9 @@ public class RecentDatabaseEntryComparator
         if (lhs.isSynchronised() != rhs.isSynchronised()) return 1;
         if (!lhs.localPath.equals(rhs.localPath)) return 1;
 
-        if (lhs.remoteFileName == null) lhs.remoteFileName = "";
-        if (rhs.remoteFileName == null) rhs.remoteFileName = "";
-        if (!lhs.remoteFileName.equals(rhs.remoteFileName)) return 1;
+        if (lhs.remotePath == null) lhs.remotePath = "";
+        if (rhs.remotePath == null) rhs.remotePath = "";
+        if (!lhs.remotePath.equals(rhs.remotePath)) return 1;
 
         if (lhs.isLocalFileChanged != rhs.isLocalFileChanged) return 1;
 

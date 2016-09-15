@@ -37,6 +37,7 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -136,9 +137,6 @@ public class SyncPreferenceFragment
         // show selected value
         viewHolder.remoteFile.setSummary(remoteFile);
 
-//        // Save the selection into preferences.
-//        getSyncManager().setRemotePath(remoteFile);
-
         // save recent db.
         saveDatabaseMetadata(remoteFile);
 
@@ -204,7 +202,6 @@ public class SyncPreferenceFragment
                     sync.login()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-//                            .toBlocking().value();
                             .subscribe(new SingleSubscriber<Void>() {
                                 @Override
                                 public void onSuccess(Void value) {
@@ -324,7 +321,8 @@ public class SyncPreferenceFragment
     }
 
     private void checkIfLocalFileExistsAndDownload() {
-        String local = MoneyManagerApplication.getDatabasePath(getActivity());
+        //String local = MoneyManagerApplication.getDatabasePath(getActivity());
+        String local = new RecentDatabasesProvider(getActivity()).getCurrent().localPath;
 
         // check if the file exists and prompt the user.
         if (new File(local).exists()) {
@@ -369,11 +367,11 @@ public class SyncPreferenceFragment
         String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
 
         String dbPath = dbDirectory.concat(File.separator).concat(fileName);
+        // save current database path
+        new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
 
         RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
-        // todo: save changed date?
-
-        // save preference
-        new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
+        RecentDatabasesProvider databases = new RecentDatabasesProvider(getActivity());
+        databases.add(db);
     }
 }
