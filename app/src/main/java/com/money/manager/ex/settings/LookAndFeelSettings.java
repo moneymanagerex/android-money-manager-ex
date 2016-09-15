@@ -55,7 +55,7 @@ public class LookAndFeelSettings
     public DefinedDateRangeName getShowTransactions() {
         DefinedDateRangeName defaultValue = DefinedDateRangeName.LAST_7_DAYS;
 
-        String value = get(R.string.pref_show_transaction, defaultValue.toString());
+        String value = get(R.string.pref_show_transaction, defaultValue.name());
 
         if (TextUtils.isEmpty(value)) {
             return defaultValue;
