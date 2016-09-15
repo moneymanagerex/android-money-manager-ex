@@ -17,7 +17,6 @@
 package com.money.manager.ex.core;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -37,7 +36,6 @@ import timber.log.Timber;
 public class Passcode {
 
     private static final String KEY = "6c2a6f30726b3447747559525162665768412370297c5573342324705b";
-//    private static final String LOGCAT = Passcode.class.getSimpleName();
 
     public Passcode(Context context) {
         this.mContext = context.getApplicationContext();
@@ -47,6 +45,53 @@ public class Passcode {
 
     private Context mContext;
     @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    /**
+     * Get decrypt pass-code
+     * @return null if not set passcode else passcode
+     */
+    public String getPasscode() {
+        String ret = retrievePasscode();
+        if (ret != null) {
+            // decrypt passcode
+            ret = decrypt(ret);
+        }
+        return ret;
+    }
+
+    /**
+     * Return true if passcode has set otherwise false
+     * @return indicator whether there is a passcode or not.
+     */
+    public boolean hasPasscode() {
+        return !(TextUtils.isEmpty(retrievePasscode()));
+    }
+
+    /**
+     * Set a decrypt pass code
+     * @param passcode new pass code
+     */
+    public boolean setPasscode(String passcode) {
+        String encrypted = encrypt(passcode);
+        return savePasscode(encrypted);
+    }
+
+    public boolean clearPasscode() {
+        try {
+            return clearPasscode_Internal();
+        } catch (Exception ex) {
+            Timber.e(ex, "Error clearing passcode");
+        }
+        return false;
+    }
+
+    /*
+        Private
+     */
 
     /**
      * Decrypt pass-code.
@@ -87,55 +132,25 @@ public class Passcode {
         return ret;
     }
 
-    /**
-     * Get decrypt pass-code
-     * @return null if not set passcode else passcode
-     */
-    public String getPasscode() {
-        String ret = retrievePasscode();
-        if (ret != null) {
-            // decrypt passcode
-            ret = decrypt(ret);
-        }
-        return ret;
-    }
-
-    /**
-     * Return true if passcode has set otherwise false
-     * @return indicator whether there is a passcode or not.
-     */
-    public boolean hasPasscode() {
-        return !(TextUtils.isEmpty(retrievePasscode()));
+    private boolean clearPasscode_Internal() {
+        InfoRepositorySql repo = infoRepositorySqlLazy.get();
+        if (repo.delete(Info.INFONAME + "=?", InfoKeys.PASSCODE) <= 0) {
+            Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_LONG).show();
+            return false;
+        } else
+            return true;
     }
 
     private String retrievePasscode() {
-        try {
-            return retrievePasscodeInternal();
-        } catch (IllegalStateException | SQLiteDiskIOException ex) {
-            Timber.e(ex, "retrieving passcode");
-        }
-        return null;
-    }
-
-    private String retrievePasscodeInternal() {
-        InfoService service = new InfoService(mContext);
+        InfoService service = new InfoService(getContext());
         return service.getInfoValue(InfoKeys.PASSCODE);
-    }
-
-    /**
-     * Set a decrypt pass code
-     * @param passcode new pass code
-     */
-    public boolean setPasscode(String passcode) {
-        String encrypted = encrypt(passcode);
-        return updatePasscode(encrypted);
     }
 
     /**
      * Set a passcode into database
      * @param passcode passcode to use
      */
-    private boolean updatePasscode(String passcode) {
+    private boolean savePasscode(String passcode) {
         Info entity = new Info();
         entity.setName(InfoKeys.PASSCODE);
         entity.setValue(passcode);
@@ -149,7 +164,8 @@ public class Passcode {
             }
         } else {
             // insert
-            if (repo.insert(entity) <= 0) {
+            long id = repo.insert(entity);
+            if (id <= 0) {
                 Toast.makeText(mContext, R.string.db_insert_failed, Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -158,26 +174,4 @@ public class Passcode {
         return true;
     }
 
-    public boolean cleanPasscode() {
-        try {
-            return cleanPasscode_Internal();
-        } catch (Exception ex) {
-            String error = "Error clearing passcode";
-            Timber.e("%s: %s", error, ex.getLocalizedMessage());
-            ex.printStackTrace();
-            Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
-        }
-        return false;
-    }
-
-    private boolean cleanPasscode_Internal() {
-        InfoRepositorySql repo = infoRepositorySqlLazy.get();
-        if (repo.delete(Info.INFONAME + "=?", InfoKeys.PASSCODE) <= 0) {
-//        if (mContext.getContentResolver().delete(new InfoRepositorySql(mContext).getUri(),
-//            Info.INFONAME + "=?", new String[]{ InfoKeys.PASSCODE }) <= 0) {
-            Toast.makeText(mContext, R.string.db_delete_failed, Toast.LENGTH_LONG).show();
-            return false;
-        } else
-            return true;
-    }
 }

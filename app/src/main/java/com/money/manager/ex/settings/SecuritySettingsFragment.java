@@ -135,7 +135,7 @@ public class SecuritySettingsFragment
                 String passcodeDelete = pass.getPasscode();
                 if (passcodeDelete != null && passcode != null) {
                     if (passcodeDelete.equals(passcode)) {
-                        if (!pass.cleanPasscode()) {
+                        if (!pass.clearPasscode()) {
                             Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
                         }
                     } else

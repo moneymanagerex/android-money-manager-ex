@@ -269,7 +269,10 @@ public class MoneyManagerApplication
     /**
      * @param userName the userName to set
      * @param save     update into database
+     * @deprecated Use Info Service directly to read and write this value as it is used only in
+     * the main activity.
      */
+    @Deprecated
     public boolean setUserName(String userName, boolean save) {
         MoneyManagerApplication.userName = userName;
 
