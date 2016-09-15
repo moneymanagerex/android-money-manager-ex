@@ -16,11 +16,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="beta 915">
+    <changelogversion versionName="beta 916">
         <changelogtext>Passcode improvements.</changelogtext>
         <changelogtext>Storing remote change date per database file.</changelogtext>
-        <changelogtext>Removing minification.</changelogtext>
-        <changelogtext>Replacing StringUtils with TextUtils to work around the MIUI bug.</changelogtext>
+        <changelogtext>Removing minification to resolve issues on MIUI ROMs.</changelogtext>
         <changelogtext>Updating a couple of libraries.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.08.31.911">
