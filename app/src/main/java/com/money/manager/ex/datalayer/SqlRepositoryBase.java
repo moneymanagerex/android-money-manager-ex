@@ -53,8 +53,8 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         return result;
     }
 
-    public boolean exists(String sql, String... args) {
-        Cursor c = database.query(sql, args);
+    public boolean exists(Select query) {
+        Cursor c = database.query(query.toString(), query.selectionArgs);
         if (c == null) return false;
 
         boolean result = c.getCount() > 0;
@@ -94,8 +94,8 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
         return entity;
     }
 
-    public Cursor query(String sql, String... args) {
-        return database.query(sql, args);
+    public Cursor query(Select query) {
+        return database.query(query.toString(), query.selectionArgs);
     }
 
     protected boolean update(EntityBase entity, String where, String... selectionArgs) {

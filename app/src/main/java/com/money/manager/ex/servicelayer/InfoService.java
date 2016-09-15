@@ -108,7 +108,7 @@ public class InfoService
             Select query = new Select()
                     .from(InfoRepositorySql.TABLE_NAME)
                     .where(Info.INFONAME + "=?", info);
-            cursor = repository.query(query.toString(), query.selectionArgs);
+            cursor = repository.query(query);
             if (cursor == null) return null;
 
             if (cursor.moveToFirst()) {

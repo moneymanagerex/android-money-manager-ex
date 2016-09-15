@@ -29,9 +29,8 @@ public class InfoRepositorySql
 //    }
 
     public List<Info> loadAll(String infoName) {
-        String sql = new Select()
-            .where(Info.INFONAME + "=?", new String[] { infoName })
-            .toString();
+        Select sql = new Select()
+            .where(Info.INFONAME + "=?", infoName);
 
         Cursor c = this.query(sql);
         if (c == null) return null;
