@@ -97,6 +97,7 @@ public class MmxDatabaseUtils {
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
+    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
     @Inject Lazy<MmxOpenHelper> openHelper;
     private Context mContext;
 
@@ -243,8 +244,8 @@ public class MmxDatabaseUtils {
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(database.localPath);
 
         // Store the Recent Database entry.
-        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
-        boolean added = recentDbs.add(database);
+//        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
+        boolean added = mDatabasesLazy.get().add(database);
         if (!added) {
             throw new RuntimeException("could not add to recent files");
         }

@@ -46,12 +46,6 @@ public class RecentDatabasesProvider {
         load();
     }
 
-    public RecentDatabasesProvider(Context context) {
-        this.context = context.getApplicationContext();
-
-        this.load();
-    }
-
     public LinkedHashMap<String, DatabaseMetadata> map;
 
     private Context context;

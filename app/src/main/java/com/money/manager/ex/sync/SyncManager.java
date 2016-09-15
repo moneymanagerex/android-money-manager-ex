@@ -242,16 +242,12 @@ public class SyncManager {
         ProgressDialog progressDialog = null;
         // Create progress dialog only if called from the UI.
         if ((getContext() instanceof Activity)) {
-            try {
-                //progress dialog shown only when downloading an updated db file.
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setCancelable(false);
-                progressDialog.setMessage(getContext().getString(R.string.syncProgress));
-                progressDialog.setIndeterminate(true);
-//                progressDialog.show();
-            } catch (Exception ex) {
-                Timber.e(ex, "displaying sync progress binaryDialog");
-            }
+            //progress dialog shown only when downloading an updated db file.
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(getContext().getString(R.string.syncProgress));
+            progressDialog.setIndeterminate(true);
+//            progressDialog.show();
         }
         Messenger messenger = null;
         if (getContext() instanceof Activity) {
@@ -301,7 +297,6 @@ public class SyncManager {
     }
 
     boolean isSyncEnabled() {
-        // The sync needs to be enabled.
         return getPreferences().isSyncEnabled();
     }
 

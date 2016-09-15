@@ -57,6 +57,7 @@ public class DatabaseSettingsFragment
     extends PreferenceFragment {
 
     @Inject Lazy<MmxOpenHelper> openHelper;
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,8 @@ public class DatabaseSettingsFragment
         Preference preference = findPreference(getString(R.string.pref_clear_recent_files));
         if (preference == null) return;
 
-        final RecentDatabasesProvider recents = new RecentDatabasesProvider(getActivity());
+        final RecentDatabasesProvider recents = mDatabases.get();
+
 
         // show how many items are in the list.
         preference.setSummary(Integer.toString(recents.map.size()));
