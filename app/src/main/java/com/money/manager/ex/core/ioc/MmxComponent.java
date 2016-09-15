@@ -24,6 +24,7 @@ import com.money.manager.ex.currency.list.CurrencyListFragment;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.home.SelectDatabaseActivity;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
@@ -53,6 +54,7 @@ public interface MmxComponent {
     void inject(MainActivity activity);
     void inject(RecurringTransactionEditActivity activity);
     void inject(CheckingTransactionEditActivity activity);
+    void inject(SelectDatabaseActivity activity);
 
     // Fragments
     void inject(DatabaseSettingsFragment fragment);

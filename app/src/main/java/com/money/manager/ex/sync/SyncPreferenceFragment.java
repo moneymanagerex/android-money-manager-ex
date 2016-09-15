@@ -36,7 +36,7 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -378,9 +378,9 @@ public class SyncPreferenceFragment
 
         String dbPath = dbDirectory.concat(File.separator).concat(fileName);
         // save current database path
-        new AppSettings(getActivity()).getDatabaseSettings().setDatabasePath(dbPath);
+        new AppSettings(getActivity()).set(R.string.pref_database_path, dbPath);
 
-        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
+        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
         //RecentDatabasesProvider databases = new RecentDatabasesProvider(getActivity());
         getDatabases().add(db);
     }

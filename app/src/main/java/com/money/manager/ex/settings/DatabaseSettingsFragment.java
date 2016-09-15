@@ -29,8 +29,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -114,14 +115,13 @@ public class DatabaseSettingsFragment
                 // clear recent files list
                 boolean success = recents.clear();
                 // update display value.
-                preference.setSummary(Integer.toString(recents.map.size()));
+                preference.setSummary(Integer.toString(recents.count()));
 
                 // notification
-                ExceptionHandler handler = new ExceptionHandler(getActivity(), DatabaseSettingsFragment.this);
                 String message = success
                     ? getString(R.string.cleared)
                     : getString(R.string.error);
-                handler.showMessage(message);
+                new UIHelper(getActivity()).showToast(message);
                 return false;
             }
         });
@@ -230,7 +230,7 @@ public class DatabaseSettingsFragment
         String dbPath = dbUtils.createDatabase(filename);
         if (TextUtils.isEmpty(dbPath)) return false;
 
-        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath);
+        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(dbPath);
         boolean isSet = dbUtils.useDatabase(db);
         if (!isSet) return false;
 

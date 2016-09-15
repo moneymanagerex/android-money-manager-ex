@@ -19,10 +19,10 @@ package com.money.manager.ex.home;
 import java.util.Comparator;
 
 /**
- * Comparator for RecentDatabaseEntry objects that compares their properties.
+ * Comparator for DatabaseMetadata objects that compares their properties.
  */
 public class RecentDatabaseEntryComparator
-    implements Comparator<RecentDatabaseEntry> {
+    implements Comparator<DatabaseMetadata> {
 
     /**
      * Compares the two specified objects to determine their relative ordering. The ordering
@@ -45,7 +45,7 @@ public class RecentDatabaseEntryComparator
      * @throws ClassCastException if objects are not of the correct type.
      */
     @Override
-    public int compare(RecentDatabaseEntry lhs, RecentDatabaseEntry rhs) {
+    public int compare(DatabaseMetadata lhs, DatabaseMetadata rhs) {
         if (lhs.isSynchronised() != rhs.isSynchronised()) return 1;
         if (!lhs.localPath.equals(rhs.localPath)) return 1;
 

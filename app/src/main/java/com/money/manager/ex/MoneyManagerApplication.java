@@ -109,10 +109,9 @@ public class MoneyManagerApplication
 
         // otherwise try other paths or create the default database.
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(context);
-        String defaultDirectory = dbUtils.getDefaultDatabaseDirectory();
-        String defaultPath = defaultDirectory.concat(File.separator).concat(DEFAULT_DB_FILENAME);
+        String defaultPath = new MmxDatabaseUtils(context).getDefaultDatabasePath();
 
+        // Save db path to preferences.
         dbSettings.setDatabasePath(defaultPath);
 
         // Show notification
@@ -231,6 +230,7 @@ public class MoneyManagerApplication
 
     private MmxOpenHelper createDbInstance(String path) {
         if (TextUtils.isEmpty(path)) {
+//            path = new MmxDatabaseUtils(this).getDefaultDatabasePath();
             path = getDatabasePath(this);
         }
         return new MmxOpenHelper(this, path);

@@ -31,15 +31,15 @@ import com.money.manager.ex.sync.SyncManager;
 
 public class DatabaseMetadataFactory {
 
-    public static RecentDatabaseEntry getInstance(String localPath) {
-        RecentDatabaseEntry db = new RecentDatabaseEntry();
+    public static DatabaseMetadata getInstance(String localPath) {
+        DatabaseMetadata db = new DatabaseMetadata();
         db.localPath = localPath;
         db.remotePath = "";
         return db;
     }
 
-    public static RecentDatabaseEntry getInstance(String filePath, @NonNull String remoteFileName) {
-        RecentDatabaseEntry entry = new RecentDatabaseEntry();
+    public static DatabaseMetadata getInstance(String filePath, @NonNull String remoteFileName) {
+        DatabaseMetadata entry = new DatabaseMetadata();
         entry.localPath = filePath;
         entry.remotePath = remoteFileName;
         return entry;
@@ -64,8 +64,8 @@ public class DatabaseMetadataFactory {
      * to Database metadata records.
      * @return A database record that represents the current settings (local/remote db paths).
      */
-    public RecentDatabaseEntry createDefaultEntry() {
-        RecentDatabaseEntry entry = new RecentDatabaseEntry();
+    public DatabaseMetadata createDefaultEntry() {
+        DatabaseMetadata entry = new DatabaseMetadata();
 
         // todo remove the local change preference after upgrade.
         entry.localPath = MoneyManagerApplication.getDatabasePath(getContext());

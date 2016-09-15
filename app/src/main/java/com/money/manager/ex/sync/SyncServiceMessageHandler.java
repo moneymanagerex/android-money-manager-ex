@@ -27,7 +27,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
@@ -134,7 +134,7 @@ public class SyncServiceMessageHandler
         RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
 
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-        RecentDatabaseEntry entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
+        DatabaseMetadata entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
 
         recents.add(entry);
     }

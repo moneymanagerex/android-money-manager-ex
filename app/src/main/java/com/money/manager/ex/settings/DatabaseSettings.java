@@ -16,9 +16,6 @@
  */
 package com.money.manager.ex.settings;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import com.money.manager.ex.R;
 
 /**
@@ -33,15 +30,11 @@ public class DatabaseSettings {
     private AppSettings mAppSettings;
 
     public String getDatabasePath() {
-        Context context = mAppSettings.getContext();
-        String key = context.getString(R.string.pref_database_path);
-        String path = mAppSettings.get(key, "");
+        String path = mAppSettings.get(R.string.pref_database_path, "");
         return path;
     }
 
     public void setDatabasePath(String path) {
-        Context context = mAppSettings.getContext();
-        String key = context.getString(R.string.pref_database_path);
-        mAppSettings.set(key, path);
+        mAppSettings.set(R.string.pref_database_path, path);
     }
 }

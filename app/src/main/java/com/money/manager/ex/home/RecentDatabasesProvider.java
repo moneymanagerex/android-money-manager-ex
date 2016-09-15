@@ -23,11 +23,8 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
-import com.money.manager.ex.sync.SyncManager;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -55,7 +52,7 @@ public class RecentDatabasesProvider {
         this.load();
     }
 
-    public LinkedHashMap<String, RecentDatabaseEntry> map;
+    public LinkedHashMap<String, DatabaseMetadata> map;
 
     private Context context;
 
@@ -65,7 +62,7 @@ public class RecentDatabasesProvider {
      * @param value The recent database object.
      * @return Indicator if the value was saved successfully.
      */
-    public boolean add(String key, RecentDatabaseEntry value) {
+    public boolean add(String key, DatabaseMetadata value) {
         // check if this item already exist.
         if (contains(value.localPath)) {
             // Put as the last if it does.
@@ -84,7 +81,7 @@ public class RecentDatabasesProvider {
         return true;
     }
 
-    public boolean add(RecentDatabaseEntry entry) {
+    public boolean add(DatabaseMetadata entry) {
         return add(entry.localPath, entry);
     }
 
@@ -104,24 +101,7 @@ public class RecentDatabasesProvider {
         return this.map.size();
     }
 
-//    /**
-//     * This method will find an existing item by comparing another object by its properties.
-//     * The returned value is used when removing the entry from the collection (reference).
-//     * @param entry Object to compare to.
-//     * @return Existing entry.
-//     */
-//    public RecentDatabaseEntry find(RecentDatabaseEntry entry) {
-//        RecentDatabaseEntryComparator comparator = new RecentDatabaseEntryComparator();
-//
-//        for (RecentDatabaseEntry existing : this.map.values()) {
-//            if (comparator.compare(existing, entry) == 0) {
-//                return existing;
-//            }
-//        }
-//        return null;
-//    }
-
-    public RecentDatabaseEntry get(String key) {
+    public DatabaseMetadata get(String key) {
         return this.map.get(key);
     }
 
@@ -133,7 +113,7 @@ public class RecentDatabasesProvider {
      * find and return the current database
      * @return The current database metadata, if any, or null.
      */
-    public RecentDatabaseEntry getCurrent() {
+    public DatabaseMetadata getCurrent() {
         String dbPath = new AppSettings(getContext()).getDatabaseSettings().getDatabasePath();
         if (TextUtils.isEmpty(dbPath)) return null;
 
@@ -142,12 +122,12 @@ public class RecentDatabasesProvider {
         }
 
         // otherwise create the default entry for the existing path.
-        RecentDatabaseEntry defaultDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
+        DatabaseMetadata defaultDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
         return defaultDb;
     }
 
     public boolean remove(String localPath) {
-        RecentDatabaseEntry existing = get(localPath);
+        DatabaseMetadata existing = get(localPath);
         if (existing != null) {
             this.map.remove(existing);
             return true;
@@ -159,19 +139,14 @@ public class RecentDatabasesProvider {
         return this.map.containsKey(path);
     }
 
-    public SharedPreferences getPreferences() {
-        SharedPreferences prefs = getContext().getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
-        return prefs;
-    }
-
     public String readPreference() {
-        return getPreferences().getString(PREF_KEY, "");
+        return getRecentDbPreferences().getString(PREF_KEY, "");
     }
 
     public void load() {
         String value = readPreference();
 
-        LinkedHashMap<String, RecentDatabaseEntry> map = null;
+        LinkedHashMap<String, DatabaseMetadata> map = null;
         try {
             map = parseStorageContent(value);
         } catch (Exception e) {
@@ -186,18 +161,10 @@ public class RecentDatabasesProvider {
         }
     }
 
-    private LinkedHashMap<String, RecentDatabaseEntry> parseStorageContent(String value) {
-        Type listType = new TypeToken<LinkedHashMap<String, RecentDatabaseEntry>>() {}.getType();
-        Gson gson = new Gson();
-
-        LinkedHashMap<String, RecentDatabaseEntry> map = gson.fromJson(value, listType);
-        return map;
-    }
-
     public void save() {
         String value = toJson();
 
-        getPreferences().edit()
+        getRecentDbPreferences().edit()
                 .putString(PREF_KEY, value)
                 .apply();
     }
@@ -221,4 +188,22 @@ public class RecentDatabasesProvider {
 
         this.map.remove(firstKey);
     }
+
+    /*
+        private
+     */
+
+    private SharedPreferences getRecentDbPreferences() {
+        SharedPreferences prefs = getContext().getSharedPreferences(PreferenceConstants.RECENT_DB_PREFERENCES, 0);
+        return prefs;
+    }
+
+    private LinkedHashMap<String, DatabaseMetadata> parseStorageContent(String value) {
+        Type listType = new TypeToken<LinkedHashMap<String, DatabaseMetadata>>() {}.getType();
+        Gson gson = new Gson();
+
+        LinkedHashMap<String, DatabaseMetadata> map = gson.fromJson(value, listType);
+        return map;
+    }
+
 }

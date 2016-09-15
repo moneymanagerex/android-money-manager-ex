@@ -72,7 +72,7 @@ abstract class SettingsBase {
 //    }
 
 //    private boolean save() {
-//        boolean result = getPreferences().edit()
+//        boolean result = getRecentDbPreferences().edit()
 ////                .apply();
 //                .commit();
 //        return result;

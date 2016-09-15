@@ -32,10 +32,11 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.NetworkUtils;
@@ -219,7 +220,7 @@ public class SyncManager {
     }
 
     public String getRemotePath() {
-        RecentDatabaseEntry db = getDatabases().getCurrent();
+        DatabaseMetadata db = getDatabases().getCurrent();
         if (db == null) return null;
 
         String fileName = db.remotePath;
@@ -254,7 +255,7 @@ public class SyncManager {
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
         }
 
-        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
+        String localFile = getDatabases().getCurrent().localPath;
 
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
                 localFile, remoteFile, messenger);
@@ -386,8 +387,9 @@ public class SyncManager {
     }
 
     public void triggerUpload() {
-        String localFile = getDatabases().getCurrent().localPath;
-        String remoteFile = getRemotePath();
+        DatabaseMetadata db = getDatabases().getCurrent();
+        String localFile = db.localPath;
+        String remoteFile = db.remotePath;
 
         // trigger upload
         Intent service = new Intent(getContext(), SyncService.class);
@@ -463,7 +465,7 @@ public class SyncManager {
         String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
         // todo: remote change date missing here!
-        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(localFile, getRemotePath());
+        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(localFile, getRemotePath());
         boolean isDbSet = dbUtils.useDatabase(db);
 
         if (!isDbSet) {
@@ -512,10 +514,9 @@ public class SyncManager {
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
-        RecentDatabasesProvider databases = new RecentDatabasesProvider(getContext());
-        RecentDatabaseEntry currentDb = databases.get(localPath);
+        DatabaseMetadata currentDb = getDatabases().get(localPath);
         currentDb.remoteLastChangedOn = date;
-        databases.save();
+        getDatabases().save();
     }
 
     /**
@@ -561,13 +562,12 @@ public class SyncManager {
     }
 
     private void markLocalFileChanged(boolean changed) {
-        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-        RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
-        RecentDatabaseEntry currentDbEntry = recents.get(localPath);
+        String localPath = new AppSettings(getContext()).getDatabaseSettings().getDatabasePath();
+        DatabaseMetadata currentDbEntry = getDatabases().get(localPath);
 
         currentDbEntry.isLocalFileChanged = changed;
 
-        recents.save();
+        getDatabases().save();
     }
 
     private void resetLocalChanges() {
@@ -588,7 +588,7 @@ public class SyncManager {
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
-        RecentDatabaseEntry db = getDatabases().getCurrent();
+        DatabaseMetadata db = getDatabases().getCurrent();
 
         Intent intent = new Intent(getContext(), SyncService.class);
 

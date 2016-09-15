@@ -18,8 +18,8 @@ package org.moneymanagerex.android.tests;
 
 import com.google.gson.Gson;
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 
 import junit.framework.Assert;
@@ -67,20 +67,20 @@ public class RecentDatabaseProviderTests {
 
         // save full collection
 
-        LinkedHashMap<String, RecentDatabaseEntry> testEntries = getEntries();
+        LinkedHashMap<String, DatabaseMetadata> testEntries = getEntries();
         _testObject.map = testEntries;
         _testObject.save();
 
         // Load
 
         _testObject.load();
-        LinkedHashMap<String, RecentDatabaseEntry> actual = _testObject.map;
+        LinkedHashMap<String, DatabaseMetadata> actual = _testObject.map;
         Gson gson = new Gson();
 
         // compare individual elements.
         
-        for (RecentDatabaseEntry entry : actual.values()) {
-            RecentDatabaseEntry expected = testEntries.get(entry.localPath);
+        for (DatabaseMetadata entry : actual.values()) {
+            DatabaseMetadata expected = testEntries.get(entry.localPath);
             assertThat(gson.toJson(entry))
                     .isEqualTo(gson.toJson(expected));
         }
@@ -88,7 +88,7 @@ public class RecentDatabaseProviderTests {
 
     @Test
     public void testInsert() {
-        RecentDatabaseEntry entry = getEntry(false);
+        DatabaseMetadata entry = getEntry(false);
         String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remotePath\":\"\",\"linkedToCloud\":false}}";
 
         _testObject.add(entry);
@@ -101,19 +101,19 @@ public class RecentDatabaseProviderTests {
     @Test public void testGetCurrent() {
         // todo prepare conditions
 
-        RecentDatabaseEntry current = _testObject.getCurrent();
+        DatabaseMetadata current = _testObject.getCurrent();
 
         assertThat(current).isNotNull();
     }
 
     @Test public void add_does_not_create_duplicate() {
-        RecentDatabaseEntry entry1 = DatabaseMetadataFactory.getInstance("path1");
+        DatabaseMetadata entry1 = DatabaseMetadataFactory.getInstance("path1");
         _testObject.add(entry1);
 
-        RecentDatabaseEntry entry2 = DatabaseMetadataFactory.getInstance("path2");
+        DatabaseMetadata entry2 = DatabaseMetadataFactory.getInstance("path2");
         _testObject.add(entry2);
 
-        RecentDatabaseEntry entry1Duplicate = DatabaseMetadataFactory.getInstance("path1");
+        DatabaseMetadata entry1Duplicate = DatabaseMetadataFactory.getInstance("path1");
         _testObject.add(entry1Duplicate);
 
         // _testObject.get("path1");
@@ -122,19 +122,19 @@ public class RecentDatabaseProviderTests {
 
     // Private
 
-    private LinkedHashMap<String, RecentDatabaseEntry> getEntries() {
-        LinkedHashMap<String, RecentDatabaseEntry> map = new LinkedHashMap<>();
+    private LinkedHashMap<String, DatabaseMetadata> getEntries() {
+        LinkedHashMap<String, DatabaseMetadata> map = new LinkedHashMap<>();
 
         for(int i = 0; i < 3; i++) {
-            RecentDatabaseEntry entry = getEntry(true);
+            DatabaseMetadata entry = getEntry(true);
             map.put(entry.localPath, entry);
         }
 
         return map;
     }
 
-    private RecentDatabaseEntry getEntry(boolean useRandomPath) {
-        RecentDatabaseEntry entry = new RecentDatabaseEntry();
+    private DatabaseMetadata getEntry(boolean useRandomPath) {
+        DatabaseMetadata entry = new DatabaseMetadata();
 
         String unique = useRandomPath ? Double.toString(Math.random()) : "";
 

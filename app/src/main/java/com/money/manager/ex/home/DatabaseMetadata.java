@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.home;
 
+import android.content.SyncAdapterType;
 import android.text.TextUtils;
 
 import org.joda.time.DateTime;
@@ -25,10 +26,12 @@ import java.io.File;
 /**
  * An entry in the recent databases list.
  */
-public class RecentDatabaseEntry {
+public class DatabaseMetadata {
 
     public String localPath;
     public boolean isLocalFileChanged;
+    // todo sync provider
+    // SyncAdapterType
     public String remotePath;
     public DateTime remoteLastChangedOn;
 

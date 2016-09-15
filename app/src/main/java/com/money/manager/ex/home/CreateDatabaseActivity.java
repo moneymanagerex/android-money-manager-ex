@@ -19,7 +19,6 @@ package com.money.manager.ex.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoButton;
 import com.money.manager.ex.view.RobotoTextView;
@@ -37,8 +35,6 @@ import com.money.manager.ex.view.RobotoTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 public class CreateDatabaseActivity
     extends BaseFragmentActivity {
@@ -76,7 +72,7 @@ public class CreateDatabaseActivity
         String dbPath = dbUtils.createDatabase();
         if (TextUtils.isEmpty(dbPath)) return;
 
-        RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(dbPath);
+        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(dbPath);
         dbUtils.useDatabase(db);
 
         // show message

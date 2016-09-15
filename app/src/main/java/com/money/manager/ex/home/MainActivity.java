@@ -312,7 +312,7 @@ public class MainActivity
                     return;
                 }
 
-                RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(selectedPath);
+                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
                 changeDatabase(db);
                 break;
 
@@ -543,7 +543,7 @@ public class MainActivity
         Custom methods
      */
 
-    public void changeDatabase(@NonNull RecentDatabaseEntry database) {
+    public void changeDatabase(@NonNull DatabaseMetadata database) {
         // String localPath, @NonNull String remotePath
         try {
             new MmxDatabaseUtils(this)
@@ -597,7 +597,7 @@ public class MainActivity
 
         if (item.getId() == null && item.getTag() != null) {
             String key = item.getTag().toString();
-            RecentDatabaseEntry recentDb = getDatabases().get(key);
+            DatabaseMetadata recentDb = getDatabases().get(key);
             if (recentDb != null) {
                 onOpenDatabaseClick(recentDb);
             }
@@ -1175,7 +1175,7 @@ public class MainActivity
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
 
         if (getDatabases().map != null) {
-            for (RecentDatabaseEntry entry : getDatabases().map.values()) {
+            for (DatabaseMetadata entry : getDatabases().map.values()) {
                 String title = entry.getFileName();
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
@@ -1230,7 +1230,7 @@ public class MainActivity
                 Timber.d("Path intent file to open: %s", filePath);
 
                 // Open this database.
-                RecentDatabaseEntry db = DatabaseMetadataFactory.getInstance(filePath);
+                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(filePath);
                 changeDatabase(db);
                 return;
             } catch (Exception e) {
@@ -1291,7 +1291,7 @@ public class MainActivity
      * called when quick-switching the recent databases from the navigation menu.
      * @param recentDb selected recent database entry
      */
-    private void onOpenDatabaseClick(RecentDatabaseEntry recentDb) {
+    private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
         // do nothing if selecting the currently open database
         String currentDb = MoneyManagerApplication.getDatabasePath(this);
         if (recentDb.localPath.equals(currentDb)) return;

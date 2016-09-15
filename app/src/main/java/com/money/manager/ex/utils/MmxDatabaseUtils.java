@@ -25,7 +25,6 @@ import android.database.sqlite.SQLiteDiskIOException;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -35,8 +34,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.datalayer.InfoRepository;
 import com.money.manager.ex.domainmodel.Info;
-import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.RecentDatabaseEntry;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 
@@ -233,7 +231,7 @@ public class MmxDatabaseUtils {
      * the stored settings.
      * @return Indicator whether the database is valid for use.
      */
-    public boolean useDatabase(@NonNull RecentDatabaseEntry database) {
+    public boolean useDatabase(@NonNull DatabaseMetadata database) {
         // String dbPath, @NonNull String remotePath
 
         // check if the file is a valid database.
@@ -400,13 +398,12 @@ public class MmxDatabaseUtils {
     }
 
     /**
-     *
+     * External files directory
+     * /storage/sdcard0/Android/data/package/files
      * @return directory to store the database in external files dir.
      */
     private File getExternalFilesDirectory() {
-        // /storage/sdcard0/Android/data/package/files
         File externalFilesDir = getContext().getExternalFilesDir(null);
-        //assert externalFilesDir != null;
         if (externalFilesDir == null) return null;
         
         String dbString = externalFilesDir.getAbsolutePath().concat(File.separator)

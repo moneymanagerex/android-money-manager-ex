@@ -33,10 +33,9 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.dropbox.IOnDownloadUploadEntry;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.home.RecentDatabaseEntry;
 import com.money.manager.ex.home.RecentDatabasesProvider;
-import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.utils.MmxFileUtils;
@@ -286,7 +285,7 @@ public class SyncService
 
         // are there local changes?
         boolean isLocalModified = false;
-        RecentDatabaseEntry currentDb = this.recentDatabasesProvider
+        DatabaseMetadata currentDb = this.recentDatabasesProvider
             .get(localFile.getAbsolutePath());
         // todo remove the null-check below after the default record is established.
         if (currentDb != null) {

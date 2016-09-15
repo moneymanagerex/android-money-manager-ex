@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
@@ -32,9 +33,12 @@ import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.Lazy;
 import timber.log.Timber;
 
 public class SelectDatabaseActivity
@@ -42,12 +46,16 @@ public class SelectDatabaseActivity
 
     public static final int REQUEST_PICKFILE = 1;
 
+    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_database);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         ButterKnife.bind(this);
 
@@ -124,9 +132,8 @@ public class SelectDatabaseActivity
         // store db setting
         new AppSettings(this).getDatabaseSettings().setDatabasePath(dbPath);
         // Add the current db to the recent db list.
-        RecentDatabasesProvider databases = new RecentDatabasesProvider(this);
-        RecentDatabaseEntry currentDb = databases.getCurrent();
-        databases.add(currentDb);
+        DatabaseMetadata currentDb = mDatabasesLazy.get().getCurrent();
+        mDatabasesLazy.get().add(currentDb);
 
         // open the main activity
         Intent intent = IntentFactory.getMainActivityNew(this);

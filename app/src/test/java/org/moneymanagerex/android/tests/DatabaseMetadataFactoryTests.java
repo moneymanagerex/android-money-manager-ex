@@ -18,8 +18,8 @@
 package org.moneymanagerex.android.tests;
 
 import com.money.manager.ex.BuildConfig;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.RecentDatabaseEntry;
 
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class DatabaseMetadataFactoryTests {
 
     @Test
     public void createDefaultItem() {
-        RecentDatabaseEntry empty = _testObject.createDefaultEntry();
+        DatabaseMetadata empty = _testObject.createDefaultEntry();
 
         assertThat(empty).isNotNull();
     }
