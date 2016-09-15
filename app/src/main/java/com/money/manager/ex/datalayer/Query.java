@@ -68,6 +68,13 @@ public class Query {
         return this;
     }
 
+    /**
+     * When using this method, make sure to pass Query.selectionArgs to the .query or other action
+     * methods.
+     * @param selection WHERE statement
+     * @param args arguments
+     * @return Query object for chaining methods.
+     */
     public Query where(String selection, String... args) {
         this.selection = selection;
         this.selectionArgs = args;

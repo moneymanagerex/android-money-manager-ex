@@ -58,6 +58,6 @@ public class InfoRepositorySql
     }
 
     public boolean update(Info entity) {
-        return update(entity, Info.INFONAME + "=?", InfoKeys.PASSCODE);
+        return update(entity, Info.INFONAME + "=?", entity.getName());
     }
 }

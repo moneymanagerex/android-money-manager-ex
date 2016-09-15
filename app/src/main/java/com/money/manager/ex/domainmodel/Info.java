@@ -21,6 +21,10 @@ public class Info
         return getInt(INFOID);
     }
 
+    public String getName() {
+        return getString(INFONAME);
+    }
+
     public void setName(String name) {
         setString(INFONAME, name);
     }

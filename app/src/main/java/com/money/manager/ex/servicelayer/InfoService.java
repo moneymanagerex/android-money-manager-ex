@@ -109,16 +109,10 @@ public class InfoService
         String ret = null;
 
         try {
-//            cursor = getContext().getContentResolver().query(repository.getUri(),
-//                null,
-//                Info.INFONAME + "=?",
-//                new String[]{ info },
-//                null);
-            String sql = new Query()
+            Query query = new Query()
                     .from(InfoRepositorySql.TABLE_NAME)
-                    .where(Info.INFONAME + "=?", info)
-                    .toString();
-            cursor = repository.query(sql);
+                    .where(Info.INFONAME + "=?", info);
+            cursor = repository.query(query.toString(), query.selectionArgs);
             if (cursor == null) return null;
 
             if (cursor.moveToFirst()) {
@@ -134,8 +128,7 @@ public class InfoService
 
     /**
      * Update value of info.
-     *
-     * @param key  to be updated
+     * @param key to update
      * @param value value to be used
      * @return true if update success otherwise false
      */
@@ -144,8 +137,6 @@ public class InfoService
         // check if info exists
         boolean exists = (getInfoValue(key) != null);
 
-//        ContentValues values = new ContentValues();
-//        values.put(Info.INFOVALUE, value);
         Info entity = Info.create(key, value);
 
         try {
