@@ -33,6 +33,7 @@ import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 import com.money.manager.ex.sync.SyncService;
+import com.money.manager.ex.sync.SyncServiceMessageHandler;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
@@ -69,6 +70,7 @@ public interface MmxComponent {
     void inject(MmxContentProvider provider);
     void inject(MmxDatabaseUtils utils);
     void inject(SyncManager sync);
+    void inject(SyncServiceMessageHandler handler);
 
     // Business Services
     void inject(CurrencyService service);

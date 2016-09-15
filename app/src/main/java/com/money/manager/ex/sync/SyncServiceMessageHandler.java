@@ -34,6 +34,10 @@ import com.money.manager.ex.utils.DialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
+
 /**
  * Handler for the messages received from the sync service.
  * Updates the UI based on the messages received. The messages state the progress of the
@@ -44,11 +48,14 @@ public class SyncServiceMessageHandler
     extends Handler {
 
     public SyncServiceMessageHandler(Context context, ProgressDialog progressDialog, String remoteFile) {
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
+
         this.context = context;
         this.progressDialog = progressDialog;
         this.remoteFile = remoteFile;
     }
 
+    @Inject Lazy<RecentDatabasesProvider> mDatabases;
     private Context context;
     private ProgressDialog progressDialog;
     private String remoteFile;
@@ -124,6 +131,10 @@ public class SyncServiceMessageHandler
         }
     }
 
+    private RecentDatabasesProvider getDatabases() {
+        return mDatabases.get();
+    }
+
     private void showProgressDialog() {
         if (progressDialog == null) return;
 
@@ -131,12 +142,14 @@ public class SyncServiceMessageHandler
     }
 
     private void storeRecentDb(String remoteFile) {
-        RecentDatabasesProvider recents = new RecentDatabasesProvider(getContext());
-
         String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-        DatabaseMetadata entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
 
-        recents.add(entry);
+        DatabaseMetadata entry = getDatabases().get(localPath);
+        if (entry == null) {
+            entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
+        }
+
+        getDatabases().add(entry);
     }
 
 }
