@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.budget;
 
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import java.util.Locale;
 
@@ -29,7 +29,7 @@ public class BudgetNameParser {
     private static final String SEPARATOR = "-";
 
     public int getYear(String name) {
-        if (StringUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name)) {
             return 0;
         }
 
@@ -41,7 +41,7 @@ public class BudgetNameParser {
     }
 
     public int getMonth(String name) {
-        if (StringUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name)) {
             return 0;
         }
 

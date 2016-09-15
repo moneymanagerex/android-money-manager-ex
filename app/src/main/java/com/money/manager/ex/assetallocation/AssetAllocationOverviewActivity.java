@@ -7,6 +7,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
@@ -22,7 +23,6 @@ import com.money.manager.ex.assetallocation.report.ReportHtmlFormatter;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.file.TextFileExport;
@@ -30,8 +30,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.money.manager.ex.settings.InvestmentSettings;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -159,7 +157,7 @@ public class AssetAllocationOverviewActivity
         webView.saveWebArchive(outFile.getAbsolutePath(), false, new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {
-                if (!StringUtils.isEmpty(value)) {
+                if (!TextUtils.isEmpty(value)) {
                     // offer export
                     export.export(finalOutFile, getString(R.string.asset_allocation));
                 }

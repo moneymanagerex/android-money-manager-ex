@@ -51,7 +51,6 @@ import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
@@ -445,7 +444,7 @@ public class RecurringTransactionEditActivity
         if (!mCommonFunctions.validateData()) return false;
 
         // Due Date is required
-        if (StringUtils.isEmpty(getRecurringTransaction().getDueDateString())) {
+        if (TextUtils.isEmpty(getRecurringTransaction().getDueDateString())) {
             Core.alertDialog(this, R.string.due_date_required);
             return false;
         }

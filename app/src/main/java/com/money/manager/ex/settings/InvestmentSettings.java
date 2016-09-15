@@ -20,13 +20,12 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.investment.QuoteProviders;
 import com.money.manager.ex.servicelayer.InfoService;
-
-import org.apache.commons.lang3.StringUtils;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -58,7 +57,7 @@ public class InvestmentSettings
         InfoService service = new InfoService(getContext());
         String value = service.getInfoValue(InfoKeys.ASSET_ALLOCATION_DIFF_THRESHOLD);
 
-        if (StringUtils.isEmpty(value)) {
+        if (TextUtils.isEmpty(value)) {
             value = Integer.toString(Constants.NOT_SET); // "-1";
         }
         return MoneyFactory.fromString(value);

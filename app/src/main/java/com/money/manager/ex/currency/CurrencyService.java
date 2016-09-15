@@ -41,8 +41,6 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.servicelayer.ServiceBase;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -400,7 +398,7 @@ public class CurrencyService
         String currencyString = infoService.getInfoValue(InfoKeys.BASECURRENCYID);
         Integer currencyId = null;
 
-        if (!StringUtils.isEmpty(currencyString)) {
+        if (!TextUtils.isEmpty(currencyString)) {
             currencyId = Integer.parseInt(currencyString);
         }
 
@@ -417,7 +415,7 @@ public class CurrencyService
                 defaultLocale = Locale.getDefault();
             }
             // Check if there is a country.
-            if (!StringUtils.isEmpty(defaultLocale.getCountry() )) {
+            if (!TextUtils.isEmpty(defaultLocale.getCountry() )) {
                 currency = java.util.Currency.getInstance(defaultLocale);
             }
             // Otherwise no country info in the locale. Just use the default.

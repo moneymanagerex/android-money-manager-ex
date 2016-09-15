@@ -75,6 +75,7 @@ allprojects {
             force 'com.google.code.gson:gson:2.7'
             force 'com.google.guava:guava:19.0'
             force 'com.google.code.findbugs:jsr305:3.0.1'
+            force 'org.apache.commons:commons-lang3:3.4'
         }
     }
 }

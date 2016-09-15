@@ -38,7 +38,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -47,7 +46,6 @@ import com.money.manager.ex.search.CategorySub;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 
-import org.apache.commons.lang3.StringUtils;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -130,11 +128,10 @@ public class CategoriesReportFragment
                 Money totalAmount = MoneyFactory.fromString("0");
                 while (data.moveToNext()) {
                     String totalRow = data.getString(data.getColumnIndex("TOTAL"));
-                    if (!StringUtils.isEmpty(totalRow)) {
+                    if (!TextUtils.isEmpty(totalRow)) {
                         totalAmount = totalAmount.add(MoneyFactory.fromString(totalRow));
                     } else {
-                        ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-                        handler.showMessage("reading total");
+                        new UIHelper(getActivity()).showToast("reading total");
                     }
                 }
                 TextView txtColumn2 = (TextView) mListViewFooter.findViewById(R.id.textViewColumn2);

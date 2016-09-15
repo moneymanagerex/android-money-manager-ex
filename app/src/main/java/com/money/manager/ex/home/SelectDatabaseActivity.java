@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
@@ -30,8 +31,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
-
-import org.apache.commons.lang3.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +66,7 @@ public class SelectDatabaseActivity
             case REQUEST_PICKFILE:
                 if (resultCode != RESULT_OK) return;
                 String selectedPath = UIHelper.getSelectedFile(data);
-                if(StringUtils.isEmpty(selectedPath)) {
+                if(TextUtils.isEmpty(selectedPath)) {
                     new UIHelper(this).showToast(R.string.invalid_database);
                     return;
                 }

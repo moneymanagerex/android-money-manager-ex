@@ -16,7 +16,7 @@
  */
 package com.money.manager.ex.investment.yql;
 
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,11 +47,11 @@ public class YqlQueryGenerator {
         }
 
         String query = "select ";
-        query += StringUtils.join(fields, ',');     // fields
+        query += TextUtils.join(",", fields);
         query += " from ";
         query += source;    // table
         query += " where symbol in (";
-        query += StringUtils.join(symbols, ",");
+        query += TextUtils.join(",", symbols);
         query += ")";
 
         return query;

@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +46,6 @@ import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
@@ -452,7 +452,7 @@ public class InvestmentTransactionEditActivity
 
     private boolean validate() {
         // symbol must not be empty.
-        if (StringUtils.isEmpty(mStock.getSymbol())) {
+        if (TextUtils.isEmpty(mStock.getSymbol())) {
             new UIHelper(this).showToast(getString(R.string.symbol_required));
             return false;
         }

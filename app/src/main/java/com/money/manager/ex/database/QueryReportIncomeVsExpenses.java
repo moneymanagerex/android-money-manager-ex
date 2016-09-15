@@ -17,13 +17,12 @@
 package com.money.manager.ex.database;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxFileUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class QueryReportIncomeVsExpenses
     extends Dataset {
@@ -47,7 +46,7 @@ public class QueryReportIncomeVsExpenses
     private void initialize(Context context, String whereStatement) {
         ViewMobileData mobileData = new ViewMobileData(context);
         // add where statement
-        if(!StringUtils.isEmpty(whereStatement)) {
+        if(!TextUtils.isEmpty(whereStatement)) {
             mobileData.setWhere(whereStatement);
         }
         String mobileDataQuery = mobileData.getSource();

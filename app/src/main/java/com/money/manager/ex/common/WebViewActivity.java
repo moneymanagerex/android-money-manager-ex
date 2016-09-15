@@ -19,6 +19,7 @@ package com.money.manager.ex.common;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,8 +31,6 @@ import android.widget.ProgressBar;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.HttpMethods;
 import com.money.manager.ex.core.MyWebChromeClient;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 
@@ -156,7 +155,7 @@ public class WebViewActivity
         if (postParams != null) {
             String postDataString = "";
             for (String key : postParams.keySet()) {
-                if (!StringUtils.isEmpty(postDataString)) {
+                if (!TextUtils.isEmpty(postDataString)) {
                     postDataString += "&";
                 }
                 postDataString += key + "=" + postParams.get(key);

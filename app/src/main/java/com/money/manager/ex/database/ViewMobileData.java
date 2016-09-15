@@ -22,8 +22,6 @@ import android.text.TextUtils;
 import com.money.manager.ex.R;
 import com.money.manager.ex.utils.MmxFileUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * This has been migrated to QueryAllData.
  */

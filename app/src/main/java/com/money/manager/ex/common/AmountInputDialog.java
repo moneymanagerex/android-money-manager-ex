@@ -33,7 +33,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -42,7 +41,6 @@ import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.ExpressionBuilder;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import info.javaperformance.money.Money;
@@ -238,7 +236,7 @@ public class AmountInputDialog
         mDefaultColor = txtTop.getCurrentTextColor();
 
         txtMain = (TextView) view.findViewById(R.id.textViewMain);
-        if (!StringUtils.isEmpty(mExpression)) {
+        if (!TextUtils.isEmpty(mExpression)) {
             txtMain.setText(mExpression);
         } else {
             showAmountInEntryField();

@@ -30,8 +30,6 @@ import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 
 /**
@@ -46,32 +44,6 @@ public class CategoryService
     }
 
     private CategoryRepository mRepository;
-
-//    public int loadIdByName(String name) {
-//        int result = Constants.NOT_SET;
-//
-//        if(TextUtils.isEmpty(name)) { return result; }
-//
-//        String selection = Category.CATEGNAME + "=?";
-//
-//        CategoryRepository repo = new CategoryRepository(getContext());
-//
-//        Cursor cursor = getContext().getContentResolver().query(
-//                repo.getUri(),
-//                new String[] { Category.CATEGID },
-//                selection,
-//                new String[] { name },
-//                null);
-//        if (cursor == null) return Constants.NOT_SET;
-//
-//        if(cursor.moveToFirst()) {
-//            result = cursor.getInt(cursor.getColumnIndex(Category.CATEGID));
-//        }
-//
-//        cursor.close();
-//
-//        return result;
-//    }
 
     public int loadIdByName(String name) {
         return getRepository().loadIdByName(name);
@@ -114,8 +86,8 @@ public class CategoryService
         }
 
         String result = "";
-        if (StringUtils.isNotEmpty(categoryName)) result += categoryName;
-        if (StringUtils.isNotEmpty(subCategoryName)) result += ":" + subCategoryName;
+        if (!TextUtils.isEmpty(categoryName)) result += categoryName;
+        if (!TextUtils.isEmpty(subCategoryName)) result += ":" + subCategoryName;
 
         return result;
     }

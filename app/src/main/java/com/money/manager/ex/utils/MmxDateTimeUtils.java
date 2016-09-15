@@ -17,6 +17,7 @@
 package com.money.manager.ex.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
@@ -26,7 +27,6 @@ import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -57,14 +57,14 @@ public class MmxDateTimeUtils {
     }
 
     public static DateTime from(String isoString) {
-        if (StringUtils.isEmpty(isoString)) return null;
+        if (TextUtils.isEmpty(isoString)) return null;
 
         String pattern = Constants.ISO_DATE_FORMAT;
         return from(isoString, pattern);
     }
 
     public static DateTime from(String dateString, String pattern) {
-        if (StringUtils.isEmpty(dateString)) return null;
+        if (TextUtils.isEmpty(dateString)) return null;
 
         DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
 //        DateTime dateTime = format.parseDateTime(dateString);
@@ -169,7 +169,7 @@ public class MmxDateTimeUtils {
      * @return Date Range object.
      */
     public DateRange getDateRangeForPeriod(String period) {
-        if (StringUtils.isEmpty(period)) return null;
+        if (TextUtils.isEmpty(period)) return null;
 
         DateTime dateFrom;
         DateTime dateTo;
@@ -230,7 +230,7 @@ public class MmxDateTimeUtils {
         InfoService service = new InfoService(getContext());
         String pattern = service.getInfoValue(InfoKeys.DATEFORMAT);
 
-        if (!StringUtils.isEmpty(pattern)) {
+        if (!TextUtils.isEmpty(pattern)) {
             //replace part of pattern
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
                     .replace("%y", "yy").replace("%Y", "yyyy")
@@ -238,7 +238,7 @@ public class MmxDateTimeUtils {
         }
 
         // && getContext().getResources().getStringArray(R.array.date_format_mask) != null
-        if (StringUtils.isEmpty(pattern)
+        if (TextUtils.isEmpty(pattern)
                 && getContext().getResources().getStringArray(R.array.date_format_mask).length > 0){
             pattern= getContext().getResources().getStringArray(R.array.date_format_mask)[0];
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")

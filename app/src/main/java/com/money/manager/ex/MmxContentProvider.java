@@ -59,8 +59,6 @@ import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.sync.SyncManager;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -447,10 +445,10 @@ public class MmxContentProvider
                 log = "SELECT *";
             }
             log += " FROM " + dataset.getSource();
-            if (StringUtils.isNotEmpty(selection)) {
+            if (!TextUtils.isEmpty(selection)) {
                 log += " WHERE " + selection;
             }
-            if (StringUtils.isNotEmpty(sortOrder)) {
+            if (!TextUtils.isEmpty(sortOrder)) {
                 log += " ORDER BY " + sortOrder;
             }
             if (selectionArgs != null) {
@@ -484,7 +482,7 @@ public class MmxContentProvider
     private void logDelete(Dataset dataset, String selection, String[] selectionArgs) {
         String log = "DELETE FROM " + dataset.getSource();
         // compose log verbose
-        if (StringUtils.isNotEmpty(selection)) {
+        if (!TextUtils.isEmpty(selection)) {
             log += " WHERE " + selection;
         }
         if (selectionArgs != null) {

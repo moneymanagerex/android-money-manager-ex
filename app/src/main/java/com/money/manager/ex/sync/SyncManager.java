@@ -41,7 +41,6 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -159,7 +158,7 @@ public class SyncManager {
 
         // Check if the current database is linked to a cloud service.
         String remotePath = getRemotePath();
-        if (StringUtils.isEmpty(remotePath)) return;
+        if (TextUtils.isEmpty(remotePath)) return;
 
         // Mark local file as changed.
         markLocalFileChanged(true);
@@ -283,7 +282,7 @@ public class SyncManager {
         }
 
         // Remote file must be set.
-        if (StringUtils.isEmpty(getRemotePath())) {
+        if (TextUtils.isEmpty(getRemotePath())) {
             return false;
         }
 
@@ -484,8 +483,8 @@ public class SyncManager {
      * @return A boolean indicating if the filenames are the same.
      */
     private boolean areFileNamesSame(String localPath, String remotePath) {
-        if (StringUtils.isEmpty(localPath)) return false;
-        if (StringUtils.isEmpty(remotePath)) return false;
+        if (TextUtils.isEmpty(localPath)) return false;
+        if (TextUtils.isEmpty(remotePath)) return false;
 
         File localFile = new File(localPath);
         String localName = localFile.getName();

@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,7 +63,6 @@ import com.money.manager.ex.settings.InvestmentSettings;
 import com.money.manager.ex.sync.SyncManager;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
@@ -316,7 +316,7 @@ public class WatchlistFragment
     private void onPriceDownloaded(String symbol, Money price, DateTime date) {
         // prices updated.
 
-        if (StringUtils.isEmpty(symbol)) return;
+        if (TextUtils.isEmpty(symbol)) return;
 
         // update the current price of the stock.
         StockRepository repo = getStockRepository();

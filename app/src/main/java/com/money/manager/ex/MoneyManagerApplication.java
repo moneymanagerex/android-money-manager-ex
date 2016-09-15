@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -50,7 +51,6 @@ import com.shamanland.fonticon.FontIconTypefaceHolder;
 import io.fabric.sdk.android.Fabric;
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.parceler.Parcel;
 import org.parceler.ParcelClass;
 import org.parceler.ParcelClasses;
@@ -99,7 +99,7 @@ public class MoneyManagerApplication
         DatabaseSettings dbSettings = new AppSettings(context).getDatabaseSettings();
         String databasePath = dbSettings.getDatabasePath();
 
-        if (!StringUtils.isEmpty(databasePath)) {
+        if (!TextUtils.isEmpty(databasePath)) {
             // Use the db path stored in the preferences.
             File databaseFile = new File(databasePath);
             if (databaseFile.getAbsoluteFile().exists())  {
@@ -230,7 +230,7 @@ public class MoneyManagerApplication
     }
 
     private MmxOpenHelper createDbInstance(String path) {
-        if (StringUtils.isEmpty(path)) {
+        if (TextUtils.isEmpty(path)) {
             path = getDatabasePath(this);
         }
         return new MmxOpenHelper(this, path);
@@ -242,7 +242,7 @@ public class MoneyManagerApplication
 
         String language = new AppSettings(context).getGeneralSettings().getApplicationLanguage();
 
-        if(StringUtils.isNotEmpty(language)) {
+        if(!TextUtils.isEmpty(language)) {
             try {
                 locale = new Locale(language);
             } catch (Exception e) {
@@ -289,7 +289,7 @@ public class MoneyManagerApplication
         InfoService service = new InfoService(context);
         String username = service.getInfoValue(InfoKeys.USERNAME);
 
-        String result = StringUtils.isEmpty(username) ? "" : username;
+        String result = TextUtils.isEmpty(username) ? "" : username;
 
         return result;
     }

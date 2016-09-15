@@ -33,6 +33,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -102,7 +103,6 @@ import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -305,7 +305,7 @@ public class MainActivity
                 if (resultCode != RESULT_OK) return;
 
                 String selectedPath = UIHelper.getSelectedFile(data);
-                if(StringUtils.isEmpty(selectedPath)) {
+                if(TextUtils.isEmpty(selectedPath)) {
                     new UIHelper(this).showToast(R.string.invalid_database);
                     return;
                 }
@@ -1274,7 +1274,7 @@ public class MainActivity
     private boolean isDatabaseAvailable() {
         // Do we have a database set?
         String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
-        if (StringUtils.isEmpty(dbPath)) return false;
+        if (TextUtils.isEmpty(dbPath)) return false;
 
         // Does the database file exist?
         File dbFile = new File(dbPath);
