@@ -95,62 +95,6 @@ public class SyncAdapter
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
         Timber.d("synchronizing!");
 
-        // todo update syncResult object with info
-
-        SyncManager sync = new SyncManager(getContext());
-        AppSettings settings = new AppSettings(getContext());
-
-//        String localFilename = settings.getDatabaseSettings().getDatabasePath();
-//        String localFilename = sync.getLocalPath();
-        String localFilename = MoneyManagerApplication.getDatabasePath(getContext());
-        String remoteFilename = sync.getRemotePath();
-
-        // check if file is correct
-        if (TextUtils.isEmpty(localFilename) || TextUtils.isEmpty(remoteFilename)) return;
-
-        File localFile = new File(localFilename);
-
-        CloudMetaData remoteFile = sync.loadMetadata(remoteFilename);
-        if (remoteFile == null) {
-//            sendMessage(SyncServiceMessage.ERROR);
-            return;
-        }
-
-        // check if name is same
-        if (!localFile.getName().toLowerCase().equals(remoteFile.getName().toLowerCase())) {
-            Timber.w("Local filename different from the remote!");
-//            sendMessage(SyncServiceMessage.ERROR);
-            return;
-        }
-
-        triggerSync(localFile, remoteFile);
+        // todo copy the logic from the current SyncService.
     }
-
-    private void triggerSync(final File localFile, CloudMetaData remoteFile) {
-        SyncManager sync = new SyncManager(getContext());
-
-        DateTime localLastModified = sync.getCachedLastModifiedDateFor(remoteFile.getPath());
-        if (localLastModified == null) localLastModified = new DateTime(localFile.lastModified());
-
-        DateTime remoteLastModified = new DateTime(remoteFile.getModifiedAt());
-
-        Timber.d("Local file last modified: %s", localLastModified.toString());
-        Timber.d("Remote file last modified: %s", remoteLastModified.toString());
-
-        // check date
-        if (remoteLastModified.isAfter(localLastModified)) {
-            Timber.d("Download %s from the cloud storage.", remoteFile.getPath());
-            // download file
-            // todo triggerDownload(localFile, remoteFile);
-        } else if (remoteLastModified.isBefore(localLastModified)) {
-            Timber.d("Upload %s to the cloud storage.", localFile.getPath());
-            // upload file
-            // todo triggerUpload(localFile, remoteFile);
-        } else {
-            Timber.d("The local and remote files are the same.");
-
-//            sendMessage(SyncServiceMessage.FILE_NOT_CHANGED);
-        }
-    }
-
 }

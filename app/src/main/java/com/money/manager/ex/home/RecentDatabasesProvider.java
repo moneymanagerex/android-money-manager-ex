@@ -30,12 +30,14 @@ import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import timber.log.Timber;
 
 /**
  * Provides handling of the recent databases file queue.
  */
+@Singleton
 public class RecentDatabasesProvider {
 
     private static final String PREF_KEY = "LIST";

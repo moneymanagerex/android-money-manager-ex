@@ -25,6 +25,8 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncManager;
 
+import org.joda.time.DateTime;
+
 /**
  * Factory for the database metadata records.
  */
@@ -74,9 +76,9 @@ public class DatabaseMetadataFactory {
         SyncManager syncManager = new SyncManager(getContext());
         // todo remove the remote file preference after upgrade
         entry.remotePath = new SyncPreferences(getContext()).loadPreference(R.string.pref_remote_file, "");
-        entry.remoteLastChangedOn = syncManager.getCachedLastModifiedDateFor(entry.remotePath);
+        DateTime cachedRemoteChangeDate = syncManager.getRemoteLastModifiedDatePreferenceFor(entry.remotePath);
+        entry.setRemoteLastChangedDate(cachedRemoteChangeDate);
 
         return entry;
     }
-
 }

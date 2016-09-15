@@ -33,7 +33,7 @@ public class DatabaseMetadata {
     // todo sync provider
     // SyncAdapterType
     public String remotePath;
-    public DateTime remoteLastChangedOn;
+    public String remoteLastChangedDate;
 
     public String getFileName() {
         File file = new File(this.localPath);
@@ -42,5 +42,9 @@ public class DatabaseMetadata {
 
     public boolean isSynchronised() {
         return !TextUtils.isEmpty(remotePath);
+    }
+
+    public void setRemoteLastChangedDate(DateTime value) {
+        this.remoteLastChangedDate = value.toString();
     }
 }

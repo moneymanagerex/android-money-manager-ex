@@ -66,6 +66,7 @@ import timber.log.Timber;
  */
 public class SyncManager {
 
+    @Inject
     public SyncManager(Context context) {
         mContext = context;
         mStorageClient = new CloudStorageClient(context);
@@ -117,8 +118,9 @@ public class SyncManager {
     }
 
     public boolean isRemoteFileModified(CloudMetaData remoteFile) {
-        DateTime cachedLastModified = getCachedLastModifiedDateFor(remoteFile.getPath());
-        DateTime remoteLastModified = getModificationDate(remoteFile);
+        DateTime cachedLastModified = DateTime.parse(getDatabases().getCurrent().remoteLastChangedDate);
+
+        DateTime remoteLastModified = getModificationDateFrom(remoteFile);
 
         return !remoteLastModified.isEqual(cachedLastModified);
     }
@@ -209,17 +211,19 @@ public class SyncManager {
 
     /**
      * Gets last saved datetime of the remote file modification from the preferences.
+     * Get the saved date from Database Metadata.
      * @param remotePath file name, key
      * @return date of last modification
      */
-    public DateTime getCachedLastModifiedDateFor(String remotePath) {
+    @Deprecated
+    public DateTime getRemoteLastModifiedDatePreferenceFor(String remotePath) {
         String dateString = getPreferences().get(remotePath, null);
         if (TextUtils.isEmpty(dateString)) return null;
 
         return new DateTime(dateString);
     }
 
-    public DateTime getModificationDate(CloudMetaData remoteFile) {
+    public DateTime getModificationDateFrom(CloudMetaData remoteFile) {
         return new DateTime(remoteFile.getModifiedAt());
     }
 
@@ -463,7 +467,6 @@ public class SyncManager {
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
         String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
-        // todo: remote change date missing here!
         DatabaseMetadata db = getDatabases().get(localFile);
         if (db == null) {
             db = DatabaseMetadataFactory.getInstance(localFile, getRemotePath());
@@ -517,7 +520,9 @@ public class SyncManager {
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
         DatabaseMetadata currentDb = getDatabases().get(localPath);
-        currentDb.remoteLastChangedOn = date;
+        if (currentDb.remoteLastChangedDate == date.toString()) return;
+
+        currentDb.setRemoteLastChangedDate(date);
         getDatabases().save();
     }
 
@@ -567,8 +572,9 @@ public class SyncManager {
         String localPath = new AppSettings(getContext()).getDatabaseSettings().getDatabasePath();
         DatabaseMetadata currentDbEntry = getDatabases().get(localPath);
 
-        currentDbEntry.isLocalFileChanged = changed;
+        if (currentDbEntry.isLocalFileChanged == changed) return;
 
+        currentDbEntry.isLocalFileChanged = changed;
         getDatabases().save();
     }
 

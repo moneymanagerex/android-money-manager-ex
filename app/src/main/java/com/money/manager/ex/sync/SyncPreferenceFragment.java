@@ -364,7 +364,7 @@ public class SyncPreferenceFragment
     }
 
     private void forceUpload() {
-        new SyncManager(getActivity()).triggerUpload();
+        getSyncManager().triggerUpload();
 
         // toast to show
         new UIHelper(getActivity()).showToast(R.string.sync_uploading);
@@ -373,14 +373,14 @@ public class SyncPreferenceFragment
     private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();
 
-        MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getActivity());
-        String dbDirectory = dbUtils.getDefaultDatabaseDirectory();
+        String localPath = new MmxDatabaseUtils(getActivity())
+                .getDefaultDatabaseDirectory()
+                .concat(File.separator).concat(fileName);
 
-        String dbPath = dbDirectory.concat(File.separator).concat(fileName);
         // save current database path
-        new AppSettings(getActivity()).set(R.string.pref_database_path, dbPath);
+        new AppSettings(getActivity()).set(R.string.pref_database_path, localPath);
 
-        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(dbPath, remoteFile);
+        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
         //RecentDatabasesProvider databases = new RecentDatabasesProvider(getActivity());
         getDatabases().add(db);
     }
