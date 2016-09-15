@@ -26,7 +26,7 @@ import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 /**
- * Query account bills = account data with balances.
+ * Select account bills = account data with balances.
  */
 public class QueryAccountBills
         extends Dataset {

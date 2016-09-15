@@ -19,7 +19,6 @@ package com.money.manager.ex.datalayer;
 import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.util.Log;
 
 import com.money.manager.ex.database.DatasetType;
@@ -70,8 +69,7 @@ public class AssetClassRepository
 
         String[] fields = new String[] { AssetClass.ID };
 
-        Query query = new Query()
-                .select(fields)
+        Select query = new Select(fields)
                 .where(where.getWhere());
         List<AssetClass> children = query(AssetClass.class, query);
 

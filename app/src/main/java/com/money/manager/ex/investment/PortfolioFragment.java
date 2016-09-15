@@ -30,7 +30,7 @@ import android.widget.AdapterView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Stock;
@@ -161,8 +161,7 @@ public class PortfolioFragment
                 setListShown(false);
 
                 StockRepository repo = new StockRepository(getActivity());
-                Query query = new Query()
-                    .select(repo.getAllColumns())
+                Select query = new Select(repo.getAllColumns())
                     .where(StockFields.HELDAT + " = " + args.getInt(ARG_ACCOUNT_ID))
                     .orderBy(StockFields.SYMBOL);
                 //.orderBy(sort);

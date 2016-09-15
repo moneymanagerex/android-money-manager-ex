@@ -41,9 +41,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.common.MmxCursorLoader;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.datalayer.Query;
 import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
@@ -214,8 +214,7 @@ public class RecurringTransactionListFragment
                 if (!TextUtils.isEmpty(mCurFilter)) {
                     select = Account.ACCOUNTNAME + " LIKE '" + mCurFilter + "%'";
                 }
-                Query query = new Query()
-                        .select(mBillDeposits.getAllColumns())
+                Select query = new Select(mBillDeposits.getAllColumns())
                         .where(select)
                         .orderBy(QueryBillDeposits.NEXTOCCURRENCEDATE);
 

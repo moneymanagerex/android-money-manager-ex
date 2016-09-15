@@ -44,7 +44,7 @@ import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -301,8 +301,7 @@ public class WatchlistItemsFragment
                     sort = args.getString(AllDataListFragment.KEY_ARGUMENTS_SORT);
                 }
 
-                Query query = new Query()
-                        .select(mStockRepository.getAllColumns())
+                Select query = new Select(mStockRepository.getAllColumns())
                         .where(selection)
                         .orderBy(sort);
 

@@ -47,7 +47,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.CalendarUtils;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -117,7 +117,7 @@ public class IncomeVsExpensesListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String selection = null;
-        Query query = new Query();
+        Select query;
 
         switch (id) {
             case ID_LOADER_REPORT:
@@ -132,7 +132,7 @@ public class IncomeVsExpensesListFragment
                     selection = "1=2";
                 }
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                query.select(report.getAllColumns())
+                query = new Select(report.getAllColumns())
                     .where(selection)
                     .orderBy(IncomeVsExpenseReportEntity.YEAR + " " + mSort + ", " + IncomeVsExpenseReportEntity.Month + " " + mSort);
 
@@ -141,7 +141,7 @@ public class IncomeVsExpensesListFragment
             case ID_LOADER_YEARS:
                 ViewMobileData mobileData = new ViewMobileData(getContext());
                 selection = "SELECT DISTINCT Year FROM " + mobileData.getSource() + " ORDER BY Year DESC";
-                query.where(selection);
+                query = new Select().where(selection);
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
         }
         return null;

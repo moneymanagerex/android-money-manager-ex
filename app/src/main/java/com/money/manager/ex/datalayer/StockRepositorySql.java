@@ -20,7 +20,6 @@ package com.money.manager.ex.datalayer;
 import android.database.Cursor;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.domainmodel.Stock;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -97,17 +96,12 @@ public class StockRepositorySql
     private int[] findIdsBySymbol(String symbol) {
         int[] result;
 
-        String sql = new Query()
-                .select(StockFields.STOCKID)
-                .from(tableName)
-                .where(StockFields.SYMBOL + "=?")
-                .toString();
+        String sql = new Select(StockFields.STOCKID)
+            .from(tableName)
+            .where(StockFields.SYMBOL + "=?")
+            .toString();
 
         Cursor cursor = database.query(sql, symbol);
-//        Cursor cursor = getContext().getContentResolver().query(this.getUri(),
-//                new String[]{ StockFields.STOCKID },
-//                StockFields.SYMBOL + "=?", new String[]{symbol},
-//                null);
         if (cursor == null) return null;
 
         int records = cursor.getCount();

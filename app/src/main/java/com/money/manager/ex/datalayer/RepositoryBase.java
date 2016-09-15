@@ -29,7 +29,6 @@ import android.os.RemoteException;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmxContentProvider;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.AssetClass;
@@ -123,7 +122,7 @@ public abstract class RepositoryBase<T extends EntityBase>
         return entity;
     }
 
-    public List<T> query(Class<T> resultType, Query query) {
+    public List<T> query(Class<T> resultType, Select query) {
         // String[] projection, String selection, String[] args, String sort
         Cursor c = openCursor(query.projection, query.selection, query.selectionArgs, query.sort);
         if (c == null) return null;
@@ -168,7 +167,7 @@ public abstract class RepositoryBase<T extends EntityBase>
     }
 
     protected List<T> query(Class<T> resultType, String selection) {
-        Query query = new Query().where(selection);
+        Select query = new Select().where(selection);
         return query(resultType, query);
     }
 

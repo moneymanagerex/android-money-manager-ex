@@ -371,7 +371,7 @@ public class MmxOpenHelper
         InfoService infoService = new InfoService(getContext());
 
         // todo: try query generator.
-//        String sql = new Query()
+//        String sql = new Select()
 //                .select()
 //                .from(InfoRepositorySql.TABLE_NAME)
 //                .where(Info.INFONAME + "=?", InfoKeys.BASECURRENCYID)

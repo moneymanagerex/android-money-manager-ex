@@ -50,7 +50,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.CurrencyUIFeatures;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
 import com.money.manager.ex.currency.events.ExchangeRateUpdateConfirmedEvent;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
@@ -452,8 +452,7 @@ public class CurrencyListFragment
                         selectionArgs = arguments.toArray(selectionArgs);
 
                         CurrencyRepository repo = new CurrencyRepository(getActivity());
-                        Query query = new Query()
-                                .select(repo.getAllColumns())
+                        Select query = new Select(repo.getAllColumns())
                                 .where(whereClause, selectionArgs)
                                 .orderBy("upper(" + Currency.CURRENCYNAME + ")");
 

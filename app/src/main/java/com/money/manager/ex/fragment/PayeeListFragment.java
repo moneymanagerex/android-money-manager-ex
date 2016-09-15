@@ -44,7 +44,7 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.datalayer.PayeeRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.servicelayer.PayeeService;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
@@ -255,8 +255,7 @@ public class PayeeListFragment
                     selectionArgs = new String[]{mCurFilter + '%'};
                 }
                 PayeeRepository repo = new PayeeRepository(getActivity());
-                Query query = new Query()
-                        .select(repo.getAllColumns())
+                Select query = new Select(repo.getAllColumns())
                         .where(whereClause, selectionArgs)
                         .orderBy(mSort == 1 ? SORT_BY_USAGE : SORT_BY_NAME);
 

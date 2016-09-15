@@ -150,7 +150,7 @@ public class YqlSecurityPriceUpdaterTest {
 //
 //        IYqlService fakeYql = new IYqlService() {
 //            @Override
-//            public Call<JsonElement> getPrices(@Query("q") String query) {
+//            public Call<JsonElement> getPrices(@Select("q") String query) {
 //                return new Call<JsonElement>() {
 //                    @Override
 //                    public Response<JsonElement> execute() throws IOException {

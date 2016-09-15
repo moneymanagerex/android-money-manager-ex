@@ -2,7 +2,6 @@ package com.money.manager.ex.datalayer;
 
 import android.database.Cursor;
 
-import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.domainmodel.Info;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -30,8 +29,7 @@ public class InfoRepositorySql
 //    }
 
     public List<Info> loadAll(String infoName) {
-        String sql = new Query()
-            .select()
+        String sql = new Select()
             .where(Info.INFONAME + "=?", new String[] { infoName })
             .toString();
 

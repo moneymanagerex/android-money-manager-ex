@@ -21,8 +21,8 @@ package com.money.manager.ex.datalayer;
  * Repository interface
  */
 public interface IRepository {
-//    Query selectAll();
-//    Query select();
+//    Select selectAll();
+//    Select select();
 
     //<T extends EntityBase> boolean insert(Class<T> entity);
 //    boolean insert(EntityBase entity);

@@ -339,7 +339,7 @@ public class AccountService
     /**
      * Loads account details with balances.
      * Needs to be better organized to limit the where clause.
-     * @param where selection criteria for Query Account Bills
+     * @param where selection criteria for Select Account Bills
      * @return current balance in the currency of the account.
      */
     public Money loadBalance(String where) {

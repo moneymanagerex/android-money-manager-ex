@@ -19,41 +19,30 @@ package com.money.manager.ex.datalayer;
 
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Query object for easier querying through repositories.
+ * Select object for easier querying through repositories.
  */
-public class Query {
+public class Select {
     public String[] projection = null;
     public String from = null;
     public String selection = null;
     public String[] selectionArgs = null;
     public String sort = null;
 
-    public Query() {}
-
-//    public Query(String table) {
-//        this.from = table;
-//    }
-
-    public Query select() {
-        return this;
-    }
+    /**
+     * Query generator. The constructor is also the projection definition. Empty arguments mean *.
+     */
+    public Select() {}
 
     /**
-     * Sets the projection.
-     * @param projection The projection to use. The fields to fetch.
-     * @return Returns this instance of Query for chaining methods.
+     * The constructor with projection.
+     * @param projection The fields to fetch.
      */
-    public Query select(String... projection) {
-        // add selection
+    public Select(String... projection) {
         this.projection = projection;
-        return this;
     }
 
-    public Query from(String table) {
+    public Select from(String table) {
         from = table;
         return this;
     }
@@ -61,34 +50,34 @@ public class Query {
     /**
      * With this method the arguments can be passed directly to the database query.
      * @param selection Selection statement with placeholders for arguments.
-     * @return Query object.
+     * @return Select object.
      */
-    public Query where(String selection) {
+    public Select where(String selection) {
         this.selection = selection;
         return this;
     }
 
     /**
-     * When using this method, make sure to pass Query.selectionArgs to the .query or other action
+     * When using this method, make sure to pass Select.selectionArgs to the .query or other action
      * methods.
      * @param selection WHERE statement
      * @param args arguments
-     * @return Query object for chaining methods.
+     * @return Select object for chaining methods.
      */
-    public Query where(String selection, String... args) {
+    public Select where(String selection, String... args) {
         this.selection = selection;
         this.selectionArgs = args;
         return this;
     }
 
-    public Query orderBy(String sort) {
+    public Select orderBy(String sort) {
         // sort
         this.sort = sort;
         return this;
     }
 
     public String toString() {
-        // compose
+        // compose select query.
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(from);
         String sql = builder.buildQuery(projection, selection, null, null, sort, null);

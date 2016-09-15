@@ -34,7 +34,7 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AssetClassRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
@@ -101,8 +101,7 @@ public class AssetClassListActivity
                 // todo Do not offer any children of the selected asset class!
                 // todo Load only groups and empty asset classes, not those linked to any stocks!
 
-                Query query = new Query()
-                    .select(repo.getAllColumns())
+                Select query = new Select(repo.getAllColumns())
                     .where(where.getWhere());
 
                 return new MmxCursorLoader(context, repo.getUri(), query);

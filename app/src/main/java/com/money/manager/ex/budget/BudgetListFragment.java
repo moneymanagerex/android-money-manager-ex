@@ -39,7 +39,7 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
 
 import org.greenrobot.eventbus.EventBus;
@@ -144,8 +144,7 @@ public class BudgetListFragment
         switch (id) {
             case LOADER_BUDGETS:
                 BudgetRepository repo = new BudgetRepository(getActivity());
-                Query query = new Query()
-                    .select(repo.getAllColumns())
+                Select query = new Select(repo.getAllColumns())
                     .orderBy(Budget.BUDGETYEARNAME);
 
                 result = new MmxCursorLoader(getActivity(), repo.getUri(), query);

@@ -554,7 +554,7 @@ public class AccountEditActivity
     }
 
     /**
-     * Query info for current currency
+     * Select info for current currency
      * @param currencyId Id of the currency to select
      * @return A boolean indicating whether the retrieval of currency name was successful.
      */

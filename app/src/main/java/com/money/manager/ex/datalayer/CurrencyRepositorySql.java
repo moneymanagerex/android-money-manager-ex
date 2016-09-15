@@ -37,11 +37,10 @@ public class CurrencyRepositorySql
     }
 
     public boolean exists(String currencyCode) {
-        String sql = new Query()
-                .select(Currency.CURRENCYID)
-                .from(tableName)
-                .where(Currency.CURRENCY_SYMBOL + "=?")
-                .toString();
+        String sql = new Select(Currency.CURRENCYID)
+            .from(tableName)
+            .where(Currency.CURRENCY_SYMBOL + "=?")
+            .toString();
 
         return super.exists(sql, currencyCode);
     }

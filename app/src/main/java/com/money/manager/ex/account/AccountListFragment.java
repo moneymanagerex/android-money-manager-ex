@@ -40,7 +40,7 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -141,17 +141,6 @@ public class AccountListFragment
                                 }
                             })
                             .build().show();
-//                    new AlertDialogWrapper.Builder(getContext())
-//                        .setTitle(R.string.attention)
-//                        .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-//                        .setMessage(R.string.account_can_not_deleted)
-//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        })
-//                        .create().show();
                 } else {
                     showDeleteConfirmationDialog(accountId);
                 }
@@ -174,8 +163,7 @@ public class AccountListFragment
                 }
 
                 AccountRepository repo = new AccountRepository(getActivity());
-                Query query = new Query()
-                        .select(repo.getAllColumns())
+                Select query = new Select(repo.getAllColumns())
                         .where(whereClause, selectionArgs)
                         .orderBy("upper(" + Account.ACCOUNTNAME + ")");
 

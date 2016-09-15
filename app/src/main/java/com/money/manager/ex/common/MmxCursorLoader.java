@@ -22,8 +22,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.CursorLoader;
 
-import com.money.manager.ex.log.ExceptionHandler;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 
 import timber.log.Timber;
 
@@ -37,7 +36,7 @@ public class MmxCursorLoader
         super(context);
     }
 
-    public MmxCursorLoader(Context context, Uri uri, Query query) {
+    public MmxCursorLoader(Context context, Uri uri, Select query) {
         // String[] projection, String selection, String[] selectionArgs, String sortOrder
         super(context, uri, query.projection, query.selection, query.selectionArgs, query.sort);
 

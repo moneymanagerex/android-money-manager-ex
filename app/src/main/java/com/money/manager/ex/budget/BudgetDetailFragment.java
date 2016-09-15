@@ -30,7 +30,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -137,8 +137,7 @@ public class BudgetDetailFragment
                 switch (id) {
                     case LOADER_BUDGET:
                         BudgetQuery budget = new BudgetQuery(getActivity());
-                        Query query = new Query()
-                            .select(budget.getAllColumns())
+                        Select query = new Select(budget.getAllColumns())
                             .where(BudgetQuery.BUDGETYEARID + "=?", new String[] { Long.toString(mBudgetYearId) })
                             .orderBy(BudgetQuery.CATEGNAME + ", " + BudgetQuery.SUBCATEGNAME);
 

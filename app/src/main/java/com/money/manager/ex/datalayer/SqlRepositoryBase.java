@@ -21,12 +21,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.sync.SyncManager;
 import com.squareup.sqlbrite.BriteDatabase;
-
-import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -70,11 +67,11 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
         T entity = null;
 
-        String sql = new Query()
-                .select(projection)
-                .from(tableName)
-                .where(selection)
-                .toString();
+        String sql = new Select(projection)
+            .from(tableName)
+            .where(selection)
+            .orderBy(sort)
+            .toString();
 
         try {
             Cursor c = database.query(sql, args);
@@ -86,7 +83,7 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
                     //resultType.cast(entity);
                     entity.loadFromCursor(c);
                 } catch (Exception e) {
-                    Timber.e(e, "creating " + resultType.getName());
+                    Timber.e(e, "creating %s", resultType.getName());
                 }
             }
             c.close();

@@ -91,11 +91,10 @@ public class StockHistoryRepositorySql
 
         String isoDate = MmxDateTimeUtils.getIsoStringFrom(date);
 
-        String sql = new Query()
-                .select()
-                .from(TABLE_NAME)
-                .where(StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?")
-                .toString();
+        String sql = new Select()
+            .from(TABLE_NAME)
+            .where(StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?")
+            .toString();
 
         Cursor cursor = database.query(sql, symbol, isoDate);
         if (cursor == null) return false;

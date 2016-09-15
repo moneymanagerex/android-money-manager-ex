@@ -27,10 +27,10 @@ import retrofit2.http.Query;
  */
 public interface IYqlService {
 //    @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
-//    Call<YqlStockPriceResponse> getPrices(@Query("q") String query);
+//    Call<YqlStockPriceResponse> getPrices(@Select("q") String query);
 
 //    @GET("/v1/public/yql?q={query}&format=json&env=store://datatables.org/alltableswithkeys")
-//    Call<List<SecurityPriceModel>> getPrices(@Query("query") String query, Callback<List<SecurityPriceModel>> callback);
+//    Call<List<SecurityPriceModel>> getPrices(@Select("query") String query, Callback<List<SecurityPriceModel>> callback);
 
     @GET("/v1/public/yql?format=json&env=store://datatables.org/alltableswithkeys")
     Call<JsonElement> getPrices(@Query("q") String query);

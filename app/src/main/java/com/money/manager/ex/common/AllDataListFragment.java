@@ -18,7 +18,6 @@ package com.money.manager.ex.common;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -55,7 +54,7 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -246,8 +245,7 @@ public class AllDataListFragment
                 }
                 // create loader
                 QueryAllData allData = new QueryAllData(getActivity());
-                Query query = new Query()
-                        .select(allData.getAllColumns())
+                Select query = new Select(allData.getAllColumns())
                         .where(selection)
                         .orderBy(sort);
 

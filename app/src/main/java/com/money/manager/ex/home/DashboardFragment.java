@@ -52,7 +52,7 @@ import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.QueryReportIncomeVsExpenses;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
@@ -157,13 +157,13 @@ public class DashboardFragment
             linearScreens[id].addView(progressBar);
         }
 
-        Query query = new Query();
+        Select query;
 
         // start loader
         switch (id) {
             case ID_LOADER_SCREEN1:
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                query.select(report.getAllColumns())
+                query = new Select(report.getAllColumns())
                     .where(IncomeVsExpenseReportEntity.Month + "=" + Integer.toString(Calendar.getInstance().get(Calendar.MONTH) + 1) +
                             " AND " +
                             IncomeVsExpenseReportEntity.YEAR + "=" + Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
@@ -171,16 +171,16 @@ public class DashboardFragment
                 return new MmxCursorLoader(getActivity(), report.getUri(), query);
 
             case ID_LOADER_SCREEN2:
-                query.where(prepareQueryTopWithdrawals());
+                query = new Select().where(prepareQueryTopWithdrawals());
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
 
             case ID_LOADER_SCREEN3:
-                query.where(prepareQueryTopPayees());
+                query = new Select().where(prepareQueryTopPayees());
                 return new MmxCursorLoader(getActivity(), new SQLDataSet().getUri(), query);
 
             case ID_LOADER_SCREEN4:
                 QueryBillDeposits billDeposits = new QueryBillDeposits(getActivity());
-                query.select(billDeposits.getAllColumns())
+                query = new Select(billDeposits.getAllColumns())
                     .where(QueryBillDeposits.DAYSLEFT + "<=10")
                     .orderBy(QueryBillDeposits.DAYSLEFT);
 

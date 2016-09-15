@@ -53,8 +53,7 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
-import com.money.manager.ex.datalayer.Query;
-import com.money.manager.ex.domainmodel.Info;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.home.events.AccountsTotalLoadedEvent;
 import com.money.manager.ex.home.events.RequestAccountFragmentEvent;
 import com.money.manager.ex.home.events.RequestPortfolioFragmentEvent;
@@ -218,7 +217,7 @@ public class HomeFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         MmxCursorLoader result;
-        Query query = new Query();
+        Select query;
 
         switch (id) {
 //            case LOADER_USER_NAME:
@@ -245,7 +244,7 @@ public class HomeFragment
                 }
 
                 QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
-                query.select(queryAccountBills.getAllColumns())
+                query = new Select(queryAccountBills.getAllColumns())
                     .where(where)
                     .orderBy(QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
 
@@ -266,7 +265,7 @@ public class HomeFragment
                             Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
                 QueryReportIncomeVsExpenses report = new QueryReportIncomeVsExpenses(getActivity());
-                query.select(report.getAllColumns())
+                query = new Select(report.getAllColumns())
                         .where(whereStatement);
                 result = new MmxCursorLoader(getActivity(), report.getUri(), query);
                 break;

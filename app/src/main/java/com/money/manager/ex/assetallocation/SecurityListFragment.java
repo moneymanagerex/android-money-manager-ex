@@ -31,7 +31,7 @@ import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.AssetClassStockRepository;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.AssetClassStock;
@@ -126,8 +126,7 @@ public class SecurityListFragment
                 }
 
                 StockRepository repo = new StockRepository(getActivity());
-                Query query = new Query()
-                    .select(new String[] { "STOCKID AS _id", StockFields.STOCKID, StockFields.SYMBOL })
+                Select query = new Select(new String[] { "STOCKID AS _id", StockFields.STOCKID, StockFields.SYMBOL })
                     .where(whereClause, selectionArgs)
                     .orderBy("upper(" + StockFields.SYMBOL + ")");
 

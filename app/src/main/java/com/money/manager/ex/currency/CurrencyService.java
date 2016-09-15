@@ -33,7 +33,7 @@ import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.CurrencyRepositorySql;
-import com.money.manager.ex.datalayer.Query;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -173,8 +173,7 @@ public class CurrencyService
         // old trick. Now remove the last separator.
         usedList = usedList.substring(0, usedList.length() - 2);
 
-        Query query = new Query();
-        query.select(getRepository().getAllColumns())
+        Select query = new Select(getRepository().getAllColumns())
             .where(Currency.CURRENCYID + " NOT IN (" + usedList + ")")
             .orderBy(Currency.CURRENCYNAME);
 
