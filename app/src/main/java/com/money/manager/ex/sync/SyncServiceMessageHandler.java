@@ -85,7 +85,7 @@ public class SyncServiceMessageHandler
                 break;
 
             case DOWNLOAD_COMPLETE:
-                storeRecentDb(remoteFile);
+//                storeRecentDb(remoteFile);
                 // close binaryDialog
                 closeDialog(progressDialog);
                 // Notify whoever is interested.
@@ -141,15 +141,15 @@ public class SyncServiceMessageHandler
         progressDialog.show();
     }
 
-    private void storeRecentDb(String remoteFile) {
-        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
-
-        DatabaseMetadata entry = getDatabases().get(localPath);
-        if (entry == null) {
-            entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
-        }
-
-        getDatabases().add(entry);
-    }
+//    private void storeRecentDb(String remoteFile) {
+//        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
+//
+//        DatabaseMetadata entry = getDatabases().get(localPath);
+//        if (entry == null) {
+//            entry = DatabaseMetadataFactory.getInstance(localPath, remoteFile);
+//        }
+//
+//        getDatabases().add(entry);
+//    }
 
 }

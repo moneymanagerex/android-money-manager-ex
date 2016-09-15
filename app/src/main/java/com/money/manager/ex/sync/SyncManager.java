@@ -469,7 +469,10 @@ public class SyncManager {
         String localFile = MoneyManagerApplication.getDatabasePath(getContext());
 
         // todo: remote change date missing here!
-        DatabaseMetadata db = DatabaseMetadataFactory.getInstance(localFile, getRemotePath());
+        DatabaseMetadata db = getDatabases().get(localFile);
+        if (db == null) {
+            db = DatabaseMetadataFactory.getInstance(localFile, getRemotePath());
+        }
         boolean isDbSet = dbUtils.useDatabase(db);
 
         if (!isDbSet) {
