@@ -36,6 +36,8 @@ public class DatabaseMetadata {
     public String remoteLastChangedDate;
 
     public String getFileName() {
+        if (TextUtils.isEmpty(this.localPath)) return "";
+
         File file = new File(this.localPath);
         return file.getName();
     }
