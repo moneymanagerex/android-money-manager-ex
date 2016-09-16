@@ -65,14 +65,13 @@ public class PerDatabaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.settings_per_database);
-
-        initializeControls();
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Timber.d("creating");
+        addPreferencesFromResource(R.xml.settings_per_database);
+
+        initializeControls();
     }
 
     @Override

@@ -41,6 +41,8 @@ public class SettingsFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
+        // General Settings
+
         final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
         if (generalPreference != null) {
             generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

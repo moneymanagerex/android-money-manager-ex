@@ -27,4 +27,9 @@ public class GeneralSettingsActivity
         super.onCreate(savedInstance);
         setSettingFragment(new GeneralSettingsFragment());
     }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        return super.onOptionsItemSelected(item);
+//    }
 }

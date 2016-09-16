@@ -77,7 +77,7 @@ public abstract class BaseFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // This is used to e the <- Home arrow button in the toolbar (i.e. settings screens).
+        // This is used to handle the <- Home arrow button in the toolbar (i.e. settings screens).
         
         switch (item.getItemId()) {
             // home click can be handled in the manifest by setting up the parent activity.

@@ -36,15 +36,30 @@ public class GeneralSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.settings_general);
 
         initializeControls();
     }
 
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Timber.d("creating");
-    }
+//    @Override
+//    protected void setResult() {
+//
+//    }
+
+//    @Override
+//    public void onBackPressed() {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(FIELD_A, mA.getText().toString());
+
+//        Intent mIntent = new Intent();
+//        mIntent.putExtras(bundle);
+//        setResult(RESULT_OK, mIntent);
+//        super.onBackPressed();
+//    }
 
     // Private
 
@@ -127,9 +142,6 @@ public class GeneralSettingsFragment
 
     private void restartActivity() {
         MainActivity.setRestartActivity(true);
-
-        // apply the change to the current activity immediately
-        // other activities apply on create.
 
         getActivity().recreate();
     }

@@ -94,7 +94,7 @@ public class SyncPreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Timber.d("creating");
+//        Timber.d("creating");
     }
 
     @Override

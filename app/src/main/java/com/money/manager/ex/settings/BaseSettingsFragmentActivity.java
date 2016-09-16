@@ -18,7 +18,8 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
@@ -27,8 +28,9 @@ import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 /**
  */
@@ -62,22 +64,26 @@ public class BaseSettingsFragmentActivity
 //        return super.onOptionsItemSelected(item);
 //    }
 
-//    protected void setSettingFragment(PreferenceFragment fragment) {
-//        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-//        tx.replace(R.id.content, fragment)
-//            .commit();
-//    }
-
-    protected void setSettingFragment(android.support.v14.preference.PreferenceFragment fragment) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content, fragment)
-                .commit();
-    }
-
     protected void setSettingFragment(PreferenceFragmentCompat fragment) {
-        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.content, fragment);
-        tx.addToBackStack(null);
+        // use the class name as the fragment tag.
+        String tag = fragment.getClass().getSimpleName();
+
+        FragmentManager manager = getSupportFragmentManager();
+
+        FragmentTransaction tx = manager.beginTransaction();
+        tx.replace(R.id.content, fragment, tag);
+
+        // Add to backstack only if this is not the first fragment, and the fragment is not already added.
+        List<Fragment> fragments = manager.getFragments();
+        boolean isFirstFragment = fragments == null || fragments.size() == 0;
+
+        Fragment existing = manager.findFragmentByTag(tag);
+        boolean isAdded = existing != null;
+
+        if (!isFirstFragment && !isAdded) {
+            tx.addToBackStack(null);
+        }
+
         tx.commit();
     }
 }
