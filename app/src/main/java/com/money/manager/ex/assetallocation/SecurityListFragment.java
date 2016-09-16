@@ -196,7 +196,11 @@ public class SecurityListFragment
             case Intent.ACTION_PICK:
                 result = new Intent();
                 result.putExtra(INTENT_RESULT_STOCK_SYMBOL, selectedStockSymbol);
-                getActivity().setResult(Activity.RESULT_OK, result);
+                if (TextUtils.isEmpty(selectedStockSymbol)) {
+                    getActivity().setResult(Activity.RESULT_CANCELED, result);
+                } else {
+                    getActivity().setResult(Activity.RESULT_OK, result);
+                }
                 break;
 
             default:
