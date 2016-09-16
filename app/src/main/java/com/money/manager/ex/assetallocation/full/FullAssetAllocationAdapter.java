@@ -30,6 +30,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.core.FormatUtilities;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -91,7 +92,9 @@ public class FullAssetAllocationAdapter
 
         // % diff
         Money diff = item.assetClass.getDiffAsPercentOfSet();
-        holder.allocationDiffTextView.setText(diff.toString());
+        DecimalFormat df = new DecimalFormat("0.00");
+        String diffString = df.format(diff.toDouble());
+        holder.allocationDiffTextView.setText(diffString);
 
         // color red/green if under/over the threshold.
         if (diff.toDouble() >= this.differenceThreshold.toDouble()) {
