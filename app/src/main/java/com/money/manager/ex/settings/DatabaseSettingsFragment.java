@@ -18,9 +18,9 @@ package com.money.manager.ex.settings;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -32,7 +32,6 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -54,7 +53,7 @@ import timber.log.Timber;
  * Database settings fragment.
  */
 public class DatabaseSettingsFragment
-    extends PreferenceFragment {
+    extends PreferenceFragmentCompat {
 
     @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
@@ -97,6 +96,11 @@ public class DatabaseSettingsFragment
 
         // Fix duplicates
         initFixDuplicates();
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Timber.d("creating");
     }
 
     // private

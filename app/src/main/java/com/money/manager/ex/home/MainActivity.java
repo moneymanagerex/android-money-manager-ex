@@ -184,6 +184,9 @@ public class MainActivity
         // todo: remove this after the users upgrade the recent files list.
         migrateRecentDatabases();
 
+        // Reset the request for restart. If we are in onCreate, we are restarting already.
+        setRestartActivity(false);
+
         // Layout
         setContentView(R.layout.main_activity);
 
@@ -213,7 +216,9 @@ public class MainActivity
 
         // show change log binaryDialog
         Core core = new Core(this);
-        if (core.isToDisplayChangelog()) core.showChangelog();
+        if (core.isToDisplayChangelog()) {
+            core.showChangelog();
+        }
 
         showCurrentDatabasePath(this);
 

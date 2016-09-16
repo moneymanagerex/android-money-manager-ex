@@ -41,12 +41,6 @@ public class AppSettings
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    @Override
-    protected SharedPreferences getPreferences() {
-//        return PreferenceManager.getDefaultSharedPreferences(getContext());
-        return sharedPreferences.get();
-    }
-
     @Inject Lazy<SharedPreferences> sharedPreferences;
 
     // setting groups
@@ -56,6 +50,11 @@ public class AppSettings
     private BehaviourSettings mBehaviour;
     private InvestmentSettings mInvestment;
     private DatabaseSettings mDatabase;
+
+    @Override
+    protected SharedPreferences getPreferences() {
+        return sharedPreferences.get();
+    }
 
     public DatabaseSettings getDatabaseSettings() {
         if (mDatabase == null) {

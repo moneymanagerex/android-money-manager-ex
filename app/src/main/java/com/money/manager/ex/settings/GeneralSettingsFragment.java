@@ -17,9 +17,9 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.home.MainActivity;
@@ -30,7 +30,7 @@ import timber.log.Timber;
  * Fragment that contains the general settings.
  */
 public class GeneralSettingsFragment
-    extends PreferenceFragment {
+    extends PreferenceFragmentCompat {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,11 @@ public class GeneralSettingsFragment
         addPreferencesFromResource(R.xml.settings_general);
 
         initializeControls();
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Timber.d("creating");
     }
 
     // Private
@@ -58,10 +63,7 @@ public class GeneralSettingsFragment
                     String language = String.valueOf(newValue);
                     setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
 
-                    // apply the change to the current activity immediately
-                    getActivity().recreate();
-
-                    // other activities apply on create.
+                    restartActivity();
 
                     return true;
                 }
@@ -77,9 +79,7 @@ public class GeneralSettingsFragment
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Timber.d("setting theme: %s", newValue.toString());
 
-                    MainActivity.setRestartActivity(true);
-
-                    getActivity().recreate();
+                    restartActivity();
 
                     return true;
                 }
@@ -113,7 +113,6 @@ public class GeneralSettingsFragment
                 }
             });
         }
-
     }
 
     public void setSummaryListPreference(Preference preference, String value, int idArrayValues, int idArrayItems) {
@@ -126,4 +125,12 @@ public class GeneralSettingsFragment
         }
     }
 
+    private void restartActivity() {
+        MainActivity.setRestartActivity(true);
+
+        // apply the change to the current activity immediately
+        // other activities apply on create.
+
+        getActivity().recreate();
+    }
 }

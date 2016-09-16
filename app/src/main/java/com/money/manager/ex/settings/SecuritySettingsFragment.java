@@ -20,10 +20,10 @@ package com.money.manager.ex.settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
 import com.money.manager.ex.PasscodeActivity;
@@ -31,10 +31,12 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.Passcode;
 
+import timber.log.Timber;
+
 /**
  */
 public class SecuritySettingsFragment
-    extends PreferenceFragment {
+    extends PreferenceFragmentCompat {
 
     private static final int REQUEST_INSERT_PASSCODE = 1;
     private static final int REQUEST_EDIT_PASSCODE = 2;
@@ -82,6 +84,11 @@ public class SecuritySettingsFragment
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Timber.d("creating");
     }
 
     @Override

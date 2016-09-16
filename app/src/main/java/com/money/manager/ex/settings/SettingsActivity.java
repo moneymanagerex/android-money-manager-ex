@@ -19,8 +19,10 @@ package com.money.manager.ex.settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.home.MainActivity;
 
 import javax.inject.Inject;
 
@@ -32,35 +34,26 @@ public class SettingsActivity
 
     public static final String EXTRA_FRAGMENT = "extraFragment";
 
-    @Inject Lazy<AppSettings> appSettingsLazy;
-    private String initialTheme;
+//    @Inject Lazy<AppSettings> appSettingsLazy;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+//        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         showFragment();
-
-        // store the current theme
-        initialTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        // apply theme if changed.
-        String currentTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
-        if (!currentTheme.equals(initialTheme)) {
-            recreate();
-        }
     }
 
     private void showFragment() {
         // figure out which fragment to show
-        PreferenceFragment fragment = null;
+        PreferenceFragmentCompat fragment = null;
 
         Intent intent = getIntent();
 

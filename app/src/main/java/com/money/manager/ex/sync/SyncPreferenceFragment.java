@@ -22,11 +22,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.money.manager.ex.BuildConfig;
@@ -62,7 +62,7 @@ import timber.log.Timber;
  * A simple {@link Fragment} subclass.
  */
 public class SyncPreferenceFragment
-    extends PreferenceFragment { // Compat
+    extends PreferenceFragmentCompat {
 
     public static final int REQUEST_REMOTE_FILE = 1;
     public static final String EXTRA_REMOTE_FILE = "remote_file";
@@ -92,9 +92,10 @@ public class SyncPreferenceFragment
         initializePreferences();
     }
 
-//    @Override
-//    public void onCreatePreferences(Bundle bundle, String s) {
-//    }
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Timber.d("creating");
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

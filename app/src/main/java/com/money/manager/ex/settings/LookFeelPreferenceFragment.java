@@ -18,11 +18,11 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
+import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
@@ -39,7 +39,7 @@ import timber.log.Timber;
  * Look & feel settings.
  */
 public class LookFeelPreferenceFragment
-    extends PreferenceFragment {
+    extends PreferenceFragmentCompat {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class LookFeelPreferenceFragment
             });
         }
 
-        // font type
+        // Font type
 
         final ListPreference lstFont = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT));
         if (lstFont != null) {
@@ -152,7 +152,7 @@ public class LookFeelPreferenceFragment
             });
         }
 
-        //font size
+        // Font size
 
         final ListPreference lstFontSize = (ListPreference) findPreference(getString(PreferenceConstants.PREF_APPLICATION_FONT_SIZE));
         if (lstFontSize != null) {
@@ -167,5 +167,10 @@ public class LookFeelPreferenceFragment
                 }
             });
         }
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Timber.d("creating");
     }
 }

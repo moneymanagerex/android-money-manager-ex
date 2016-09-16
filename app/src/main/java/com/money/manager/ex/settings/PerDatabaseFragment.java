@@ -21,10 +21,10 @@ package com.money.manager.ex.settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -53,7 +53,7 @@ import timber.log.Timber;
  * A simple {@link Fragment} subclass.
  */
 public class PerDatabaseFragment
-    extends PreferenceFragment {
+    extends PreferenceFragmentCompat {
 
     public static final int REQUEST_PICK_CURRENCY = 1;
 
@@ -68,6 +68,11 @@ public class PerDatabaseFragment
         addPreferencesFromResource(R.xml.settings_per_database);
 
         initializeControls();
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        Timber.d("creating");
     }
 
     @Override

@@ -406,14 +406,10 @@ public class Core {
     }
 
     public boolean showChangelog() {
-        int currentVersionCode = getAppVersionCode();
-        PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
-                .putInt(getContext().getString(R.string.pref_last_version_key), currentVersionCode)
-                .apply();
-
-        // create layout
+        // create changelog layout
         View view = LayoutInflater.from(getContext()).inflate(R.layout.changelog_layout, null);
-        //create binaryDialog
+
+        // show changelog dialog
         new MaterialDialog.Builder(getContext())
             .cancelable(false)
             .title(R.string.changelog)
@@ -426,6 +422,13 @@ public class Core {
                 }
             })
             .build().show();
+
+        // mark as seen
+        int currentVersionCode = getAppVersionCode();
+        PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
+                .putInt(getContext().getString(R.string.pref_last_version_key), currentVersionCode)
+                .apply();
+
         return true;
     }
 
@@ -434,11 +437,11 @@ public class Core {
 //        TypedArray ta = getContext().obtainStyledAttributes(getContext().getTheme(), attrs);
 //    }
 
-    public int getColourFromThemeAttribute(int attribute) {
-        TypedValue typedValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(attribute, typedValue, true);
-        return typedValue.resourceId;
-    }
+//    public int getColourFromThemeAttribute(int attribute) {
+//        TypedValue typedValue = new TypedValue();
+//        getContext().getTheme().resolveAttribute(attribute, typedValue, true);
+//        return typedValue.resourceId;
+//    }
 
     public boolean usingDarkTheme(){
         int currentTheme = this.getThemeId();

@@ -19,6 +19,7 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
@@ -61,11 +62,11 @@ public class BaseSettingsFragmentActivity
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    protected void setSettingFragment(PreferenceFragment fragment) {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.content, fragment)
-            .commit();
-    }
+//    protected void setSettingFragment(PreferenceFragment fragment) {
+//        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+//        tx.replace(R.id.content, fragment)
+//            .commit();
+//    }
 
     protected void setSettingFragment(android.support.v14.preference.PreferenceFragment fragment) {
         getFragmentManager().beginTransaction()
@@ -74,8 +75,9 @@ public class BaseSettingsFragmentActivity
     }
 
     protected void setSettingFragment(PreferenceFragmentCompat fragment) {
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.content, fragment)
-            .commit();
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.content, fragment);
+        tx.addToBackStack(null);
+        tx.commit();
     }
 }
