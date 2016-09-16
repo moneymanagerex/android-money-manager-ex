@@ -30,6 +30,7 @@ public class InfoRepositorySql
 
     public List<Info> loadAll(String infoName) {
         Select sql = new Select()
+            .from(TABLE_NAME)
             .where(Info.INFONAME + "=?", infoName);
 
         Cursor c = this.query(sql);
