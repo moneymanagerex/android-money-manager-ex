@@ -18,7 +18,6 @@ package com.money.manager.ex.core;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
@@ -34,17 +33,12 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import info.javaperformance.money.Money;
+import timber.log.Timber;
 
 /**
  * Utilities to assist with formatting dates and numbers.
  */
 public class FormatUtilities {
-
-    private static final String LOGCAT = FormatUtilities.class.getSimpleName();
-
-    public static String getIsoDateStringFrom(int year, int month, int day) {
-        return String.format("%04d-%02d-%02d", year, month, day);
-    }
 
     public FormatUtilities(Context context) {
         this.context = context;
@@ -60,12 +54,9 @@ public class FormatUtilities {
      * @param amount     to be formatted
      * @param currencyId Id currency to be formatted
      */
-    public void formatAmountTextView(TextView view, Money amount,
-                                     Integer currencyId) {
+    public void formatAmountTextView(TextView view, Money amount, Integer currencyId) {
         if (amount == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), null);
-            handler.showMessage("Amount for formatting is null.");
-            Log.w(LOGCAT, "Amount for formatting is null.");
+            Timber.w("Amount for formatting is null.");
             return;
         }
 
@@ -97,7 +88,7 @@ public class FormatUtilities {
         String decimalSeparator = getDecimalSeparatorForAppLocale();
         String groupSeparator = getGroupingSeparatorForAppLocale();
 
-        return getValueFormatted(amount, scale, decimalSeparator, groupSeparator);
+        return format(amount, scale, decimalSeparator, groupSeparator);
     }
 
     public Context getContext() {
@@ -148,10 +139,10 @@ public class FormatUtilities {
      * @param showSymbols Whether to include the currency symbol in the output.
      * @return formatted value
      */
-    public String getValueFormatted(Money value, boolean showSymbols, Currency currency) {
+    public String format(Money value, boolean showSymbols, Currency currency) {
         if (currency == null) return "n/a";
 
-        String result = this.getValueFormatted(value, currency.getScale(),
+        String result = this.format(value, currency.getScale(),
             currency.getDecimalSeparator(), currency.getGroupSeparator());
 
         // check suffix
@@ -167,22 +158,22 @@ public class FormatUtilities {
     }
 
     /**
-     *
+     * Formats the given value with the currency settings.
      * @param value value to format
      * @return value formatted
      */
-    public String getValueFormatted(Money value, Currency currency) {
-        return getValueFormatted(value, true, currency);
+    public String format(Money value, Currency currency) {
+        return format(value, true, currency);
     }
 
-    public String getValueFormatted(Money value, int currencyId) {
+    public String format(Money value, int currencyId) {
         CurrencyService currencyService = getCurrencyService();
         Currency currency = currencyService.getCurrency(currencyId);
         
-        return getValueFormatted(value, true, currency);
+        return format(value, true, currency);
     }
 
-    public String getValueFormatted(Money value, int scale, String decimalSeparator, String groupSeparator) {
+    public String format(Money value, int scale, String decimalSeparator, String groupSeparator) {
         int decimals = new NumericHelper(getContext()).getNumberOfDecimals(scale);
 
         value = value.truncate(decimals);
@@ -298,7 +289,7 @@ public class FormatUtilities {
 
     public String getValueFormattedInBaseCurrency(Money value) {
         CurrencyService service = getCurrencyService();
-        return getValueFormatted(value, service.getBaseCurrency());
+        return format(value, service.getBaseCurrency());
     }
 
 }

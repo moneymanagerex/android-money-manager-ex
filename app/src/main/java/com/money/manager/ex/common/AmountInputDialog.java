@@ -454,7 +454,7 @@ public class AmountInputDialog
             if(getRoundToCurrencyDecimals()) {
                 // use decimals from the display currency.
                 // but decimal and group separators from the base currency.
-                result = formatUtilities.getValueFormatted(amount, displayCurrency.getScale(),
+                result = formatUtilities.format(amount, displayCurrency.getScale(),
                     formatUtilities.getDecimalSeparatorForAppLocale(),
                     formatUtilities.getGroupingSeparatorForAppLocale());
 

@@ -303,7 +303,7 @@ public class CurrencyService
             } else {
                 // formatted value
                 FormatUtilities formats = new FormatUtilities(getContext());
-                result = formats.getValueFormatted(value, currency);
+                result = formats.format(value, currency);
             }
         } else {
             result = String.valueOf(value);

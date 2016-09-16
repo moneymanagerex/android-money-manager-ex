@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.FormatUtilities;
@@ -77,12 +78,12 @@ public class OnDateButtonClickListener
         @Override
         public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
             try {
-                String dateString = FormatUtilities.getIsoDateStringFrom(year, monthOfYear + 1, dayOfMonth);
+                DateTime date = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0);
 
-                // Save the actual value as tag.
+                // Save the string value as tag.
+                String dateString = date.toString(Constants.ISO_DATE_FORMAT);
                 mTextView.setTag(dateString);
 
-                DateTime date = new DateTime(dateString);
                 String displayText = new MmxDateTimeUtils(mParent.getApplicationContext()).getUserStringFromDateTime(date);
                 mTextView.setText(displayText);
             } catch (Exception e) {

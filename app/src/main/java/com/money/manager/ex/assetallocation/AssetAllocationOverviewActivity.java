@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
-import android.print.PrintJob;
 import android.print.PrintManager;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -294,7 +293,7 @@ public class AssetAllocationOverviewActivity
             allocation.getName() + ", " +
 //            currencyService.getBaseCurrencyCode() + " " +
 //            String.format(VALUE_FORMAT, allocation.getCurrentValue().toDouble()) +
-            formatter.getValueFormatted(allocation.getCurrentValue(), getCurrencyService().getBaseCurrencyId()) +
+            formatter.format(allocation.getCurrentValue(), getCurrencyService().getBaseCurrencyId()) +
             "</p>";
         return html;
     }

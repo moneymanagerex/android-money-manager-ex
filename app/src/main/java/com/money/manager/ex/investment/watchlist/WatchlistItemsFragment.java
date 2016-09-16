@@ -431,7 +431,7 @@ public class WatchlistItemsFragment
         if (account == null) return;
 
         FormatUtilities formatter = new FormatUtilities(getActivity());
-        textView.setText(formatter.getValueFormatted(
+        textView.setText(formatter.format(
             account.getInitialBalance(), account.getCurrencyId()));
     }
 
