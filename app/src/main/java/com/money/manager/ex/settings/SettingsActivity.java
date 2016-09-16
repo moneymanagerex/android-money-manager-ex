@@ -20,6 +20,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
+import com.money.manager.ex.MoneyManagerApplication;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import timber.log.Timber;
 
 public class SettingsActivity
@@ -27,18 +32,30 @@ public class SettingsActivity
 
     public static final String EXTRA_FRAGMENT = "extraFragment";
 
+    @Inject Lazy<AppSettings> appSettingsLazy;
+    private String initialTheme;
+
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
+
         showFragment();
+
+        // store the current theme
+        initialTheme = appSettingsLazy.get().getLookAndFeelSettings().getTheme();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Timber.d("resuming");
+        // apply theme if changed.
+        String currentTheme = appSettingsLazy.get().getLookAndFeelSettings().getTheme();
+        if (!currentTheme.equals(initialTheme)) {
+            recreate();
+        }
     }
 
     private void showFragment() {
@@ -56,6 +73,7 @@ public class SettingsActivity
         if (fragment == null) {
             fragment = new SettingsFragment();
         }
+
         setSettingFragment(fragment);
     }
 }
