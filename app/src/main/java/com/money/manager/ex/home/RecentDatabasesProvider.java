@@ -119,6 +119,9 @@ public class RecentDatabasesProvider {
 
         // otherwise create the default entry for the existing path.
         DatabaseMetadata defaultDb = new DatabaseMetadataFactory(getContext()).createDefaultEntry();
+        // and save it to the list
+        add(defaultDb);
+
         return defaultDb;
     }
 

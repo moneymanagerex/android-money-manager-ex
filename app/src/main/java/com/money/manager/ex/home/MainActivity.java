@@ -181,6 +181,9 @@ public class MainActivity
             return;
         }
 
+        // todo: remove this after the users upgrade the recent files list.
+        migrateRecentDatabases();
+
         // Layout
         setContentView(R.layout.main_activity);
 
@@ -584,22 +587,22 @@ public class MainActivity
     }
 
     /**
-     * Handle the callback from the drawer click handler.
+     * Handle the drawer item click. Invoked by the actual click handler.
      * @param item selected DrawerMenuItem
      * @return boolean indicating whether the action was handled or not.
      */
-    //@Override
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
         final Core core = new Core(this);
         final Boolean isDarkTheme = core.getThemeId() == R.style.Theme_Money_Manager_Dark;
 
+        // Recent database?
         if (item.getId() == null && item.getTag() != null) {
             String key = item.getTag().toString();
-            DatabaseMetadata recentDb = getDatabases().get(key);
-            if (recentDb != null) {
-                onOpenDatabaseClick(recentDb);
+            DatabaseMetadata selectedDatabase = getDatabases().get(key);
+            if (selectedDatabase != null) {
+                onOpenDatabaseClick(selectedDatabase);
             }
         }
         if (item.getId() == null) return false;
@@ -694,7 +697,9 @@ public class MainActivity
         return result;
     }
 
-    // Private.
+    /*
+        Private
+    */
 
     private void initializeSync() {
         // Check cloud storage for updates?
@@ -923,7 +928,7 @@ public class MainActivity
         childItems.add(null);
 
         // Open Database. Display the recent db list.
-        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabases();
+        ArrayList<DrawerMenuItem> childDatabases = getRecentDatabasesDrawerMenuItems();
         childItems.add(childDatabases);
 
         // Synchronization
@@ -1171,11 +1176,12 @@ public class MainActivity
         return menuItems;
     }
 
-    private ArrayList<DrawerMenuItem> getRecentDatabases() {
+    private ArrayList<DrawerMenuItem> getRecentDatabasesDrawerMenuItems() {
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
+        RecentDatabasesProvider databases = getDatabases();
 
-        if (getDatabases().map != null) {
-            for (DatabaseMetadata entry : getDatabases().map.values()) {
+        if (databases.count() > 0) {
+            for (DatabaseMetadata entry : databases.map.values()) {
                 String title = entry.getFileName();
 
                 DrawerMenuItem item = new DrawerMenuItem().withText(title);
@@ -1190,7 +1196,7 @@ public class MainActivity
             }
         }
 
-        // Other. Simply open the file picker, as before.
+        // Menu item 'Other'. Simply open the file picker, as before.
         DrawerMenuItem item = new DrawerMenuItem()
                 .withId(R.id.menu_open_database)
                 .withText(getString(R.string.other));
@@ -1495,5 +1501,22 @@ public class MainActivity
         // make top-level so there's no going back.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void migrateRecentDatabases() {
+        RecentDatabasesProvider databases = getDatabases();
+        // if there are entries with empty name, migrate:
+        // - clean up the list
+        // - create the default entry
+        // - save the default entry.
+        for (DatabaseMetadata entry : databases.map.values()) {
+            if (TextUtils.isEmpty(entry.localPath)) {
+                databases.clear();
+                // create & save the default entry.
+                DatabaseMetadata currentEntry = databases.getCurrent();
+
+                return;
+            }
+        }
     }
 }
