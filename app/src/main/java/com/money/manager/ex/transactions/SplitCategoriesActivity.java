@@ -41,7 +41,6 @@ import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
 import com.money.manager.ex.transactions.events.SplitItemRemovedEvent;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
@@ -136,13 +135,14 @@ public class SplitCategoriesActivity
     @Override
     public boolean onActionDoneClick() {
         List<ISplitTransaction> allSplitTransactions = mAdapter.splitTransactions;
+        Core core = new Core(this);
         Money total = MoneyFactory.fromString("0");
 
         // Validate Category.
         for (int i = 0; i < allSplitTransactions.size(); i++) {
             ISplitTransaction splitTransaction = allSplitTransactions.get(i);
             if (splitTransaction.getCategoryId() == Constants.NOT_SET) {
-                Core.alertDialog(this, R.string.error_category_not_selected);
+                core.alert(R.string.error_category_not_selected);
                 return false;
             }
 
@@ -151,7 +151,7 @@ public class SplitCategoriesActivity
 
         // total amount must not be negative.
         if (total.toDouble() < 0) {
-            Core.alertDialog(this, R.string.split_amount_negative);
+            core.alert(R.string.split_amount_negative);
             return false;
         }
 

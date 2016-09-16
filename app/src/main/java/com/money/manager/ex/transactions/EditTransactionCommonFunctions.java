@@ -29,7 +29,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -76,7 +75,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -1073,45 +1071,46 @@ public class EditTransactionCommonFunctions {
 
     public boolean validateData() {
         boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+        Core core = new Core(mParent);
 
         if (isTransfer) {
             if (transactionEntity.getAccountToId() == Constants.NOT_SET) {
-                Core.alertDialog(mParent, R.string.error_toaccount_not_selected);
+                core.alert(R.string.error_toaccount_not_selected);
                 return false;
             }
             if (transactionEntity.getAccountToId().equals(transactionEntity.getAccountId())) {
-                Core.alertDialog(mParent, R.string.error_transfer_to_same_account);
+                core.alert(R.string.error_transfer_to_same_account);
                 return false;
             }
 
             // Amount To is required and has to be positive.
             if (this.transactionEntity.getAmountTo().toDouble() <= 0) {
-                Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
+                core.alert(R.string.error_amount_must_be_positive);
                 return false;
             }
         }
 
         // Amount is required and must be positive. Sign is determined by transaction type.
         if (transactionEntity.getAmount().toDouble() <= 0) {
-            Core.alertDialog(mParent, R.string.error_amount_must_be_positive);
+            core.alert(R.string.error_amount_must_be_positive);
             return false;
         }
 
         // Category is required if tx is not a split or transfer.
         boolean hasCategory = transactionEntity.hasCategory();
         if (!hasCategory && (!isSplitSelected()) && !isTransfer) {
-            Core.alertDialog(mParent, R.string.error_category_not_selected);
+            core.alert(R.string.error_category_not_selected);
             return false;
         }
 
         // Split records must exist if split is checked.
         if (isSplitSelected() && getSplitTransactions().isEmpty()) {
-            Core.alertDialog(mParent, R.string.error_split_transaction_empty);
+            core.alert(R.string.error_split_transaction_empty);
             return false;
         }
         // Splits sum must be positive.
         if (!CommonSplitCategoryLogic.validateSumSign(getSplitTransactions())){
-            Core.alertDialog(mParent, R.string.split_amount_negative);
+            core.alert(R.string.split_amount_negative);
             return false;
         }
 

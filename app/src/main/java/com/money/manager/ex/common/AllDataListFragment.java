@@ -734,7 +734,7 @@ public class AllDataListFragment
             .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
             .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
                     transactionIds.size(), transactionIds.size()));
-//        alertDialog.setIcon(R.drawable.ic_action_warning_light);
+//        alert.setIcon(R.drawable.ic_action_warning_light);
 
         // set listener button positive
         alertDialog.positiveText(android.R.string.ok);

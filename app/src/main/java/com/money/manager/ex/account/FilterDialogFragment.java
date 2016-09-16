@@ -19,19 +19,12 @@ package com.money.manager.ex.account;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -40,7 +33,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.domainmodel.Account;
-import com.money.manager.ex.settings.AppSettings;
 import com.shamanland.fonticon.FontIconButton;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -182,7 +174,7 @@ public class FilterDialogFragment
                 AccountRepository repo = new AccountRepository(getActivity());
                 boolean updated = repo.save(mAccount);
                 if (!updated) {
-                    Core.alertDialog(getActivity(), R.string.error_saving_record);
+                    new Core(getActivity()).alert(R.string.error_saving_record);
                 }
 
                 showFavouriteStatus(v);

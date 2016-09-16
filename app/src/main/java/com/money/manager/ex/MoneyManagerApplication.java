@@ -65,9 +65,7 @@ import timber.log.Timber;
 import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 /**
- * This class extends Application and implements all the methods common in the
- * former money manager application for Android
- * Here we define the parcel converter for Money type.
+ * Here we define the parcel converter for Money type. It may not be used, though.
  */
 @ParcelClasses(
     @ParcelClass(
@@ -319,11 +317,13 @@ public class MoneyManagerApplication
         return userName;
     }
 
-    public boolean isUriAvailable(Context context, Intent intent) {
-        return context.getPackageManager().resolveActivity(intent, 0) != null;
-    }
+//    public boolean isUriAvailable(Context context, Intent intent) {
+//        return context.getPackageManager().resolveActivity(intent, 0) != null;
+//    }
 
-    // Private
+    /*
+        Private
+    */
 
     private double getSummaryAccountsInternal(Context context) {
         double curTotal = 0;

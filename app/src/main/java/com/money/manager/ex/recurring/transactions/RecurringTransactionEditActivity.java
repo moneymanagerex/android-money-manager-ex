@@ -407,7 +407,6 @@ public class RecurringTransactionEditActivity
 
     /**
      * this method allows you to search the transaction data
-     *
      * @param recurringTransactionId transaction id
      * @return true if data selected, false nothing
      */
@@ -443,21 +442,23 @@ public class RecurringTransactionEditActivity
     private boolean validateData() {
         if (!mCommonFunctions.validateData()) return false;
 
+        Core core = new Core(this);
+
         // Due Date is required
         if (TextUtils.isEmpty(getRecurringTransaction().getDueDateString())) {
-            Core.alertDialog(this, R.string.due_date_required);
+            core.alert(R.string.due_date_required);
             return false;
         }
 
         if (TextUtils.isEmpty(mCommonFunctions.viewHolder.dateTextView.getText().toString())) {
-            Core.alertDialog(this, R.string.error_next_occurrence_not_populate);
+            core.alert(R.string.error_next_occurrence_not_populate);
 
             return false;
         }
 
         // Payments Left must have a value
         if (getRecurringTransaction().getPaymentsLeft() == null) {
-            Core.alertDialog(this, R.string.payments_left_required);
+            core.alert(R.string.payments_left_required);
             return false;
         }
         return true;
@@ -578,14 +579,14 @@ public class RecurringTransactionEditActivity
             mCommonFunctions.transactionEntity = repo.insert((RecurringTransaction) mCommonFunctions.transactionEntity);
 
             if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
-                Core.alertDialog(this, R.string.db_checking_insert_failed);
+                new Core(this).alert(R.string.db_checking_insert_failed);
                 Timber.w("Insert new repeating transaction failed!");
                 return false;
             }
         } else {
             // update
             if (!repo.update((RecurringTransaction) mCommonFunctions.transactionEntity)) {
-                Core.alertDialog(this, R.string.db_checking_update_failed);
+                new Core(this).alert(R.string.db_checking_update_failed);
                 Timber.w("Update repeating  transaction failed!");
                 return false;
             }

@@ -52,7 +52,7 @@ public abstract class BaseFragmentActivity
 
         AppSettings settings = new AppSettings(this);
         String locale = settings.getGeneralSettings().getApplicationLanguage();
-        Core.setAppLocale(this, locale);
+        new Core(this).setAppLocale(locale);
 
         // Add layout inflater for icon fonts in xml.
 //        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));

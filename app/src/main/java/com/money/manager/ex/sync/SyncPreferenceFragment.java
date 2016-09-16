@@ -317,7 +317,7 @@ public class SyncPreferenceFragment
                             sync.resetPreferences();
                             sync.stopSyncServiceAlarm();
 
-                            Core.alertDialog(getActivity(), R.string.preferences_reset);
+                            new Core(getActivity()).alert(R.string.preferences_reset);
 
                             getActivity().recreate();
                         }

@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -118,5 +119,10 @@ public class LookAndFeelSettings
     public boolean getSortTransactionsByType() {
         String key = getSettingsKey(R.string.pref_transaction_sort_by_type);
         return getBooleanSetting(key, true);
+    }
+
+    public String getTheme() {
+        String lightTheme = Constants.THEME_LIGHT;
+        return get(R.string.pref_theme, lightTheme);
     }
 }

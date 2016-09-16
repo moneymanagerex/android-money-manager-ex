@@ -80,7 +80,7 @@ public class WebChangelogFragment
         // check if there is network access
         NetworkUtils utils = new NetworkUtils(getActivity());
         if (!utils.isOnline()) {
-            Core.alertDialog(getActivity(), R.string.no_network);
+            new Core(getActivity()).alert(R.string.no_network);
             return;
         }
 

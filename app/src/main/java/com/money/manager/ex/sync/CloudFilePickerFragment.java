@@ -107,7 +107,7 @@ public class CloudFilePickerFragment
             // check if the file is a valid database?
             if (!isValidDatabase(item)) {
                 // show notification
-                Core.alertDialog(getActivity(), R.string.invalid_database);
+                new Core(getActivity()).alert(R.string.invalid_database);
             }
 
             // select file.

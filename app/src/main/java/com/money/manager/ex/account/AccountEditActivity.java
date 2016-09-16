@@ -49,7 +49,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
@@ -454,24 +453,26 @@ public class AccountEditActivity
      * Validate entered data.
      */
     private boolean validateData() {
+        Core core = new Core(this);
+
         if (mAccount.getCurrencyId() == null || mAccount.getCurrencyId() == Constants.NOT_SET) {
-            Core.alertDialog(this, R.string.error_currency_not_selected);
+            core.alert(R.string.error_currency_not_selected);
             return false;
         }
         if (!mAccount.hasInitialBalance()) {
-            Core.alertDialog(this, R.string.error_initialbal_empty);
+            core.alert(R.string.error_initialbal_empty);
             return false;
         }
         if (TextUtils.isEmpty(mAccount.getName())) {
-            Core.alertDialog(this, R.string.error_accountname_empty);
+            core.alert(R.string.error_accountname_empty);
             return false;
         }
         if (TextUtils.isEmpty(mAccount.getTypeName())) {
-            Core.alertDialog(this, R.string.error_accounttype_empty);
+            core.alert(R.string.error_accounttype_empty);
             return false;
         }
         if (TextUtils.isEmpty(mAccount.getStatus())) {
-            Core.alertDialog(this, R.string.error_status_empty);
+            core.alert(R.string.error_status_empty);
             return false;
         }
 

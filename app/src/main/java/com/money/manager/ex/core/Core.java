@@ -65,27 +65,40 @@ import timber.log.Timber;
 
 public class Core {
 
-    /**
-     * Shown alert.
-     * @param resId id of string
-     */
-    public static void alertDialog(Context context, int resId) {
-//        alertDialog(ctx, ctx.getString(resId));
-        alert(context, Constants.NOT_SET, resId);
+    @Inject
+    public Core(Context context) {
+        super();
+
+        this.mContext = context;
+        // .getApplicationContext() == null ? context.getApplicationContext() : context;
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    public static void alert(Context context, int title, int text) {
+    private Context mContext;
+    @Inject Lazy<MmxOpenHelper> openHelper;
+    @Inject Lazy<AppSettings> appSettingsLazy;
+
+    /**
+     * Show alert dialog.
+     * @param textResourceId id of string to display as a message
+     */
+    public void alert(int textResourceId) {
+        alert(Constants.NOT_SET, textResourceId);
+    }
+
+    public void alert(int title, int text) {
         if (title == Constants.NOT_SET) {
             title = R.string.attention;
         }
 
-        UIHelper uiHelper = new UIHelper(context);
-        Drawable icon = new IconicsDrawable(context)
+        UIHelper uiHelper = new UIHelper(getContext());
+        Drawable icon = new IconicsDrawable(getContext())
                 .icon(MMXIconFont.Icon.mmx_alert)
                 .color(uiHelper.getPrimaryColor())
                 .sizeDp(uiHelper.getToolbarIconSize());
 
-        new MaterialDialog.Builder(context)
+        new MaterialDialog.Builder(getContext())
                 .icon(icon)
                 .title(title)
                 .content(text)
@@ -99,69 +112,6 @@ public class Core {
 //                .negativeText(R.string.disagree)
                 .show();
     }
-
-    /**
-     * Method, which allows you to change the language of the application on the fly.
-     * @param context        Context
-     * @param languageToLoad language to load for the locale
-     * @return and indicator whether the operation was successful
-     * Ref: http://stackoverflow.com/questions/22402491/android-change-and-set-default-locale-within-the-app
-     */
-    public static boolean setAppLocale(Context context, String languageToLoad) {
-        try {
-            setAppLocale_Internal(context, languageToLoad);
-        } catch (Exception e) {
-            Timber.e(e, "changing app locale");
-
-            return false;
-        }
-        return true;
-    }
-
-    private static void setAppLocale_Internal(Context context, String languageToLoad) {
-        Locale locale;
-
-        if (!TextUtils.isEmpty(languageToLoad)) {
-            locale = new Locale(languageToLoad);
-            // Below method is not available in emulator 4.1.1 (?!).
-//                locale = Locale.forLanguageTag(languageToLoad);
-        } else {
-            locale = Locale.getDefault();
-        }
-        // http://developer.android.com/reference/java/util/Locale.html#setDefault%28java.util.Locale%29
-//            Locale.setDefault(locale);
-
-        // change locale of the configuration
-        Resources resources = context.getResources();
-//            Configuration config = new Configuration();
-//            Configuration config = new Configuration(resources.getConfiguration());
-        Configuration config = resources.getConfiguration();
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-             config.locale = locale;  // deprecated
-        } else {
-            config.setLocale(locale);
-        }
-
-        // set new locale
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-//            getBaseContext().getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-    }
-
-    // Instance
-
-    public Core(Context context) {
-        super();
-
-        this.mContext = context;
-        // .getApplicationContext() == null ? context.getApplicationContext() : context;
-
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
-    }
-
-    private Context mContext;
-    @Inject Lazy<MmxOpenHelper> openHelper;
-    @Inject Lazy<AppSettings> appSettings;
 
     /**
      * Backup current database
@@ -202,9 +152,9 @@ public class Core {
         return new File(folderOutput + "/" + filesFromCopy.get(0).getName());
     }
 
-    public String getAppVersionBuild() {
-        return Integer.toString(getAppVersionCode());
-    }
+//    public String getAppVersionBuild() {
+//        return Integer.toString(getAppVersionCode());
+//    }
 
     /**
      * Get a versioncode of the application.
@@ -232,10 +182,6 @@ public class Core {
         return "n/a";
     }
 
-//    public String getFullAppVersion() {
-//        return getAppVersionName() + "." + getAppVersionBuild();
-//    }
-
     public Context getContext() {
         return mContext;
     }
@@ -248,11 +194,7 @@ public class Core {
     public int getThemeId() {
         try {
             String darkTheme = Constants.THEME_DARK;
-            String lightTheme = Constants.THEME_LIGHT;
-
-            String key = mContext.getString(R.string.pref_theme);
-            String currentTheme = PreferenceManager.getDefaultSharedPreferences(getContext())
-                    .getString(key, lightTheme);
+            String currentTheme = appSettingsLazy.get().getLookAndFeelSettings().getTheme();
 
             if (currentTheme.endsWith(darkTheme)) {
                 // Dark theme
@@ -309,6 +251,49 @@ public class Core {
      */
     public String[] getListMonths() {
         return new DateFormatSymbols().getMonths();
+    }
+
+    public String getDefaultSystemDateFormat() {
+        Locale locale = Locale.getDefault();
+        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
+        String pattern = sdf.toLocalizedPattern();
+        // replace date
+        if (pattern.contains("dd")) {
+            pattern = pattern.replace("dd", "%d");
+        } else {
+            pattern = pattern.replace("d", "%d");
+        }
+        // replace month
+        if (pattern.contains("MM")) {
+            pattern = pattern.replace("MM", "%m");
+        } else {
+            pattern = pattern.replace("M", "%m");
+        }
+        // replace year
+        pattern = pattern.replace("yyyy", "%Y");
+        pattern = pattern.replace("yy", "%y");
+        // check if exists in format definition
+        boolean found = false;
+        String[] availableDateFormats = getContext().getResources().getStringArray(R.array.date_format_mask);
+        for (int i = 0; i < availableDateFormats.length; i++) {
+            if (pattern.equals(availableDateFormats[i])) {
+                found = true;
+                break;
+            }
+        }
+
+        return found
+                ? pattern
+                : null;
+    }
+
+    public int getColourFromAttribute(int attribute) {
+        TypedArray ta = getAttributeValue(attribute);
+        int result = ta.getColor(0, Color.TRANSPARENT);
+
+        ta.recycle();
+
+        return result;
     }
 
     /**
@@ -377,6 +362,49 @@ public class Core {
         return lastVersionCode != currentVersionCode;
     }
 
+    /**
+     * Method, which allows you to change the language of the application on the fly.
+     * @param languageToLoad language to load for the locale
+     * @return and indicator whether the operation was successful
+     * Ref: http://stackoverflow.com/questions/22402491/android-change-and-set-default-locale-within-the-app
+     */
+    public boolean setAppLocale(String languageToLoad) {
+        try {
+            setAppLocale_Internal(languageToLoad);
+        } catch (Exception e) {
+            Timber.e(e, "changing app locale");
+
+            return false;
+        }
+        return true;
+    }
+
+    private void setAppLocale_Internal(String languageToLoad) {
+        Locale locale;
+
+        if (!TextUtils.isEmpty(languageToLoad)) {
+            locale = new Locale(languageToLoad);
+//                locale = Locale.forLanguageTag(languageToLoad);
+        } else {
+            locale = Locale.getDefault();
+        }
+        // http://developer.android.com/reference/java/util/Locale.html#setDefault%28java.util.Locale%29
+//            Locale.setDefault(locale);
+
+        // change locale of the configuration
+        Resources resources = getContext().getResources();
+        Configuration config = resources.getConfiguration();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.locale = locale;
+        } else {
+            config.setLocale(locale);
+        }
+
+        // set new locale
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
     public boolean showChangelog() {
         int currentVersionCode = getAppVersionCode();
         PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
@@ -399,49 +427,6 @@ public class Core {
             })
             .build().show();
         return true;
-    }
-
-    public String getDefaultSystemDateFormat() {
-        Locale locale = Locale.getDefault();
-        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
-        String pattern = sdf.toLocalizedPattern();
-        // replace date
-        if (pattern.contains("dd")) {
-            pattern = pattern.replace("dd", "%d");
-        } else {
-            pattern = pattern.replace("d", "%d");
-        }
-        // replace month
-        if (pattern.contains("MM")) {
-            pattern = pattern.replace("MM", "%m");
-        } else {
-            pattern = pattern.replace("M", "%m");
-        }
-        // replace year
-        pattern = pattern.replace("yyyy", "%Y");
-        pattern = pattern.replace("yy", "%y");
-        // check if exists in format definition
-        boolean found = false;
-        String[] availableDateFormats = getContext().getResources().getStringArray(R.array.date_format_mask);
-        for (int i = 0; i < availableDateFormats.length; i++) {
-            if (pattern.equals(availableDateFormats[i])) {
-                found = true;
-                break;
-            }
-        }
-
-        return found
-            ? pattern
-            : null;
-    }
-
-    public int getColourFromAttribute(int attribute) {
-        TypedArray ta = getAttributeValue(attribute);
-        int result = ta.getColor(0, Color.TRANSPARENT);
-
-        ta.recycle();
-
-        return result;
     }
 
 //    public int getColourFromStyledAttribute(int attribute) {

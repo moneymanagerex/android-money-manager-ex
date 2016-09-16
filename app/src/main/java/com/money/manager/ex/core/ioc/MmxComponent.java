@@ -33,6 +33,7 @@ import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActiv
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
+import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 import com.money.manager.ex.sync.SyncService;
@@ -59,6 +60,7 @@ public interface MmxComponent {
     void inject(RecurringTransactionEditActivity activity);
     void inject(CheckingTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
+    void inject(SettingsActivity activity);
 
     // Fragments
     void inject(DatabaseSettingsFragment fragment);
