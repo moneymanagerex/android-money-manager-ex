@@ -194,7 +194,7 @@ public class Core {
     public int getThemeId() {
         try {
             String darkTheme = Constants.THEME_DARK;
-            String currentTheme = appSettingsLazy.get().getLookAndFeelSettings().getTheme();
+            String currentTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
 
             if (currentTheme.endsWith(darkTheme)) {
                 // Dark theme

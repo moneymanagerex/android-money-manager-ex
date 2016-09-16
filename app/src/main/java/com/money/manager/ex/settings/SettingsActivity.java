@@ -44,7 +44,7 @@ public class SettingsActivity
         showFragment();
 
         // store the current theme
-        initialTheme = appSettingsLazy.get().getLookAndFeelSettings().getTheme();
+        initialTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SettingsActivity
         super.onResume();
 
         // apply theme if changed.
-        String currentTheme = appSettingsLazy.get().getLookAndFeelSettings().getTheme();
+        String currentTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
         if (!currentTheme.equals(initialTheme)) {
             recreate();
         }

@@ -17,6 +17,7 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Language -->
     <ListPreference
         android:icon="@null"
         android:defaultValue=""
@@ -24,6 +25,15 @@
         android:entryValues="@array/application_locale_values"
         android:key="@string/pref_locale"
         android:title="@string/locale_application" />
+
+    <!-- Theme -->
+    <ListPreference
+        android:defaultValue="@string/theme_light"
+        android:entries="@array/themes_names"
+        android:entryValues="@array/themes_values"
+        android:icon="@null"
+        android:key="@string/pref_theme"
+        android:title="@string/theme_application"/>
 
     <ListPreference
         android:icon="@null"

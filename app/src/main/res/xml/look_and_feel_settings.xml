@@ -17,13 +17,6 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:defaultValue="@string/theme_light"
-        android:entries="@array/themes_names"
-        android:entryValues="@array/themes_values"
-        android:icon="@null"
-        android:key="@string/pref_theme"
-        android:title="@string/theme_application"/>
     <CheckBoxPreference
         android:icon="@null"
         android:key="@string/pref_account_open_visible"

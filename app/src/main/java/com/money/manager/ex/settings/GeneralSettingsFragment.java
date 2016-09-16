@@ -22,6 +22,9 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.home.MainActivity;
+
+import timber.log.Timber;
 
 /**
  * Fragment that contains the general settings.
@@ -55,10 +58,28 @@ public class GeneralSettingsFragment
                     String language = String.valueOf(newValue);
                     setSummaryListPreference(preference, language, R.array.application_locale_values, R.array.application_locale_entries);
 
-                    // apply the chaneg to the current activity immediately
+                    // apply the change to the current activity immediately
                     getActivity().recreate();
 
                     // other activities apply on create.
+
+                    return true;
+                }
+            });
+        }
+
+        // Theme
+
+        final ListPreference lstTheme = (ListPreference) findPreference(getString(R.string.pref_theme));
+        if (lstTheme != null) {
+            lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Timber.d("setting theme: %s", newValue.toString());
+
+                    MainActivity.setRestartActivity(true);
+
+                    getActivity().recreate();
 
                     return true;
                 }

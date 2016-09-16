@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.NumericHelper;
@@ -76,5 +77,10 @@ public class GeneralSettings
 
         InfoService service = new InfoService(getContext());
         service.setInfoValue(InfoKeys.DEFAULT_ACCOUNT_ID, value);
+    }
+
+    public String getTheme() {
+        String lightTheme = Constants.THEME_LIGHT;
+        return get(R.string.pref_theme, lightTheme);
     }
 }

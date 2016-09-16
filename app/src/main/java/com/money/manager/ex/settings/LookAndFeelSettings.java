@@ -120,9 +120,4 @@ public class LookAndFeelSettings
         String key = getSettingsKey(R.string.pref_transaction_sort_by_type);
         return getBooleanSetting(key, true);
     }
-
-    public String getTheme() {
-        String lightTheme = Constants.THEME_LIGHT;
-        return get(R.string.pref_theme, lightTheme);
-    }
 }

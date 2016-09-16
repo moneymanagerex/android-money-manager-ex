@@ -51,24 +51,6 @@ public class LookFeelPreferenceFragment
 
         final LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
 
-        // Theme
-
-        final ListPreference lstTheme = (ListPreference) findPreference(getString(R.string.pref_theme));
-        if (lstTheme != null) {
-            lstTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Timber.d("setting theme: %s", newValue.toString());
-
-                    MainActivity.setRestartActivity(true);
-
-                    getActivity().recreate();
-
-                    return true;
-                }
-            });
-        }
-
         // Show Open accounts
 
         final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
