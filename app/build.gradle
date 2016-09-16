@@ -161,7 +161,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.7.0'
+            , 'com.cloudrail:cloudrail-si-android:2.7.1'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
