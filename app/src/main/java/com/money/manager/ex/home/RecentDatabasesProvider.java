@@ -95,6 +95,8 @@ public class RecentDatabasesProvider {
         add(current);
 //        this.save();
 
+        MainActivity.setRestartActivity(true);
+
         return true;
     }
 
