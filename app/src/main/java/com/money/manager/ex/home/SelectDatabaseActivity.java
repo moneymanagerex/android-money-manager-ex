@@ -91,7 +91,7 @@ public class SelectDatabaseActivity
                                            @NonNull int[] grantResults) {
         // cancellation
         //if (permissions.length == 0) return;
-        Timber.d("returning from permissions request %s", permissions);
+        Timber.d("returning from permissions request"); // permissions
     }
 
     @OnClick(R.id.createDatabaseButton)
