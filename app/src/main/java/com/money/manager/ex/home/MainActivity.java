@@ -924,6 +924,8 @@ public class MainActivity
      */
 
     private void createExpandableDrawer() {
+        UIHelper uiHelper = new UIHelper(this);
+
         // Menu.
 
         final ArrayList<DrawerMenuItem> groupItems = getDrawerMenuItems();
@@ -946,19 +948,19 @@ public class MainActivity
         // manage: account
         childTools.add(new DrawerMenuItem().withId(R.id.menu_account)
                 .withText(getString(R.string.accounts))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_temple)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_temple)));
         // manage: categories
         childTools.add(new DrawerMenuItem().withId(R.id.menu_category)
                 .withText(getString(R.string.categories))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_tag_empty)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_tag_empty)));
         // manage: currencies
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_euro)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_euro)));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_people)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_group)));
         childItems.add(childTools);
 
         // Recurring Transactions
@@ -1117,66 +1119,67 @@ public class MainActivity
 
     private ArrayList<DrawerMenuItem> getDrawerMenuItems() {
         ArrayList<DrawerMenuItem> menuItems = new ArrayList<>();
+        UIHelper uiHelper = new UIHelper(this);
 
         // Home
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
                 .withText(getString(R.string.home))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_home)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_home)));
 
         // Open database
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
                 .withText(getString(R.string.open_database))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_open_folder)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_folder2)));
 
         // Cloud synchronize
         if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
-                    .withText(getString(R.string.synchronize))
-                    .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_sync)));
+                .withText(getString(R.string.synchronize))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_refresh)));
         }
 
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
                 .withText(getString(R.string.entities))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_building)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_building)));
 
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.repeating_transactions))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_recurring)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)));
 
         // Budgets
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
                 .withText(getString(R.string.budgets))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_law)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)));
 
         // Asset Allocation
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
                 .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)));
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_search)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_magnifier)));
         // reports
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_reports))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports))
                 .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_settings)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_settings)));
         // Donate
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
                 .withText(getString(R.string.donate))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_gift))
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_gift))
                 .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_question)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)));
 
         return menuItems;
     }
@@ -1193,9 +1196,9 @@ public class MainActivity
                 item.setTag(entry.localPath);
 
                 if (entry.isSynchronised()) {
-                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_dropbox));
+                    item.withIconDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_dropbox));
                 } else {
-                    item.withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_floppy_disk));
+                    item.withIconDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_floppy_disk));
                 }
                 childDatabases.add(item);
             }

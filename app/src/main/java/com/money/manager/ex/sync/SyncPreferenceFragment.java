@@ -150,7 +150,8 @@ public class SyncPreferenceFragment
         getSyncManager().startSyncServiceHeartbeat();
 
         ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
-            UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download)
+            UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download,
+                    android.R.string.yes, android.R.string.no)
                     .filter(new Func1<Boolean, Boolean>() {
                         @Override
                         public Boolean call(Boolean aBoolean) {

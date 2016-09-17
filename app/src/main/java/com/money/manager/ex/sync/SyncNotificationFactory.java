@@ -159,7 +159,7 @@ public class SyncNotificationFactory {
         UIHelper uiHelper = new UIHelper(getContext());
         IconicsDrawable icon = new IconicsDrawable(getContext())
                 .icon(MMXIconFont.Icon.mmx_alert)
-                .color(uiHelper.getPrimaryColor())
+                .color(uiHelper.getSecondaryColor())
                 .sizeDp(Constants.NotificationBigIconSize);
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())

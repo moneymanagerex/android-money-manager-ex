@@ -3,6 +3,7 @@ package com.money.manager.ex.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.widget.Toast;
@@ -64,13 +65,18 @@ public class UIHelper {
     }
 
     public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message) {
+        return binaryDialog(context, title, message, android.R.string.ok, android.R.string.cancel);
+    }
+
+    public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message,
+                                                   final int positiveTextId, final int negativeTextId) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(final Subscriber<? super Boolean> subscriber) {
                 final MaterialDialog dialog = new MaterialDialog.Builder(context)
                         .title(title)
                         .content(message)
-                        .positiveText(android.R.string.ok)
+                        .positiveText(positiveTextId)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -78,7 +84,7 @@ public class UIHelper {
                                 subscriber.onCompleted();
                             }
                         })
-                        .negativeText(android.R.string.cancel)
+                        .negativeText(negativeTextId)
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -140,12 +146,20 @@ public class UIHelper {
 
         return new IconicsDrawable(context)
                 .icon(icon)
-                .color(uiHelper.getPrimaryColor())
+                .color(uiHelper.getSecondaryColor())
                 .sizeDp(uiHelper.getToolbarIconSize());
     }
 
     public int getPrimaryColor() {
         return getColor(R.attr.toolbarItemColor);
+    }
+
+    public int getSecondaryColor() {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+        int color = typedValue.data;
+        return color;
     }
 
     public int getToolbarIconSize() {

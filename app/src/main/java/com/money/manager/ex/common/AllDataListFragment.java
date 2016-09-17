@@ -48,6 +48,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
@@ -731,7 +733,7 @@ public class AllDataListFragment
         // create alert binaryDialog and set title and message
         MaterialDialog.Builder alertDialog = new MaterialDialog.Builder(getContext())
             .title(R.string.delete_transaction)
-            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+            .icon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
             .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
                     transactionIds.size(), transactionIds.size()));
 //        alert.setIcon(R.drawable.ic_action_warning_light);

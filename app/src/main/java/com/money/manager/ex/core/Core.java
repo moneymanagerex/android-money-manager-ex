@@ -25,7 +25,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -34,13 +33,11 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -92,14 +89,8 @@ public class Core {
             title = R.string.attention;
         }
 
-        UIHelper uiHelper = new UIHelper(getContext());
-        Drawable icon = new IconicsDrawable(getContext())
-                .icon(MMXIconFont.Icon.mmx_alert)
-                .color(uiHelper.getPrimaryColor())
-                .sizeDp(uiHelper.getToolbarIconSize());
-
         new MaterialDialog.Builder(getContext())
-                .icon(icon)
+                .icon(new UIHelper(getContext()).getIcon(MMXIconFont.Icon.mmx_alert))
                 .title(title)
                 .content(text)
                 .positiveText(android.R.string.ok)
@@ -109,13 +100,11 @@ public class Core {
                         dialog.dismiss();
                     }
                 })
-//                .negativeText(R.string.disagree)
                 .show();
     }
 
     /**
      * Backup current database
-     *
      * @return new File database backup
      */
     public File backupDatabase() {

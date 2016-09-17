@@ -36,7 +36,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -232,14 +231,9 @@ public class CurrencyListFragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
 
-        UIHelper uiHelper = new UIHelper(getActivity());
-
         // Customize with font icon, if needed.
         MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
-        Drawable icon = new IconicsDrawable(getActivity())
-                .icon(MMXIconFont.Icon.mmx_share_square)
-                .color(uiHelper.getPrimaryColor())
-                .sizeDp(uiHelper.getToolbarIconSize());
+        Drawable icon = new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_share_square);
         item.setIcon(icon);
     }
 

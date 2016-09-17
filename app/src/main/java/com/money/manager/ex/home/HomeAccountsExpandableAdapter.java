@@ -27,8 +27,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -149,16 +152,24 @@ public class HomeAccountsExpandableAdapter
         }
         // set image depending on the account type
         if (!TextUtils.isEmpty(accountType)) {
+            UIHelper uiHelper = new UIHelper(getContext());
+            int iconSize = 30;
+
             if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_bill));
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_money_banknote).sizeDp(iconSize);
+                holder.imgAccountType.setImageDrawable(icon);
             } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
-                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_temple));
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_temple).sizeDp(iconSize);
+                holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_calendar));
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_calendar).sizeDp(iconSize);
+                holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_credit_card));
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_credit_card).sizeDp(iconSize);
+                holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-                holder.imgAccountType.setImageDrawable(FontIconDrawable.inflate(getContext(), R.xml.ic_briefcase));
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase).sizeDp(iconSize);
+                holder.imgAccountType.setImageDrawable(icon);
             }
         }
 
