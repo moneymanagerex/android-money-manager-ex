@@ -86,15 +86,13 @@ public class SyncPreferenceFragment
         PreferenceManager prefMgr = getPreferenceManager();
         prefMgr.setSharedPreferencesName(PreferenceConstants.SYNC_PREFERENCES);
         prefMgr.setSharedPreferencesMode(Context.MODE_PRIVATE); // MODE_WORLD_READABLE
-
-        addPreferencesFromResource(R.xml.settings_sync);
-
-        initializePreferences();
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-//        Timber.d("creating");
+        addPreferencesFromResource(R.xml.settings_sync);
+
+        initializePreferences();
     }
 
     @Override

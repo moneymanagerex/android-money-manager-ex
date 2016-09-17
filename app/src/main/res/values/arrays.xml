@@ -136,6 +136,7 @@
         <item>@string/every_30_minutes</item>
         <item>@string/every_hour</item>
         <item>@string/every_2_hours</item>
+        <item>@string/every_3_hours</item>
         <item>@string/every_6_hours</item>
         <item>@string/every_12_hours</item>
         <item>@string/daily</item>
@@ -150,6 +151,7 @@
         <item>30</item>
         <item>60</item>
         <item>120</item>
+        <item>180</item>
         <item>360</item>
         <item>720</item>
         <item>1440</item>
