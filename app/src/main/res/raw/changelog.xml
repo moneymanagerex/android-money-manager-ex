@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="beta 919">
+    <changelogversion versionName="2016.09.17.920">
         <changelogtext>Immediately apply changes to app language and colour theme.</changelogtext>
         <changelogtext>Correcting a few minor issues.</changelogtext>
         <changelogtext>Migrating existing database to the Database Metadata format.</changelogtext>
