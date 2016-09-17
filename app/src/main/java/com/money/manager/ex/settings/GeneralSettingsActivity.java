@@ -19,6 +19,8 @@ package com.money.manager.ex.settings;
 
 import android.os.Bundle;
 
+import com.money.manager.ex.R;
+
 public class GeneralSettingsActivity
     extends BaseSettingsFragmentActivity {
 
@@ -26,6 +28,13 @@ public class GeneralSettingsActivity
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setSettingFragment(new GeneralSettingsFragment());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setTitle(R.string.preferences_general);
     }
 
 //    @Override

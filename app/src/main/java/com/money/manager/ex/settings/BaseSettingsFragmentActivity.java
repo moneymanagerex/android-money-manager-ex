@@ -43,6 +43,8 @@ public class BaseSettingsFragmentActivity
 
         setContentView(R.layout.settings_activity);
         setDisplayHomeAsUpEnabled(true);
+
+        //
     }
 
     @Subscribe

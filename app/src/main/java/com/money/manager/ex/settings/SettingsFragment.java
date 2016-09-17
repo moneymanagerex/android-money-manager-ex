@@ -36,27 +36,14 @@ import timber.log.Timber;
 public class SettingsFragment
     extends PreferenceFragmentCompat {
 
+    public static final int REQUEST_GENERAL_PREFERENCES = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
-        // General Settings
-
-        final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
-        if (generalPreference != null) {
-            generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    GeneralSettingsFragment fragment = new GeneralSettingsFragment();
-                    ((SettingsActivity) getActivity()).setSettingFragment(fragment);
-
-//                    Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
-//                    startActivity(intent);
-                    return true;
-                }
-            });
-        }
+        initGeneralSettings();
 
         // Per-Database settings
         Preference perDbPreference = findPreference(getString(R.string.pref_per_database));
@@ -184,14 +171,39 @@ public class SettingsFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Timber.d("creating preferences");
+        // Timber.d("creating preferences");
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        switch (requestCode) {
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_GENERAL_PREFERENCES:
+                // always recreate activity when returning from general settings, instead of
+                // trying to figure out if something has changed.
+                getActivity().recreate();
+                break;
+        }
+    }
+
+    private void initGeneralSettings() {
+        // General Settings
+
+        final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
+        if (generalPreference != null) {
+            generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+//                    GeneralSettingsFragment fragment = new GeneralSettingsFragment();
+//                    ((SettingsActivity) getActivity()).setSettingFragment(fragment);
+
+                    Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
+//                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
+                    return true;
+                }
+            });
+        }
+    }
 }

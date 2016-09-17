@@ -18,29 +18,29 @@ package com.money.manager.ex.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.Core;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import timber.log.Timber;
 
 public class SettingsActivity
     extends BaseSettingsFragmentActivity {
 
     public static final String EXTRA_FRAGMENT = "extraFragment";
 
-//    @Inject Lazy<AppSettings> appSettingsLazy;
+    @Inject Lazy<AppSettings> appSettingsLazy;
+    @Inject Lazy<Core> coreLazy;
 
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-//        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         showFragment();
     }
@@ -49,6 +49,7 @@ public class SettingsActivity
     protected void onResume() {
         super.onResume();
 
+        setTitle(R.string.settings);
     }
 
     private void showFragment() {

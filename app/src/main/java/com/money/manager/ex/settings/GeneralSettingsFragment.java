@@ -45,22 +45,6 @@ public class GeneralSettingsFragment
         initializeControls();
     }
 
-//    @Override
-//    protected void setResult() {
-//
-//    }
-
-//    @Override
-//    public void onBackPressed() {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(FIELD_A, mA.getText().toString());
-
-//        Intent mIntent = new Intent();
-//        mIntent.putExtras(bundle);
-//        setResult(RESULT_OK, mIntent);
-//        super.onBackPressed();
-//    }
-
     // Private
 
     private void initializeControls() {
