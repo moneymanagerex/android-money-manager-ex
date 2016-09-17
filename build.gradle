@@ -15,7 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// These values are used in all the projects.
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }  // Fabric
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0-rc2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'io.fabric.tools:gradle:1.+'                  // Fabric
+    }
+}
+
+plugins {
+    // dependencyUpdates
+    id 'com.github.ben-manes.versions' version '0.13.0'
+}
+
 ext {
     compileSdkVersion = 24
     buildToolsVersion = '24.0.2'
@@ -31,18 +47,6 @@ ext {
             recyclerView     :       "com.android.support:recyclerview-v7:${supportLibrary}",
             supportAnnotation:       "com.android.support:support-annotations:${supportLibrary}"
     ]
-}
-
-buildscript {
-    repositories {
-        jcenter()
-        maven { url 'https://maven.fabric.io/public' }  // Fabric
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-rc2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'io.fabric.tools:gradle:1.+'                  // Fabric
-    }
 }
 
 // This applies to the projects underneath.
