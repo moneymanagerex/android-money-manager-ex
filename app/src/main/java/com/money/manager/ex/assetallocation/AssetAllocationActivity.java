@@ -27,28 +27,25 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
-import com.money.manager.ex.BuildConfig;
+import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
@@ -91,8 +88,7 @@ public class AssetAllocationActivity
             getSupportLoaderManager().initLoader(LOADER_ASSET_ALLOCATION, null, mLoaderCallbacks);
         }
 
-        Answers.getInstance().logContentView(new ContentViewEvent()
-            .putContentName("Asset Allocation"));
+        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocation.name()));
     }
 
     @Override

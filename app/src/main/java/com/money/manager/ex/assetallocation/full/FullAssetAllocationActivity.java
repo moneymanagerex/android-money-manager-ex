@@ -30,6 +30,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.BuildConfig;
@@ -39,6 +41,7 @@ import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
@@ -94,6 +97,8 @@ public class FullAssetAllocationActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         showTotal(assetAllocation);
+
+        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocationFull.name()));
     }
 
     @Override

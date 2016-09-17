@@ -24,9 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.R;
 import com.money.manager.ex.budget.events.BudgetSelectedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.Core;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -49,6 +52,8 @@ public class BudgetsActivity
         setDisplayHomeAsUpEnabled(true);
 
         createFragments();
+
+        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Budget.name()));
     }
 
     // Menu / toolbar
