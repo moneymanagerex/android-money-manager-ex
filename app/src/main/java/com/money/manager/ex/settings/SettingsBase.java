@@ -40,7 +40,6 @@ abstract class SettingsBase {
 
     // Context for preferences is the Application Context.
     private Context mContext;
-//    private SharedPreferences.Editor mEditor;
 
     // common
 
@@ -63,20 +62,6 @@ abstract class SettingsBase {
         }
         return "";
     }
-
-//    /**
-//     * Clear the preference value (remove preference).
-//     */
-//    public void clear(String key) {
-//
-//    }
-
-//    private boolean update() {
-//        boolean result = getRecentDbPreferences().edit()
-////                .apply();
-//                .commit();
-//        return result;
-//    }
 
     // String
 
@@ -173,5 +158,4 @@ abstract class SettingsBase {
         String stringKey = getSettingsKey(key);
         return this.set(stringKey, value);
     }
-
 }

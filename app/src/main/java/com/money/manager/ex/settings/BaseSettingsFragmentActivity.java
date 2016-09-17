@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 /**
+ * Base activity for the settings activities.
  */
 public class BaseSettingsFragmentActivity
     extends BaseFragmentActivity {

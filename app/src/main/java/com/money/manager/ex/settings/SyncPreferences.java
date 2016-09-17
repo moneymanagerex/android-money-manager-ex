@@ -33,10 +33,7 @@ public class SyncPreferences
     public SyncPreferences(Context context) {
         super(context);
 
-        mContext = context;
     }
-
-    private Context mContext;
 
     /**
      * Delete all preferences.
@@ -51,10 +48,6 @@ public class SyncPreferences
 
     public String get(Integer key, String defaultValue) {
         return getPreferences().getString(getKey(key), defaultValue);
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     @Override

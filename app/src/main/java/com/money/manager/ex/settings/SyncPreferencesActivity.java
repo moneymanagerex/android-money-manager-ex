@@ -17,7 +17,9 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 
+import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
 public class SyncPreferencesActivity

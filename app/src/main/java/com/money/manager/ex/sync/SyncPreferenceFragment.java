@@ -17,9 +17,7 @@
 
 package com.money.manager.ex.sync;
 
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -58,6 +56,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -83,16 +83,20 @@ public class SyncPreferenceFragment
         MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         // Use a separate sync preference file.
+//        PreferenceManager.setDefaultValues(getActivity(), PreferenceConstants.SYNC_PREFERENCES,
+//                MODE_PRIVATE,
+//                R.xml.preferences_sync, false);
         PreferenceManager prefMgr = getPreferenceManager();
         prefMgr.setSharedPreferencesName(PreferenceConstants.SYNC_PREFERENCES);
-        prefMgr.setSharedPreferencesMode(Context.MODE_PRIVATE); // MODE_WORLD_READABLE
+        prefMgr.setSharedPreferencesMode(MODE_PRIVATE); // MODE_WORLD_READABLE
+
+        addPreferencesFromResource(R.xml.preferences_sync);
+
+        initializePreferences();
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.preferences_sync);
-
-        initializePreferences();
     }
 
     @Override

@@ -31,7 +31,6 @@ import com.money.manager.ex.R;
  */
 public class SyncPreferencesViewHolder {
 
-    //    public CheckBoxPreference syncEnabled;
     SwitchPreferenceCompat syncEnabled;
     public ListPreference providerList;
     public Preference remoteFile;
@@ -43,7 +42,6 @@ public class SyncPreferencesViewHolder {
 
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
 
-//        syncEnabled = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_enabled));
         syncEnabled = (SwitchPreferenceCompat) view.findPreference(view.getString(R.string.pref_sync_enabled));
         providerList = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_provider));
         remoteFile = view.findPreference(view.getString(R.string.pref_remote_file));

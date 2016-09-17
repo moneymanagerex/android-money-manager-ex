@@ -180,19 +180,6 @@ public class FilterDialogFragment
                 showFavouriteStatus(v);
             }
         });
-
-        // Default account
-
-//        CheckBox defaultAccountCheckbox = (CheckBox) view.findViewById(R.id.defaultAccountCheckbox);
-//        defaultAccountCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                // un/set as default account
-//                Integer defaultAccountId = isChecked ? mAccount.getId() : null;
-//                AppSettings preferences = new AppSettings(getActivity());
-//                preferences.getGeneralSettings().setDefaultAccountId(defaultAccountId);
-//            }
-//        });
     }
 
     private void showFavouriteStatus(View view) {
