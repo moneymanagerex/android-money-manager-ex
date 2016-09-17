@@ -81,11 +81,10 @@ public class SyncPreferenceFragment
         super.onCreate(savedInstanceState);
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
+    }
 
-        // Use a separate sync preference file.
-//        PreferenceManager.setDefaultValues(getActivity(), PreferenceConstants.SYNC_PREFERENCES,
-//                MODE_PRIVATE,
-//                R.xml.preferences_sync, false);
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         PreferenceManager prefMgr = getPreferenceManager();
         prefMgr.setSharedPreferencesName(PreferenceConstants.SYNC_PREFERENCES);
         prefMgr.setSharedPreferencesMode(MODE_PRIVATE); // MODE_WORLD_READABLE
@@ -93,10 +92,6 @@ public class SyncPreferenceFragment
         addPreferencesFromResource(R.xml.preferences_sync);
 
         initializePreferences();
-    }
-
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     }
 
     @Override
