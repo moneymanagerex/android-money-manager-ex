@@ -18,6 +18,7 @@ package com.money.manager.ex.home;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +28,35 @@ import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
+import java.util.ArrayList;
+
 public class DrawerMenuItemAdapter
     extends ArrayAdapter<DrawerMenuItem> {
+//	extends RecyclerView.Adapter {
 	
 	public DrawerMenuItemAdapter(Context context) {
 		super(context, 0);
+//		super();
+
+		this.context = context;
+        this.items = new ArrayList<>();
 	}
-	
+
+	private Context context;
+    private ArrayList<DrawerMenuItem> items;
+
+    public Context getContext() {
+        return this.context;
+    }
+
+    public void add(DrawerMenuItem item) {
+        this.items.add(item);
+    }
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		DrawerMenuItem item = getItem(position);
+//		DrawerMenuItem item = getItem(position);
+        DrawerMenuItem item = items.get(position);
 		DrawerViewHolder holder = null;
 		View view = convertView;
 		
@@ -72,4 +92,20 @@ public class DrawerMenuItemAdapter
 		
 		return view;
 	}
+
+//	@Override
+//	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        RecyclerView.ViewHolder holder
+//		return null;
+//	}
+//
+//	@Override
+//	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+//
+//	}
+//
+//	@Override
+//	public int getItemCount() {
+//		return items.size();
+//	}
 }

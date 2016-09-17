@@ -19,13 +19,11 @@ package com.money.manager.ex.currency;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.R;
@@ -112,72 +110,69 @@ public class CurrencyUIFeatures {
     }
 
     public void showDialogDeleteCurrency(final int currencyId, final int itemPosition) {
-        // config alert binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-                .setTitle(R.string.delete_currency)
-                .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-                .setMessage(R.string.confirmDelete);
-        // set listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.delete_currency)
+                .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+                .content(R.string.confirmDelete)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         EventBus.getDefault().post(new CurrencyDeletionConfirmedEvent(currencyId, itemPosition));
                     }
-                });
-        // set listener on negative button
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        // create binaryDialog and show
-        alertDialog.create().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+        .build().show();
     }
 
     public void showDialogImportAllCurrencies() {
-        new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.attention)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.question_import_currencies)
-            .setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.attention)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.question_import_currencies)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         importCurrencies();
                     }
                 })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            })
-            .create().show();
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+            .build().show();
     }
 
     public void showDialogUpdateExchangeRates() {
-        // config alert binaryDialog
-        new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.download)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
-            .setMessage(R.string.question_update_currency_exchange_rates)
-            .setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.download)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_question))
+            .content(R.string.question_update_currency_exchange_rates)
+            .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //updateExchangeRates();
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         EventBus.getDefault().post(new ExchangeRateUpdateConfirmedEvent(true));
                     }
                 })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            })
-            .create().show();
+            .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+            .build().show();
     }
 
     /**

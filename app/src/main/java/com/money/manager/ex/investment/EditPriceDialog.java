@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -39,6 +38,7 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
@@ -89,7 +89,7 @@ public class EditPriceDialog
 
         // Create binaryDialog.
 
-        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
+        AlertDialogWrapper builder = new AlertDialogWrapper(getContext())
                 .setTitle(mPrice.symbol)
                 .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_euro));
 

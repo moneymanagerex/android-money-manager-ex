@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -37,7 +38,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -52,6 +54,7 @@ import com.money.manager.ex.database.SQLTypeTransaction;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.shamanland.fonticon.FontIconDrawable;
 
 /**
@@ -215,19 +218,18 @@ public class PayeeListFragment
                 if (!service.isPayeeUsed(payee.getId())) {
                     showDialogDeletePayee(payee.getId());
                 } else {
-                    new AlertDialogWrapper.Builder(getActivity())
+                    new AlertDialogWrapper(getActivity())
                             .setTitle(R.string.attention)
                             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
                             .setMessage(R.string.payee_can_not_deleted)
-                            .setPositiveButton(android.R.string.ok,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialog,
-                                                int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).create().show();
+                            .setPositiveButton(android.R.string.ok)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                        .create().show();
                 }
                 break;
 
@@ -337,15 +339,15 @@ public class PayeeListFragment
     }
 
     private void showDialogDeletePayee(final int payeeId) {
-        // creating binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+        new AlertDialogWrapper(getContext())
             .setTitle(R.string.delete_payee)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
             .setMessage(R.string.confirmDelete)
             .setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
                         PayeeRepository repo = new PayeeRepository(getActivity());
                         boolean success = repo.delete(payeeId);
                         if (success) {
@@ -355,15 +357,14 @@ public class PayeeListFragment
                         restartLoader();
                     }
                 })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                }
-        });
-        // show binaryDialog
-        alertDialog.create()
-            .show();
+            .setNegativeButton(android.R.string.cancel,
+                    new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.cancel();
+                        }
+                    })
+            .create().show();
     }
 
     private void showDialogEditPayeeName(final SQLTypeTransaction type, final int payeeId, final String payeeName) {
@@ -374,16 +375,15 @@ public class PayeeListFragment
         if (!TextUtils.isEmpty(payeeName)) {
             edtPayeeName.setSelection(payeeName.length());
         }
-        // create binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
+
+        new AlertDialogWrapper(getContext())
             .setView(viewDialog)
             .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_user))
-            .setTitle(R.string.edit_payeeName);
-
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+            .setTitle(R.string.edit_payeeName)
+        .setPositiveButton(android.R.string.ok,
+                new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         // take payee name from the input field.
                         String name = edtPayeeName.getText().toString();
 
@@ -419,16 +419,14 @@ public class PayeeListFragment
                         // restart loader
                         restartLoader();
                     }
-                });
-
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                })
+        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
-        });
-        // show binaryDialog
-        alertDialog.create().show();
+        })
+        .create().show();
     }
 
     @Override

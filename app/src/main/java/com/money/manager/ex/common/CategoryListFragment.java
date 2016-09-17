@@ -37,7 +37,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
@@ -484,17 +483,15 @@ public class CategoryListFragment
             return;
         }
 
-        // create and set alert binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setTitle(R.string.delete_category)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
-            .setMessage(R.string.confirmDelete);
-
-        // listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
+        // create and set alert dialog
+        new MaterialDialog.Builder(getContext())
+            .title(R.string.delete_category)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_alert))
+            .content(R.string.confirmDelete)
+            .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         int rowsDelete;
                         if (categoryIds.subCategId <= 0) {
                             CategoryRepository repo = new CategoryRepository(getActivity());
@@ -505,8 +502,8 @@ public class CategoryListFragment
                             SubcategoryRepository repo = new SubcategoryRepository(getActivity());
 
                             rowsDelete = getActivity().getContentResolver().delete(repo.getUri(),
-                                Subcategory.CATEGID + "=" + categoryIds.categId + " AND " +
-                                    Subcategory.SUBCATEGID + "=" + categoryIds.subCategId,
+                                    Subcategory.CATEGID + "=" + categoryIds.categId + " AND " +
+                                            Subcategory.SUBCATEGID + "=" + categoryIds.subCategId,
                                     null);
                         }
                         if (rowsDelete == 0) {
@@ -515,16 +512,16 @@ public class CategoryListFragment
                         // restart loader
                         restartLoader();
                     }
-                });
-        // listener on negative button
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        // show binaryDialog
-        alertDialog.create().show();
+                })
+            .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        dialog.dismiss();
+                        dialog.cancel();
+                    }
+                })
+            .build().show();
     }
 
     /**
@@ -546,17 +543,15 @@ public class CategoryListFragment
                 ? R.string.add_category
                 : R.string.edit_categoryName;
 
-        // create alter binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setView(viewDialog)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
-            .setTitle(titleId)
-            .setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @SuppressWarnings("incomplete-switch")
+        new MaterialDialog.Builder(getContext())
+                .customView(viewDialog, true)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
+            .title(titleId)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // get description category
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // get category description
                         String name = edtCategName.getText().toString();
                         CategoryService service = new CategoryService(getActivity());
 
@@ -578,16 +573,15 @@ public class CategoryListFragment
                         // restart loader
                         restartLoader();
                     }
-                });
-        // listener on cancel binaryDialog
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        // create binaryDialog and show
-        alertDialog.create().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+        .build().show();
     }
 
     /**
@@ -629,17 +623,15 @@ public class CategoryListFragment
                 ? R.string.add_subcategory
                 : R.string.edit_categoryName;
 
-        // create alter binaryDialog
-        AlertDialogWrapper.Builder alertDialog = new AlertDialogWrapper.Builder(getContext())
-            .setView(viewDialog)
-            .setIcon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
-            .setTitle(titleId);
-        // listener on positive button
-        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    //@SuppressWarnings("incomplete-switch")
+        new MaterialDialog.Builder(getContext())
+            .customView(viewDialog, true)
+            .icon(FontIconDrawable.inflate(getContext(), R.xml.ic_tag))
+            .title(titleId)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // get description category
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // get category description
                         String name = edtSubCategName.getText().toString();
                         // check position
                         if (spnCategory.getSelectedItemPosition() == Spinner.INVALID_POSITION)
@@ -661,12 +653,12 @@ public class CategoryListFragment
                                 break;
                             case UPDATE:
                                 if (getActivity().getContentResolver().update(
-                                    repo.getUri(),
-                                    values,
-                                    Subcategory.CATEGID + "="
-                                    + categoryId + " AND "
-                                    + Subcategory.SUBCATEGID
-                                    + "=" + subCategoryId, null) == 0) {
+                                        repo.getUri(),
+                                        values,
+                                        Subcategory.CATEGID + "="
+                                                + categoryId + " AND "
+                                                + Subcategory.SUBCATEGID
+                                                + "=" + subCategoryId, null) == 0) {
                                     Toast.makeText(getActivity(), R.string.db_update_failed, Toast.LENGTH_SHORT).show();
                                 }
                                 break;
@@ -674,16 +666,15 @@ public class CategoryListFragment
                         // restart loader
                         restartLoader();
                     }
-                });
-        // listener on cancel binaryDialog
-        alertDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        // create binaryDialog and show
-        alertDialog.create().show();
+                })
+                .negativeText(android.R.string.cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.cancel();
+                    }
+                })
+            .build().show();
     }
 
     private void addListClickHandlers() {

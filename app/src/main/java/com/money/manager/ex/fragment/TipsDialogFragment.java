@@ -34,8 +34,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.money.manager.ex.R;
+import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 public class TipsDialogFragment extends DialogFragment {
@@ -118,12 +118,11 @@ public class TipsDialogFragment extends DialogFragment {
                     checkDont.getPaddingBottom());
         }
 
-        // Compose Builder
-        AlertDialogWrapper.Builder builder = new AlertDialogWrapper.Builder(getContext())
+        return new AlertDialogWrapper(getContext())
             .setTitle(getTitle())
             .setView(view)
-            .setCancelable(false);
-        builder.setNeutralButton(android.R.string.ok, new OnClickListener() {
+            .setCancelable(false)
+        .setNeutralButton(android.R.string.ok, new OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -132,9 +131,8 @@ public class TipsDialogFragment extends DialogFragment {
                 }
                 dialog.dismiss();
             }
-        });
-
-        return builder.create();
+        })
+         .create();
     }
 
     @Override
