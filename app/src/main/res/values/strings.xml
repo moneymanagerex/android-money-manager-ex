@@ -372,6 +372,7 @@
     <string name="summary_check_repeating_transaction">What time would you check if there are recurring transactions overdue? (default 08:00)</string>
     <!-- 20130730 -->
     <string name="credits">Credits</string>
+    <string name="libraries">Libraries</string>
     <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
     <!-- 20130801 -->
     <string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>

@@ -24,15 +24,17 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+
+import timber.log.Timber;
 
 /**
  * About the app
  */
 public class AboutActivity
-    extends BaseFragmentActivity
-    implements ActionBar.TabListener {
+    extends BaseFragmentActivity {
 
     private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
 
@@ -49,7 +51,8 @@ public class AboutActivity
             new String[]{
                 getString(R.string.about),
                 getString(R.string.changelog),
-                getString(R.string.credits)
+                getString(R.string.credits),
+                getString(R.string.libraries)
             }));
 
         // Give the PagerSlidingTabStrip the ViewPager
@@ -70,43 +73,46 @@ public class AboutActivity
         mViewPager.setCurrentItem(savedInstanceState.getInt(BUNDLE_KEY_TABINDEX));
     }
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        Fragment fragment = null;
-        switch (tab.getPosition()) {
-            case 0: //about
-                fragment = new AboutFragment();
-                break;
-            case 1: //changelog
-//                fragment = new AboutChangelogFragment();
-                fragment = WebChangelogFragment.newInstance();
-                break;
-            case 2: //credits
-                fragment = new AboutCreditsFragment();
-                break;
-            default:
-                break;
-        }
-        if (fragment != null)
-            fragmentTransaction.replace(android.R.id.content, fragment);
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
+//    @Override
+//    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+//        Fragment fragment = null;
+//        switch (tab.getPosition()) {
+//            case 0: //about
+//                fragment = new AboutFragment();
+//                break;
+//            case 1: //changelog
+////                fragment = new AboutChangelogFragment();
+//                fragment = WebChangelogFragment.newInstance();
+//                break;
+//            case 2: //credits
+//                fragment = new AboutCreditsFragment();
+//                break;
+//            case 3: // libraries
+//                fragment = new LibsBuilder().supportFragment();
+//                break;
+//            default:
+//                break;
+//        }
+//        if (fragment != null)
+//            fragmentTransaction.replace(android.R.id.content, fragment);
+//    }
+//
+//    @Override
+//    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+//
+//    }
+//
+//    @Override
+//    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+//
+//    }
 
     @Override
     protected void setTheme() {
         try {
             this.setTheme(R.style.Theme_Money_Manager_Light);
         } catch (Exception e) {
-            Log.e(BaseFragmentActivity.class.getSimpleName(), e.getMessage());
+            Timber.e(e, "setting theme");
         }
     }
 }

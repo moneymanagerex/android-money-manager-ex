@@ -4,13 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.mikepenz.aboutlibraries.LibsBuilder;
+
 /**
  * Adapter for the tabs on the About page.
  */
 public class AboutTabAdapter
     extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 3;
+    private static int NUM_ITEMS = 4;
     private String tabTitles[];
 
     public AboutTabAdapter(FragmentManager fragmentManager, String titles[]) {
@@ -28,13 +30,15 @@ public class AboutTabAdapter
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: // Fragment # 0 - This will show FirstFragment
+            case 0:
                 return AboutFragment.newInstance(position);
-            case 1: // Fragment # 0 - This will show FirstFragment different title
+            case 1:
 //                    return AboutChangelogFragment.newInstance(position);
                 return WebChangelogFragment.newInstance();
-            case 2: // Fragment # 1 - This will show SecondFragment
+            case 2:
                 return AboutCreditsFragment.newInstance(position);
+            case 3:
+                return new LibsBuilder().supportFragment();
             default:
                 return null;
         }
