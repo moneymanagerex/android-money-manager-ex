@@ -22,9 +22,12 @@ import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.AnswersEvents;
 
 public class PortfolioActivity
     extends BaseFragmentActivity {
@@ -52,6 +55,7 @@ public class PortfolioActivity
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENT_TAG).commit();
         }
 
+        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Portfolio.name()));
     }
 
 }

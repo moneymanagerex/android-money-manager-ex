@@ -41,9 +41,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockFields;
@@ -122,6 +125,8 @@ public class WatchlistFragment
         }
 
         mUpdateCounter = 0;
+
+        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Watchlist.name()));
     }
 
     @Override

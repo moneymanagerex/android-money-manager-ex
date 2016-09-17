@@ -23,9 +23,12 @@ package com.money.manager.ex.core;
  */
 
 public enum AnswersEvents {
+    AccountList,
     AssetAllocationFull,
     AssetAllocation,
     Budget,
     CurrencyList,
-    RecurringTransactionList
+    Portfolio,
+    RecurringTransactionList,
+    Watchlist
 }
