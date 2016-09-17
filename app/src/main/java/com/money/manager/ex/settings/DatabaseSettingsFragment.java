@@ -61,9 +61,10 @@ public class DatabaseSettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings_database);
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
+
+        addPreferencesFromResource(R.xml.settings_database);
 
         // Database path.
         refreshDbPath();
@@ -100,7 +101,7 @@ public class DatabaseSettingsFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Timber.d("creating");
+//        Timber.d("creating");
     }
 
     // private
@@ -121,7 +122,7 @@ public class DatabaseSettingsFragment
                 // clear recent files list
                 boolean success = recents.clear();
                 // update display value.
-                preference.setSummary(Integer.toString(recents.count()));
+                showNumberOfRecentFiles();
 
                 // notification
                 String message = success
@@ -245,6 +246,7 @@ public class DatabaseSettingsFragment
 
         // update the displayed value.
         refreshDbPath();
+        showNumberOfRecentFiles();
 
         return true;
     }
@@ -374,5 +376,12 @@ public class DatabaseSettingsFragment
         };
 
         preference.setOnPreferenceClickListener(clickListener);
+    }
+
+    private void showNumberOfRecentFiles() {
+        Preference preference = findPreference(getString(R.string.pref_clear_recent_files));
+        if (preference == null) return;
+
+        preference.setSummary(Integer.toString(mDatabases.get().count()));
     }
 }

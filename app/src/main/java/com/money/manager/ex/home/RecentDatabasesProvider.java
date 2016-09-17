@@ -82,13 +82,18 @@ public class RecentDatabasesProvider {
     }
 
     /**
-     * Clears the recent files list.
+     * Clears the recent files list. Leaves only the metadata for the current database.
      * @return boolean indicator of success.
      */
     public boolean clear() {
+        // keep the current database.
+        DatabaseMetadata current = getCurrent();
+
         this.map.clear();
 
-        this.save();
+        // add back the current db
+        add(current);
+//        this.save();
 
         return true;
     }
