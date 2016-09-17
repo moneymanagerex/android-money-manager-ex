@@ -24,18 +24,13 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.utils.CalendarUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
- * Look & feel settings.
+ * Look & feel preferences.
  */
 public class BehaviourSettingsFragment
     extends PreferenceFragmentCompat {
@@ -55,7 +50,7 @@ public class BehaviourSettingsFragment
     public void onCreatePreferences(Bundle bundle, String s) {
         // use either setPreferenceScreen(PreferenceScreen) or addPreferencesFromResource(int).
 
-        addPreferencesFromResource(R.xml.settings_behaviour);
+        addPreferencesFromResource(R.xml.preferences_behaviour);
     }
 
     @Override

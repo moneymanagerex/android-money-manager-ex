@@ -35,7 +35,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Look and Feel settings
+ * Look and Feel preferences
  */
 @RunWith(AndroidJUnit4.class)
 public class SettingsLookFeelTests {

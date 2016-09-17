@@ -64,7 +64,7 @@ public class DatabaseMetadataFactory {
     /**
      * Creates a database entry from the current preferences. Used for transition from preferences
      * to Database metadata records.
-     * @return A database record that represents the current settings (local/remote db paths).
+     * @return A database record that represents the current preferences (local/remote db paths).
      */
     public DatabaseMetadata createDefaultEntry() {
         DatabaseMetadata entry = new DatabaseMetadata();

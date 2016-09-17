@@ -349,18 +349,18 @@ public class AmountInputDialog
         String result = null;
         FormatUtilities format = new FormatUtilities(getActivity());
 
-        // No currency. Use locale settings.
+        // No currency. Use locale preferences.
         if (mCurrencyId == null) {
             result = format.formatWithLocale(mAmount);
         }
 
-        // Use currency settings but ignore the decimals.
+        // Use currency preferences but ignore the decimals.
         if (!getRoundToCurrencyDecimals()) {
-            // ignore the currency settings but show the symbol.
+            // ignore the currency preferences but show the symbol.
             result = format.formatNumberIgnoreDecimalCount(mAmount, mCurrencyId);
         }
 
-        // default format, use currency settings.
+        // default format, use currency preferences.
         if (result == null) {
             result = mCurrencyService.getCurrencyFormatted(mCurrencyId, mAmount);
         }

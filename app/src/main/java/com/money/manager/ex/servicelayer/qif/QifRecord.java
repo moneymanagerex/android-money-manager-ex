@@ -198,7 +198,7 @@ public class QifRecord {
     private String parseDate(AccountTransactionDisplay transaction) throws ParseException {
         DateTime date = transaction.getDate();
 
-        // todo: get Quicken date format from settings.
+        // todo: get Quicken date format from preferences.
         DateTimeFormatter qifFormat = DateTimeFormat.forPattern("MM/dd''yy");
 
         return qifFormat.print(date);

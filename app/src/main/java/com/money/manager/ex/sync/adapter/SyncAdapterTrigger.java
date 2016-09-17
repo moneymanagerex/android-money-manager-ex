@@ -33,7 +33,7 @@ import static com.money.manager.ex.sync.adapter.SyncAdapterService.AUTHORITY;
 /**
  * Here is the code that can be used to invoke the sync adapter synchronization from within the app.
  * 
- *         // todo enable for sync. Use perhaps on sync settings.
+ *         // todo enable for sync. Use perhaps on sync preferences.
  // create the sync account
  //        CreateSyncAccount(this);
  //        new SyncAdapterTrigger().runSync();
@@ -105,7 +105,7 @@ public class SyncAdapterTrigger {
 
         /*
          * Request the sync for the default account, authority, and
-         * manual sync settings
+         * manual sync preferences
          */
         ContentResolver.requestSync(account, AUTHORITY, settingsBundle);
 

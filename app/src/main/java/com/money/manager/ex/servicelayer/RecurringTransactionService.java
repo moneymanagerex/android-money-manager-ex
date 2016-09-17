@@ -181,7 +181,7 @@ public class RecurringTransactionService
         }
 
         /**
-         * The action will depend on the transaction settings.
+         * The action will depend on the transaction preferences.
          */
         Recurrence recurrence = Recurrence.valueOf(recurrenceType);
         if (recurrence == null) {

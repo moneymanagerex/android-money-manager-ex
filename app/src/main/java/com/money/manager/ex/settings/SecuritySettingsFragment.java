@@ -31,8 +31,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.Passcode;
 
-import timber.log.Timber;
-
 /**
  */
 public class SecuritySettingsFragment
@@ -48,7 +46,7 @@ public class SecuritySettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.security_settings);
+        addPreferencesFromResource(R.xml.preferences_security);
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // active passcode

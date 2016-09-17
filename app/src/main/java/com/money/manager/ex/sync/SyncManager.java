@@ -238,7 +238,7 @@ public class SyncManager {
     public void invokeSyncService(String action) {
         // Validation.
         String remoteFile = getRemotePath();
-        // We need a value in remote file name settings.
+        // We need a value in remote file name preferences.
         if (TextUtils.isEmpty(remoteFile)) return;
 
         // Action

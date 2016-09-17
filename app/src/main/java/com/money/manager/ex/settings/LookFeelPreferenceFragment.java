@@ -36,7 +36,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import timber.log.Timber;
 
 /**
- * Look & feel settings.
+ * Look & feel preferences.
  */
 public class LookFeelPreferenceFragment
     extends PreferenceFragmentCompat {
@@ -45,7 +45,7 @@ public class LookFeelPreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.look_and_feel_settings);
+        addPreferencesFromResource(R.xml.preferences_look_and_feel);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -101,7 +101,7 @@ public class LookFeelPreferenceFragment
                 return true;
             }
         };
-        // Set the main activity to restart on change of any of the following settings.
+        // Set the main activity to restart on change of any of the following preferences.
         chkHideReconciled.setOnPreferenceChangeListener(listener);
 
         // Show Transactions, period

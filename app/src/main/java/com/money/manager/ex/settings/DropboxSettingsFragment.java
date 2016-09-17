@@ -71,7 +71,7 @@
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //
-//        addPreferencesFromResource(R.xml.settings_dropbox);
+//        addPreferencesFromResource(R.xml.preferences_dropbox);
 //        PreferenceManager.getDefaultSharedPreferences(getActivity());
 //
 //        // dropbox preference screen

@@ -33,7 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 import info.javaperformance.money.Money;
 
 /**
- * Look & feel settings.
+ * Look & feel preferences.
  */
 public class InvestmentSettingsFragment
     extends PreferenceFragmentCompat {
@@ -57,7 +57,7 @@ public class InvestmentSettingsFragment
     public void onCreatePreferences(Bundle bundle, String s) {
         // use either setPreferenceScreen(PreferenceScreen) or addPreferencesFromResource(int).
 
-        addPreferencesFromResource(R.xml.settings_investment);
+        addPreferencesFromResource(R.xml.preferences_investment);
     }
 
     @Override

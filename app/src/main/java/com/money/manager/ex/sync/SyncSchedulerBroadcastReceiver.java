@@ -44,7 +44,7 @@ import timber.log.Timber;
 
 /**
  * Schedules the periodic alarm (sync heartbeat) that triggers cloud synchronization.
- * Called from the settings when the synchronization interval changes, and on BOOT_COMPLETED.
+ * Called from the preferences when the synchronization interval changes, and on BOOT_COMPLETED.
  */
 public class SyncSchedulerBroadcastReceiver
     extends BroadcastReceiver {

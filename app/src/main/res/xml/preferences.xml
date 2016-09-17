@@ -15,136 +15,45 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <PreferenceScreen android:title="@string/preferences_general">
-        <ListPreference
-            android:defaultValue=""
-            android:entries="@array/application_locale_entries"
-            android:entryValues="@array/application_locale_values"
-            android:key="@string/pref_locale"
-            android:title="@string/locale_application" />
-
-        <EditTextPreference
-            android:key="@string/pref_user_name"
-            android:summary="@string/username"
-            android:title="@string/user" />
-
-        <ListPreference
-            android:key="@string/pref_date_format"
-            android:title="@string/date_format" />
-
-        <ListPreference
-            android:key="@string/pref_base_currency"
-            android:title="@string/base_currency" />
-
-        <ListPreference
-            android:defaultValue=""
-            android:entries="@array/status_items"
-            android:entryValues="@array/status_values"
-            android:key="@string/pref_default_status"
-            android:title="@string/default_status" />
-
-        <ListPreference
-            android:defaultValue="N"
-            android:entries="@array/new_transaction_dialog_items"
-            android:entryValues="@array/new_transaction_dialog_values"
-            android:key="@string/pref_default_payee"
-            android:title="@string/default_payee" />
-
-        <EditTextPreference
-            android:key="@string/pref_financial_year_startdate"
-            android:title="@string/financial_year_start_day" />
-
-        <ListPreference
-            android:key="@string/pref_financial_year_startmonth"
-            android:title="@string/financial_year_start_month" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/pref_text_search_type"
-            android:summary="@string/search_text_contain_summary"
-            android:title="@string/search_text_contain_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/pref_repeating_transaction_notifications"
-            android:summary="@string/summary_notifications_repeating_transaction"
-            android:title="@string/title_notifications_repeating_transaction" />
-
-    </PreferenceScreen>
-    <PreferenceScreen android:title="@string/preferences_dispaly">
-        <CheckBoxPreference
-            android:key="@string/pref_account_open_visible"
-            android:summary="@string/if_not_selected_willShowAllAccounts"
-            android:title="@string/view_accounts_opened" />
-        <CheckBoxPreference
-            android:key="@string/pref_account_fav_visible"
-            android:summary="@string/if_not_selected_willShowAllAccounts"
-            android:title="@string/view_accounts_favorites" />
-
-        <ListPreference
-            android:defaultValue="@string/last7days"
-            android:key="@string/pref_show_transaction"
-            android:title="@string/show_transaction" />
-        <!--android:entries="@array/show_transaction_values"-->
-        <!--android:entryValues="@array/show_transaction_values"-->
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="@string/pref_transaction_shown_balance"
-            android:summary="@string/summary_transaction_shown_balance"
-            android:title="@string/title_transaction_shown_balance" />
-
-        <ListPreference
-            android:defaultValue="-1"
-            android:entries="@array/application_font_entries"
-            android:entryValues="@array/application_font_values"
-            android:key="@string/pref_application_font"
-            android:summary="@string/summary_application_font"
-            android:title="@string/title_application_font" />
-        <ListPreference
-            android:defaultValue="default"
-            android:entries="@array/application_font_size_entries"
-            android:entryValues="@array/application_font_size_values"
-            android:key="@string/pref_application_font_size"
-            android:summary="@string/summary_application_font_size"
-            android:title="@string/title_application_font_size" />
-        <ListPreference
-            android:defaultValue="@string/theme_light"
-            android:entries="@array/themes_values"
-            android:entryValues="@array/themes_values"
-            android:key="@string/pref_theme"
-            android:title="@string/theme_application" />
-    </PreferenceScreen>
-    <PreferenceScreen android:title="@string/preferences_security">
-        <PreferenceScreen
-            android:key="@string/pref_active_passcode"
-            android:title="@string/preferences_active_passcode" />
-        <PreferenceScreen
-            android:key="@string/pref_edit_passcode"
-            android:title="@string/preferences_edit_passcode" />
-        <PreferenceScreen
-            android:key="@string/pref_disable_passcode"
-            android:title="@string/preferences_disable_passcode" />
-    </PreferenceScreen>
-    <PreferenceScreen android:title="@string/database">
-        <PreferenceScreen
-            android:key="@string/pref_database_path"
-            android:title="@string/path" />
-        <!--<PreferenceScreen
-            android:key="@string/pref_sqlite_version"
-            android:title="@string/android_sqlite_vesion" />-->
-        <PreferenceScreen
-            android:key="@string/pref_database_backup"
-            android:title="@string/menu_move_database_to_external_storage" />
-    </PreferenceScreen>
-    <PreferenceScreen
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_general"
+        android:title="@string/preferences_general" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_per_database"
+        android:title="@string/preferences_perdatabase" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_look_feel"
+        android:title="@string/preferences_dispaly" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_behaviour"
+        android:title="@string/preferences_behaviour" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_dropbox_how_it_works"
+        android:title="@string/synchronization" />
+    <Preference
+        android:icon="@null"
+        android:key="pref_investment"
+        android:title="@string/investment" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_security"
+        android:title="@string/preferences_security" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_database"
+        android:title="@string/database" />
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_donate"
         android:title="@string/donate" />
-    <PreferenceScreen
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_version_name"
         android:title="@string/preferences_info_application" />
-
 </PreferenceScreen>

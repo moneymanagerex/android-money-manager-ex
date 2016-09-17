@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import dagger.Lazy;
 
 /**
- * This class is used to interact with application settings/preferences.
+ * This class is used to interact with application preferences/preferences.
  * Expand with additional methods as needed.
  */
 public class AppSettings
@@ -90,7 +90,7 @@ public class AppSettings
         return mInvestment;
     }
 
-    // Individual settings.
+    // Individual preferences.
 
     public int getPayeeSort() {
         int sort = get(R.string.pref_sort_payee, 0);

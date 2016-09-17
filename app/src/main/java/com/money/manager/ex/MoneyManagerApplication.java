@@ -84,9 +84,9 @@ public class MoneyManagerApplication
     }
 
     /**
-     * Reads the current database path from the settings and checks for the existence of the
+     * Reads the current database path from the preferences and checks for the existence of the
      * database file.
-     * Creates a default database file if the one from settings is not found. Sets this file as
+     * Creates a default database file if the one from preferences is not found. Sets this file as
      * the default database.
      * @param context Executing context.
      * @return Full path to the current database file.

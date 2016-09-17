@@ -23,7 +23,7 @@ import android.preference.PreferenceManager;
 import com.money.manager.ex.R;
 
 /**
- * Encapsulates Dropbox settings.
+ * Encapsulates Dropbox preferences.
  */
 public class DropboxSettings
     extends SettingsBase {

@@ -26,7 +26,7 @@ import com.money.manager.ex.log.ExceptionHandler;
 import timber.log.Timber;
 
 /**
- * Base class for settings sections.
+ * Base class for preferences sections.
  */
 abstract class SettingsBase {
 
@@ -38,7 +38,7 @@ abstract class SettingsBase {
         }
     }
 
-    // Context for settings is the Application Context.
+    // Context for preferences is the Application Context.
     private Context mContext;
 //    private SharedPreferences.Editor mEditor;
 
@@ -96,7 +96,7 @@ abstract class SettingsBase {
     }
 
     /**
-     * Save string value to settings.
+     * Save string value to preferences.
      */
     public void set(String key, String value) {
         getPreferences().edit()

@@ -47,9 +47,9 @@
 //import com.money.manager.ex.home.MainActivity;
 //import com.money.manager.ex.MoneyManagerApplication;
 //import com.money.manager.ex.R;
-//import com.money.manager.ex.settings.AppSettings;
-//import com.money.manager.ex.settings.DropboxSettings;
-//import com.money.manager.ex.settings.PreferenceConstants;
+//import com.money.manager.ex.preferences.AppSettings;
+//import com.money.manager.ex.preferences.DropboxSettings;
+//import com.money.manager.ex.preferences.PreferenceConstants;
 //import com.money.manager.ex.sync.SyncConstants;
 //import com.money.manager.ex.sync.SyncServiceMessage;
 //import com.money.manager.ex.sync.SyncService;
@@ -119,8 +119,8 @@
 //        }
 //
 //        // Should we schedule an upload?
-//        DropboxSettings settings = new AppSettings(mContext).getDropboxSettings();
-//        if (settings.getImmediatelyUploadChanges()) {
+//        DropboxSettings preferences = new AppSettings(mContext).getDropboxSettings();
+//        if (preferences.getImmediatelyUploadChanges()) {
 //            abortScheduledUpload();
 //            scheduleUpload();
 //        }
@@ -168,11 +168,11 @@
 //    // Public methods.
 //
 //    public boolean canAutoSync() {
-//        // Check WiFi settings.
+//        // Check WiFi preferences.
 //        // should we sync only on wifi?
-//        AppSettings settings = new AppSettings(mContext);
+//        AppSettings preferences = new AppSettings(mContext);
 //        if (BuildConfig.DEBUG) Log.i(LOGCAT, "Preferences set to sync on WiFi only.");
-//        if (settings.getDropboxSettings().getShouldSyncOnWifi()) {
+//        if (preferences.getDropboxSettings().getShouldSyncOnWifi()) {
 //            // check if we are on WiFi connection.
 //            NetworkUtils network = new NetworkUtils(mContext);
 //            if (!network.isOnWiFi()) {
@@ -252,8 +252,8 @@
 //    }
 //
 //    private void storeOauth2Token(String token) {
-////        AppSettings settings = new AppSettings(context);
-////        settings.getDropboxSettings().setOauth2Token(token);
+////        AppSettings preferences = new AppSettings(context);
+////        preferences.getDropboxSettings().setOauth2Token(token);
 //
 //        SharedPreferences prefs = getDropboxPreferences();
 //        Editor edit = prefs.edit();

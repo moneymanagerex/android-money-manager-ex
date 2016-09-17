@@ -48,7 +48,7 @@ public class FormatUtilities {
     private CurrencyService currencyService;
 
     /**
-     * Formats the amount in TextView with the given currency settings.
+     * Formats the amount in TextView with the given currency preferences.
      *
      * @param view       TextView to set the amount
      * @param amount     to be formatted
@@ -158,7 +158,7 @@ public class FormatUtilities {
     }
 
     /**
-     * Formats the given value with the currency settings.
+     * Formats the given value with the currency preferences.
      * @param value value to format
      * @return value formatted
      */

@@ -231,7 +231,7 @@ public class MmxDatabaseUtils {
      * Sets the given database path (full path to the file) as the current database. Adds it to the
      * recent files. Resets the data layer.
      * All that is needed after this method is to (re-)start the Main Activity, which will read all
-     * the stored settings.
+     * the stored preferences.
      * @return Indicator whether the database is valid for use.
      */
     public boolean useDatabase(@NonNull DatabaseMetadata database) {
@@ -318,7 +318,7 @@ public class MmxDatabaseUtils {
         // close connection
         openHelper.get().close();
 
-        // store as the current database in settings
+        // store as the current database in preferences
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(newFilePath);
 
         return newFilePath;

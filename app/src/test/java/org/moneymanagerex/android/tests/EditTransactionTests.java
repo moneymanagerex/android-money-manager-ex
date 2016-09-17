@@ -43,7 +43,7 @@ public class EditTransactionTests {
         String dbPath = dbSettings.getDatabasePath();
         assertThat(dbPath).isEmpty();
 
-        // set the db path in settings
+        // set the db path in preferences
         dbPath = "Z:\\Dropbox\\Apps\\MoneyManagerEx Mobile\\dev-db.mmb";
         dbSettings.setDatabasePath(dbPath);
 

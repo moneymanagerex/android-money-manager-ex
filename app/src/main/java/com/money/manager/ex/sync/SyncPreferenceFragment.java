@@ -90,7 +90,7 @@ public class SyncPreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings_sync);
+        addPreferencesFromResource(R.xml.preferences_sync);
 
         initializePreferences();
     }

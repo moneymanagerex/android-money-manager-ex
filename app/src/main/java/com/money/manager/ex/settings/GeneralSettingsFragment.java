@@ -27,7 +27,7 @@ import com.money.manager.ex.home.MainActivity;
 import timber.log.Timber;
 
 /**
- * Fragment that contains the general settings.
+ * Fragment that contains the general preferences.
  */
 public class GeneralSettingsFragment
     extends PreferenceFragmentCompat {
@@ -40,7 +40,7 @@ public class GeneralSettingsFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings_general);
+        addPreferencesFromResource(R.xml.preferences_general);
 
         initializeControls();
     }

@@ -31,7 +31,7 @@ import com.money.manager.ex.about.AboutActivity;
 import timber.log.Timber;
 
 /**
- * Root settings fragment.
+ * Root preferences fragment.
  */
 public class SettingsFragment
     extends PreferenceFragmentCompat {
@@ -41,11 +41,11 @@ public class SettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings);
+        addPreferencesFromResource(R.xml.preferences);
 
         initGeneralSettings();
 
-        // Per-Database settings
+        // Per-Database preferences
         Preference perDbPreference = findPreference(getString(R.string.pref_per_database));
         if (perDbPreference != null) {
             perDbPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -180,7 +180,7 @@ public class SettingsFragment
 
         switch (requestCode) {
             case REQUEST_GENERAL_PREFERENCES:
-                // always recreate activity when returning from general settings, instead of
+                // always recreate activity when returning from general preferences, instead of
                 // trying to figure out if something has changed.
                 getActivity().recreate();
                 break;

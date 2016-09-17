@@ -50,7 +50,7 @@ import dagger.Lazy;
 import timber.log.Timber;
 
 /**
- * Database settings fragment.
+ * Database preferences fragment.
  */
 public class DatabaseSettingsFragment
     extends PreferenceFragmentCompat {
@@ -64,7 +64,7 @@ public class DatabaseSettingsFragment
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
 
-        addPreferencesFromResource(R.xml.settings_database);
+        addPreferencesFromResource(R.xml.preferences_database);
 
         // Database path.
         refreshDbPath();

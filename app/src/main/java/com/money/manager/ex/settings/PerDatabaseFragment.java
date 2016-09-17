@@ -69,7 +69,7 @@ public class PerDatabaseFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings_per_database);
+        addPreferencesFromResource(R.xml.preferences_per_database);
 
         initializeControls();
     }

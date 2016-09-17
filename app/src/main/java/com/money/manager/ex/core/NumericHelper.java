@@ -111,7 +111,7 @@ public class NumericHelper {
     }
 
     /**
-     * Clean up the number based on the locale settings for grouping and decimal separators.
+     * Clean up the number based on the locale preferences for grouping and decimal separators.
      * @param numberString Formatted string
      * @return (English) number string that can be used for expression.
      */

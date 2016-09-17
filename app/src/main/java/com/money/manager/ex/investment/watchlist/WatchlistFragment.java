@@ -164,7 +164,7 @@ public class WatchlistFragment
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         mDataFragment = WatchlistItemsFragment.newInstance();
-        // set arguments and settings of fragment
+        // set arguments and preferences of fragment
         Bundle arguments = new Bundle();
         arguments.putInt(WatchlistItemsFragment.KEY_ACCOUNT_ID, getAccountId());
         mDataFragment.setArguments(arguments);

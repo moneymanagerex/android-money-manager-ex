@@ -29,7 +29,7 @@ public class RecurringTransactionReceiver
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-        // If the notifications are disabled in settings, do not trigger the alarm.
+        // If the notifications are disabled in preferences, do not trigger the alarm.
         boolean notify = PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(context.getString(PreferenceConstants.PREF_REPEATING_TRANSACTION_NOTIFICATIONS), true);
         if (!notify) return;

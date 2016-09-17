@@ -22,17 +22,17 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.money.manager.ex.R;
-
-import butterknife.ButterKnife;
 
 /**
  * View holder for sync preferences.
  */
 public class SyncPreferencesViewHolder {
 
-    public CheckBoxPreference syncEnabled;
+    //    public CheckBoxPreference syncEnabled;
+    SwitchPreferenceCompat syncEnabled;
     public ListPreference providerList;
     public Preference remoteFile;
     public ListPreference syncInterval;
@@ -42,9 +42,9 @@ public class SyncPreferencesViewHolder {
     public CheckBoxPreference syncOnStart;
 
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
-        // Compat
 
-        syncEnabled = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_enabled));
+//        syncEnabled = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_enabled));
+        syncEnabled = (SwitchPreferenceCompat) view.findPreference(view.getString(R.string.pref_sync_enabled));
         providerList = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_provider));
         remoteFile = view.findPreference(view.getString(R.string.pref_remote_file));
         syncInterval = (ListPreference) view.findPreference(view.getString(R.string.pref_sync_interval));
@@ -53,5 +53,4 @@ public class SyncPreferencesViewHolder {
         upload = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_upload));
         syncOnStart = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_on_app_start));
     }
-
 }

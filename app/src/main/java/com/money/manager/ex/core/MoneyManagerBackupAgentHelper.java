@@ -24,7 +24,7 @@ import android.app.backup.SharedPreferencesBackupHelper;
 import com.money.manager.ex.MoneyManagerApplication;
 
 /**
- * Manage settings backup.
+ * Manage preferences backup.
  */
 public class MoneyManagerBackupAgentHelper
     extends BackupAgentHelper {

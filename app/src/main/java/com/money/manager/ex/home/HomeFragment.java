@@ -606,7 +606,7 @@ public class HomeFragment
     private void createWelcomeView(View view) {
         linearWelcome = (ViewGroup) view.findViewById(R.id.linearLayoutWelcome);
 
-        // basic settings
+        // basic preferences
         Button buttonSettings = (Button) view.findViewById(R.id.buttonSettings);
         if (buttonSettings != null) {
             buttonSettings.setOnClickListener(new OnClickListener() {
@@ -725,13 +725,13 @@ public class HomeFragment
             }
         });
 
-        // store settings when groups are collapsed/expanded
+        // store preferences when groups are collapsed/expanded
         mExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
                 // update collapsed group setting
                 final boolean groupVisible = false;
-                // update each group visibility into its own settings.
+                // update each group visibility into its own preferences.
                 AppSettings settings = new AppSettings(getActivity());
                 String key = getSettingsKeyFromGroupPosition(groupPosition);
                 // store value.
@@ -743,7 +743,7 @@ public class HomeFragment
             public void onGroupExpand(int groupPosition) {
                 // update expanded group setting
                 final boolean groupVisible = true;
-                // update each group visibility into its own settings.
+                // update each group visibility into its own preferences.
                 AppSettings settings = new AppSettings(getActivity());
                 String key = getSettingsKeyFromGroupPosition(groupPosition);
                 // store value.
@@ -766,9 +766,9 @@ public class HomeFragment
     private void setVisibilityOfAccountGroups() {
         // set visibility of the account groups.
         AppSettings settings = new AppSettings(getContext());
-        // Expand groups based on their visibility settings.
+        // Expand groups based on their visibility preferences.
         for (int i = 0; i < mAccountTypes.size(); i++) {
-            // Check saved visibility settings. Some groups might be collapsed.
+            // Check saved visibility preferences. Some groups might be collapsed.
             String key = getSettingsKeyFromGroupPosition(i);
             Boolean expanded = settings.get(key, true);
 

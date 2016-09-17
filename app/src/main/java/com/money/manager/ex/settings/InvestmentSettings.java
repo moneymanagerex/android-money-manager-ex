@@ -31,7 +31,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
- * Investment settings / preferences.
+ * Investment preferences / preferences.
  */
 public class InvestmentSettings
     extends SettingsBase {

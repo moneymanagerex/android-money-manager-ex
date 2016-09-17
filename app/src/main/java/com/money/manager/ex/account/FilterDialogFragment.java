@@ -134,8 +134,8 @@ public class FilterDialogFragment
 
         // Default Account
 //        CheckBox defaultAccountCheckbox = (CheckBox) view.findViewById(R.id.defaultAccountCheckbox);
-//        AppSettings settings = new AppSettings(getActivity());
-//        Integer defaultAccountId = settings.getGeneralSettings().getDefaultAccountId();
+//        AppSettings preferences = new AppSettings(getActivity());
+//        Integer defaultAccountId = preferences.getGeneralSettings().getDefaultAccountId();
 //        defaultAccountCheckbox.setChecked(mAccount.getId().equals(defaultAccountId));
 
         // Number of records
@@ -189,8 +189,8 @@ public class FilterDialogFragment
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                // un/set as default account
 //                Integer defaultAccountId = isChecked ? mAccount.getId() : null;
-//                AppSettings settings = new AppSettings(getActivity());
-//                settings.getGeneralSettings().setDefaultAccountId(defaultAccountId);
+//                AppSettings preferences = new AppSettings(getActivity());
+//                preferences.getGeneralSettings().setDefaultAccountId(defaultAccountId);
 //            }
 //        });
     }

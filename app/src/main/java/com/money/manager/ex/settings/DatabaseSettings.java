@@ -19,7 +19,7 @@ package com.money.manager.ex.settings;
 import com.money.manager.ex.R;
 
 /**
- * Manipulates database settings/preferences.
+ * Manipulates database preferences/preferences.
  */
 public class DatabaseSettings {
 

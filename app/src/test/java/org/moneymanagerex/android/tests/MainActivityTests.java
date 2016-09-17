@@ -74,7 +74,7 @@ public class MainActivityTests {
 
     /**
      * Test the activity lifecycle in unit tests.
-     * Simulates the opening of the app the very first time, initialization of settings,
+     * Simulates the opening of the app the very first time, initialization of preferences,
      * database, etc. Displays the Tutorial and the Welcome screen in the Home fragment.
      * Then opens the Add New Account activity.
      * See http://robolectric.org/activity-lifecycle/

@@ -278,7 +278,7 @@ public class CurrencyService
     }
 
     /**
-     * Format the given value with the currency settings.
+     * Format the given value with the currency preferences.
      *
      * @param currencyId of the currency to be formatted
      * @param value      value to format
