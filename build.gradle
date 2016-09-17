@@ -81,6 +81,7 @@ allprojects {
             force 'com.google.code.findbugs:jsr305:3.0.1'
             force 'org.apache.commons:commons-lang3:3.4'
         }
+        exclude group: 'commons-logging', module: 'commons-logging'
     }
 }
 
