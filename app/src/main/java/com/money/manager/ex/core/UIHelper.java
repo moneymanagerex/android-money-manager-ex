@@ -163,7 +163,7 @@ public class UIHelper {
     }
 
     public int getToolbarIconSize() {
-        return getDimenInDp(R.dimen.mmx_toolbar_icon_size);
+        return getDimenInDp(R.dimen.mmx_icon_size);
     }
 
     public boolean isDarkTheme() {

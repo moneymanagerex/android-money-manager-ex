@@ -80,6 +80,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
  -->
     <dimen name="widget_margin">8dp</dimen>
 
-    <dimen name="mmx_toolbar_icon_size">24dp</dimen>
+    <dimen name="mmx_icon_size">24dp</dimen>
 
 </resources>

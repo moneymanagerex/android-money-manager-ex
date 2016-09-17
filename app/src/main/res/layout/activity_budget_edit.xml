@@ -33,7 +33,6 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context="com.money.manager.ex.budget.BudgetEditActivity">
-    <!--android:background="?attr/theme_background_color"-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -62,8 +61,6 @@
                 android:hint="@string/budget_name"
                 android:textStyle="bold"
                 android:text="@{budget.Name}" />
-            <!-- app:iconLeft="@xml/ic_hash_small"
-            android:gravity="end" -->
 
             <!-- year -->
             <com.money.manager.ex.view.RobotoTextView
