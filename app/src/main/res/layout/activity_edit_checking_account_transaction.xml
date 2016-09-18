@@ -201,7 +201,7 @@
 
                 <com.mikepenz.iconics.view.IconicsImageView
                     app:iiv_icon="mmx-temple"
-                    app:iiv_color="?android:textColorTertiary"
+                    app:iiv_color="?android:textColorSecondary"
                     app:iiv_size="@dimen/mmx_icon_size"
                     android:layout_width="@dimen/mmx_side_icon_size"
                     android:layout_height="wrap_content"
@@ -247,7 +247,7 @@
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         app:iiv_icon="mmx-calculator"
-                        app:iiv_color="?android:textColorTertiary"
+                        app:iiv_color="?android:textColorSecondary"
                         app:iiv_size="@dimen/mmx_icon_size"
                         android:layout_width="@dimen/mmx_side_icon_size"
                         android:layout_height="wrap_content"
