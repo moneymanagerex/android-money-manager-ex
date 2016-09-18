@@ -89,7 +89,7 @@ public class BudgetEditActivity
 //        return true;
 //    }
 
-    @Override
+//    @Override
     public boolean onActionDoneClick() {
         if (save()) {
             // If everything is okay, finish the activity
@@ -157,6 +157,7 @@ public class BudgetEditActivity
                 public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                     mModel.setYear(number.intValue());
                     viewHolder.refreshYear();
+                    viewHolder.refreshName();
                 }
             })
             .show();
@@ -185,6 +186,7 @@ public class BudgetEditActivity
                 public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                     mModel.setMonth(number.intValue());
                     viewHolder.refreshMonth();
+                    viewHolder.refreshName();
                 }
             })
             .show();
