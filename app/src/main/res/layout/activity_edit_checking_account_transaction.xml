@@ -196,7 +196,7 @@
             <!-- Account -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_detail_item_height"
+                android:layout_height="@dimen/mmx_list_two_line_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -242,7 +242,7 @@
                 <!-- Amount From -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/mmx_detail_item_height"
+                    android:layout_height="@dimen/mmx_list_two_line_item_height"
                     android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView

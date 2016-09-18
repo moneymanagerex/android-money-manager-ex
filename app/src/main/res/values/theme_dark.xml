@@ -44,7 +44,7 @@
         <item name="row_light_theme">@color/holo_dark_row_light</item>
 
         <!-- text colors -->
-        <item name="android:textColorTertiary">@android:color/tertiary_text_dark</item>
+        <item name="android:textColorTertiary">@android:color/tertiary_text_light</item>
 
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_dark</item>
