@@ -96,7 +96,8 @@
         <item name="android:textColor">@color/md_primary_dark</item>
     </style>
 
-    <style name="Money.Base.TextView.Widget.EditText" parent="android:Widget.Holo.EditText"/>
+    <!--<style name="Money.Base.TextView.Widget.EditText" parent="android:Widget.Holo.EditText"/>-->
+    <style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>
 
     <style name="Money.TextView.Widget.EditText" parent="Money.Base.TextView.Widget.EditText">
         <item name="android:ellipsize">end</item>
