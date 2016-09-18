@@ -28,7 +28,7 @@
     <android.support.v7.widget.LinearLayoutCompat
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mmex_listitem_height_dense"
+        android:layout_height="@dimen/mmx_list_item_height_dense"
         android:layout_gravity="center_vertical">
 
         <com.money.manager.ex.view.RobotoTextView
@@ -71,7 +71,7 @@
         android:id="@+id/valuePanel"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mmex_listitem_height"
+        android:layout_height="@dimen/mmx_list_item_height"
         android:visibility="gone">
 
         <com.money.manager.ex.view.RobotoTextView

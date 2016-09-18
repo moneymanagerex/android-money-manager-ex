@@ -14,6 +14,13 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+<!--
+References:
+
+Material Design
+https://material.google.com/layout/metrics-keylines.html#metrics-keylines-keylines-spacing
+
+-->
 <resources>
     <dimen name="mmex_text_view_size_micro">12sp</dimen>
     <dimen name="money_text_view_size_small">14sp</dimen>
@@ -26,8 +33,8 @@
     <dimen name="mmx_elevation">8dp</dimen>
 
     <!-- Preference activity side margins -->
-    <dimen name="mmex_activity_side_margin">0dp</dimen>
-    <dimen name="mmex_activity_side_padding">16dp</dimen>
+    <dimen name="mmx_activity_side_margin">0dp</dimen>
+    <dimen name="mmx_activity_side_padding">16dp</dimen>
 
     <!-- default padding and margin -->
     <dimen name="mmex_padding">4dp</dimen>
@@ -68,8 +75,8 @@
 
     <!-- list items -->
     <!-- Android Design Guidelines https://www.google.com/design/spec/components/lists.html#lists-specs -->
-    <dimen name="mmex_listitem_height">48dp</dimen>
-    <dimen name="mmex_listitem_height_dense">40dp</dimen>
+    <dimen name="mmx_list_item_height">48dp</dimen>
+    <dimen name="mmx_list_item_height_dense">40dp</dimen>
     <dimen name="mmex_listitem_padding_side">16dp</dimen>
     <dimen name="mmex_list_padding_top">8dp</dimen>
     <dimen name="mmex_list_padding_top_small">4dp</dimen>
@@ -81,5 +88,11 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
 
     <dimen name="mmx_icon_size">24dp</dimen>
+
+    <!-- https://material.google.com/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
+    <dimen name="mmx_side_icon_margin">16dp</dimen>
+    <dimen name="side_icon_size">40dp</dimen>
+    <dimen name="mmx_detail_item_height">72dp</dimen>
+    <dimen name="mmx_detail_right_space">32dp</dimen>
 
 </resources>

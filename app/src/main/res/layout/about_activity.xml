@@ -26,7 +26,7 @@
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mmex_listitem_height"
+        android:layout_height="@dimen/mmx_list_item_height"
         app:pstsIndicatorColor="@color/md_primary"
         app:pstsShouldExpand="true"
         app:pstsTextAllCaps="true"/>

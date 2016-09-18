@@ -21,7 +21,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/mmex_activity_side_padding"
+    android:padding="@dimen/mmx_activity_side_padding"
     android:orientation="vertical"
     tools:context="com.money.manager.ex.account.FilterDialogFragment">
 

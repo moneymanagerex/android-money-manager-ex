@@ -17,7 +17,7 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/mmex_listitem_height_dense"
+    android:layout_height="@dimen/mmx_list_item_height_dense"
     android:paddingLeft="@dimen/mmex_listitem_padding_side"
     android:paddingRight="@dimen/mmex_listitem_padding_side"
     android:layout_margin="@dimen/mmex_margin"

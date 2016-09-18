@@ -58,7 +58,7 @@
             <!-- collapsible part above the toolbar -->
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmex_listitem_height_dense"
+                android:layout_height="@dimen/mmx_list_item_height_dense"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 app:layout_collapseMode="parallax"

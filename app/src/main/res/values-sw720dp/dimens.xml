@@ -18,6 +18,6 @@
 
 <resources>
     <!-- Preference activity side margins -->
-    <dimen name="mmex_activity_side_margin">0dp</dimen>
-    <dimen name="mmex_activity_side_padding">32dp</dimen>
+    <dimen name="mmx_activity_side_margin">0dp</dimen>
+    <dimen name="mmx_activity_side_padding">32dp</dimen>
 </resources>
