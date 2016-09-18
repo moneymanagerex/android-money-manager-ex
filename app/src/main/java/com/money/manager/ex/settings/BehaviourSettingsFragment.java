@@ -41,9 +41,7 @@ public class BehaviourSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        initializeNotificationTime();
+//        PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     @Override
@@ -51,6 +49,8 @@ public class BehaviourSettingsFragment
         // use either setPreferenceScreen(PreferenceScreen) or addPreferencesFromResource(int).
 
         addPreferencesFromResource(R.xml.preferences_behaviour);
+
+        initializeNotificationTime();
     }
 
     @Override
@@ -104,6 +104,7 @@ public class BehaviourSettingsFragment
 
         RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment()
             .setOnTimeSetListener(timeSetListener)
+            .setForced24hFormat()
             .setStartTime(hour, minute)
             .setThemeDark();
         timePicker.show(getChildFragmentManager(), KEY_NOTIFICATION_TIME);

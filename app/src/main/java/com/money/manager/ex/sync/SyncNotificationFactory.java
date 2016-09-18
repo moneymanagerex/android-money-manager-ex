@@ -166,7 +166,6 @@ public class SyncNotificationFactory {
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))
                 .setAutoCancel(false)
                 .setSubText(getContext().getString(R.string.sync_conflict))
-//                .setContentInfo(getContext().getString(R.string.sync_uploading))
                 .setContentText(getContext().getString(R.string.both_files_modified))
 //                .setLargeIcon(icon.toBitmap())
                 .setSmallIcon(R.drawable.ic_stat_notification)

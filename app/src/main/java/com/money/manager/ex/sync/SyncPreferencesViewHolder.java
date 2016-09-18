@@ -38,7 +38,7 @@ public class SyncPreferencesViewHolder {
     public Preference resetPreferences;
     public PreferenceScreen download;
     public PreferenceScreen upload;
-    public CheckBoxPreference syncOnStart;
+    public SwitchPreferenceCompat syncOnStart;
 
     public SyncPreferencesViewHolder(PreferenceFragmentCompat view) {
 
@@ -49,6 +49,6 @@ public class SyncPreferencesViewHolder {
         resetPreferences = view.findPreference(view.getString(R.string.pref_reset_preferences));
         download = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_download));
         upload = (PreferenceScreen) view.findPreference(view.getString(R.string.pref_sync_upload));
-        syncOnStart = (CheckBoxPreference) view.findPreference(view.getString(R.string.pref_sync_on_app_start));
+        syncOnStart = (SwitchPreferenceCompat) view.findPreference(view.getString(R.string.pref_sync_on_app_start));
     }
 }

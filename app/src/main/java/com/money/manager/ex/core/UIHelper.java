@@ -157,18 +157,6 @@ public class UIHelper {
                 .sizeDp(this.getToolbarIconSize());
     }
 
-//    public int getPrimaryColor() {
-//        return getColor(R.attr.toolbarItemColor);
-//    }
-
-//    public int getSecondaryColor() {
-//        TypedValue typedValue = new TypedValue();
-//        Resources.Theme theme = getContext().getTheme();
-//        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
-//        int color = typedValue.data;
-//        return color;
-//    }
-
     public int getPrimaryTextColor() {
         return isUsingDarkTheme()
             ? ContextCompat.getColor(getContext(), android.R.color.primary_text_dark)

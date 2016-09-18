@@ -54,7 +54,7 @@
         android:title="@string/remote_file" />
 
     <!-- upload immediately -->
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:icon="@null"
         android:defaultValue="true"
         android:dependency="@string/pref_sync_enabled"
@@ -63,7 +63,7 @@
         android:title="@string/title_sync_upload_immediate" />
 
     <!-- sync only on wi-fi -->
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:icon="@null"
         android:defaultValue="false"
         android:dependency="@string/pref_sync_enabled"
@@ -86,7 +86,7 @@
         android:summary="@string/cloud_upload"
         android:title="@string/upload" />
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:title="@string/sync_on_start"
         android:summary="@string/sync_on_app_start"
         android:key="@string/pref_sync_on_app_start"

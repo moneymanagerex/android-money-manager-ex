@@ -20,7 +20,6 @@ package com.money.manager.ex.sync;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -59,7 +58,7 @@ import timber.log.Timber;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Synchronization preferences fragment.
  */
 public class SyncPreferenceFragment
     extends PreferenceFragmentCompat {
