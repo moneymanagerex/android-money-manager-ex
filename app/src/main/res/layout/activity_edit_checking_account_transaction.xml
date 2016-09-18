@@ -239,7 +239,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <!-- Amount From -->
+                <!-- Amount From row-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/mmx_list_two_line_item_height"

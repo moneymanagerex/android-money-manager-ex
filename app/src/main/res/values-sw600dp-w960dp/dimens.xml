@@ -16,6 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
+<!--
+    Landscape mode (when available width is at least 960).
+
+    https://developer.android.com/guide/practices/screens_support.html#qualifiers
+-->
 <resources>
     <dimen name="mmx_activity_side_padding">48dp</dimen>
 </resources>

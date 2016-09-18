@@ -1276,11 +1276,8 @@ public class EditTransactionCommonFunctions {
 
     private void displayAmountTo() {
         // if the currencies are the same, show only one Amount field.
-        if (areCurrenciesSame()) {
-            viewHolder.tableRowAmountTo.setVisibility(View.GONE);
-        } else {
-            viewHolder.tableRowAmountTo.setVisibility(View.VISIBLE);
-        }
+        int amountToVisibility = areCurrenciesSame() ? View.GONE : View.VISIBLE;
+        viewHolder.tableRowAmountTo.setVisibility(amountToVisibility);
 
         Money amount = transactionEntity.getAmountTo() == null ? MoneyFactory.fromDouble(0) : transactionEntity.getAmountTo();
         //displayAmountTo(amount);

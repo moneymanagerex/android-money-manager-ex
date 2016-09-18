@@ -69,6 +69,7 @@
     <color name="app_light_darkactionbar_color">#727272</color>
     <!-- AChartEngine Colors -->
     <color name="theme_chart_labels_color">#CCCCCC</color>
+
     <!-- Material Design -->
     <color name="md_primary">@color/material_green_500</color>
     <color name="md_primary_dark">@color/material_green_700</color>
