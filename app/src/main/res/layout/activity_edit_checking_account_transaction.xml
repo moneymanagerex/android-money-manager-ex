@@ -423,18 +423,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.money.manager.ex.view.RobotoEditText
-                    android:id="@+id/editTextTransNumber"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:drawableLeft="?attr/ic_plusone"
-                    android:drawableStart="?attr/ic_plusone"
-                    android:ellipsize="end"
-                    android:hint="@string/transaction_number"
-                    android:maxLines="1"
-                    android:textCursorDrawable="@null" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.money.manager.ex.view.RobotoEditText
+                        android:id="@+id/editTextTransNumber"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:drawableLeft="?attr/ic_plusone"
+                        android:drawableStart="?attr/ic_plusone"
+                        android:ellipsize="end"
+                        android:hint="@string/transaction_number"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null" />
+                </android.support.design.widget.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/buttonTransNumber"
