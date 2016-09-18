@@ -16,16 +16,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources>
-    <!-- theme used for decor view (the initial screen simulating a splash screen) -->
-    <!-- It is assigned to the application in the manifest, application block. -->
-    <style name="Theme.Splash" parent="android:Theme">
-        <item name="android:windowBackground">@drawable/background_logo</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
     <!-- Light Theme -->
 
-    <!-- base for the base of the light theme. ?? -->
+    <!-- base for the base of the light theme. -->
     <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:icon">@color/md_icons</item>
         <item name="android:divider">@color/md_divider</item>
@@ -36,7 +29,6 @@
         <item name="actionModeBackground">@color/md_primary_dark</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="windowActionModeOverlay">true</item>
         <item name="md_dark_theme">false</item>
     </style>
 
