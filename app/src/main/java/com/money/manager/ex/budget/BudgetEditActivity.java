@@ -19,17 +19,17 @@ package com.money.manager.ex.budget;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
+import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
-import com.money.manager.ex.databinding.ActivityBudgetEditBinding;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -37,25 +37,32 @@ import com.money.manager.ex.utils.MmxDateTimeUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class BudgetEditActivity
     extends BaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
 
     private BudgetViewModel mModel;
-    private ActivityBudgetEditBinding mBinding;
+    private BudgetEditViewHolder viewHolder;
+//    private ActivityBudgetEditBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_budget_edit);
+        setContentView(R.layout.activity_budget_edit);
 
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
+//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
+        ButterKnife.bind(this);
 
         // this handles OK/Cancel button clicks in the toolbar.
         showStandardToolbarActions();
 
         initializeModel();
+        showModel();
     }
 
     @Override
@@ -83,6 +90,7 @@ public class BudgetEditActivity
         }
     }
 
+    @OnClick(R.id.budgetYearTextView)
     public void onSelectYear(View v) {
         int currentYear = MmxDateTimeUtils.today().getYear();
         int year;
@@ -105,11 +113,13 @@ public class BudgetEditActivity
                 @Override
                 public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                     mModel.setYear(number.intValue());
+                    viewHolder.refreshYear();
                 }
             })
             .show();
     }
 
+    @OnClick(R.id.budgetMonthTextView)
     public void onSelectMonth(View v) {
         int month;
         if (mModel.month != 0) {
@@ -131,6 +141,7 @@ public class BudgetEditActivity
                 @Override
                 public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                     mModel.setMonth(number.intValue());
+                    viewHolder.refreshMonth();
                 }
             })
             .show();
@@ -162,7 +173,7 @@ public class BudgetEditActivity
 
         mModel = BudgetViewModel.from(budget);
 
-        mBinding.setBudget(mModel);
+//        mBinding.setBudget(mModel);
     }
 
     private boolean save() {
@@ -173,5 +184,10 @@ public class BudgetEditActivity
 
         BudgetRepository repo = new BudgetRepository(this);
         return repo.save(budget);
+    }
+
+    private void showModel() {
+        this.viewHolder = new BudgetEditViewHolder(this);
+        viewHolder.bind(mModel);
     }
 }

@@ -16,16 +16,11 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable name="budget" type="com.money.manager.ex.budget.BudgetViewModel"/>
-    </data>
-
-    <LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/mmx_activity_side_margin"
     android:layout_marginRight="@dimen/mmx_activity_side_margin"
     android:animateLayoutChanges="true"
@@ -53,14 +48,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/budget_name" />
-            <com.money.manager.ex.view.RobotoTextViewFontIcon
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/budgetNameTextView"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:hint="@string/budget_name"
-                android:textStyle="bold"
-                android:text="@{budget.Name}" />
+                android:textStyle="bold" />
+            <!--android:text="@{budget.Name}"-->
 
             <!-- year -->
             <com.money.manager.ex.view.RobotoTextView
@@ -69,15 +65,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/budget_year" />
             <com.money.manager.ex.view.RobotoTextViewFontIcon
+                android:id="@+id/budgetYearTextView"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="right"
                 app:iconLeft="@xml/ic_pencil_small"
-                android:hint="@string/budget_year"
-                android:text="@{budget.Year}"
-                android:onClick="onSelectYear" />
+                android:hint="@string/budget_year" />
+            <!--android:text="@{budget.Year}"-->
+            <!--android:onClick="onSelectYear"-->
 
             <!-- month -->
             <com.money.manager.ex.view.RobotoTextView
@@ -86,19 +83,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/budget_month" />
             <com.money.manager.ex.view.RobotoTextViewFontIcon
+                android:id="@+id/budgetMonthTextView"
                 style="@style/Money.TextView.Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="right"
                 app:iconLeft="@xml/ic_pencil_small"
-                android:hint="@string/budget_month"
-                android:text="@{budget.Month}"
-                android:onClick="onSelectMonth" />
+                android:hint="@string/budget_month" />
+            <!--android:text="@{budget.Month}"-->
+            <!--android:onClick="onSelectMonth"-->
 
         </LinearLayout>
     </ScrollView>
 
     <include layout="@layout/action_buttons" />
 </LinearLayout>
-</layout>
