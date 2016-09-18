@@ -391,6 +391,9 @@ public class SyncManager {
 
     public void triggerUpload() {
         DatabaseMetadata db = getDatabases().getCurrent();
+        if (db == null) {
+            throw new RuntimeException("Cannot upload: local database not set.");
+        }
         String localFile = db.localPath;
         String remoteFile = db.remotePath;
 
