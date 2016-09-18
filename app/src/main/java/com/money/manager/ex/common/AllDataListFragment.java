@@ -733,7 +733,7 @@ public class AllDataListFragment
         // create alert binaryDialog and set title and message
         MaterialDialog.Builder alertDialog = new MaterialDialog.Builder(getContext())
             .title(R.string.delete_transaction)
-            .icon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
+            .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
             .content(getResources().getQuantityString(R.plurals.plurals_delete_transactions,
                     transactionIds.size(), transactionIds.size()));
 //        alert.setIcon(R.drawable.ic_action_warning_light);

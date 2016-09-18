@@ -45,6 +45,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.CategoryExpandableListAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.CategoryRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SubcategoryRepository;
@@ -471,24 +472,24 @@ public class CategoryListFragment
         }
         if (!(canDelete)) {
             new MaterialDialog.Builder(getContext())
-                    .title(R.string.attention)
-                    .icon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
-                    .content(R.string.category_can_not_deleted)
-                    .positiveText(android.R.string.ok)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .build().show();
+                .title(R.string.attention)
+                .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
+                .content(R.string.category_can_not_deleted)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build().show();
             return;
         }
 
-        // create and set alert dialog
+        // Prompt for deletion.
         new MaterialDialog.Builder(getContext())
             .title(R.string.delete_category)
-            .icon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
+            .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
             .content(R.string.confirmDelete)
             .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

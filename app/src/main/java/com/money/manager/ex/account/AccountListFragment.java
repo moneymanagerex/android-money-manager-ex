@@ -41,6 +41,7 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Account;
@@ -133,7 +134,7 @@ public class AccountListFragment
                 if (service.isAccountUsed(accountId)) {
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.attention)
-                            .icon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
+                            .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
                             .content(R.string.account_can_not_deleted)
                             .positiveText(android.R.string.ok)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {

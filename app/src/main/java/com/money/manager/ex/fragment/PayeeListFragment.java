@@ -48,6 +48,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.PayeeRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.servicelayer.PayeeService;
@@ -223,7 +224,7 @@ public class PayeeListFragment
                 } else {
                     new AlertDialogWrapper(getActivity())
                             .setTitle(R.string.attention)
-                            .setIcon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
+                            .setIcon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
                             .setMessage(R.string.payee_can_not_deleted)
                             .setPositiveButton(android.R.string.ok)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {

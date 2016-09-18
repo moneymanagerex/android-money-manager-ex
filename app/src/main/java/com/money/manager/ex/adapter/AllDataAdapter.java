@@ -19,6 +19,7 @@ package com.money.manager.ex.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.TextUtils;
@@ -176,13 +177,15 @@ public class AllDataAdapter
         holder.txtAmount.setText(currencyService.getCurrencyFormatted(getCurrencyId(), MoneyFactory.fromDouble(amount)));
 
         // text color amount
+        int amountTextColor;
         if (isTransfer) {
-            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_grey_700));
+            amountTextColor = ContextCompat.getColor(mContext, R.color.material_grey_700);
         } else if (TransactionTypes.valueOf(transactionType).equals(TransactionTypes.Deposit)) {
-            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_green_700));
+            amountTextColor = ContextCompat.getColor(mContext, R.color.material_green_700);
         } else {
-            holder.txtAmount.setTextColor(mContext.getResources().getColor(R.color.material_red_700));
+            amountTextColor = ContextCompat.getColor(mContext, R.color.material_red_700);
         }
+        holder.txtAmount.setTextColor(amountTextColor);
 
         // Group header - account name.
         if (isShowAccountName()) {
