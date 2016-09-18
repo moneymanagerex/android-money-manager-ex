@@ -102,7 +102,6 @@
 
         <!-- MPAndroidChart -->
         <attr name="chartTextColor" format="reference"/>
-
     </declare-styleable>
 
     <declare-styleable name="RobotoTextView">
