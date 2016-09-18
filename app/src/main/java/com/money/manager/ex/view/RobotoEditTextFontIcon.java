@@ -19,6 +19,7 @@ package com.money.manager.ex.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ import com.shamanland.fonticon.CompoundDrawables;
  *
  * @author a.lazzari
  */
-public class RobotoEditTextFontIcon extends EditText {
+public class RobotoEditTextFontIcon extends AppCompatEditText {
     /**
      * Simple constructor to use when creating a widget from code.
      *
