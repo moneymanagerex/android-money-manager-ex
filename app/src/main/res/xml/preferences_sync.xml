@@ -90,7 +90,7 @@
         android:title="@string/sync_on_start"
         android:summary="@string/sync_on_app_start"
         android:key="@string/pref_sync_on_app_start"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:dependency="@string/pref_sync_enabled"
         android:icon="@null" />
 
