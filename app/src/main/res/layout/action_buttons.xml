@@ -22,8 +22,8 @@
     android:id="@+id/defaultButtons"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:layout_weight="0">
+    android:gravity="center">
+    <!--android:layout_weight="0"-->
 
     <include layout="@layout/actionbar_button_cancel_done"/>
 
