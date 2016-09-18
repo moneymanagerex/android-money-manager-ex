@@ -35,7 +35,7 @@
         android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
     <!-- Intro -->
@@ -52,15 +52,16 @@
         android:paddingTop="10dp"
         android:text="@string/intro_create_db" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.money.manager.ex.view.RobotoButton
-            android:id="@+id/createDatabaseButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_db" />
-    </android.support.v7.widget.CardView>
+            style="@style/RaisedButton">
+            <com.money.manager.ex.view.RobotoButton
+                android:id="@+id/createDatabaseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_db" />
+        </LinearLayout>
 
     <!-- Open Database text -->
     <com.money.manager.ex.view.RobotoTextView
@@ -69,15 +70,16 @@
         android:paddingTop="10dp"
         android:text="@string/intro_open_db" />
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/RaisedButton">
         <com.money.manager.ex.view.RobotoButton
             android:id="@+id/openDatabaseButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/open_database" />
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
     <!-- Configure Synchronisation text -->
     <com.money.manager.ex.view.RobotoTextView
@@ -86,15 +88,16 @@
         android:paddingTop="10dp"
         android:text="@string/intro_sync" />
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/RaisedButton">
         <com.money.manager.ex.view.RobotoButton
             android:id="@+id/setupSyncButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/configure_sync" />
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
     </LinearLayout>
     </ScrollView>

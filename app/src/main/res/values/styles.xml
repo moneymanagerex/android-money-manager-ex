@@ -135,4 +135,10 @@
         <item name="android:ellipsize">none</item>
         <item name="android:padding">4dp</item>
     </style>
+
+    <!-- this is just a sample that illustrates how to add shadow (a raised element) -->
+    <style name="RaisedButton">
+        <item name="android:background">@android:drawable/dialog_holo_light_frame</item>
+        <item name="android:padding">0dp</item>
+    </style>
 </resources>
