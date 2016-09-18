@@ -98,7 +98,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <!-- https://material.google.com/layout/metrics-keylines.html#metrics-keylines-keylines-spacing -->
     <dimen name="mmx_side_icon_margin">16dp</dimen>
-    <dimen name="side_icon_size">40dp</dimen>
+    <dimen name="mmx_side_icon_size">40dp</dimen>
     <dimen name="mmx_detail_item_height">72dp</dimen>
     <dimen name="mmx_detail_right_space">32dp</dimen>
 
