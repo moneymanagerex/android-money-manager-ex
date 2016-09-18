@@ -32,7 +32,7 @@
         <item name="md_dark_theme">false</item>
     </style>
 
-    <!-- base for light theme. The version for API 21 has additional settings. -->
+    <!-- The version for API 21 has additional settings. So we split here to add them. -->
     <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
 
     <!-- Application Theme, Material Light -->

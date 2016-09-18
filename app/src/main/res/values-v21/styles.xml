@@ -17,7 +17,7 @@
   -->
 <resources>
 
-    <style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>
+    <!--<style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>-->
 
     <!--<style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner">-->
         <!--<item name="android:background">@drawable/app_light_darkactionbar_spinner_background_holo_light</item>-->
