@@ -125,7 +125,7 @@
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="EditEventCustomActionButtonText">
+    <style name="EditViewCustomActionButtonText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textAppearance">?android:attr/actionMenuTextAppearance</item>

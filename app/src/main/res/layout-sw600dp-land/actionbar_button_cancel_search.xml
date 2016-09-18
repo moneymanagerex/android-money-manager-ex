@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/text_cancel"
-            style="@style/EditEventCustomActionButtonText"
+            style="@style/EditViewCustomActionButtonText"
             android:text="@android:string/cancel"/>
     </LinearLayout>
 
@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/text_done"
-            style="@style/EditEventCustomActionButtonText"
+            style="@style/EditViewCustomActionButtonText"
             android:text="@android:string/search_go"/>
     </LinearLayout>
 
