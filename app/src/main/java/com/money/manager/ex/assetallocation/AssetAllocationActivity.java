@@ -32,6 +32,8 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
@@ -111,9 +113,10 @@ public class AssetAllocationActivity
         // Currencies
         MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
         if (currenciesMenu != null) {
-            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
+//            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
             UIHelper uiHelper = new UIHelper(this);
-            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
+            IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
+//            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
             currenciesMenu.setIcon(icon);
         }
 

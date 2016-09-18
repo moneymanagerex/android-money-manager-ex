@@ -20,16 +20,26 @@ package com.money.manager.ex.budget;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.LayoutInflaterCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -39,6 +49,7 @@ import java.math.BigInteger;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class BudgetEditActivity
     extends BaseFragmentActivity {
@@ -55,14 +66,14 @@ public class BudgetEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_edit);
 
-//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_budget_edit);
         ButterKnife.bind(this);
 
-        // this handles OK/Cancel button clicks in the toolbar.
-        showStandardToolbarActions();
+        initializeToolbar();
 
         initializeModel();
         showModel();
+
+//        initializeFab();
     }
 
     @Override
@@ -71,12 +82,12 @@ public class BudgetEditActivity
         //outState.
     }
 
-    @Override
-    public boolean onActionCancelClick() {
-        setResult(Activity.RESULT_CANCELED);
-        finish();
-        return true;
-    }
+//    @Override
+//    public boolean onActionCancelClick() {
+//        setResult(Activity.RESULT_CANCELED);
+//        finish();
+//        return true;
+//    }
 
     @Override
     public boolean onActionDoneClick() {
@@ -88,6 +99,38 @@ public class BudgetEditActivity
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+
+        UIHelper uiHelper = new UIHelper(this);
+
+        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
+        if (saveMenu != null) {
+            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
+                    .color(uiHelper.getPrimaryTextColor());
+            saveMenu.setIcon(check);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // cancel clicked. Prompt to confirm?
+                Timber.d("going back");
+                break;
+            case R.id.saveMenuItem:
+                return onActionDoneClick();
+//                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @OnClick(R.id.budgetYearTextView)
@@ -153,6 +196,21 @@ public class BudgetEditActivity
         return getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
     }
 
+    private void initializeFab() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        UIHelper uiHelper = new UIHelper(this);
+        IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
+                .color(uiHelper.getPrimaryTextColor());
+        fab.setImageDrawable(icon);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new UIHelper(BudgetEditActivity.this).showToast("yo!");
+            }
+        });
+    }
+
     private void initializeModel() {
         Budget budget = null;
         Intent intent = getIntent();
@@ -174,6 +232,15 @@ public class BudgetEditActivity
         mModel = BudgetViewModel.from(budget);
 
 //        mBinding.setBudget(mModel);
+    }
+
+    private void initializeToolbar() {
+        // Title
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle(getString(R.string.budget));
+
+        // Back arrow / cancel.
+        setDisplayHomeAsUpEnabled(true);
     }
 
     private boolean save() {

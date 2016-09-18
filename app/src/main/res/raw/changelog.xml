@@ -17,11 +17,13 @@
   -->
 <changelog bulletedList="true">
     <changelogversion versionName="beta 921">
+        <changelogtext>Automatic generation for most of the library dependencies.</changelogtext>
+        <changelogtext>Adding Material Design icons, palettes, and themes.</changelogtext>
         <changelogtext>Design adjustments for the transaction entry form.</changelogtext>
         <changelogtext>Standardizing icon size and color.</changelogtext>
         <changelogtext>Improved styling for buttons.</changelogtext>
         <changelogtext>Using switches in preference screens.</changelogtext>
-        <changelogtext>Automatic generation for most of the library dependencies.</changelogtext>
+        <changelogtext>Redesigned Budget Edit screen.</changelogtext>
     </changelogversion>
     <changelogversion versionName="2016.09.17.920">
         <changelogtext>Immediately apply changes to app language and colour theme.</changelogtext>

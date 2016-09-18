@@ -574,6 +574,7 @@
     <string name="select_account">Select account</string>
     <string name="invalid_transaction_number">Invalid transaction number</string>
     <string name="budgets">Budgets</string>
+    <string name="budget">Budget</string>
     <string name="budget_list">Budget list</string>
     <string name="actual">Actual</string>
     <string name="base_currency_not_set">Base currency has not been set</string>
@@ -776,4 +777,6 @@
 
     <!-- Settings -->
     <string name="per_database_settings">Per-Database</string>
+
+    <string name="save">Save</string>
 </resources>

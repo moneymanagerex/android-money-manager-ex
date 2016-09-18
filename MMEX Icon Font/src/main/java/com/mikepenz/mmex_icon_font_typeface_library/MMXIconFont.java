@@ -113,6 +113,9 @@ public class MMXIconFont implements ITypeface {
         return typeface;
     }
 
+    /**
+     * Some icons removed as they are included in GMD: https://design.google.com/icons/
+     */
     public enum Icon implements IIcon {
         mmx_law('\u0061'),
 		mmx_home('\u0062'),
@@ -124,8 +127,8 @@ public class MMXIconFont implements ITypeface {
 		mmx_dropbox('\u0069'),
 		mmx_magnifier('\u006a'),
 		mmx_back_in_time('\u006b'),
-		mmx_gift('\u0064'),
-		mmx_question('\u006c'),
+//		mmx_gift('\u0064'),
+//		mmx_question('\u006c'),
 		mmx_reports('\u006d'),
 		mmx_ic_right_arrow('\u006e'),
 		mmx_chevron_right('\u006f'),
@@ -151,21 +154,21 @@ public class MMXIconFont implements ITypeface {
 		mmx_floppy_disk('\u004e'),
 		mmx_calendar('\u004a'),
 		mmx_money_banknote('\u004f'),
-		mmx_hospital_square('\u0043'),
+//		mmx_hospital_square('\u0043'),
 		mmx_minus_square('\u0044'),
 		mmx_share_square('\u0045'),
 		mmx_chart_pie('\u0050'),
-		mmx_star('\u0075'),
-		mmx_star_outline('\u0051'),
+//		mmx_star('\u0075'),
+//		mmx_star_outline('\u0051'),
 		mmx_filter('\u0052'),
 		mmx_credit_card('\u0053'),
 		mmx_report_page('\u0054'),
 		mmx_sort_amount_asc('\u0055'),
 		mmx_sort_amount_desc('\u0056'),
-		mmx_pencil('\u0057'),
+//		mmx_pencil('\u0057'),
 		mmx_scissors('\u0058'),
 		mmx_print('\u0059'),
-		mmx_refresh('\u005a'),
+//		mmx_refresh('\u005a'),
 		mmx_check_5('\u0030');
 
         char character;

@@ -49,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
@@ -1070,7 +1071,7 @@ public class MainActivity
                 mSyncMenuItem = menu.findItem(id);
 //                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
 //                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                Drawable syncIcon = new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_refresh);
+                Drawable syncIcon = new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cached);
                 mSyncMenuItem.setIcon(syncIcon);
 
                 if (hasAnimation) {
@@ -1134,7 +1135,7 @@ public class MainActivity
         if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_refresh)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)));
         }
 
         // Entities
@@ -1173,12 +1174,13 @@ public class MainActivity
         // Donate
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
                 .withText(getString(R.string.donate))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_gift))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard))
                 .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)));
+//                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)))
+            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)));
 
         return menuItems;
     }
@@ -1370,7 +1372,7 @@ public class MainActivity
         animation.setRepeatCount(Animation.INFINITE);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_refresh));
+        imageView.setImageDrawable(new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cached));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
