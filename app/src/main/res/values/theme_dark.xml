@@ -42,7 +42,7 @@
         <item name="row_light_theme">@color/holo_dark_row_light</item>
         <!-- checkboxes and confirmation text in dialogs -->
         <item name="colorAccent">@color/md_primary_dark</item>
-        <item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>
+        <!--<item name="android:textColorSecondary">@color/secondary_text_default_material_dark</item>-->
 
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_dark</item>

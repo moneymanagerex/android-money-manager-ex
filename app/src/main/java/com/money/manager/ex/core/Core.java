@@ -176,30 +176,6 @@ public class Core {
     }
 
     /**
-     * Return application theme choice from user
-     *
-     * @return application theme id
-     */
-    public int getThemeId() {
-        try {
-            String darkTheme = Constants.THEME_DARK;
-            String currentTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
-
-            if (currentTheme.endsWith(darkTheme)) {
-                // Dark theme
-                return R.style.Theme_Money_Manager_Dark;
-            } else {
-                // Light theme
-                return R.style.Theme_Money_Manager_Light;
-            }
-        } catch (Exception e) {
-            Timber.e(e, "getting theme setting");
-
-            return R.style.Theme_Money_Manager_Light;
-        }
-    }
-
-    /**
      * Method, which returns the last payee used
      * @return last payee used
      */
@@ -431,11 +407,6 @@ public class Core {
 //        getContext().getTheme().resolveAttribute(attribute, typedValue, true);
 //        return typedValue.resourceId;
 //    }
-
-    public boolean usingDarkTheme(){
-        int currentTheme = this.getThemeId();
-        return currentTheme == R.style.Theme_Money_Manager_Dark;
-    }
 
     // private
 

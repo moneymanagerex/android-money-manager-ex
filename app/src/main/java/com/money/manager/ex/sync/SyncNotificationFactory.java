@@ -157,10 +157,10 @@ public class SyncNotificationFactory {
 
     public Notification getNotificationForConflict() {
         UIHelper uiHelper = new UIHelper(getContext());
-        IconicsDrawable icon = new IconicsDrawable(getContext())
-                .icon(MMXIconFont.Icon.mmx_alert)
-                .color(uiHelper.getSecondaryColor())
-                .sizeDp(Constants.NotificationBigIconSize);
+//        IconicsDrawable icon = new IconicsDrawable(getContext())
+//                .icon(MMXIconFont.Icon.mmx_alert)
+//                .color(uiHelper.getSecondaryColor())
+//                .sizeDp(Constants.NotificationBigIconSize);
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext())
                 .setContentTitle(getContext().getString(R.string.sync_notification_title))

@@ -599,8 +599,7 @@ public class MainActivity
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
-        final Core core = new Core(this);
-        final Boolean isDarkTheme = core.getThemeId() == R.style.Theme_Money_Manager_Dark;
+        boolean isDarkTheme = new UIHelper(this).getThemeId() == R.style.Theme_Money_Manager_Dark;
 
         // Recent database?
         if (item.getId() == null && item.getTag() != null) {

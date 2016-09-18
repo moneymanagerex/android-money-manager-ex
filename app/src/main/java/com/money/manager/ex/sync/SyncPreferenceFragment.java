@@ -149,7 +149,7 @@ public class SyncPreferenceFragment
         getSyncManager().startSyncServiceHeartbeat();
 
         ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
-            UIHelper.binaryDialog(getActivity(), R.string.download, R.string.confirm_download,
+            new UIHelper(getActivity()).binaryDialog(R.string.download, R.string.confirm_download,
                     android.R.string.yes, android.R.string.no)
                     .filter(new Func1<Boolean, Boolean>() {
                         @Override
@@ -337,7 +337,7 @@ public class SyncPreferenceFragment
         if (new File(local).exists()) {
             // prompt
             ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
-                UIHelper.binaryDialog(getActivity(), R.string.file_exists, R.string.file_exists_long)
+                new UIHelper(getActivity()).binaryDialog(R.string.file_exists, R.string.file_exists_long)
                         .filter(new Func1<Boolean, Boolean>() {
                             @Override
                             public Boolean call(Boolean aBoolean) {
@@ -363,10 +363,12 @@ public class SyncPreferenceFragment
     }
 
     private void forceUpload() {
-        getSyncManager().triggerUpload();
-
-        // toast to show
-        new UIHelper(getActivity()).showToast(R.string.sync_uploading);
+        try {
+            getSyncManager().triggerUpload();
+            new UIHelper(getActivity()).showToast(R.string.sync_uploading);
+        } catch (RuntimeException e) {
+            Timber.e(e, "uploading database");
+        }
     }
 
     private void saveDatabaseMetadata(String remoteFile) {

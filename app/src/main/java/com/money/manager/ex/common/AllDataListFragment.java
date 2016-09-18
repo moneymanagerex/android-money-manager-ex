@@ -888,7 +888,7 @@ public class AllDataListFragment
     private void changeTransactionStatus(final ArrayList<Integer> transIds){
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(getActivity());
 //        final Core core = new Core(getActivity().getApplicationContext());
-        final Boolean isDarkTheme = new UIHelper(getActivity()).isDarkTheme();
+        final Boolean isDarkTheme = new UIHelper(getActivity()).isUsingDarkTheme();
 
         // add status
         adapter.add(new DrawerMenuItem().withId(R.id.menu_none)

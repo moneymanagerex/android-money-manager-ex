@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -13,14 +15,20 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
 import rx.subscriptions.Subscriptions;
+import timber.log.Timber;
 
 /**
  * Various methods that assist with the UI Android requirements.
@@ -64,16 +72,33 @@ public class UIHelper {
         return filePath;
     }
 
-    public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message) {
-        return binaryDialog(context, title, message, android.R.string.ok, android.R.string.cancel);
+    /*
+        Instance
+     */
+
+    public UIHelper(Context context) {
+        this.context = context;
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    public static Observable<Boolean> binaryDialog(final Context context, final int title, final int message,
-                                                   final int positiveTextId, final int negativeTextId) {
+    @Inject Lazy<AppSettings> appSettingsLazy;
+    private Context context;
+
+    public Context getContext() {
+        return this.context;
+    }
+
+    public Observable<Boolean> binaryDialog(final int title, final int message) {
+        return binaryDialog(title, message, android.R.string.ok, android.R.string.cancel);
+    }
+
+    public Observable<Boolean> binaryDialog(final int title, final int message,
+                                            final int positiveTextId, final int negativeTextId) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(final Subscriber<? super Boolean> subscriber) {
-                final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
                         .title(title)
                         .content(message)
                         .positiveText(positiveTextId)
@@ -108,20 +133,6 @@ public class UIHelper {
         });
     }
 
-    /*
-        Instance
-     */
-
-    public UIHelper(Context context) {
-        this.context = context;
-    }
-
-    private Context context;
-
-    public Context getContext() {
-        return this.context;
-    }
-
     /**
      * Finds the theme color from an attribute.
      * @param attrId    Id of the attribute to parse. i.e. R.attr.some_color
@@ -140,35 +151,71 @@ public class UIHelper {
     }
 
     public IconicsDrawable getIcon(IIcon icon) {
-        Context context = getContext();
-
-        UIHelper uiHelper = new UIHelper(context);
-
-        return new IconicsDrawable(context)
+        return new IconicsDrawable(getContext())
                 .icon(icon)
-                .color(uiHelper.getSecondaryColor())
-                .sizeDp(uiHelper.getToolbarIconSize());
+                .color(this.getTertiaryTextColor())
+                .sizeDp(this.getToolbarIconSize());
     }
 
-    public int getPrimaryColor() {
-        return getColor(R.attr.toolbarItemColor);
+//    public int getPrimaryColor() {
+//        return getColor(R.attr.toolbarItemColor);
+//    }
+
+//    public int getSecondaryColor() {
+//        TypedValue typedValue = new TypedValue();
+//        Resources.Theme theme = getContext().getTheme();
+//        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+//        int color = typedValue.data;
+//        return color;
+//    }
+
+    public int getPrimaryTextColor() {
+        return isUsingDarkTheme()
+            ? ContextCompat.getColor(getContext(), android.R.color.primary_text_dark)
+            : ContextCompat.getColor(getContext(), android.R.color.primary_text_light);
     }
 
-    public int getSecondaryColor() {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
-        int color = typedValue.data;
-        return color;
+    public int getSecondaryTextColor() {
+        return isUsingDarkTheme()
+                ? ContextCompat.getColor(getContext(), android.R.color.secondary_text_dark)
+                : ContextCompat.getColor(getContext(), android.R.color.secondary_text_light);
+    }
+
+    public int getTertiaryTextColor() {
+        return isUsingDarkTheme()
+                ? ContextCompat.getColor(getContext(), android.R.color.tertiary_text_dark)
+                : ContextCompat.getColor(getContext(), android.R.color.tertiary_text_light);
     }
 
     public int getToolbarIconSize() {
         return getDimenInDp(R.dimen.mmx_icon_size);
     }
 
-    public boolean isDarkTheme() {
-        Core core = new Core(getContext());
-        return core.getThemeId() == R.style.Theme_Money_Manager_Dark;
+    /**
+     * Return application theme choice from user
+     * @return application theme id
+     */
+    public int getThemeId() {
+        try {
+            String darkTheme = Constants.THEME_DARK;
+            String currentTheme = appSettingsLazy.get().getGeneralSettings().getTheme();
+
+            if (currentTheme.endsWith(darkTheme)) {
+                // Dark theme
+                return R.style.Theme_Money_Manager_Dark;
+            } else {
+                // Light theme
+                return R.style.Theme_Money_Manager_Light;
+            }
+        } catch (Exception e) {
+            Timber.e(e, "getting theme setting");
+
+            return R.style.Theme_Money_Manager_Light;
+        }
+    }
+
+    public boolean isUsingDarkTheme() {
+        return getThemeId() == R.style.Theme_Money_Manager_Dark;
     }
 
     /**

@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -627,7 +628,7 @@ public class AccountTransactionListFragment
                 switchAccount(accountId);
 
                 // color the spinner text of the selected item.
-                int spinnerItemTextColor = getResources().getColor(R.color.material_grey_50);
+                int spinnerItemTextColor = ContextCompat.getColor(getActivity(), R.color.material_grey_50);
                 ((TextView) spinner.getSelectedView()).setTextColor(spinnerItemTextColor);
             }
 

@@ -47,9 +47,9 @@ public class PasscodeActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// set theme
-		Core core = new Core(getApplicationContext());
 		try {
-			setTheme(core.getThemeId());
+			UIHelper uiHelper = new UIHelper(getApplicationContext());
+			setTheme(uiHelper.getThemeId());
 		} catch (Exception e) {
 			//Log.e(BaseListFragment.class.getSimpleName(), e.getMessage());
             Timber.e(e, "setting theme in passcode activity");

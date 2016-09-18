@@ -468,7 +468,7 @@ public class EditTransactionCommonFunctions {
                     .setOnDateSetListener(listener)
                     .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                     .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
-                if (new UIHelper(getContext()).isDarkTheme()) {
+                if (new UIHelper(getContext()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
                 datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
@@ -1448,8 +1448,7 @@ public class EditTransactionCommonFunctions {
             // #188: if there is a Category selected and we are switching to Split Categories.
         } else {
             buttonColour = R.color.button_foreground_inactive;
-            Core core = new Core(getContext());
-            buttonBackground = core.usingDarkTheme()
+            buttonBackground = new UIHelper(getContext()).isUsingDarkTheme()
                     ? R.color.button_background_inactive_dark
                     : R.color.button_background_inactive_light;
         }

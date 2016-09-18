@@ -24,6 +24,6 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
 
         <!--<item name="android:colorAccent">@color/md_accent</item>-->
-        <item name="android:colorAccent">@color/md_primary_dark</item>
+        <!--<item name="android:colorAccent">@color/md_primary_dark</item>-->
     </style>
 </resources>

@@ -33,6 +33,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
@@ -58,9 +59,10 @@ public abstract class BaseExpandableListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // set theme
-        Core core = new Core(getActivity().getApplicationContext());
+//        Core core = new Core(getActivity().getApplicationContext());
+        UIHelper uiHelper = new UIHelper(getActivity().getApplicationContext());
         try {
-            getActivity().setTheme(core.getThemeId());
+            getActivity().setTheme(uiHelper.getThemeId());
         } catch (Exception e) {
             Log.e(BaseExpandableListFragment.class.getSimpleName(), e.getMessage());
         }
@@ -71,8 +73,9 @@ public abstract class BaseExpandableListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // set animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getExpandableListView().setLayoutTransition(new LayoutTransition());
+        }
         // saved instance
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SHOWN_TIPS_WILDCARD)) {
@@ -81,8 +84,6 @@ public abstract class BaseExpandableListFragment
         }
         // set subtitle in actionbar
         if (!(TextUtils.isEmpty(getSubTitle()))) {
-            //getActivity().getActionBar().setSubtitle(getSubTitle());
-            //ActionBarActivity activity = (ActionBarActivity) getActivity();
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             if (activity != null) {
                 activity.getSupportActionBar().setSubtitle(getSubTitle());

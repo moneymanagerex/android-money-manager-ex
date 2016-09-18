@@ -20,6 +20,7 @@ package com.money.manager.ex.core.ioc;
 import com.money.manager.ex.MmxContentProvider;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.Passcode;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.list.CurrencyListFragment;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
@@ -78,6 +79,9 @@ public interface MmxComponent {
     void inject(SyncManager sync);
     void inject(SyncServiceMessageHandler handler);
     void inject(Passcode object);
+
+    // Helpers
+    void inject(UIHelper helper);
 
     // Business Services
     void inject(CurrencyService service);

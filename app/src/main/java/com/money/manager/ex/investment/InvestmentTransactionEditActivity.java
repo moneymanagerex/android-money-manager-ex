@@ -341,7 +341,7 @@ public class InvestmentTransactionEditActivity
                         .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                if (new UIHelper(InvestmentTransactionEditActivity.this).isDarkTheme()) {
+                if (new UIHelper(InvestmentTransactionEditActivity.this).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
                 datePicker.show(getSupportFragmentManager(), DATEPICKER_TAG);

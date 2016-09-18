@@ -22,7 +22,6 @@ import android.view.View;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
-import com.money.manager.ex.currency.recycler.RecyclerItemClickListener;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
 import org.greenrobot.eventbus.EventBus;

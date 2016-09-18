@@ -357,7 +357,7 @@ public class RecurringTransactionListFragment
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxDateTimeUtils.getFirstDayOfWeek());
-        if (new UIHelper(getActivity()).isDarkTheme()) {
+        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
             args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
         }
         // disable switching month for now.

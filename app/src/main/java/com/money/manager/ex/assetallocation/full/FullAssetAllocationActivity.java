@@ -71,8 +71,8 @@ public class FullAssetAllocationActivity
         super.onCreate(savedInstanceState);
 
         // Theme
-        Core core = new Core(this);
-        this.setTheme(core.getThemeId());
+        UIHelper uiHelper = new UIHelper(this);
+        this.setTheme(uiHelper.getThemeId());
 
         setContentView(R.layout.activity_full_asset_allocation);
 

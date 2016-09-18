@@ -172,7 +172,7 @@ public class EditPriceDialog
                         .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(mPrice.date.getYear(), mPrice.date.getMonthOfYear() - 1, mPrice.date.getDayOfMonth());
-                if (new UIHelper(getActivity()).isDarkTheme()) {
+                if (new UIHelper(getActivity()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
                 datePicker.show(((FragmentActivity) getContext()).getSupportFragmentManager(), datePicker.getClass().getSimpleName());

@@ -230,8 +230,8 @@ public abstract class BaseFragmentActivity
 
     protected void setTheme() {
         try {
-            Core core = new Core(this);
-            this.setTheme(core.getThemeId());
+            UIHelper uiHelper = new UIHelper(this);
+            this.setTheme(uiHelper.getThemeId());
         } catch (Exception e) {
             Timber.e(e, "setting theme");
         }

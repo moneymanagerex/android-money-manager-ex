@@ -19,6 +19,7 @@ package com.money.manager.ex.core;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleCursorAdapter;
@@ -45,17 +46,22 @@ public class ToolbarSpinnerAdapter
 
         TextView textView = (TextView) view.findViewById(android.R.id.text1);
 
-        Core core = new Core(mContext);
-        int textColor = mContext.getResources().getColor(R.color.material_grey_900);
+//        int textColor = getContext().getResources().getColor(R.color.material_grey_900);
+        int textColor = ContextCompat.getColor(getContext(), R.color.material_grey_900);
 //        int textColorId = core.getColourFromThemeAttribute(R.attr.toolbar_spinner_item_text_color);
 //        int textColorId = core.getColourFromAttribute(R.attr.toolbar_spinner_item_text_color);
 //        int textColor = mContext.getResources().getColor(textColorId);
-        if (core.usingDarkTheme()) {
-            textColor = mContext.getResources().getColor(R.color.material_grey_50);
+        if (new UIHelper(getContext()).isUsingDarkTheme()) {
+            textColor = ContextCompat.getColor(getContext(), R.color.material_grey_50);
+//            textColor = mContext.getResources().getColor(R.color.material_grey_50);
         }
 
         textView.setTextColor(textColor);
 
         return view;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 }
