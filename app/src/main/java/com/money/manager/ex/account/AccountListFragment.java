@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
@@ -134,7 +135,7 @@ public class AccountListFragment
                 if (service.isAccountUsed(accountId)) {
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.attention)
-                            .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
+                            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
                             .content(R.string.account_can_not_deleted)
                             .positiveText(android.R.string.ok)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {

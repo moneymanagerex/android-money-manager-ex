@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
@@ -66,7 +67,7 @@ public class CloudDataAdapter
         // Icon: folder or file
         Drawable icon = null;
         if (item.getFolder()) {
-            icon = new UIHelper(getContext()).getIcon(MMXIconFont.Icon.mmx_folder2).sizeDp(30);
+            icon = new UIHelper(getContext()).getIcon(GoogleMaterial.Icon.gmd_folder_open).sizeDp(30);
         } else {
             //icon = FontIconDrawable.inflate(getContext(), R.xml.ic_);
         }

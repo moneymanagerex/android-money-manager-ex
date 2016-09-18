@@ -43,6 +43,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -226,7 +227,7 @@ public class WatchlistFragment
         // custom icon
         MenuItem purgeMenu = menu.findItem(R.id.menu_purge_history);
         if (purgeMenu != null) {
-            IconicsDrawable icon = new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_scissors);
+            IconicsDrawable icon = new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_content_cut);
             purgeMenu.setIcon(icon);
         }
 

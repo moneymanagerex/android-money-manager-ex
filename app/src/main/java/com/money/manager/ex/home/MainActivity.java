@@ -956,11 +956,11 @@ public class MainActivity
         // manage: currencies
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_euro)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_group)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_group)));
         childItems.add(childTools);
 
         // Recurring Transactions
@@ -1124,12 +1124,12 @@ public class MainActivity
         // Home
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
                 .withText(getString(R.string.home))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_home)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_home)));
 
         // Open database
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
                 .withText(getString(R.string.open_database))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_folder2)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_folder_open)));
 
         // Cloud synchronize
         if (new SyncManager(this).isActive()) {
@@ -1141,7 +1141,7 @@ public class MainActivity
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
                 .withText(getString(R.string.entities))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_building)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_business)));
 
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
@@ -1170,7 +1170,7 @@ public class MainActivity
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_settings)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings)));
         // Donate
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
                 .withText(getString(R.string.donate))

@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -473,7 +474,7 @@ public class CategoryListFragment
         if (!(canDelete)) {
             new MaterialDialog.Builder(getContext())
                 .title(R.string.attention)
-                .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
+                .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
                 .content(R.string.category_can_not_deleted)
                 .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -489,7 +490,7 @@ public class CategoryListFragment
         // Prompt for deletion.
         new MaterialDialog.Builder(getContext())
             .title(R.string.delete_category)
-            .icon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
+            .icon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
             .content(R.string.confirmDelete)
             .positiveText(android.R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

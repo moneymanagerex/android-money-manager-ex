@@ -422,6 +422,16 @@
                 android:layout_height="@dimen/mmx_list_two_line_item_height"
                 android:orientation="horizontal">
 
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd-exposure_plus_1"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -431,8 +441,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:drawableLeft="?attr/ic_plusone"
-                        android:drawableStart="?attr/ic_plusone"
                         android:ellipsize="end"
                         android:hint="@string/transaction_number"
                         android:maxLines="1"

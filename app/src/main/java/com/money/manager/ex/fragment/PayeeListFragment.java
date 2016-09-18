@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -224,7 +225,7 @@ public class PayeeListFragment
                 } else {
                     new AlertDialogWrapper(getActivity())
                             .setTitle(R.string.attention)
-                            .setIcon(new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_alert))
+                            .setIcon(new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_warning))
                             .setMessage(R.string.payee_can_not_deleted)
                             .setPositiveButton(android.R.string.ok)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -345,7 +346,7 @@ public class PayeeListFragment
     private void showDialogDeletePayee(final int payeeId) {
         new AlertDialogWrapper(getContext())
             .setTitle(R.string.delete_payee)
-            .setIcon(new IconicsDrawable(getActivity()).icon(MMXIconFont.Icon.mmx_alert))
+            .setIcon(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_warning))
             .setMessage(R.string.confirmDelete)
             .setPositiveButton(android.R.string.ok,
                     new MaterialDialog.SingleButtonCallback() {

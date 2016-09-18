@@ -38,6 +38,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -90,7 +91,7 @@ public class Core {
         }
 
         new MaterialDialog.Builder(getContext())
-                .icon(new UIHelper(getContext()).getIcon(MMXIconFont.Icon.mmx_alert))
+                .icon(new UIHelper(getContext()).getIcon(GoogleMaterial.Icon.gmd_warning))
                 .title(title)
                 .content(text)
                 .positiveText(android.R.string.ok)
