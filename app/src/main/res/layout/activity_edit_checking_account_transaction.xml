@@ -85,6 +85,7 @@
                     android:background="?attr/selectableItemBackground" />
             </LinearLayout>
 
+            <!-- tx type & status -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/mmx_detail_item_height"
@@ -200,9 +201,8 @@
 
                 <com.mikepenz.iconics.view.IconicsImageView
                     app:iiv_icon="mmx-temple"
-                    app:iiv_color="@android:color/holo_red_dark"
+                    app:iiv_color="?android:textColorTertiary"
                     app:iiv_size="@dimen/side_icon_size"
-                    android:background="@color/material_yellow_500"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/mmx_side_icon_margin"
@@ -244,11 +244,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/mmx_detail_item_height"
                     android:orientation="horizontal">
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         app:iiv_icon="mmx-calculator"
-                        app:iiv_color="@android:color/holo_red_dark"
+                        app:iiv_color="?android:textColorTertiary"
                         app:iiv_size="@dimen/side_icon_size"
-                        android:background="@color/material_yellow_500"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/mmx_side_icon_margin"

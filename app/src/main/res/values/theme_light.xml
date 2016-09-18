@@ -56,7 +56,6 @@
         <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
 
         <!-- Colors -->
-        <!--<item name="android:textColorPrimary">@color/material_grey_900</item>-->
         <item name="theme_background_color">@android:color/transparent</item>
         <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background</item>
         <item name="cardViewBackgroundColor">@android:color/white</item>
@@ -65,6 +64,10 @@
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_light_row_light</item>
+
+        <!-- text colors -->
+        <!--<item name="android:textColorPrimary">@color/material_grey_900</item>-->
+        <item name="android:textColorTertiary">@android:color/tertiary_text_dark</item>
 
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_light</item>
