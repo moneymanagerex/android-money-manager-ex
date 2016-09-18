@@ -262,7 +262,7 @@
                 <LinearLayout
                     android:id="@+id/tableRowAmount"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <!-- Amount header -->
@@ -280,7 +280,8 @@
                         android:id="@+id/textViewAmount"
                         style="@style/Money.TextView.Widget.EditText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:gravity="end"
                         android:textStyle="bold" />
                     <!--android:layout_marginRight="@dimen/mmx_detail_right_space"-->
@@ -309,7 +310,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <!-- account to header -->
@@ -351,7 +352,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <com.money.manager.ex.view.RobotoTextView
@@ -368,7 +369,8 @@
                         android:id="@+id/textViewTotAmount"
                         style="@style/Money.TextView.Widget.EditText"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:gravity="end"
                         android:textStyle="bold" />
                 </LinearLayout>
