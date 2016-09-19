@@ -18,11 +18,11 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
@@ -53,7 +53,7 @@ public class LookFeelPreferenceFragment
 
         // Show Open accounts
 
-        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
+        final SwitchPreferenceCompat chkAccountOpen = (SwitchPreferenceCompat)
                 findPreference(getString(R.string.pref_account_open_visible));
         if (chkAccountOpen != null) {
             // set initial value
@@ -72,7 +72,7 @@ public class LookFeelPreferenceFragment
 
         // Show Favourite accounts
 
-        final CheckBoxPreference chkAccountFav = (CheckBoxPreference)
+        final SwitchPreferenceCompat chkAccountFav = (SwitchPreferenceCompat)
                 findPreference(getString(R.string.pref_account_fav_visible));
         if (chkAccountFav != null) {
             // set initial value
@@ -91,7 +91,7 @@ public class LookFeelPreferenceFragment
 
         // Hide reconciled amounts setting.
 
-        final CheckBoxPreference chkHideReconciled = (CheckBoxPreference) findPreference(getString(
+        final SwitchPreferenceCompat chkHideReconciled = (SwitchPreferenceCompat) findPreference(getString(
                 R.string.pref_transaction_hide_reconciled_amounts));
 
         Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
