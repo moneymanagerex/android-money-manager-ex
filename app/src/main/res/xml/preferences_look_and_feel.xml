@@ -36,14 +36,14 @@
     <!--android:entries="@array/show_transaction_values"-->
     <!--android:entryValues="@array/show_transaction_values"-->
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:defaultValue="false"
         android:icon="@null"
         android:key="@string/pref_transaction_shown_balance"
         android:summary="@string/summary_transaction_shown_balance"
         android:title="@string/title_transaction_shown_balance"/>
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:defaultValue="false"
         android:icon="@null"
         android:key="@string/pref_transaction_hide_reconciled_amounts"
