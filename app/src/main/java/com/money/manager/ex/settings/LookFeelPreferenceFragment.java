@@ -18,6 +18,7 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
+import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -53,7 +54,7 @@ public class LookFeelPreferenceFragment
 
         // Show Open accounts
 
-        final SwitchPreferenceCompat chkAccountOpen = (SwitchPreferenceCompat)
+        final CheckBoxPreference chkAccountOpen = (CheckBoxPreference)
                 findPreference(getString(R.string.pref_account_open_visible));
         if (chkAccountOpen != null) {
             // set initial value
@@ -72,7 +73,7 @@ public class LookFeelPreferenceFragment
 
         // Show Favourite accounts
 
-        final SwitchPreferenceCompat chkAccountFav = (SwitchPreferenceCompat)
+        final CheckBoxPreference chkAccountFav = (CheckBoxPreference)
                 findPreference(getString(R.string.pref_account_fav_visible));
         if (chkAccountFav != null) {
             // set initial value
