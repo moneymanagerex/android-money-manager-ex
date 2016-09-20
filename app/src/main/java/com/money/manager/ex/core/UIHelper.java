@@ -150,10 +150,17 @@ public class UIHelper {
         return sizeInDp;
     }
 
+    /**
+     * Creates an icon with default settings. The default color is tertiary text color.
+     * @param icon Icon to instantiate.
+     * @return Drawable (Iconics drawable).
+     */
     public IconicsDrawable getIcon(IIcon icon) {
         return new IconicsDrawable(getContext())
                 .icon(icon)
-                .color(this.getTertiaryTextColor())
+                .color(getSecondaryTextColor())
+//                .color(this.getTertiaryTextColor())
+//                .color(this.getPrimaryTextColor())
                 .sizeDp(this.getToolbarIconSize());
     }
 
