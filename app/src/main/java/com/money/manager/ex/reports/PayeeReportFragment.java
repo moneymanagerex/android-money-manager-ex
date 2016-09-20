@@ -49,6 +49,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Content fragment for the Payee report.
@@ -258,7 +259,11 @@ public class PayeeReportFragment
                 fragmentTransaction.replace(R.id.fragmentMain, fragment, PieChartFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
             }
-            fragmentTransaction.commit();
+            try {
+                fragmentTransaction.commit();
+            } catch (IllegalStateException e) {
+                Timber.e(e, "adding fragment");
+            }
         }
     }
 
