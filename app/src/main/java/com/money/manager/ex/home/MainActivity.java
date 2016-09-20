@@ -1362,17 +1362,18 @@ public class MainActivity
         if (item == null) return;
 
         // define the animation for rotation
-        Animation animation = new RotateAnimation(0.0f, 360.0f,
+        Animation animation = new RotateAnimation(360.0f, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(1200);
         animation.setInterpolator(new LinearInterpolator());
+        animation.setDuration(1200);
 //        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation);
-
         animation.setRepeatCount(Animation.INFINITE);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageDrawable(new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cached));
+        UIHelper uiHelper = new UIHelper(this);
+        imageView.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
+            .color(uiHelper.getPrimaryTextColor()));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
