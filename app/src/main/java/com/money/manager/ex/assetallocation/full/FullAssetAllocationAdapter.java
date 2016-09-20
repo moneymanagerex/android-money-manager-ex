@@ -126,7 +126,11 @@ public class FullAssetAllocationAdapter
 
     @Override
     public int getItemCount() {
-        return this.model.size();
+        if (model != null) {
+            return this.model.size();
+        } else {
+            return 0;
+        }
     }
 
 //    public void onClick(View view) {
