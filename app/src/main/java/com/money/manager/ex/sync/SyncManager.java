@@ -118,7 +118,8 @@ public class SyncManager {
     }
 
     public boolean isRemoteFileModified(CloudMetaData remoteFile) {
-        DateTime cachedLastModified = DateTime.parse(getDatabases().getCurrent().remoteLastChangedDate);
+        String dateString = getDatabases().getCurrent().remoteLastChangedDate;
+        DateTime cachedLastModified = DateTime.parse(dateString);
 
         DateTime remoteLastModified = getModificationDateFrom(remoteFile);
 
