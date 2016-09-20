@@ -16,7 +16,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <changelog bulletedList="true">
-    <changelogversion versionName="beta 921">
+    <changelogversion versionName="beta 922">
+        <changelogtext>Minor stabilization improvements.</changelogtext>
         <changelogtext>Automatic generation for most of the library dependencies.</changelogtext>
         <changelogtext>Adding Material Design icons, palettes, and themes.</changelogtext>
         <changelogtext>Design adjustments for the transaction entry form.</changelogtext>
