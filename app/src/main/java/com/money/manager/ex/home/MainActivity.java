@@ -149,7 +149,6 @@ public class MainActivity
     // state if restart activity
     private static boolean mRestartActivity = false;
 
-//    @Inject SharedPreferences preferences;
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
     @State boolean dbUpdateCheckDone = false;
@@ -169,6 +168,7 @@ public class MainActivity
     private boolean mIsDualPanel = false;
     // sync rotating icon
     private MenuItem mSyncMenuItem = null;
+    private UIHelper mUiHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,7 +214,7 @@ public class MainActivity
         // Close any existing notifications.
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
-        // show change log binaryDialog
+        // show change log dialog
         Core core = new Core(this);
         if (core.isToDisplayChangelog()) {
             core.showChangelog();
@@ -222,18 +222,11 @@ public class MainActivity
 
         showCurrentDatabasePath(this);
 
-        // check if we require a password.
-//        String dbPath = MoneyManagerApplication.getDatabasePath(this);
-//        if (MmxDatabaseUtils.isEncryptedDatabase(dbPath)) {
-//            // todo: && !MmxOpenHelper.getInstance(this).hasPassword()
-//            requestDatabasePassword();
-//        }
         // Read something from the database at this stage so that the db file gets created.
         InfoService infoService = new InfoService(getApplicationContext());
         String username = infoService.getInfoValue(InfoKeys.USERNAME);
 
         // fragments
-//        originalShowFragment(savedInstanceState);
         initHomeFragment();
 
         // start notification for recurring transaction
@@ -343,21 +336,6 @@ public class MainActivity
                     this.finish();
                 }
                 break;
-
-//            case REQUEST_PASSWORD:
-//                if (resultCode == RESULT_OK && data != null) {
-//                    String dbPath = data.getStringExtra(EXTRA_DATABASE_PATH);
-//                    String password = data.getStringExtra(PasswordActivity.EXTRA_PASSWORD);
-//
-//                    // Figure out what to do next. Switch the db or continue with init?
-//                    if (StringUtils.isEmpty(dbPath)) {
-//                        // MmxOpenHelper.getInstance(this).setPassword(password);
-//                        // continue
-//                        initializeDatabaseAccess(null);
-//                    } else {
-//                        changeDatabase(dbPath, password);
-//                    }
-//                }
         }
     }
 
@@ -427,19 +405,6 @@ public class MainActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        Core core = new Core(getApplicationContext());
-//        if (core.isTablet()) {
-//            Fragment fragment = getSupportFragmentManager().findFragmentById(getContentId());
-//            if (fragment != null) {
-//                if (fragment instanceof AccountTransactionListFragment) {
-//                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, ((AccountTransactionListFragment) fragment).getFragmentName());
-//                } else if ((!(fragment instanceof DashboardFragment)) && (!(fragment instanceof HomeFragment))) {
-//                    outState.putString(KEY_CLASS_FRAGMENT_CONTENT, fragment.getClass().getName());
-//                }
-//                // move pop stack in onCreate event
-//            }
-//        }
-
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isRecurringTransactionStarted);
 
@@ -699,46 +664,6 @@ public class MainActivity
         }
 
         return result;
-    }
-
-    /*
-        Private
-    */
-
-    private void initializeSync() {
-        // Check cloud storage for updates?
-        boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
-        if (syncOnStart && !this.dbUpdateCheckDone) {
-//            checkCloudForDbUpdates();
-
-            SyncManager sync = new SyncManager(this);
-            sync.triggerSynchronization();
-
-            // This is to avoid checking for online updates on every device rotation.
-            dbUpdateCheckDone = true;
-
-            // re-set sync timer.
-            sync.startSyncServiceHeartbeat();
-        }
-    }
-
-    private void initializeDrawer() {
-        // navigation drawer
-        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-
-        // set a custom shadow that overlays the main content when the drawer opens
-        if (mDrawer == null) return;
-
-        mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
-        mDrawer.addDrawerListener(mDrawerToggle);
-
-        // create drawer menu
-        initializeDrawerVariables();
-        createExpandableDrawer();
-
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-        setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
     }
 
     /**
@@ -1009,7 +934,6 @@ public class MainActivity
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // execute operation
                             onDrawerMenuAndOptionMenuSelected(selectedItem);
                         }
                     }, 200);
@@ -1022,7 +946,6 @@ public class MainActivity
     }
 
     private void createSyncToolbarItem(Menu menu) {
-//        Menu menu = getToolbar().getMenu();
         if (menu == null) return;
 
         int id = R.id.menuSyncProgress;
@@ -1042,8 +965,6 @@ public class MainActivity
                 MenuInflater inflater = getMenuInflater();
                 inflater.inflate(R.menu.menu_item_sync_progress, menu);
                 mSyncMenuItem = menu.findItem(id);
-//                mSyncMenuItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, R.string.synchronize);
-//                mSyncMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                 Drawable syncIcon = new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cached);
                 mSyncMenuItem.setIcon(syncIcon);
 
@@ -1061,7 +982,6 @@ public class MainActivity
     }
 
     private void destroySyncToolbarItem(Menu menu) {
-//        Menu menu = getToolbar().getMenu();
         if (menu == null) return;
 
         int id = R.id.menuSyncProgress;
@@ -1078,16 +998,6 @@ public class MainActivity
 
     private RecentDatabasesProvider getDatabases() {
         return mDatabases.get();
-    }
-
-    private Drawable getDrawableFromResource(int resourceId) {
-        Drawable icon;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            icon = getDrawable(resourceId);
-        } else {
-            icon = getResources().getDrawable(resourceId);
-        }
-        return icon;
     }
 
     private ArrayList<DrawerMenuItem> getDrawerMenuItems() {
@@ -1187,11 +1097,15 @@ public class MainActivity
         return childDatabases;
     }
 
+    private UIHelper getUiHelper() {
+        if (mUiHelper == null) {
+            mUiHelper = new UIHelper(this);
+        }
+        return mUiHelper;
+    }
+
     private void handleDeviceRotation() {
         // Remove items from back stack on device rotation.
-//        int savedOrientation = savedInstanceState.containsKey(KEY_ORIENTATION)
-//                ? savedInstanceState.getInt(KEY_ORIENTATION)
-//                : Constants.NOT_SET;
         int currentOrientation = getResources().getConfiguration().orientation;
         boolean isTablet = new Core(this).isTablet();
 
@@ -1230,6 +1144,42 @@ public class MainActivity
         this.dbUpdateCheckDone = skipRemoteCheck;
     }
 
+    private void initializeSync() {
+        // Check cloud storage for updates?
+        boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
+        if (syncOnStart && !this.dbUpdateCheckDone) {
+//            checkCloudForDbUpdates();
+
+            SyncManager sync = new SyncManager(this);
+            sync.triggerSynchronization();
+
+            // This is to avoid checking for online updates on every device rotation.
+            dbUpdateCheckDone = true;
+
+            // re-set sync timer.
+            sync.startSyncServiceHeartbeat();
+        }
+    }
+
+    private void initializeDrawer() {
+        // navigation drawer
+        mDrawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // set a custom shadow that overlays the main content when the drawer opens
+        if (mDrawer == null) return;
+
+        mDrawerToggle = new MyActionBarDrawerToggle(this, mDrawer, R.string.open, R.string.closed);
+        mDrawer.addDrawerListener(mDrawerToggle);
+
+        // create drawer menu
+        initializeDrawerVariables();
+        createExpandableDrawer();
+
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+    }
+
     private void initHomeFragment() {
         String tag = HomeFragment.class.getSimpleName();
 
@@ -1256,7 +1206,6 @@ public class MainActivity
         if (mDrawerLinearRepeating != null) {
             mDrawerLinearRepeating.setVisibility(View.GONE);
         }
-//        mDrawerTextViewRepeating = (TextView) findViewById(R.id.textViewOverdue);
         mDrawerTextUserName = (TextView) findViewById(R.id.textViewUserName);
         mDrawerTextTotalAccounts = (TextView) findViewById(R.id.textViewTotalAccounts);
     }
@@ -1310,17 +1259,17 @@ public class MainActivity
 //        // Note that the selected file is handled in onActivityResult.
 //    }
 
-    private void requestDatabasePassword() {
-        // request password for the current database.
-        requestDatabasePassword(null);
-    }
+//    private void requestDatabasePassword() {
+//        // request password for the current database.
+//        requestDatabasePassword(null);
+//    }
 
     private void requestDatabasePassword(String dbFilePath) {
         // request password
         Intent intent = new Intent(this, PasswordActivity.class);
         intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
         startActivityForResult(intent, REQUEST_PASSWORD);
-        // continues onActivityResult.
+        // continues in onActivityResult.
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
@@ -1433,6 +1382,8 @@ public class MainActivity
             showSelectDatabaseActivity();
             return true;
         }
+
+        // todo: show changelog?
 
         return false;
     }
