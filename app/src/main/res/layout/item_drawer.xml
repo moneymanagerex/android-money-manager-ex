@@ -19,7 +19,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="48dp"
+              android:layout_height="@dimen/mmx_list_item_height"
               android:orientation="vertical">
 
     <LinearLayout
@@ -44,10 +44,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="16dp"
-            android:singleLine="true"
             android:text="Test"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:typeface="roboto_black"/>
+            app:typeface="roboto_black"
+            android:maxLines="1" />
     </LinearLayout>
 
     <View

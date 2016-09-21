@@ -18,54 +18,38 @@ package com.money.manager.ex.home;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.money.manager.ex.R;
 
-import java.util.ArrayList;
-
 public class DrawerMenuItemAdapter
     extends ArrayAdapter<DrawerMenuItem> {
-//	extends RecyclerView.Adapter {
-	
+
 	public DrawerMenuItemAdapter(Context context) {
 		super(context, 0);
-//		super();
 
 		this.context = context;
-        this.items = new ArrayList<>();
 	}
 
 	private Context context;
-    private ArrayList<DrawerMenuItem> items;
 
     public Context getContext() {
         return this.context;
     }
 
-    public void add(DrawerMenuItem item) {
-        this.items.add(item);
-    }
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-//		DrawerMenuItem item = getItem(position);
-        DrawerMenuItem item = items.get(position);
+		DrawerMenuItem item = getItem(position);
+
 		DrawerViewHolder holder = null;
 		View view = convertView;
 		
 		if (view == null) {
 			view = LayoutInflater.from(getContext()).inflate(R.layout.item_drawer, null);
-			TextView textViewItem = (TextView)view.findViewById(R.id.textViewItem);
-			ImageView imageViewIcon = (ImageView)view.findViewById(R.id.imageViewIcon);
-            View viewDivider = view.findViewById(R.id.viewDivider);
-            view.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
+            view.setTag(new DrawerViewHolder(view));
         }
 		
 		if (view != null && holder == null) {
@@ -92,20 +76,4 @@ public class DrawerMenuItemAdapter
 		
 		return view;
 	}
-
-//	@Override
-//	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        RecyclerView.ViewHolder holder
-//		return null;
-//	}
-//
-//	@Override
-//	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//
-//	}
-//
-//	@Override
-//	public int getItemCount() {
-//		return items.size();
-//	}
 }

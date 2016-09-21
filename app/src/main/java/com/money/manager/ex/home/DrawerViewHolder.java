@@ -16,23 +16,33 @@
  */
 package com.money.manager.ex.home;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.money.manager.ex.R;
+
 /**
  * ViewHolder for the linear drawer items.
- *
- * Created by Alen Siljak on 21/07/2015.
  */
-public class DrawerViewHolder {
-    public TextView textViewItem;
-    public ImageView imageViewIcon;
-    public View viewDivider;
+public class DrawerViewHolder
+    extends RecyclerView.ViewHolder {
 
-    public DrawerViewHolder(TextView textViewItem, ImageView imageViewIcon, View viewDivider) {
+    public DrawerViewHolder(View itemView) {
+        super(itemView);
+
+        TextView textViewItem = (TextView)itemView.findViewById(R.id.textViewItem);
+        ImageView imageViewIcon = (ImageView)itemView.findViewById(R.id.imageViewIcon);
+        View viewDivider = itemView.findViewById(R.id.viewDivider);
+
         this.textViewItem = textViewItem;
         this.imageViewIcon = imageViewIcon;
         this.viewDivider = viewDivider;
     }
+
+    public TextView textViewItem;
+    public ImageView imageViewIcon;
+    public View viewDivider;
+
 }

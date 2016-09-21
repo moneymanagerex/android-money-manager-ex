@@ -45,7 +45,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.UIHelper;
@@ -236,7 +235,7 @@ public class AccountTransactionListFragment
         // add the date picker.
         inflater.inflate(R.menu.menu_period_picker_transactions, menu);
 
-        // Transaction Type picker
+        // transaction Status picker
         inflater.inflate(R.menu.menu_transaction_status_selector, menu);
         initTransactionStatusMenu(menu);
 

@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +51,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
@@ -879,32 +881,6 @@ public class MainActivity
         startActivity(new Intent(this, IncomeVsExpensesActivity.class));
     }
 
-    public void onDrawerItemSubDialogs(final DrawerMenuItemAdapter adapter, CharSequence title) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(title)
-                .adapter(adapter, new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
-                        dialog.dismiss();
-                    }
-                })
-                .build();
-
-//        ListView listView = binaryDialog.getListView();
-//        if (listView != null) {
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    onDrawerMenuAndOptionMenuSelected(adapter.getItem(position));
-//                    binaryDialog.dismiss();
-//                }
-//            });
-//        }
-
-        dialog.show();
-    }
-
     public void openDatabasePicker() {
         //pickFile(Environment.getDefaultDatabaseDirectory());
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(this);
@@ -1465,14 +1441,17 @@ public class MainActivity
     }
 
     private void showReportsSelector(boolean isDarkTheme, String text) {
-        DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
+        IconicsDrawable icon;
+        UIHelper uiHelper = new UIHelper(this);
         int iconId;
 
         // payee
-        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
+//        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
+        icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_insert_chart);
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
                 .withText(getString(R.string.payees))
-                .withIconDrawable(getDrawableFromResource(iconId)));
+                .withIconDrawable(icon));
 
         // where money goes
         iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
@@ -1503,7 +1482,17 @@ public class MainActivity
                 .withText(getString(R.string.asset_allocation))
                 .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
 
-        onDrawerItemSubDialogs(adapter, text);
+        new MaterialDialog.Builder(this)
+                .title(text)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        onDrawerMenuAndOptionMenuSelected(adapter.getItem(which));
+                        dialog.dismiss();
+                    }
+                })
+                .build()
+                .show();
     }
 
     private void showSelectDatabaseActivity() {

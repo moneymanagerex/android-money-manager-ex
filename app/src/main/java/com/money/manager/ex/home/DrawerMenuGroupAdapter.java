@@ -72,11 +72,7 @@ public class DrawerMenuGroupAdapter
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_child, null);
 
-            TextView textViewItem = (TextView)convertView.findViewById(R.id.textViewItem);
-            ImageView imageViewIcon = (ImageView)convertView.findViewById(R.id.imageViewIcon);
-            View viewDivider = convertView.findViewById(R.id.viewDivider);
-
-            convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
+            convertView.setTag(new DrawerViewHolder(convertView));
         }
 
         Object tag = convertView.getTag();
@@ -144,11 +140,7 @@ public class DrawerMenuGroupAdapter
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_drawer_group, null);
 
-            TextView textViewItem = (TextView)convertView.findViewById(R.id.textViewItem);
-            ImageView imageViewIcon = (ImageView)convertView.findViewById(R.id.imageViewIcon);
-            View viewDivider = convertView.findViewById(R.id.viewDivider);
-
-            convertView.setTag(new DrawerViewHolder(textViewItem, imageViewIcon, viewDivider));
+            convertView.setTag(new DrawerViewHolder(convertView));
         }
 
         if (convertView.getTag() instanceof DrawerViewHolder) {
@@ -175,11 +167,8 @@ public class DrawerMenuGroupAdapter
         if (getChildrenCount(groupPosition) > 0) {
             if (isExpanded) {
                 // the group is not expanded and has children.
-                // holder.imageViewIcon.setBackground(item.getIconDrawable());
                 chevronView.setText(mContext.getString(R.string.ic_chevron_down));
-//                chevronView.setBackground(FontIconDrawable.inflate(context, R.xml.ic_chevron_down));
             } else {
-//                chevronView.setBackground(FontIconDrawable.inflate(context, R.xml.ic_chevron_right));
                 chevronView.setText(mContext.getString(R.string.ic_chevron_right));
             }
 
