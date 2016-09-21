@@ -19,6 +19,8 @@ package com.money.manager.ex.recurring.transactions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -57,6 +61,7 @@ import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
+import icepick.State;
 import timber.log.Timber;
 
 /**
@@ -80,13 +85,12 @@ public class RecurringTransactionEditActivity
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
-    public static final String KEY_ACTION = "RepeatingTransaction:Action";
+//    public static final String KEY_ACTION = "RepeatingTransaction:Action";
     public static final String TAG_DATEPICKER = "DatePicker";
 
-    @Inject
-    BriteDatabase database;
+    @Inject BriteDatabase database;
 
-    private String mIntentAction;
+    @State private String mIntentAction;
 
     // Form controls
     private RecurringTransactionViewHolder mViewHolder;
@@ -102,7 +106,8 @@ public class RecurringTransactionEditActivity
         RecurringTransaction tx = initializeModel();
         mCommonFunctions = new EditTransactionCommonFunctions(this, tx, database);
 
-        showStandardToolbarActions();
+//        showStandardToolbarActions();
+        mCommonFunctions.initializeToolbar();
 
         // manage update instance
         if (savedInstanceState != null) {
@@ -149,6 +154,36 @@ public class RecurringTransactionEditActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+
+        UIHelper uiHelper = new UIHelper(this);
+
+        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
+        if (saveMenu != null) {
+            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
+                    .color(uiHelper.getPrimaryTextColor());
+            saveMenu.setIcon(check);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                return onActionCancelClick();
+            case R.id.saveMenuItem:
+                return onActionDoneClick();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -166,7 +201,7 @@ public class RecurringTransactionEditActivity
         outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.viewHolder.edtNotes.getTag()));
 
-        outState.putString(KEY_ACTION, mIntentAction);
+//        outState.putString(KEY_ACTION, mIntentAction);
     }
 
     @Override
@@ -531,7 +566,7 @@ public class RecurringTransactionEditActivity
         mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
 
         // action
-        mIntentAction = savedInstanceState.getString(KEY_ACTION);
+//        mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
 
     private boolean saveSplitCategories() {

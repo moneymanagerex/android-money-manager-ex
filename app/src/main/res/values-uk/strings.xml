@@ -375,7 +375,7 @@
   <string name="delete_others_selected_transaction">Ви дійсно бажаєте видалити %d вибраних транзакцій?</string>
   <string name="categories">Категорії</string>
   <string name="payees">Контрагенти</string>
-  <string name="repeating_transactions">Повторювані транзакції</string>
+  <string name="recurring_transactions">Повторювані транзакції</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Новий рахунок</string>
   <string name="create_new_account">Створити новий рахунок</string>

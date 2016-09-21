@@ -365,7 +365,7 @@
   <string name="delete_others_selected_transaction">%d seçilen işlemleri silmek istediğinizden emin misiniz?</string>
   <string name="categories">Kategoriler</string>
   <string name="payees">Alacaklılar</string>
-  <string name="repeating_transactions">Tekrar Eden İşlemler</string>
+  <string name="recurring_transactions">Tekrar Eden İşlemler</string>
   <string name="theme_holo_light">Holo Açık</string>
   <string name="new_account">Yeni Hesap</string>
   <string name="amount_greater_or_equal">Miktar büyük veya eşit</string>

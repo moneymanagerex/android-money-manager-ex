@@ -376,7 +376,7 @@
   <string name="delete_others_selected_transaction">Ești sigur că vrei să ștergi aceste %d tranzacții selectate?</string>
   <string name="categories">Categorii</string>
   <string name="payees">Beneficiari</string>
-  <string name="repeating_transactions">Tranzacții recurente</string>
+  <string name="recurring_transactions">Tranzacții recurente</string>
   <string name="theme_holo_light">Lumina Holo</string>
   <string name="new_account">Cont Nou</string>
   <string name="create_new_account">Creează cont nou</string>

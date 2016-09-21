@@ -103,15 +103,11 @@ public abstract class BaseFragmentActivity
 
     @Override
     protected void onStart() {
-        try {
-            super.onStart();
+        super.onStart();
             // set elevation actionbar 0
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setElevation(0);
-            }
-        } catch (Exception e) {
-            Timber.e(e, "initializing activity");
-        }
+//            if (getSupportActionBar() != null) {
+//                getSupportActionBar().setElevation(0);
+//            }
 
         EventBus.getDefault().register(this);
     }

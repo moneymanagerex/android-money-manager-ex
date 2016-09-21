@@ -382,7 +382,7 @@
   <string name="delete_others_selected_transaction">Êtes-vous sûr de vouloir effacer les %d opérations sélectionnées ?</string>
   <string name="categories">Catégories</string>
   <string name="payees">Bénéficiaires</string>
-  <string name="repeating_transactions">Opérations périodiques</string>
+  <string name="recurring_transactions">Opérations périodiques</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Nouveau compte</string>
   <string name="create_new_account">Créer nouveau compte</string>

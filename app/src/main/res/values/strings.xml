@@ -407,7 +407,7 @@
     <string name="delete_others_selected_transaction">Are you sure you want delete the %d selected transactions?</string>
     <string name="categories">Categories</string>
     <string name="payees">Payees</string>
-    <string name="repeating_transactions">Recurring Transactions</string>
+    <string name="recurring_transactions">Recurring Transactions</string>
     <string name="theme_holo_light">Holo Light</string>
     <string name="new_account">New Account</string>
     <string name="create_new_account">Create new account</string>

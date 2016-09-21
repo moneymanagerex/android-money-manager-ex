@@ -346,7 +346,7 @@
   <string name="delete_others_selected_transaction">האם אתה בטוח שברצונך למחוק את %d התנועות שנבחרו?</string>
   <string name="categories">קטגוריות</string>
   <string name="payees">מוטב</string>
-  <string name="repeating_transactions">תנועות מחזוריות</string>
+  <string name="recurring_transactions">תנועות מחזוריות</string>
   <string name="theme_holo_light">אור ההולוגרפי</string>
   <string name="new_account">חשבון חדש</string>
   <string name="amount_greater_or_equal">סכום גדול או שווה</string>

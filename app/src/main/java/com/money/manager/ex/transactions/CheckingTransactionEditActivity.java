@@ -22,8 +22,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -61,6 +65,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import icepick.State;
 import timber.log.Timber;
 
 /**
@@ -69,7 +74,7 @@ import timber.log.Timber;
 public class CheckingTransactionEditActivity
     extends BaseFragmentActivity {
 
-    public String mIntentAction;
+    @State public String mIntentAction;
 
     // bill deposits
     public int mRecurringTransactionId = Constants.NOT_SET;
@@ -86,10 +91,11 @@ public class CheckingTransactionEditActivity
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
 
-        showStandardToolbarActions();
-
         ITransactionEntity model = AccountTransaction.create();
         mCommonFunctions = new EditTransactionCommonFunctions(this, model, database);
+
+//        showStandardToolbarActions();
+        mCommonFunctions.initializeToolbar();
 
         // restore state, if any.
         if ((savedInstanceState != null)) {
@@ -122,6 +128,36 @@ public class CheckingTransactionEditActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+
+        UIHelper uiHelper = new UIHelper(this);
+
+        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
+        if (saveMenu != null) {
+            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
+                    .color(uiHelper.getPrimaryTextColor());
+            saveMenu.setIcon(check);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                return onActionCancelClick();
+            case R.id.saveMenuItem:
+                return onActionDoneClick();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -141,7 +177,7 @@ public class CheckingTransactionEditActivity
                 Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
         outState.putInt(EditTransactionActivityConstants.KEY_BDID_ID, mRecurringTransactionId);
 
-        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
+//        outState.putString(EditTransactionActivityConstants.KEY_ACTION, mIntentAction);
     }
 
     @Override
@@ -522,7 +558,7 @@ public class CheckingTransactionEditActivity
         mRecurringTransactionId = savedInstanceState.getInt(EditTransactionActivityConstants.KEY_BDID_ID);
 
         // action
-        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
+//        mIntentAction = savedInstanceState.getString(EditTransactionActivityConstants.KEY_ACTION);
     }
 
     /**

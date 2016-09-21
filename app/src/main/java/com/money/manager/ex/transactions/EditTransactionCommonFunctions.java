@@ -23,8 +23,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -98,7 +100,7 @@ public class EditTransactionCommonFunctions {
         super();
 
         mContext = parentActivity.getApplicationContext();
-        mParent = parentActivity;
+        activity = parentActivity;
         this.transactionEntity = transactionEntity;
         this.mDatabase = database;
     }
@@ -114,10 +116,8 @@ public class EditTransactionCommonFunctions {
     // Controls
     public EditTransactionViewHolder viewHolder;
 
-    // Other
-
     private Context mContext;
-    private BaseFragmentActivity mParent;
+    private BaseFragmentActivity activity;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
@@ -196,7 +196,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getDepositButtonIcon() {
-        return (FontIconView) mParent.findViewById(R.id.depositButtonIcon);
+        return (FontIconView) activity.findViewById(R.id.depositButtonIcon);
     }
 
     public Integer getDestinationCurrencyId() {
@@ -237,11 +237,11 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getTransferButtonIcon() {
-        return (FontIconView) mParent.findViewById(R.id.transferButtonIcon);
+        return (FontIconView) activity.findViewById(R.id.transferButtonIcon);
     }
 
     public FontIconView getWithdrawalButtonIcon() {
-        return (FontIconView) mParent.findViewById(R.id.withdrawalButtonIcon);
+        return (FontIconView) activity.findViewById(R.id.withdrawalButtonIcon);
     }
 
     public boolean hasPayee() {
@@ -289,7 +289,7 @@ public class EditTransactionCommonFunctions {
 
         // Adapter for account selectors.
 
-        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(mParent,
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(activity,
                 android.R.layout.simple_spinner_item, mAccountNameList);
 
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -399,7 +399,7 @@ public class EditTransactionCommonFunctions {
                 }
 
                 AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(), amount, currencyId);
-                dialog.show(mParent.getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                dialog.show(activity.getSupportFragmentManager(), dialog.getClass().getSimpleName());
 
                 // The result is received in onFinishedInputAmountDialog.
             }
@@ -427,9 +427,9 @@ public class EditTransactionCommonFunctions {
             public void onClick(View v) {
                 if (!isSplitSelected()) {
                     // select first category.
-                    Intent intent = new Intent(mParent, CategoryListActivity.class);
+                    Intent intent = new Intent(activity, CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
-                    mParent.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                    activity.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     // select split categories.
                     showSplitCategoriesForm(mSplitCategoryEntityName);
@@ -471,7 +471,7 @@ public class EditTransactionCommonFunctions {
                 if (new UIHelper(getContext()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
-                datePicker.show(mParent.getSupportFragmentManager(), DATEPICKER_TAG);
+                datePicker.show(activity.getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
 
@@ -492,8 +492,26 @@ public class EditTransactionCommonFunctions {
         });
     }
 
+    public void initializeToolbar() {
+//        activity.showStandardToolbarActions();
+
+        // String title
+//        ActionBar actionBar = activity.getSupportActionBar();
+//        actionBar.setTitle(title);
+
+        // Title
+//        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+//        collapsingToolbarLayout.setTitle(getString(R.string.budget));
+
+        // Back arrow / cancel.
+        activity.setDisplayHomeAsUpEnabled(true);
+
+        // todo: add Save button
+
+    }
+
     public void initNotesControls() {
-        viewHolder.edtNotes = (EditText) mParent.findViewById(R.id.editTextNotes);
+        viewHolder.edtNotes = (EditText) activity.findViewById(R.id.editTextNotes);
         if (!(TextUtils.isEmpty(transactionEntity.getNotes()))) {
             viewHolder.edtNotes.setText(transactionEntity.getNotes());
         }
@@ -521,9 +539,9 @@ public class EditTransactionCommonFunctions {
         this.viewHolder.txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mParent, PayeeActivity.class);
+                Intent intent = new Intent(activity, PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                mParent.startActivityForResult(intent, REQUEST_PICK_PAYEE);
+                activity.startActivityForResult(intent, REQUEST_PICK_PAYEE);
 
                 // the result is handled in onActivityResult
             }
@@ -580,7 +598,7 @@ public class EditTransactionCommonFunctions {
         mStatusValues = mContext.getResources().getStringArray(R.array.status_values);
 
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(mParent,
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(activity,
                 android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinStatus.setAdapter(adapterStatus);
@@ -615,7 +633,7 @@ public class EditTransactionCommonFunctions {
     public void initTransactionNumberControls() {
         // Transaction number
 
-        viewHolder.edtTransNumber = (EditText) mParent.findViewById(R.id.editTextTransNumber);
+        viewHolder.edtTransNumber = (EditText) activity.findViewById(R.id.editTextTransNumber);
         if (!TextUtils.isEmpty(transactionEntity.getTransactionNumber())) {
             viewHolder.edtTransNumber.setText(transactionEntity.getTransactionNumber());
         }
@@ -640,7 +658,7 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        viewHolder.btnTransNumber = (ImageButton) mParent.findViewById(R.id.buttonTransNumber);
+        viewHolder.btnTransNumber = (ImageButton) activity.findViewById(R.id.buttonTransNumber);
         viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -748,7 +766,7 @@ public class EditTransactionCommonFunctions {
 
     public boolean onActionCancelClick() {
         if (getDirty()) {
-            final MaterialDialog dialog = new MaterialDialog.Builder(mParent)
+            final MaterialDialog dialog = new MaterialDialog.Builder(activity)
                 .title(android.R.string.cancel)
                 .content(R.string.transaction_cancel_confirm)
                 .positiveText(R.string.discard)
@@ -831,7 +849,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public void onFinishedInputAmountDialog(int id, Money amount) {
-        View view = mParent.findViewById(id);
+        View view = activity.findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
 
         setDirty(true);
@@ -938,14 +956,14 @@ public class EditTransactionCommonFunctions {
                 if (areCurrenciesSame()) {
                     viewHolder.amountHeaderTextView.setText(getContext().getString(R.string.transfer_amount));
                 } else {
-                    viewHolder.amountHeaderTextView.setText(mParent.getString(R.string.withdrawal_from,
+                    viewHolder.amountHeaderTextView.setText(activity.getString(R.string.withdrawal_from,
                             this.AccountList.get(index).getName()));
                 }
             }
 
             index = mAccountIdList.indexOf(transactionEntity.getAccountToId());
             if (index >= 0) {
-                viewHolder.amountToHeaderTextView.setText(mParent.getString(R.string.deposit_to,
+                viewHolder.amountToHeaderTextView.setText(activity.getString(R.string.deposit_to,
                         this.AccountList.get(index).getName()));
             }
         }
@@ -1046,7 +1064,7 @@ public class EditTransactionCommonFunctions {
 
         // Style the selected button.
 
-        int backgroundSelected = ContextCompat.getColor(mParent, R.color.button_background_active);
+        int backgroundSelected = ContextCompat.getColor(activity, R.color.button_background_active);
         int foregroundSelected = ContextCompat.getColor(mContext, R.color.button_foreground_active);
 
         switch (transactionType) {
@@ -1071,7 +1089,7 @@ public class EditTransactionCommonFunctions {
 
     public boolean validateData() {
         boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        Core core = new Core(mParent);
+        Core core = new Core(activity);
 
         if (isTransfer) {
             if (transactionEntity.getAccountToId() == Constants.NOT_SET) {
@@ -1193,7 +1211,9 @@ public class EditTransactionCommonFunctions {
         return true;
     }
 
-    // Private
+    /*
+        Private
+    */
 
     private void addMissingAccountToSelectors(AccountRepository accountRepository, Integer accountId) {
         if (accountId == null || accountId <= 0) return;
@@ -1243,8 +1263,8 @@ public class EditTransactionCommonFunctions {
     }
 
     private void cancelActivity() {
-        mParent.setResult(Activity.RESULT_CANCELED);
-        mParent.finish();
+        activity.setResult(Activity.RESULT_CANCELED);
+        activity.finish();
     }
 
     /**
@@ -1348,12 +1368,12 @@ public class EditTransactionCommonFunctions {
 
             DialogFragment dialog = new YesNoDialog();
             Bundle args = new Bundle();
-            args.putString("title", mParent.getString(R.string.warning));
-            args.putString("message", mParent.getString(R.string.no_transfer_splits));
+            args.putString("title", activity.getString(R.string.warning));
+            args.putString("message", activity.getString(R.string.no_transfer_splits));
             args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
             dialog.setArguments(args);
 
-            dialog.show(mParent.getSupportFragmentManager(), "tag");
+            dialog.show(activity.getSupportFragmentManager(), "tag");
 
             // Dialog result is handled in onEvent handlers in the listeners.
 
@@ -1413,7 +1433,7 @@ public class EditTransactionCommonFunctions {
         Integer fromCurrencyId = getSourceCurrencyId();
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
-        mParent.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+        activity.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }
 
     /**
@@ -1421,7 +1441,7 @@ public class EditTransactionCommonFunctions {
      * that the records must be adjusted manually.
      */
     private void showSplitResetNotice() {
-        new MaterialDialog.Builder(mParent)
+        new MaterialDialog.Builder(activity)
                 .title(R.string.split_transaction)
                 .content(R.string.split_reset_notice)
                 .positiveText(android.R.string.ok)

@@ -372,7 +372,7 @@
   <string name="delete_others_selected_transaction">你確定要刪除所選的 %d 筆交易紀錄？</string>
   <string name="categories">類型</string>
   <string name="payees">受帳人</string>
-  <string name="repeating_transactions">定期交易</string>
+  <string name="recurring_transactions">定期交易</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新增帳戶</string>
   <string name="create_new_account">建立新帳戶</string>

@@ -383,7 +383,7 @@
   <string name="delete_others_selected_transaction">Είστε βέβαιοι ότι θέλετε να διαγράψετε την επιλεγμένη συναλλαγή;</string>
   <string name="categories">Κατηγορίες</string>
   <string name="payees">Δικαιούχοι</string>
-  <string name="repeating_transactions">Επαναλαμβανόμενες συναλλαγές</string>
+  <string name="recurring_transactions">Επαναλαμβανόμενες συναλλαγές</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Νέος λογαριασμός</string>
   <string name="create_new_account">Δημιουργία νέου λογαριασμού</string>

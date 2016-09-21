@@ -374,7 +374,7 @@
   <string name="delete_others_selected_transaction">Sind Sie sicher %d die ausgwählten Transaktionen zu löschen zu wollen?</string>
   <string name="categories">Kategorien</string>
   <string name="payees">Zahlungsempfänger/Zahler</string>
-  <string name="repeating_transactions">Wiederholte Transaktionen</string>
+  <string name="recurring_transactions">Wiederholte Transaktionen</string>
   <string name="theme_holo_light">Holo hell</string>
   <string name="new_account">Neues Konto</string>
   <string name="create_new_account">Einen neuen Account erstellen</string>

@@ -42,7 +42,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,7 +50,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
@@ -104,7 +102,6 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -1121,7 +1118,7 @@ public class MainActivity
 
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
-                .withText(getString(R.string.repeating_transactions))
+                .withText(getString(R.string.recurring_transactions))
                 .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)));
 
         // Budgets

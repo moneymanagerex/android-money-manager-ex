@@ -288,7 +288,7 @@ public class RecurringTransactionListFragment
 
     @Override
     public String getSubTitle() {
-        return getString(R.string.repeating_transactions);
+        return getString(R.string.recurring_transactions);
     }
 
     // private
