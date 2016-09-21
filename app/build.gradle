@@ -175,8 +175,8 @@ dependencies {
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
             , 'commons-io:commons-io:2.5'
             , 'com.afollestad.material-dialogs:core:0.8.6.1'
-//            , 'com.afollestad.material-dialogs:core:0.9.0.1'
-//            , 'com.afollestad.material-dialogs:commons:0.9.0.1'
+//            , 'com.afollestad.material-dialogs:core:0.9.0.2'
+//            , 'com.afollestad.material-dialogs:commons:0.9.0.2'
             , 'com.melnykov:floatingactionbutton:1.3.0'
             , 'com.github.pedrovgs:lynx:1.6'
             , 'com.astuetz:pagerslidingtabstrip:1.0.1'
@@ -205,14 +205,14 @@ dependencies {
             , 'io.reactivex:rxjava:1.2.0'
 //            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
             , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
-            , 'com.jakewharton.timber:timber:4.3.0'
+            , 'com.jakewharton.timber:timber:4.3.1'
             , 'com.jakewharton.rxbinding:rxbinding:0.4.0'    // RxBinding
 //            ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
-            , 'com.trello:rxlifecycle:0.7.0'         // RxLifecycle
+            , 'com.trello:rxlifecycle:0.8.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
             , 'com.mikepenz:iconics-core:2.8.1@aar' // also update in the icon module.
             , 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar' // MD icons
