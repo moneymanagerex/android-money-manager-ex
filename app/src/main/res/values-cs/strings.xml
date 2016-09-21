@@ -415,7 +415,6 @@
   <string name="discard">Zrušit</string>
   <string name="invalid_expression">Neplatný výraz</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Na Dropboxu je aktualizovaná databáze</string>
   <string name="due_today">Splatnost dnes</string>
   <string name="issues_tracker">Hlášení problémů na GitHubu</string>
   <string name="action_settings">Nastavení</string>
@@ -543,6 +542,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Na Dropboxu je aktualizovaná databáze</string>
   <string name="dropbox_file_ready_for_use">Databáze byla stažena</string>
   <string name="dropbox_open_database_downloaded">Pro použití stažené databáze se dotkněte Otevřít databázi</string>
   <!-- Synchronization -->
@@ -555,7 +555,7 @@
   <string name="every_6_hours">Každých 6 hodin</string>
   <string name="every_12_hours">Každých 12 hodin</string>
   <string name="never">Nikdy</string>
-  <string name="select_remote_file">Vyberte soubor z Dropboxu</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

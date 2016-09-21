@@ -439,7 +439,6 @@
   <string name="discard">Hủy bỏ</string>
   <string name="invalid_expression">Từ ngữ không hợp lệ</string>
   <string name="send_me_logcat">Bản ghi danh mục</string>
-  <string name="dropbox_database_can_be_updted">Có một bản cập nhật của cơ sở dữ liệu trên Dropbox</string>
   <string name="due_today">Hôm nay đến hạn</string>
   <string name="issues_tracker">Theo dõi Vấn đề trên GitHub</string>
   <string name="action_settings">Thiết đặt</string>
@@ -578,6 +577,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Có một bản cập nhật của cơ sở dữ liệu trên Dropbox</string>
   <string name="dropbox_file_ready_for_use">Cơ sở dữ liệu của bạn đã được tải về</string>
   <string name="dropbox_open_database_downloaded">Để sử dụng cơ sở dữ liệu tải về, chạm vào Mở cơ sở dữ liệu</string>
   <!-- Synchronization -->
@@ -590,7 +590,7 @@
   <string name="every_6_hours">Mỗi 6 giờ</string>
   <string name="every_12_hours">Mỗi giờ 12</string>
   <string name="never">Không bao giờ</string>
-  <string name="select_remote_file">Chọn một tập tin từ Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

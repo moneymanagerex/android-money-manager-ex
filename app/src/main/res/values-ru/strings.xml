@@ -436,7 +436,6 @@
   <string name="discard">Не сохранять</string>
   <string name="invalid_expression">Недопустимое выражение</string>
   <string name="send_me_logcat">Отладка</string>
-  <string name="dropbox_database_can_be_updted">Есть обновление базы данных на Dropbox</string>
   <string name="due_today">Завершающиеся сегодня</string>
   <string name="issues_tracker">Система отслеживания проблем на сайте GitHub</string>
   <string name="action_settings">Настройки</string>
@@ -616,6 +615,7 @@
   <string name="quote_provider">Поставщик цен</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Есть обновление базы данных на Dropbox</string>
   <string name="dropbox_file_ready_for_use">Ваша база данных была загружена</string>
   <string name="dropbox_open_database_downloaded">Для работы с загруженной базой нажмите Открыть Базу</string>
   <!-- Synchronization -->
@@ -629,7 +629,7 @@
   <string name="every_12_hours">Каждые 12 часов</string>
   <string name="never">Никогда не</string>
   <string name="dropbox_empty_folder">Папка Dropbox/Apps/Money Manager Ex Mobile пустая. Если ранее программа MoneyManagerEx использовалась - просто скопируйте файл с базой данный программы в эту папку на компьютере, после чего сделайте обновление.</string>
-  <string name="select_remote_file">Выберите файл из Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

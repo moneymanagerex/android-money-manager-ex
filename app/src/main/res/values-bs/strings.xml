@@ -67,6 +67,7 @@
   <string name="auto_sync_via_wifi">Auto-sinhronizuj samo preko WiFi</string>
   <string name="auto_sync_via_wifi_summary">Auto-sinhronizuj samo ako postoji WiFi konekcija.</string>
   <string name="sync_on_app_start">Sinhronizuj pri pokretanju aplikacije.</string>
+  <string name="sync_on_start">Sinhronizuj pri pokretanju</string>
   <!-- account -->
   <string name="account">Račun</string>
   <string name="account_list">Lista računa</string>
@@ -353,6 +354,7 @@
   <string name="summary_check_repeating_transaction">U koje vrijeme želite provjeriti da li su ponavljajuće transakcije dospjele? (inicijalno 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Zahvale</string>
+  <string name="libraries">Biblioteke</string>
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Top isplate: Posljednjih 30 dana</string>
@@ -446,7 +448,6 @@
   <string name="discard">Odbaci</string>
   <string name="invalid_expression">Izraz nije valjan</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Na Dropbox-u se nalazi novija verzija baze podataka</string>
   <string name="due_today">Dospijeva danas</string>
   <string name="issues_tracker">Pratite sugestije na Github-u</string>
   <string name="action_settings">Podešavanja</string>
@@ -525,6 +526,7 @@
   <string name="select_account">Odaberite račun</string>
   <string name="invalid_transaction_number">Broj transakcije nije validan</string>
   <string name="budgets">Budžeti</string>
+  <string name="budget">Budžet</string>
   <string name="budget_list">Lista budžeta</string>
   <string name="actual">Aktualni</string>
   <string name="base_currency_not_set">Osnovna valuta nije postavljena</string>
@@ -637,6 +639,7 @@
   <string name="exchange_rate_provider">Davatelj kursne liste</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Na Dropbox-u se nalazi novija verzija baze podataka</string>
   <string name="dropbox_file_ready_for_use">Vaša baza podataka je preuzeta</string>
   <string name="dropbox_open_database_downloaded">Da biste koristili preuzetu bazu podataka, dodirnite \'Otvori bazu podataka\'</string>
   <string name="click_to_select_file_dropbox">Dodirnite da odabirete datoteku koju želite koristiti sa Dropbox-a</string>
@@ -675,6 +678,7 @@
   <string name="every_30_minutes">Svakih 30 minuta</string>
   <string name="every_hour">Svakih sat vremena</string>
   <string name="every_2_hours">Svaka 2 sata</string>
+  <string name="every_3_hours">Svaka 3 sata</string>
   <string name="every_6_hours">Svakih 6 sati</string>
   <string name="every_12_hours">Svakih 12 sati</string>
   <string name="never">Nikada</string>
@@ -682,10 +686,20 @@
   <string name="title_sync_upload_immediate">Pošalji bazu podataka odmah nakon promjene</string>
   <string name="summary_sync_upload_immediate">Ova opcija omogućava automatsko slanje čim napravite promjenu u bazi podataka</string>
   <string name="dropbox_empty_folder">Mapa Dropbox/Apps/MoneyManagerEx Android je prazan. Ako već koristite MoneyManagerEx, kopirajte svoju bazu podataka u ovu mapu i zatim osvježite.</string>
-  <string name="select_remote_file">Odabir datoteke iz Dropbox-a</string>
+  <string name="select_remote_file">Odaberite datoteku na cloud servisu</string>
+  <string name="confirm_download">Da li želite preuzeti datoteku sada?</string>
+  <string name="file_exists">Datoteka postoji</string>
+  <string name="file_exists_long">Datoteka s istim imenom već postoji na uređaju. Da li želite prebrisati ovu datoteku?</string>
+  <string name="synchronization_disabled">Sinhronizacija je onemogućena.</string>
+  <string name="filenames_differ">Imena lokalne i udaljene datoteke se razlikuju. Prekidam sinhronizaciju.</string>
+  <string name="both_files_modified">I lokalna i udaljena datoteka baze podataka imaju izmjene!</string>
+  <string name="sync_conflict">Konflikt u sinhronizaciji</string>
+  <!-- Warnings -->
+  <string name="no_accounts_available_for_selection">Nema računa dostupnih za odabir. Molim prilagodite svoje preference za filtriranje računa ili označite neke račune kao omiljene.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Pogreška u dekodiranju unesene vrijednosti</string>
   <string name="remote_file_not_found">Udaljena datoteka nije pronađena</string>
+  <string name="error_checking_remote">Pogreška prilikom traženja promjena na serveru.</string>
   <!-- Select database screen -->
   <string name="intro_text">Da biste počeli koristiti Money Manager Ex trebate imati bazu podataka gdje će vaši podaci biti spremljeni. Molim odaberite jednu od opcija ispod.</string>
   <string name="intro_create_db">Možete kreirati novu datoteku i inicijalne preference.</string>
@@ -697,4 +711,5 @@
   <string name="create_db_info_1">Standardna lokacija baze podataka je:</string>
   <!-- Settings -->
   <string name="per_database_settings">Po bazi podataka</string>
+  <string name="save">Spremi</string>
 </resources>

@@ -428,7 +428,6 @@
   <string name="discard">放棄</string>
   <string name="invalid_expression">運算式有誤</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Dropbox 裡的資料庫有更新</string>
   <string name="due_today">今天到期</string>
   <string name="issues_tracker">GitHub 問題追蹤區</string>
   <string name="action_settings">設定</string>
@@ -570,6 +569,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Dropbox 裡的資料庫有更新</string>
   <string name="dropbox_file_ready_for_use">您的資料庫已被下載</string>
   <string name="dropbox_open_database_downloaded">若要使用資料庫下載，點擊開啟資料庫</string>
   <!-- Synchronization -->
@@ -582,7 +582,7 @@
   <string name="every_6_hours">每隔 6 小時</string>
   <string name="every_12_hours">每隔 12 小時</string>
   <string name="never">永遠不要</string>
-  <string name="select_remote_file">從 Dropbox 選擇一個檔案</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

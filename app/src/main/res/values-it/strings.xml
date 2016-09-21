@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Una applicazione semplice e facile da usare per gestire finanze personali, conti bancari, budget familiare, etc.</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">Generale</string>
+  <string name="preferences_perdatabase">Per Database</string>
   <string name="preferences_dispaly">Look &amp; Feel</string>
   <string name="preferences_behaviour">Comportamento</string>
   <string name="base_currency">Valuta base</string>
@@ -62,6 +64,9 @@
   <string name="summary_show_tutorial">Visualizza tutorial al prossimo avvio?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtra selezioni</string>
   <string name="preferences_behaviour_focus_filter_summary">Nelle selezioni si focalizza sul filtro. Diversamente scorre fra le selezioni disponibili.</string>
+  <string name="auto_sync_via_wifi">Sincronizzazione automatica solo su WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Sincronizza automaticamente solo con collegamento WiFi attivo.</string>
+  <string name="sync_on_app_start">Sincronizza all\'avvio dell\'applicazione.</string>
   <!-- account -->
   <string name="account">Conto</string>
   <string name="account_list">Elenco dei Conti</string>
@@ -441,7 +446,6 @@
   <string name="discard">Abbandona</string>
   <string name="invalid_expression">Espressione non valida</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">C\'è un aggiornamento del database su Dropbox</string>
   <string name="due_today">Scade oggi</string>
   <string name="issues_tracker">Issues Tracker on GitHub</string>
   <string name="action_settings">Impostazioni</string>
@@ -452,6 +456,7 @@
   <string name="tutorial_overview_1">Rapida panoramica sui bilanci, budgets e resoconti con personalizzazioni.</string>
   <string name="global">Globale</string>
   <string name="tutorial_global_1">Svariate valute e lingue. Open Source. Unisciti al nostro team di traduzione.</string>
+  <string name="tutorial_sync_1">Supporto per piattaforme multiple, sincronizzazione con servizi Cloud. Importazione ed esportazione dei dati in altre applicazioni.</string>
   <string name="transactions">Operazioni</string>
   <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Operazioni ricorrenti con promemoria.</string>
   <string name="split_category">-Categoria Suddivisa-</string>
@@ -623,6 +628,7 @@
   <string name="active_currencies">Valute attive</string>
   <string name="inactive_currencies">Valute inattive</string>
   <string name="all_currencies">Tutte le valute</string>
+  <string name="show_only_used">Visualizza solo utilizzati</string>
   <!-- Investment -->
   <string name="portfolio">Portafoglio</string>
   <string name="change_provider">Cambia provider</string>
@@ -630,8 +636,22 @@
   <string name="exchange_rate_provider">Provider dei tassi di cambio</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">C\'è un aggiornamento del database su Dropbox</string>
   <string name="dropbox_file_ready_for_use">Il database è stato scaricato</string>
   <string name="dropbox_open_database_downloaded">Per utilizzare il database scaricato, toccare Apri Database</string>
+  <string name="click_to_select_file_dropbox">Tocca per selezionare il file da utilizzare da Dropbox</string>
+  <string name="download_from_drobpox">Scarica da Dropbox</string>
+  <string name="summary_download_from_drobpox">Tocca per scaricare manualmente il file collegato dalla cartella Dropbox</string>
+  <string name="upload_to_drobpox">Carica su Dropbox</string>
+  <string name="summary_upload_to_drobpox">Tocca per caricare manualmente il file collegato nella cartella Dropbox</string>
+  <string name="dropbox_how_it_works">Come funziona Dropbox per Money Manager Ex\?</string>
+  <string name="dropbox_link">Collega a Dropbox</string>
+  <string name="dropbox_unlink">Scollega da Dropbox</string>
+  <string name="dropbox_downloadProgress">Download da Dropbox. Attendere prego&#8230;</string>
+  <string name="dropbox_uploadProgress">Caricamento file su Dropbox. Attendere prego&#8230;</string>
+  <string name="dropbox_linkedFile">File di Dropbox</string>
+  <string name="dropbox_file_summary_all">File presente in Dropbox</string>
+  <string name="db_not_dropbox">Il database corrente non è sincronizzato. Per favore imposta la sincronizzazione con Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Sincronizzazione</string>
   <string name="sync_enabled">Sincronizzazione attivata</string>
@@ -662,11 +682,19 @@
   <string name="title_sync_upload_immediate">Carica immediatamente il database dopo la modifica</string>
   <string name="summary_sync_upload_immediate">Questa opzione consente di caricare il database automaticamente non appena lo modifichi</string>
   <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
-  <string name="select_remote_file">Selezionare un file da Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <string name="error_parsing_value">Errore di analisi del valore inserito</string>
   <string name="remote_file_not_found">File remoto non trovato</string>
   <!-- Select database screen -->
+  <string name="intro_text">Per iniziare a utilizzare Money Manager Ex, è necessario avere un file di database per memorizzare i dati. Si prega di selezionare una delle opzioni disponibili qui sotto.</string>
+  <string name="intro_create_db">Puoi creare un nuovo file e impostare le preferenze iniziali.</string>
+  <string name="intro_open_db">O puoi selezionare un file esistente dal tuo dispositivo.</string>
+  <string name="intro_sync">In alternativa, si può impostare la sincronizzazione con un servizio Cloud e scaricare il file di database dallo storage online per iniziare.</string>
   <!-- Create Database screen -->
+  <string name="select_language">Seleziona lingua</string>
+  <string name="run">Esegui Money Manager Ex</string>
+  <string name="create_db_info_1">Il percorso predefinito del database è:</string>
   <!-- Settings -->
+  <string name="per_database_settings">Per Database</string>
 </resources>

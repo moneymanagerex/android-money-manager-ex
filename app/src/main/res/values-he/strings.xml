@@ -439,7 +439,7 @@
   <string name="every_6_hours">כל 6 שעות</string>
   <string name="every_12_hours">כל 12 שעות</string>
   <string name="never">אף פעם</string>
-  <string name="select_remote_file">בחר קובץ מ- Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

@@ -431,7 +431,6 @@
   <string name="discard">Elvet</string>
   <string name="invalid_expression">Érvénytelen kifejezés</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Van egy frissített adatbázis a Dropbox-ban</string>
   <string name="due_today">Ma Esedékes</string>
   <string name="issues_tracker">Probléma követés a Github-on</string>
   <string name="action_settings">Beállítások</string>
@@ -587,6 +586,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Van egy frissített adatbázis a Dropbox-ban</string>
   <string name="dropbox_file_ready_for_use">Az adatbázis letöltése megtörtént</string>
   <string name="dropbox_open_database_downloaded">A letöltött adatbázis használatához válassza az Adatbázis megnyitása menüt</string>
   <!-- Synchronization -->
@@ -599,7 +599,7 @@
   <string name="every_6_hours">6 óránként</string>
   <string name="every_12_hours">12 óránként</string>
   <string name="never">Soha</string>
-  <string name="select_remote_file">Válasszon egy Dropbox állományt</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

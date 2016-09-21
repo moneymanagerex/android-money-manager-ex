@@ -60,6 +60,7 @@
   <string name="summary_show_tutorial">Zeige Tutorium beim nächsten Programmaufruf?</string>
   <string name="preferences_behaviour_focus_filter_title">Voreinstellung_Verhalten_Fokus_Filter_Titel</string>
   <string name="preferences_behaviour_focus_filter_summary">Fokus auf Filter in Selektoren. Ansonsten durchsuchen.</string>
+  <string name="sync_on_app_start">Synchronisiere beim Start</string>
   <!-- account -->
   <string name="account">Konto</string>
   <string name="account_list">Kontenliste</string>
@@ -427,7 +428,6 @@
   <string name="discard">Verwerfen</string>
   <string name="invalid_expression">Ungültiger Ausdruck</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Es gibt ein Update der Datenbank auf Dropbox</string>
   <string name="due_today">Heute fällig</string>
   <string name="issues_tracker">Issues Tracker on GitHub</string>
   <string name="action_settings">Einstellungen</string>
@@ -587,6 +587,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Es gibt ein Update der Datenbank auf Dropbox</string>
   <string name="dropbox_file_ready_for_use">Deine Datenbank is heruntergeladen</string>
   <string name="dropbox_open_database_downloaded">Um die heruntergeladene Datenbank zu benutzen, auf Datenbank öffnen tippen</string>
   <!-- Synchronization -->
@@ -599,7 +600,7 @@
   <string name="every_6_hours">Alle 6 Stunden</string>
   <string name="every_12_hours">Alle 12 Stunden</string>
   <string name="never">Nie</string>
-  <string name="select_remote_file">Wählen Sie eine Datei von Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

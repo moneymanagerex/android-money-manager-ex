@@ -431,7 +431,6 @@
   <string name="discard">Відмінити</string>
   <string name="invalid_expression">Недопустимий вираз</string>
   <string name="send_me_logcat">Logcat (лог системи)</string>
-  <string name="dropbox_database_can_be_updted">Є оновлення бази даних на Dropbox</string>
   <string name="due_today">Закінчується сьогодні</string>
   <string name="issues_tracker">Відстежувати питання на GitHub</string>
   <string name="action_settings">Налаштування</string>
@@ -587,6 +586,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Є оновлення бази даних на Dropbox</string>
   <string name="dropbox_file_ready_for_use">База даних була завантажена</string>
   <string name="dropbox_open_database_downloaded">Для використання завантаженої бази даних потрібно натиснути \"Відкрити базу даних\"</string>
   <!-- Synchronization -->
@@ -599,7 +599,7 @@
   <string name="every_6_hours">Кожні 6 годин</string>
   <string name="every_12_hours">Кожні 12 годин</string>
   <string name="never">Ніколи</string>
-  <string name="select_remote_file">Виберіть файл з Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

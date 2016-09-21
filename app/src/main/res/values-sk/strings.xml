@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Jednoduchá a ľahko použiteľná aplikácia na správu osobných financií, bankových účtov, rodinného rozpočtu a tak ďalej.</string>
@@ -62,6 +63,9 @@
   <string name="summary_show_tutorial">Zobraziť sprievodcu pri ďalšom spustení?</string>
   <string name="preferences_behaviour_focus_filter_title">Filter výberu</string>
   <string name="preferences_behaviour_focus_filter_summary">Nastaví filter výberu. Inak zobrazí všetko.</string>
+  <string name="auto_sync_via_wifi">Automatická synchronizácia len cez WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Automaticky synchronizovať len cez WiFi pripojenie.</string>
+  <string name="sync_on_app_start">Synchronizovať pri štarte.</string>
   <!-- account -->
   <string name="account">Účet</string>
   <string name="account_list">Zoznam účtov</string>
@@ -128,6 +132,7 @@
   <string name="status">Stav</string>
   <string name="status_reconciled">Overené</string>
   <string name="status_void">Neplatné</string>
+  <string name="status_follow_up">Nasleduj</string>
   <string name="status_duplicate">Duplikovať</string>
   <string name="status_none">Žiadny</string>
   <string name="transfer">Prevod</string>
@@ -233,6 +238,8 @@
   <string name="notification_repeating_transaction_expired">Máte opakujúce sa transakcie po splatnosti</string>
   <string name="notification_click_to_check_repeating_transaction">Dotykom skontrolujte transakcie po splatnosti</string>
   <string name="num_repeating_transaction_expired">Počet opakujúcich sa transakcií po splatnosti: %1$d</string>
+  <string name="skip">Preskočiť</string>
+  <string name="enter">Zadajte</string>
   <!-- 20121121 -->
   <string name="send_feedback">Pošlite svoj názor</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -394,6 +401,9 @@
   <string name="show_chart">Zobraziť graf</string>
   <string name="add_transaction">Pridať transakciu</string>
   <string name="welcome_header">Vitajte v MoneyManagerEx!</string>
+  <string name="welcome_body">Všetky transakcie v MoneyManagerEx spadajú pod účty.\n\nAktuálne nemáte žiadne viditeľné účty. Prosím upravte filter viditeľných účtov v Nastavení alebo\n\nvytvorte nový účet.</string>
+  <string name="welcome_body_dropbox">Ak už používate aplikáciu MoneyManagerEx na Windows, Mac Os nebo Linuxe, môžete využiť vzájomnú synchronizáciu databáz prostredníctvom služby Dropbox</string>
+  <string name="configure_sync">Konfigurovať synchronizáciu</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Hľadanie podľa obsahu nie podľa začiatku textu</string>
   <string name="search_text_contain_summary">Hľadanie príjemcov, kategórií, mien a pod. podľa obsahu a nie podľa začiatočných znakov</string>
@@ -427,11 +437,11 @@
   <string name="montly_last_bussines_day">Mesačne (posledný pracovný deň)</string>
   <!-- languages -->
   <string name="locale_application">Jazyk aplikácie</string>
+  <string name="transaction_cancel_confirm">Ste si istý, že chcete zrušiť zmeny?</string>
   <string name="keep_editing">Pokračovať v upravovaní</string>
   <string name="discard">Zrušiť</string>
   <string name="invalid_expression">Neplatný výraz</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Na Dropboxe je aktualizácia databázy</string>
   <string name="due_today">Splatnosť dnes</string>
   <string name="issues_tracker">Hlásenie problému na GitHub</string>
   <string name="action_settings">Nastavenie</string>
@@ -606,10 +616,17 @@
   <string name="portfolio">Portfólio</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Na Dropboxe je aktualizácia databázy</string>
   <string name="dropbox_file_ready_for_use">Vaša databáza bola stiahnutá</string>
   <string name="dropbox_open_database_downloaded">Ak chcete použiť stiahnutú databázu, klepnite na Otvoriť databázu</string>
+  <string name="dropbox_link">Pripojiť k Dropboxu</string>
+  <string name="dropbox_unlink">Odpojiť od Dropboxu</string>
+  <string name="dropbox_downloadProgress">Sťahujem súbor z Dropboxu. Počkajte prosím&#8230;</string>
+  <string name="dropbox_uploadProgress">Nahrávam súbor na Dropbox. Počkajte prosím&#8230;</string>
+  <string name="dropbox_linkedFile">Dropbox súbor</string>
   <!-- Synchronization -->
   <string name="synchronization">Synchronizácia</string>
+  <string name="sync_enabled">Synchronizácia je povolená</string>
   <string name="every_5_minutes">Každých 5 minút</string>
   <string name="every_15_minutes">Každých 15 minút</string>
   <string name="every_30_minutes">Každých 30 minút</string>
@@ -619,7 +636,7 @@
   <string name="every_12_hours">Každých 12 hodín</string>
   <string name="never">Nikdy</string>
   <string name="dropbox_empty_folder">Adresár Dropbox/Apps/Money Manager Ex Mobile je prázdny. Ak už používate MoneyManagerEx, tak skopírujte databázu do tohto adresára na vašom počítači a potom vykonajte aktualizáciu.</string>
-  <string name="select_remote_file">Vyberte súbor z Dropboxu</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

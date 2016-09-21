@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManager Ex</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Una aplicación simple y fácil de utilizar para organizar las finanzas personales, las cuentas bancarias, el presupuesto familiar, etc.</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">Generales</string>
+  <string name="preferences_perdatabase">Por base de datos</string>
   <string name="preferences_dispaly">Apariencia</string>
   <string name="preferences_behaviour">Comportamiento</string>
   <string name="base_currency">Moneda base</string>
@@ -62,6 +64,9 @@
   <string name="summary_show_tutorial">Mostrar el tutorial la próxima vez?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtrar en los selectores</string>
   <string name="preferences_behaviour_focus_filter_summary">Enfocarse en filtrar en los selectores. De lo contrario, navegar.</string>
+  <string name="auto_sync_via_wifi">Auto sincronizar solo con Wi-Fi</string>
+  <string name="auto_sync_via_wifi_summary">Auto sincronizar solo al conectarse a Wi-Fi.</string>
+  <string name="sync_on_app_start">Sincronizar al iniciar la aplicación.</string>
   <!-- account -->
   <string name="account">Cuenta</string>
   <string name="account_list">Lista de las cuentas</string>
@@ -441,7 +446,6 @@
   <string name="discard">Descartar</string>
   <string name="invalid_expression">Expresión no válida</string>
   <string name="send_me_logcat">Depurar</string>
-  <string name="dropbox_database_can_be_updted">Hay una actualización de la base de datos en Dropbox</string>
   <string name="due_today">Vence hoy</string>
   <string name="issues_tracker">Seguimiento de problemas en GitHub</string>
   <string name="action_settings">Opciones</string>
@@ -452,6 +456,7 @@
   <string name="tutorial_overview_1">Panel de control de vista rápida, presupuestos, reportes personalizados.</string>
   <string name="global">Global</string>
   <string name="tutorial_global_1">Múltiples monedas e idiomas. Código Abierto. Únase a nuestro equipo de traducción.</string>
+  <string name="tutorial_sync_1">Soporte para múltiples plataformas, sincronización con múltiples servicios en la nube. Importe y exporte sus datos a otras aplicaciones.</string>
   <string name="transactions">Transacciones</string>
   <string name="tutorial_transactions_1">Depósitos, extracciones, transferencias. Transacciones recurrentes con recordatorios.</string>
   <string name="split_category">-Dividir Categoría-</string>
@@ -564,7 +569,9 @@
   <!-- asset allocation -->
   <string name="asset_allocation">Asignación de activos</string>
   <string name="asset_classes_empty">Sin clases de activos definidos. Para crear uno, pulse el botón verde.</string>
+  <string name="title_activity_asset_class_edit">Editar clase de Activos</string>
   <string name="asset_class_name">Nombre de la Clase de Activo</string>
+  <string name="asset_class">Clase de Activos</string>
   <string name="allocation">Asignación</string>
   <string name="current_allocation">Asignación actual</string>
   <string name="move_up">Subir</string>
@@ -592,6 +599,7 @@
   <string name="invalid_recurrence_type">Tipo de recurrencia inválida</string>
   <string name="account_not_found">Cuenta no encontrada</string>
   <string name="favourite">Favorito</string>
+  <string name="split_reset_notice">Tenga en cuenta que esta transacción está dividida en múltiples categorías. Debe eliminarlas manualmente.</string>
   <!-- budgets -->
   <string name="add_budget">Agregar Presupuesto</string>
   <string name="budget_name">Nombre del Presupuesto</string>
@@ -620,6 +628,7 @@
   <string name="active_currencies">Monedas vigentes</string>
   <string name="inactive_currencies">Monedas no operativas</string>
   <string name="all_currencies">Todas las monedas</string>
+  <string name="show_only_used">Mostrar solo lo usado</string>
   <!-- Investment -->
   <string name="portfolio">Cartera</string>
   <string name="change_provider">Cambiar proveedor</string>
@@ -627,8 +636,22 @@
   <string name="exchange_rate_provider">Proveedor de tipos de cambio</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Hay una actualización de la base de datos en Dropbox</string>
   <string name="dropbox_file_ready_for_use">Su base de datos ha sido descargada</string>
   <string name="dropbox_open_database_downloaded">Para usar la base de datos descargada, toque Abrir Base de datos</string>
+  <string name="click_to_select_file_dropbox">Toque para seleccionar archivo a usar en Dropbox</string>
+  <string name="download_from_drobpox">Descargar de Dropbox</string>
+  <string name="summary_download_from_drobpox">Toque para descargar manualmente el archivo vinculado desde la carpeta de Dropbox</string>
+  <string name="upload_to_drobpox">Subiendo a Dropbox</string>
+  <string name="summary_upload_to_drobpox">Toque para subir manualmente el archivo vinculado a Dropbox</string>
+  <string name="dropbox_how_it_works">¿Cómo funciona Dropbox para Money Manager Ex\?</string>
+  <string name="dropbox_link">Vincular con Dropbox</string>
+  <string name="dropbox_unlink">Desvincular con Dropbox</string>
+  <string name="dropbox_downloadProgress">Descargando archivo desde Dropbox. Por favor espere&#8230;</string>
+  <string name="dropbox_uploadProgress">Subiendo archivo a Dropbox. Por favor espere&#8230;</string>
+  <string name="dropbox_linkedFile">Archivo Dropbox</string>
+  <string name="dropbox_file_summary_all">Archivo en cualquier parte en Dropbox</string>
+  <string name="db_not_dropbox">Su base de datos actual no está sincronizada. Por favor active la sincronización.</string>
   <!-- Synchronization -->
   <string name="synchronization">Sincronización</string>
   <string name="sync_enabled">Sincronización habilitada</string>
@@ -659,11 +682,19 @@
   <string name="title_sync_upload_immediate">Subir la base de datos inmediatamente después de una modificación</string>
   <string name="summary_sync_upload_immediate">Esta opción permite guardar automáticamente cuando se cambia la base de datos</string>
   <string name="dropbox_empty_folder">La carpeta en Dropbox/Apps/Money Manager Ex Mobile está vacía. Si ya utilizas MoneyManagerEx copia tu base de datos a esta carpeta en tu ordenador, y después actualiza.</string>
-  <string name="select_remote_file">Seleccione un archivo en Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <string name="error_parsing_value">Error de escritura en el valor introducido</string>
   <string name="remote_file_not_found">No se encontró el archivo remoto</string>
   <!-- Select database screen -->
+  <string name="intro_text">Para comenzar a usar Money Manager Ex, necesita tener un archivo base de datos para almacenar sus datos. Por favor seleccione una de las opciones disponibles.</string>
+  <string name="intro_create_db">Usted puede crear un nuevo archivo y configurar sus preferencias iniciales.</string>
+  <string name="intro_open_db">O puede seleccionar un archivo existente de su dispositivo.</string>
+  <string name="intro_sync">Como alternativa, puede configurar la sincronización con un servicio de almacenamiento en la nube y descargar su archivo allí almacenado para empezar.</string>
   <!-- Create Database screen -->
+  <string name="select_language">Seleccione lenguaje</string>
+  <string name="run">Inicie Money Manager Ex</string>
+  <string name="create_db_info_1">La ubicación por defecto esta en:</string>
   <!-- Settings -->
+  <string name="per_database_settings">Por base de datos</string>
 </resources>

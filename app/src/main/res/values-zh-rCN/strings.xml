@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">一个简单易用的应用程序，它主要是用来管理个人财务、银行帐户以及家庭预算。</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">通用设置</string>
+  <string name="preferences_perdatabase">每个数据库</string>
   <string name="preferences_dispaly">外观 &amp; 色调</string>
   <string name="preferences_behaviour">表示方式</string>
   <string name="base_currency">基础货币</string>
@@ -62,6 +64,9 @@
   <string name="summary_show_tutorial">是否在下次运行时显示教程？</string>
   <string name="preferences_behaviour_focus_filter_title">在选择列表中显示搜索框</string>
   <string name="preferences_behaviour_focus_filter_summary">在选择列表中显示搜索框，取消选择将以浏览模式显示</string>
+  <string name="auto_sync_via_wifi">仅在连接至无线网络时自动同步</string>
+  <string name="auto_sync_via_wifi_summary">自动同步将仅在无线网络连接时进行</string>
+  <string name="sync_on_app_start">在应用程序启动时自动同步</string>
   <!-- account -->
   <string name="account">账户</string>
   <string name="account_list">账户列表</string>
@@ -94,7 +99,7 @@
   <string name="edit_payeeName">编辑收款人</string>
   <string name="delete_payee">删除收款人</string>
   <string name="payee">收款人</string>
-  <string name="select_payee">选择收款人</string>
+  <string name="select_payee">请选择收款人</string>
   <string name="payee_empty_list">没有找到可用的收款人。轻触绿色加号按钮可新建一个收款人。</string>
   <string name="from">从</string>
   <string name="db_payee_update_failed">更新收款人失败</string>
@@ -189,7 +194,7 @@
   <string name="today">今天</string>
   <string name="last7days">最近七天</string>
   <string name="last15days">最近两周</string>
-  <string name="current_month">当月</string>
+  <string name="current_month">本月</string>
   <string name="current_year">今年</string>
   <string name="future_transactions">未来交易</string>
   <string name="show_transaction">显示多久之内的交易记录</string>
@@ -227,6 +232,7 @@
   <string name="repeats">交易周期</string>
   <string name="occurs">交易周期</string>
   <string name="payments_left">剩余付款</string>
+  <string name="payments_left_required">需要填入剩余付款金额</string>
   <string name="due_date_required">到期日期是必需的</string>
   <string name="error_next_occurrence_not_populate">请选择下一个周期</string>
   <string name="enter_next_occurrence">确认下次交易</string>
@@ -235,6 +241,8 @@
   <string name="notification_repeating_transaction_expired">有到期的周期性交易</string>
   <string name="notification_click_to_check_repeating_transaction">轻触以检查到期的交易</string>
   <string name="num_repeating_transaction_expired">%1$d 周期性交易到期</string>
+  <string name="skip">跳过</string>
+  <string name="enter">回车</string>
   <!-- 20121121 -->
   <string name="send_feedback">发送反馈和建议</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -270,7 +278,7 @@
   <string name="last_year">上一年度</string>
   <!-- 20130106 -->
   <!--<string name="result">Result</string>-->
-  <string name="number_transaction_found">交易次数：%1$d</string>
+  <string name="number_transaction_found">交易次数: %1$d</string>
   <!-- 20130108 -->
   <string name="date_format">日期格式</string>
   <string name="financial_year_start_day">会计年度：起始日</string>
@@ -332,7 +340,7 @@
   <string name="summary_application_font">选择程序文字的显示字体</string>
   <string name="title_application_font_size">字号</string>
   <string name="summary_application_font_size">选择程序文字的显示字号</string>
-  <string name="micro">微小</string>
+  <string name="micro">极小</string>
   <string name="small">小</string>
   <string name="Default">默认</string>
   <string name="medium">中</string>
@@ -438,7 +446,6 @@
   <string name="discard">放弃编辑</string>
   <string name="invalid_expression">表达式无效</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Dropbox 上的数据库有一个更新</string>
   <string name="due_today">今天到期</string>
   <string name="issues_tracker">访问 GitHub 上的问题讨论区</string>
   <string name="action_settings">设置</string>
@@ -449,6 +456,7 @@
   <string name="tutorial_overview_1">快速浏览仪主页，预算，和自定义报告。</string>
   <string name="global">全球</string>
   <string name="tutorial_global_1">多种货币和语言。开放源码软件。加入我们的翻译团队。</string>
+  <string name="tutorial_sync_1">支持多平台，多云端同步。您可以便捷地将数据导入导出到其他应用程序中。</string>
   <string name="transactions">交易</string>
   <string name="tutorial_transactions_1">存款、 取款、 转账。带有提醒的周期性交易。</string>
   <string name="split_category">-拆分类目-</string>
@@ -462,6 +470,8 @@
   <string name="custom_dates">自定义日期</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">在统计面板上隐藏已核对的金额</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">不显示已核对金额</string>
+  <string name="pref_transaction_sort_by_type_summary">按交易类型配置日常交易(收入，支出，转账)</string>
+  <string name="pref_transaction_sort_by_type_title">按类型排序交易</string>
   <string name="warning">警告</string>
   <string name="no_transfer_splits">切换到转账之后，现有的类目拆分记录将会丢失，您确认要继续此操作吗？</string>
   <string name="qif_export">Qif Export</string>
@@ -550,16 +560,18 @@
   <string name="commission">佣金</string>
   <string name="value">市值</string>
   <string name="view_transactions">查看交易记录</string>
-  <string name="error_downloading_symbol">下载价格时发生错误</string>
+  <string name="error_downloading_symbol">下载汇率时发生错误</string>
   <string name="error_updating_rates">更新汇率时出错</string>
-  <string name="error_no_price_found_for_symbol">无此代码价格</string>
+  <string name="error_no_price_found_for_symbol">无此币种汇价</string>
   <string name="other">其他</string>
   <string name="cleared">已清除</string>
   <string name="delete_success">已删除</string>
   <!-- asset allocation -->
   <string name="asset_allocation">资产配置</string>
   <string name="asset_classes_empty">未定义可用的资产类别。轻触绿色加号按钮可新建一个资产类别。</string>
+  <string name="title_activity_asset_class_edit">编辑资产类别</string>
   <string name="asset_class_name">资产类别名称</string>
+  <string name="asset_class">资产类别</string>
   <string name="allocation">分配</string>
   <string name="current_allocation">当前分配</string>
   <string name="move_up">向上移动</string>
@@ -587,6 +599,7 @@
   <string name="invalid_recurrence_type">重复类型无效</string>
   <string name="account_not_found">未找到账户</string>
   <string name="favourite">喜爱</string>
+  <string name="split_reset_notice">请注意，此项交易有多个分类目。您需要手动移除这些分类目。</string>
   <!-- budgets -->
   <string name="add_budget">新建预算</string>
   <string name="budget_name">预算名称</string>
@@ -615,14 +628,30 @@
   <string name="active_currencies">启用的币种</string>
   <string name="inactive_currencies">停用的币种</string>
   <string name="all_currencies">所有货币</string>
+  <string name="show_only_used">仅显示已使用</string>
   <!-- Investment -->
   <string name="portfolio">组合</string>
   <string name="change_provider">更改服务商</string>
   <string name="quote_provider">引用提供程序</string>
+  <string name="exchange_rate_provider">汇率提供商</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Dropbox 上的数据库有一个更新</string>
   <string name="dropbox_file_ready_for_use">您的数据库已被下载</string>
   <string name="dropbox_open_database_downloaded">轻触以打开已下载的数据库</string>
+  <string name="click_to_select_file_dropbox">轻触屏幕选择一个需要使用的 Dropbox 文件</string>
+  <string name="download_from_drobpox">从 Dropbox 下载</string>
+  <string name="summary_download_from_drobpox">轻触以从 Dropbox 文件夹手动下载相关联的文件</string>
+  <string name="upload_to_drobpox">上传到 Dropbox</string>
+  <string name="summary_upload_to_drobpox">轻触以将文件手动上传至 Dropbox 文件夹</string>
+  <string name="dropbox_how_it_works">Dropbox 是如何在 Money Manager Ex 中工作的？</string>
+  <string name="dropbox_link">链接到 Dropbox</string>
+  <string name="dropbox_unlink">取消与 Dropbox 的链接</string>
+  <string name="dropbox_downloadProgress">正在将文件从Dropbox下载到本地 请稍候&#8230;</string>
+  <string name="dropbox_uploadProgress">正在将文件上传至 Dropbox 请稍候</string>
+  <string name="dropbox_linkedFile">Dropbox 文件</string>
+  <string name="dropbox_file_summary_all">Dropbox 中任意位置的文件</string>
+  <string name="db_not_dropbox">您当前的数据未被同步。请设置 Dropbox 同步。</string>
   <!-- Synchronization -->
   <string name="synchronization">同步</string>
   <string name="sync_enabled">启用同步</string>
@@ -653,9 +682,19 @@
   <string name="title_sync_upload_immediate">更改后立即上传数据库</string>
   <string name="summary_sync_upload_immediate">选中此选项后数据库一有变化则立即自动上传</string>
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android 文件夹下没有文件。如果您已经使用计算机将数据库上传至此文件夹，请稍后刷新重试。</string>
-  <string name="select_remote_file">从 Dropbox 选择一个文件</string>
+  <!-- Warnings -->
   <!-- Errors -->
+  <string name="error_parsing_value">解析输入值时出现错误</string>
+  <string name="remote_file_not_found">找不到远程文件</string>
   <!-- Select database screen -->
+  <string name="intro_text">在开始使用 Money Manager Ex 之前，您需要有一个数据库来存放您的数据。请从下列选项中任选一个。</string>
+  <string name="intro_create_db">您可以创建一个新文件，并使用默认设置。</string>
+  <string name="intro_open_db">或者您也可以选择设备中已有的数据库。</string>
+  <string name="intro_sync">另外，您也可以设置与云存储同步数据，并从云存储中下载您的数据库。</string>
   <!-- Create Database screen -->
+  <string name="select_language">请选择语言</string>
+  <string name="run">启动 Money Manager Ex</string>
+  <string name="create_db_info_1">默认数据库的位置是︰</string>
   <!-- Settings -->
+  <string name="per_database_settings">每个数据库</string>
 </resources>

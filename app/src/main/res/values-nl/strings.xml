@@ -436,7 +436,6 @@
   <string name="discard">Annuleer</string>
   <string name="invalid_expression">Ongeldige expressie</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Er is een update van de database beschikbaar op Dropbox</string>
   <string name="due_today">Vervaldatum is vandaag</string>
   <string name="issues_tracker">Problemen volgen op  GitHub</string>
   <string name="action_settings">Instellingen</string>
@@ -598,6 +597,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Er is een update van de database beschikbaar op Dropbox</string>
   <string name="dropbox_file_ready_for_use">Je databank is gedownload</string>
   <string name="dropbox_open_database_downloaded">Om de gedownloade databank te gebruiken, druk je op Open databank</string>
   <!-- Synchronization -->
@@ -610,7 +610,7 @@
   <string name="every_6_hours">Elke 6 uur</string>
   <string name="every_12_hours">Elke 12 uur</string>
   <string name="never">Nooit</string>
-  <string name="select_remote_file">Selecteer een bestand in Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

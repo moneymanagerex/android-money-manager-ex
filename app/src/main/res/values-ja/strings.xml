@@ -446,7 +446,6 @@
   <string name="discard">破棄</string>
   <string name="invalid_expression">式が正しくありません</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Dropbox にデータベースの更新があります</string>
   <string name="due_today">今日中に完了</string>
   <string name="issues_tracker">GitHub 上の問題トラッカー</string>
   <string name="action_settings">設定</string>
@@ -637,6 +636,7 @@
   <string name="exchange_rate_provider">為替レート プロバイダー</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Dropbox にデータベースの更新があります</string>
   <string name="dropbox_file_ready_for_use">データベースがダウンロードされました</string>
   <string name="dropbox_open_database_downloaded">ダウンロードしたデータベースを使用するには、データベースを開くをタッチしてください</string>
   <string name="click_to_select_file_dropbox">タッチして、Dropbox から使用するファイルを選択</string>
@@ -682,7 +682,7 @@
   <string name="title_sync_upload_immediate">変更した直後にデータベースをアップロード</string>
   <string name="summary_sync_upload_immediate">このオプションで、データベースを変更するとすぐに自動的にアップロードすることができます。</string>
   <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android のフォルダーは空です。既に MoneyManagerEx を使用している場合は、コンピューターでこのフォルダーにデータベースをコピーしてから、更新してください。</string>
-  <string name="select_remote_file">Dropbox からファイルを選択</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <string name="error_parsing_value">入力値の解析時にエラー</string>
   <string name="remote_file_not_found">リモート ファイルが見つかりません</string>

@@ -308,7 +308,7 @@
   <string name="donate_bitcoin">Τώρα επίσης δεχόμαστε δωρεές με BitCoin</string>
   <string name="donate_license">Για λόγους αδειοδότησης της Google, δεν επιτρέπουμε να τοποθετείτε συνδέσμους δωρεάς απευθείας από το εσωτερικό της εφαρμογής.</string>
   <string name="donate_button_text">Κάντε Δωρεά</string>
-  <string name="homepage_button">Ανοίξτε την κεντρική σελίδα</string>
+  <string name="homepage_button">Άνοιγμα κεντρικής σελίδας</string>
   <!-- 20130225 -->
   <string name="android_sqlite_vesion">Εκδοση SQLite</string>
   <!-- 20130301 -->
@@ -320,7 +320,7 @@
   <string name="last_modified">Τελευταία τροποποίηση</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
   <string name="dont_show_again">Να μην εμφανιστεί ξανά</string>
-  <string name="open_database">Ανοίξτε τη βάση δεδομένων</string>
+  <string name="open_database">Άνοιγμα βάσης δεδομένων</string>
   <string name="synchronization_interval">Διάστημα συγχρονισμού</string>
   <string name="summary_synchronization_interval">Πόσο συχνά πρέπει να συγχρονίζει;</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
@@ -328,7 +328,7 @@
   <!-- 20130426 -->
   <string name="title_transaction_shown_balance">Εμφανίζει το υπόλοιπο για κάθε συναλλαγή</string>
   <string name="summary_transaction_shown_balance">Εμφανίζει το υπόλοιπο για κάθε συναλλαγή. Η επίδειξη της ισορροπίας θα μπορούσε να κάνει την εφαρμογή πιο αργή</string>
-  <string name="menu_open_database">Ανοίξτε τη βάση δεδομένων</string>
+  <string name="menu_open_database">Άνοιγμα βάσης δεδομένων</string>
   <string name="database">Βάση Δεδομένων</string>
   <string name="tips">Συμβουλές</string>
   <string name="title_application_font">Εφαρμογή γραμματοσειράς</string>
@@ -442,7 +442,6 @@
   <string name="discard">Απόρριψη</string>
   <string name="invalid_expression">Μη έγκυρη έκφραση</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Υπάρχει μια ενημερωμένη έκδοση της βάσης δεδομένων στο Dropbox</string>
   <string name="due_today">Λήγουν σήμερα</string>
   <string name="issues_tracker">Θέματα Tracker στο GitHub</string>
   <string name="action_settings">Ρυθμίσεις</string>
@@ -631,6 +630,7 @@
   <string name="exchange_rate_provider">Παροχείς ισοτιμιών</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Υπάρχει μια ενημερωμένη έκδοση της βάσης δεδομένων στο Dropbox</string>
   <string name="dropbox_file_ready_for_use">Η βάση δεδομένων σας έχει ληφθεί</string>
   <string name="dropbox_open_database_downloaded">Για να χρησιμοποιήσετε τη βάση δεδομένων που κατεβαίνει, ακουμπήστε την Ανοιχτή Βάση δεδομένων</string>
   <!-- Synchronization -->
@@ -663,7 +663,7 @@
   <string name="title_sync_upload_immediate">Αμεσο ανέβασμα της ΒΔ μετά από αλλαγή</string>
   <string name="summary_sync_upload_immediate">Αυτή η επιλογή επιτρέπει να ανεβάζετε αυτόματα τη βάση δεδομένων μόλις κάνετε κάποια αλλαγή</string>
   <string name="dropbox_empty_folder">Ο φάκελος Dropbox/Apps/Money Manager Ex Android είναι άδειος. Εάν χρησιμοποιείτε ήδη το MoneyManagerEx αντιγράψτε τη βάση δεδομένων σας σε αυτόν το φάκελο στον υπολογιστή σας, και αφότου ολοκληρώσετε κάντε ανανέωση.</string>
-  <string name="select_remote_file">Επιλέξτε ένα αρχείο από Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <string name="error_parsing_value">Σφάλμα κατά την ανάλυση της τιμής που εισάχθηκε</string>
   <string name="remote_file_not_found">Δεν βρέθηκε Απομακρυσμένο αρχείο</string>

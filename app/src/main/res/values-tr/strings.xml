@@ -415,7 +415,6 @@
   <string name="discard">İptal et</string>
   <string name="invalid_expression">Geçersiz ifade</string>
   <string name="send_me_logcat">Kayıt günlüğü</string>
-  <string name="dropbox_database_can_be_updted">Dropbox üzerindeki veritabanı için güncelleştirme mevcut</string>
   <string name="due_today">Bugün Son Gün</string>
   <string name="issues_tracker">GitHub üzerinde sorunları takip et</string>
   <string name="action_settings">Ayarlar</string>
@@ -531,6 +530,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Dropbox üzerindeki veritabanı için güncelleştirme mevcut</string>
   <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
   <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
   <!-- Synchronization -->
@@ -543,7 +543,7 @@
   <string name="every_6_hours">Her 6 saatte</string>
   <string name="every_12_hours">Her 12 Saatte</string>
   <string name="never">Hiç bir zaman</string>
-  <string name="select_remote_file">Dropbox\'tan bir dosya seç</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

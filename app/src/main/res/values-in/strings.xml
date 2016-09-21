@@ -397,7 +397,7 @@
   <string name="every_12_hours">Setiap 12 jam</string>
   <string name="never">Tidak pernah</string>
   <string name="dropbox_empty_folder">Folder di Dropbox/Apps/Money manajer Ex Android kosong. Jika Anda sudah menggunakan MoneyManagerEx salin database Anda ke folder ini di komputer Anda, dan setelah Anda melakukan proses refresh.</string>
-  <string name="select_remote_file">Pilih file dari Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

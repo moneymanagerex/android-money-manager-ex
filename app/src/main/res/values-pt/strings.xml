@@ -435,7 +435,6 @@
   <string name="discard">Sair</string>
   <string name="invalid_expression">Expressão inválida</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Há uma atualização da base de dados no Dropbox</string>
   <string name="due_today">Vencimentos hoje</string>
   <string name="issues_tracker">Rastreador de problemas no GitHub</string>
   <string name="action_settings">Definições</string>
@@ -611,6 +610,7 @@
   <string name="portfolio">Portfólio</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Há uma atualização da base de dados no Dropbox</string>
   <string name="dropbox_file_ready_for_use">A sua base de dados foi descarregada</string>
   <string name="dropbox_open_database_downloaded">Para usar a base de dados descarregada, toque em Abrir base de dados</string>
   <!-- Synchronization -->
@@ -630,7 +630,7 @@
   <string name="every_6_hours">Cada 6 horas</string>
   <string name="every_12_hours">Cada 12 horas</string>
   <string name="never">Nunca</string>
-  <string name="select_remote_file">Selecione um ficheiro do Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->

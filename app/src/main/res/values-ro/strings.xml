@@ -432,7 +432,6 @@
   <string name="discard">Anulează</string>
   <string name="invalid_expression">Expresie invalidă</string>
   <string name="send_me_logcat">Logcat</string>
-  <string name="dropbox_database_can_be_updted">Există o actualizare a bazei de date în Dropbox</string>
   <string name="due_today">Scadent azi</string>
   <string name="issues_tracker">Probleme cu Tracker on GitHub</string>
   <string name="action_settings">Setări</string>
@@ -590,6 +589,7 @@
   <!-- Investment -->
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
+  <string name="dropbox_database_can_be_updted">Există o actualizare a bazei de date în Dropbox</string>
   <string name="dropbox_file_ready_for_use">Baza ta de date a fost descărcată</string>
   <string name="dropbox_open_database_downloaded">Pentru a folosi baza de date descărcată, atinge Deschide Baza de date</string>
   <!-- Synchronization -->
@@ -602,7 +602,7 @@
   <string name="every_6_hours">La fiecare 6 ore</string>
   <string name="every_12_hours">La fiecare 12 ore</string>
   <string name="never">Niciodată</string>
-  <string name="select_remote_file">Selectează un fișier din Dropbox</string>
+  <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
   <!-- Create Database screen -->
