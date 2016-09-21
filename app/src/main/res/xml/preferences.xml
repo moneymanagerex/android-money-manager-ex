@@ -34,7 +34,7 @@
         android:title="@string/preferences_behaviour" />
     <Preference
         android:icon="@null"
-        android:key="@string/pref_dropbox_how_it_works"
+        android:key="@string/pref_synchronization"
         android:title="@string/synchronization" />
     <Preference
         android:icon="@null"

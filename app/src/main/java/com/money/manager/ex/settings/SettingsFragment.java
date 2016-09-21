@@ -128,9 +128,10 @@ public class SettingsFragment
         }
 
         // Synchronisation
-        final Preference dropboxPreference = findPreference(getString(R.string.pref_dropbox_how_it_works));
-        if (dropboxPreference != null) {
-            dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        final Preference syncPreference = findPreference(getString(R.string.pref_synchronization));
+        if (syncPreference != null) {
+            syncPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_sync));
+            syncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), SyncPreferencesActivity.class));
@@ -142,6 +143,7 @@ public class SettingsFragment
         //donate
         final Preference pDonate = findPreference(getString(PreferenceConstants.PREF_DONATE));
         if (pDonate != null) {
+            pDonate.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard));
             pDonate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -153,6 +155,7 @@ public class SettingsFragment
 
         final Preference infoPreference = findPreference(getString(PreferenceConstants.PREF_VERSION_NAME));
         if (infoPreference != null) {
+            pDonate.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_info_outline));
             infoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
