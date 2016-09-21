@@ -23,10 +23,14 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
+import com.money.manager.ex.core.UIHelper;
 
 import timber.log.Timber;
 
@@ -38,6 +42,8 @@ public class SettingsFragment
 
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
 
+    private UIHelper uiHelper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,8 @@ public class SettingsFragment
         // Per-Database preferences
         Preference perDbPreference = findPreference(getString(R.string.pref_per_database));
         if (perDbPreference != null) {
+            perDbPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings_applications));
+
             perDbPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -61,6 +69,7 @@ public class SettingsFragment
 
         final Preference lookAndFeelPreference = findPreference(getString(PreferenceConstants.PREF_LOOK_FEEL));
         if (lookAndFeelPreference != null) {
+            lookAndFeelPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_wallpaper));
             lookAndFeelPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -72,6 +81,7 @@ public class SettingsFragment
 
         final Preference behaviourPreference = findPreference(getString(R.string.pref_behaviour));
         if (behaviourPreference != null) {
+            behaviourPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_play_circle_outline));
             behaviourPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -83,6 +93,7 @@ public class SettingsFragment
 
         final Preference investmentPreference = findPreference(getString(R.string.pref_investment));
         if (investmentPreference != null) {
+            investmentPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_trending_up));
             investmentPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -94,6 +105,7 @@ public class SettingsFragment
 
         final Preference passcodePreference = findPreference(getString(PreferenceConstants.PREF_SECURITY));
         if (passcodePreference != null) {
+            passcodePreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_lock));
             passcodePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -105,6 +117,7 @@ public class SettingsFragment
 
         final Preference databasesPreference = findPreference(getString(PreferenceConstants.PREF_DATABASE));
         if (databasesPreference != null) {
+            databasesPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_storage));
             databasesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -187,23 +200,28 @@ public class SettingsFragment
         }
     }
 
+    private UIHelper getUiHelper() {
+        if (this.uiHelper == null) {
+            uiHelper = new UIHelper(getActivity());
+        }
+        return uiHelper;
+    }
+
     private void initGeneralSettings() {
         // General Settings
 
         final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
-        if (generalPreference != null) {
-            generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-//                    GeneralSettingsFragment fragment = new GeneralSettingsFragment();
-//                    ((SettingsActivity) getActivity()).setSettingFragment(fragment);
+        if (generalPreference == null) return;
 
-                    Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
-//                    startActivity(intent);
-                    startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
-                    return true;
-                }
-            });
-        }
+        generalPreference.setIcon(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_build));
+
+        generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
+                startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
+                return true;
+            }
+        });
     }
 }
