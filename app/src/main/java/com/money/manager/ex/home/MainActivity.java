@@ -1442,45 +1442,37 @@ public class MainActivity
 
     private void showReportsSelector(boolean isDarkTheme, String text) {
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
-        IconicsDrawable icon;
         UIHelper uiHelper = new UIHelper(this);
-        int iconId;
 
         // payee
-//        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
-        icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_insert_chart);
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
                 .withText(getString(R.string.payees))
-                .withIconDrawable(icon));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
 
         // where money goes
-        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
                 .withText(getString(R.string.menu_report_where_money_goes))
-                .withIconDrawable(getDrawableFromResource(iconId)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
 
         // where money comes from
-        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
                 .withText(getString(R.string.menu_report_where_money_comes_from))
-                .withIconDrawable(getDrawableFromResource(iconId)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
 
         // where money comes from
-        iconId = isDarkTheme ? R.drawable.ic_action_pie_chart_dark : R.drawable.ic_action_pie_chart_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
                 .withText(getString(R.string.categories))
-                .withIconDrawable(getDrawableFromResource(iconId)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
 
         // income vs. expenses
-        iconId = isDarkTheme ? R.drawable.ic_action_bargraph_dark : R.drawable.ic_action_bargraph_light;
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
                 .withText(getString(R.string.menu_report_income_vs_expenses))
-                .withIconDrawable(getDrawableFromResource(iconId)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)));
 
         // Asset Allocation Overview
         adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
                 .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(FontIconDrawable.inflate(this, R.xml.ic_pie_chart)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)));
 
         new MaterialDialog.Builder(this)
                 .title(text)
