@@ -155,7 +155,7 @@ public class SettingsFragment
 
         final Preference infoPreference = findPreference(getString(PreferenceConstants.PREF_VERSION_NAME));
         if (infoPreference != null) {
-            pDonate.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_info_outline));
+            infoPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_info_outline));
             infoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override

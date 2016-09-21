@@ -1141,7 +1141,7 @@ public class MainActivity
         // reports
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer))
                 .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
