@@ -57,7 +57,7 @@
                     android:hint="@string/account_name"
                     android:inputType="text"
                     android:maxLength="100"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- favourite, default -->
@@ -193,9 +193,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/account_number"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:maxLength="100"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Held at -->
@@ -238,9 +238,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/contact"
-                    android:inputType="text"
+                    android:inputType="textPersonName"
                     android:maxLength="100"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Access info -->
@@ -270,7 +270,7 @@
                     android:drawablePadding="@dimen/mmx_padding"
                     android:gravity="top|start"
                     android:hint="@string/notes"
-                    android:inputType="textMultiLine"
+                    android:inputType="textMultiLine|textCapSentences"
                     android:scrollHorizontally="false"
                     android:textCursorDrawable="@null"
                     app:iconLeft="@xml/ic_clipboard_small" />

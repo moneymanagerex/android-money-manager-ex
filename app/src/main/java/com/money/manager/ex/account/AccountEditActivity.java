@@ -250,25 +250,7 @@ public class AccountEditActivity
     }
 
     private void initializeControls() {
-        mViewHolder = new AccountEditViewHolder();
-
-        // Get controls from layout
-        mViewHolder.edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
-        mViewHolder.defaultAccountCheckbox = (CheckBox) findViewById(R.id.defaultAccountCheckbox);
-        mViewHolder.defaultAccountText = (RobotoTextView) findViewById(R.id.defaultAccountText);
-        mViewHolder.imageViewAccountFav = (FontIconView) findViewById(R.id.imageViewAccountFav);
-        mViewHolder.favouriteAccountTextView = (RobotoTextView) findViewById(R.id.favouriteAccountTextView);
-        mViewHolder.accountTypeSpinner = (Spinner) findViewById(R.id.spinnerAccountType);
-        mViewHolder.edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
-        mViewHolder.edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
-        mViewHolder.webSiteEditText = (EditText) findViewById(R.id.editTextWebsite);
-        mViewHolder.edtContact = (EditText) findViewById(R.id.editTextContact);
-        mViewHolder.edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
-        Spinner spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
-        mViewHolder.spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
-        mViewHolder.txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
-        mViewHolder.edtNotes = (EditText) findViewById(R.id.editTextNotes);
-        mViewHolder.txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
+        mViewHolder = new AccountEditViewHolder(this);
 
         // Initial balance.
 
@@ -305,14 +287,14 @@ public class AccountEditActivity
         String[] mAccountStatusItems = getResources().getStringArray(R.array.accountstatus_items);
         mAccountStatusValues = getResources().getStringArray(R.array.accountstatus_values);
         ArrayAdapter<String> adapterAccountStatus = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAccountStatusItems);
-        spinAccountStatus.setAdapter(adapterAccountStatus);
+        mViewHolder.spinAccountStatus.setAdapter(adapterAccountStatus);
         adapterAccountStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (!(TextUtils.isEmpty(mAccount.getStatus()))) {
             if (Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()) >= 0) {
-                spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()), true);
+                mViewHolder.spinAccountStatus.setSelection(Arrays.asList(mAccountStatusValues).indexOf(mAccount.getStatus()), true);
             }
         } else {
-            String selectedStatus = (String) spinAccountStatus.getSelectedItem();
+            String selectedStatus = (String) mViewHolder.spinAccountStatus.getSelectedItem();
             AccountStatuses status = AccountStatuses.get(selectedStatus);
             mAccount.setStatus(status);
         }
@@ -337,7 +319,7 @@ public class AccountEditActivity
             }
         });
 
-        spinAccountStatus.setOnItemSelectedListener(new OnItemSelectedListener() {
+        mViewHolder.spinAccountStatus.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if ((position >= 0) && (position <= mAccountStatusValues.length)) {
