@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.utils;
 
+import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.DatePicker;
@@ -33,6 +34,8 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Calendar;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 /**
  * Utilities for DateTime.
@@ -144,6 +147,11 @@ public class MmxDateTimeUtils {
 
     public MmxDateTimeUtils(Context context) {
         this.context = context;
+    }
+
+    @Inject
+    public MmxDateTimeUtils(MoneyManagerApplication app) {
+        this.context = app;
     }
 
     private Context context;

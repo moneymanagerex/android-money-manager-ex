@@ -30,9 +30,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.MoneyBundler;
@@ -53,6 +55,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import icepick.Icepick;
 import icepick.State;
 import info.javaperformance.money.Money;
@@ -74,11 +79,26 @@ public class EditPriceDialog
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
 
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+
     @State int mAccountId;
     @State String mUserDateFormat;
     @State(MoneyBundler.class) PriceDownloadedEvent mPrice;
 
     private EditPriceViewHolder viewHolder;
+    private Lazy<FormatUtilities> formatUtilitiesLazy;
+
+    public EditPriceDialog() {
+        super();
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
+
+        formatUtilitiesLazy = new Lazy<FormatUtilities>() {
+            @Override
+            public FormatUtilities get() {
+                return new FormatUtilities(getContext());
+            }
+        };
+    }
 
     @Override
     @NonNull
@@ -86,12 +106,7 @@ public class EditPriceDialog
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         } else {
-            mAccountId = getArguments().getInt(ARG_ACCOUNT);
-            String symbol = getArguments().getString(ARG_SYMBOL);
-            Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
-            String dateString = getArguments().getString(ARG_DATE);
-            DateTime date = DateTime.parse(dateString);
-            mPrice = new PriceDownloadedEvent(symbol, price, date);
+            createNewEntity();
         }
 
         // Create dialog.
@@ -170,10 +185,18 @@ public class EditPriceDialog
         Private
      */
 
+    private void createNewEntity() {
+        mAccountId = getArguments().getInt(ARG_ACCOUNT);
+        String symbol = getArguments().getString(ARG_SYMBOL);
+        Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
+        String dateString = getArguments().getString(ARG_DATE);
+        DateTime date = DateTime.parse(dateString);
+        mPrice = new PriceDownloadedEvent(symbol, price, date);
+    }
+
     private String getUserDateFormat() {
         if (TextUtils.isEmpty(mUserDateFormat)) {
-            MmxDateTimeUtils utils = new MmxDateTimeUtils(getContext());
-            mUserDateFormat = utils.getUserDatePattern();
+            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern();
         }
         return mUserDateFormat;
     }
@@ -245,7 +268,8 @@ public class EditPriceDialog
     }
 
     private void showCurrentPrice() {
-        viewHolder.amountTextView.setText(mPrice.price.toString());
+        String priceFormatted = formatUtilitiesLazy.get().format(mPrice.price, "0.00##");
+        viewHolder.amountTextView.setText(priceFormatted);
     }
 
     private void showDate() {

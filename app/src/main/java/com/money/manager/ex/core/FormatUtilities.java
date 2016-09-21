@@ -32,6 +32,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -132,6 +134,12 @@ public class FormatUtilities {
         return separator;
     }
 
+    public String format(Money value, String numberFormat) {
+//        DecimalFormat format = new DecimalFormat(numberFormat);
+        DecimalFormat formatter = new DecimalFormat(numberFormat);
+        return formatter.format(value.toDouble());
+    }
+
     /**
      * Formats the amount with the currency scale, decimal & group separators, prefix and suffix.
      *
@@ -194,6 +202,7 @@ public class FormatUtilities {
 //        Locale appLocale = MoneyManagerApplication.getInstance().getLocale();
 //        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(appLocale);
         String pattern = NumericPatternGenerator.getPattern(decimals);
+
         DecimalFormat formatter = new DecimalFormat(pattern);
 
         formatter.setMaximumFractionDigits(decimals);

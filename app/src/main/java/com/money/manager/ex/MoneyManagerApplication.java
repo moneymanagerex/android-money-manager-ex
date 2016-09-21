@@ -65,7 +65,7 @@ import timber.log.Timber;
 import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 /**
- * Here we define the parcel converter for Money type. It may not be used, though.
+ * Here we define the parcel converter for Money type.
  */
 @ParcelClasses(
     @ParcelClass(
