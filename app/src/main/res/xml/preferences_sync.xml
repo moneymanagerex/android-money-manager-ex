@@ -53,24 +53,6 @@
         android:key="@string/pref_remote_file"
         android:title="@string/remote_file" />
 
-    <!-- upload immediately -->
-    <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="true"
-        android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_upload_immediately"
-        android:summary="@string/summary_sync_upload_immediate"
-        android:title="@string/title_sync_upload_immediate" />
-
-    <!-- sync only on wi-fi -->
-    <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="false"
-        android:dependency="@string/pref_sync_enabled"
-        android:key="@string/pref_sync_via_wifi"
-        android:title="@string/auto_sync_via_wifi"
-        android:summary="@string/auto_sync_via_wifi_summary" />
-
     <!-- download -->
     <PreferenceScreen
         android:icon="@null"
@@ -86,6 +68,16 @@
         android:summary="@string/cloud_upload"
         android:title="@string/upload" />
 
+    <!-- upload immediately -->
+    <SwitchPreferenceCompat
+        android:icon="@null"
+        android:defaultValue="true"
+        android:dependency="@string/pref_sync_enabled"
+        android:key="@string/pref_upload_immediately"
+        android:summary="@string/summary_sync_upload_immediate"
+        android:title="@string/title_sync_upload_immediate" />
+
+    <!-- sync on start -->
     <SwitchPreferenceCompat
         android:title="@string/sync_on_start"
         android:summary="@string/sync_on_app_start"
@@ -93,6 +85,15 @@
         android:defaultValue="false"
         android:dependency="@string/pref_sync_enabled"
         android:icon="@null" />
+
+    <!-- sync only on wi-fi -->
+    <SwitchPreferenceCompat
+        android:icon="@null"
+        android:defaultValue="false"
+        android:dependency="@string/pref_sync_enabled"
+        android:key="@string/pref_sync_via_wifi"
+        android:title="@string/auto_sync_via_wifi"
+        android:summary="@string/auto_sync_via_wifi_summary" />
 
     <!-- log out -->
     <Preference
