@@ -35,6 +35,7 @@
         android:key="@string/pref_theme"
         android:title="@string/theme_application"/>
 
+    <!-- default status -->
     <ListPreference
         android:icon="@null"
         android:defaultValue=""
@@ -43,6 +44,7 @@
         android:key="@string/pref_default_status"
         android:title="@string/default_status" />
 
+    <!-- default payee -->
     <ListPreference
         android:icon="@null"
         android:defaultValue="N"
