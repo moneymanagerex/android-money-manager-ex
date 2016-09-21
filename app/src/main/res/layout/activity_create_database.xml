@@ -22,10 +22,10 @@
     android:id="@+id/activity_create_database"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/mmex_activity_vertical_margin"
-    android:paddingLeft="@dimen/mmex_activity_horizontal_margin"
-    android:paddingRight="@dimen/mmex_activity_horizontal_margin"
-    android:paddingTop="@dimen/mmex_activity_vertical_margin"
+    android:paddingBottom="@dimen/mmx_activity_vertical_margin"
+    android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
+    android:paddingRight="@dimen/mmx_activity_horizontal_margin"
+    android:paddingTop="@dimen/mmx_activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.money.manager.ex.home.CreateDatabaseActivity">
 
@@ -34,7 +34,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mmex_activity_vertical_margin">
+        android:layout_marginTop="@dimen/mmx_activity_vertical_margin">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/mmex_activity_vertical_margin"
+                android:layout_marginTop="@dimen/mmx_activity_vertical_margin"
                 android:visibility="invisible">
 
                 <com.mikepenz.iconics.view.IconicsImageView

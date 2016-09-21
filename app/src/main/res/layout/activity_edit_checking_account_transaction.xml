@@ -75,7 +75,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:drawablePadding="@dimen/mmex_padding"
+                        android:drawablePadding="@dimen/mmx_padding"
                         android:hint="@string/date"
                         android:textStyle="bold"
                         app:iconLeft="@xml/ic_calendar_small"

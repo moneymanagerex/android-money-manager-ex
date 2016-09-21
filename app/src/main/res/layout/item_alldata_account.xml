@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/mmex_margin"
+    android:layout_margin="@dimen/mmx_margin"
     android:orientation="vertical" >
 
     <com.money.manager.ex.view.RobotoTextView
@@ -34,7 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mmex_margin"
+        android:layout_margin="@dimen/mmx_margin"
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
@@ -54,7 +54,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/mmex_text_view_size_micro"
+                android:textSize="@dimen/mmx_text_view_size_micro"
                 app:typeface="roboto_light" />
 
             <com.money.manager.ex.view.RobotoTextView
@@ -64,7 +64,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/money_text_view_size_medium"
+                android:textSize="@dimen/mmx_text_view_size_medium"
                 app:typeface="roboto_light" />
 
             <com.money.manager.ex.view.RobotoTextView
@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/mmex_text_view_size_micro"
+                android:textSize="@dimen/mmx_text_view_size_micro"
                 app:typeface="roboto_light" />
         </LinearLayout>
 
@@ -82,8 +82,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/mmex_margin"
-            android:layout_marginRight="@dimen/mmex_margin"
+            android:layout_marginLeft="@dimen/mmx_margin"
+            android:layout_marginRight="@dimen/mmx_margin"
             android:layout_weight="1"
             android:orientation="vertical" >
 
@@ -107,7 +107,7 @@
                 android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textSize="@dimen/mmex_text_view_size_micro"
+                android:textSize="@dimen/mmx_text_view_size_micro"
                 android:textStyle="italic"
                 android:visibility="gone"
                 app:typeface="roboto_condensed_italic" />
@@ -127,7 +127,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical|right"
                 android:singleLine="true"
-                android:textSize="@dimen/mmex_text_view_size_micro"
+                android:textSize="@dimen/mmx_text_view_size_micro"
                 android:textStyle="italic"
                 app:typeface="roboto_condensed_italic" />
 
@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
                 android:gravity="center_vertical|right"
-                android:textSize="@dimen/mmex_text_view_size_micro"
+                android:textSize="@dimen/mmx_text_view_size_micro"
                 android:textStyle="italic"
                 android:visibility="gone"
                 app:typeface="roboto_condensed_italic" />

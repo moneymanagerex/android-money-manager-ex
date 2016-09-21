@@ -38,10 +38,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/mmex_margin_bottom_top"
-        android:layout_marginLeft="@dimen/mmex_margin"
-        android:layout_marginRight="@dimen/mmex_margin"
-        android:layout_marginTop="@dimen/mmex_margin_bottom_top"
+        android:layout_marginBottom="@dimen/mmx_margin_bottom_top"
+        android:layout_marginLeft="@dimen/mmx_margin"
+        android:layout_marginRight="@dimen/mmx_margin"
+        android:layout_marginTop="@dimen/mmx_margin_bottom_top"
         android:background="?attr/shape_white_background_shadow"
         android:orientation="vertical" >
 
@@ -49,8 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/mmex_padding"
-            android:paddingRight="@dimen/mmex_padding" >
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding" >
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewAccountName"
@@ -63,14 +63,14 @@
                 android:id="@+id/textViewRepeat"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/mmex_margin_bottom_top"
+                android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
                 android:textStyle="bold" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/mmex_margin_bottom_top"
+                android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
                 android:gravity="right"
                 android:textColor="?attr/holo_red_color_theme"
                 android:textStyle="bold" />
@@ -80,8 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/mmex_padding"
-            android:paddingRight="@dimen/mmex_padding" >
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding" >
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -146,15 +146,15 @@
             android:id="@+id/textViewCategorySub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/mmex_padding"
-            android:paddingRight="@dimen/mmex_padding" />
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding" />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/mmex_padding"
-            android:paddingRight="@dimen/mmex_padding"
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding"
             android:singleLine="true"
             android:textStyle="italic"
             android:visibility="gone" />

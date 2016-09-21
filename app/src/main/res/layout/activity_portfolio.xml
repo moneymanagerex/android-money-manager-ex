@@ -20,10 +20,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/mmex_activity_vertical_margin"
-    android:paddingLeft="@dimen/mmex_activity_horizontal_margin"
-    android:paddingRight="@dimen/mmex_activity_horizontal_margin"
-    android:paddingTop="@dimen/mmex_activity_vertical_margin"
+    android:paddingBottom="@dimen/mmx_activity_vertical_margin"
+    android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
+    android:paddingRight="@dimen/mmx_activity_horizontal_margin"
+    android:paddingTop="@dimen/mmx_activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.money.manager.ex.investment.PortfolioActivity">
 

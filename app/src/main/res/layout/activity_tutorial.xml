@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="@string/close"
             android:id="@+id/skipTextView"
-            android:textSize="@dimen/money_text_view_size_medium"
+            android:textSize="@dimen/mmx_text_view_size_medium"
             android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             android:layout_marginEnd="20dp"

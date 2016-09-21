@@ -20,10 +20,10 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:paddingLeft="@dimen/mmex_activity_horizontal_margin"
-              android:paddingRight="@dimen/mmex_activity_horizontal_margin"
-              android:paddingTop="@dimen/mmex_activity_vertical_margin"
-              android:paddingBottom="@dimen/mmex_activity_vertical_margin"
+              android:paddingLeft="@dimen/mmx_activity_horizontal_margin"
+              android:paddingRight="@dimen/mmx_activity_horizontal_margin"
+              android:paddingTop="@dimen/mmx_activity_vertical_margin"
+              android:paddingBottom="@dimen/mmx_activity_vertical_margin"
               tools:context="com.money.manager.ex.assetallocation.AssetClassEditFragment">
 
     <!--<ScrollView-->
@@ -68,7 +68,7 @@
                 android:id="@+id/nameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/mmex_padding"
+                android:drawablePadding="@dimen/mmx_padding"
                 android:gravity="top|start"
                 android:hint="@string/asset_class_name"
                 android:inputType="text"

@@ -19,10 +19,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingLeft="@dimen/mmex_padding"
-    android:paddingStart="@dimen/mmex_padding"
-    android:paddingEnd="@dimen/mmex_padding"
-    android:paddingRight="@dimen/mmex_padding"
+    android:paddingLeft="@dimen/mmx_padding"
+    android:paddingStart="@dimen/mmx_padding"
+    android:paddingEnd="@dimen/mmx_padding"
+    android:paddingRight="@dimen/mmx_padding"
     android:layout_height="@dimen/mmx_list_item_height"
     android:gravity="center_vertical">
 

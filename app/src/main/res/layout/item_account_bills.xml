@@ -73,7 +73,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="0"
-            android:textSize="@dimen/mmex_text_view_size_micro"/>
+            android:textSize="@dimen/mmx_text_view_size_micro"/>
     </LinearLayout>
 
 </LinearLayout>

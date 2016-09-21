@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -85,15 +84,15 @@ public class RobotoView {
     
     public static void setUserFontSize(Context context, String fontSize) {
     	if (fontSize.equalsIgnoreCase("micro")) {
-    		mUserFontSize = context.getResources().getDimension(R.dimen.mmex_text_view_size_micro);
+    		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_micro);
     	} else if (fontSize.equalsIgnoreCase("small")) {
-    		mUserFontSize = context.getResources().getDimension(R.dimen.money_text_view_size_small);
+    		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_small);
     	} else if (fontSize.equalsIgnoreCase("default")) {
     		mUserFontSize = MoneyManagerApplication.getTextSize();
     	} else if (fontSize.equalsIgnoreCase("medium")) {
-    		mUserFontSize = context.getResources().getDimension(R.dimen.money_text_view_size_medium);
+    		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_medium);
     	} else if (fontSize.equalsIgnoreCase("large")) {
-    		mUserFontSize = context.getResources().getDimension(R.dimen.money_text_view_size_large);
+    		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_large);
     	} else {
     		mUserFontSize = MoneyManagerApplication.getTextSize();
     	}

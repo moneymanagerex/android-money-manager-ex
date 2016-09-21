@@ -25,11 +25,11 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
 
 -->
 <resources>
-    <dimen name="mmex_text_view_size_micro">12sp</dimen>
-    <dimen name="money_text_view_size_small">14sp</dimen>
-    <dimen name="money_text_view_size_medium">18sp</dimen>
-    <dimen name="money_text_view_size_large">22sp</dimen>
-    <dimen name="money_text_view_size_header">16sp</dimen>
+    <dimen name="mmx_text_view_size_micro">12sp</dimen>
+    <dimen name="mmx_text_view_size_small">14sp</dimen>
+    <dimen name="mmx_text_view_size_medium">18sp</dimen>
+    <dimen name="mmx_text_view_size_large">22sp</dimen>
+    <dimen name="mmx_text_view_size_header">16sp</dimen>
 
     <dimen name="mmx_button_height">36dp</dimen>
 
@@ -40,10 +40,10 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <dimen name="mmx_activity_side_padding">16dp</dimen>
 
     <!-- default padding and margin -->
-    <dimen name="mmex_padding">4dp</dimen>
-    <dimen name="mmex_margin">6dp</dimen>
-    <dimen name="mmex_margin_bottom_top">3dp</dimen>
-    <dimen name="money_margin_top_textview_widget_edittext">-8dp</dimen>
+    <dimen name="mmx_padding">4dp</dimen>
+    <dimen name="mmx_margin">6dp</dimen>
+    <dimen name="mmx_margin_bottom_top">3dp</dimen>
+    <dimen name="mmx_margin_top_textview_widget_edittext">-8dp</dimen>
 
     <!-- font size amount binaryDialog -->
     <dimen name="input_dialog_text_size">32sp</dimen>
@@ -69,8 +69,8 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <dimen name="app_minimumsize_h">598.0dip</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="mmex_activity_horizontal_margin">16dp</dimen>
-    <dimen name="mmex_activity_vertical_margin">16dp</dimen>
+    <dimen name="mmx_activity_horizontal_margin">16dp</dimen>
+    <dimen name="mmx_activity_vertical_margin">16dp</dimen>
 
     <!-- font icons sizes -->
     <dimen name="fonticon_drawer">30sp</dimen>
@@ -80,9 +80,9 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <!-- Android Design Guidelines https://www.google.com/design/spec/components/lists.html#lists-specs -->
     <dimen name="mmx_list_item_height">48dp</dimen>
     <dimen name="mmx_list_item_height_dense">40dp</dimen>
-    <dimen name="mmex_listitem_padding_side">16dp</dimen>
-    <dimen name="mmex_list_padding_top">8dp</dimen>
-    <dimen name="mmex_list_padding_top_small">4dp</dimen>
+    <dimen name="mmx_listitem_padding_side">16dp</dimen>
+    <dimen name="mmx_list_padding_top">8dp</dimen>
+    <dimen name="mmx_list_padding_top_small">4dp</dimen>
 
     <!-- avatar with text and icon -->
     <dimen name="mmx_avatar_item_height">56dp</dimen>

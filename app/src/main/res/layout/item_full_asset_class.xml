@@ -21,8 +21,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/mmex_listitem_padding_side"
-    android:paddingRight="@dimen/mmex_listitem_padding_side"
+    android:paddingLeft="@dimen/mmx_listitem_padding_side"
+    android:paddingRight="@dimen/mmx_listitem_padding_side"
     android:animateLayoutChanges="true" >
 
     <android.support.v7.widget.LinearLayoutCompat

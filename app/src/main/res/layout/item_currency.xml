@@ -19,15 +19,15 @@
     android:id="@+id/row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/mmex_margin"
+    android:layout_margin="@dimen/mmx_margin"
     android:baselineAligned="false"
     android:orientation="horizontal"
     android:layout_gravity="center_vertical"
     android:minHeight="@dimen/mmx_list_item_height_dense"
-    android:paddingStart="@dimen/mmex_listitem_padding_side"
-    android:paddingLeft="@dimen/mmex_listitem_padding_side"
-    android:paddingRight="@dimen/mmex_listitem_padding_side"
-    android:paddingEnd="@dimen/mmex_listitem_padding_side" >
+    android:paddingStart="@dimen/mmx_listitem_padding_side"
+    android:paddingLeft="@dimen/mmx_listitem_padding_side"
+    android:paddingRight="@dimen/mmx_listitem_padding_side"
+    android:paddingEnd="@dimen/mmx_listitem_padding_side" >
 
     <!-- name -->
     <com.money.manager.ex.view.RobotoTextViewFontIcon
@@ -36,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/mmex_margin"
-        android:layout_marginEnd="@dimen/mmex_margin"
+        android:layout_marginRight="@dimen/mmx_margin"
+        android:layout_marginEnd="@dimen/mmx_margin"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceListItemSmall" />

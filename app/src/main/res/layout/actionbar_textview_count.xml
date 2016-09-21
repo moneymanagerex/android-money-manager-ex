@@ -21,6 +21,6 @@
     android:id="@+id/textViewCount"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="@dimen/mmex_margin"
+    android:paddingRight="@dimen/mmx_margin"
     app:typeface="roboto_medium" 
     style="@android:style/TextAppearance.Large"/>

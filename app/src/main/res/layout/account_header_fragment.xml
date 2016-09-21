@@ -34,8 +34,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/mmex_margin"
-            android:layout_marginTop="@dimen/mmex_margin"
+            android:layout_marginBottom="@dimen/mmx_margin"
+            android:layout_marginTop="@dimen/mmx_margin"
             android:layout_weight="1"/>
 
         <ImageView

@@ -82,7 +82,7 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:text="@string/difference"
-            android:textSize="@dimen/mmex_text_view_size_micro"/>
+            android:textSize="@dimen/mmx_text_view_size_micro"/>
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/textViewDifference"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_weight="1"
-            android:textSize="@dimen/mmex_text_view_size_micro"
+            android:textSize="@dimen/mmx_text_view_size_micro"
             android:textStyle="bold"/>
     </TableRow>
 
