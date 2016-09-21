@@ -467,13 +467,7 @@ public class AccountTransactionListFragment
     private void initializeFilterMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menuTransactionFilters);
 
-        // Use a font icon.
-//        FontIconDrawable icon = FontIconDrawable.inflate(getActivity(), R.xml.ic_chevron_down);
         Drawable icon = new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_keyboard_arrow_down);
-
-        // get the toolbar item color.
-//        UIHelper uiHelper = new UIHelper(getActivity());
-//        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor)); // Color.RED
         item.setIcon(icon);
 
         // selection handled in onOptionsItemSelected
