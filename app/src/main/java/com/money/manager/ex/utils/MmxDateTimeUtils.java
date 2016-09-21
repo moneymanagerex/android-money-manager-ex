@@ -238,9 +238,9 @@ public class MmxDateTimeUtils {
         }
 
         // && getContext().getResources().getStringArray(R.array.date_format_mask) != null
-        if (TextUtils.isEmpty(pattern)
-                && getContext().getResources().getStringArray(R.array.date_format_mask).length > 0){
-            pattern= getContext().getResources().getStringArray(R.array.date_format_mask)[0];
+        String[] dateFormats = getContext().getResources().getStringArray(R.array.date_format_mask);
+        if (TextUtils.isEmpty(pattern) && dateFormats.length > 0){
+            pattern = dateFormats[0];
             pattern = pattern.replace("%d", "dd").replace("%m", "MM")
                     .replace("%y", "yy").replace("%Y", "yyyy")
                     .replace("'", "''");
