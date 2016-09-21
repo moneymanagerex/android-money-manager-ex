@@ -1413,7 +1413,7 @@ public class EditTransactionCommonFunctions {
     }
 
     private void showDate(DateTime dateTime) {
-        viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+        viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_MEDIUM_DAY_PATTERN));
     }
 
     private void showSplitCategoriesForm(String datasetName) {
