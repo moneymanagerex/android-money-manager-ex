@@ -19,24 +19,6 @@ import butterknife.ButterKnife;
 public class AccountEditViewHolder {
     public AccountEditViewHolder(Activity parent) {
         ButterKnife.bind(this, parent);
-
-//        mViewHolder.edtAccountName = (EditText) findViewById(R.id.editTextAccountName);
-//        mViewHolder.defaultAccountCheckbox = (CheckBox) findViewById(R.id.defaultAccountCheckbox);
-//        mViewHolder.defaultAccountText = (RobotoTextView) findViewById(R.id.defaultAccountText);
-//        mViewHolder.imageViewAccountFav = (FontIconView) findViewById(R.id.imageViewAccountFav);
-//        mViewHolder.favouriteAccountTextView = (RobotoTextView) findViewById(R.id.favouriteAccountTextView);
-//        mViewHolder.accountTypeSpinner = (Spinner) findViewById(R.id.spinnerAccountType);
-//        mViewHolder.edtAccountNumber = (EditText) findViewById(R.id.editTextAccountNumber);
-//        mViewHolder.edtAccountHeldAt = (EditText) findViewById(R.id.editTextAccountHeldAt);
-//        mViewHolder.webSiteEditText = (EditText) findViewById(R.id.editTextWebsite);
-//        mViewHolder.edtContact = (EditText) findViewById(R.id.editTextContact);
-//        mViewHolder.edtAccessInfo = (EditText) findViewById(R.id.editTextAccessInfo);
-//        Spinner spinAccountStatus = (Spinner) findViewById(R.id.spinnerAccountStatus);
-//        mViewHolder.spinSymbolInitialBalance = (Spinner) findViewById(R.id.spinnerSymbolInitialBalance);
-//        mViewHolder.txtInitialBalance = (TextView) findViewById(R.id.editTextInitialBalance);
-//        mViewHolder.edtNotes = (EditText) findViewById(R.id.editTextNotes);
-//        mViewHolder.txtSelectCurrency = (TextView) findViewById(R.id.textViewSelectCurrency);
-
     }
 
     @BindView(R.id.editTextAccountHeldAt) EditText edtAccountHeldAt;

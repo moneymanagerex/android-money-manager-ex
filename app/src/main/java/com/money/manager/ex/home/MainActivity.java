@@ -214,12 +214,6 @@ public class MainActivity
         // Close any existing notifications.
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE);
 
-        // show change log dialog
-        Core core = new Core(this);
-        if (core.isToDisplayChangelog()) {
-            core.showChangelog();
-        }
-
         showCurrentDatabasePath(this);
 
         // Read something from the database at this stage so that the db file gets created.
@@ -1383,7 +1377,13 @@ public class MainActivity
             return true;
         }
 
-        // todo: show changelog?
+        // todo: show webview changelog?
+
+//        // show change log dialog
+//        Core core = new Core(this);
+//        if (core.isToDisplayChangelog()) {
+//            core.showChangelog();
+//        }
 
         return false;
     }

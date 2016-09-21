@@ -87,6 +87,11 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <!-- avatar with text and icon -->
     <dimen name="mmx_avatar_item_height_dense">48dp</dimen>
     <dimen name="mmx_avatar_item_height">56dp</dimen>
+    <!-- margins -->
+    <dimen name="mmx_avatar_item_left_margin">16dp</dimen>
+    <dimen name="mmx_avatar_left_margin_56">56dp</dimen>
+    <!-- margin of the text item when there is no icon -->
+    <dimen name="mmx_avatar_list_item_text_margin">72dp</dimen>
     <!-- avatar -->
     <dimen name="mmx_list_two_line_item_height">72dp</dimen>
 

@@ -41,16 +41,7 @@ public class EditTransactionViewHolder {
     public EditTransactionViewHolder(Activity view) {
         ButterKnife.bind(this, view);
 
-        // Date
-//        dateTextView = (TextView) view.findViewById(R.id.textViewDate);
-//        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
-//        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
-
-        // Status
-//        spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
-
         // Payee
-//        txtSelectPayee = (TextView) view.findViewById(R.id.textViewPayee);
         removePayeeButton = (FontIconView) view.findViewById(R.id.removePayeeButton);
         tableRowPayee = (ViewGroup) view.findViewById(R.id.tableRowPayee);
 
@@ -73,11 +64,6 @@ public class EditTransactionViewHolder {
         txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
         txtAmountTo = (TextView) view.findViewById(R.id.textViewTotAmount);
         tableRowAmountTo = (ViewGroup) view.findViewById(R.id.tableRowAmountTo);
-
-        // Transaction Type
-//        withdrawalButton = (RelativeLayout) view.findViewById(R.id.withdrawalButton);
-//        depositButton = (RelativeLayout) view.findViewById(R.id.depositButton);
-//        transferButton = (RelativeLayout) view.findViewById(R.id.transferButton);
     }
 
     @BindView(R.id.textViewDate) public TextView dateTextView;

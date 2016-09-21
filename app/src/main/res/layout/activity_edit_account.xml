@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -39,16 +40,9 @@
             android:paddingLeft="@dimen/mmx_activity_side_padding"
             android:paddingRight="@dimen/mmx_activity_side_padding">
 
-            <!-- account name -->
-            <!--<com.money.manager.ex.view.RobotoTextView-->
-            <!--style="?attr/headerTextViewStyle"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/account_name" />-->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextAccountName"
                     android:layout_width="match_parent"
@@ -210,7 +204,7 @@
                     android:hint="@string/account_held_at"
                     android:inputType="text"
                     android:maxLength="100"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Website -->
