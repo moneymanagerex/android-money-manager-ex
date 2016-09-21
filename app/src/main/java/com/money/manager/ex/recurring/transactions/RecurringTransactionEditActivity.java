@@ -90,7 +90,7 @@ public class RecurringTransactionEditActivity
 
     @Inject BriteDatabase database;
 
-    @State private String mIntentAction;
+    @State String mIntentAction;
 
     // Form controls
     private RecurringTransactionViewHolder mViewHolder;
