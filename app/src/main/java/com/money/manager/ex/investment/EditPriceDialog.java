@@ -22,21 +22,27 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.settings.GeneralSettings;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -47,6 +53,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
+import icepick.Icepick;
+import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -66,12 +74,11 @@ public class EditPriceDialog
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
 
-    private static final String KEY_ACCOUNT = "EditPriceDialog:Account";
-    private static final String KEY_PRICE = "EditPriceDialog:Price";
+    @State int mAccountId;
+    @State String mUserDateFormat;
+    @State(MoneyBundler.class) PriceDownloadedEvent mPrice;
 
     private EditPriceViewHolder viewHolder;
-    private PriceDownloadedEvent mPrice;
-    private int mAccountId;
 
     @Override
     @NonNull
@@ -87,7 +94,7 @@ public class EditPriceDialog
             mPrice = new PriceDownloadedEvent(symbol, price, date);
         }
 
-        // Create binaryDialog.
+        // Create dialog.
 
         AlertDialogWrapper builder = new AlertDialogWrapper(getContext())
                 .setTitle(mPrice.symbol)
@@ -146,8 +153,9 @@ public class EditPriceDialog
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt(KEY_ACCOUNT, mAccountId);
-        savedInstanceState.putParcelable(KEY_PRICE, Parcels.wrap(mPrice));
+        super.onSaveInstanceState(savedInstanceState);
+
+        Icepick.saveInstanceState(this, savedInstanceState);
     }
 
     // Events
@@ -161,6 +169,14 @@ public class EditPriceDialog
     /*
         Private
      */
+
+    private String getUserDateFormat() {
+        if (TextUtils.isEmpty(mUserDateFormat)) {
+            InfoService service = new InfoService(getContext());
+            mUserDateFormat = service.getInfoValue(InfoKeys.DATEFORMAT);
+        }
+        return mUserDateFormat;
+    }
 
     private void initializeControls(final EditPriceViewHolder viewHolder) {
         // date picker
@@ -225,8 +241,7 @@ public class EditPriceDialog
     }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
-        this.mAccountId = savedInstanceState.getInt(KEY_ACCOUNT);
-        mPrice = Parcels.unwrap(savedInstanceState.getParcelable(KEY_PRICE));
+        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
     private void showCurrentPrice() {
@@ -234,6 +249,7 @@ public class EditPriceDialog
     }
 
     private void showDate() {
-        viewHolder.dateTextView.setText(mPrice.date.toString(Constants.LONG_DATE_MEDIUM_DAY_PATTERN));
+        String dateFormat = getUserDateFormat();
+        viewHolder.dateTextView.setText(mPrice.date.toString(dateFormat));
     }
 }
