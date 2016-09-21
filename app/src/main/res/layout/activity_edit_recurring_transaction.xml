@@ -47,24 +47,25 @@
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/due_date" />
+                android:text="@string/due_date"
+                android:maxLines="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/previousDayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="@string/ic_chevron_left"
-                    android:textSize="@dimen/fonticon_drawer"
+                    app:iiv_icon="gmd-keyboard-arrow-left"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
                     android:background="?attr/selectableItemBackground" />
 
-                <com.money.manager.ex.view.RobotoTextViewFontIcon
+                <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewDate"
                     style="@style/Money.TextView.Widget.EditText"
                     android:layout_width="0dp"
@@ -73,16 +74,16 @@
                     android:drawablePadding="@dimen/mmx_padding"
                     android:hint="@string/date"
                     android:textStyle="bold"
-                    app:iconLeft="@xml/ic_calendar_small"
-                    app:iconStart="@xml/ic_calendar_small" />
+                    android:textAlignment="center" />
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/nextDayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="@string/ic_chevron_right"
-                    android:textSize="@dimen/fonticon_drawer"
+                    app:iiv_icon="gmd-keyboard-arrow-right"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
                     android:background="?attr/selectableItemBackground" />
             </LinearLayout>
 
@@ -91,8 +92,8 @@
                 style="@style/Money.TextView.Header.Caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@string/payment_date" />
+                android:text="@string/payment_date"
+                android:maxLines="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"

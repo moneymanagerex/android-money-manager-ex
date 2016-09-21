@@ -85,8 +85,8 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <dimen name="mmx_list_padding_top_small">4dp</dimen>
 
     <!-- avatar with text and icon -->
-    <dimen name="mmx_avatar_item_height">56dp</dimen>
     <dimen name="mmx_avatar_item_height_dense">48dp</dimen>
+    <dimen name="mmx_avatar_item_height">56dp</dimen>
     <!-- avatar -->
     <dimen name="mmx_list_two_line_item_height">72dp</dimen>
 

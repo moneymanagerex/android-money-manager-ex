@@ -44,7 +44,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height">
+                android:layout_height="@dimen/mmx_detail_item_height">
                 <!-- Date header -->
                 <com.money.manager.ex.view.RobotoTextView
                     style="@style/Money.TextView.Header.Caption"
@@ -61,36 +61,40 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <com.shamanland.fonticon.FontIconView
+                    <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/previousDayButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/mmx_side_icon_size"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/ic_chevron_left"
-                        android:textSize="@dimen/fonticon_drawer"
+                        android:layout_gravity="center"
+                        app:iiv_icon="gmd-keyboard-arrow-left"
+                        app:iiv_color="?android:textColorPrimary"
+                        app:iiv_size="@dimen/mmx_icon_size"
                         android:background="?attr/selectableItemBackground" />
 
-                    <com.money.manager.ex.view.RobotoTextViewFontIcon
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:layout_width="@dimen/mmx_icon_size"
+                        android:layout_height="match_parent"
+                        app:iiv_icon="mmx-calendar"
+                        app:iiv_color="?android:textColorSecondary" />
+
+                    <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/textViewDate"
                         style="@style/Money.TextView.Widget.EditText"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:drawablePadding="@dimen/mmx_padding"
                         android:hint="@string/date"
                         android:textStyle="bold"
-                        app:iconLeft="@xml/ic_calendar_small"
-                        app:iconStart="@xml/ic_calendar_small" />
+                        android:textAlignment="center" />
 
-                    <com.shamanland.fonticon.FontIconView
+                    <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/nextDayButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/mmx_side_icon_size"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/ic_chevron_right"
-                        android:textSize="@dimen/fonticon_drawer"
+                        app:iiv_icon="gmd-keyboard-arrow-right"
+                        app:iiv_color="?android:textColorPrimary"
+                        app:iiv_size="@dimen/mmx_icon_size"
                         android:background="?attr/selectableItemBackground" />
                 </LinearLayout>
             </LinearLayout>
@@ -208,7 +212,7 @@
             <!-- Account -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -247,7 +251,7 @@
             <!-- Amount From -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -296,7 +300,7 @@
                 android:id="@+id/tableRowAccountTo"
                 android:animateLayoutChanges="true"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -339,7 +343,7 @@
             <LinearLayout
                 android:id="@+id/tableRowAmountTo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -382,7 +386,7 @@
             <LinearLayout
                 android:id="@+id/tableRowPayee"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal">
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -417,7 +421,7 @@
             <!-- Category -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -453,7 +457,7 @@
             <!-- Transaction Number -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
@@ -493,7 +497,7 @@
             <!-- Notes -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:layout_height="@dimen/mmx_detail_item_height"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView

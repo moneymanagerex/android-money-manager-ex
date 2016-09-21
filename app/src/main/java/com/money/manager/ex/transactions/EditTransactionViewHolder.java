@@ -26,8 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * View holder for transaction editing (checking & recurring).
@@ -35,16 +39,18 @@ import com.shamanland.fonticon.FontIconView;
 public class EditTransactionViewHolder {
 
     public EditTransactionViewHolder(Activity view) {
+        ButterKnife.bind(this, view);
+
         // Date
-        dateTextView = (TextView) view.findViewById(R.id.textViewDate);
-        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
-        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
+//        dateTextView = (TextView) view.findViewById(R.id.textViewDate);
+//        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
+//        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
 
         // Status
-        spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
+//        spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
 
         // Payee
-        txtSelectPayee = (TextView) view.findViewById(R.id.textViewPayee);
+//        txtSelectPayee = (TextView) view.findViewById(R.id.textViewPayee);
         removePayeeButton = (FontIconView) view.findViewById(R.id.removePayeeButton);
         tableRowPayee = (ViewGroup) view.findViewById(R.id.tableRowPayee);
 
@@ -69,23 +75,29 @@ public class EditTransactionViewHolder {
         tableRowAmountTo = (ViewGroup) view.findViewById(R.id.tableRowAmountTo);
 
         // Transaction Type
-        withdrawalButton = (RelativeLayout) view.findViewById(R.id.withdrawalButton);
-        depositButton = (RelativeLayout) view.findViewById(R.id.depositButton);
-        transferButton = (RelativeLayout) view.findViewById(R.id.transferButton);
+//        withdrawalButton = (RelativeLayout) view.findViewById(R.id.withdrawalButton);
+//        depositButton = (RelativeLayout) view.findViewById(R.id.depositButton);
+//        transferButton = (RelativeLayout) view.findViewById(R.id.transferButton);
     }
 
-    public TextView dateTextView;
-    public FontIconView previousDayButton, nextDayButton;
+    @BindView(R.id.textViewDate) public TextView dateTextView;
+    @BindView(R.id.previousDayButton) public IconicsImageView previousDayButton;
+    @BindView(R.id.nextDayButton) public IconicsImageView nextDayButton;
+
     public TextView categoryTextView;
-    public TextView txtSelectPayee;
-    public Spinner spinAccount, spinAccountTo, spinStatus;
+    @BindView(R.id.textViewPayee) TextView txtSelectPayee;
+    @BindView(R.id.spinnerStatus) Spinner spinStatus;
+    public Spinner spinAccount, spinAccountTo;
     public TextView txtAmountTo, txtAmount;
 
     public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
     public TextView accountFromLabel, txtToAccount;
     public TextView amountHeaderTextView, amountToHeaderTextView;
     public FontIconView removePayeeButton, splitButton;
-    public RelativeLayout withdrawalButton, depositButton, transferButton;
+    // Transaction types
+    @BindView(R.id.withdrawalButton) RelativeLayout withdrawalButton;
+    @BindView(R.id.depositButton) RelativeLayout depositButton;
+    @BindView(R.id.transferButton) RelativeLayout transferButton;
     public ImageButton btnTransNumber;
     public EditText edtTransNumber, edtNotes;
    
