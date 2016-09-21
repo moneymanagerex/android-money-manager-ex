@@ -172,8 +172,8 @@ public class EditPriceDialog
 
     private String getUserDateFormat() {
         if (TextUtils.isEmpty(mUserDateFormat)) {
-            InfoService service = new InfoService(getContext());
-            mUserDateFormat = service.getInfoValue(InfoKeys.DATEFORMAT);
+            MmxDateTimeUtils utils = new MmxDateTimeUtils(getContext());
+            mUserDateFormat = utils.getUserDatePattern();
         }
         return mUserDateFormat;
     }
@@ -249,7 +249,6 @@ public class EditPriceDialog
     }
 
     private void showDate() {
-        String dateFormat = getUserDateFormat();
-        viewHolder.dateTextView.setText(mPrice.date.toString(dateFormat));
+        viewHolder.dateTextView.setText(mPrice.date.toString(getUserDateFormat()));
     }
 }
