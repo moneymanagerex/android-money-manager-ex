@@ -41,6 +41,7 @@ import com.money.manager.ex.sync.SyncPreferenceFragment;
 import com.money.manager.ex.sync.SyncService;
 import com.money.manager.ex.sync.SyncServiceMessageHandler;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
+import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import javax.inject.Singleton;
@@ -83,6 +84,7 @@ public interface MmxComponent {
     void inject(SyncManager sync);
     void inject(SyncServiceMessageHandler handler);
     void inject(Passcode object);
+    void inject(EditTransactionCommonFunctions object);
 
     // Helpers
     void inject(UIHelper helper);

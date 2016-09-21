@@ -23,10 +23,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -43,11 +41,13 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -79,6 +79,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -103,7 +106,19 @@ public class EditTransactionCommonFunctions {
         activity = parentActivity;
         this.transactionEntity = transactionEntity;
         this.mDatabase = database;
+        formatUtilitiesLazy = new Lazy<FormatUtilities>() {
+            @Override
+            public FormatUtilities get() {
+                return new FormatUtilities(getContext());
+            }
+        };
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
+
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+
+    private Lazy<FormatUtilities> formatUtilitiesLazy;
 
     // Model
     public ITransactionEntity transactionEntity;
@@ -128,6 +143,7 @@ public class EditTransactionCommonFunctions {
     private ArrayList<Integer> mAccountIdList = new ArrayList<>();
     private TransactionTypes previousTransactionType = TransactionTypes.Withdrawal;
     private String[] mStatusItems, mStatusValues;    // arrays to manage trans.code and status
+    private String mUserDateFormat;
 
     public boolean deleteMarkedSplits(IRepository repository) {
         for (int i = 0; i < mSplitTransactionsDeleted.size(); i++) {
@@ -1324,6 +1340,13 @@ public class EditTransactionCommonFunctions {
         return mSplitTransactions;
     }
 
+    private String getUserDateFormat() {
+        if (TextUtils.isEmpty(mUserDateFormat)) {
+            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern();
+        }
+        return mUserDateFormat;
+    }
+
     /**
      * Returning from the Split Categories form after OK button was pressed.
      */
@@ -1413,7 +1436,9 @@ public class EditTransactionCommonFunctions {
     }
 
     private void showDate(DateTime dateTime) {
-        viewHolder.dateTextView.setText(dateTime.toString(Constants.LONG_DATE_MEDIUM_DAY_PATTERN));
+        // Constants.LONG_DATE_MEDIUM_DAY_PATTERN
+        String format = "EEE, " + getUserDateFormat();
+        viewHolder.dateTextView.setText(dateTime.toString(format));
     }
 
     private void showSplitCategoriesForm(String datasetName) {
