@@ -23,10 +23,10 @@
     android:clickable="true"
     android:focusable="true"
     android:background="?android:attr/selectableItemBackground"
-    android:paddingStart="@dimen/mmx_listitem_padding_side"
-    android:paddingLeft="@dimen/mmx_listitem_padding_side"
-    android:paddingEnd="@dimen/mmx_listitem_padding_side"
-    android:paddingRight="@dimen/mmx_listitem_padding_side">
+    android:paddingStart="@dimen/mmx_list_item_padding_side"
+    android:paddingLeft="@dimen/mmx_list_item_padding_side"
+    android:paddingEnd="@dimen/mmx_list_item_padding_side"
+    android:paddingRight="@dimen/mmx_list_item_padding_side">
 
     <com.money.manager.ex.view.RobotoTextViewFontIcon
         android:id="@+id/nameTextView"

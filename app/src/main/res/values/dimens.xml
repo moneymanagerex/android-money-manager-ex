@@ -80,23 +80,13 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <!-- Android Design Guidelines https://www.google.com/design/spec/components/lists.html#lists-specs -->
     <dimen name="mmx_list_item_height">48dp</dimen>
     <dimen name="mmx_list_item_height_dense">40dp</dimen>
-    <dimen name="mmx_listitem_padding_side">16dp</dimen>
+    <dimen name="mmx_list_item_padding_side">16dp</dimen>
     <dimen name="mmx_list_padding_top">8dp</dimen>
     <dimen name="mmx_list_padding_top_small">4dp</dimen>
 
     <!-- avatar with text and icon -->
     <dimen name="mmx_avatar_item_height">56dp</dimen>
     <dimen name="mmx_avatar_item_height_dense">48dp</dimen>
-
-    <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-section Adding margins to App Widgets
- -->
-    <dimen name="widget_margin">8dp</dimen>
-
-    <dimen name="mmx_icon_size">24dp</dimen>
-
     <!-- avatar -->
     <dimen name="mmx_list_two_line_item_height">72dp</dimen>
 
@@ -106,4 +96,12 @@ section Adding margins to App Widgets
     <dimen name="mmx_detail_item_height">72dp</dimen>
     <dimen name="mmx_detail_right_space">32dp</dimen>
 
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+section Adding margins to App Widgets
+ -->
+    <dimen name="widget_margin">8dp</dimen>
+
+    <dimen name="mmx_icon_size">24dp</dimen>
 </resources>
