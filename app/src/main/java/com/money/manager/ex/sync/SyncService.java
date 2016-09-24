@@ -84,8 +84,9 @@ public class SyncService
 
     @Override
     protected void onHandleIntent(Intent intent) {
-//        String intentString = intent != null ? intent.toString() : "null";
-        String action = intent.getAction();
+        String action = intent != null
+            ? intent.getAction()
+            : "null";
         Timber.d("Running sync service: %s", action);
         sendStartEvent();
 
