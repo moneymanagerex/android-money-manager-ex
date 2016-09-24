@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -59,8 +58,8 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionListFragment;
-import com.money.manager.ex.assetallocation.AssetAllocationOverviewActivity;
-import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
+import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
+import com.money.manager.ex.assetallocation.full.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
@@ -607,7 +606,7 @@ public class MainActivity
                 startActivity(intent);
                 break;
             case R.id.menu_asset_allocation:
-                intent = new Intent(this, FullAssetAllocationActivity.class);
+                intent = new Intent(this, AssetAllocationOverviewActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_search_transaction:
@@ -641,7 +640,7 @@ public class MainActivity
                 startActivity(new Intent(this, IncomeVsExpensesActivity.class));
                 break;
             case R.id.menu_asset_allocation_overview:
-                startActivity(new Intent(this, AssetAllocationOverviewActivity.class));
+                startActivity(new Intent(this, AssetAllocationReportActivity.class));
                 break;
             case R.id.menu_help:
                 startActivity(new Intent(MainActivity.this, HelpActivity.class));

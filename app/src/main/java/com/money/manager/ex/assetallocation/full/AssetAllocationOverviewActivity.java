@@ -21,28 +21,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ObservableScrollView;
-import com.money.manager.ex.BuildConfig;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.AssetAllocationActivity;
-import com.money.manager.ex.assetallocation.AssetClassEditActivity;
+import com.money.manager.ex.assetallocation.AssetAllocationEditorActivity;
 import com.money.manager.ex.assetallocation.ItemType;
-import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.AnswersEvents;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
@@ -52,16 +45,12 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import info.javaperformance.money.Money;
-import timber.log.Timber;
 
-public class FullAssetAllocationActivity
+public class AssetAllocationOverviewActivity
     extends BaseFragmentActivity {
 
     private FormatUtilities formatter;
@@ -70,19 +59,12 @@ public class FullAssetAllocationActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Theme
-        UIHelper uiHelper = new UIHelper(this);
-        this.setTheme(uiHelper.getThemeId());
-
-        setContentView(R.layout.activity_full_asset_allocation);
+        setContentView(R.layout.activity_asset_allocation_overview);
 
         // Toolbar
         setUpToolbar();
 
-        // Floating action button.
-//        setUpFloatingButton();
-
-        // List
+        // List/recycler.
 
         AssetAllocationService service = new AssetAllocationService(this);
         AssetClass assetAllocation = service.loadAssetAllocation();
@@ -98,7 +80,7 @@ public class FullAssetAllocationActivity
 
         showTotal(assetAllocation);
 
-        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocationFull.name()));
+        Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocationOverview.name()));
     }
 
     @Override
@@ -114,31 +96,31 @@ public class FullAssetAllocationActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
+        getMenuInflater().inflate(R.menu.menu_asset_allocation_editor, menu);
+
+        UIHelper uiHelper = new UIHelper(this);
 
         // customize icons
 
         // Currencies
         MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
         if (currenciesMenu != null) {
-            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
-            UIHelper uiHelper = new UIHelper(this);
-            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
+            IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
             currenciesMenu.setIcon(icon);
         }
 
         // Overview
-//        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
+//        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_report);
 //        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
 //        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
 //        overview.setIcon(icon);
 
         // New Asset Allocation view
         MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
-        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
-        UIHelper uiHelper = new UIHelper(this);
-        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
-        newForm.setIcon(icon);
+        if (newForm != null) {
+            IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_edit);
+            newForm.setIcon(icon);
+        }
 
         return true;
     }
@@ -161,12 +143,12 @@ public class FullAssetAllocationActivity
 
 //            case R.id.menu_asset_allocation_overview:
 //                // show the overview
-//                intent = new Intent(this, AssetAllocationOverviewActivity.class);
+//                intent = new Intent(this, AssetAllocationReportActivity.class);
 //                startActivity(intent);
 //                break;
 
             case R.id.menu_new_asset_allocation:
-                intent = new Intent(this, AssetAllocationActivity.class);
+                intent = new Intent(this, AssetAllocationEditorActivity.class);
                 startActivity(intent);
                 break;
 
@@ -174,17 +156,6 @@ public class FullAssetAllocationActivity
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    /*
-        Events
-     */
-
-    @Subscribe
-    public void onEvent(AssetAllocationItemLongPressedEvent event) {
-        // show context menu.
-        // todo openContextMenu();
-        Timber.d("show the context menu here");
     }
 
     /*
@@ -235,29 +206,6 @@ public class FullAssetAllocationActivity
             formatter = new FormatUtilities(this);
         }
         return this.formatter;
-    }
-
-    private void setUpFloatingButton() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab == null) return;
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // create new asset allocation.
-                Intent intent = new Intent(FullAssetAllocationActivity.this, AssetClassEditActivity.class);
-                intent.setAction(Intent.ACTION_INSERT);
-//                intent.putExtra(AssetClassEditActivity.KEY_PARENT_ID, this.getAssetClassId());
-                startActivity(intent);
-            }
-        });
-
-        ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
-        if (scrollView != null) {
-            fab.attachToScrollView(scrollView);
-        }
-
-        fab.setVisibility(View.VISIBLE);
     }
 
     private void setUpToolbar() {

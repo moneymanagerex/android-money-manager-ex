@@ -40,7 +40,7 @@ import timber.log.Timber;
 /**
  * Asset Allocation report.
  */
-public class AssetAllocationOverviewActivity
+public class AssetAllocationReportActivity
     extends BaseFragmentActivity {
 
     private Money differenceThreshold;
@@ -50,7 +50,7 @@ public class AssetAllocationOverviewActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_asset_allocation_overview);
+        setContentView(R.layout.activity_asset_allocation_report);
 
         // load difference threshold
         InvestmentSettings settings = new InvestmentSettings(this);

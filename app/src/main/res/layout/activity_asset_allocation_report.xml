@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
@@ -14,21 +15,18 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.money.manager.ex.assetallocation.AssetAllocationReportActivity">
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.money.manager.ex.assetallocation.AssetAllocationActivity">
+    <WebView
+        android:id="@+id/overviewWebView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <item
-        android:id="@+id/menu_currencies"
-        android:icon="?attr/ic_action_reload"
-        android:title="@string/currencies"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/menu_new_asset_allocation"
-        android:icon="@null"
-        android:title="@string/asset_allocation"
-        app:showAsAction="ifRoom" />
-</menu>
+</LinearLayout>

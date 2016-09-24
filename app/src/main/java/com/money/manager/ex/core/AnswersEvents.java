@@ -24,7 +24,7 @@ package com.money.manager.ex.core;
 
 public enum AnswersEvents {
     AccountList,
-    AssetAllocationFull,
+    AssetAllocationOverview,
     AssetAllocation,
     Budget,
     CurrencyList,

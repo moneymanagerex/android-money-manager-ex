@@ -37,7 +37,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
-import com.money.manager.ex.assetallocation.full.FullAssetAllocationActivity;
+import com.money.manager.ex.assetallocation.full.AssetAllocationOverviewActivity;
 import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
@@ -56,7 +56,7 @@ import java.util.List;
 /**
  * Asset Allocation view.
  */
-public class AssetAllocationActivity
+public class AssetAllocationEditorActivity
     extends BaseFragmentActivity {
 
     public static final String KEY_ASSET_ALLOCATION = "assetAllocation";
@@ -77,7 +77,7 @@ public class AssetAllocationActivity
             setSupportActionBar(toolbar);
             showStandardToolbarActions();
             // change home icon to 'back'.
-//            setDisplayHomeAsUpEnabled(true);
+            setDisplayHomeAsUpEnabled(true);
         }
 
         if (savedInstanceState != null) {
@@ -106,17 +106,16 @@ public class AssetAllocationActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.menu_asset_allocation, menu);
+        getMenuInflater().inflate(R.menu.menu_asset_allocation_editor, menu);
 
         // customize icons
+
+        UIHelper uiHelper = new UIHelper(this);
 
         // Currencies
         MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
         if (currenciesMenu != null) {
-//            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_euro);
-            UIHelper uiHelper = new UIHelper(this);
             IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
-//            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
             currenciesMenu.setIcon(icon);
         }
 
@@ -128,10 +127,11 @@ public class AssetAllocationActivity
 
         // New Asset Allocation view
         MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
-        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
-        UIHelper uiHelper = new UIHelper(this);
-        icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
-        newForm.setIcon(icon);
+        if (newForm != null) {
+            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
+            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
+            newForm.setIcon(icon);
+        }
 
         return true;
     }
@@ -154,12 +154,12 @@ public class AssetAllocationActivity
 
 //            case R.id.menu_asset_allocation_overview:
 //                // show the overview
-//                intent = new Intent(this, AssetAllocationOverviewActivity.class);
+//                intent = new Intent(this, AssetAllocationReportActivity.class);
 //                startActivity(intent);
 //                break;
 
             case R.id.menu_new_asset_allocation:
-                intent = new Intent(this, FullAssetAllocationActivity.class);
+                intent = new Intent(this, AssetAllocationOverviewActivity.class);
                 //intent.putExtra(KEY_ASSET_ALLOCATION, Parcels.wrap(this.assetAllocation));
                 startActivity(intent);
                 break;
@@ -230,12 +230,12 @@ public class AssetAllocationActivity
         return new LoaderManager.LoaderCallbacks<AssetClass>() {
             @Override
             public Loader<AssetClass> onCreateLoader(int id, Bundle args) {
-                return new AssetAllocationLoader(AssetAllocationActivity.this);
+                return new AssetAllocationLoader(AssetAllocationEditorActivity.this);
             }
 
             @Override
             public void onLoadFinished(Loader<AssetClass> loader, final AssetClass data) {
-                AssetAllocationActivity.this.assetAllocation = data;
+                AssetAllocationEditorActivity.this.assetAllocation = data;
 
                 // Create handler to perform showing of fragment(s).
                 Handler h = new Handler(Looper.getMainLooper());
@@ -246,7 +246,7 @@ public class AssetAllocationActivity
                 };
 
                 // show the data
-                AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(AssetAllocationActivity.this);
+                AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(AssetAllocationEditorActivity.this);
                 // If there are no other fragments, create the initial view.
                 if (fragment == null) {
                     h.post(runnable);

@@ -22,10 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.events.AssetAllocationItemLongPressedEvent;
 import com.money.manager.ex.view.RobotoTextView;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * View Holder for the full asset class.
@@ -91,13 +88,13 @@ public class FullAssetClassViewHolder
             }
         });
 
-        listItem.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                // show context menu.
-                EventBus.getDefault().post(new AssetAllocationItemLongPressedEvent());
-                return true;
-            }
-        });
+//        listItem.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View view) {
+//                // show context menu.
+//                EventBus.getDefault().post(new AssetAllocationItemLongPressedEvent());
+//                return true;
+//            }
+//        });
     }
 }

@@ -268,7 +268,7 @@
             android:name=".common.WebViewActivity"
             android:label="@string/donate" />
         <activity
-            android:name=".assetallocation.AssetAllocationActivity"
+            android:name=".assetallocation.AssetAllocationEditorActivity"
             android:label="@string/asset_allocation" />
         <activity android:name=".assetallocation.AssetClassEditActivity"
             android:label="@string/title_activity_asset_class_edit"
@@ -279,13 +279,13 @@
             android:label="@string/enter_password" />
         <activity android:name=".investment.PortfolioActivity"
             android:label="@string/portfolio" />
-        <activity android:name=".assetallocation.AssetAllocationOverviewActivity"
+        <activity android:name=".assetallocation.AssetAllocationReportActivity"
             android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
         <activity android:name=".sync.CloudFilePickerActivity" />
-        <activity android:name=".assetallocation.full.FullAssetAllocationActivity">
+        <activity android:name=".assetallocation.full.AssetAllocationOverviewActivity">
 
             <!-- android:parentActivityName=".home.MainActivity" -->
             <!-- Parent activity meta-data to support 4.0 and lower -->

@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.AssetAllocationActivity;
+import com.money.manager.ex.assetallocation.AssetAllocationEditorActivity;
 import com.money.manager.ex.assetallocation.AssetClassEditActivity;
 import com.robotium.solo.Solo;
 
@@ -39,12 +39,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(AndroidJUnit4.class)
 public class AssetAllocationTests
-        extends ActivityInstrumentationTestCase2<AssetAllocationActivity> {
+        extends ActivityInstrumentationTestCase2<AssetAllocationEditorActivity> {
 
     private Solo solo;
 
     public AssetAllocationTests() {
-        super(AssetAllocationActivity.class);
+        super(AssetAllocationEditorActivity.class);
     }
 
     @Before

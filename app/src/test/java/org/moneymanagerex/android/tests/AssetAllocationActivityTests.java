@@ -17,7 +17,7 @@
 package org.moneymanagerex.android.tests;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.assetallocation.AssetAllocationActivity;
+import com.money.manager.ex.assetallocation.AssetAllocationEditorActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
@@ -39,8 +38,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Config(constants = BuildConfig.class)
 public class AssetAllocationActivityTests {
 
-    private ActivityController<AssetAllocationActivity> controller;
-    private AssetAllocationActivity activity;
+    private ActivityController<AssetAllocationEditorActivity> controller;
+    private AssetAllocationEditorActivity activity;
 
     @Before
     public void setup() {
@@ -48,7 +47,7 @@ public class AssetAllocationActivityTests {
         UnitTestHelper.setupContentProvider();
 
         // initialize support for activities (UI)
-        this.controller = UnitTestHelper.getController(AssetAllocationActivity.class);
+        this.controller = UnitTestHelper.getController(AssetAllocationEditorActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
     }
 
