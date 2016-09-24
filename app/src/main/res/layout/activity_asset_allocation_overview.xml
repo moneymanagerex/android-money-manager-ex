@@ -34,8 +34,6 @@
         android:fitsSystemWindows="true">
         <!--250dp-->
 
-        <!--<include layout="@layout/toolbar"/>-->
-
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
@@ -58,10 +56,12 @@
             <!-- collapsible part above the toolbar -->
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_item_height_dense"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom|center_horizontal"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:gravity="bottom"
                 app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.3"
                 android:fitsSystemWindows="true">
 
                 <com.money.manager.ex.view.RobotoTextView
