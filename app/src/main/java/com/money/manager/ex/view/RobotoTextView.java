@@ -85,6 +85,8 @@ public class RobotoTextView extends AppCompatTextView {
      * @param attrs   The attributes of the XML tag that is inflating the widget.
      */
     private void parseAttributes(Context context, AttributeSet attrs) {
+        if (isInEditMode()) return;
+
     	RobotoView.parseAttributes(context, this, attrs);
     }
 }
