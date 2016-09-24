@@ -17,6 +17,7 @@
 package com.money.manager.ex.investment.morningstar;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -237,6 +238,9 @@ public class MorningstarPriceUpdater
 
         // price
         String priceString = doc.body().getElementById("last-price-value").text();
+        if (TextUtils.isEmpty(priceString)) {
+            throw new RuntimeException("No price available for " + symbol);
+        }
         Money price = MoneyFactory.fromString(priceString);
         // currency
         String currency = doc.body().getElementById("curency").text();
