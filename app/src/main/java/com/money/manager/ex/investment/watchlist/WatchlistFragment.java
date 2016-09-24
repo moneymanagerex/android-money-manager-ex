@@ -224,11 +224,28 @@ public class WatchlistFragment
         // add options menu for watchlist
         inflater.inflate(R.menu.menu_watchlist, menu);
 
-        // custom icon
-        MenuItem purgeMenu = menu.findItem(R.id.menu_purge_history);
-        if (purgeMenu != null) {
-            IconicsDrawable icon = new UIHelper(getActivity()).getIcon(GoogleMaterial.Icon.gmd_content_cut);
-            purgeMenu.setIcon(icon);
+        // custom icons
+
+        UIHelper uiHelper = new UIHelper(getActivity());
+        IconicsDrawable icon;
+        MenuItem menuItem;
+
+        menuItem = menu.findItem(R.id.menu_update_prices);
+        if (menuItem != null) {
+            icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_file_download);
+            menuItem.setIcon(icon);
+        }
+
+        menuItem = menu.findItem(R.id.menu_export_prices);
+        if (menuItem != null) {
+            icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_share);
+            menuItem.setIcon(icon);
+        }
+
+        menuItem = menu.findItem(R.id.menu_purge_history);
+        if (menuItem != null) {
+            icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_content_cut);
+            menuItem.setIcon(icon);
         }
 
         // call create option menu of fragment
