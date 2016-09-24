@@ -35,6 +35,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
@@ -48,7 +49,6 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.transactions.EditTransactionCommonFunctions;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -68,7 +68,7 @@ import timber.log.Timber;
  * Recurring transactions are stored in BillsDeposits table.
  */
 public class RecurringTransactionEditActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
 //    private static final String LOGCAT = RecurringTransactionEditActivity.class.getSimpleName();
 

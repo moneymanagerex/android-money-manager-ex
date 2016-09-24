@@ -35,7 +35,7 @@ import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.transactions.events.AmountEntryRequestedEvent;
 import com.money.manager.ex.transactions.events.CategoryRequestedEvent;
@@ -51,7 +51,7 @@ import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 public class SplitCategoriesActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String KEY_SPLIT_TRANSACTION = "SplitCategoriesActivity:ArraysSplitTransaction";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "SplitCategoriesActivity:ArraysSplitTransactionDeleted";

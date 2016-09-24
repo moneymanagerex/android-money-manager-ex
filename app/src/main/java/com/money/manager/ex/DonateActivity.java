@@ -21,7 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.WebViewActivity;
 import com.money.manager.ex.core.HttpMethods;
 
@@ -32,7 +32,7 @@ import butterknife.OnClick;
 import timber.log.Timber;
 
 public class DonateActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

@@ -24,7 +24,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
 
@@ -36,7 +36,7 @@ import java.util.List;
  * Base activity for the settings activities.
  */
 public class BaseSettingsFragmentActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstance) {

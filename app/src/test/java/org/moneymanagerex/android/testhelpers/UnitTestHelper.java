@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.money.manager.ex.MmxContentProvider;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -70,7 +70,7 @@ public class UnitTestHelper {
 //
 //    }
 
-    public static Fragment getFragment(BaseFragmentActivity activity, String fragmentClassName) {
+    public static Fragment getFragment(MmxBaseFragmentActivity activity, String fragmentClassName) {
         Fragment fragment = activity.getSupportFragmentManager()
             .findFragmentByTag(fragmentClassName);
         return fragment;

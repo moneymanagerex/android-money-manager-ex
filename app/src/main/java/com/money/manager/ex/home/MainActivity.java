@@ -61,6 +61,7 @@ import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
 import com.money.manager.ex.assetallocation.full.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCode;
@@ -84,7 +85,6 @@ import com.money.manager.ex.core.RecurringTransactionBootReceiver;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.account.AccountListFragment;
-import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.fragment.PayeeListFragment;
 import com.money.manager.ex.investment.watchlist.WatchlistFragment;
 import com.money.manager.ex.notifications.RecurringTransactionNotifications;
@@ -121,7 +121,7 @@ import timber.log.Timber;
  * Main activity of the application.
  */
 public class MainActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final int REQUEST_PASSCODE = 2;
     public static final int REQUEST_PASSWORD = 3;

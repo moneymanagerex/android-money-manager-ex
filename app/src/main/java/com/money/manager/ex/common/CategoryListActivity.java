@@ -29,7 +29,7 @@ import com.money.manager.ex.R;
  * List of categories.
  */
 public class CategoryListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String KEY_REQUEST_ID = "CategorySubCategory:RequestId";
     public static final String INTENT_RESULT_CATEGID = "CategorySubCategory:CategId";

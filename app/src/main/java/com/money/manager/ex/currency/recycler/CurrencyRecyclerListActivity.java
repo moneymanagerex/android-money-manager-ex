@@ -21,10 +21,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class CurrencyRecyclerListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     private static final String FRAGMENTTAG = CurrencyRecyclerListFragment.class.getSimpleName();
 

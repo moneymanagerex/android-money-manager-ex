@@ -24,13 +24,13 @@ import android.support.v4.app.FragmentManager;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 
 public class AssetClassEditActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String KEY_ASSET_CLASS_ID = "AssetClassEditActivity:AssetClassId";
     public static final String KEY_PARENT_ID = "AssetClassEditActivity:parentId";

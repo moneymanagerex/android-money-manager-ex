@@ -23,10 +23,10 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class SecurityListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String EXTRA_ASSET_CLASS_ID = "assetClassId";
     private static final String FRAGMENTTAG = SecurityListFragment.class.getSimpleName() + "_Fragment";

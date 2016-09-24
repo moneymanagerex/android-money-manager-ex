@@ -25,14 +25,14 @@ import android.view.KeyEvent;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.AnswersEvents;
 
 /**
  * Account list activity.
  */
 public class AccountListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_ACCOUNTID = "AccountListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_ACCOUNTNAME = "AccountListActivity:ACCOUNTNAME";

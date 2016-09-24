@@ -29,7 +29,7 @@ import android.text.TextUtils;
 import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
@@ -147,7 +147,7 @@ public class SyncPreferenceFragment
         // start sync service
         getSyncManager().startSyncServiceHeartbeat();
 
-        ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+        ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
             new UIHelper(getActivity()).binaryDialog(R.string.download, R.string.confirm_download,
                     android.R.string.yes, android.R.string.no)
                     .filter(new Func1<Boolean, Boolean>() {
@@ -207,7 +207,7 @@ public class SyncPreferenceFragment
                 sync.setProvider(CloudStorageProviderEnum.valueOf(o.toString()));
 
                 // log in to the provider immediately and update to persistence.
-                ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+                ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
                     sync.login()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -335,7 +335,7 @@ public class SyncPreferenceFragment
         // check if the file exists and prompt the user.
         if (new File(local).exists()) {
             // prompt
-            ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+            ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
                 new UIHelper(getActivity()).binaryDialog(R.string.file_exists, R.string.file_exists_long)
                         .filter(new Func1<Boolean, Boolean>() {
                             @Override

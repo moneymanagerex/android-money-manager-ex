@@ -168,6 +168,7 @@ public class PayeeListFragment
                 // restart search
                 restartLoader();
                 return true;
+
             case android.R.id.home:
                 getActivity().setResult(PayeeActivity.RESULT_CANCELED);
                 getActivity().finish();

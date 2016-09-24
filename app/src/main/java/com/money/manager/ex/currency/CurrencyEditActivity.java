@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.domainmodel.Currency;
 
 import java.text.DecimalFormat;
@@ -36,7 +36,7 @@ import java.util.Arrays;
  * Edit currency
  */
 public class CurrencyEditActivity
-        extends BaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     // key intent
     public static final String KEY_CURRENCY_ID = "CurrencyEditActivity:CurrencyId";

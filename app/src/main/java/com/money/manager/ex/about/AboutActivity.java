@@ -17,16 +17,11 @@
 package com.money.manager.ex.about;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 import timber.log.Timber;
 
@@ -34,7 +29,7 @@ import timber.log.Timber;
  * About the app
  */
 public class AboutActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     private static final String BUNDLE_KEY_TABINDEX = "AboutActivity:tabindex";
 

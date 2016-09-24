@@ -38,7 +38,7 @@ import java.util.HashMap;
  * Used for PayPal online donations handling.
  */
 public class WebViewActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String URL = "URL";
     /**

@@ -38,7 +38,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
 import com.money.manager.ex.assetallocation.full.AssetAllocationOverviewActivity;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.AnswersEvents;
@@ -57,7 +57,7 @@ import java.util.List;
  * Asset Allocation view.
  */
 public class AssetAllocationEditorActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String KEY_ASSET_ALLOCATION = "assetAllocation";
 

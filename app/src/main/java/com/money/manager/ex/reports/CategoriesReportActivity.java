@@ -22,10 +22,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class CategoriesReportActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
     
     public static final String REPORT_FILTERS = "CategoriesReportActivity:Filter";
     public static final String REPORT_TITLE = "CategoriesReportActivity:Title";

@@ -18,19 +18,17 @@ package com.money.manager.ex.investment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.AnswersEvents;
 
 public class PortfolioActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     private static final String FRAGMENT_TAG = PortfolioFragment.class.getSimpleName();
 

@@ -26,7 +26,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.utils.ActivityUtils;
 
@@ -34,7 +34,7 @@ import com.money.manager.ex.utils.ActivityUtils;
  * List of currencies.
  */
 public class CurrencyListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_CURRENCYID = "CurrencyListActivity:ACCOUNTID";
     public static final String INTENT_RESULT_CURRENCYNAME = "CurrencyListActivity:ACCOUNTNAME";

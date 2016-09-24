@@ -38,7 +38,7 @@ import timber.log.Timber;
 
 //import net.sqlcipher.database.SQLiteDatabase;
 
-public abstract class BaseFragmentActivity
+public abstract class MmxBaseFragmentActivity
     extends AppCompatActivity {
 
     public CompositeSubscription compositeSubscription;

@@ -22,17 +22,17 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.fragment.PayeeListFragment;
 
 public class PayeeActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String INTENT_RESULT_PAYEEID = "PayeeActivity:PayeeId";
     public static final String INTENT_RESULT_PAYEENAME = "PayeeActivity:PayeeName";
     @SuppressWarnings("unused")
-    private static final String LOGCAT = PayeeActivity.class.getSimpleName();
+//    private static final String LOGCAT = PayeeActivity.class.getSimpleName();
     private static final String FRAGMENTTAG = PayeeActivity.class.getSimpleName() + "_Fragment";
 
     PayeeListFragment listFragment = new PayeeListFragment();

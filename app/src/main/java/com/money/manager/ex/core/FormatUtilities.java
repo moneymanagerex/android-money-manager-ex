@@ -44,10 +44,16 @@ public class FormatUtilities {
 
     public FormatUtilities(Context context) {
         this.context = context;
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
+    }
+
+    @Inject
+    public FormatUtilities(MoneyManagerApplication app) {
+        this.context = app;
     }
 
     private Context context;
-    private CurrencyService currencyService;
+    @Inject CurrencyService currencyService;
 
     /**
      * Formats the amount in TextView with the given currency preferences.

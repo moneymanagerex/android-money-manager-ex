@@ -224,16 +224,13 @@
             android:label="@string/payee" />
         <activity android:name=".reports.CategoriesReportActivity"
             android:label="@string/category" />
-        <activity
-            android:name=".search.SearchActivity"
+        <activity android:name=".search.SearchActivity"
             android:label="@string/search" />
         <activity android:name=".transactions.SplitCategoriesActivity"
             android:label="@string/split_transaction" />
-        <activity
-            android:name=".DonateActivity"
+        <activity android:name=".DonateActivity"
             android:label="@string/donate" />
-        <activity
-            android:name=".HelpActivity"
+        <activity android:name=".HelpActivity"
             android:label="@string/help">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_RAW_FILE" />
@@ -261,14 +258,11 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".investment.InvestmentTransactionEditActivity"
+        <activity android:name=".investment.InvestmentTransactionEditActivity"
             android:label="@string/investment" />
-        <activity
-            android:name=".common.WebViewActivity"
+        <activity android:name=".common.WebViewActivity"
             android:label="@string/donate" />
-        <activity
-            android:name=".assetallocation.AssetAllocationEditorActivity"
+        <activity android:name=".assetallocation.AssetAllocationEditorActivity"
             android:label="@string/asset_allocation" />
         <activity android:name=".assetallocation.AssetClassEditActivity"
             android:label="@string/title_activity_asset_class_edit"
@@ -298,6 +292,9 @@
         <activity android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme" />
+        <activity android:name=".common.AmountInputActivity"
+            android:label="@string/app_name" />
+
 
         <!-- providers -->
 

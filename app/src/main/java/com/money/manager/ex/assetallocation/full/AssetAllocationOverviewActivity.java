@@ -34,7 +34,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.AssetAllocationEditorActivity;
 import com.money.manager.ex.assetallocation.ItemType;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
@@ -43,7 +43,6 @@ import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.view.RobotoTextView;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ import java.util.List;
 import info.javaperformance.money.Money;
 
 public class AssetAllocationOverviewActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     private FormatUtilities formatter;
 

@@ -18,18 +18,17 @@
 package com.money.manager.ex;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import timber.log.Timber;
 
 public class HelpActivity
-        extends BaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     private static final String LOGCAT = HelpActivity.class.getSimpleName();
     private WebView mWebView;

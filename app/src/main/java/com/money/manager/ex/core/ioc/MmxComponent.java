@@ -18,7 +18,9 @@
 package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmxContentProvider;
+import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -64,6 +66,7 @@ public interface MmxComponent {
     void inject(CheckingTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
     void inject(SettingsActivity activity);
+    void inject(AmountInputActivity activity);
 
     // Fragments
     void inject(DatabaseSettingsFragment fragment);
@@ -88,6 +91,7 @@ public interface MmxComponent {
 
     // Helpers
     void inject(UIHelper helper);
+    void inject(FormatUtilities utils);
 
     // Business Services
     void inject(CurrencyService service);

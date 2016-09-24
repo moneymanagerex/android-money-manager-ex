@@ -26,13 +26,13 @@ import android.widget.LinearLayout;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.QueryAllData;
 
 import org.parceler.Parcels;
 
 public class SearchActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String EXTRA_SEARCH_PARAMETERS = "SearchActivity:SearchCriteria";
 

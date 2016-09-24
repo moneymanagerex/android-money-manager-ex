@@ -21,10 +21,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 public class PayeesReportActivity
-        extends BaseFragmentActivity {
+        extends MmxBaseFragmentActivity {
 
     public boolean mIsDualPanel = false;
 

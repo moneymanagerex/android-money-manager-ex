@@ -21,10 +21,10 @@
 //import android.view.KeyEvent;
 //
 //import com.money.manager.ex.R;
-//import com.money.manager.ex.common.BaseFragmentActivity;
+//import com.money.manager.ex.common.MmxBaseFragmentActivity;
 //
 //public class DropboxBrowserActivity
-//    extends BaseFragmentActivity {
+//    extends MmxBaseFragmentActivity {
 //
 //    public static final String INTENT_DROBPOXFILE_PATH = "DropboxBrowserActivity:DropboxFile";
 //

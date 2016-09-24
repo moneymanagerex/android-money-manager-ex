@@ -45,9 +45,9 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
+import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
-import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -58,7 +58,7 @@ import com.money.manager.ex.datalayer.SubcategoryRepository;
 import com.money.manager.ex.domainmodel.Category;
 import com.money.manager.ex.domainmodel.Subcategory;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
@@ -95,30 +95,31 @@ public class EditTransactionCommonFunctions {
     private static final int REQUEST_PICK_ACCOUNT = 2;
     private static final int REQUEST_PICK_CATEGORY = 3;
     private static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
+    private static final int REQUEST_AMOUNT = 5;
 
     private static final String DATEPICKER_TAG = "datepicker";
 
-    public EditTransactionCommonFunctions(BaseFragmentActivity parentActivity,
+    public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
                                           ITransactionEntity transactionEntity, BriteDatabase database) {
         super();
 
         mContext = parentActivity.getApplicationContext();
-        activity = parentActivity;
+        this.activity = parentActivity;
         this.transactionEntity = transactionEntity;
         this.mDatabase = database;
-        formatUtilitiesLazy = new Lazy<FormatUtilities>() {
-            @Override
-            public FormatUtilities get() {
-                return new FormatUtilities(getContext());
-            }
-        };
+//        this.formatUtilitiesLazy = new Lazy<FormatUtilities>() {
+//            @Override
+//            public FormatUtilities get() {
+//                return new FormatUtilities(getContext());
+//            }
+//        };
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-    private Lazy<FormatUtilities> formatUtilitiesLazy;
+//    private Lazy<FormatUtilities> formatUtilitiesLazy;
 
     // Model
     public ITransactionEntity transactionEntity;
@@ -132,7 +133,7 @@ public class EditTransactionCommonFunctions {
     public EditTransactionViewHolder viewHolder;
 
     private Context mContext;
-    private BaseFragmentActivity activity;
+    private MmxBaseFragmentActivity activity;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
@@ -421,9 +422,20 @@ public class EditTransactionCommonFunctions {
             }
         };
 
+        View.OnClickListener onAmountClicked = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currencyId = getSourceCurrencyId();
+                Money amount = transactionEntity.getAmount();
+
+                Intent intent = getIntentForNumericInput(amount, currencyId);
+                activity.startActivityForResult(intent, REQUEST_AMOUNT);
+            }
+        };
+
         // amount
         displayAmountFrom();
-        viewHolder.txtAmount.setOnClickListener(onClickAmount);
+        viewHolder.txtAmount.setOnClickListener(onAmountClicked);
 
         // amount to
         displayAmountTo();
@@ -684,8 +696,6 @@ public class EditTransactionCommonFunctions {
                     repo.getSource() + " WHERE " +
                     ITransactionEntity.ACCOUNTID + "=?";
 
-//                Cursor cursor = mOpenHelper.getReadableDatabase().rawQuery(sql,
-//                    new String[]{Integer.toString(transactionEntity.getAccountId())});
                 String accountId = transactionEntity.getAccountId().toString();
                 Cursor cursor = mDatabase.query(sql, accountId);
                 if (cursor == null) return;
@@ -804,10 +814,10 @@ public class EditTransactionCommonFunctions {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
         switch (requestCode) {
             case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
-
                 setDirty(true);
 
                 this.transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
@@ -823,17 +833,22 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
-
                 setDirty(true);
 
                 transactionEntity.setAccountToId(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
-            case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+            case EditTransactionCommonFunctions.REQUEST_AMOUNT:
+                setDirty(true);
+                // amount entered
+                String amountString = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                Money amount = MoneyFactory.fromString(amountString);
+                onFinishedInputAmountDialog(R.id.textViewAmount, amount);
 
+                break;
+
+            case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
                 setDirty(true);
 
                 this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
@@ -845,8 +860,6 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
-                if ((resultCode != Activity.RESULT_OK) || (data == null)) break;
-
                 setDirty(true);
 
                 mSplitTransactions = Parcels.unwrap(data.getParcelableExtra(SplitCategoriesActivity.INTENT_RESULT_SPLIT_TRANSACTION));
@@ -1331,6 +1344,17 @@ public class EditTransactionCommonFunctions {
 
         view.setText(amountDisplay);
         view.setTag(amount.toString());
+    }
+
+    private Intent getIntentForNumericInput(Money amount, int currencyId) {
+        Intent intent = new Intent(getContext(), AmountInputActivity.class);
+
+        // currency
+        intent.putExtra(AmountInputActivity.EXTRA_CURRENCY_ID, currencyId);
+        // amount
+        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
+
+        return intent;
     }
 
     private ArrayList<ISplitTransaction> getSplitTransactions() {

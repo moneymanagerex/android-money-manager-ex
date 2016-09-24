@@ -39,6 +39,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
@@ -48,7 +49,6 @@ import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.common.AllDataListFragment;
-import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -358,7 +358,7 @@ public class WatchlistItemsFragment
     public void onStop() {
         super.onStop();
         try {
-            BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+            MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
             if (activity != null) {
                 ActionBar actionBar = activity.getSupportActionBar();
                 if(actionBar != null) {

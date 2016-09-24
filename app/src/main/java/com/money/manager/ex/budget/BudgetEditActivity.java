@@ -32,7 +32,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
@@ -46,7 +46,7 @@ import butterknife.OnClick;
 import timber.log.Timber;
 
 public class BudgetEditActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String KEY_BUDGET_ID = "budgetId";
 

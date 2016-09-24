@@ -49,8 +49,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.core.UIHelper;
@@ -71,10 +69,8 @@ import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.adapter.AllDataAdapter.TypeCursor;
 import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.ExportToCsvFile;
 import com.money.manager.ex.database.QueryAllData;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -371,7 +367,7 @@ public class AllDataListFragment
     public void onStop() {
         super.onStop();
         try {
-            BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+            MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
             if (activity != null) {
                 ActionBar actionBar = activity.getSupportActionBar();
                 if(actionBar != null) {

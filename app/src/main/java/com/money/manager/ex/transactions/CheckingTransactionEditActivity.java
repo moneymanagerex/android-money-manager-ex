@@ -31,6 +31,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -50,7 +51,6 @@ import com.money.manager.ex.datalayer.RecurringTransactionRepository;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.domainmodel.AccountTransaction;
 import com.money.manager.ex.domainmodel.Payee;
-import com.money.manager.ex.common.BaseFragmentActivity;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
@@ -72,7 +72,7 @@ import timber.log.Timber;
  * Activity for editing Checking Account Transaction
  */
 public class CheckingTransactionEditActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     @State public String mIntentAction;
 

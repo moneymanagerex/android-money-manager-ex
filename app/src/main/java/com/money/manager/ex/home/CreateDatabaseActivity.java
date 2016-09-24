@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CreateDatabaseActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.runButton) RobotoButton runButton;

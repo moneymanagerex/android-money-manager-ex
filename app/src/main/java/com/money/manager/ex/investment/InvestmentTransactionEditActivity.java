@@ -33,7 +33,7 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -57,7 +57,7 @@ import info.javaperformance.money.MoneyFactory;
  * Edit investment transaction (stock purchase).
  */
 public class InvestmentTransactionEditActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";

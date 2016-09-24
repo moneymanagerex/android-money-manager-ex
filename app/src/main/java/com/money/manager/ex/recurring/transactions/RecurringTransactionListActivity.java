@@ -27,13 +27,13 @@ import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.Passcode;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
 /**
  * Not used.
  */
 public class RecurringTransactionListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final String INTENT_EXTRA_LAUNCH_NOTIFICATION = "RecurringTransactionListActivity:LaunchNotification";
     public static final int INTENT_REQUEST_PASSCODE = 2;

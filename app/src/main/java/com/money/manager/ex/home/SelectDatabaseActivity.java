@@ -25,7 +25,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
@@ -42,7 +42,7 @@ import dagger.Lazy;
 import timber.log.Timber;
 
 public class SelectDatabaseActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static final int REQUEST_PICKFILE = 1;
 

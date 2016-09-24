@@ -48,7 +48,7 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 import com.money.manager.ex.account.AccountEditActivity;
 import com.money.manager.ex.common.AmountInputDialog;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
@@ -655,7 +655,7 @@ public class HomeFragment
      * This should be moved to the MainActivity, which actually handles the event and updates the UI.
      */
     private void loadUsername() {
-        ((BaseFragmentActivity) getActivity()).compositeSubscription.add(
+        ((MmxBaseFragmentActivity) getActivity()).compositeSubscription.add(
         Single.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {

@@ -19,7 +19,7 @@ import android.webkit.WebView;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.report.ReportHtmlFormatter;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.FormatUtilities;
@@ -41,7 +41,7 @@ import timber.log.Timber;
  * Asset Allocation report.
  */
 public class AssetAllocationReportActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     private Money differenceThreshold;
     private CurrencyService mCurrencyService;

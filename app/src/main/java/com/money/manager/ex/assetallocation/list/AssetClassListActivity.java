@@ -29,7 +29,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.common.events.ListItemClickedEvent;
 import com.money.manager.ex.database.WhereStatementGenerator;
@@ -41,7 +41,7 @@ import com.money.manager.ex.view.recycler.DividerItemDecoration;
 import org.greenrobot.eventbus.Subscribe;
 
 public class AssetClassListActivity
-    extends BaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
     public static int LOADER_ASSET_CLASSES = 1;
     public static String EXTRA_ASSET_CLASS_ID = "AssetClassId";

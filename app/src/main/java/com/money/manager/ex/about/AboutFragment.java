@@ -38,9 +38,8 @@ import com.github.pedrovgs.lynx.LynxConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.BaseFragmentActivity;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
-import com.money.manager.ex.log.ExceptionHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class AboutFragment extends Fragment {
         String text, version;
         View view = inflater.inflate(R.layout.about_fragment, container, false);
 
-        BaseFragmentActivity activity = (BaseFragmentActivity) getActivity();
+        MmxBaseFragmentActivity activity = (MmxBaseFragmentActivity) getActivity();
         if (activity != null && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
