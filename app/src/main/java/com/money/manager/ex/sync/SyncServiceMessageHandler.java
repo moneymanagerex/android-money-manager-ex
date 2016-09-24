@@ -37,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
 
 /**
  * Handler for the messages received from the sync service.
@@ -138,7 +139,11 @@ public class SyncServiceMessageHandler
     private void showProgressDialog() {
         if (progressDialog == null) return;
 
-        progressDialog.show();
+        try {
+            progressDialog.show();
+        } catch (Exception e) {
+            Timber.e(e, "showing progress dialog on sync.");
+        }
     }
 
 //    private void storeRecentDb(String remoteFile) {
