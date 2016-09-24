@@ -41,20 +41,17 @@
             app:expandedTitleMarginEnd="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!--<ImageView-->
-            <!--android:id="@+id/header"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@drawable/ic_logo_money_manager_ex_flat"-->
-            <!--android:fitsSystemWindows="true"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--app:layout_collapseMode="parallax" />-->
+            <!-- collapsible part above the toolbar -->
+
             <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_marginTop="8dp"
                 app:iiv_icon="mmx-law"
                 app:iiv_color="?android:textColorSecondary"
-                app:iiv_size="128dp"
+                app:iiv_size="120dp"
                 android:layout_width="wrap_content"
+                android:minWidth="50dp"
                 android:layout_height="wrap_content"
+                android:minHeight="50dp"
                 android:layout_marginLeft="@dimen/mmx_side_icon_margin"
                 android:layout_marginStart="@dimen/mmx_side_icon_margin"
                 android:layout_marginRight="@dimen/mmx_side_icon_margin"
@@ -63,30 +60,6 @@
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
-
-            <!-- collapsible part above the toolbar -->
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_list_item_height_dense"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                app:layout_collapseMode="parallax"
-                android:fitsSystemWindows="true">
-
-                <com.money.manager.ex.view.RobotoTextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:gravity="center"
-                    android:text="@string/total" />
-                <com.money.manager.ex.view.RobotoTextView
-                    android:id="@+id/totalAmountTextView"
-                    android:layout_width="0dp"
-                    android:layout_weight="50"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/total" />
-            </android.support.v7.widget.LinearLayoutCompat>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
