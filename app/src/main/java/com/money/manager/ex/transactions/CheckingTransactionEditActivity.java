@@ -224,7 +224,9 @@ public class CheckingTransactionEditActivity
         mCommonFunctions.cancelChangingTransactionToTransfer();
     }
 
+    /*
     // Private
+    */
 
     private boolean createSplitCategoriesFromRecurringTransaction() {
         // check if category and sub-category are not set.
@@ -316,14 +318,13 @@ public class CheckingTransactionEditActivity
     }
 
     private void initializeInputControls() {
-        // Transaction date
-        mCommonFunctions.initDateSelector();
-
         // Transaction Type
         mCommonFunctions.initTransactionTypeSelector();
-
         // status
         mCommonFunctions.initStatusSelector();
+
+        // Transaction date
+        mCommonFunctions.initDateSelector();
 
         // account(s)
         mCommonFunctions.initAccountSelectors();

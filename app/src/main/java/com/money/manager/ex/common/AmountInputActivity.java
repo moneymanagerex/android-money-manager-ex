@@ -63,7 +63,14 @@ public class AmountInputActivity
     /**
      * By default, round the number to the currency Scale. Set in the factory method.
      */
-    public boolean roundToCurrencyDecimals;
+    @State boolean roundToCurrencyDecimals;
+    //    @State String mRequestId;
+    @State(MoneyBundler.class) Money mAmount;
+    @State Integer mCurrencyId;
+    /**
+     * used to restore expression from saved instance state.
+     */
+    @State String mExpression;
 
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
@@ -80,13 +87,6 @@ public class AmountInputActivity
     @Inject CurrencyService mCurrencyService;
     @Inject Lazy<FormatUtilities> formatUtilitiesLazy;
 
-    //    @State String mRequestId;
-    @State(MoneyBundler.class) Money mAmount;
-    @State Integer mCurrencyId;
-    /**
-     * used to restore expression from saved instance state.
-     */
-    @State String mExpression;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
     /**
@@ -99,14 +99,13 @@ public class AmountInputActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UIHelper uiHelper = new UIHelper(this);
-        setTheme(uiHelper.getThemeId());
-
         setContentView(R.layout.activity_amount_input);
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
-        
-        extractArguments();
+
+        if (savedInstanceState == null) {
+            extractArguments();
+        }
 
         initializeControls();
     }
@@ -295,7 +294,7 @@ public class AmountInputActivity
      */
     public String getFormattedAmount() {
         String result = null;
-        FormatUtilities format = new FormatUtilities(this);
+        FormatUtilities format = formatUtilitiesLazy.get();
 
         // No currency. Use locale preferences.
         if (mCurrencyId == null) {
@@ -353,6 +352,9 @@ public class AmountInputActivity
         Intent intent = getIntent();
         if (intent == null) return;
 
+        mCurrencyId = intent.getIntExtra(EXTRA_CURRENCY_ID, Constants.NOT_SET);
+        roundToCurrencyDecimals = intent.getBooleanExtra(EXTRA_ROUND_TO_CURRENCY, true);
+
         String value = intent.getStringExtra(EXTRA_AMOUNT);
         if (!TextUtils.isEmpty(value)) {
             NumericHelper numericHelper = new NumericHelper(this);
@@ -368,9 +370,6 @@ public class AmountInputActivity
             }
 
         }
-
-        mCurrencyId = intent.getIntExtra(EXTRA_CURRENCY_ID, Constants.NOT_SET);
-        roundToCurrencyDecimals = intent.getBooleanExtra(EXTRA_ROUND_TO_CURRENCY, true);
     }
 
 //    private void restoreSavedInstanceState(Bundle savedInstanceState) {

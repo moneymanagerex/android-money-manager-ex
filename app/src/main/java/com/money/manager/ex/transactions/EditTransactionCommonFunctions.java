@@ -96,6 +96,7 @@ public class EditTransactionCommonFunctions {
     private static final int REQUEST_PICK_CATEGORY = 3;
     private static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
     private static final int REQUEST_AMOUNT = 5;
+    private static final int REQUEST_AMOUNT_TO = 6;
 
     private static final String DATEPICKER_TAG = "datepicker";
 
@@ -397,32 +398,34 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initAmountSelectors() {
-        View.OnClickListener onClickAmount = new View.OnClickListener() {
+//        View.OnClickListener onClickAmount = new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                // Get currency id from the account for which the amount has been modified.
+//                Integer currencyId;
+//                Money amount;
+//
+//                if (v.equals(viewHolder.txtAmountTo)) {
+//                    // clicked Amount To.
+//                    currencyId = getDestinationCurrencyId();
+//                    amount = transactionEntity.getAmountTo();
+//                } else {
+//                    // clicked Amount.
+//                    currencyId = getSourceCurrencyId();
+//                    amount = transactionEntity.getAmount();
+//                }
+//
+//                AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(), amount, currencyId);
+//                dialog.show(activity.getSupportFragmentManager(), dialog.getClass().getSimpleName());
+//
+//                // The result is received in onFinishedInputAmountDialog.
+//            }
+//        };
 
-            @Override
-            public void onClick(View v) {
-                // Get currency id from the account for which the amount has been modified.
-                Integer currencyId;
-                Money amount;
-
-                if (v.equals(viewHolder.txtAmountTo)) {
-                    // clicked Amount To.
-                    currencyId = getDestinationCurrencyId();
-                    amount = transactionEntity.getAmountTo();
-                } else {
-                    // clicked Amount.
-                    currencyId = getSourceCurrencyId();
-                    amount = transactionEntity.getAmount();
-                }
-
-                AmountInputDialog dialog = AmountInputDialog.getInstance(v.getId(), amount, currencyId);
-                dialog.show(activity.getSupportFragmentManager(), dialog.getClass().getSimpleName());
-
-                // The result is received in onFinishedInputAmountDialog.
-            }
-        };
-
-        View.OnClickListener onAmountClicked = new View.OnClickListener() {
+        // amount
+        displayAmountFrom();
+        viewHolder.txtAmount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currencyId = getSourceCurrencyId();
@@ -431,15 +434,20 @@ public class EditTransactionCommonFunctions {
                 Intent intent = getIntentForNumericInput(amount, currencyId);
                 activity.startActivityForResult(intent, REQUEST_AMOUNT);
             }
-        };
-
-        // amount
-        displayAmountFrom();
-        viewHolder.txtAmount.setOnClickListener(onAmountClicked);
+        });
 
         // amount to
         displayAmountTo();
-        viewHolder.txtAmountTo.setOnClickListener(onClickAmount);
+        viewHolder.txtAmountTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currencyId = getDestinationCurrencyId();
+                Money amount = transactionEntity.getAmountTo();
+
+                Intent intent = getIntentForNumericInput(amount, currencyId);
+                activity.startActivityForResult(intent, REQUEST_AMOUNT_TO);
+            }
+        });
     }
 
     /**
@@ -816,10 +824,12 @@ public class EditTransactionCommonFunctions {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
+        setDirty(true);
+
+        String stringExtra;
+
         switch (requestCode) {
             case EditTransactionCommonFunctions.REQUEST_PICK_PAYEE:
-                setDirty(true);
-
                 this.transactionEntity.setPayeeId(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
                 // select last category used from payee. Only if category has not been entered earlier.
@@ -833,24 +843,23 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_ACCOUNT:
-                setDirty(true);
-
                 transactionEntity.setAccountToId(data.getIntExtra(AccountListActivity.INTENT_RESULT_ACCOUNTID, Constants.NOT_SET));
                 mToAccountName = data.getStringExtra(AccountListActivity.INTENT_RESULT_ACCOUNTNAME);
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_AMOUNT:
-                setDirty(true);
                 // amount entered
-                String amountString = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
-                Money amount = MoneyFactory.fromString(amountString);
-                onFinishedInputAmountDialog(R.id.textViewAmount, amount);
+                stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                onFinishedInputAmountDialog(R.id.textViewAmount, MoneyFactory.fromString(stringExtra));
+                break;
 
+            case EditTransactionCommonFunctions.REQUEST_AMOUNT_TO:
+                // amount entered
+                stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                onFinishedInputAmountDialog(R.id.textViewAmount, MoneyFactory.fromString(stringExtra));
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
-                setDirty(true);
-
                 this.transactionEntity.setCategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET));
                 categoryName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
                 this.transactionEntity.setSubcategoryId(data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET));
@@ -860,8 +869,6 @@ public class EditTransactionCommonFunctions {
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_SPLIT_TRANSACTION:
-                setDirty(true);
-
                 mSplitTransactions = Parcels.unwrap(data.getParcelableExtra(SplitCategoriesActivity.INTENT_RESULT_SPLIT_TRANSACTION));
 
                 // deleted items
