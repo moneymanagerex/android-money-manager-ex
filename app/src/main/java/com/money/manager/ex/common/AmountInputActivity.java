@@ -23,8 +23,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -34,12 +36,16 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
+import com.money.manager.ex.view.RobotoButton;
 import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.Lazy;
 import icepick.State;
 import info.javaperformance.money.Money;
@@ -72,6 +78,9 @@ public class AmountInputActivity
      */
     @State String mExpression;
 
+    // Views
+    @BindView(R.id.deleteButton) ImageButton deleteButton;
+
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
             R.id.buttonKeyNum4, R.id.buttonKeyNum5, R.id.buttonKeyNum6, R.id.buttonKeyNum7,
@@ -102,6 +111,9 @@ public class AmountInputActivity
         setContentView(R.layout.activity_amount_input);
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
+        ButterKnife.bind(this);
+
+        //setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             extractArguments();
@@ -183,22 +195,11 @@ public class AmountInputActivity
             }
         });
 
-        // Delete button '<='
-        FontIconView deleteButton = (FontIconView) findViewById(R.id.deleteButton);
-        if (deleteButton != null) {
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mStartedTyping = true;
-
-                    String currentNumber = txtMain.getText().toString();
-                    currentNumber = deleteLastCharacterFrom(currentNumber);
-                    txtMain.setText(currentNumber);
-
-                    evalExpression();
-                }
-            });
-        }
+        // delete button, <=
+        UIHelper uiHelper = new UIHelper(this);
+        deleteButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace)
+                .sizeDp(40)
+                .color(uiHelper.getColor(R.color.md_primary_dark)));
 
         // Amounts
         txtTop = (TextView) findViewById(R.id.textViewTop);
@@ -313,6 +314,20 @@ public class AmountInputActivity
         }
 
         return result;
+    }
+
+    /**
+     * Delete button '<='
+     */
+    @OnClick(R.id.deleteButton)
+    public void onDeleteClicked() {
+        mStartedTyping = true;
+
+        String currentNumber = txtMain.getText().toString();
+        currentNumber = deleteLastCharacterFrom(currentNumber);
+        txtMain.setText(currentNumber);
+
+        evalExpression();
     }
 
     /*

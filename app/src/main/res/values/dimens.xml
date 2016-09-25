@@ -49,7 +49,7 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <!-- font size amount dialog -->
     <dimen name="input_dialog_text_size">32sp</dimen>
     <!--<dimen name="input_dialog_button_height">52dp</dimen>-->
-    <dimen name="input_dialog_button_height">88dp</dimen>
+    <dimen name="input_dialog_button_height">72dp</dimen>
     <dimen name="input_dialog_linear_button_height">52dp</dimen>
 
     <!-- shape dimens -->

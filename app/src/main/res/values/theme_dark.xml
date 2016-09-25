@@ -54,6 +54,7 @@ https://developer.android.com/training/material/theme.html
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_dark_row_light</item>
         <!-- todo <item name="colorButtonNormal"></item>-->
+        <!--<item name="colorControlHighlight"></item>-->
 
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_dark</item>

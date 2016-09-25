@@ -3,6 +3,7 @@ package com.money.manager.ex.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -129,6 +130,10 @@ public class UIHelper {
                 dialog.show();
             }
         });
+    }
+
+    public int getColor(int colorId) {
+        return ContextCompat.getColor(getContext(), colorId);
     }
 
 //    /**
