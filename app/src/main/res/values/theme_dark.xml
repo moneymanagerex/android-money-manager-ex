@@ -64,7 +64,7 @@ https://developer.android.com/training/material/theme.html
         <!-- other -->
         <item name="color_list_header">@color/material_grey_900</item>
         <!-- toolbar -->
-        <!--<item name="toolbarItemColor">@color/material_grey_50</item>-->
+        <item name="toolbarItemColor">@color/material_grey_50</item>
         <!--<item name="toolbar_spinner_item_text_color">@color/material_grey_50</item>-->
 
         <!-- Drawables -->

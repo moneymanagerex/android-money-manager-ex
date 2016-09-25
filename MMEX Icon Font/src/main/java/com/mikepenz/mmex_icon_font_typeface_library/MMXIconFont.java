@@ -143,7 +143,7 @@ public class MMXIconFont implements ITypeface {
 //		mmx_chevron_up('\u0079'),
 		mmx_calculator('\u007a'),
 //		mmx_dollar('\u0041'),
-//		mmx_erase('\u0042'),
+//		mmx_erase('\u0042'), => gmd-backspace
 		mmx_git_branch('\u0046'),
 //		mmx_alert('\u0047'),
 //		mmx_user('\u0048'),

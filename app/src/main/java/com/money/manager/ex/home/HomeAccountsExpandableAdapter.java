@@ -153,22 +153,27 @@ public class HomeAccountsExpandableAdapter
         if (!TextUtils.isEmpty(accountType)) {
             UIHelper uiHelper = new UIHelper(getContext());
             int iconSize = 30;
+            int iconColor = uiHelper.getSecondaryTextColor();
 
             if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_money_banknote)
-                        .sizeDp(iconSize);
+                        .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
             } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
-                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_temple).sizeDp(iconSize);
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_temple)
+                        .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.TERM.toString().equalsIgnoreCase(accountType)) {
-                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_calendar).sizeDp(iconSize);
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_calendar)
+                        .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.CREDIT_CARD.toString().equalsIgnoreCase(accountType)) {
-                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_credit_card).sizeDp(iconSize);
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_credit_card)
+                        .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
             } else if (AccountTypes.INVESTMENT.toString().equalsIgnoreCase(accountType)) {
-                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase).sizeDp(iconSize);
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase)
+                        .sizeDp(iconSize).color(iconColor);
                 holder.imgAccountType.setImageDrawable(icon);
             }
         }

@@ -183,6 +183,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
                     android:hint="@string/date"
                     android:textStyle="bold"
                     android:textAlignment="center" />
@@ -399,14 +400,14 @@
                     android:layout_weight="1"
                     android:hint="@string/payee" />
 
-                <com.shamanland.fonticon.FontIconView
+                <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/removePayeeButton"
-                    style="@style/Money.Button"
                     android:layout_width="@dimen/mmx_button_height"
                     android:layout_height="@dimen/mmx_button_height"
-                    android:textAlignment="center"
-                    android:text="@string/ic_erase"
-                    android:textSize="@dimen/fonticon_drawer" />
+                    android:layout_margin="4dp"
+                    style="@style/Money.Button"
+                    app:iiv_color="?attr/toolbarItemColor"
+                    app:iiv_icon="gmd-backspace" />
 
             </LinearLayout>
 

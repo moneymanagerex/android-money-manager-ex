@@ -17,7 +17,7 @@
   -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Money.Button" parent="android:Widget.Button">
+    <style name="Money.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@color/md_primary</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:layout_margin">3dp</item>
@@ -31,7 +31,7 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="Money.Button.Input.Dialog" parent="android:Widget.Button">
+    <style name="Money.Button.Input.Dialog" parent="Widget.AppCompat.Button.Colored">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">@dimen/input_dialog_button_height</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -96,7 +96,6 @@
         <item name="android:textColor">@color/md_primary_dark</item>
     </style>
 
-    <!--<style name="Money.Base.TextView.Widget.EditText" parent="android:Widget.Holo.EditText"/>-->
     <style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>
 
     <style name="Money.TextView.Widget.EditText" parent="Money.Base.TextView.Widget.EditText">

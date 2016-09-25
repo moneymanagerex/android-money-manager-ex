@@ -69,7 +69,7 @@
             android:id="@+id/fab"
             style="@style/MoneyFloatingActionButton"
             android:layout_marginBottom="@dimen/fab_margin_bottom_higher"
-            fab:fab_colorNormal="@color/md_primary"
+            fab:fab_colorNormal="@color/md_accent"
             fab:fab_colorPressed="@color/md_primary_dark" />
 
     </FrameLayout>

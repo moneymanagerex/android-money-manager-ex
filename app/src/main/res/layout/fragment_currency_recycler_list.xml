@@ -39,7 +39,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_action_add_dark"
         android:visibility="gone"
-        fab:fab_colorNormal="@color/md_primary"
+        fab:fab_colorNormal="@color/md_accent"
         fab:fab_colorPressed="@color/md_primary_dark" />
 
 </LinearLayout>

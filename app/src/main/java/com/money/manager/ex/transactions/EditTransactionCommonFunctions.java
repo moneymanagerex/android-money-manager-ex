@@ -1102,7 +1102,7 @@ public class EditTransactionCommonFunctions {
 
         UIHelper uiHelper = new UIHelper(getContext());
         int backgroundSelected = ContextCompat.getColor(activity, R.color.md_accent);
-        int foregroundSelected = ContextCompat.getColor(mContext, uiHelper.getSecondaryTextColor());
+        int foregroundSelected = uiHelper.getColor(R.attr.toolbarItemColor);
 
         switch (transactionType) {
             case Deposit:

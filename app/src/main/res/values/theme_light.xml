@@ -72,7 +72,7 @@
         <!-- other -->
         <item name="color_list_header">@color/material_green_100</item>
         <!-- toolbar -->
-        <!--<item name="toolbarItemColor">@color/material_grey_50</item>-->
+        <item name="toolbarItemColor">@color/material_grey_50</item>
         <!--<item name="toolbar_spinner_item_text_color">@color/material_grey_900</item>-->
 
         <!-- Drawables -->

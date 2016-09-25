@@ -86,7 +86,7 @@
         <attr name="colorPrimaryLight" format="color|reference" />
         <attr name="dividerColor" format="color|reference" />
         <attr name="color_list_header" format="color|reference" />
-        <!--<attr name="toolbarItemColor" format="color|reference" />-->
+        <attr name="toolbarItemColor" format="color|reference" />
         <!--<attr name="toolbar_spinner_item_text_color" format="color|reference" />-->
 
         <!-- number input binaryDialog / calculator -->

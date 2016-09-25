@@ -151,7 +151,7 @@ public class UIHelper {
     }
 
     /**
-     * Creates an icon with default settings. The default color is tertiary text color.
+     * Creates an icon with default settings. The default color is the toolbar item color.
      * @param icon Icon to instantiate.
      * @return Drawable (Iconics drawable).
      */
@@ -162,7 +162,8 @@ public class UIHelper {
 //                .color(getSecondaryTextColor())
 //                .color(this.getTertiaryTextColor())
 //                .color(this.getPrimaryTextColor())
-                .color(getColor(android.R.attr.colorForeground))
+//                .color(getColor(android.R.attr.colorForeground))
+                .color(getToolbarItemColor())
                 .sizeDp(this.getToolbarIconSize());
     }
 
@@ -184,9 +185,9 @@ public class UIHelper {
                 : ContextCompat.getColor(getContext(), android.R.color.tertiary_text_light);
     }
 
-//    public int getToolbarItemColor() {
-//        return ContextCompat.getColor(getContext(), resolveIdAttribute(R.attr.toolbarItemColor));
-//    }
+    public int getToolbarItemColor() {
+        return ContextCompat.getColor(getContext(), resolveIdAttribute(R.attr.toolbarItemColor));
+    }
 
     public int getToolbarIconSize() {
         return getDimenInDp(R.dimen.mmx_icon_size);
