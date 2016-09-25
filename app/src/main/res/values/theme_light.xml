@@ -37,10 +37,15 @@
 
     <!-- Application Theme, Material Light -->
     <style name="Theme.Money.Manager.Light" parent="@style/App_Light_DarkActionBar">
-        <item name="colorPrimary">@color/md_primary</item>
-        <item name="colorPrimaryDark">@color/md_primary_dark</item>
-        <!-- checkboxes and confirmation text in dialogs -->
-        <item name="colorAccent">@color/md_primary_dark</item>
+        <!-- md palette colors -->
+        <item name="colorPrimaryDark">@color/material_green_700</item>
+        <item name="colorPrimary">@color/material_green_500</item>
+        <item name="colorPrimaryLight">@color/material_green_100</item>
+        <item name="textColor">@color/material_white</item>
+        <item name="colorAccent">@color/material_amber_500</item>
+        <item name="android:textColorPrimary">@color/material_grey_900</item>
+        <item name="android:textColorSecondary">@color/material_grey_600</item>
+        <item name="dividerColor">@color/material_grey_400</item>
 
         <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>

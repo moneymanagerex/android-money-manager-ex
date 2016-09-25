@@ -21,8 +21,15 @@ https://developer.android.com/training/material/theme.html
 <resources>
     <!-- Dark Theme -->
     <style name="Theme.Money.Manager.Dark" parent="@style/Theme.AppCompat.NoActionBar">
-        <!-- checkboxes and confirmation text in dialogs -->
-        <item name="colorAccent">@color/md_primary_dark</item>
+        <!-- md palette colors -->
+        <item name="colorPrimaryDark">@color/material_blue_grey_700</item>
+        <item name="colorPrimary">@color/material_blue_grey_500</item>
+        <item name="colorPrimaryLight">@color/material_blue_grey_100</item>
+        <item name="textColor">@color/material_white</item>
+        <item name="colorAccent">@color/material_light_green_500</item>
+        <item name="android:textColorPrimary">@color/material_grey_900</item>
+        <item name="android:textColorSecondary">@color/material_grey_600</item>
+        <item name="dividerColor">@color/material_grey_400</item>
 
         <item name="android:windowContentOverlay">@null</item>
         <item name="actionModeBackground">@color/md_primary_dark</item>

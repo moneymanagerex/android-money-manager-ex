@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<!--
+These are the new styles.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- full-screen numeric input styles -->
+    <style name="Money.Button.Input.Dialog.Full" parent="Widget.AppCompat.Button.Colored">
+        <!--android:Widget.Button-->
+        <item name="android:textSize">@dimen/input_dialog_text_size</item>
+        <!--<item name="android:background">?attr/calculator_button_background</item>-->
+        <!--<item name="android:background">?attr/selectableItemBackground</item>-->
+        <item name="android:layout_height">@dimen/input_dialog_button_height</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+    <style name="Money.Button.Input.Dialog.Full.Operator" parent="Money.Button.Input.Dialog.Full">
+        <item name="android:textColor">@color/md_primary_dark</item>
+        <item name="android:background">?attr/calculator_button_operator_background</item>
+    </style>
+
+</resources>

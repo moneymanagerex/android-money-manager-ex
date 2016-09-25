@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -291,7 +292,7 @@ See https://www.materialui.co/colors
     <!-- GREY -->
     <color name="material_white">#FFFFFF</color>
     <color name="material_grey_50" tools:override="true">#FAFAFA</color>
-    <color name="material_grey_100">#F5F5F5</color>
+    <color name="material_grey_100" tools:override="true">#F5F5F5</color>
     <color name="material_grey_200">#EEEEEE</color>
     <color name="material_grey_300" tools:override="true">#E0E0E0</color>
     <color name="material_grey_400">#BDBDBD</color>
@@ -311,7 +312,7 @@ See https://www.materialui.co/colors
     <color name="material_blue_grey_500">#607D8B</color>
     <color name="material_blue_grey_600">#546E7A</color>
     <color name="material_blue_grey_700">#455A64</color>
-    <color name="material_blue_grey_800">#37474F</color>
+    <color name="material_blue_grey_800" tools:override="true">#37474F</color>
     <color name="material_blue_grey_900" tools:override="true">#263238</color>
 
 </resources>
