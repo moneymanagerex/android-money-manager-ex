@@ -54,7 +54,8 @@ public class SettingsFragment
         // Per-Database preferences
         Preference perDbPreference = findPreference(getString(R.string.pref_per_database));
         if (perDbPreference != null) {
-            perDbPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings_applications));
+            perDbPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings_applications)
+                    .color(uiHelper.getSecondaryTextColor()));
 
             perDbPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -69,7 +70,8 @@ public class SettingsFragment
 
         final Preference lookAndFeelPreference = findPreference(getString(PreferenceConstants.PREF_LOOK_FEEL));
         if (lookAndFeelPreference != null) {
-            lookAndFeelPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_wallpaper));
+            lookAndFeelPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_wallpaper)
+                    .color(uiHelper.getSecondaryTextColor()));
             lookAndFeelPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -81,7 +83,8 @@ public class SettingsFragment
 
         final Preference behaviourPreference = findPreference(getString(R.string.pref_behaviour));
         if (behaviourPreference != null) {
-            behaviourPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_play_circle_outline));
+            behaviourPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_play_circle_outline)
+                    .color(uiHelper.getSecondaryTextColor()));
             behaviourPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -93,7 +96,8 @@ public class SettingsFragment
 
         final Preference investmentPreference = findPreference(getString(R.string.pref_investment));
         if (investmentPreference != null) {
-            investmentPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_trending_up));
+            investmentPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_trending_up)
+                    .color(uiHelper.getSecondaryTextColor()));
             investmentPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -105,7 +109,8 @@ public class SettingsFragment
 
         final Preference passcodePreference = findPreference(getString(PreferenceConstants.PREF_SECURITY));
         if (passcodePreference != null) {
-            passcodePreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_lock));
+            passcodePreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_lock)
+                    .color(uiHelper.getSecondaryTextColor()));
             passcodePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -117,7 +122,8 @@ public class SettingsFragment
 
         final Preference databasesPreference = findPreference(getString(PreferenceConstants.PREF_DATABASE));
         if (databasesPreference != null) {
-            databasesPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_storage));
+            databasesPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_storage)
+                    .color(uiHelper.getSecondaryTextColor()));
             databasesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -130,7 +136,8 @@ public class SettingsFragment
         // Synchronisation
         final Preference syncPreference = findPreference(getString(R.string.pref_synchronization));
         if (syncPreference != null) {
-            syncPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_sync));
+            syncPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_sync)
+                    .color(uiHelper.getSecondaryTextColor()));
             syncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -143,7 +150,8 @@ public class SettingsFragment
         //donate
         final Preference pDonate = findPreference(getString(PreferenceConstants.PREF_DONATE));
         if (pDonate != null) {
-            pDonate.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard));
+            pDonate.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
+                    .color(uiHelper.getSecondaryTextColor()));
             pDonate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -155,7 +163,8 @@ public class SettingsFragment
 
         final Preference infoPreference = findPreference(getString(PreferenceConstants.PREF_VERSION_NAME));
         if (infoPreference != null) {
-            infoPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_info_outline));
+            infoPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_info_outline)
+                    .color(uiHelper.getSecondaryTextColor()));
             infoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
                 @Override
@@ -216,7 +225,8 @@ public class SettingsFragment
         final Preference generalPreference = findPreference(getString(PreferenceConstants.PREF_GENERAL));
         if (generalPreference == null) return;
 
-        generalPreference.setIcon(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_build));
+        generalPreference.setIcon(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_build)
+            .color(uiHelper.getSecondaryTextColor()));
 
         generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
