@@ -557,7 +557,7 @@ public class MainActivity
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
-        boolean isDarkTheme = new UIHelper(this).getThemeId() == R.style.Theme_Money_Manager_Dark;
+//        boolean isDarkTheme = new UIHelper(this).getThemeId() == R.style.Theme_Money_Manager_Dark;
 
         // Recent database?
         if (item.getId() == null && item.getTag() != null) {
@@ -619,7 +619,7 @@ public class MainActivity
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
             case R.id.menu_reports:
-                showReportsSelector(isDarkTheme, item.getText());
+                showReportsSelector(item.getText());
                 break;
             case R.id.menu_report_payees:
                 startActivity(new Intent(this, PayeesReportActivity.class));
@@ -839,19 +839,23 @@ public class MainActivity
         // manage: account
         childTools.add(new DrawerMenuItem().withId(R.id.menu_account)
                 .withText(getString(R.string.accounts))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_temple)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_temple)
+                        .color(uiHelper.getSecondaryTextColor())));
         // manage: categories
         childTools.add(new DrawerMenuItem().withId(R.id.menu_category)
                 .withText(getString(R.string.categories))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_tag_empty)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_tag_empty)
+                        .color(uiHelper.getSecondaryTextColor())));
         // manage: currencies
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)
+                        .color(uiHelper.getSecondaryTextColor())));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_group)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_group)
+                        .color(uiHelper.getSecondaryTextColor())));
         childItems.add(childTools);
 
         // Recurring Transactions
@@ -1000,63 +1004,75 @@ public class MainActivity
         // Home
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_home)
                 .withText(getString(R.string.home))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_home)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_home)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Open database
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_open_database)
                 .withText(getString(R.string.open_database))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_folder_open)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_folder_open)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Cloud synchronize
         if (new SyncManager(this).isActive()) {
             menuItems.add(new DrawerMenuItem().withId(R.id.menu_sync)
                 .withText(getString(R.string.synchronize))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
+                        .color(uiHelper.getSecondaryTextColor())));
         }
 
         // Entities
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_group_main)
                 .withText(getString(R.string.entities))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_business)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_business)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Recurring Transactions
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_recurring_transaction)
                 .withText(getString(R.string.recurring_transactions))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_back_in_time)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Budgets
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_budgets)
                 .withText(getString(R.string.budgets))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Asset Allocation
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation)
                 .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Search transaction
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_search_transaction)
                 .withText(getString(R.string.search))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_magnifier)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_magnifier)
+                        .color(uiHelper.getSecondaryTextColor())));
         // reports
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_reports)
                 .withText(getString(R.string.menu_reports))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_equalizer)
+                        .color(uiHelper.getSecondaryTextColor()))
                 .withDivider(true));
         // Settings
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_settings)
                 .withText(getString(R.string.settings))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings)
+                        .color(uiHelper.getSecondaryTextColor())));
         // Donate
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_donate)
                 .withText(getString(R.string.donate))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard))
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_card_giftcard)
+                        .color(uiHelper.getSecondaryTextColor()))
                 .withDivider(Boolean.TRUE));
         // Help
         menuItems.add(new DrawerMenuItem().withId(R.id.menu_about)
                 .withText(getString(R.string.about))
 //                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_question)))
-            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)));
+            .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_help_outline)
+                    .color(uiHelper.getSecondaryTextColor())));
 
         return menuItems;
     }
@@ -1387,39 +1403,45 @@ public class MainActivity
         return false;
     }
 
-    private void showReportsSelector(boolean isDarkTheme, String text) {
+    private void showReportsSelector(String text) {
         final DrawerMenuItemAdapter adapter = new DrawerMenuItemAdapter(this);
         UIHelper uiHelper = new UIHelper(this);
 
         // payee
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_payees)
                 .withText(getString(R.string.payees))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                    .color(uiHelper.getSecondaryTextColor())));
 
         // where money goes
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_goes)
                 .withText(getString(R.string.menu_report_where_money_goes))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // where money comes from
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_where_money_comes_from)
                 .withText(getString(R.string.menu_report_where_money_comes_from))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // where money comes from
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_categories)
                 .withText(getString(R.string.categories))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_donut_large)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // income vs. expenses
         adapter.add(new DrawerMenuItem().withId(R.id.menu_report_income_vs_expenses)
                 .withText(getString(R.string.menu_report_income_vs_expenses))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         // Asset Allocation Overview
         adapter.add(new DrawerMenuItem().withId(R.id.menu_asset_allocation_overview)
                 .withText(getString(R.string.asset_allocation))
-                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)));
+                .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_chart_pie)
+                        .color(uiHelper.getSecondaryTextColor())));
 
         new MaterialDialog.Builder(this)
                 .title(text)
