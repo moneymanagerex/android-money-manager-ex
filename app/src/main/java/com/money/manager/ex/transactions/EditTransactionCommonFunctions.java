@@ -104,23 +104,14 @@ public class EditTransactionCommonFunctions {
                                           ITransactionEntity transactionEntity, BriteDatabase database) {
         super();
 
-        mContext = parentActivity.getApplicationContext();
-        this.activity = parentActivity;
+        mContext = parentActivity;
         this.transactionEntity = transactionEntity;
         this.mDatabase = database;
-//        this.formatUtilitiesLazy = new Lazy<FormatUtilities>() {
-//            @Override
-//            public FormatUtilities get() {
-//                return new FormatUtilities(getContext());
-//            }
-//        };
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
-
-//    private Lazy<FormatUtilities> formatUtilitiesLazy;
 
     // Model
     public ITransactionEntity transactionEntity;
@@ -134,7 +125,6 @@ public class EditTransactionCommonFunctions {
     public EditTransactionViewHolder viewHolder;
 
     private Context mContext;
-    private MmxBaseFragmentActivity activity;
     private boolean mSplitSelected;
     private boolean mDirty = false; // indicate whether the data has been modified by the user.
     private String mSplitCategoryEntityName;
@@ -214,7 +204,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getDepositButtonIcon() {
-        return (FontIconView) activity.findViewById(R.id.depositButtonIcon);
+        return (FontIconView) getActivity().findViewById(R.id.depositButtonIcon);
     }
 
     public Integer getDestinationCurrencyId() {
@@ -255,11 +245,11 @@ public class EditTransactionCommonFunctions {
     }
 
     public FontIconView getTransferButtonIcon() {
-        return (FontIconView) activity.findViewById(R.id.transferButtonIcon);
+        return (FontIconView) getActivity().findViewById(R.id.transferButtonIcon);
     }
 
     public FontIconView getWithdrawalButtonIcon() {
-        return (FontIconView) activity.findViewById(R.id.withdrawalButtonIcon);
+        return (FontIconView) getActivity().findViewById(R.id.withdrawalButtonIcon);
     }
 
     public boolean hasPayee() {
@@ -307,7 +297,7 @@ public class EditTransactionCommonFunctions {
 
         // Adapter for account selectors.
 
-        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(activity,
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, mAccountNameList);
 
         accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -432,7 +422,7 @@ public class EditTransactionCommonFunctions {
                 Money amount = transactionEntity.getAmount();
 
                 Intent intent = getIntentForNumericInput(amount, currencyId);
-                activity.startActivityForResult(intent, REQUEST_AMOUNT);
+                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
             }
         });
 
@@ -445,7 +435,7 @@ public class EditTransactionCommonFunctions {
                 Money amount = transactionEntity.getAmountTo();
 
                 Intent intent = getIntentForNumericInput(amount, currencyId);
-                activity.startActivityForResult(intent, REQUEST_AMOUNT_TO);
+                getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
             }
         });
     }
@@ -463,9 +453,9 @@ public class EditTransactionCommonFunctions {
             public void onClick(View v) {
                 if (!isSplitSelected()) {
                     // select first category.
-                    Intent intent = new Intent(activity, CategoryListActivity.class);
+                    Intent intent = new Intent(getActivity(), CategoryListActivity.class);
                     intent.setAction(Intent.ACTION_PICK);
-                    activity.startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                    getActivity().startActivityForResult(intent, REQUEST_PICK_CATEGORY);
                 } else {
                     // select split categories.
                     showSplitCategoriesForm(mSplitCategoryEntityName);
@@ -507,7 +497,7 @@ public class EditTransactionCommonFunctions {
                 if (new UIHelper(getContext()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
-                datePicker.show(activity.getSupportFragmentManager(), DATEPICKER_TAG);
+                datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
 
@@ -540,7 +530,7 @@ public class EditTransactionCommonFunctions {
 //        collapsingToolbarLayout.setTitle(getString(R.string.budget));
 
         // Back arrow / cancel.
-        activity.setDisplayHomeAsUpEnabled(true);
+        getActivity().setDisplayHomeAsUpEnabled(true);
 
         // todo: add Save button
 
@@ -574,9 +564,9 @@ public class EditTransactionCommonFunctions {
         this.viewHolder.txtSelectPayee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, PayeeActivity.class);
+                Intent intent = new Intent(getContext(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                activity.startActivityForResult(intent, REQUEST_PICK_PAYEE);
+                getActivity().startActivityForResult(intent, REQUEST_PICK_PAYEE);
 
                 // the result is handled in onActivityResult
             }
@@ -633,7 +623,7 @@ public class EditTransactionCommonFunctions {
         mStatusValues = mContext.getResources().getStringArray(R.array.status_values);
 
         // create adapter for spinnerStatus
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(activity,
+        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, mStatusItems);
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinStatus.setAdapter(adapterStatus);
@@ -797,7 +787,7 @@ public class EditTransactionCommonFunctions {
 
     public boolean onActionCancelClick() {
         if (getDirty()) {
-            final MaterialDialog dialog = new MaterialDialog.Builder(activity)
+            final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
                 .title(android.R.string.cancel)
                 .content(R.string.transaction_cancel_confirm)
                 .positiveText(R.string.discard)
@@ -882,7 +872,7 @@ public class EditTransactionCommonFunctions {
     }
 
     public void onFinishedInputAmountDialog(int id, Money amount) {
-        View view = activity.findViewById(id);
+        View view = getActivity().findViewById(id);
         if (view == null || !(view instanceof TextView)) return;
 
         setDirty(true);
@@ -989,14 +979,14 @@ public class EditTransactionCommonFunctions {
                 if (areCurrenciesSame()) {
                     viewHolder.amountHeaderTextView.setText(getContext().getString(R.string.transfer_amount));
                 } else {
-                    viewHolder.amountHeaderTextView.setText(activity.getString(R.string.withdrawal_from,
+                    viewHolder.amountHeaderTextView.setText(getContext().getString(R.string.withdrawal_from,
                             this.AccountList.get(index).getName()));
                 }
             }
 
             index = mAccountIdList.indexOf(transactionEntity.getAccountToId());
             if (index >= 0) {
-                viewHolder.amountToHeaderTextView.setText(activity.getString(R.string.deposit_to,
+                viewHolder.amountToHeaderTextView.setText(getContext().getString(R.string.deposit_to,
                         this.AccountList.get(index).getName()));
             }
         }
@@ -1098,7 +1088,7 @@ public class EditTransactionCommonFunctions {
         // Style the selected button.
 
         UIHelper uiHelper = new UIHelper(getContext());
-        int backgroundSelected = ContextCompat.getColor(activity, R.color.md_accent);
+        int backgroundSelected = ContextCompat.getColor(getContext(), R.color.md_accent);
         int foregroundSelected = uiHelper.getToolbarItemColor();
 
         switch (transactionType) {
@@ -1123,7 +1113,7 @@ public class EditTransactionCommonFunctions {
 
     public boolean validateData() {
         boolean isTransfer = transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
-        Core core = new Core(activity);
+        Core core = new Core(getContext());
 
         if (isTransfer) {
             if (transactionEntity.getAccountToId() == Constants.NOT_SET) {
@@ -1297,8 +1287,8 @@ public class EditTransactionCommonFunctions {
     }
 
     private void cancelActivity() {
-        activity.setResult(Activity.RESULT_CANCELED);
-        activity.finish();
+        getActivity().setResult(Activity.RESULT_CANCELED);
+        getActivity().finish();
     }
 
     /**
@@ -1349,6 +1339,10 @@ public class EditTransactionCommonFunctions {
 
         view.setText(amountDisplay);
         view.setTag(amount.toString());
+    }
+
+    private MmxBaseFragmentActivity getActivity() {
+        return (MmxBaseFragmentActivity) mContext;
     }
 
     private Intent getIntentForNumericInput(Money amount, int currencyId) {
@@ -1420,12 +1414,12 @@ public class EditTransactionCommonFunctions {
 
             DialogFragment dialog = new YesNoDialog();
             Bundle args = new Bundle();
-            args.putString("title", activity.getString(R.string.warning));
-            args.putString("message", activity.getString(R.string.no_transfer_splits));
+            args.putString("title", getContext().getString(R.string.warning));
+            args.putString("message", getContext().getString(R.string.no_transfer_splits));
             args.putString("purpose", YesNoDialog.PURPOSE_DELETE_SPLITS_WHEN_SWITCHING_TO_TRANSFER);
             dialog.setArguments(args);
 
-            dialog.show(activity.getSupportFragmentManager(), "tag");
+            dialog.show(getActivity().getSupportFragmentManager(), "tag");
 
             // Dialog result is handled in onEvent handlers in the listeners.
 
@@ -1487,7 +1481,7 @@ public class EditTransactionCommonFunctions {
         Integer fromCurrencyId = getSourceCurrencyId();
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
-        activity.startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
+        getActivity().startActivityForResult(intent, REQUEST_PICK_SPLIT_TRANSACTION);
     }
 
     /**
@@ -1495,7 +1489,7 @@ public class EditTransactionCommonFunctions {
      * that the records must be adjusted manually.
      */
     private void showSplitResetNotice() {
-        new MaterialDialog.Builder(activity)
+        new MaterialDialog.Builder(getContext())
                 .title(R.string.split_transaction)
                 .content(R.string.split_reset_notice)
                 .positiveText(android.R.string.ok)
