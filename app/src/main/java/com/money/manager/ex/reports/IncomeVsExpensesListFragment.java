@@ -419,10 +419,10 @@ public class IncomeVsExpensesListFragment
         UIHelper uiHelper = new UIHelper(getActivity());
         if (income - Math.abs(expenses) < 0) {
             txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
-                uiHelper.resolveIdAttribute(R.attr.holo_red_color_theme)));
+                uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
         } else {
             txtDifference.setTextColor(ContextCompat.getColor(getActivity(),
-                uiHelper.resolveIdAttribute(R.attr.holo_green_color_theme)));
+                uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
         }
     }
 

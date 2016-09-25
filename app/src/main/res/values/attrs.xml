@@ -27,7 +27,7 @@
         <attr name="ic_action_cancel" format="reference"/>
         <attr name="ic_action_cancel_contrast" format="reference" />
         <attr name="ic_action_copy" format="reference"/>
-        <attr name="ic_action_currency" format="reference"/>
+        <!--<attr name="ic_action_currency" format="reference"/>-->
         <attr name="ic_action_delete" format="reference"/>
         <attr name="ic_action_download" format="reference"/>
         <attr name="ic_action_dropbox" format="reference"/>

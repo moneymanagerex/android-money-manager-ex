@@ -36,7 +36,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.ArrayList;
@@ -125,7 +124,7 @@ public class PieChartFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTextColor = new UIHelper(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
+        mTextColor = new UIHelper(getActivity()).resolveAttribute(R.attr.chartTextColor);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_SAVED_INSTANCE))
                 setChartArguments(savedInstanceState.getBundle(KEY_SAVED_INSTANCE));

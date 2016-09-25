@@ -408,7 +408,6 @@
                     app:iiv_color="?attr/toolbarItemColor"
                     app:iiv_icon="gmd-backspace"
                     app:iiv_size="@dimen/mmx_icon_size"/>
-                <!--android:layout_margin="4dp"-->
 
             </LinearLayout>
 

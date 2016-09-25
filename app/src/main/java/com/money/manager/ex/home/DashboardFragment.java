@@ -20,6 +20,7 @@ package com.money.manager.ex.home;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -417,9 +418,10 @@ public class DashboardFragment
                     new Integer[]{null, Gravity.RIGHT, Gravity.RIGHT}, new Integer[][]{null, {0, 0, padding_in_px, 0}, null});
             TextView txt = (TextView) row.getChildAt(2);
             UIHelper uiHelper = new UIHelper(getActivity());
-            txt.setTextColor(ContextCompat.getColor(getActivity(), (daysLeft >= 0
-                ? uiHelper.getColor(R.attr.holo_green_color_theme)
-                : uiHelper.getColor(R.attr.holo_red_color_theme))));
+            int color = daysLeft >= 0
+                    ? uiHelper.resolveAttribute(R.attr.holo_green_color_theme)
+                    : uiHelper.resolveAttribute(R.attr.holo_red_color_theme);
+            txt.setTextColor(ContextCompat.getColor(getActivity(), color));
             // Add Row
             tableLayout.addView(row);
         }

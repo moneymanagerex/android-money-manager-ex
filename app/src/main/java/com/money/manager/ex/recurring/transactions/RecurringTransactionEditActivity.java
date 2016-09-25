@@ -202,8 +202,6 @@ public class RecurringTransactionEditActivity
         outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommon.mSplitTransactions));
         outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommon.mSplitTransactionsDeleted));
         outState.putString(KEY_NOTES, String.valueOf(mCommon.viewHolder.edtNotes.getTag()));
-
-//        outState.putString(KEY_ACTION, mIntentAction);
     }
 
     @Override

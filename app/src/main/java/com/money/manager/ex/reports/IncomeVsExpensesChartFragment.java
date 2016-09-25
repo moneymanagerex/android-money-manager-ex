@@ -37,7 +37,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.UIHelper;
 
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public class IncomeVsExpensesChartFragment
                 setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(KEY_DISPLAY_AS_UP_ENABLED));
         }
 
-        mTextColor = new UIHelper(getActivity()).resolveIdAttribute(R.attr.chartTextColor);
+        mTextColor = new UIHelper(getActivity()).resolveAttribute(R.attr.chartTextColor);
 
         // enabled display as home
 //        ActionBarActivity activity = (ActionBarActivity) getActivity();

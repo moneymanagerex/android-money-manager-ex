@@ -39,7 +39,6 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
@@ -314,10 +313,10 @@ public class Core {
      */
     public int resolveColorAttribute(int attr) {
 //        Resources.Theme currentTheme = mContext.getTheme();
-//        return mContext.getResources().getColor(resolveIdAttribute(attr), currentTheme);
-        //return mContext.getResources().getColor(resolveIdAttribute(attr));
+//        return mContext.getResources().getColor(resolveAttribute(attr), currentTheme);
+        //return mContext.getResources().getColor(resolveAttribute(attr));
         UIHelper uiHelper = new UIHelper(getContext());
-        return ContextCompat.getColor(getContext(), uiHelper.resolveIdAttribute(attr));
+        return ContextCompat.getColor(getContext(), uiHelper.resolveAttribute(attr));
     }
 
     public boolean isToDisplayChangelog() {

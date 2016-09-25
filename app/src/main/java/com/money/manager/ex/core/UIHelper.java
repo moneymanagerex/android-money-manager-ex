@@ -3,8 +3,6 @@ package com.money.manager.ex.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -133,16 +131,19 @@ public class UIHelper {
         });
     }
 
-    /**
-     * Finds the theme color from an attribute.
-     * @param attrId    Id of the attribute to parse. i.e. R.attr.some_color
-     */
-    public int getColor(int attrId) {
-        TypedValue typedValue = new TypedValue();
-        getContext().getTheme()
-            .resolveAttribute(attrId, typedValue, true);
-        return typedValue.data;
-    }
+//    /**
+//     * Finds the theme color from an attribute.
+//     * @param attrId    Id of the attribute to parse. i.e. R.attr.some_color
+//     */
+//    public int getColorFromAttribute(int attrId) {
+//        int x = resolveAttribute(attrId);
+//        int y = R.color.material_grey_50;
+//
+//        TypedValue typedValue = new TypedValue();
+//        getContext().getTheme()
+//            .resolveAttribute(attrId, typedValue, true);
+//        return typedValue.data;
+//    }
 
     public int getDimenInDp(int dimenId) {
         int sizeInDp = (int) (getContext().getResources().getDimension(dimenId)
@@ -179,14 +180,9 @@ public class UIHelper {
                 : ContextCompat.getColor(getContext(), android.R.color.secondary_text_light);
     }
 
-    public int getTertiaryTextColor() {
-        return isUsingDarkTheme()
-                ? ContextCompat.getColor(getContext(), android.R.color.tertiary_text_dark)
-                : ContextCompat.getColor(getContext(), android.R.color.tertiary_text_light);
-    }
-
     public int getToolbarItemColor() {
-        return ContextCompat.getColor(getContext(), getColor(R.attr.toolbarItemColor));
+        int resourceId = resolveAttribute(R.attr.toolbarItemColor);
+        return ContextCompat.getColor(getContext(), resourceId);
     }
 
     public int getToolbarIconSize() {
@@ -221,11 +217,12 @@ public class UIHelper {
     }
 
     /**
-     * Resolve the id attribute into int value
+     * Resolves the attribute into a resource id.
+     * For example attr/color resolves into color.red, which is used to get the Color object.
      * @param attr id attribute
-     * @return resource id
+     * @return resource id for the given attribute.
      */
-    public int resolveIdAttribute(int attr) {
+    public int resolveAttribute(int attr) {
         TypedValue tv = new TypedValue();
         if (getContext().getTheme().resolveAttribute(attr, tv, true))
             return tv.resourceId;

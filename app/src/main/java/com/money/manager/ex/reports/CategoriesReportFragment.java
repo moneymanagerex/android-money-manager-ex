@@ -108,7 +108,7 @@ public class CategoriesReportFragment
         if (itemChart != null) {
             itemChart.setVisible(!(((CategoriesReportActivity) getActivity()).mIsDualPanel));
             UIHelper uiHelper = new UIHelper(getActivity());
-            itemChart.setIcon(uiHelper.resolveIdAttribute(R.attr.ic_action_pie_chart));
+            itemChart.setIcon(uiHelper.resolveAttribute(R.attr.ic_action_pie_chart));
         }
     }
 

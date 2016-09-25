@@ -547,7 +547,6 @@ public class EditTransactionCommonFunctions {
     }
 
     public void initNotesControls() {
-        viewHolder.edtNotes = (EditText) activity.findViewById(R.id.editTextNotes);
         if (!(TextUtils.isEmpty(transactionEntity.getNotes()))) {
             viewHolder.edtNotes.setText(transactionEntity.getNotes());
         }
@@ -669,7 +668,6 @@ public class EditTransactionCommonFunctions {
     public void initTransactionNumberControls() {
         // Transaction number
 
-        viewHolder.edtTransNumber = (EditText) activity.findViewById(R.id.editTextTransNumber);
         if (!TextUtils.isEmpty(transactionEntity.getTransactionNumber())) {
             viewHolder.edtTransNumber.setText(transactionEntity.getTransactionNumber());
         }
@@ -694,7 +692,6 @@ public class EditTransactionCommonFunctions {
             }
         });
 
-        viewHolder.btnTransNumber = (ImageButton) activity.findViewById(R.id.buttonTransNumber);
         viewHolder.btnTransNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

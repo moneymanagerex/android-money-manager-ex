@@ -40,47 +40,34 @@ public class EditTransactionViewHolder {
 
     public EditTransactionViewHolder(Activity view) {
         ButterKnife.bind(this, view);
-
-        // todo: complete the conversion of the bindings
-        // Payee
-        tableRowPayee = (ViewGroup) view.findViewById(R.id.tableRowPayee);
-
-        // Category / Split
-        splitButton = (FontIconView) view.findViewById(R.id.splitButton);
-        categoryTextView = (TextView) view.findViewById(R.id.textViewCategory);
-
-        // Account
-        spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
-        accountFromLabel = (TextView) view.findViewById(R.id.accountFromLabel);
-
-        txtToAccount = (TextView) view.findViewById(R.id.textViewToAccount);
-        spinAccountTo = (Spinner) view.findViewById(R.id.spinnerToAccount);
     }
 
     @BindView(R.id.textViewDate) public TextView dateTextView;
     @BindView(R.id.previousDayButton) public IconicsImageView previousDayButton;
     @BindView(R.id.nextDayButton) public IconicsImageView nextDayButton;
 
-    public TextView categoryTextView;
+    @BindView(R.id.textViewCategory) TextView categoryTextView;
     @BindView(R.id.textViewPayee) TextView txtSelectPayee;
     @BindView(R.id.spinnerStatus) Spinner spinStatus;
-    public Spinner spinAccount, spinAccountTo;
+    @BindView(R.id.spinnerAccount) Spinner spinAccount;
+    @BindView(R.id.spinnerToAccount) Spinner spinAccountTo;
     @BindView(R.id.textViewTotAmount) TextView txtAmountTo;
     @BindView(R.id.textViewAmount) TextView txtAmount;
 
-    public ViewGroup tableRowPayee;
+    @BindView(R.id.tableRowPayee) ViewGroup tableRowPayee;
     @BindView(R.id.tableRowAmountTo) ViewGroup tableRowAmountTo;
     @BindView(R.id.tableRowAccountTo) ViewGroup tableRowAccountTo;
-    public TextView accountFromLabel, txtToAccount;
+    @BindView(R.id.accountFromLabel) TextView accountFromLabel;
+    @BindView(R.id.textViewToAccount) TextView txtToAccount;
     @BindView(R.id.textViewHeaderAmount) TextView amountHeaderTextView;
     @BindView(R.id.textViewHeaderAmountTo) TextView amountToHeaderTextView;
     @BindView(R.id.removePayeeButton) IconicsImageView removePayeeButton;
-    public FontIconView splitButton;
+    @BindView(R.id.splitButton) FontIconView splitButton;
     // Transaction types
     @BindView(R.id.withdrawalButton) RelativeLayout withdrawalButton;
     @BindView(R.id.depositButton) RelativeLayout depositButton;
     @BindView(R.id.transferButton) RelativeLayout transferButton;
-    public ImageButton btnTransNumber;
-    public EditText edtTransNumber, edtNotes;
-   
+    @BindView(R.id.buttonTransNumber) ImageButton btnTransNumber;
+    @BindView(R.id.editTextTransNumber) public EditText edtTransNumber;
+    @BindView(R.id.editTextNotes) public EditText edtNotes;
 }
