@@ -94,7 +94,7 @@ public class RecurringTransactionEditActivity
 
     // Form controls
     private RecurringTransactionViewHolder mViewHolder;
-    private EditTransactionCommonFunctions mCommonFunctions;
+    private EditTransactionCommonFunctions mCommon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +104,10 @@ public class RecurringTransactionEditActivity
         MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         RecurringTransaction tx = initializeModel();
-        mCommonFunctions = new EditTransactionCommonFunctions(this, tx, database);
+        mCommon = new EditTransactionCommonFunctions(this, tx, database);
 
 //        showStandardToolbarActions();
-        mCommonFunctions.initializeToolbar();
+        mCommon.initializeToolbar();
 
         // manage update instance
         if (savedInstanceState != null) {
@@ -123,7 +123,7 @@ public class RecurringTransactionEditActivity
                     // select data transaction
                     loadRecurringTransaction(id);
                 } else {
-                    mCommonFunctions.transactionEntity.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
+                    mCommon.transactionEntity.setAccountId(getIntent().getIntExtra(KEY_ACCOUNT_ID, Constants.NOT_SET));
                 }
             }
             mIntentAction = getIntent().getAction();
@@ -141,16 +141,18 @@ public class RecurringTransactionEditActivity
         initializeControls();
 
         // refresh user interface
-        mCommonFunctions.onTransactionTypeChanged(mCommonFunctions.transactionEntity.getTransactionType());
-        mCommonFunctions.showPayeeName();
-        mCommonFunctions.displayCategoryName();
+        mCommon.onTransactionTypeChanged(mCommon.transactionEntity.getTransactionType());
+        mCommon.showPayeeName();
+        mCommon.displayCategoryName();
 
         showPaymentsLeft();
+
+        mCommon.setDirty(false);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCommonFunctions.onActivityResult(requestCode, resultCode, data);
+        mCommon.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -187,26 +189,26 @@ public class RecurringTransactionEditActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_MODEL, Parcels.wrap(mCommonFunctions.transactionEntity));
+        outState.putParcelable(KEY_MODEL, Parcels.wrap(mCommon.transactionEntity));
 
         // update the state interface
-        outState.putString(KEY_TO_ACCOUNT_NAME, mCommonFunctions.mToAccountName);
-        outState.putString(KEY_TRANS_CODE, mCommonFunctions.getTransactionType());
-        outState.putString(KEY_TRANS_STATUS, mCommonFunctions.transactionEntity.getStatus());
-        outState.putString(KEY_PAYEE_NAME, mCommonFunctions.payeeName);
-        outState.putString(KEY_CATEGORY_NAME, mCommonFunctions.categoryName);
-        outState.putString(KEY_SUBCATEGORY_NAME, mCommonFunctions.subCategoryName);
-        outState.putString(KEY_TRANS_NUMBER, mCommonFunctions.viewHolder.edtTransNumber.getText().toString());
-        outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommonFunctions.mSplitTransactions));
-        outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommonFunctions.mSplitTransactionsDeleted));
-        outState.putString(KEY_NOTES, String.valueOf(mCommonFunctions.viewHolder.edtNotes.getTag()));
+        outState.putString(KEY_TO_ACCOUNT_NAME, mCommon.mToAccountName);
+        outState.putString(KEY_TRANS_CODE, mCommon.getTransactionType());
+        outState.putString(KEY_TRANS_STATUS, mCommon.transactionEntity.getStatus());
+        outState.putString(KEY_PAYEE_NAME, mCommon.payeeName);
+        outState.putString(KEY_CATEGORY_NAME, mCommon.categoryName);
+        outState.putString(KEY_SUBCATEGORY_NAME, mCommon.subCategoryName);
+        outState.putString(KEY_TRANS_NUMBER, mCommon.viewHolder.edtTransNumber.getText().toString());
+        outState.putParcelable(KEY_SPLIT_TRANSACTION, Parcels.wrap(mCommon.mSplitTransactions));
+        outState.putParcelable(KEY_SPLIT_TRANSACTION_DELETED, Parcels.wrap(mCommon.mSplitTransactionsDeleted));
+        outState.putString(KEY_NOTES, String.valueOf(mCommon.viewHolder.edtNotes.getTag()));
 
 //        outState.putString(KEY_ACTION, mIntentAction);
     }
 
     @Override
     public boolean onActionCancelClick() {
-        return mCommonFunctions.onActionCancelClick();
+        return mCommon.onActionCancelClick();
     }
 
     @Override
@@ -231,17 +233,17 @@ public class RecurringTransactionEditActivity
     public void onEvent(AmountEnteredEvent event) {
         int id = Integer.parseInt(event.requestId);
 
-        mCommonFunctions.onFinishedInputAmountDialog(id, event.amount);
+        mCommon.onFinishedInputAmountDialog(id, event.amount);
     }
 
     @Subscribe
     public void onEvent(DialogPositiveClickedEvent event) {
-        mCommonFunctions.confirmDeletingCategories();
+        mCommon.confirmDeletingCategories();
     }
 
     @Subscribe
     public void onEvent(DialogNegativeClickedEvent event) {
-        mCommonFunctions.cancelChangingTransactionToTransfer();
+        mCommon.cancelChangingTransactionToTransfer();
     }
 
     // Public
@@ -285,7 +287,7 @@ public class RecurringTransactionEditActivity
     // Private
 
     private RecurringTransaction getRecurringTransaction() {
-        return (RecurringTransaction) mCommonFunctions.transactionEntity;
+        return (RecurringTransaction) mCommon.transactionEntity;
     }
 
     private void initializeControls() {
@@ -293,42 +295,42 @@ public class RecurringTransactionEditActivity
         initializePaymentDateSelector();
 
         // Account(s)
-        mCommonFunctions.initAccountSelectors();
+        mCommon.initAccountSelectors();
 
         // Transaction type
-        mCommonFunctions.initTransactionTypeSelector();
+        mCommon.initTransactionTypeSelector();
 
         // status
-        mCommonFunctions.initStatusSelector();
+        mCommon.initStatusSelector();
 
         // Payee
-        mCommonFunctions.initPayeeControls();
+        mCommon.initPayeeControls();
 
         // Category
-        mCommonFunctions.initCategoryControls(SplitRecurringCategory.class.getSimpleName());
+        mCommon.initCategoryControls(SplitRecurringCategory.class.getSimpleName());
 
         // Split Categories
-        mCommonFunctions.initSplitCategories();
+        mCommon.initSplitCategories();
 
         // mark checked if there are existing split categories.
-        boolean hasSplit = mCommonFunctions.hasSplitCategories();
-        mCommonFunctions.setSplit(hasSplit);
+        boolean hasSplit = mCommon.hasSplitCategories();
+        mCommon.setSplit(hasSplit);
 
         // Amount and total amount
 
-        mCommonFunctions.initAmountSelectors();
+        mCommon.initAmountSelectors();
 
         // transaction number
-        mCommonFunctions.initTransactionNumberControls();
+        mCommon.initTransactionNumberControls();
 
         // notes
-        mCommonFunctions.initNotesControls();
+        mCommon.initNotesControls();
 
         // Frequency
 
         Spinner spinFrequencies = (Spinner) findViewById(R.id.spinnerFrequencies);
 
-        RecurringTransaction tx = (RecurringTransaction) mCommonFunctions.transactionEntity;
+        RecurringTransaction tx = (RecurringTransaction) mCommon.transactionEntity;
         Integer recurrence = tx.getRecurrenceInt();
         if (recurrence >= 200) {
             recurrence = recurrence - 200;
@@ -340,7 +342,7 @@ public class RecurringTransactionEditActivity
         spinFrequencies.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCommonFunctions.setDirty(true);
+                mCommon.setDirty(true);
 
                 getRecurringTransaction().setRecurrence(position);
                 showPaymentsLeft();
@@ -416,12 +418,12 @@ public class RecurringTransactionEditActivity
 
     private void initializeViewHolder() {
         // Controls need to be at the beginning as they are referenced throughout the code.
-        mCommonFunctions.findControls(this);
+        mCommon.findControls(this);
 
         mViewHolder = new RecurringTransactionViewHolder();
 
         // Due Date = date
-        mCommonFunctions.initDateSelector();
+        mCommon.initDateSelector();
 
         // Payment Date, next occurrence
         mViewHolder.paymentDateTextView = (TextView) findViewById(R.id.paymentDateTextView);
@@ -447,24 +449,24 @@ public class RecurringTransactionEditActivity
      */
     private boolean loadRecurringTransaction(int recurringTransactionId) {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
-        mCommonFunctions.transactionEntity = repo.load(recurringTransactionId);
-        if (mCommonFunctions.transactionEntity == null) return false;
+        mCommon.transactionEntity = repo.load(recurringTransactionId);
+        if (mCommon.transactionEntity == null) return false;
 
         // Read data.
         String transCode = getRecurringTransaction().getTransactionCode();
-        mCommonFunctions.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
+        mCommon.transactionEntity.setTransactionType(TransactionTypes.valueOf(transCode));
 
         // load split transactions only if no category selected.
-        if (!mCommonFunctions.transactionEntity.hasCategory() && mCommonFunctions.mSplitTransactions == null) {
+        if (!mCommon.transactionEntity.hasCategory() && mCommon.mSplitTransactions == null) {
             RecurringTransactionService recurringTransaction = new RecurringTransactionService(recurringTransactionId, this);
-            mCommonFunctions.mSplitTransactions = recurringTransaction.loadSplitTransactions();
+            mCommon.mSplitTransactions = recurringTransaction.loadSplitTransactions();
         }
 
         AccountRepository accountRepository = new AccountRepository(this);
-        mCommonFunctions.mToAccountName = accountRepository.loadName(mCommonFunctions.transactionEntity.getAccountToId());
+        mCommon.mToAccountName = accountRepository.loadName(mCommon.transactionEntity.getAccountToId());
 
-        mCommonFunctions.loadPayeeName(mCommonFunctions.transactionEntity.getPayeeId());
-        mCommonFunctions.loadCategoryName();
+        mCommon.loadPayeeName(mCommon.transactionEntity.getPayeeId());
+        mCommon.loadCategoryName();
 
         return true;
     }
@@ -475,7 +477,7 @@ public class RecurringTransactionEditActivity
      * @return validation result
      */
     private boolean validateData() {
-        if (!mCommonFunctions.validateData()) return false;
+        if (!mCommon.validateData()) return false;
 
         Core core = new Core(this);
 
@@ -485,7 +487,7 @@ public class RecurringTransactionEditActivity
             return false;
         }
 
-        if (TextUtils.isEmpty(mCommonFunctions.viewHolder.dateTextView.getText().toString())) {
+        if (TextUtils.isEmpty(mCommon.viewHolder.dateTextView.getText().toString())) {
             core.alert(R.string.error_next_occurrence_not_populate);
 
             return false;
@@ -530,9 +532,9 @@ public class RecurringTransactionEditActivity
 
         if (!validateData()) return false;
 
-        boolean isTransfer = mCommonFunctions.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
+        boolean isTransfer = mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer);
         if (!isTransfer) {
-            mCommonFunctions.resetTransfer();
+            mCommon.resetTransfer();
         }
 
         // Transaction. Need the id for split categories.
@@ -541,13 +543,13 @@ public class RecurringTransactionEditActivity
 
         // Split Categories
 
-        if (mCommonFunctions.convertOneSplitIntoRegularTransaction()) {
+        if (mCommon.convertOneSplitIntoRegularTransaction()) {
             saveTransaction();
         }
 
-        if(!mCommonFunctions.isSplitSelected()) {
+        if(!mCommon.isSplitSelected()) {
             // Delete any split categories if split is unchecked.
-            mCommonFunctions.removeAllSplitCategories();
+            mCommon.removeAllSplitCategories();
         }
         if (!saveSplitCategories()) return false;
 
@@ -556,14 +558,14 @@ public class RecurringTransactionEditActivity
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         // Restore the transaction entity.
-        mCommonFunctions.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MODEL));
+        mCommon.transactionEntity = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MODEL));
 
-        mCommonFunctions.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
-        mCommonFunctions.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
-        mCommonFunctions.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
-        mCommonFunctions.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
-        mCommonFunctions.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
-        mCommonFunctions.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
+        mCommon.mToAccountName = savedInstanceState.getString(KEY_TO_ACCOUNT_NAME);
+        mCommon.payeeName = savedInstanceState.getString(KEY_PAYEE_NAME);
+        mCommon.categoryName = savedInstanceState.getString(KEY_CATEGORY_NAME);
+        mCommon.subCategoryName = savedInstanceState.getString(KEY_SUBCATEGORY_NAME);
+        mCommon.mSplitTransactions = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION));
+        mCommon.mSplitTransactionsDeleted = Parcels.unwrap(savedInstanceState.getParcelable(KEY_SPLIT_TRANSACTION_DELETED));
 
         // action
 //        mIntentAction = savedInstanceState.getString(KEY_ACTION);
@@ -573,17 +575,17 @@ public class RecurringTransactionEditActivity
         SplitRecurringCategoriesRepository splitRepo = new SplitRecurringCategoriesRepository(this);
 
         // deleted old split transaction
-        if (mCommonFunctions.getDeletedSplitCategories().size() > 0) {
-            if (!mCommonFunctions.deleteMarkedSplits(splitRepo)) return false;
+        if (mCommon.getDeletedSplitCategories().size() > 0) {
+            if (!mCommon.deleteMarkedSplits(splitRepo)) return false;
         }
 
         // has split transaction
-        boolean hasSplitCategories = mCommonFunctions.hasSplitCategories();
+        boolean hasSplitCategories = mCommon.hasSplitCategories();
         if (hasSplitCategories) {
-            for (ISplitTransaction item : mCommonFunctions.mSplitTransactions) {
+            for (ISplitTransaction item : mCommon.mSplitTransactions) {
                 SplitRecurringCategory splitEntity = (SplitRecurringCategory) item;
 
-                splitEntity.setTransId(mCommonFunctions.transactionEntity.getId());
+                splitEntity.setTransId(mCommon.transactionEntity.getId());
 
                 if (splitEntity.getId() == null || splitEntity.getId() == Constants.NOT_SET) {
                     // insert data
@@ -609,18 +611,18 @@ public class RecurringTransactionEditActivity
     private boolean saveTransaction() {
         RecurringTransactionRepository repo = new RecurringTransactionRepository(this);
 
-        if (!mCommonFunctions.transactionEntity.hasId()) {
+        if (!mCommon.transactionEntity.hasId()) {
             // insert
-            mCommonFunctions.transactionEntity = repo.insert((RecurringTransaction) mCommonFunctions.transactionEntity);
+            mCommon.transactionEntity = repo.insert((RecurringTransaction) mCommon.transactionEntity);
 
-            if (mCommonFunctions.transactionEntity.getId() == Constants.NOT_SET) {
+            if (mCommon.transactionEntity.getId() == Constants.NOT_SET) {
                 new Core(this).alert(R.string.db_checking_insert_failed);
                 Timber.w("Insert new repeating transaction failed!");
                 return false;
             }
         } else {
             // update
-            if (!repo.update((RecurringTransaction) mCommonFunctions.transactionEntity)) {
+            if (!repo.update((RecurringTransaction) mCommon.transactionEntity)) {
                 new Core(this).alert(R.string.db_checking_update_failed);
                 Timber.w("Update repeating  transaction failed!");
                 return false;
@@ -640,7 +642,7 @@ public class RecurringTransactionEditActivity
     }
 
     private void setPaymentDate(DateTime dateTime) {
-        mCommonFunctions.setDirty(true);
+        mCommon.setDirty(true);
 
         getRecurringTransaction().setPaymentDate(dateTime);
         mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
