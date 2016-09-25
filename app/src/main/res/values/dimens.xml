@@ -25,6 +25,7 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
 
 -->
 <resources>
+    <!-- Text -->
     <dimen name="mmx_text_view_size_micro">12sp</dimen>
     <dimen name="mmx_text_view_size_small">14sp</dimen>
     <dimen name="mmx_text_view_size_medium">18sp</dimen>
@@ -45,9 +46,10 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <dimen name="mmx_margin_bottom_top">3dp</dimen>
     <dimen name="mmx_margin_top_textview_widget_edittext">-8dp</dimen>
 
-    <!-- font size amount binaryDialog -->
+    <!-- font size amount dialog -->
     <dimen name="input_dialog_text_size">32sp</dimen>
-    <dimen name="input_dialog_button_height">52dp</dimen>
+    <!--<dimen name="input_dialog_button_height">52dp</dimen>-->
+    <dimen name="input_dialog_button_height">88dp</dimen>
     <dimen name="input_dialog_linear_button_height">52dp</dimen>
 
     <!-- shape dimens -->

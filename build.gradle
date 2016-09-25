@@ -45,7 +45,8 @@ ext {
             design           :       "com.android.support:design:${supportLibrary}",
             preference       :       "com.android.support:preference-v14:${supportLibrary}",
             recyclerView     :       "com.android.support:recyclerview-v7:${supportLibrary}",
-            supportAnnotation:       "com.android.support:support-annotations:${supportLibrary}"
+            supportAnnotation:       "com.android.support:support-annotations:${supportLibrary}",
+            gridLayout          :   "com.android.support:gridlayout-v7:${supportLibrary}"
     ]
 }
 

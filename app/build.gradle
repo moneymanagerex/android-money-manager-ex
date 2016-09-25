@@ -170,6 +170,7 @@ dependencies {
             , supportDependencies.design
             , supportDependencies.preference
             , supportDependencies.supportAnnotation
+            , supportDependencies.gridLayout
             , 'com.opencsv:opencsv:3.8'
             , 'net.objecthunter:exp4j:0.4.7'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'

@@ -391,11 +391,11 @@ public class AmountInputActivity
      * Set the decimal separator to the base currency's separator.
      */
     private void setDecimalSeparator() {
-        Button separatorButton = (Button) findViewById(R.id.buttonKeyNumDecimal);
+        Button decimalSeparatorButton = (Button) findViewById(R.id.buttonKeyNumDecimal);
 
         String separator = this.formatUtilitiesLazy.get().getDecimalSeparatorForAppLocale();
 
-        separatorButton.setText(separator);
+        decimalSeparatorButton.setText(separator);
     }
 
     private boolean isCurrencySet() {
