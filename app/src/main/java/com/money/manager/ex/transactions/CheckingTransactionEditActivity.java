@@ -139,8 +139,7 @@ public class CheckingTransactionEditActivity
 
         MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
         if (saveMenu != null) {
-            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-                    .color(uiHelper.getPrimaryTextColor());
+            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check);
             saveMenu.setIcon(check);
         }
 
