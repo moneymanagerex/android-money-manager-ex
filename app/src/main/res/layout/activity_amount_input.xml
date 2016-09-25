@@ -72,10 +72,9 @@
             android:layout_height="wrap_content"
             app:columnCount="4"
             app:rowCount="5"
-            app:orientation="horizontal"
+            app:alignmentMode="alignBounds"
             android:layout_gravity="center">
             <!--android:background="?attr/colorPrimaryLight"-->
-            <!--app:alignMode="alignBounds"-->
 
             <com.money.manager.ex.view.RobotoButton
                 android:id="@+id/buttonKeyClear"
