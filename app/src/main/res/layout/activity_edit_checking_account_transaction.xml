@@ -404,10 +404,11 @@
                     android:id="@+id/removePayeeButton"
                     android:layout_width="@dimen/mmx_button_height"
                     android:layout_height="@dimen/mmx_button_height"
-                    android:layout_margin="4dp"
                     style="@style/Money.Button"
                     app:iiv_color="?attr/toolbarItemColor"
-                    app:iiv_icon="gmd-backspace" />
+                    app:iiv_icon="gmd-backspace"
+                    app:iiv_size="@dimen/mmx_icon_size"/>
+                <!--android:layout_margin="4dp"-->
 
             </LinearLayout>
 

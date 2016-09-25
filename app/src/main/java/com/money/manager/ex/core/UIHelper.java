@@ -186,7 +186,7 @@ public class UIHelper {
     }
 
     public int getToolbarItemColor() {
-        return ContextCompat.getColor(getContext(), resolveIdAttribute(R.attr.toolbarItemColor));
+        return ContextCompat.getColor(getContext(), getColor(R.attr.toolbarItemColor));
     }
 
     public int getToolbarIconSize() {

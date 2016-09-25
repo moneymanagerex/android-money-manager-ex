@@ -41,8 +41,8 @@ public class EditTransactionViewHolder {
     public EditTransactionViewHolder(Activity view) {
         ButterKnife.bind(this, view);
 
+        // todo: complete the conversion of the bindings
         // Payee
-        removePayeeButton = (FontIconView) view.findViewById(R.id.removePayeeButton);
         tableRowPayee = (ViewGroup) view.findViewById(R.id.tableRowPayee);
 
         // Category / Split
@@ -53,17 +53,8 @@ public class EditTransactionViewHolder {
         spinAccount = (Spinner) view.findViewById(R.id.spinnerAccount);
         accountFromLabel = (TextView) view.findViewById(R.id.accountFromLabel);
 
-        tableRowAccountTo = (ViewGroup) view.findViewById(R.id.tableRowAccountTo);
         txtToAccount = (TextView) view.findViewById(R.id.textViewToAccount);
         spinAccountTo = (Spinner) view.findViewById(R.id.spinnerToAccount);
-
-        // Amounts
-        amountHeaderTextView = (TextView) view.findViewById(R.id.textViewHeaderAmount);
-        amountToHeaderTextView = (TextView) view.findViewById(R.id.textViewHeaderAmountTo);
-
-        txtAmount = (TextView) view.findViewById(R.id.textViewAmount);
-        txtAmountTo = (TextView) view.findViewById(R.id.textViewTotAmount);
-        tableRowAmountTo = (ViewGroup) view.findViewById(R.id.tableRowAmountTo);
     }
 
     @BindView(R.id.textViewDate) public TextView dateTextView;
@@ -74,12 +65,17 @@ public class EditTransactionViewHolder {
     @BindView(R.id.textViewPayee) TextView txtSelectPayee;
     @BindView(R.id.spinnerStatus) Spinner spinStatus;
     public Spinner spinAccount, spinAccountTo;
-    public TextView txtAmountTo, txtAmount;
+    @BindView(R.id.textViewTotAmount) TextView txtAmountTo;
+    @BindView(R.id.textViewAmount) TextView txtAmount;
 
-    public ViewGroup tableRowPayee, tableRowAmountTo, tableRowAccountTo;
+    public ViewGroup tableRowPayee;
+    @BindView(R.id.tableRowAmountTo) ViewGroup tableRowAmountTo;
+    @BindView(R.id.tableRowAccountTo) ViewGroup tableRowAccountTo;
     public TextView accountFromLabel, txtToAccount;
-    public TextView amountHeaderTextView, amountToHeaderTextView;
-    public FontIconView removePayeeButton, splitButton;
+    @BindView(R.id.textViewHeaderAmount) TextView amountHeaderTextView;
+    @BindView(R.id.textViewHeaderAmountTo) TextView amountToHeaderTextView;
+    @BindView(R.id.removePayeeButton) IconicsImageView removePayeeButton;
+    public FontIconView splitButton;
     // Transaction types
     @BindView(R.id.withdrawalButton) RelativeLayout withdrawalButton;
     @BindView(R.id.depositButton) RelativeLayout depositButton;
