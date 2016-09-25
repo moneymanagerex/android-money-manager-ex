@@ -71,14 +71,14 @@
     <color name="theme_chart_labels_color">#CCCCCC</color>
 
     <!-- Material Design -->
-    <color name="md_primary">@color/material_green_500</color>
-    <color name="md_primary_dark">@color/material_green_700</color>
-    <color name="md_primary_light">@color/material_green_100</color>
-    <color name="md_accent">@color/material_light_green_900</color>
+    <color name="md_primary">@color/material_teal_500</color>
+    <color name="md_primary_dark">@color/material_teal_700</color>
+    <color name="md_primary_light">@color/material_teal_100</color>
+    <color name="md_accent">@color/material_green_500</color>
     <color name="md_primary_text">@color/material_grey_900</color>
     <color name="md_secondary_text">#727272</color>
     <!--<color name="md_icons">@color/material_white</color>-->
-    <color name="md_icons">@color/material_grey_100</color>
+    <!--<color name="md_icons">@color/material_grey_100</color>-->
     <color name="md_divider">#B6B6B6</color>
 
     <color name="md_red">@color/material_red_700</color>
@@ -88,9 +88,9 @@
     <color name="color_dialog_number_button">#474747</color>
     <color name="color_dialog_number_operator">#222222</color>
 
-    <color name="button_foreground_active">@color/md_icons</color>
+    <!--<color name="button_foreground_active">@color/md_icons</color>-->
     <color name="button_foreground_inactive">@color/md_secondary_text</color>
-    <color name="button_background_active">@color/md_primary</color>
+    <!--<color name="button_background_active">@color/md_primary</color>-->
     <color name="button_background_inactive_light">@color/material_white</color>
     <color name="button_background_inactive_dark">@color/black20transparent</color>
     <color name="black20transparent">#70000000</color>

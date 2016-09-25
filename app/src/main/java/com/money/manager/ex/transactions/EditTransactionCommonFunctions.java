@@ -1100,8 +1100,9 @@ public class EditTransactionCommonFunctions {
 
         // Style the selected button.
 
-        int backgroundSelected = ContextCompat.getColor(activity, R.color.button_background_active);
-        int foregroundSelected = ContextCompat.getColor(mContext, R.color.button_foreground_active);
+        UIHelper uiHelper = new UIHelper(getContext());
+        int backgroundSelected = ContextCompat.getColor(activity, R.color.md_accent);
+        int foregroundSelected = ContextCompat.getColor(mContext, uiHelper.getSecondaryTextColor());
 
         switch (transactionType) {
             case Deposit:
@@ -1516,8 +1517,9 @@ public class EditTransactionCommonFunctions {
         // update Split button
         int buttonColour, buttonBackground;
         if (isSplitSelected()) {
-            buttonColour = R.color.button_foreground_active;
-            buttonBackground = R.color.button_background_active;
+//            buttonColour = R.color.button_foreground_active;
+            buttonColour = R.color.md_accent;
+            buttonBackground = R.color.md_primary;
             // #188: if there is a Category selected and we are switching to Split Categories.
         } else {
             buttonColour = R.color.button_foreground_inactive;
@@ -1525,7 +1527,7 @@ public class EditTransactionCommonFunctions {
                     ? R.color.button_background_inactive_dark
                     : R.color.button_background_inactive_light;
         }
-        viewHolder.splitButton.setTextColor(getContext().getResources().getColor(buttonColour));
-        viewHolder.splitButton.setBackgroundColor(getContext().getResources().getColor(buttonBackground));
+        viewHolder.splitButton.setTextColor(ContextCompat.getColor(getContext(), buttonColour));
+        viewHolder.splitButton.setBackgroundColor(ContextCompat.getColor(getContext(), buttonBackground));
     }
 }

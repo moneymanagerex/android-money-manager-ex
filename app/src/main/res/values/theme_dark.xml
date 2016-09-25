@@ -20,15 +20,16 @@ https://developer.android.com/training/material/theme.html
 -->
 <resources>
     <!-- Dark Theme -->
-    <style name="Theme.Money.Manager.Dark" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="Theme.Money.Manager.Dark" parent="Theme.AppCompat.NoActionBar">
         <!-- md palette colors -->
-        <item name="colorPrimaryDark">@color/material_blue_grey_700</item>
-        <item name="colorPrimary">@color/material_blue_grey_500</item>
-        <item name="colorPrimaryLight">@color/material_blue_grey_100</item>
+        <item name="colorPrimaryDark">@color/md_primary_dark</item>
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorPrimaryLight">@color/md_primary_light</item>
+        <item name="colorAccent">@color/md_accent</item>
+        <!-- text -->
         <item name="textColor">@color/material_white</item>
-        <item name="colorAccent">@color/material_light_green_500</item>
-        <item name="android:textColorPrimary">@color/material_grey_900</item>
-        <item name="android:textColorSecondary">@color/material_grey_600</item>
+        <!--<item name="android:textColorPrimary">@color/material_grey_900</item>-->
+        <!--<item name="android:textColorSecondary">@color/material_grey_600</item>-->
         <item name="dividerColor">@color/material_grey_400</item>
 
         <item name="android:windowContentOverlay">@null</item>
@@ -52,6 +53,7 @@ https://developer.android.com/training/material/theme.html
         <item name="holo_red_color_theme">@color/holo_red_dark</item>
         <item name="row_dark_theme">@android:color/transparent</item>
         <item name="row_light_theme">@color/holo_dark_row_light</item>
+        <!-- todo <item name="colorButtonNormal"></item>-->
 
         <!-- buttons -->
         <item name="button_background_inactive">@color/button_background_inactive_dark</item>
@@ -62,7 +64,7 @@ https://developer.android.com/training/material/theme.html
         <!-- other -->
         <item name="color_list_header">@color/material_grey_900</item>
         <!-- toolbar -->
-        <item name="toolbarItemColor">@color/material_grey_50</item>
+        <!--<item name="toolbarItemColor">@color/material_grey_50</item>-->
         <!--<item name="toolbar_spinner_item_text_color">@color/material_grey_50</item>-->
 
         <!-- Drawables -->

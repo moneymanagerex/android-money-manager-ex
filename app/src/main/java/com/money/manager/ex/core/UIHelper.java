@@ -158,10 +158,11 @@ public class UIHelper {
     public IconicsDrawable getIcon(IIcon icon) {
         return new IconicsDrawable(getContext())
                 .icon(icon)
-                .color(getToolbarItemColor())
+//                .color(getToolbarItemColor())
 //                .color(getSecondaryTextColor())
 //                .color(this.getTertiaryTextColor())
 //                .color(this.getPrimaryTextColor())
+                .color(getColor(android.R.attr.colorForeground))
                 .sizeDp(this.getToolbarIconSize());
     }
 
@@ -183,9 +184,9 @@ public class UIHelper {
                 : ContextCompat.getColor(getContext(), android.R.color.tertiary_text_light);
     }
 
-    public int getToolbarItemColor() {
-        return ContextCompat.getColor(getContext(), resolveIdAttribute(R.attr.toolbarItemColor));
-    }
+//    public int getToolbarItemColor() {
+//        return ContextCompat.getColor(getContext(), resolveIdAttribute(R.attr.toolbarItemColor));
+//    }
 
     public int getToolbarIconSize() {
         return getDimenInDp(R.dimen.mmx_icon_size);

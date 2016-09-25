@@ -557,7 +557,6 @@ public class MainActivity
     public boolean onDrawerMenuAndOptionMenuSelected(DrawerMenuItem item) {
         boolean result = true;
         Intent intent;
-//        boolean isDarkTheme = new UIHelper(this).getThemeId() == R.style.Theme_Money_Manager_Dark;
 
         // Recent database?
         if (item.getId() == null && item.getTag() != null) {
@@ -849,8 +848,7 @@ public class MainActivity
         // manage: currencies
         childTools.add(new DrawerMenuItem().withId(R.id.menu_currency)
                 .withText(getString(R.string.currencies))
-                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)
-                        .color(uiHelper.getSecondaryTextColor())));
+                .withIconDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol)));
         // manage: payees
         childTools.add(new DrawerMenuItem().withId(R.id.menu_payee)
                 .withText(getString(R.string.payees))

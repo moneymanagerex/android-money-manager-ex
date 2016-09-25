@@ -129,7 +129,7 @@ public class AssetAllocationEditorActivity
         MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
         if (newForm != null) {
             FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
-            icon.setTextColor(uiHelper.getColor(R.attr.toolbarItemColor));
+            icon.setTextColor(uiHelper.getSecondaryTextColor());
             newForm.setIcon(icon);
         }
 

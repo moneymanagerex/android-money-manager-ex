@@ -25,7 +25,7 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
-        <item name="android:textColor">@color/button_foreground_active</item>
+        <!--<item name="android:textColor">@color/button_foreground_active</item>-->
     </style>
     <style name="Money.Button.Transparent" parent="Money.Button">
         <item name="android:background">@android:color/transparent</item>
@@ -74,13 +74,13 @@
     <style name="Money.TextView.Subhead" parent="TextAppearance.AppCompat.Subhead"/>
 
     <style name="Money.TextView.Subhead.Inverse" parent="TextAppearance.AppCompat.Subhead.Inverse">
-        <item name="android:textColor">@color/md_icons</item>
+        <!--<item name="android:textColor">@color/md_icons</item>-->
     </style>
 
     <style name="Money.TextView.Body2" parent="TextAppearance.AppCompat.Body2"/>
 
     <style name="Money.TextView.Body2.Inverse" parent="Money.TextView.Body2">
-        <item name="android:textColor">@color/md_icons</item>
+        <!--<item name="android:textColor">@color/md_icons</item>-->
     </style>
 
     <style name="Money.TextView.Header" parent="Money.TextView">

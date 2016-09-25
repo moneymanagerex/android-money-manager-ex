@@ -137,8 +137,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
-                        android:singleLine="true"
-                        android:text="@string/income_vs_expenses_current_month"/>
+                        android:text="@string/income_vs_expenses_current_month"
+                        android:maxLines="1" />
 
                     <include layout="@layout/merge_main_footer_income_expenses"/>
                 </LinearLayout>
@@ -154,7 +154,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="@dimen/fab_margin_bottom_home_fragment"
             android:src="@drawable/ic_action_add_dark"
-            app:fab_colorNormal="@color/md_primary"
+            app:fab_colorNormal="@color/md_accent"
             app:fab_colorPressed="@color/md_primary_dark"/>
 
         <!--<android.support.design.widget.FloatingActionButton-->

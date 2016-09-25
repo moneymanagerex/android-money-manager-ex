@@ -169,7 +169,7 @@ public class SyncNotificationFactory {
                 .setContentText(getContext().getString(R.string.both_files_modified))
 //                .setLargeIcon(icon.toBitmap())
                 .setSmallIcon(R.drawable.ic_stat_notification)
-                .setColor(uiHelper.getColor(R.color.md_primary));
+                .setColor(uiHelper.getPrimaryTextColor());
 
         return notification.build();
     }

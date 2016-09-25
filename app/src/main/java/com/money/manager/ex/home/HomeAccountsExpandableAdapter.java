@@ -34,7 +34,6 @@ import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,7 +155,8 @@ public class HomeAccountsExpandableAdapter
             int iconSize = 30;
 
             if(AccountTypes.CASH.toString().equalsIgnoreCase(accountType)) {
-                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_money_banknote).sizeDp(iconSize);
+                IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_money_banknote)
+                        .sizeDp(iconSize);
                 holder.imgAccountType.setImageDrawable(icon);
             } else if(AccountTypes.CHECKING.toString().equalsIgnoreCase(accountType)){
                 IconicsDrawable icon = uiHelper.getIcon(MMXIconFont.Icon.mmx_temple).sizeDp(iconSize);

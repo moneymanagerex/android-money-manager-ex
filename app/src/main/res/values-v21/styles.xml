@@ -35,6 +35,6 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
-        <item name="android:textColor">@color/button_foreground_active</item>
+        <!--<item name="android:textColor">@color/button_foreground_active</item>-->
     </style>
 </resources>
