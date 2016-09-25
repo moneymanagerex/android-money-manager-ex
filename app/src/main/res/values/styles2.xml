@@ -21,6 +21,7 @@ These are the new styles.
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- full-screen numeric input styles -->
     <style name="Money.Button.Input.Dialog.Full" parent="Widget.AppCompat.Button.Colored">
+        <!--Widget.AppCompat.Button.Colored-->
         <!--Base.Widget.AppCompat.Button-->
         <!--android:Widget.Button-->
         <item name="android:textSize">@dimen/input_dialog_text_size</item>
