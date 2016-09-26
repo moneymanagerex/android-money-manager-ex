@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
@@ -152,6 +153,61 @@ public class CurrencyListFragment
         registerForContextMenu(getListView());
     }
 
+    // Menu.
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
+
+        UIHelper ui = new UIHelper(getActivity());
+
+        MenuItem item = menu.findItem(R.id.menu_update_exchange_rate);
+        item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_file_download));
+
+        // Customize with font icon, if needed.
+        item = menu.findItem(R.id.menu_import_all_currencies);
+        item.setIcon(ui.getIcon(MMXIconFont.Icon.mmx_share_square));
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem showOnlyUsed = menu.findItem(R.id.menu_show_used);
+        if (showOnlyUsed != null) {
+            showOnlyUsed.setChecked(mShowOnlyUsedCurrencies);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
+
+        switch (item.getItemId()) {
+            case R.id.menu_import_all_currencies:
+                ui.showDialogImportAllCurrencies();
+                return true;
+
+            case R.id.menu_update_exchange_rate:
+                ui.showDialogUpdateExchangeRates();
+                break;
+
+            case R.id.menu_show_used:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    // list all accounts
+                    mShowOnlyUsedCurrencies = false;
+                    reloadData();
+                } else {
+                    item.setChecked(true);
+                    // list only used accounts
+                    mShowOnlyUsedCurrencies = true;
+                    reloadData();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // Context menu
 
     @Override
@@ -222,57 +278,6 @@ public class CurrencyListFragment
                 break;
         }
         return false;
-    }
-
-    // Menu.
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_currency_formats_list_activity, menu);
-
-        // Customize with font icon, if needed.
-        MenuItem item = menu.findItem(R.id.menu_import_all_currencies);
-        Drawable icon = new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_share_square);
-        item.setIcon(icon);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem showOnlyUsed = menu.findItem(R.id.menu_show_used);
-        if (showOnlyUsed != null) {
-            showOnlyUsed.setChecked(mShowOnlyUsedCurrencies);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        CurrencyUIFeatures ui = new CurrencyUIFeatures(getActivity());
-
-        switch (item.getItemId()) {
-            case R.id.menu_import_all_currencies:
-                ui.showDialogImportAllCurrencies();
-                return true;
-
-            case R.id.menu_update_exchange_rate:
-                ui.showDialogUpdateExchangeRates();
-                break;
-
-            case R.id.menu_show_used:
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    // list all accounts
-                    mShowOnlyUsedCurrencies = false;
-                    reloadData();
-                } else {
-                    item.setChecked(true);
-                    // list only used accounts
-                    mShowOnlyUsedCurrencies = true;
-                    reloadData();
-                }
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     // Search

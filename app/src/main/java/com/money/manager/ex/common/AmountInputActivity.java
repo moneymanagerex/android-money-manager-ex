@@ -212,33 +212,6 @@ public class AmountInputActivity
 
         // evaluate the expression initially, in case there is an existing amount passed to the binaryDialog.
         evalExpression();
-
-        // Dialog
-
-//        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-//                .customView(view, false)
-//                .cancelable(false)
-//                .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                    @Override
-//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                        if (!evalExpression()) return;
-//
-//                        EventBus.getDefault().post(new AmountEnteredEvent(mRequestId, getAmount()));
-//
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .onNegative(new MaterialDialog.SingleButtonCallback() {
-//                    @Override
-//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .autoDismiss(false)
-//                .negativeText(android.R.string.cancel)
-//                .positiveText(android.R.string.ok);
-//
-//        return builder.show();
     }
 
     /**
