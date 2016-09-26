@@ -68,13 +68,12 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.GridLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:columnCount="4"
             app:rowCount="5"
             app:alignmentMode="alignBounds"
             android:layout_gravity="center">
-            <!--android:background="?attr/colorPrimaryLight"-->
 
             <com.money.manager.ex.view.RobotoButton
                 android:id="@+id/buttonKeyClear"
