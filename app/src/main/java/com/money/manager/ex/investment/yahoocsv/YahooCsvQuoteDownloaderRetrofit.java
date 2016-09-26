@@ -20,7 +20,7 @@ package com.money.manager.ex.investment.yahoocsv;
 import android.content.Context;
 
 import com.money.manager.ex.R;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceCsvParser;
 import com.money.manager.ex.investment.PriceUpdaterBase;
@@ -94,8 +94,7 @@ public class YahooCsvQuoteDownloaderRetrofit
         closeProgressDialog();
 
         // Notify user that all the prices have been downloaded.
-        ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-        handler.showMessage(getContext().getString(R.string.download_complete));
+        new UIHelper(getContext()).showToast(getContext().getString(R.string.download_complete));
 
         // fire an event so that the data can be reloaded.
         EventBus.getDefault().post(new AllPricesDownloadedEvent());
@@ -106,14 +105,18 @@ public class YahooCsvQuoteDownloaderRetrofit
         setProgress(mCounter);
 
         if (content == null) {
-            ExceptionHandler handler = new ExceptionHandler(getContext(), this);
-            handler.showMessage(getContext().getString(R.string.error_updating_rates));
-//            closeProgressDialog();
+            new UIHelper(getContext()).showToast(getContext().getString(R.string.error_updating_rates));
             return;
         }
 
         PriceCsvParser parser = new PriceCsvParser(getContext());
-        PriceDownloadedEvent event = parser.parse(content);
+        PriceDownloadedEvent event;
+        try {
+            event = parser.parse(content);
+        } catch (IllegalArgumentException e) {
+            Timber.e(e, "parsing the csv contents.");
+            return;
+        }
 
         // Notify the caller by invoking the interface method.
         if (event != null) {
