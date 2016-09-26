@@ -472,6 +472,24 @@
 
             </LinearLayout>
 
+            <!-- Notes -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.money.manager.ex.view.RobotoEditTextFontIcon
+                    android:id="@+id/editTextNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/mmx_padding"
+                    android:gravity="top|start"
+                    android:hint="@string/notes"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:textCursorDrawable="@null"
+                    app:iconLeft="@xml/ic_clipboard_small" />
+            </android.support.design.widget.TextInputLayout>
+
             <!-- Transaction Number -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -495,24 +513,6 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_action_plusone_dark" />
             </LinearLayout>
-
-            <!-- Notes -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.money.manager.ex.view.RobotoEditTextFontIcon
-                    android:id="@+id/editTextNotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/mmx_padding"
-                    android:gravity="top|start"
-                    android:hint="@string/notes"
-                    android:inputType="textMultiLine"
-                    android:scrollHorizontally="false"
-                    android:textCursorDrawable="@null"
-                    app:iconLeft="@xml/ic_clipboard_small" />
-            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>
 
