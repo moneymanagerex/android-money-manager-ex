@@ -197,7 +197,7 @@ public class AmountInputActivity
         UIHelper uiHelper = new UIHelper(this);
         deleteButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace)
                 .sizeDp(40)
-                .color(uiHelper.getColor(R.color.md_primary_dark)));
+                .color(uiHelper.getColor(R.color.md_primary)));
 
         // Amounts
         txtTop = (TextView) findViewById(R.id.textViewTop);
