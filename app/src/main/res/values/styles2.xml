@@ -42,7 +42,7 @@ These are the new styles.
         <item name="android:padding">2dp</item>
     </style>
     <style name="Money.Button.Input.Dialog.Full.Operator" parent="Money.Button.Input.Dialog.Full">
-        <item name="android:textColor">@color/md_primary_dark</item>
+        <item name="android:textColor">@color/md_primary</item>
         <!--<item name="android:background">?attr/calculator_button_operator_background</item>-->
         <!--<item name="colorButtonNormal">?attr/colorPrimary</item>-->
         <!--<item name="colorControlHighlight">?attr/colorAccent</item>-->

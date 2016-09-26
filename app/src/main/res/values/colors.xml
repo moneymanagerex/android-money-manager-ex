@@ -71,11 +71,17 @@
     <color name="theme_chart_labels_color">#CCCCCC</color>
 
     <!-- Material Design -->
-    <color name="md_primary">@color/material_teal_500</color>
-    <color name="md_primary_dark">@color/material_teal_700</color>
-    <color name="md_primary_light">@color/material_teal_100</color>
-    <color name="md_accent">@color/material_green_500</color>
-    <color name="md_primary_text">@color/material_grey_900</color>
+    <!--<color name="md_primary">@color/material_teal_500</color>-->
+    <color name="md_primary">@color/material_green_700</color>
+    <!--<color name="md_primary_dark">@color/material_teal_700</color>-->
+    <color name="md_primary_dark">@color/material_green_900</color>
+    <!--<color name="md_primary_light">@color/material_teal_100</color>-->
+    <color name="md_primary_light">@color/material_green_300</color>
+    <!--<color name="md_accent">@color/material_green_500</color>-->
+    <color name="md_accent">@color/material_light_green_500</color>
+    <!--<color name="md_primary_text">@color/material_grey_900</color>-->
+
+    <color name="md_primary_text">@color/material_black</color>
     <color name="md_secondary_text">#727272</color>
     <color name="md_divider">#B6B6B6</color>
 

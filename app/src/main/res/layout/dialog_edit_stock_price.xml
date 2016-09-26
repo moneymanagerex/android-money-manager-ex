@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:text="@string/ic_chevron_left"
             android:textSize="@dimen/fonticon_drawer"
-            android:background="?attr/selectableItemBackground" />
+             />
 
         <com.money.manager.ex.view.RobotoTextView
             android:id="@+id/dateTextView"

@@ -61,7 +61,7 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <dimen name="chart_list_item_text_size">14sp</dimen>
 
     <!-- floating button bottom margin -->
-    <dimen name="fab_margin_bottom_home_fragment">44dp</dimen>
+    <dimen name="fab_margin_bottom_home_fragment">40dp</dimen>
     <dimen name="fab_margin_bottom_higher">64dp</dimen>
 
     <!-- Samsung MultiWindow Function -->

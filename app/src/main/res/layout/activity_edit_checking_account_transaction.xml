@@ -400,15 +400,11 @@
                     android:layout_weight="1"
                     android:hint="@string/payee" />
 
-                <com.mikepenz.iconics.view.IconicsImageView
+                <ImageButton
                     android:id="@+id/removePayeeButton"
                     android:layout_width="@dimen/mmx_button_height"
                     android:layout_height="@dimen/mmx_button_height"
-                    style="@style/Money.Button"
-                    app:iiv_color="?attr/toolbarItemColor"
-                    app:iiv_icon="gmd-backspace"
-                    app:iiv_size="@dimen/mmx_icon_size"/>
-
+                    android:theme="@style/Money.Button.Colored.Theme" />
             </LinearLayout>
 
             <!-- Category -->
@@ -480,7 +476,7 @@
 
                 <ImageButton
                     android:id="@+id/buttonTransNumber"
-                    style="@style/Money.Button"
+                    android:theme="@style/Money.Button.Colored.Theme"
                     android:layout_width="@dimen/mmx_button_height"
                     android:layout_height="@dimen/mmx_button_height"
                     android:layout_gravity="center_vertical"
@@ -520,5 +516,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <!--<include layout="@layout/action_buttons" />-->
 </LinearLayout>

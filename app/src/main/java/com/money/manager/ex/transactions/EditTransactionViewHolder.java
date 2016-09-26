@@ -26,8 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.shamanland.fonticon.FontIconView;
 
 import butterknife.BindView;
@@ -40,6 +42,10 @@ public class EditTransactionViewHolder {
 
     public EditTransactionViewHolder(Activity view) {
         ButterKnife.bind(this, view);
+
+        // add custom icons
+        UIHelper uiHelper = new UIHelper(view);
+        removePayeeButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace));
     }
 
     @BindView(R.id.textViewDate) public TextView dateTextView;
@@ -61,7 +67,7 @@ public class EditTransactionViewHolder {
     @BindView(R.id.textViewToAccount) TextView txtToAccount;
     @BindView(R.id.textViewHeaderAmount) TextView amountHeaderTextView;
     @BindView(R.id.textViewHeaderAmountTo) TextView amountToHeaderTextView;
-    @BindView(R.id.removePayeeButton) IconicsImageView removePayeeButton;
+    @BindView(R.id.removePayeeButton) ImageButton removePayeeButton;
     @BindView(R.id.splitButton) FontIconView splitButton;
     // Transaction types
     @BindView(R.id.withdrawalButton) RelativeLayout withdrawalButton;
