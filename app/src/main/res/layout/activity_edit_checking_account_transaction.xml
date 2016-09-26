@@ -442,6 +442,38 @@
                     android:textSize="@dimen/fonticon_drawer" />
             </LinearLayout>
 
+            <!-- Notes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/mmx_avatar_item_height"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd-content_paste"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.money.manager.ex.view.RobotoEditText
+                        android:id="@+id/editTextNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:hint="@string/notes"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:scrollHorizontally="false"
+                        android:textCursorDrawable="@null" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
             <!-- Transaction Number -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -483,36 +515,6 @@
                     android:src="@drawable/ic_action_plusone_dark" />
             </LinearLayout>
 
-            <!-- Notes -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/mmx_avatar_item_height"
-                android:orientation="horizontal">
-
-                <com.mikepenz.iconics.view.IconicsImageView
-                    app:iiv_icon="gmd-content_paste"
-                    app:iiv_color="?android:textColorSecondary"
-                    app:iiv_size="@dimen/mmx_icon_size"
-                    android:layout_width="@dimen/mmx_side_icon_size"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
-                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
-                    android:layout_gravity="center_vertical"/>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <com.money.manager.ex.view.RobotoEditText
-                        android:id="@+id/editTextNotes"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="top|start"
-                        android:hint="@string/notes"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:scrollHorizontally="false"
-                        android:textCursorDrawable="@null" />
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
