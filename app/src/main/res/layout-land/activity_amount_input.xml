@@ -180,14 +180,9 @@
                 android:layout_height="@dimen/input_dialog_linear_button_height"
                 android:orientation="horizontal">
 
-                <com.shamanland.fonticon.FontIconView
+                <ImageButton
                     android:id="@+id/deleteButton"
-                    style="@style/Money.Button.Input.Dialog.Operator"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:text="@string/ic_erase"
-                    android:textSize="@dimen/input_dialog_text_size" />
+                    style="@style/Money.Button.Input.Dialog.Full.Operator" />
 
                 <com.money.manager.ex.view.RobotoButton
                     android:id="@+id/buttonKeyNumDecimal"

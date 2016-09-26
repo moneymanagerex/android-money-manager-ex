@@ -36,8 +36,6 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
-import com.money.manager.ex.view.RobotoButton;
-import com.shamanland.fonticon.FontIconView;
 
 import net.objecthunter.exp4j.ExpressionBuilder;
 
