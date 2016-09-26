@@ -24,8 +24,8 @@ These are the new styles.
     <style name="Money.Button.Input.Dialog.Full.Theme" parent="Widget.AppCompat.Button.Colored">
         <!--<item name="android:background">?attr/calculator_button_background</item>-->
         <!--<item name="android:background">?attr/selectableItemBackground</item>-->
-        <!--<item name="android:background">?attr/colorPrimaryLight</item>-->
-        <item name="colorButtonNormal">@color/black20transparent</item>
+        <!--<item name="colorButtonNormal">?attr/colorPrimaryLight</item>-->
+        <!--<item name="colorButtonNormal">@color/black20transparent</item>-->
         <!--<item name="colorControlHighlight">@color/material_deep_orange_500</item>-->
     </style>
 
