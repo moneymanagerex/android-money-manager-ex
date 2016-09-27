@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class MMXIconFont implements ITypeface {
-    private static final String TTF_FILE = "mmex-icon-font-font-v1.0.0.0.ttf";
+    private static final String TTF_FILE = "mmex.ttf";
     private static Typeface typeface = null;
     private static HashMap<String, Character> mChars;
 
@@ -169,7 +169,11 @@ public class MMXIconFont implements ITypeface {
 //		mmx_scissors('\u0058'),
 		mmx_print('\u0059'),
 //		mmx_refresh('\u005a'),
-		mmx_check_5('\u0030');
+		mmx_check_5('\u0030'),
+        mmx_arrow_down('\u0062'),
+        mmx_arrow_left('\u0062'),
+        mmx_arrow_right('\u0062'),
+        mmx_arrow_up('\u0062');
 
         char character;
 
