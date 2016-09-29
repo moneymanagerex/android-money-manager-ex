@@ -97,25 +97,16 @@ public class SearchActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                return onActionCancelClick();
+                finish();
+                return true;
+
             case R.id.searchMenuItem:
-                return onActionDoneClick();
+                performSearch();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    //    @Override
-    public boolean onActionCancelClick() {
-        finish();
-        return true;
-    }
-
-//    @Override
-    public boolean onActionDoneClick() {
-        performSearch();
-
-        return super.onActionDoneClick();
     }
 
     // Public

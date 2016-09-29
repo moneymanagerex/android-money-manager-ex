@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -120,10 +121,12 @@ public class SearchFragment
 
         View view = inflater.inflate(R.layout.fragment_search_parameters, container, false);
 
+        // bind events
+        ButterKnife.bind(this, view);
+        // bind controls
         viewHolder = new SearchParametersViewHolder(view);
 
         initializeUiControlVariables(view);
-//        initializeAmountSelectors(view);
 
         // Account
         if (mAccountList == null) {
