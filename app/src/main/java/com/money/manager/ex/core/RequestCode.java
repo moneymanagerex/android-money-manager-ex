@@ -25,5 +25,8 @@ public class RequestCode {
     public static final int SELECT_FILE = 1;
     public static final int AMOUNT = 2;
     public static final int PASSCODE = 3;
-
+    public static final int PAYEE = 4;
+    public static final int AMOUNT_FROM = 5;
+    public static final int AMOUNT_TO = 6;
+    public static final int CATEGORY = 7;
 }

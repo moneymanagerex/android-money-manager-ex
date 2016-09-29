@@ -40,6 +40,7 @@ import android.widget.TextView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -74,10 +75,10 @@ import info.javaperformance.money.MoneyFactory;
 public class SearchFragment
     extends Fragment {
 
-    public static final int REQUEST_PICK_PAYEE = 1;
-    public static final int REQUEST_PICK_AMOUNT_FROM = 2;
-    public static final int REQUEST_PICK_CATEGORY = 3;
-    public static final int REQUEST_PICK_AMOUNT_TO = 4;
+//    public static final int REQUEST_PICK_PAYEE = 1;
+//    public static final int REQUEST_PICK_AMOUNT_FROM = 2;
+//    public static final int REQUEST_PICK_CATEGORY = 3;
+//    public static final int REQUEST_PICK_AMOUNT_TO = 4;
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
 
@@ -157,7 +158,7 @@ public class SearchFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_PAYEE);
+                startActivityForResult(intent, RequestCode.PAYEE);
             }
         });
 
@@ -167,7 +168,7 @@ public class SearchFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CategoryListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+                startActivityForResult(intent, RequestCode.CATEGORY);
             }
         });
 
@@ -204,13 +205,13 @@ public class SearchFragment
         String stringExtra;
 
         switch (requestCode) {
-            case REQUEST_PICK_PAYEE:
+            case RequestCode.PAYEE:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     viewHolder.txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                     viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
                 }
                 break;
-            case REQUEST_PICK_CATEGORY:
+            case RequestCode.CATEGORY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     //create class for store data
                     CategorySub categorySub = new CategorySub();
@@ -223,7 +224,7 @@ public class SearchFragment
                 }
                 break;
 
-            case REQUEST_PICK_AMOUNT_FROM:
+            case RequestCode.AMOUNT_FROM:
                 stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
                 searchParameters = getSearchParameters();
                 searchParameters.amountFrom = MoneyFactory.fromString(stringExtra);
@@ -231,7 +232,7 @@ public class SearchFragment
                 displayAmountFrom();
                 break;
 
-            case REQUEST_PICK_AMOUNT_TO:
+            case RequestCode.AMOUNT_TO:
                 stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
                 searchParameters = getSearchParameters();
                 searchParameters.amountTo = MoneyFactory.fromString(stringExtra);
@@ -339,7 +340,7 @@ public class SearchFragment
         Money amount = getSearchParameters().amountFrom;
 
         Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), amount);
-        getActivity().startActivityForResult(intent, REQUEST_PICK_AMOUNT_FROM);
+        getActivity().startActivityForResult(intent, RequestCode.AMOUNT_FROM);
     }
 
     @OnClick(R.id.textViewToAmount)
@@ -347,7 +348,7 @@ public class SearchFragment
         Money amount = getSearchParameters().amountTo;
 
         Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), amount);
-        getActivity().startActivityForResult(intent, REQUEST_PICK_AMOUNT_TO);
+        getActivity().startActivityForResult(intent, RequestCode.AMOUNT_TO);
     }
 
     // Private
