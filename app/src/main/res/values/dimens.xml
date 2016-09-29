@@ -13,8 +13,7 @@
   ~
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-<!--
+  --><!--
 References:
 
 Material Design
@@ -111,4 +110,7 @@ section Adding margins to App Widgets
     <dimen name="widget_margin">8dp</dimen>
 
     <dimen name="mmx_icon_size">24dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

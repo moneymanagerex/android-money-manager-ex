@@ -29,36 +29,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputActivity;
-import com.money.manager.ex.common.AmountInputDialog;
-import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.core.bundlers.PriceDownloadedEventBundler;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.servicelayer.InfoService;
-import com.money.manager.ex.settings.GeneralSettings;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
-import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
@@ -81,8 +72,6 @@ public class EditPriceDialog
     public static final String ARG_SYMBOL = "EditPriceDialog:Symbol";
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
-
-    public static final int REQUEST_AMOUNT = 1;
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
@@ -167,10 +156,12 @@ public class EditPriceDialog
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != Activity.RESULT_OK) return;
 
         switch (requestCode) {
-            case REQUEST_AMOUNT:
+            case RequestCode.AMOUNT:
                 String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
                 mPrice.price = MoneyFactory.fromString(stringExtra);
                 showCurrentPrice();
@@ -257,7 +248,7 @@ public class EditPriceDialog
 //                dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
                 // getChildFragmentManager() ?
                 Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), mPrice.price, mCurrencyId, false);
-                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
+                getActivity().startActivityForResult(intent, RequestCode.AMOUNT);
             }
         };
         viewHolder.amountTextView.setOnClickListener(onClickAmount);

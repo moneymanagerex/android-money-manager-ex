@@ -35,6 +35,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.NumericHelper;
+import com.money.manager.ex.core.bundlers.MoneyBundler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
 import com.shamanland.fonticon.FontIconView;
@@ -43,6 +44,8 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
+import icepick.Icepick;
+import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -116,7 +119,7 @@ public class AmountInputDialog
     };
 
     private String mRequestId;
-    private Money mAmount;
+    @State(MoneyBundler.class) Money mAmount;
     private Integer mCurrencyId;
     private Integer mDefaultColor;
     private TextView txtMain, txtTop;
@@ -283,14 +286,13 @@ public class AmountInputDialog
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-//        savedInstanceState.putDouble(KEY_AMOUNT, mAmount.doubleValue());
-        savedInstanceState.putString(KEY_AMOUNT, mAmount.toString());
-
         if (mCurrencyId != null) savedInstanceState.putInt(KEY_CURRENCY_ID, mCurrencyId);
         savedInstanceState.putString(KEY_REQUEST_ID, mRequestId);
 
         mExpression = txtMain.getText().toString();
         savedInstanceState.putString(KEY_EXPRESSION, mExpression);
+
+        Icepick.saveInstanceState(this, savedInstanceState);
     }
 
     // methods
@@ -403,15 +405,17 @@ public class AmountInputDialog
         if (savedInstanceState.containsKey(KEY_REQUEST_ID)) {
             mRequestId = savedInstanceState.getString(KEY_REQUEST_ID);
         }
-        if (savedInstanceState.containsKey(KEY_AMOUNT)) {
-            mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
-        }
+//        if (savedInstanceState.containsKey(KEY_AMOUNT)) {
+//            mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
+//        }
         if (savedInstanceState.containsKey(KEY_CURRENCY_ID)) {
             mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
         }
         if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
             mExpression = savedInstanceState.getString(KEY_EXPRESSION);
         }
+
+        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
     /**

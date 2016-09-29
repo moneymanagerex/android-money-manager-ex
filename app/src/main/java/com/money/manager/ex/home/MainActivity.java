@@ -123,9 +123,6 @@ import timber.log.Timber;
 public class MainActivity
     extends MmxBaseFragmentActivity {
 
-    public static final int REQUEST_PASSCODE = 2;
-    public static final int REQUEST_PASSWORD = 3;
-
     public static final String EXTRA_DATABASE_PATH = "dbPath";
     public static final String EXTRA_SKIP_REMOTE_CHECK = "skipRemoteCheck";
 
@@ -255,7 +252,7 @@ public class MainActivity
                 intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
                 intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
                 // start activity
-                startActivityForResult(intent, REQUEST_PASSCODE);
+                startActivityForResult(intent, RequestCode.PASSCODE);
                 // set in authentication
                 isInAuthentication = true;
             }
@@ -310,7 +307,7 @@ public class MainActivity
                 changeDatabase(db);
                 break;
 
-            case REQUEST_PASSCODE:
+            case RequestCode.PASSCODE:
                 isAuthenticated = false;
                 isInAuthentication = false;
                 if (resultCode == RESULT_OK && data != null) {
@@ -1274,13 +1271,13 @@ public class MainActivity
 //        requestDatabasePassword(null);
 //    }
 
-    private void requestDatabasePassword(String dbFilePath) {
-        // request password
-        Intent intent = new Intent(this, PasswordActivity.class);
-        intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
-        startActivityForResult(intent, REQUEST_PASSWORD);
-        // continues in onActivityResult.
-    }
+//    private void requestDatabasePassword(String dbFilePath) {
+//        // request password
+//        Intent intent = new Intent(this, PasswordActivity.class);
+//        intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
+//        startActivityForResult(intent, REQUEST_PASSWORD);
+//        // continues in onActivityResult.
+//    }
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))

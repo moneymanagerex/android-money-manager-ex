@@ -15,15 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.core;
+package com.money.manager.ex.investment;
 
-/**
- * Common request codes for activity results.
- */
+import android.os.Bundle;
 
-public class RequestCode {
-    public static final int SELECT_FILE = 1;
-    public static final int AMOUNT = 2;
-    public static final int PASSCODE = 3;
+import com.money.manager.ex.R;
+import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
+public class EditPriceActivity
+    extends MmxBaseFragmentActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_price);
+    }
 }

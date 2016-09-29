@@ -55,7 +55,8 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV3RVD4VMl2dthsS81qkxq7MW12Iy_LR3_gWXuQ" />
 
-        <receiver android:name=".widget.ButtonAddTransactionWidgetProvider"
+        <receiver
+            android:name=".widget.ButtonAddTransactionWidgetProvider"
             android:label="@string/widget_add_transaction">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -65,7 +66,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_button_add_transaction" />
         </receiver>
-        <receiver android:name=".widget.SummaryWidgetProvider"
+        <receiver
+            android:name=".widget.SummaryWidgetProvider"
             android:label="@string/widget_summary">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -75,7 +77,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_summary" />
         </receiver>
-        <receiver android:name=".widget.AccountBillsWidgetProvider"
+        <receiver
+            android:name=".widget.AccountBillsWidgetProvider"
             android:label="@string/widget_all_accounts">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -99,7 +102,8 @@
             </intent-filter>
         </receiver>
         <receiver android:name=".notifications.RecurringTransactionReceiver" />
-        <receiver android:name=".widget.SingleAccountWidget"
+        <receiver
+            android:name=".widget.SingleAccountWidget"
             android:label="@string/single_account">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -112,7 +116,8 @@
 
         <!-- activities -->
 
-        <activity android:name=".home.MainActivity"
+        <activity
+            android:name=".home.MainActivity"
             android:label="@string/application_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -152,7 +157,8 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.emb" />
             </intent-filter>
         </activity>
-        <activity android:name=".transactions.CheckingTransactionEditActivity"
+        <activity
+            android:name=".transactions.CheckingTransactionEditActivity"
             android:label="@string/new_edit_transaction">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
@@ -162,7 +168,8 @@
                 <!-- <data android:scheme="content" /> -->
             </intent-filter>
         </activity>
-        <activity android:name=".PayeeActivity"
+        <activity
+            android:name=".PayeeActivity"
             android:label="@string/payee">
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
@@ -179,58 +186,77 @@
             <action android:name="android.intent.action.PICK" />
             <action android:name="android.intent.action.EDIT" />
         </activity>
-        <activity android:name=".about.AboutActivity"
+        <activity
+            android:name=".about.AboutActivity"
             android:label="@string/about" />
-        <activity android:name=".currency.CurrencyEditActivity"
+        <activity
+            android:name=".currency.CurrencyEditActivity"
             android:label="@string/new_edit_currency">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".account.AccountEditActivity"
+        <activity
+            android:name=".account.AccountEditActivity"
             android:label="@string/account_list">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
         <activity android:name=".recurring.transactions.RecurringTransactionListActivity" />
-        <activity android:name=".recurring.transactions.RecurringTransactionEditActivity"
+        <activity
+            android:name=".recurring.transactions.RecurringTransactionEditActivity"
             android:label="@string/new_edit_repeating_transaction">
             <action android:name="android.intent.action.EDIT" />
             <action android:name="android.intent.action.INSERT" />
         </activity>
-        <activity android:name=".settings.SettingsActivity"
+        <activity
+            android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
-        <activity android:name=".settings.GeneralSettingsActivity"
+        <activity
+            android:name=".settings.GeneralSettingsActivity"
             android:label="@string/preferences_general" />
-        <activity android:name=".settings.LookFeelSettingsActivity"
+        <activity
+            android:name=".settings.LookFeelSettingsActivity"
             android:label="@string/preferences_dispaly" />
-        <activity android:name=".settings.BehaviourSettingsActivity"
+        <activity
+            android:name=".settings.BehaviourSettingsActivity"
             android:label="@string/preferences_behaviour" />
-        <activity android:name=".settings.InvestmentSettingsActivity"
+        <activity
+            android:name=".settings.InvestmentSettingsActivity"
             android:label="@string/investment" />
-        <activity android:name=".settings.SecuritySettingsActivity"
+        <activity
+            android:name=".settings.SecuritySettingsActivity"
             android:label="@string/preferences_security" />
-        <activity android:name=".settings.DatabaseSettingsActivity"
+        <activity
+            android:name=".settings.DatabaseSettingsActivity"
             android:label="@string/database" />
-        <activity android:name=".settings.SyncPreferencesActivity"
+        <activity
+            android:name=".settings.SyncPreferencesActivity"
             android:label="@string/synchronization" />
         <activity android:name=".PasscodeActivity">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
             </intent-filter>
         </activity>
-        <activity android:name=".reports.IncomeVsExpensesActivity"
+        <activity
+            android:name=".reports.IncomeVsExpensesActivity"
             android:label="@string/menu_report_income_vs_expenses" />
-        <activity android:name=".reports.PayeesReportActivity"
+        <activity
+            android:name=".reports.PayeesReportActivity"
             android:label="@string/payee" />
-        <activity android:name=".reports.CategoriesReportActivity"
+        <activity
+            android:name=".reports.CategoriesReportActivity"
             android:label="@string/category" />
-        <activity android:name=".search.SearchActivity"
+        <activity
+            android:name=".search.SearchActivity"
             android:label="@string/search" />
-        <activity android:name=".transactions.SplitCategoriesActivity"
+        <activity
+            android:name=".transactions.SplitCategoriesActivity"
             android:label="@string/split_transaction" />
-        <activity android:name=".DonateActivity"
+        <activity
+            android:name=".DonateActivity"
             android:label="@string/donate" />
-        <activity android:name=".HelpActivity"
+        <activity
+            android:name=".HelpActivity"
             android:label="@string/help">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.WEB_VIEW_RAW_FILE" />
@@ -242,12 +268,14 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".tutorial.TutorialActivity"
+        <activity
+            android:name=".tutorial.TutorialActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/application_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity android:name=".currency.CurrencyChartActivity"
+        <activity
+            android:name=".currency.CurrencyChartActivity"
             android:label="@string/title_activity_currency_chart"
             android:screenOrientation="landscape" />
         <activity
@@ -258,22 +286,30 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".investment.InvestmentTransactionEditActivity"
+        <activity
+            android:name=".investment.InvestmentTransactionEditActivity"
             android:label="@string/investment" />
-        <activity android:name=".common.WebViewActivity"
+        <activity
+            android:name=".common.WebViewActivity"
             android:label="@string/donate" />
-        <activity android:name=".assetallocation.AssetAllocationEditorActivity"
+        <activity
+            android:name=".assetallocation.AssetAllocationEditorActivity"
             android:label="@string/asset_allocation" />
-        <activity android:name=".assetallocation.AssetClassEditActivity"
+        <activity
+            android:name=".assetallocation.AssetClassEditActivity"
             android:label="@string/title_activity_asset_class_edit"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".assetallocation.SecurityListActivity"
+        <activity
+            android:name=".assetallocation.SecurityListActivity"
             android:label="@string/securities" />
-        <activity android:name=".database.PasswordActivity"
+        <activity
+            android:name=".database.PasswordActivity"
             android:label="@string/enter_password" />
-        <activity android:name=".investment.PortfolioActivity"
+        <activity
+            android:name=".investment.PortfolioActivity"
             android:label="@string/portfolio" />
-        <activity android:name=".assetallocation.AssetAllocationReportActivity"
+        <activity
+            android:name=".assetallocation.AssetAllocationReportActivity"
             android:label="@string/title_activity_asset_allocation_overview" />
         <activity android:name=".budget.BudgetEditActivity" />
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
@@ -289,20 +325,23 @@
         </activity>
         <activity android:name=".home.SelectDatabaseActivity" />
         <activity android:name=".home.CreateDatabaseActivity" />
-        <activity android:name="com.nononsenseapps.filepicker.FilePickerActivity"
+        <activity
+            android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme" />
-        <activity android:name=".common.AmountInputActivity"
+        <activity
+            android:name=".common.AmountInputActivity"
             android:label="@string/app_name" />
-
 
         <!-- providers -->
 
-        <provider android:name=".MmxContentProvider"
+        <provider
+            android:name=".MmxContentProvider"
             android:authorities="${applicationId}.provider"
             android:exported="true" />
         <!-- used for qif export -->
-        <provider android:name="android.support.v4.content.FileProvider"
+        <provider
+            android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -311,17 +350,20 @@
                 android:resource="@xml/filepaths" />
         </provider>
         <!-- stub provider for the sync framework -->
-        <provider android:name=".sync.adapter.StubSyncProvider"
+        <provider
+            android:name=".sync.adapter.StubSyncProvider"
             android:authorities="${applicationId}.datasyncprovider"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
 
         <!-- services -->
 
         <service android:name=".notifications.RecurringTransactionIntentService" />
-        <service android:name=".widget.AccountBillsWidgetService"
+        <service
+            android:name=".widget.AccountBillsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service android:name=".widget.SummaryDashExtension"
+        <service
+            android:name=".widget.SummaryDashExtension"
             android:icon="@drawable/ic_stat_notification"
             android:label="@string/widget_summary"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
@@ -339,7 +381,8 @@
                 android:name="description"
                 android:value="@string/dashclock_extension_summary" />
         </service>
-        <service android:name=".widget.AccountBillsDashExtension"
+        <service
+            android:name=".widget.AccountBillsDashExtension"
             android:icon="@drawable/ic_stat_notification"
             android:label="@string/widget_all_accounts"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
@@ -357,7 +400,8 @@
                 android:name="description"
                 android:value="@string/dashclock_extension_summary_all_account" />
         </service>
-        <service android:name=".sync.SyncService"
+        <service
+            android:name=".sync.SyncService"
             android:exported="false">
             <intent-filter>
                 <action android:name="${applicationId}.sync.action.SYNC" />
@@ -366,38 +410,52 @@
             </intent-filter>
         </service>
         <!-- authenticator service for the sync framework -->
-        <service android:name=".sync.adapter.AuthenticatorService"
+        <service
+            android:name=".sync.adapter.AuthenticatorService"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <service android:name=".sync.adapter.SyncAdapterService"
+        <service
+            android:name=".sync.adapter.SyncAdapterService"
             android:exported="true"
             android:process=":sync">
             <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
+                <action android:name="android.content.SyncAdapter" />
             </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
         <!-- Samsung MultiWindow Function -->
 
-        <uses-library android:name="com.sec.android.app.multiwindow"
+        <uses-library
+            android:name="com.sec.android.app.multiwindow"
             android:required="false" />
-        <meta-data android:name="com.sec.android.support.multiwindow"
+
+        <meta-data
+            android:name="com.sec.android.support.multiwindow"
             android:value="true" />
-        <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
+        <meta-data
+            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
             android:resource="@dimen/app_defaultsize_w" />
-        <meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
+        <meta-data
+            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
             android:resource="@dimen/app_defaultsize_h" />
-        <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
+        <meta-data
+            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
             android:resource="@dimen/app_minimumsize_w" />
-        <meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
+        <meta-data
+            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:resource="@dimen/app_minimumsize_h" />
+
+        <activity android:name=".investment.EditPriceActivity"></activity>
     </application>
 
 </manifest>
