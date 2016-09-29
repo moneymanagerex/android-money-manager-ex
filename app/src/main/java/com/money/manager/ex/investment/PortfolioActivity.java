@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.investment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
@@ -35,14 +34,13 @@ public class PortfolioActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setContentView(R.layout.activity_portfolio);
-        setContentView(R.layout.base_toolbar_activity);
+        setContentView(R.layout.activity_portfolio);
+//        setContentView(R.layout.base_toolbar_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // todo: pass the correct account id.
-        PortfolioFragment listFragment = PortfolioFragment.newInstance(Constants.NOT_SET);
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
         // todo: action
 //        if (intent != null && !(TextUtils.isEmpty(intent.getAction()))) {
 //            listFragment.mAction = intent.getAction();
@@ -50,10 +48,12 @@ public class PortfolioActivity
         FragmentManager fm = getSupportFragmentManager();
         // attach fragment to activity
         if (fm.findFragmentById(R.id.content) == null) {
+            PortfolioFragment listFragment = PortfolioFragment.newInstance(Constants.NOT_SET);
             fm.beginTransaction().add(R.id.content, listFragment, FRAGMENT_TAG).commit();
         }
 
         Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.Portfolio.name()));
     }
+
 
 }

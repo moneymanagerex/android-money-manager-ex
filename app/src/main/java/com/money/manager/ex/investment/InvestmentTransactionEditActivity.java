@@ -62,6 +62,7 @@ public class InvestmentTransactionEditActivity
     public static final String ARG_ACCOUNT_ID = "InvestmentTransactionEditActivity:AccountId";
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
     public static final String DATEPICKER_TAG = "datepicker";
+
     public static final int ID_NUM_SHARES = 1;
     public static final int ID_PURCHASE_PRICE = 2;
     public static final int ID_COMMISSION = 3;
@@ -78,7 +79,8 @@ public class InvestmentTransactionEditActivity
         setContentView(R.layout.activity_investment_transaction_edit);
 
         // this handles OK/Cancel button clicks in the toolbar.
-        showStandardToolbarActions();
+//        showStandardToolbarActions();
+        setDisplayHomeAsUpEnabled(true);
 
         // load account & currency
         Intent intent = getIntent();
@@ -108,6 +110,9 @@ public class InvestmentTransactionEditActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_edit_investment_transaction, menu);
+
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+
         return true;
     }
 
@@ -116,11 +121,12 @@ public class InvestmentTransactionEditActivity
         // Handle action bar item clicks here. The action bar will
         // automatically e clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
+        int id = item.getItemId();
 
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        switch (id) {
+            case R.id.saveMenuItem:
+                return onActionDoneClick();
+        }
 
         return super.onOptionsItemSelected(item);
     }

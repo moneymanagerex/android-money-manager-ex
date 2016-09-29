@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.common;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -83,6 +84,7 @@ public abstract class MmxBaseFragmentActivity
             // home click can be handled in the manifest by setting up the parent activity.
             case android.R.id.home:
                 if (mDisplayHomeAsUpEnabled) {
+                    setResult(Activity.RESULT_CANCELED);
                     finish();
                     return true;
                 }

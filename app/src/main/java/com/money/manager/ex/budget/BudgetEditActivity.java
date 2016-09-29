@@ -33,6 +33,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
@@ -81,16 +82,8 @@ public class BudgetEditActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.menu_save, menu);
-
-        UIHelper uiHelper = new UIHelper(this);
-
-        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
-        if (saveMenu != null) {
-            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-                    .color(uiHelper.getPrimaryTextColor());
-            saveMenu.setIcon(check);
-        }
+        MenuHelper menuHelper = new MenuHelper(this);
+        menuHelper.addSaveToolbarIcon(getMenuInflater(), menu);
 
         return true;
     }

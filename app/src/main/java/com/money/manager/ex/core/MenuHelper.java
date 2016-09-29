@@ -20,8 +20,11 @@ package com.money.manager.ex.core;
 import android.content.Context;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
 
 /**
@@ -31,7 +34,11 @@ public class MenuHelper {
 
     public MenuHelper(Context context) {
         mContext = context;
+
+        uiHelper = new UIHelper(context);
     }
+
+    public UIHelper uiHelper;
 
     private Context mContext;
 
@@ -69,5 +76,18 @@ public class MenuHelper {
 
     private Context getContext() {
         return mContext;
+    }
+
+    public void addSaveToolbarIcon(MenuInflater inflater, Menu menu) {
+        inflater.inflate(R.menu.menu_save, menu);
+
+        // customize icon
+        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
+        if (saveMenu != null) {
+            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
+                    .color(uiHelper.getPrimaryTextColor());
+            saveMenu.setIcon(check);
+        }
+
     }
 }
