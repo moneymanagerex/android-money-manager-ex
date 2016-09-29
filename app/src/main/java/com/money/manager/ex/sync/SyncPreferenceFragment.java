@@ -362,6 +362,12 @@ public class SyncPreferenceFragment
     }
 
     private void forceUpload() {
+        String remotePath = getSyncManager().getRemotePath();
+        if (TextUtils.isEmpty(remotePath)) {
+            new Core(getActivity()).alert(R.string.no_remote_file);
+            return;
+        }
+
         try {
             getSyncManager().triggerUpload();
             new UIHelper(getActivity()).showToast(R.string.sync_uploading);
@@ -369,6 +375,8 @@ public class SyncPreferenceFragment
             Timber.e(e, "uploading database");
         }
     }
+
+
 
     private void saveDatabaseMetadata(String remoteFile) {
         String fileName = new File(remoteFile).getName();
