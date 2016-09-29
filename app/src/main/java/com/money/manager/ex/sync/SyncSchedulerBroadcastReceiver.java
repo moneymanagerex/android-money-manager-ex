@@ -64,7 +64,7 @@ public class SyncSchedulerBroadcastReceiver
 
         Intent syncIntent = new Intent(context, SyncBroadcastReceiver.class);
         PendingIntent pendingSyncIntent = PendingIntent.getBroadcast(context, SyncConstants.REQUEST_PERIODIC_SYNC,
-                syncIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         // PendingIntent.FLAG_CANCEL_CURRENT, FLAG_UPDATE_CURRENT
 
         AlarmManager alarmManager = getAlarmManager(context);

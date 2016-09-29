@@ -298,7 +298,7 @@ public class SyncService
         try {
             isRemoteModified = sync.isRemoteFileModified(remoteFile);
         } catch (RuntimeException e) {
-            Timber.e(e, "no remote change data found in metadata!");
+            Timber.e(e, "No remote change data found in metadata! Please re-synchronize manually.");
             // notify the user!
             sendMessage(SyncServiceMessage.ERROR);
             return;

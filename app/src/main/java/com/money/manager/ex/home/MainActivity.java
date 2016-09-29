@@ -304,10 +304,7 @@ public class MainActivity
                     return;
                 }
 
-                DatabaseMetadata db = mDatabases.get().get(selectedPath);
-                if (db == null) {
-                    db = DatabaseMetadataFactory.getInstance(selectedPath);
-                }
+                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
                 changeDatabase(db);
                 break;
 
@@ -511,7 +508,13 @@ public class MainActivity
      */
 
     public void changeDatabase(@NonNull DatabaseMetadata database) {
-        // String localPath, @NonNull String remotePath
+        // Reuse existing metadata, if found.
+        DatabaseMetadata existing = mDatabases.get().get(database.localPath);
+        if (existing != null) {
+            Timber.v("Existing database found. Reusing metadata.");
+            database = existing;
+        }
+
         try {
             new MmxDatabaseUtils(this)
                     .useDatabase(database);
@@ -1156,19 +1159,23 @@ public class MainActivity
     }
 
     private void initializeSync() {
-        // Check cloud storage for updates?
-        boolean syncOnStart = new SyncPreferences(this).get(R.string.pref_sync_on_app_start, true);
-        if (syncOnStart && !this.dbUpdateCheckDone) {
-//            checkCloudForDbUpdates();
+        SyncManager sync = new SyncManager(this);
+        if (!sync.isActive()) return;
 
-            SyncManager sync = new SyncManager(this);
+        SyncPreferences preferences = new SyncPreferences(this);
+
+        // Start the sync timer in case it was stopped for whatever reason.
+        if (preferences.getSyncInterval() != 0) {
+            sync.startSyncServiceHeartbeat();
+        }
+
+        // Check cloud storage for updates?
+        boolean syncOnStart = preferences.get(R.string.pref_sync_on_app_start, true);
+        if (syncOnStart && !this.dbUpdateCheckDone) {
             sync.triggerSynchronization();
 
             // This is to avoid checking for online updates on every device rotation.
             dbUpdateCheckDone = true;
-
-            // re-set sync timer.
-            sync.startSyncServiceHeartbeat();
         }
     }
 

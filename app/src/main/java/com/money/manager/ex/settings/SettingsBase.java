@@ -138,7 +138,7 @@ abstract class SettingsBase {
      * @param defaultValue The default value to use if setting not found.
      * @return The setting value or default.
      */
-    protected int get(Integer settingKey, int defaultValue) {
+    public int get(Integer settingKey, int defaultValue) {
         String key = getSettingsKey(settingKey);
         return getIntSetting(key, defaultValue);
     }
