@@ -83,6 +83,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
+import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -95,6 +96,8 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import icepick.Icepick;
+import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import rx.Single;
@@ -139,7 +142,7 @@ public class HomeFragment
     private Money mGrandTotal = MoneyFactory.fromDouble(0);
     private Money mGrandReconciled = MoneyFactory.fromDouble(0);
 
-    private int accountBalancedId = Constants.NOT_SET;
+    @State int accountBalancedId = Constants.NOT_SET;
     private QueryAccountBills accountBeingBalanced = null;
 
     @Override
@@ -157,7 +160,8 @@ public class HomeFragment
 
         // restore number input binaryDialog reference, if any
         if (savedInstanceState != null) {
-            this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
+//            this.accountBalancedId = savedInstanceState.getInt(TAG_BALANCE_ACCOUNT);
+            Icepick.restoreInstanceState(this, savedInstanceState);
         }
     }
 
@@ -220,14 +224,6 @@ public class HomeFragment
         Select query;
 
         switch (id) {
-//            case LOADER_USER_NAME:
-//                // todo This should be on the activity, not in this fragment!
-//                InfoRepositorySql repo = new InfoRepositorySql(getActivity());
-//                query.select(new String[]{ Info.INFONAME, Info.INFOVALUE });
-//
-//                result = new MmxCursorLoader(getActivity(), repo.getUri(), query);
-//                break;
-
             case LOADER_ACCOUNT_BILLS:
                 setListViewAccountBillsVisible(false);
 
@@ -292,21 +288,6 @@ public class HomeFragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
-//            case LOADER_USER_NAME:
-//                if (data != null) {
-//                    while (data.moveToNext()) {
-//                        String username;
-//                        String infoValue = data.getString(data.getColumnIndex(Info.INFONAME));
-//                        // update into preferences username and base currency id
-//                        if (InfoKeys.USERNAME.equalsIgnoreCase(infoValue)) {
-//                            username = data.getString(data.getColumnIndex(Info.INFOVALUE));
-//                            MoneyManagerApplication.getApp().setUserName(username);
-//                        }
-//                    }
-//                }
-//                EventBus.getDefault().post(new UsernameLoadedEvent());
-//                break;
-
             case LOADER_ACCOUNT_BILLS:
                 try {
                     renderAccountsList(data);
@@ -411,8 +392,10 @@ public class HomeFragment
             // show title
             activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-            // clear subTitle of ActionBar
-            activity.getSupportActionBar().setSubtitle(null);
+            // Show db name in toolbar.
+            String dbPath = new AppSettings(activity).getDatabaseSettings().getDatabasePath();
+            String dbFileName = FilenameUtils.getBaseName(dbPath);
+            activity.getSupportActionBar().setSubtitle(dbFileName);
         }
 
         // reload data.
@@ -500,7 +483,8 @@ public class HomeFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
+//        outState.putInt(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
+        Icepick.saveInstanceState(this, outState);
     }
 
     // Events

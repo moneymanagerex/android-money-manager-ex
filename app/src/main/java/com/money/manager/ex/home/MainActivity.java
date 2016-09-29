@@ -67,6 +67,7 @@ import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.PasswordActivity;
+import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -101,7 +102,9 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxFileUtils;
 
+import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
