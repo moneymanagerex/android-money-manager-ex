@@ -27,6 +27,8 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -272,5 +274,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <include layout="@layout/action_buttons" />
+    <!--<include layout="@layout/action_buttons" />-->
 </LinearLayout>

@@ -35,6 +35,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -108,10 +109,8 @@ public class InvestmentTransactionEditActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_edit_investment_transaction, menu);
 
-        getMenuInflater().inflate(R.menu.menu_save, menu);
+        new MenuHelper(this).addSaveToolbarIcon(getMenuInflater(), menu);
 
         return true;
     }

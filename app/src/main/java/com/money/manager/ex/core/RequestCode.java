@@ -29,4 +29,5 @@ public class RequestCode {
     public static final int AMOUNT_FROM = 5;
     public static final int AMOUNT_TO = 6;
     public static final int CATEGORY = 7;
+    public static final int CURRENCY = 8;
 }

@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -35,6 +37,8 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -65,7 +69,7 @@ public class AccountEditActivity
     // LOGCAT
     private static final String LOGCAT = AccountEditActivity.class.getSimpleName();
     // ID REQUEST Data
-    private static final int REQUEST_PICK_CURRENCY = 1;
+//    private static final int REQUEST_PICK_CURRENCY = 1;
     private static final String KEY_ACTION = "AccountEditActivity:Action";
     // Constant
     private static final int PLUS = 0;
@@ -130,12 +134,8 @@ public class AccountEditActivity
         // Compose layout
         setContentView(R.layout.activity_edit_account);
 
-        // toolbar
-//        if (getToolbar() != null) {
-//            showActionBar();
-//            showStandardToolbarActions();
-//        }
-        showStandardToolbarActions();
+//        showStandardToolbarActions();
+        setDisplayHomeAsUpEnabled(true);
 
         initializeControls();
     }
@@ -143,7 +143,7 @@ public class AccountEditActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_PICK_CURRENCY:
+            case RequestCode.CURRENCY:
                 if ((resultCode == Activity.RESULT_OK) && (data != null)) {
                     int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
                     mAccount.setCurrencyId(currencyId);
@@ -158,6 +158,26 @@ public class AccountEditActivity
                     }
                 }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        new MenuHelper(this).addSaveToolbarIcon(getMenuInflater(), menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.saveMenuItem:
+                return onActionDoneClick();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -337,7 +357,7 @@ public class AccountEditActivity
             public void onClick(View v) {
                 Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, REQUEST_PICK_CURRENCY);
+                startActivityForResult(intent, RequestCode.CURRENCY);
             }
         });
 
