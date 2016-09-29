@@ -18,16 +18,39 @@
 package com.money.manager.ex.investment;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 
-public class EditPriceActivity
+import butterknife.ButterKnife;
+
+public class PriceEditActivity
     extends MmxBaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_price);
+        setContentView(R.layout.activity_price_edit);
+
+        ButterKnife.bind(this);
+
+        initializeToolbar();
+
+        initializeModel();
     }
+
+    private void initializeModel() {
+
+    }
+
+    private void initializeToolbar() {
+        // Title
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle(getString(R.string.budget));
+
+        // Back arrow / cancel.
+        setDisplayHomeAsUpEnabled(true);
+    }
+
 }

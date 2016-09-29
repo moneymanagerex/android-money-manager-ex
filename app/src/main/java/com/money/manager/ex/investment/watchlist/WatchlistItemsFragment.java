@@ -42,6 +42,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -56,6 +57,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.EditPriceDialog;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
+import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.StocksCursorAdapter;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -228,13 +230,14 @@ public class WatchlistItemsFragment
                 int accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
 
+                //todo Intent intent = IntentFactory.getPriceEditIntent(getActivity());
+
                 EditPriceDialog dialog = new EditPriceDialog();
                 Bundle args = new Bundle();
                 args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
                 args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
                 args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
 
-//                String dateString = stock.getPurchaseDate().toString();
                 String dateString = DateTime.now().toString();
                 args.putString(EditPriceDialog.ARG_DATE, dateString);
 

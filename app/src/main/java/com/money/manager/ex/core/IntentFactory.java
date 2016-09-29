@@ -23,6 +23,7 @@ import android.os.Messenger;
 
 import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.sync.SyncConstants;
@@ -75,6 +76,12 @@ public class IntentFactory {
         // Clear the activity stack completely.
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        return intent;
+    }
+
+    public static Intent getPriceEditIntent(Context context) {
+        Intent intent = new Intent(context, PriceEditActivity.class);
 
         return intent;
     }

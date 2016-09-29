@@ -174,21 +174,6 @@ public class EditPriceDialog
         Icepick.saveInstanceState(this, savedInstanceState);
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (resultCode != Activity.RESULT_OK) return;
-//
-//        switch (requestCode) {
-//            case RequestCode.AMOUNT:
-//                String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
-//                mPrice.price = MoneyFactory.fromString(stringExtra);
-//                showCurrentPrice();
-//                break;
-//        }
-//    }
-
     @Subscribe
     public void onEvent(AmountEnteredEvent event) {
         mPrice.price = event.amount;

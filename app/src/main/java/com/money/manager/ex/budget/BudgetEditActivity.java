@@ -65,28 +65,11 @@ public class BudgetEditActivity
 
         initializeModel();
         showModel();
-
-//        initializeFab();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // todo update model
-        //outState.
-    }
-
-//    @Override
-//    public boolean onActionCancelClick() {
-//        setResult(Activity.RESULT_CANCELED);
-//        finish();
-//        return true;
-//    }
-
-//    @Override
     public boolean onActionDoneClick() {
         if (save()) {
-            // If everything is okay, finish the activity
-        setResult(RESULT_OK);
+            setResult(RESULT_OK);
             finish();
             return true;
         } else {
@@ -121,7 +104,6 @@ public class BudgetEditActivity
                 break;
             case R.id.saveMenuItem:
                 return onActionDoneClick();
-//                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -185,25 +167,12 @@ public class BudgetEditActivity
             .show();
     }
 
-    // Private
+    /*
+        Private
+    */
 
     private int getBudgetId() {
         return getIntent().getIntExtra(KEY_BUDGET_ID, Constants.NOT_SET);
-    }
-
-    private void initializeFab() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        UIHelper uiHelper = new UIHelper(this);
-        IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-                .color(uiHelper.getPrimaryTextColor());
-        fab.setImageDrawable(icon);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new UIHelper(BudgetEditActivity.this).showToast("yo!");
-            }
-        });
     }
 
     private void initializeModel() {
@@ -225,8 +194,6 @@ public class BudgetEditActivity
         }
 
         mModel = BudgetViewModel.from(budget);
-
-//        mBinding.setBudget(mModel);
     }
 
     private void initializeToolbar() {
