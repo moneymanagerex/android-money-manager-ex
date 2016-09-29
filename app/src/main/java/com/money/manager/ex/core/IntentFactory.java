@@ -98,4 +98,17 @@ public class IntentFactory {
         return intent;
     }
 
+    public static Intent getIntentForNumericInput(Context context, Money amount, int currencyId,
+                                                  boolean roundToCurrency) {
+        Intent intent = new Intent(context, AmountInputActivity.class);
+
+        // currency
+        intent.putExtra(AmountInputActivity.EXTRA_CURRENCY_ID, currencyId);
+        // amount
+        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
+        intent.putExtra(AmountInputActivity.EXTRA_ROUND_TO_CURRENCY, roundToCurrency);
+
+        return intent;
+    }
+
 }

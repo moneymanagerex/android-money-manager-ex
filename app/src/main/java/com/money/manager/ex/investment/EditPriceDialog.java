@@ -16,8 +16,10 @@
  */
 package com.money.manager.ex.investment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -32,12 +34,15 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.MoneyBundler;
+import com.money.manager.ex.core.bundlers.PriceDownloadedEventBundler;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.StockRepository;
@@ -72,18 +77,19 @@ import info.javaperformance.money.MoneyFactory;
 public class EditPriceDialog
     extends DialogFragment {
 
-    public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
-
     public static final String ARG_ACCOUNT = "EditPriceDialog:Account";
     public static final String ARG_SYMBOL = "EditPriceDialog:Symbol";
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
 
+    public static final int REQUEST_AMOUNT = 1;
+
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     @State int mAccountId;
     @State String mUserDateFormat;
-    @State(MoneyBundler.class) PriceDownloadedEvent mPrice;
+    @State(PriceDownloadedEventBundler.class) PriceDownloadedEvent mPrice;
+    @State int mCurrencyId = Constants.NOT_SET;
 
     private EditPriceViewHolder viewHolder;
     private Lazy<FormatUtilities> formatUtilitiesLazy;
@@ -153,32 +159,23 @@ public class EditPriceDialog
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         Icepick.saveInstanceState(this, savedInstanceState);
     }
 
-    // Events
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
 
-    @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-        mPrice.price = event.amount;
-        showCurrentPrice();
+        switch (requestCode) {
+            case REQUEST_AMOUNT:
+                String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                mPrice.price = MoneyFactory.fromString(stringExtra);
+                showCurrentPrice();
+                break;
+        }
     }
 
     /*
@@ -249,15 +246,18 @@ public class EditPriceDialog
 
         AccountRepository accountRepository = new AccountRepository(getContext());
         Account account = accountRepository.load(mAccountId);
-
-        final int currencyId = account.getCurrencyId();
+        if (mCurrencyId == Constants.NOT_SET) {
+            mCurrencyId = account.getCurrencyId();
+        }
 
         View.OnClickListener onClickAmount = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, currencyId, false);
-                dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
+//                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, mCurrencyId, false);
+//                dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
                 // getChildFragmentManager() ?
+                Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), mPrice.price, mCurrencyId, false);
+                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
             }
         };
         viewHolder.amountTextView.setOnClickListener(onClickAmount);
