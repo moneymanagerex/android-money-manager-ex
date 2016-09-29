@@ -197,7 +197,7 @@ public class MainActivity
             deviceOrientation = getResources().getConfiguration().orientation;
         }
 
-        // Intent
+        // Intent. Opening from the notification or the file system.
         handleIntent();
 
         // Restore state. Check authentication, etc.
@@ -295,6 +295,7 @@ public class MainActivity
 
         switch (requestCode) {
             case RequestCode.SELECT_FILE:
+                // Opening from intent.
                 if (resultCode != RESULT_OK) return;
 
                 String selectedPath = UIHelper.getSelectedFile(data);
@@ -303,7 +304,10 @@ public class MainActivity
                     return;
                 }
 
-                DatabaseMetadata db = DatabaseMetadataFactory.getInstance(selectedPath);
+                DatabaseMetadata db = mDatabases.get().get(selectedPath);
+                if (db == null) {
+                    db = DatabaseMetadataFactory.getInstance(selectedPath);
+                }
                 changeDatabase(db);
                 break;
 

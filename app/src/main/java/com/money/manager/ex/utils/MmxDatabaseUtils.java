@@ -235,8 +235,6 @@ public class MmxDatabaseUtils {
      * @return Indicator whether the database is valid for use.
      */
     public boolean useDatabase(@NonNull DatabaseMetadata database) {
-        // String dbPath, @NonNull String remotePath
-
         // check if the file is a valid database.
         if (!isValidDbFile(database.localPath)) {
             throw new IllegalArgumentException("Not a valid database file!");
@@ -246,7 +244,6 @@ public class MmxDatabaseUtils {
         new AppSettings(getContext()).getDatabaseSettings().setDatabasePath(database.localPath);
 
         // Store the Recent Database entry.
-//        RecentDatabasesProvider recentDbs = new RecentDatabasesProvider(getContext());
         boolean added = mDatabasesLazy.get().add(database);
         if (!added) {
             throw new RuntimeException("could not add to recent files");

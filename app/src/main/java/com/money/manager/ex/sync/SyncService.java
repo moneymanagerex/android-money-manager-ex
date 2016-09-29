@@ -174,50 +174,13 @@ public class SyncService
     private void triggerDownload(final File localFile, final CloudMetaData remoteFile) {
         final SyncManager sync = new SyncManager(getApplicationContext());
 
-        final Notification notification = new SyncNotificationFactory(getApplicationContext())
+        Notification notification = new SyncNotificationFactory(getApplicationContext())
                 .getNotificationForDownload();
 
         final NotificationManager notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         final File tempFile = new File(localFile.toString() + "-download");
 
-        final IOnDownloadUploadEntry onDownloadHandler = new IOnDownloadUploadEntry() {
-            @Override
-            public void onPreExecute() {
-            }
-
-            @Override
-            public void onPostExecute(boolean result) {
-                if (notification == null || notificationManager == null) return;
-
-                notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
-
-                if (!result) return;
-
-                // copy file
-                try {
-                    MmxFileUtils.copy(tempFile, localFile);
-                    tempFile.delete();
-                } catch (IOException e) {
-                    Timber.e(e, "copying downloaded database file");
-                    return;
-                }
-
-                sync.saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
-
-                // Create the notification for opening of the downloaded file.
-                // The Intent is passed to the notification and called if clicked on.
-                Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                        RequestCode.SELECT_FILE, intent, 0);
-
-                Notification notification = new SyncNotificationFactory(getApplicationContext())
-                    .getNotificationDownloadComplete(pendingIntent);
-
-                // notify
-                notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, notification);
-            }
-        };
         Timber.d("Download file. Local file: %s, remote file: %s", localFile.getPath(), remoteFile.getPath());
 
         if (notification != null && notificationManager != null) {
@@ -232,7 +195,9 @@ public class SyncService
                     .subscribe(new SingleSubscriber<Void>() {
                         @Override
                         public void onSuccess(Void value) {
-                            onDownloadHandler.onPostExecute(true);
+                            //onDownloadHandler.onPostExecute(true);
+                            afterDownload(notificationManager, tempFile, localFile,
+                                    remoteFile, sync);
                             sendMessage(SyncServiceMessage.DOWNLOAD_COMPLETE);
                             sendStopEvent();
                         }
@@ -245,6 +210,38 @@ public class SyncService
                         }
                     })
         );
+    }
+
+    private void afterDownload(NotificationManager notificationManager, File tempFile, File localFile,
+                               CloudMetaData remoteFile, SyncManager sync) {
+        if (notificationManager == null) return;
+
+        notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
+
+//        if (!result) return;
+
+        // copy file
+        try {
+            MmxFileUtils.copy(tempFile, localFile);
+            tempFile.delete();
+        } catch (IOException e) {
+            Timber.e(e, "copying downloaded database file");
+            return;
+        }
+
+        sync.saveRemoteLastModifiedDate(localFile.getAbsolutePath(), remoteFile);
+
+        // Create the notification for opening of the downloaded file.
+        // The Intent is passed to the notification and called if clicked on.
+        Intent intent = new SyncCommon().getIntentForOpenDatabase(getApplicationContext(), localFile);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                RequestCode.SELECT_FILE, intent, 0);
+
+        Notification completeNotification = new SyncNotificationFactory(getApplicationContext())
+                .getNotificationDownloadComplete(pendingIntent);
+
+        // notify
+        notificationManager.notify(SyncConstants.NOTIFICATION_SYNC_OPEN_FILE, completeNotification);
     }
 
     private void triggerUpload(final File localFile, CloudMetaData remoteFile) {
@@ -297,7 +294,15 @@ public class SyncService
         Timber.d("local file has changes: %b", isLocalModified);
 
         // are there remote changes?
-        boolean isRemoteModified = sync.isRemoteFileModified(remoteFile);
+        boolean isRemoteModified = false;
+        try {
+            isRemoteModified = sync.isRemoteFileModified(remoteFile);
+        } catch (RuntimeException e) {
+            Timber.e(e, "no remote change data found in metadata!");
+            // notify the user!
+            sendMessage(SyncServiceMessage.ERROR);
+            return;
+        }
         Timber.d("Remote file has changes: %b", isRemoteModified);
 
         // possible outcomes:
