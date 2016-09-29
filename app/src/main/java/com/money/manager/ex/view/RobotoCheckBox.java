@@ -19,6 +19,7 @@ package com.money.manager.ex.view;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -26,7 +27,9 @@ import android.widget.TextView;
 /**
  * Implementation of a {@link TextView} with native support for all the Roboto fonts on all versions of Android.
  */
-public class RobotoCheckBox extends CheckBox {
+public class RobotoCheckBox
+    extends AppCompatCheckBox {
+
     /**
      * Simple constructor to use when creating a widget from code.
      *

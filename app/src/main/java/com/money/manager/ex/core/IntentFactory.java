@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
 
+import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParameters;
@@ -28,6 +29,8 @@ import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncService;
 
 import org.parceler.Parcels;
+
+import info.javaperformance.money.Money;
 
 /**
  * Generates Intents for common app functionality.
@@ -75,4 +78,24 @@ public class IntentFactory {
 
         return intent;
     }
+
+    public static Intent getIntentForNumericInput(Context context, Money amount) {
+        Intent intent = new Intent(context, AmountInputActivity.class);
+        // amount
+        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
+
+        return intent;
+    }
+
+    public static Intent getIntentForNumericInput(Context context, Money amount, int currencyId) {
+        Intent intent = new Intent(context, AmountInputActivity.class);
+
+        // currency
+        intent.putExtra(AmountInputActivity.EXTRA_CURRENCY_ID, currencyId);
+        // amount
+        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
+
+        return intent;
+    }
+
 }

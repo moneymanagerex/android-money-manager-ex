@@ -36,15 +36,15 @@
             android:orientation="vertical">
 
             <!-- reset form -->
-            <Button
-                android:id="@+id/resetButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="@string/reset" />
+            <!--<Button-->
+                <!--android:id="@+id/resetButton"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:paddingLeft="30dp"-->
+                <!--android:paddingRight="30dp"-->
+                <!--android:text="@string/reset" />-->
 
             <!-- Account -->
             <com.money.manager.ex.view.RobotoTextView
@@ -78,24 +78,24 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:singleLine="true"
-                    android:text="@string/withdrawal" />
+                    android:text="@string/withdrawal"
+                    android:maxLines="1" />
 
                 <com.money.manager.ex.view.RobotoCheckBox
                     android:id="@+id/checkBoxDeposit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:singleLine="true"
-                    android:text="@string/deposit" />
+                    android:text="@string/deposit"
+                    android:maxLines="1" />
 
                 <com.money.manager.ex.view.RobotoCheckBox
                     android:id="@+id/checkBoxTransfer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:singleLine="true"
-                    android:text="@string/transfer" />
+                    android:text="@string/transfer"
+                    android:maxLines="1" />
             </LinearLayout>
 
             <com.money.manager.ex.view.RobotoTextView
@@ -125,8 +125,8 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:hint="@string/amount_from"
-                    android:singleLine="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLines="1" />
 
                 <com.money.manager.ex.view.RobotoTextView
                     android:id="@+id/textViewToAmount"
@@ -138,8 +138,8 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:hint="@string/amount_to"
-                    android:singleLine="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLines="1" />
             </LinearLayout>
 
             <LinearLayout

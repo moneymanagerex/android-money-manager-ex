@@ -48,6 +48,7 @@ import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.database.ITransactionEntity;
@@ -421,7 +422,7 @@ public class EditTransactionCommonFunctions {
                 int currencyId = getSourceCurrencyId();
                 Money amount = transactionEntity.getAmount();
 
-                Intent intent = getIntentForNumericInput(amount, currencyId);
+                Intent intent = IntentFactory.getIntentForNumericInput(getContext(), amount, currencyId);
                 getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
             }
         });
@@ -434,7 +435,7 @@ public class EditTransactionCommonFunctions {
                 int currencyId = getDestinationCurrencyId();
                 Money amount = transactionEntity.getAmountTo();
 
-                Intent intent = getIntentForNumericInput(amount, currencyId);
+                Intent intent = IntentFactory.getIntentForNumericInput(getContext(), amount, currencyId);
                 getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
             }
         });
@@ -1343,17 +1344,6 @@ public class EditTransactionCommonFunctions {
 
     private MmxBaseFragmentActivity getActivity() {
         return (MmxBaseFragmentActivity) mContext;
-    }
-
-    private Intent getIntentForNumericInput(Money amount, int currencyId) {
-        Intent intent = new Intent(getContext(), AmountInputActivity.class);
-
-        // currency
-        intent.putExtra(AmountInputActivity.EXTRA_CURRENCY_ID, currencyId);
-        // amount
-        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
-
-        return intent;
     }
 
     private ArrayList<ISplitTransaction> getSplitTransactions() {

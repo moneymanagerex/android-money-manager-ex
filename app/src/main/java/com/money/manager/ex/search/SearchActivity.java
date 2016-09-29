@@ -20,13 +20,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.QueryAllData;
 
 import org.parceler.Parcels;
@@ -56,7 +60,8 @@ public class SearchActivity
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
         }
         // reconfigure the toolbar event
-        showStandardToolbarActions(getToolbar(), R.id.action_cancel, R.id.action_search);
+//        showStandardToolbarActions(getToolbar(), R.id.action_cancel, R.id.action_search);
+        setDisplayHomeAsUpEnabled(true);
 
         handleSearchRequest();
     }
@@ -73,12 +78,40 @@ public class SearchActivity
 	}
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        UIHelper ui = new UIHelper(this);
+
+        // Add Search icon.
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.searchMenuItem);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        item.setIcon(ui.getIcon(GoogleMaterial.Icon.gmd_search));
+        // show this menu item last
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                return onActionCancelClick();
+            case R.id.searchMenuItem:
+                return onActionDoneClick();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //    @Override
     public boolean onActionCancelClick() {
         finish();
         return true;
     }
 
-    @Override
+//    @Override
     public boolean onActionDoneClick() {
         performSearch();
 
@@ -166,8 +199,6 @@ public class SearchActivity
         //animation
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
                 R.anim.slide_in_right, R.anim.slide_out_left);
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack.
         if (mIsDualPanel) {
             transaction.add(R.id.fragmentDetail, searchResultsFragment, AllDataListFragment.class.getSimpleName());
         } else {
