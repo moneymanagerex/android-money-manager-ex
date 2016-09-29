@@ -34,6 +34,8 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputActivity;
+import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCode;
@@ -49,6 +51,8 @@ import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
@@ -67,6 +71,8 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class EditPriceDialog
     extends DialogFragment {
+
+    public static final String TAG_AMOUNT_INPUT = "EditPriceDialog:AmountInput";
 
     public static final String ARG_ACCOUNT = "EditPriceDialog:Account";
     public static final String ARG_SYMBOL = "EditPriceDialog:Symbol";
@@ -148,25 +154,45 @@ public class EditPriceDialog
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         Icepick.saveInstanceState(this, savedInstanceState);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (resultCode != Activity.RESULT_OK) return;
+//
+//        switch (requestCode) {
+//            case RequestCode.AMOUNT:
+//                String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+//                mPrice.price = MoneyFactory.fromString(stringExtra);
+//                showCurrentPrice();
+//                break;
+//        }
+//    }
 
-        if (resultCode != Activity.RESULT_OK) return;
-
-        switch (requestCode) {
-            case RequestCode.AMOUNT:
-                String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
-                mPrice.price = MoneyFactory.fromString(stringExtra);
-                showCurrentPrice();
-                break;
-        }
+    @Subscribe
+    public void onEvent(AmountEnteredEvent event) {
+        mPrice.price = event.amount;
+        showCurrentPrice();
     }
 
     /*
@@ -244,11 +270,10 @@ public class EditPriceDialog
         View.OnClickListener onClickAmount = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, mCurrencyId, false);
-//                dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
-                // getChildFragmentManager() ?
-                Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), mPrice.price, mCurrencyId, false);
-                getActivity().startActivityForResult(intent, RequestCode.AMOUNT);
+                AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, mCurrencyId, false);
+                dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
+//                Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), mPrice.price, mCurrencyId, false);
+//                getActivity().startActivityForResult(intent, RequestCode.AMOUNT);
             }
         };
         viewHolder.amountTextView.setOnClickListener(onClickAmount);
