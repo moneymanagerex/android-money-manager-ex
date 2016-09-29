@@ -33,10 +33,12 @@ import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
@@ -53,7 +55,10 @@ import org.parceler.Parcels;
 
 import java.util.Arrays;
 
+import icepick.State;
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Edit Account activity/form
@@ -66,10 +71,6 @@ public class AccountEditActivity
     public static final String KEY_CURRENCY_NAME = "AccountEditActivity:CurrencyName";
     public static final String KEY_SYMBOL = "AccountEditActivity:Symbol";
     public static final String KEY_DEFAULT_ACCOUNT = "AccountEditActivity:DefaultAccount";
-    // LOGCAT
-    private static final String LOGCAT = AccountEditActivity.class.getSimpleName();
-    // ID REQUEST Data
-//    private static final int REQUEST_PICK_CURRENCY = 1;
     private static final String KEY_ACTION = "AccountEditActivity:Action";
     // Constant
     private static final int PLUS = 0;
@@ -81,12 +82,12 @@ public class AccountEditActivity
     private String mIntentAction = Intent.ACTION_INSERT; // Insert? Edit?
 
     // Activity members
-    private String mCurrencyName;
+    @State String mCurrencyName;
     private String[] mAccountTypeValues;
     private String[] mAccountStatusValues;
 
     private AccountEditViewHolder mViewHolder;
-    private boolean mIsDefault;
+    @State boolean mIsDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,21 +143,29 @@ public class AccountEditActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+
         switch (requestCode) {
             case RequestCode.CURRENCY:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
-                    mAccount.setCurrencyId(currencyId);
+                if (data == null) return;
+                int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
+                mAccount.setCurrencyId(currencyId);
 
-                    mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
-                    refreshCurrencyName();
+                mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
+                refreshCurrencyName();
 
-                    // refresh amount
-                    Money initialBalance = mAccount.getInitialBalance();
-                    if (initialBalance != null) {
-                        onEvent(new AmountEnteredEvent("ignored", initialBalance));
-                    }
+                // refresh amount
+                Money initialBalance = mAccount.getInitialBalance();
+                if (initialBalance != null) {
+                    refreshAmount(initialBalance);
                 }
+                break;
+
+            case RequestCode.AMOUNT:
+                String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                Money amount = MoneyFactory.fromString(stringExtra);
+                refreshAmount(amount);
+                break;
         }
     }
 
@@ -191,8 +200,8 @@ public class AccountEditActivity
 
         outState.putParcelable(KEY_ACCOUNT_ENTITY, Parcels.wrap(mAccount));
 
-        outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
-        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
+//        outState.putString(KEY_CURRENCY_NAME, mCurrencyName);
+//        outState.putBoolean(KEY_DEFAULT_ACCOUNT, mIsDefault);
         outState.putString(KEY_ACTION, mIntentAction);
     }
 
@@ -214,21 +223,6 @@ public class AccountEditActivity
         }
     }
 
-    @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-        if (event.amount == null) {
-            Log.w(LOGCAT, "Received amount is null.");
-            return;
-        }
-
-        TextView initialBalanceTextView = (TextView) findViewById(R.id.editTextInitialBalance);
-
-        FormatUtilities formatter = new FormatUtilities(this);
-        formatter.formatAmountTextView(initialBalanceTextView, event.amount, mAccount.getCurrencyId());
-
-        mAccount.setInitialBalance(event.amount);
-    }
-
     /**
      * Refresh current currency name on controls
      */
@@ -242,6 +236,30 @@ public class AccountEditActivity
     }
 
     // Private
+
+    /**
+     * Transfer data from UI to the model.
+     * Replace with data binding later.
+     */
+    private void collectInput() {
+        mAccount.setName(mViewHolder.edtAccountName.getText().toString());
+
+        AccountTypes accountType = getSelectedAccountType();
+        mAccount.setType(accountType);
+
+        mAccount.setAccountNumber(mViewHolder.edtAccountNumber.getText().toString());
+        mAccount.setHeldAt(mViewHolder.edtAccountHeldAt.getText().toString());
+        mAccount.setWebSite(mViewHolder.webSiteEditText.getText().toString());
+        mAccount.setContactInfo(mViewHolder.edtContact.getText().toString());
+        mAccount.setAccessInfo(mViewHolder.edtAccessInfo.getText().toString());
+        mAccount.setNotes(mViewHolder.edtNotes.getText().toString());
+
+        if (mViewHolder.spinSymbolInitialBalance.getSelectedItemPosition() != PLUS) {
+            Money initialBalance = mAccount.getInitialBalance();
+            initialBalance = initialBalance.negate();
+            mAccount.setInitialBalance(initialBalance);
+        }
+    }
 
     private void displayDefaultAccount() {
         mViewHolder.defaultAccountCheckbox.setChecked(mIsDefault);
@@ -275,8 +293,11 @@ public class AccountEditActivity
         mViewHolder.txtInitialBalance.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance(null, mAccount.getInitialBalance(), mAccount.getCurrencyId());
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+//                AmountInputDialog dialog = AmountInputDialog.getInstance(null, mAccount.getInitialBalance(), mAccount.getCurrencyId());
+//                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                Intent intent = IntentFactory.getIntentForNumericInput(AccountEditActivity.this,
+                        mAccount.getInitialBalance(), mAccount.getCurrencyId());
+                AccountEditActivity.this.startActivityForResult(intent, RequestCode.AMOUNT);
             }
         });
 
@@ -446,59 +467,11 @@ public class AccountEditActivity
         mViewHolder.favouriteAccountTextView.setOnClickListener(listener);
     }
 
-    /**
-     * Validate entered data.
-     */
-    private boolean validateData() {
-        Core core = new Core(this);
+    private void refreshAmount(Money amount) {
+        mAccount.setInitialBalance(amount);
 
-        if (mAccount.getCurrencyId() == null || mAccount.getCurrencyId() == Constants.NOT_SET) {
-            core.alert(R.string.error_currency_not_selected);
-            return false;
-        }
-        if (!mAccount.hasInitialBalance()) {
-            core.alert(R.string.error_initialbal_empty);
-            return false;
-        }
-        if (TextUtils.isEmpty(mAccount.getName())) {
-            core.alert(R.string.error_accountname_empty);
-            return false;
-        }
-        if (TextUtils.isEmpty(mAccount.getTypeName())) {
-            core.alert(R.string.error_accounttype_empty);
-            return false;
-        }
-        if (TextUtils.isEmpty(mAccount.getStatus())) {
-            core.alert(R.string.error_status_empty);
-            return false;
-        }
-
-        // TODO: Should throw an exception in case favoriteacct is not in {'TRUE', 'FALSE'}
-        return true;
-    }
-
-    /**
-     * Transfer data from UI to the model.
-     * Replace with data binding later.
-     */
-    private void collectInput() {
-        mAccount.setName(mViewHolder.edtAccountName.getText().toString());
-
-        AccountTypes accountType = getSelectedAccountType();
-        mAccount.setType(accountType);
-
-        mAccount.setAccountNumber(mViewHolder.edtAccountNumber.getText().toString());
-        mAccount.setHeldAt(mViewHolder.edtAccountHeldAt.getText().toString());
-        mAccount.setWebSite(mViewHolder.webSiteEditText.getText().toString());
-        mAccount.setContactInfo(mViewHolder.edtContact.getText().toString());
-        mAccount.setAccessInfo(mViewHolder.edtAccessInfo.getText().toString());
-        mAccount.setNotes(mViewHolder.edtNotes.getText().toString());
-
-        if (mViewHolder.spinSymbolInitialBalance.getSelectedItemPosition() != PLUS) {
-            Money initialBalance = mAccount.getInitialBalance();
-            initialBalance = initialBalance.negate();
-            mAccount.setInitialBalance(initialBalance);
-        }
+        FormatUtilities formatter = new FormatUtilities(this);
+        formatter.formatAmountTextView(mViewHolder.txtInitialBalance, amount, mAccount.getCurrencyId());
     }
 
     /**
@@ -546,8 +519,8 @@ public class AccountEditActivity
             }
         }
 
-        mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
-        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
+//        mCurrencyName = savedInstanceState.getString(KEY_CURRENCY_NAME);
+//        mIsDefault = savedInstanceState.getBoolean(KEY_DEFAULT_ACCOUNT);
         mIntentAction = savedInstanceState.getString(KEY_ACTION);
     }
 
@@ -585,5 +558,36 @@ public class AccountEditActivity
                 settings.getGeneralSettings().setDefaultAccountId(null);
             }
         }
+    }
+
+    /**
+     * Validate entered data.
+     */
+    private boolean validateData() {
+        Core core = new Core(this);
+
+        if (mAccount.getCurrencyId() == null || mAccount.getCurrencyId() == Constants.NOT_SET) {
+            core.alert(R.string.error_currency_not_selected);
+            return false;
+        }
+        if (!mAccount.hasInitialBalance()) {
+            core.alert(R.string.error_initialbal_empty);
+            return false;
+        }
+        if (TextUtils.isEmpty(mAccount.getName())) {
+            core.alert(R.string.error_accountname_empty);
+            return false;
+        }
+        if (TextUtils.isEmpty(mAccount.getTypeName())) {
+            core.alert(R.string.error_accounttype_empty);
+            return false;
+        }
+        if (TextUtils.isEmpty(mAccount.getStatus())) {
+            core.alert(R.string.error_status_empty);
+            return false;
+        }
+
+        // TODO: Should throw an exception in case favoriteacct is not in {'TRUE', 'FALSE'}
+        return true;
     }
 }
