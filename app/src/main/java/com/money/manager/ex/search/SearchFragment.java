@@ -201,6 +201,8 @@ public class SearchFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         SearchParameters searchParameters;
         String stringExtra;
 
@@ -343,7 +345,7 @@ public class SearchFragment
         }
 
         Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
-        getActivity().startActivityForResult(intent, RequestCode.AMOUNT_FROM);
+        startActivityForResult(intent, RequestCode.AMOUNT_FROM);
     }
 
     @OnClick(R.id.textViewToAmount)
@@ -354,7 +356,7 @@ public class SearchFragment
         }
 
         Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
-        getActivity().startActivityForResult(intent, RequestCode.AMOUNT_TO);
+        startActivityForResult(intent, RequestCode.AMOUNT_TO);
     }
 
     // Private
