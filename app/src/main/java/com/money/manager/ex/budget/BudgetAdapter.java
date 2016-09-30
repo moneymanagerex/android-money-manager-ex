@@ -28,12 +28,19 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
+import com.squareup.sqlbrite.BriteDatabase;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -43,23 +50,11 @@ import timber.log.Timber;
 public class BudgetAdapter
     extends SimpleCursorAdapter {
 
-    public BudgetAdapter(Context context, Cursor cursor, String[] from, int[] to, int flags) {
-        super(context, R.layout.item_budget, cursor, from, to, flags);
-
-        //todo: use application context?
-        mContext = context;
-        mLayout = R.layout.item_budget;
-    }
-
     /**
      * Standard constructor.
      *
      * @param context The context where the ListView associated with this
      *                SimpleListItemFactory is running
-     * @param layout  resource identifier of a layout file that defines the views
-     *                for this list item. The layout file should include at least
-     *                those named views defined in "to"
-     * @param c       The database cursor.  Can be null if the cursor is not available yet.
      * @param from    A list of column names representing the data to bind to the UI.  Can be null
      *                if the cursor is not available yet.
      * @param to      The views that should display column in the "from" parameter.
@@ -69,11 +64,16 @@ public class BudgetAdapter
      * @param flags   Flags used to determine the behavior of the adapter,
      *                as per {@link CursorAdapter#CursorAdapter(Context, Cursor, int)}.
      */
-//    public BudgetAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
-//        super(context, layout, c, from, to, flags);
-//
-//        mLayout = layout;
-//    }
+    public BudgetAdapter(Context context, Cursor cursor, String[] from, int[] to, int flags) {
+        super(context, R.layout.item_budget, cursor, from, to, flags);
+
+        mContext = context;
+        mLayout = R.layout.item_budget;
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
+    }
+
+    @Inject Lazy<BriteDatabase> databaseLazy;
 
     private int mLayout;
     private String mBudgetName;
@@ -142,6 +142,10 @@ public class BudgetAdapter
         }
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public void setBudgetName(String budgetName) {
         mBudgetName = budgetName;
     }
@@ -168,19 +172,13 @@ public class BudgetAdapter
 
         try {
             String query = prepareQuery(where);
-            // todo check this use of dataset with null uri.
-            SQLDataSet dataSet = new SQLDataSet();
-            Cursor cursor = mContext.getContentResolver().query(dataSet.getUri(),
-                    null,
-                    query,
-                    null,
-                    null);
+            Cursor cursor = databaseLazy.get().query(query);
             if (cursor == null) return 0;
-            if (cursor.moveToFirst()) {
-                total = cursor.getDouble(cursor.getColumnIndex("TOTAL"));
-
-                cursor.close();
+            // add all the categories and subcategories together.
+            while (cursor.moveToNext()) {
+                total += cursor.getDouble(cursor.getColumnIndex("TOTAL"));
             }
+            cursor.close();
         } catch (IllegalStateException ise) {
             Timber.e(ise, "loading category total");
         }
@@ -188,9 +186,9 @@ public class BudgetAdapter
         return total;
     }
 
-    protected String prepareQuery(String whereClause) {
+    private String prepareQuery(String whereClause) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        ViewMobileData mobileData = new ViewMobileData(mContext);
+        ViewMobileData mobileData = new ViewMobileData(getContext());
 
         //data to compose builder
         String[] projectionIn = new String[]{
@@ -221,15 +219,9 @@ public class BudgetAdapter
         String sortOrder = ViewMobileData.Category + ", " + ViewMobileData.Subcategory;
         String limit = null;
 
-        //compose builder
         builder.setTables(mobileData.getSource());
 
-        //return query
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
         return builder.buildQuery(projectionIn, selection, groupBy, having, sortOrder, limit);
-//        } else {
-//            return builder.buildQuery(projectionIn, selection, null, groupBy, having, sortOrder, limit);
-//        }
     }
 
     private int getYearFromBudgetName(String budgetName) {

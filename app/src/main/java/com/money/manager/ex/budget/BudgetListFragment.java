@@ -45,9 +45,6 @@ import com.money.manager.ex.domainmodel.Budget;
 import org.greenrobot.eventbus.EventBus;
 
 /**
- * Activities that contain this fragment must implement the
- * {@link BudgetListFragment} interface
- * to e interaction events.
  * Use the {@link BudgetListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -126,13 +123,6 @@ public class BudgetListFragment
         super.onViewCreated(view, savedInstanceState);
 
         displayBudgets();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-//        outState.put(KEY_LISTENER, mListener);
     }
 
     // Loader events

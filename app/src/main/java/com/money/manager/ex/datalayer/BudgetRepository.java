@@ -31,8 +31,10 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 public class BudgetRepository
     extends RepositoryBase<Budget> {
 
+    public static final String TABLE_NAME = "budgetyear_v1";
+
     public BudgetRepository(Context context) {
-        super(context, "budgetyear_v1", DatasetType.TABLE, "budgetyear");
+        super(context, TABLE_NAME, DatasetType.TABLE, "budgetyear");
 
     }
 

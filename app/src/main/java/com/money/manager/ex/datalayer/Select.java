@@ -19,6 +19,8 @@ package com.money.manager.ex.datalayer;
 
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import java.util.Arrays;
+
 /**
  * Select object for easier querying through repositories.
  */
@@ -67,6 +69,18 @@ public class Select {
     public Select where(String selection, String... args) {
         this.selection = selection;
         this.selectionArgs = args;
+        return this;
+    }
+
+    public Select where(String selection, long... args) {
+        this.selection = selection;
+
+        // convert array values from Integer to String
+        String[] stringArgs = Arrays.toString(args)
+                .split("[\\[\\]]")[1]
+                .split(", ");
+
+        this.selectionArgs = stringArgs;
         return this;
     }
 

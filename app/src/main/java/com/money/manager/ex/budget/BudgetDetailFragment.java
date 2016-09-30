@@ -30,10 +30,11 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
+import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.domainmodel.Budget;
 
 /**
- * A simple {@link Fragment} subclass.
  * Use the {@link BudgetDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -138,7 +139,7 @@ public class BudgetDetailFragment
                     case LOADER_BUDGET:
                         BudgetQuery budget = new BudgetQuery(getActivity());
                         Select query = new Select(budget.getAllColumns())
-                            .where(BudgetQuery.BUDGETYEARID + "=?", new String[] { Long.toString(mBudgetYearId) })
+                            .where(BudgetQuery.BUDGETYEARID + "=?", mBudgetYearId)
                             .orderBy(BudgetQuery.CATEGNAME + ", " + BudgetQuery.SUBCATEGNAME);
 
                         result = new MmxCursorLoader(getActivity(), budget.getUri(), query);

@@ -18,6 +18,7 @@
 package com.money.manager.ex.core.ioc;
 
 import com.money.manager.ex.MmxContentProvider;
+import com.money.manager.ex.budget.BudgetAdapter;
 import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
@@ -103,4 +104,7 @@ public interface MmxComponent {
     // Repositories
     void inject(StockRepositorySql repository);
     void inject(StockHistoryRepositorySql repository);
+
+    // Adapters
+    void inject(BudgetAdapter adapter);
 }

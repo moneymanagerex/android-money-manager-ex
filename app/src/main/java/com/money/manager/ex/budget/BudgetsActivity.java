@@ -88,12 +88,6 @@ public class BudgetsActivity
         showBudgetDetails(event.yearId, event.name);
     }
 
-//    @Override
-//    public void onBudgetClicked(long budgetYearId, String budgetName) {
-//        // budget clicked in the list; show the details fragment.
-//        showBudgetDetails(budgetYearId, budgetName);
-//    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
