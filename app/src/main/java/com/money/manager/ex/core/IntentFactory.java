@@ -20,6 +20,7 @@ package com.money.manager.ex.core;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
+import android.support.annotation.NonNull;
 
 import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.home.MainActivity;
@@ -86,7 +87,7 @@ public class IntentFactory {
         return intent;
     }
 
-    public static Intent getIntentForNumericInput(Context context, Money amount) {
+    public static Intent getNumericInputIntent(@NonNull Context context, @NonNull Money amount) {
         Intent intent = new Intent(context, AmountInputActivity.class);
         // amount
         intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
@@ -94,7 +95,7 @@ public class IntentFactory {
         return intent;
     }
 
-    public static Intent getIntentForNumericInput(Context context, Money amount, int currencyId) {
+    public static Intent getNumericInputIntent(Context context, Money amount, int currencyId) {
         Intent intent = new Intent(context, AmountInputActivity.class);
 
         // currency
@@ -105,7 +106,7 @@ public class IntentFactory {
         return intent;
     }
 
-    public static Intent getIntentForNumericInput(Context context, Money amount, int currencyId,
+    public static Intent getNumericInputIntent(Context context, Money amount, int currencyId,
                                                   boolean roundToCurrency) {
         Intent intent = new Intent(context, AmountInputActivity.class);
 

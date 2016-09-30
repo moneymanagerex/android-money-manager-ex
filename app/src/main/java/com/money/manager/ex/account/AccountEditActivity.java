@@ -295,7 +295,7 @@ public class AccountEditActivity
             public void onClick(View v) {
 //                AmountInputDialog dialog = AmountInputDialog.getInstance(null, mAccount.getInitialBalance(), mAccount.getCurrencyId());
 //                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-                Intent intent = IntentFactory.getIntentForNumericInput(AccountEditActivity.this,
+                Intent intent = IntentFactory.getNumericInputIntent(AccountEditActivity.this,
                         mAccount.getInitialBalance(), mAccount.getCurrencyId());
                 AccountEditActivity.this.startActivityForResult(intent, RequestCode.AMOUNT);
             }

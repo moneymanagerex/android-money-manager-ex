@@ -422,7 +422,7 @@ public class EditTransactionCommonFunctions {
                 int currencyId = getSourceCurrencyId();
                 Money amount = transactionEntity.getAmount();
 
-                Intent intent = IntentFactory.getIntentForNumericInput(getContext(), amount, currencyId);
+                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
                 getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
             }
         });
@@ -435,7 +435,7 @@ public class EditTransactionCommonFunctions {
                 int currencyId = getDestinationCurrencyId();
                 Money amount = transactionEntity.getAmountTo();
 
-                Intent intent = IntentFactory.getIntentForNumericInput(getContext(), amount, currencyId);
+                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
                 getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
             }
         });

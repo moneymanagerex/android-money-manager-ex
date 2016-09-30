@@ -338,16 +338,22 @@ public class SearchFragment
     @OnClick(R.id.textViewFromAmount)
     void onAmountFromClicked() {
         Money amount = getSearchParameters().amountFrom;
+        if (amount == null) {
+            amount = MoneyFactory.fromDouble(0);
+        }
 
-        Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), amount);
+        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
         getActivity().startActivityForResult(intent, RequestCode.AMOUNT_FROM);
     }
 
     @OnClick(R.id.textViewToAmount)
     void onAmountToClicked() {
         Money amount = getSearchParameters().amountTo;
+        if (amount == null) {
+            amount = MoneyFactory.fromDouble(0);
+        }
 
-        Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), amount);
+        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
         getActivity().startActivityForResult(intent, RequestCode.AMOUNT_TO);
     }
 
