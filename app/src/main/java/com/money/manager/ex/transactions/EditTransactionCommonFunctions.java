@@ -844,7 +844,7 @@ public class EditTransactionCommonFunctions {
             case EditTransactionCommonFunctions.REQUEST_AMOUNT_TO:
                 // amount entered
                 stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
-                onFinishedInputAmountDialog(R.id.textViewAmount, MoneyFactory.fromString(stringExtra));
+                onFinishedInputAmountDialog(R.id.textViewToAmount, MoneyFactory.fromString(stringExtra));
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_PICK_CATEGORY:
