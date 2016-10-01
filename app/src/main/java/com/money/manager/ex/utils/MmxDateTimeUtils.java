@@ -69,11 +69,12 @@ public class MmxDateTimeUtils {
     public static DateTime from(String dateString, String pattern) {
         if (TextUtils.isEmpty(dateString)) return null;
 
-        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
-//        DateTime dateTime = format.parseDateTime(dateString);
-        DateTime dateTime = format // .withZoneUTC()
-                .parseDateTime(dateString);
-        return dateTime;
+//        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+//        DateTime dateTime = format.parseDateTime(dateString); // .withZoneUTC()
+//        return dateTime;
+        return DateTimeFormat.forPattern(pattern)
+                .parseLocalDateTime(dateString)
+                .toDateTime();
     }
 
     /**
