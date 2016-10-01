@@ -1108,6 +1108,7 @@ public class MainActivity
         // Menu item 'Other'. Simply open the file picker, as before.
         DrawerMenuItem item = new DrawerMenuItem()
                 .withId(R.id.menu_open_database)
+                .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_folder_shared))
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
