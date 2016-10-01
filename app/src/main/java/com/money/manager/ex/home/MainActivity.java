@@ -1097,7 +1097,7 @@ public class MainActivity
                 item.setTag(entry.localPath);
 
                 if (entry.isSynchronised()) {
-                    item.withIconDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_dropbox));
+                    item.withIconDrawable(new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cloud));
                 } else {
                     item.withIconDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_floppy_disk));
                 }

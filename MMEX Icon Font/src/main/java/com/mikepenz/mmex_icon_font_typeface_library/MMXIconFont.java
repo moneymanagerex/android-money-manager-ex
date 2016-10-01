@@ -119,7 +119,7 @@ public class MMXIconFont implements ITypeface {
     public enum Icon implements IIcon {
         mmx_law('\u0061'),
 		mmx_briefcase('\u0067'),
-		mmx_dropbox('\u0069'),
+//		mmx_dropbox('\u0069'),
 		mmx_magnifier('\u006a'),
 		mmx_back_in_time('\u006b'),
 		mmx_reports('\u006d'),
