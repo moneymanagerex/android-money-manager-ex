@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +37,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.money.manager.ex.common.AmountInputActivity;
+import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
@@ -56,7 +55,6 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
@@ -227,7 +225,7 @@ public class SearchFragment
                 break;
 
             case RequestCode.AMOUNT_FROM:
-                stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 searchParameters = getSearchParameters();
                 searchParameters.amountFrom = MoneyFactory.fromString(stringExtra);
                 setSearchParameters(searchParameters);
@@ -235,7 +233,7 @@ public class SearchFragment
                 break;
 
             case RequestCode.AMOUNT_TO:
-                stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 searchParameters = getSearchParameters();
                 searchParameters.amountTo = MoneyFactory.fromString(stringExtra);
                 setSearchParameters(searchParameters);

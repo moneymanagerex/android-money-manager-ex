@@ -32,8 +32,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +43,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
-import com.money.manager.ex.common.AmountInputActivity;
-import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
@@ -837,13 +834,13 @@ public class EditTransactionCommonFunctions {
 
             case EditTransactionCommonFunctions.REQUEST_AMOUNT:
                 // amount entered
-                stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 onFinishedInputAmountDialog(R.id.textViewAmount, MoneyFactory.fromString(stringExtra));
                 break;
 
             case EditTransactionCommonFunctions.REQUEST_AMOUNT_TO:
                 // amount entered
-                stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 onFinishedInputAmountDialog(R.id.textViewToAmount, MoneyFactory.fromString(stringExtra));
                 break;
 

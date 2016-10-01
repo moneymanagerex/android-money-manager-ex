@@ -257,6 +257,7 @@
     <string name="num_repeating_transaction_expired">%1$d recurring transaction overdue</string>
     <string name="skip">Skip</string>
     <string name="enter">Enter</string>
+    <string name="enter_amount">Enter Amount</string>
 
     <!-- 20121121 -->
     <string name="send_feedback">Send Feedback</string>

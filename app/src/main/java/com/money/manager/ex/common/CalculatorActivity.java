@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -31,6 +33,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.MoneyBundler;
@@ -55,7 +58,7 @@ import timber.log.Timber;
  * Additional functionality includes currency conversion.
  */
 
-public class AmountInputActivity
+public class CalculatorActivity
     extends MmxBaseFragmentActivity {
 
     public static String EXTRA_CURRENCY_ID = "CurrencyId";
@@ -106,12 +109,13 @@ public class AmountInputActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_amount_input);
+        setContentView(R.layout.activity_calculator);
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
         ButterKnife.bind(this);
 
-        //setDisplayHomeAsUpEnabled(true);
+        setDisplayHomeAsUpEnabled(true);
+        getToolbar().setTitle(R.string.enter_amount);
 
         if (savedInstanceState == null) {
             extractArguments();
@@ -126,92 +130,25 @@ public class AmountInputActivity
         displayFormattedAmount();
     }
 
-    private void initializeControls() {
-        // set the decimal separator according to the locale
-        setDecimalSeparator();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Numbers and Operators.
-        View.OnClickListener numberClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Reset prior value/text (in some cases only).
-                String existingValue = txtMain.getText().toString();
-                if (!mStartedTyping) {
-                    existingValue = "";
-                    mStartedTyping = true;
-                }
+        new MenuHelper(this).addSaveToolbarIcon(getMenuInflater(), menu);
 
-                txtMain.setText(existingValue.concat(((Button) v).getText().toString()));
-                evalExpression();
-            }
-        };
-        for (int id : idButtonKeyNum) {
-            Button button = (Button) findViewById(id);
-            button.setOnClickListener(numberClickListener);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.saveMenuItem:
+                returnResult();
+                return true;
         }
 
-        View.OnClickListener operatorClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String existingValue = txtMain.getText().toString();
-                mStartedTyping = true;
-
-                txtMain.setText(existingValue.concat(((Button) v).getText().toString()));
-                evalExpression();
-            }
-        };
-        for (int id : idOperatorKeys) {
-            Button button = (Button) findViewById(id);
-            button.setOnClickListener(operatorClickListener);
-        }
-
-        // Clear button. 'C'
-        Button clearButton = (Button) findViewById(R.id.buttonKeyClear);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mStartedTyping = true;
-                txtMain.setText("");
-                evalExpression();
-            }
-        });
-
-        // Equals button '='
-        Button buttonKeyEquals = (Button) findViewById(R.id.buttonKeyEqual);
-        buttonKeyEquals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // this is called only to reset the warning colour in the top box, if any.
-                evalExpression();
-                showAmountInEntryField();
-
-                // set result and return
-                Intent result = new Intent();
-                result.putExtra(RESULT_AMOUNT, mAmount.toString());
-                setResult(Activity.RESULT_OK, result);
-                finish();
-            }
-        });
-
-        // delete button, <=
-        UIHelper uiHelper = new UIHelper(this);
-        deleteButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace)
-                .sizeDp(40)
-                .color(uiHelper.getColor(R.color.md_primary)));
-
-        // Amounts
-        txtTop = (TextView) findViewById(R.id.textViewTop);
-        mDefaultColor = txtTop.getCurrentTextColor();
-
-        txtMain = (TextView) findViewById(R.id.textViewMain);
-        if (!TextUtils.isEmpty(mExpression)) {
-            txtMain.setText(mExpression);
-        } else {
-            showAmountInEntryField();
-        }
-
-        // evaluate the expression initially, in case there is an existing amount passed to the binaryDialog.
-        evalExpression();
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -287,6 +224,10 @@ public class AmountInputActivity
         return result;
     }
 
+    /*
+        Events
+     */
+
     /**
      * Delete button '<='
      */
@@ -299,6 +240,11 @@ public class AmountInputActivity
         txtMain.setText(currentNumber);
 
         evalExpression();
+    }
+
+    @OnClick(R.id.buttonKeyEqual)
+    public void onEqualsClicked() {
+        returnResult();
     }
 
     /*
@@ -358,20 +304,76 @@ public class AmountInputActivity
         }
     }
 
-//    private void restoreSavedInstanceState(Bundle savedInstanceState) {
-//        if (savedInstanceState.containsKey(KEY_REQUEST_ID)) {
-//            mRequestId = savedInstanceState.getString(KEY_REQUEST_ID);
-//        }
-//        if (savedInstanceState.containsKey(KEY_AMOUNT)) {
-//            mAmount = MoneyFactory.fromString(savedInstanceState.getString(KEY_AMOUNT));
-//        }
-//        if (savedInstanceState.containsKey(KEY_CURRENCY_ID)) {
-//            mCurrencyId = savedInstanceState.getInt(KEY_CURRENCY_ID);
-//        }
-//        if (savedInstanceState.containsKey(KEY_EXPRESSION)) {
-//            mExpression = savedInstanceState.getString(KEY_EXPRESSION);
-//        }
-//    }
+    private void initializeControls() {
+        // set the decimal separator according to the locale
+        setDecimalSeparator();
+
+        // Numbers and Operators.
+        View.OnClickListener numberClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Reset prior value/text (in some cases only).
+                String existingValue = txtMain.getText().toString();
+                if (!mStartedTyping) {
+                    existingValue = "";
+                    mStartedTyping = true;
+                }
+
+                txtMain.setText(existingValue.concat(((Button) v).getText().toString()));
+                evalExpression();
+            }
+        };
+        for (int id : idButtonKeyNum) {
+            Button button = (Button) findViewById(id);
+            button.setOnClickListener(numberClickListener);
+        }
+
+        View.OnClickListener operatorClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String existingValue = txtMain.getText().toString();
+                mStartedTyping = true;
+
+                txtMain.setText(existingValue.concat(((Button) v).getText().toString()));
+                evalExpression();
+            }
+        };
+        for (int id : idOperatorKeys) {
+            Button button = (Button) findViewById(id);
+            button.setOnClickListener(operatorClickListener);
+        }
+
+        // Clear button. 'C'
+        Button clearButton = (Button) findViewById(R.id.buttonKeyClear);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStartedTyping = true;
+                txtMain.setText("");
+                evalExpression();
+            }
+        });
+
+        // delete button, <=
+        UIHelper uiHelper = new UIHelper(this);
+        deleteButton.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_backspace)
+                .sizeDp(40)
+                .color(uiHelper.getColor(R.color.md_primary)));
+
+        // Amounts
+        txtTop = (TextView) findViewById(R.id.textViewTop);
+        mDefaultColor = txtTop.getCurrentTextColor();
+
+        txtMain = (TextView) findViewById(R.id.textViewMain);
+        if (!TextUtils.isEmpty(mExpression)) {
+            txtMain.setText(mExpression);
+        } else {
+            showAmountInEntryField();
+        }
+
+        // evaluate the expression initially, in case there is an existing amount passed to the binaryDialog.
+        evalExpression();
+    }
 
     /**
      * Set the decimal separator to the base currency's separator.
@@ -429,38 +431,21 @@ public class AmountInputActivity
         return result;
     }
 
-//    private boolean getRoundToCurrencyDecimals() {
-//        return getArguments().getBoolean(ARG_ROUNDING);
-//    }
+    private void returnResult() {
+        // this is called only to reset the warning colour in the top box, if any.
+        evalExpression();
+        showAmountInEntryField();
 
-//    private void initializeNewDialog() {
-//        // not in restored state. new dialog
-//
-//        // Display the existing amount, if any has been passed into the binaryDialog.
-//        NumericHelper numericHelper = new NumericHelper(this);
-//        Currency currency = mCurrencyService.getCurrency(mCurrencyId);
-//
-//        Money amount = MoneyFactory.fromString(getArguments().getString(KEY_AMOUNT));
-//        if (currency != null && this.roundToCurrencyDecimals) {
-//            mAmount = numericHelper.truncateToCurrency(amount, currency);
-//        } else {
-//            // no currency and no base currency set.
-//            mAmount = amount;
-//        }
-//    }
-
-//    private void restoreArguments() {
-//        Bundle args = getArguments();
-//
-//        this.mRequestId = args.getString(KEY_REQUEST_ID);
-//        this.mCurrencyId = args.getInt(KEY_CURRENCY_ID);
-//        this.roundToCurrencyDecimals = args.getBoolean(ARG_ROUNDING);
-//    }
+        // set result and return
+        Intent result = new Intent();
+        result.putExtra(RESULT_AMOUNT, mAmount.toString());
+        setResult(Activity.RESULT_OK, result);
+        finish();
+    }
 
     private void showAmountInEntryField() {
         // Get the calculated amount in default locale and display in the main box.
         String amount = getFormattedAmountForEditing(mAmount);
         txtMain.setText(amount);
     }
-
 }

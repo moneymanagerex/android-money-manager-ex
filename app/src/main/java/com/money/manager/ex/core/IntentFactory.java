@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.os.Messenger;
 import android.support.annotation.NonNull;
 
-import com.money.manager.ex.common.AmountInputActivity;
+import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.search.SearchActivity;
@@ -88,33 +88,33 @@ public class IntentFactory {
     }
 
     public static Intent getNumericInputIntent(@NonNull Context context, @NonNull Money amount) {
-        Intent intent = new Intent(context, AmountInputActivity.class);
+        Intent intent = new Intent(context, CalculatorActivity.class);
         // amount
-        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
+        intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
 
         return intent;
     }
 
     public static Intent getNumericInputIntent(Context context, Money amount, int currencyId) {
-        Intent intent = new Intent(context, AmountInputActivity.class);
+        Intent intent = new Intent(context, CalculatorActivity.class);
 
         // currency
-        intent.putExtra(AmountInputActivity.EXTRA_CURRENCY_ID, currencyId);
+        intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
         // amount
-        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
+        intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
 
         return intent;
     }
 
     public static Intent getNumericInputIntent(Context context, Money amount, int currencyId,
                                                   boolean roundToCurrency) {
-        Intent intent = new Intent(context, AmountInputActivity.class);
+        Intent intent = new Intent(context, CalculatorActivity.class);
 
         // currency
-        intent.putExtra(AmountInputActivity.EXTRA_CURRENCY_ID, currencyId);
+        intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
         // amount
-        intent.putExtra(AmountInputActivity.EXTRA_AMOUNT, amount.toString());
-        intent.putExtra(AmountInputActivity.EXTRA_ROUND_TO_CURRENCY, roundToCurrency);
+        intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
+        intent.putExtra(CalculatorActivity.EXTRA_ROUND_TO_CURRENCY, roundToCurrency);
 
         return intent;
     }

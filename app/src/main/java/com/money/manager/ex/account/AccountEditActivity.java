@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,13 +28,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.AmountInputActivity;
+import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.IntentFactory;
@@ -45,12 +42,10 @@ import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.AccountRepository;
-import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Currency;
 import com.money.manager.ex.settings.AppSettings;
 
-import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
 import java.util.Arrays;
@@ -58,7 +53,6 @@ import java.util.Arrays;
 import icepick.State;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-import timber.log.Timber;
 
 /**
  * Edit Account activity/form
@@ -162,7 +156,7 @@ public class AccountEditActivity
                 break;
 
             case RequestCode.AMOUNT:
-                String stringExtra = data.getStringExtra(AmountInputActivity.RESULT_AMOUNT);
+                String stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 Money amount = MoneyFactory.fromString(stringExtra);
                 refreshAmount(amount);
                 break;

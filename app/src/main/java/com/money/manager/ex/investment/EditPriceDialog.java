@@ -16,10 +16,8 @@
  */
 package com.money.manager.ex.investment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -33,12 +31,9 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.AmountInputActivity;
 import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.bundlers.PriceDownloadedEventBundler;
 import com.money.manager.ex.datalayer.StockHistoryRepository;

@@ -330,7 +330,7 @@
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme" />
         <activity
-            android:name=".common.AmountInputActivity"
+            android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
 
         <!-- providers -->
