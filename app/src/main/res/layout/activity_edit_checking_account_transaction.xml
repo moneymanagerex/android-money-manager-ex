@@ -365,7 +365,7 @@
                         android:layout_gravity="center_vertical"/>
 
                     <com.money.manager.ex.view.RobotoTextView
-                        android:id="@+id/textViewTotAmount"
+                        android:id="@+id/textViewToAmount"
                         style="@style/Money.TextView.Widget.EditText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

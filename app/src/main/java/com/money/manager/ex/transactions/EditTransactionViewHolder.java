@@ -18,7 +18,6 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -57,7 +56,7 @@ public class EditTransactionViewHolder {
     @BindView(R.id.spinnerStatus) Spinner spinStatus;
     @BindView(R.id.spinnerAccount) Spinner spinAccount;
     @BindView(R.id.spinnerToAccount) Spinner spinAccountTo;
-    @BindView(R.id.textViewTotAmount) TextView txtAmountTo;
+    @BindView(R.id.textViewToAmount) TextView txtAmountTo;
     @BindView(R.id.textViewAmount) TextView txtAmount;
 
     @BindView(R.id.tableRowPayee) ViewGroup tableRowPayee;
