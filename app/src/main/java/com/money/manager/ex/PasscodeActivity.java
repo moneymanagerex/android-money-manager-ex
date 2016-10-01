@@ -22,19 +22,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-import com.money.manager.ex.core.Core;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.log.ErrorRaisedEvent;
-import com.money.manager.ex.log.ExceptionHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 public class PasscodeActivity
@@ -57,11 +59,13 @@ public class PasscodeActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.passcode_activity);
 
-		// create a listener for button
+        ButterKnife.bind(this);
+
+        // create a listener for button
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ImageButton click = (ImageButton) v;
+				Button click = (Button) v;
 				if (getWindow().getCurrentFocus() != null && getWindow().getCurrentFocus() instanceof EditText) {
 					EditText getFocus = (EditText) getWindow().getCurrentFocus();
 					if (getFocus != null && click.getTag() != null) {
@@ -97,46 +101,9 @@ public class PasscodeActivity
 			R.id.buttonPasscode4, R.id.buttonPasscode5,
 			R.id.buttonPasscode6, R.id.buttonPasscode7, R.id.buttonPasscode8, R.id.buttonPasscode9 };
 		for (int i : ids) {
-			ImageButton button = (ImageButton) findViewById(i);
+			Button button = (Button) findViewById(i);
 			button.setOnClickListener(clickListener);
 		}
-		// key back
-		ImageButton buttonKeyBack = (ImageButton) findViewById(R.id.buttonPasscodeKeyBack);
-		buttonKeyBack.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				EditText getFocus = (EditText) getWindow().getCurrentFocus();
-				if (getFocus != null) {
-					boolean nullRequestFocus = false;
-					if (!TextUtils.isEmpty(getFocus.getText())) {
-						getFocus.setText(null);
-					} else nullRequestFocus = true;
-					//quick-fix convert 'switch' to 'if-else'
-					if (getFocus.getId() == R.id.editTextPasscode1) {
-					} else if (getFocus.getId() == R.id.editTextPasscode2) {
-						((EditText) findViewById(R.id.editTextPasscode1)).requestFocus();
-						if (nullRequestFocus) {
-							((EditText) findViewById(R.id.editTextPasscode1)).setText(null);
-						}
-					} else if (getFocus.getId() == R.id.editTextPasscode3) {
-						((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
-						if (nullRequestFocus) {
-							((EditText) findViewById(R.id.editTextPasscode2)).setText(null);
-						}
-					} else if (getFocus.getId() == R.id.editTextPasscode4) {
-						((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
-						if (nullRequestFocus) {
-							((EditText) findViewById(R.id.editTextPasscode3)).setText(null);
-						}
-					} else if (getFocus.getId() == R.id.editTextPasscode5) {
-						((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
-						if (nullRequestFocus) {
-							((EditText) findViewById(R.id.editTextPasscode4)).setText(null);
-						}
-					}
-				}
-			}
-		});
 		// textview message
 		TextView textView = (TextView) findViewById(R.id.textViewMessage);
 		textView.setText(null);
@@ -148,6 +115,11 @@ public class PasscodeActivity
 				}
 			}
 		}
+
+        UIHelper ui = new UIHelper(this);
+		ImageButton buttonKeyBack = (ImageButton) findViewById(R.id.buttonPasscodeKeyBack);
+		buttonKeyBack.setImageDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_backspace)
+            .color(ui.getPrimaryTextColor()));
 	}
 
 	@Override
@@ -169,5 +141,38 @@ public class PasscodeActivity
 		// display the error to the user
 		new UIHelper(this).showToast(event.message);
 	}
+
+	@OnClick(R.id.buttonPasscodeKeyBack)
+	public void onBackspaceClick() {
+		EditText getFocus = (EditText) getWindow().getCurrentFocus();
+		if (getFocus != null) {
+			boolean nullRequestFocus = false;
+			if (!TextUtils.isEmpty(getFocus.getText())) {
+				getFocus.setText(null);
+			} else nullRequestFocus = true;
+			//quick-fix convert 'switch' to 'if-else'
+			if (getFocus.getId() == R.id.editTextPasscode1) {
+			} else if (getFocus.getId() == R.id.editTextPasscode2) {
+				((EditText) findViewById(R.id.editTextPasscode1)).requestFocus();
+				if (nullRequestFocus) {
+					((EditText) findViewById(R.id.editTextPasscode1)).setText(null);
+				}
+			} else if (getFocus.getId() == R.id.editTextPasscode3) {
+				((EditText) findViewById(R.id.editTextPasscode2)).requestFocus();
+				if (nullRequestFocus) {
+					((EditText) findViewById(R.id.editTextPasscode2)).setText(null);
+				}
+			} else if (getFocus.getId() == R.id.editTextPasscode4) {
+				((EditText) findViewById(R.id.editTextPasscode3)).requestFocus();
+				if (nullRequestFocus) {
+					((EditText) findViewById(R.id.editTextPasscode3)).setText(null);
+				}
+			} else if (getFocus.getId() == R.id.editTextPasscode5) {
+				((EditText) findViewById(R.id.editTextPasscode4)).requestFocus();
+				if (nullRequestFocus) {
+					((EditText) findViewById(R.id.editTextPasscode4)).setText(null);
+				}
+			}
+		}	}
 
 }

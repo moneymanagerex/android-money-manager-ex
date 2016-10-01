@@ -86,9 +86,9 @@
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
-                    android:singleLine="true"
                     android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:maxLines="1" />
 
                 <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode4"
@@ -99,9 +99,9 @@
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
-                    android:singleLine="true"
                     android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:maxLines="1" />
 
                 <com.money.manager.ex.view.RobotoEditText
                     android:id="@+id/editTextPasscode5"
@@ -112,9 +112,9 @@
                     android:editable="false"
                     android:gravity="center"
                     android:inputType="textPassword"
-                    android:singleLine="true"
                     android:textSize="@dimen/mmx_text_view_size_medium"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:maxLines="1" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -131,35 +131,35 @@
             android:layout_height="48dp"
             android:orientation="horizontal">
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode1"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num1"
+                android:text="1"
                 android:tag="1"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode2"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num2"
+                android:text="2"
                 android:tag="2"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode3"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num3"
+                android:text="3"
                 android:tag="3"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
@@ -170,35 +170,35 @@
             android:layout_height="48dp"
             android:orientation="horizontal">
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode4"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num4"
+                android:text="4"
                 android:tag="4"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode5"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num5"
+                android:text="5"
                 android:tag="5"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode6"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num6"
+                android:text="6"
                 android:tag="6"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
@@ -209,35 +209,35 @@
             android:layout_height="48dp"
             android:orientation="horizontal">
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode7"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num7"
+                android:text="7"
                 android:tag="7"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode8"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num8"
+                android:text="8"
                 android:tag="8"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode9"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num9"
+                android:text="9"
                 android:tag="9"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
@@ -259,13 +259,13 @@
                 android:textStyle="bold"
                 android:visibility="invisible"/>
 
-            <ImageButton
+            <Button
                 android:id="@+id/buttonPasscode0"
                 style="@style/Money.Button"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sym_keyboard_num0_no_plus"
+                android:text="0"
                 android:tag="0"
                 android:textSize="@dimen/mmx_text_view_size_medium"
                 android:textStyle="bold"/>
