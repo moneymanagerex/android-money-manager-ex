@@ -136,20 +136,6 @@ public class UIHelper {
         return ContextCompat.getColor(getContext(), colorId);
     }
 
-//    /**
-//     * Finds the theme color from an attribute.
-//     * @param attrId    Id of the attribute to parse. i.e. R.attr.some_color
-//     */
-//    public int getColorFromAttribute(int attrId) {
-//        int x = resolveAttribute(attrId);
-//        int y = R.color.material_grey_50;
-//
-//        TypedValue typedValue = new TypedValue();
-//        getContext().getTheme()
-//            .resolveAttribute(attrId, typedValue, true);
-//        return typedValue.data;
-//    }
-
     public int getDimenInDp(int dimenId) {
         int sizeInDp = (int) (getContext().getResources().getDimension(dimenId)
             / getContext().getResources().getDisplayMetrics().density);
@@ -164,11 +150,6 @@ public class UIHelper {
     public IconicsDrawable getIcon(IIcon icon) {
         return new IconicsDrawable(getContext())
                 .icon(icon)
-//                .color(getToolbarItemColor())
-//                .color(getSecondaryTextColor())
-//                .color(this.getTertiaryTextColor())
-//                .color(this.getPrimaryTextColor())
-//                .color(getColor(android.R.attr.colorForeground))
                 .color(getToolbarItemColor())
                 .sizeDp(this.getToolbarIconSize());
     }
