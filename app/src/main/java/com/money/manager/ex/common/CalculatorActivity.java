@@ -115,7 +115,7 @@ public class CalculatorActivity
         ButterKnife.bind(this);
 
         setDisplayHomeAsUpEnabled(true);
-        getToolbar().setTitle(R.string.enter_amount);
+        getSupportActionBar().setTitle(R.string.enter_amount);
 
         if (savedInstanceState == null) {
             extractArguments();
