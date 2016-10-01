@@ -70,13 +70,8 @@ import info.javaperformance.money.MoneyFactory;
 /**
  * The form with search parameter input fields.
  */
-public class SearchFragment
+public class SearchParametersFragment
     extends Fragment {
-
-//    public static final int REQUEST_PICK_PAYEE = 1;
-//    public static final int REQUEST_PICK_AMOUNT_FROM = 2;
-//    public static final int REQUEST_PICK_CATEGORY = 3;
-//    public static final int REQUEST_PICK_AMOUNT_TO = 4;
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
 
@@ -84,7 +79,7 @@ public class SearchFragment
 
     private Spinner spinAccount, spinStatus;
     private EditText txtNotes;
-    private TextView txtSelectCategory, txtDateTo;
+    private TextView txtSelectCategory;
     private CheckBox cbxWithdrawal, cbxTransfer;
     // arrays list account name and account id
     private ArrayList<String> mAccountNameList = new ArrayList<>();
@@ -94,8 +89,8 @@ public class SearchFragment
     private ArrayList<String> mStatusItems = new ArrayList<>();
     private ArrayList<String> mStatusValues = new ArrayList<>();
 
-    public static SearchFragment createInstance() {
-        SearchFragment fragment = new SearchFragment();
+    public static SearchParametersFragment createInstance() {
+        SearchParametersFragment fragment = new SearchParametersFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -187,9 +182,7 @@ public class SearchFragment
         // Date from
         viewHolder.txtDateFrom.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateFrom));
         // Date to
-        txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), txtDateTo));
-
-//        initializeResetButton(view);
+        viewHolder.txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateTo));
 
         // Store search criteria values into the controls.
         displaySearchCriteria(view);
@@ -201,27 +194,25 @@ public class SearchFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if ((resultCode == Activity.RESULT_CANCELED) || data == null) return;
+
         SearchParameters searchParameters;
         String stringExtra;
 
         switch (requestCode) {
             case RequestCode.PAYEE:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    viewHolder.txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
-                    viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
-                }
+                viewHolder.txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
+                viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
                 break;
             case RequestCode.CATEGORY:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    //create class for store data
-                    CategorySub categorySub = new CategorySub();
-                    categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                    categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                    categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                    categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
-                    //update into button
-                    displayCategory(categorySub);
-                }
+                //create class for store data
+                CategorySub categorySub = new CategorySub();
+                categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
+                categorySub.subCategId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                categorySub.subCategName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGNAME);
+                //update into button
+                displayCategory(categorySub);
                 break;
 
             case RequestCode.AMOUNT_FROM:
@@ -522,8 +513,8 @@ public class SearchFragment
             searchParameters.dateFrom = new DateTime(viewHolder.txtDateFrom.getTag().toString());
         }
         // Date to
-        if (txtDateTo.getTag() != null) {
-            String dateString = txtDateTo.getTag().toString();
+        if (viewHolder.txtDateTo.getTag() != null) {
+            String dateString = viewHolder.txtDateTo.getTag().toString();
             searchParameters.dateTo = MmxDateTimeUtils.from(dateString);
         }
         // Payee
@@ -623,8 +614,8 @@ public class SearchFragment
         }
         viewHolder.txtDateFrom.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateFrom));
         // Date to
-        txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
-        txtDateTo.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateTo));
+        viewHolder.txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
+        viewHolder.txtDateTo.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateTo));
 
         // Payee
         viewHolder.txtSelectPayee.setTag(searchParameters.payeeId);
@@ -649,8 +640,6 @@ public class SearchFragment
         txtSelectCategory = (TextView) view.findViewById(R.id.textViewSelectCategory);
 
         spinStatus = (Spinner) view.findViewById(R.id.spinnerStatus);
-
-        txtDateTo = (TextView) view.findViewById(R.id.textViewToDate);
 
         // notes
         txtNotes = (EditText) view.findViewById(R.id.editTextNotes);

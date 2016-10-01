@@ -42,4 +42,5 @@ public class SearchParametersViewHolder {
     @BindView(R.id.textViewToAmount) TextView txtAmountTo;
     @BindView(R.id.editTextTransNumber) EditText txtTransNumber;
     @BindView(R.id.textViewSelectPayee) TextView txtSelectPayee;
+    @BindView(R.id.textViewToDate) TextView txtDateTo;
 }

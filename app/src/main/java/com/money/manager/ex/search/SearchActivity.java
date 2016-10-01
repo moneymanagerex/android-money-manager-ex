@@ -46,15 +46,15 @@ public class SearchActivity
     public boolean ShowAccountHeaders = true;
 
 	private boolean mIsDualPanel = false;
-    private SearchFragment mSearchFragment;
+    private SearchParametersFragment mSearchParametersFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
 
-        SearchFragment searchFragment = getSearchFragment();
-        if (!searchFragment.isAdded()) {
+        SearchParametersFragment searchParametersFragment = getSearchFragment();
+        if (!searchParametersFragment.isAdded()) {
             // set dual panel
             LinearLayout fragmentDetail = (LinearLayout) findViewById(R.id.fragmentDetail);
             mIsDualPanel = fragmentDetail != null && fragmentDetail.getVisibility() == View.VISIBLE;
@@ -118,28 +118,28 @@ public class SearchActivity
 
     // Public
 
-    private SearchFragment createSearchFragment() {
-        SearchFragment searchFragment = SearchFragment.createInstance();
+    private SearchParametersFragment createSearchFragment() {
+        SearchParametersFragment searchParametersFragment = SearchParametersFragment.createInstance();
 
         // add to stack
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentMain, searchFragment, SearchFragment.class.getSimpleName())
+                .add(R.id.fragmentMain, searchParametersFragment, SearchParametersFragment.class.getSimpleName())
                 .commit();
 
-        return searchFragment;
+        return searchParametersFragment;
     }
 
-    private SearchFragment getSearchFragment() {
-        if (mSearchFragment == null) {
+    private SearchParametersFragment getSearchFragment() {
+        if (mSearchParametersFragment == null) {
             // try to find the search fragment
-            mSearchFragment = (SearchFragment) getSupportFragmentManager()
-                    .findFragmentByTag(SearchFragment.class.getSimpleName());
+            mSearchParametersFragment = (SearchParametersFragment) getSupportFragmentManager()
+                    .findFragmentByTag(SearchParametersFragment.class.getSimpleName());
 
-            if (mSearchFragment == null) {
-                mSearchFragment = createSearchFragment();
+            if (mSearchParametersFragment == null) {
+                mSearchParametersFragment = createSearchFragment();
             }
         }
-        return mSearchFragment;
+        return mSearchParametersFragment;
     }
 
     /**
@@ -160,8 +160,8 @@ public class SearchActivity
     }
 
     private void performSearch() {
-        SearchFragment searchFragment = getSearchFragment();
-        String where = searchFragment.getWhereStatement();
+        SearchParametersFragment searchParametersFragment = getSearchFragment();
+        String where = searchParametersFragment.getWhereStatement();
         showSearchResultsFragment(where);
     }
 

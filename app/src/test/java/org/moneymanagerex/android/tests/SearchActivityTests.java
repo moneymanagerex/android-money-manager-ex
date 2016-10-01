@@ -31,7 +31,7 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.core.RequestCode;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.search.SearchActivity;
-import com.money.manager.ex.search.SearchFragment;
+import com.money.manager.ex.search.SearchParametersFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +39,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
@@ -113,7 +112,7 @@ public class SearchActivityTests {
 
         // Now simulate that we received the category.
 
-        Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchFragment.class.getSimpleName());
+        Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchParametersFragment.class.getSimpleName());
 //        assertThat(searchFragment).isNotNull();
 
         // We "selected" Food:Dining out.
@@ -174,7 +173,7 @@ public class SearchActivityTests {
 
         // Now simulate that we received the category.
 
-        Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchFragment.class.getSimpleName());
+        Fragment searchFragment = UnitTestHelper.getFragment(activity, SearchParametersFragment.class.getSimpleName());
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");

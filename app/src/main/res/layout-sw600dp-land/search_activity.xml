@@ -22,8 +22,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <!-- Toolbar -->
-    <include layout="@layout/toolbar_actionbar_button_search_bar"/>
+    <!--<include layout="@layout/toolbar_actionbar_button_search_bar"/>-->
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
