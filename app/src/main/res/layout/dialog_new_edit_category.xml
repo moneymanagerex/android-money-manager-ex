@@ -20,8 +20,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="10dp" >
- 
-    <EditText
+
+    <com.money.manager.ex.view.RobotoEditText
         android:id="@+id/editTextCategName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
@@ -30,6 +30,6 @@
  
         <requestFocus />
  
-    </EditText>
+    </com.money.manager.ex.view.RobotoEditText>
  
 </LinearLayout>

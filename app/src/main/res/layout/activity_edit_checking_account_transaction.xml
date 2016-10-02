@@ -502,7 +502,7 @@
                         android:ellipsize="end"
                         android:hint="@string/transaction_number"
                         android:maxLines="1"
-                        android:inputType="number|text"
+                        android:inputType="text"
                         android:textCursorDrawable="@null" />
                 </android.support.design.widget.TextInputLayout>
 

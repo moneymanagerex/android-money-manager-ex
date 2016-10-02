@@ -19,6 +19,7 @@ package com.money.manager.ex.transactions;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -83,6 +84,9 @@ import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
+
+import static android.text.InputType.TYPE_CLASS_NUMBER;
+import static android.text.InputType.TYPE_CLASS_TEXT;
 
 /**
  * Functions shared between Checking Account activity and Recurring Transactions activity.
@@ -660,7 +664,6 @@ public class EditTransactionCommonFunctions {
             viewHolder.edtTransNumber.setText(transactionEntity.getTransactionNumber());
         }
 
-        // e change
         viewHolder.edtTransNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -700,11 +703,12 @@ public class EditTransactionCommonFunctions {
                     }
                     if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
                         try {
+                            // Use Money type to support very large numbers.
                             Money transactionNumber = MoneyFactory.fromString(transNumber);
                             viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
                                 .toString());
                         } catch (Exception e) {
-                            Timber.e(e, "adding transaction number");
+                            Timber.e(e, "increasing transaction number");
                         }
                     }
                 }

@@ -24,8 +24,8 @@
         android:id="@+id/editTextSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" 
-        android:singleLine="true"
-        android:imeOptions="normal" />
+        android:ems="10"
+        android:imeOptions="normal"
+        android:maxLines="1" />
 
 </LinearLayout>

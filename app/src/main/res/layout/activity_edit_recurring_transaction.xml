@@ -503,6 +503,7 @@
                     android:layout_weight="1"
                     android:drawableLeft="?attr/ic_plusone"
                     android:drawableStart="?attr/ic_plusone"
+                    android:inputType="text"
                     android:hint="@string/transaction_number" />
 
                 <ImageButton
@@ -511,7 +512,8 @@
                     android:layout_width="@dimen/mmx_button_height"
                     android:layout_height="@dimen/mmx_button_height"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_action_plusone_dark" />
+                    android:src="@drawable/ic_action_plusone_dark"
+                    android:contentDescription="@string/transaction_number" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
