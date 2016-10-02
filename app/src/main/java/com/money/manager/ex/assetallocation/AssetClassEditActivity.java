@@ -51,7 +51,8 @@ public class AssetClassEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_class_edit);
 
-        showStandardToolbarActions();
+//        showStandardToolbarActions();
+        setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);

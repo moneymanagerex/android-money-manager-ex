@@ -206,13 +206,6 @@ public class InvestmentTransactionEditActivity
         mDirty = dirty;
     }
 
-    /**
-     * Raised after the amount has been entered in the number input binaryDialog.
-     */
-    @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-    }
-
     @OnClick(R.id.numSharesView)
     public void onNumSharesClick() {
         Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
