@@ -29,6 +29,7 @@ import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -52,11 +53,15 @@ public class MmxDateTimeUtils {
 
     public static DateTime today() {
         // removing DateTimeZone.UTC
-        return new DateTime()
-                .withHourOfDay(0)
-                .withMinuteOfHour(0)
-                .withSecondOfMinute(0)
-                .withMillisOfSecond(0);
+//        return new DateTime()
+//                .withHourOfDay(0)
+//                .withMinuteOfHour(0)
+//                .withSecondOfMinute(0)
+//                .withMillisOfSecond(0)
+                // handle daylight savings transitions
+        return new LocalDate()
+                .toDateTimeAtStartOfDay()
+                .toDateTime();
     }
 
     public static DateTime from(String isoString) {
