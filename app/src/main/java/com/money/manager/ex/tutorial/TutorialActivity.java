@@ -77,6 +77,8 @@ public class TutorialActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode) {
             case REQUEST_GENERAL_PREFERENCES:
                 // back from general preferences.

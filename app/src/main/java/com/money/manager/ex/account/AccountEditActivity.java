@@ -138,6 +138,8 @@ public class AccountEditActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != Activity.RESULT_OK) return;
 
         switch (requestCode) {

@@ -94,7 +94,8 @@ public class AssetAllocationOverviewActivity
         MenuHelper helper = new MenuHelper(this, menu);
 
         // Edit Asset Allocation.
-        helper.add(MenuHelper.edit, R.string.edit, GoogleMaterial.Icon.gmd_edit);
+        helper.add(MenuHelper.edit, R.string.edit, GoogleMaterial.Icon.gmd_edit)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         return true;
     }

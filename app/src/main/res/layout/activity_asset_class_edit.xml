@@ -23,6 +23,8 @@
     android:layout_marginRight="@dimen/mmx_activity_side_margin"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar" />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragment"
@@ -32,6 +34,6 @@
         tools:layout="@layout/fragment_asset_class_edit"
         android:layout_weight="1" />
 
-    <include layout="@layout/action_buttons" />
+    <!--<include layout="@layout/action_buttons" />-->
 
 </LinearLayout>

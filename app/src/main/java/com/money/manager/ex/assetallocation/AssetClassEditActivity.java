@@ -21,13 +21,18 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
+
+import timber.log.Timber;
 
 /**
  * Editor for a single Asset Class.
@@ -53,6 +58,29 @@ public class AssetClassEditActivity
         } else {
             loadIntent();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuHelper menuHelper = new MenuHelper(this, menu);
+        menuHelper.addSaveToolbarIcon();
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // cancel clicked. Prompt to confirm?
+                Timber.d("going back");
+                break;
+            case MenuHelper.save:
+                return onActionDoneClick();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

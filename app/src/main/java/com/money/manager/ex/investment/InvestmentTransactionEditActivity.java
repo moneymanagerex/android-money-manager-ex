@@ -33,6 +33,7 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.MenuHelper;
@@ -52,6 +53,8 @@ import org.joda.time.DateTime;
 
 import java.util.Calendar;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -64,7 +67,7 @@ public class InvestmentTransactionEditActivity
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
     public static final String DATEPICKER_TAG = "datepicker";
 
-    public static final int ID_NUM_SHARES = 1;
+//    public static final int ID_NUM_SHARES = 1;
     public static final int ID_PURCHASE_PRICE = 2;
     public static final int ID_COMMISSION = 3;
     public static final int ID_CURRENT_PRICE = 4;
@@ -78,6 +81,8 @@ public class InvestmentTransactionEditActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
+
+        ButterKnife.bind(this);
 
         // this handles OK/Cancel button clicks in the toolbar.
 //        showStandardToolbarActions();
@@ -105,6 +110,18 @@ public class InvestmentTransactionEditActivity
         }
 
         initializeForm();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_CANCELED || data == null) return;
+
+        mStock.setNumberOfShares(event.amount.toDouble());
+        showNumberOfShares();
+        showValue();
+
     }
 
     @Override
@@ -155,22 +172,6 @@ public class InvestmentTransactionEditActivity
         }
     }
 
-    // Private
-
-    private void initializeForm() {
-        View rootView = this.findViewById(R.id.content);
-        mViewHolder = new InvestmentTransactionViewHolder(rootView);
-
-        initDateControl(mViewHolder);
-        initAccountSelectors(mViewHolder);
-        initNumberOfShares(mViewHolder);
-        initPurchasePrice();
-        initCommission();
-        initCurrentPrice();
-
-        displayStock(mStock, mViewHolder);
-    }
-
     public void setDirty(boolean dirty) {
         mDirty = dirty;
     }
@@ -183,11 +184,6 @@ public class InvestmentTransactionEditActivity
         int id = Integer.parseInt(event.requestId);
 
         switch (id) {
-            case ID_NUM_SHARES:
-                mStock.setNumberOfShares(event.amount.toDouble());
-                showNumberOfShares();
-                showValue();
-                break;
             case ID_PURCHASE_PRICE:
                 mStock.setPurchasePrice(event.amount);
                 showPurchasePrice();
@@ -209,6 +205,16 @@ public class InvestmentTransactionEditActivity
                 showValue();
                 break;
         }
+    }
+
+    @OnClick(R.id.numSharesView)
+    public void onNumSharesClick() {
+//        AmountInputDialog dialog = AmountInputDialog.getInstance(ID_NUM_SHARES,
+//                MoneyFactory.fromDouble(mStock.getNumberOfShares()), null, false);
+//        dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+        Calculator.forActivity(this)
+                .withAmount(mStock.getNumberOfShares())
+                .show();
     }
 
     /*
@@ -251,12 +257,18 @@ public class InvestmentTransactionEditActivity
         showValue();
     }
 
-    private void setDate(DateTime dateTime) {
-        setDirty(true);
+    private void initializeForm() {
+        View rootView = this.findViewById(R.id.content);
+        mViewHolder = new InvestmentTransactionViewHolder(rootView);
 
-        mStock.setPurchaseDate(dateTime);
+        initDateControl(mViewHolder);
+        initAccountSelectors(mViewHolder);
+        initNumberOfShares(mViewHolder);
+        initPurchasePrice();
+        initCommission();
+        initCurrentPrice();
 
-        showDate(dateTime);
+        displayStock(mStock, mViewHolder);
     }
 
     /**
@@ -370,15 +382,6 @@ public class InvestmentTransactionEditActivity
     }
 
     private void initNumberOfShares(InvestmentTransactionViewHolder viewHolder) {
-        View.OnClickListener onAmountClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_NUM_SHARES,
-                    MoneyFactory.fromDouble(mStock.getNumberOfShares()), null, false);
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-
         if (viewHolder.numSharesView == null) return;
 
         viewHolder.numSharesView.setOnClickListener(onAmountClick);
@@ -449,6 +452,14 @@ public class InvestmentTransactionEditActivity
         }
 
         return true;
+    }
+
+    private void setDate(DateTime dateTime) {
+        setDirty(true);
+
+        mStock.setPurchaseDate(dateTime);
+
+        showDate(dateTime);
     }
 
     private void showDate(DateTime date) {
