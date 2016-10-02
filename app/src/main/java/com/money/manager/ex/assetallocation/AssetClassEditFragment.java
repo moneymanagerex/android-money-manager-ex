@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,15 +31,11 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.assetallocation.list.AssetClassListActivity;
-import com.money.manager.ex.common.AmountInputDialog;
-import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.common.Calculator;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import butterknife.BindView;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -50,8 +45,6 @@ import info.javaperformance.money.MoneyFactory;
 public class AssetClassEditFragment
     extends Fragment {
 
-    public static final int INPUT_ALLOCATION = 1;
-    public static final int INPUT_SORT_ORDER = 2;
     public static final int CONTEXT_MENU_DELETE = 1;
     public static final int REQUEST_ASSET_CLASS_PARENT = 1;
 
@@ -88,91 +81,39 @@ public class AssetClassEditFragment
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) return;
+        if (resultCode != Activity.RESULT_OK || data == null) return;
 
-        // request code
+        Money amount;
 
-        int id = data.getIntExtra(AssetClassListActivity.EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
-        if (id == Constants.NOT_SET) return;
+        switch (requestCode) {
+            case RequestCodes.ASSET_CLASS:
+                int id = data.getIntExtra(AssetClassListActivity.EXTRA_ASSET_CLASS_ID, Constants.NOT_SET);
+                if (id == Constants.NOT_SET) return;
+                // set the parent for the current item
+                this.assetClass.setParentId(id);
+                // refresh the view.
+                displayParent();
+                break;
 
-        // set the parent for the current item
-        this.assetClass.setParentId(id);
-
-        // refresh the view.
-        displayParent();
-    }
-
-    // Context menu
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(0, CONTEXT_MENU_DELETE, 0, R.string.delete);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        boolean result = false;
-
-        switch (item.getItemId()) {
-//            case CONTEXT_MENU_DELETE:
-//                // Delete
-//                ListView listView = getListView();
-//                if (listView == null) return false;
-//
-//                Cursor cursor = (Cursor) listView.getItemAtPosition(info.position);
-//                Stock stock = Stock.fromCursor(cursor);
-//                String stockSymbol = stock.getSymbol();
-//
-//                AssetClassStockRepository repo = new AssetClassStockRepository(getActivity());
-//                int assetClassId = this.assetClass.getId();
-//                boolean deleted = repo.delete(assetClassId, stockSymbol);
-//                if (!deleted) {
-//                    ExceptionHandler handler = new ExceptionHandler(getActivity(), this);
-//                    handler.showMessage(getString(R.string.error));
-//                }
-//
-//                result = true;
-//                break;
-        }
-        return result;
-    }
-
-    // Events
-
-    @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-        int id = Integer.parseInt(event.requestId);
-        switch (id) {
-            case INPUT_ALLOCATION:
-                assetClass.setAllocation(event.amount);
+            case RequestCodes.ALLOCATION:
+                amount = Calculator.getAmountFromResult(data);
+                assetClass.setAllocation(amount);
                 displayAllocation();
                 break;
 
-            case INPUT_SORT_ORDER:
-                int value = Integer.valueOf(event.amount.truncate(0).toString());
+            case RequestCodes.SORT_ORDER:
+                amount = Calculator.getAmountFromResult(data);
+                int value = Integer.valueOf(amount.truncate(0).toString());
                 assetClass.setSortOrder(value);
                 displaySortOrder();
                 break;
         }
     }
 
-    // Private
+    /*
+        Private
+     */
 
     private void initializeNameEdit(View view) {
         final EditText edit = (EditText) view.findViewById(R.id.nameEdit);
@@ -212,9 +153,9 @@ public class AssetClassEditFragment
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance(INPUT_ALLOCATION,
-                    assetClass.getAllocation());
-                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                Calculator.forFragment(AssetClassEditFragment.this)
+                        .withAmount(assetClass.getAllocation())
+                        .show(RequestCodes.ALLOCATION);
             }
         });
     }
@@ -253,9 +194,10 @@ public class AssetClassEditFragment
             public void onClick(View v) {
                 Money number = MoneyFactory.fromString(Integer.toString(assetClass.getSortOrder()));
 
-                AmountInputDialog dialog = AmountInputDialog.getInstance(INPUT_SORT_ORDER,
-                    number, Constants.NOT_SET, false);
-                dialog.show(getActivity().getSupportFragmentManager(), dialog.getClass().getSimpleName());
+                Calculator.forFragment(AssetClassEditFragment.this)
+                        .withAmount(number)
+                        .roundToCurrency(false)
+                        .show(RequestCodes.SORT_ORDER);
             }
         });
     }

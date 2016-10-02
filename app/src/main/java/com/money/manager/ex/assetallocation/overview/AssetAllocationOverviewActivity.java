@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.assetallocation.full;
+package com.money.manager.ex.assetallocation.overview;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,11 +32,12 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
-import com.money.manager.ex.assetallocation.AssetAllocationEditorActivity;
+import com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity;
 import com.money.manager.ex.assetallocation.ItemType;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.AnswersEvents;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.domainmodel.AssetClass;
@@ -63,22 +64,6 @@ public class AssetAllocationOverviewActivity
         // Toolbar
         setUpToolbar();
 
-        // List/recycler.
-
-        AssetAllocationService service = new AssetAllocationService(this);
-        AssetClass assetAllocation = service.loadAssetAllocation();
-
-        List<AssetClassViewModel> model = createViewModel(assetAllocation);
-
-        Money threshold = new AppSettings(this).getInvestmentSettings().getAssetAllocationDifferenceThreshold();
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model, threshold, getFormatter());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        showTotal(assetAllocation);
-
         Answers.getInstance().logCustom(new CustomEvent(AnswersEvents.AssetAllocationOverview.name()));
     }
 
@@ -86,7 +71,7 @@ public class AssetAllocationOverviewActivity
     public void onResume() {
         super.onResume();
 
-        // todo reload asset allocation?
+        displayAssetAllocation();
     }
 
     // Menu
@@ -97,29 +82,19 @@ public class AssetAllocationOverviewActivity
 
         getMenuInflater().inflate(R.menu.menu_asset_allocation_editor, menu);
 
-        UIHelper uiHelper = new UIHelper(this);
-
-        // customize icons
+        UIHelper ui = new UIHelper(this);
 
         // Currencies
         MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
         if (currenciesMenu != null) {
-            IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
+            IconicsDrawable icon = ui.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
             currenciesMenu.setIcon(icon);
         }
 
-        // Overview
-//        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_report);
-//        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
-//        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
-//        overview.setIcon(icon);
+        MenuHelper helper = new MenuHelper(this, menu);
 
-        // New Asset Allocation view
-        MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
-        if (newForm != null) {
-            IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_edit);
-            newForm.setIcon(icon);
-        }
+        // Edit Asset Allocation.
+        helper.add(MenuHelper.edit, R.string.edit, GoogleMaterial.Icon.gmd_edit);
 
         return true;
     }
@@ -140,13 +115,7 @@ public class AssetAllocationOverviewActivity
                 startActivity(intent);
                 break;
 
-//            case R.id.menu_asset_allocation_overview:
-//                // show the overview
-//                intent = new Intent(this, AssetAllocationReportActivity.class);
-//                startActivity(intent);
-//                break;
-
-            case R.id.menu_new_asset_allocation:
+            case MenuHelper.edit:
                 intent = new Intent(this, AssetAllocationEditorActivity.class);
                 startActivity(intent);
                 break;
@@ -198,6 +167,22 @@ public class AssetAllocationOverviewActivity
         for (AssetClass child : children) {
             addModelToList(child, modelList, level + 1);
         }
+    }
+
+    private void displayAssetAllocation() {
+        AssetAllocationService service = new AssetAllocationService(this);
+        AssetClass assetAllocation = service.loadAssetAllocation();
+
+        List<AssetClassViewModel> model = createViewModel(assetAllocation);
+
+        Money threshold = new AppSettings(this).getInvestmentSettings().getAssetAllocationDifferenceThreshold();
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        FullAssetAllocationAdapter adapter = new FullAssetAllocationAdapter(model, threshold, getFormatter());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        showTotal(assetAllocation);
     }
 
     private FormatUtilities getFormatter() {

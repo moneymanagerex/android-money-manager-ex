@@ -17,7 +17,6 @@
 package com.money.manager.ex.assetallocation;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -54,9 +53,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.parceler.Parcels;
 
 /**
- * A list fragment that displays a first Asset Class contents (stocks or child asset classes).
+ * A list fragment that displays the Asset Class contents (stocks or child asset classes).
  */
-public class AssetAllocationFragment
+public class AssetAllocationContentsFragment
     extends BaseListFragment {
 
     public static final int REQUEST_STOCK_ID = 1;
@@ -71,8 +70,8 @@ public class AssetAllocationFragment
      * @param assetClassId Id of the Asset Class to show.
      * @return Fragment
      */
-    public static AssetAllocationFragment create(Integer assetClassId, int decimalPlaces, AssetClass assetAllocation) {
-        AssetAllocationFragment fragment = new AssetAllocationFragment();
+    public static AssetAllocationContentsFragment create(Integer assetClassId, int decimalPlaces, AssetClass assetAllocation) {
+        AssetAllocationContentsFragment fragment = new AssetAllocationContentsFragment();
 
         Bundle arguments = new Bundle();
         if (assetClassId == null) {
@@ -87,7 +86,7 @@ public class AssetAllocationFragment
         return fragment;
     }
 
-    public AssetAllocationFragment() {
+    public AssetAllocationContentsFragment() {
     }
 
     @Override

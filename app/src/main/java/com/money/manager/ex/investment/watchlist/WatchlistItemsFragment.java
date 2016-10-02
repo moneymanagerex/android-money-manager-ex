@@ -188,10 +188,10 @@ public class WatchlistItemsFragment
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(StockFields.SYMBOL)));
 
-        MenuHelper menuHelper = new MenuHelper(getActivity());
-        menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice, menu);
-        menuHelper.addToContextMenu(ContextMenuIds.EditPrice, menu);
-        menuHelper.addToContextMenu(ContextMenuIds.DELETE, menu);
+        MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
+        menuHelper.addToContextMenu(ContextMenuIds.DownloadPrice);
+        menuHelper.addToContextMenu(ContextMenuIds.EditPrice);
+        menuHelper.addToContextMenu(ContextMenuIds.DELETE);
     }
 
     /**

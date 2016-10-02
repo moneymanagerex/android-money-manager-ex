@@ -31,13 +31,14 @@ import android.widget.CompoundButton;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
-import com.money.manager.ex.core.RequestCode;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -140,7 +141,7 @@ public class AccountEditActivity
         if (resultCode != Activity.RESULT_OK) return;
 
         switch (requestCode) {
-            case RequestCode.CURRENCY:
+            case RequestCodes.CURRENCY:
                 if (data == null) return;
                 int currencyId = data.getIntExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
                 mAccount.setCurrencyId(currencyId);
@@ -155,7 +156,7 @@ public class AccountEditActivity
                 }
                 break;
 
-            case RequestCode.AMOUNT:
+            case RequestCodes.AMOUNT:
                 String stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 Money amount = MoneyFactory.fromString(stringExtra);
                 refreshAmount(amount);
@@ -166,7 +167,7 @@ public class AccountEditActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        new MenuHelper(this).addSaveToolbarIcon(getMenuInflater(), menu);
+        new MenuHelper(this, menu).addSaveToolbarIcon();
 
         return true;
     }
@@ -176,7 +177,7 @@ public class AccountEditActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.saveMenuItem:
+            case MenuHelper.save:
                 return onActionDoneClick();
         }
 
@@ -287,11 +288,10 @@ public class AccountEditActivity
         mViewHolder.txtInitialBalance.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AmountInputDialog dialog = AmountInputDialog.getInstance(null, mAccount.getInitialBalance(), mAccount.getCurrencyId());
-//                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-                Intent intent = IntentFactory.getNumericInputIntent(AccountEditActivity.this,
-                        mAccount.getInitialBalance(), mAccount.getCurrencyId());
-                AccountEditActivity.this.startActivityForResult(intent, RequestCode.AMOUNT);
+                Calculator.forActivity(AccountEditActivity.this)
+                        .withCurrency(mAccount.getCurrencyId())
+                        .withAmount(mAccount.getInitialBalance())
+                        .show(RequestCodes.AMOUNT);
             }
         });
 
@@ -372,7 +372,7 @@ public class AccountEditActivity
             public void onClick(View v) {
                 Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCode.CURRENCY);
+                startActivityForResult(intent, RequestCodes.CURRENCY);
             }
         });
 

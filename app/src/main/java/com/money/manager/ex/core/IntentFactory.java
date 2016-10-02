@@ -55,7 +55,7 @@ public class IntentFactory {
         return syncServiceIntent;
     }
 
-    public static Intent getIntentForSearch(Context context, SearchParameters parameters) {
+    public static Intent getSearchIntent(Context context, SearchParameters parameters) {
         Intent intent = new Intent(context, SearchActivity.class);
         intent.putExtra(SearchActivity.EXTRA_SEARCH_PARAMETERS, Parcels.wrap(parameters));
         intent.setAction(Intent.ACTION_INSERT);
@@ -86,37 +86,4 @@ public class IntentFactory {
 
         return intent;
     }
-
-    public static Intent getNumericInputIntent(@NonNull Context context, @NonNull Money amount) {
-        Intent intent = new Intent(context, CalculatorActivity.class);
-        // amount
-        intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
-
-        return intent;
-    }
-
-    public static Intent getNumericInputIntent(Context context, Money amount, int currencyId) {
-        Intent intent = new Intent(context, CalculatorActivity.class);
-
-        // currency
-        intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
-        // amount
-        intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
-
-        return intent;
-    }
-
-    public static Intent getNumericInputIntent(Context context, Money amount, int currencyId,
-                                                  boolean roundToCurrency) {
-        Intent intent = new Intent(context, CalculatorActivity.class);
-
-        // currency
-        intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
-        // amount
-        intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
-        intent.putExtra(CalculatorActivity.EXTRA_ROUND_TO_CURRENCY, roundToCurrency);
-
-        return intent;
-    }
-
 }

@@ -17,7 +17,7 @@
 package org.moneymanagerex.android.tests;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.assetallocation.AssetAllocationEditorActivity;
+import com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity;
 
 import org.junit.After;
 import org.junit.Before;

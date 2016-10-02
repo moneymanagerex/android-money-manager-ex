@@ -29,6 +29,9 @@ import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AssetClassRepository;
 import com.money.manager.ex.domainmodel.AssetClass;
 
+/**
+ * Editor for a single Asset Class.
+ */
 public class AssetClassEditActivity
     extends MmxBaseFragmentActivity {
 

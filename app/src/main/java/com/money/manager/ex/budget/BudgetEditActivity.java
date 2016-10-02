@@ -82,8 +82,8 @@ public class BudgetEditActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        MenuHelper menuHelper = new MenuHelper(this);
-        menuHelper.addSaveToolbarIcon(getMenuInflater(), menu);
+        MenuHelper menuHelper = new MenuHelper(this, menu);
+        menuHelper.addSaveToolbarIcon();
 
         return true;
     }
@@ -95,7 +95,7 @@ public class BudgetEditActivity
                 // cancel clicked. Prompt to confirm?
                 Timber.d("going back");
                 break;
-            case R.id.saveMenuItem:
+            case MenuHelper.save:
                 return onActionDoneClick();
         }
         return super.onOptionsItemSelected(item);

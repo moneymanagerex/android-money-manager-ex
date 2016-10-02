@@ -108,9 +108,9 @@ public class AccountListFragment
         Cursor cursor = (Cursor) adapter.getItem(info.position);
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Account.ACCOUNTNAME)));
 
-        MenuHelper menuHelper = new MenuHelper(getActivity());
-        menuHelper.addEditToContextMenu(menu);
-        menuHelper.addDeleteToContextMenu(menu);
+        MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
+        menuHelper.addEditToContextMenu();
+        menuHelper.addDeleteToContextMenu();
     }
 
     @Override

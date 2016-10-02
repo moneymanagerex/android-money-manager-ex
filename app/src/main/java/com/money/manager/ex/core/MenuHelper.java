@@ -20,11 +20,11 @@ package com.money.manager.ex.core;
 import android.content.Context;
 import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.IIcon;
 import com.money.manager.ex.R;
 
 /**
@@ -32,25 +32,30 @@ import com.money.manager.ex.R;
  */
 public class MenuHelper {
 
-    public MenuHelper(Context context) {
+    public static final int edit = 1;
+    public static final int save = 2;
+
+    public MenuHelper(Context context, Menu menu) {
         mContext = context;
+        this.menu = menu;
 
         uiHelper = new UIHelper(context);
     }
 
     public UIHelper uiHelper;
+    public Menu menu;
 
     private Context mContext;
 
-    public void addEditToContextMenu(ContextMenu menu) {
+    public void addEditToContextMenu() {
         menu.add(Menu.NONE, ContextMenuIds.EDIT.getId(), Menu.NONE, getContext().getString(R.string.edit));
     }
 
-    public void addDeleteToContextMenu(ContextMenu menu) {
+    public void addDeleteToContextMenu() {
         menu.add(Menu.NONE, ContextMenuIds.DELETE.getId(), Menu.NONE, getContext().getString(R.string.delete));
     }
 
-    public MenuItem addToContextMenu(ContextMenuIds itemId, ContextMenu menu) {
+    public MenuItem addToContextMenu(ContextMenuIds itemId) {
         return menu.add(Menu.NONE, itemId.getId(), Menu.NONE, getItemText(itemId));
     }
 
@@ -78,16 +83,22 @@ public class MenuHelper {
         return mContext;
     }
 
-    public void addSaveToolbarIcon(MenuInflater inflater, Menu menu) {
-        inflater.inflate(R.menu.menu_save, menu);
+    public void addSaveToolbarIcon() {
+        MenuItem item = menu.add(Menu.NONE, save, Menu.NONE, R.string.save);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        // customize icon
-        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
-        if (saveMenu != null) {
-            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-                    .color(uiHelper.getPrimaryTextColor());
-            saveMenu.setIcon(check);
-        }
+        IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
+                .color(uiHelper.getPrimaryTextColor());
+        item.setIcon(icon);
+    }
 
+    public MenuItem add(int id, int titleResId, IIcon icon) {
+        // group id, item id, order, title
+        MenuItem item = menu.add(Menu.NONE, id, Menu.NONE, titleResId);
+
+        item.setIcon(uiHelper.getIcon(icon));
+
+        // allow further customization by the client.
+        return item;
     }
 }

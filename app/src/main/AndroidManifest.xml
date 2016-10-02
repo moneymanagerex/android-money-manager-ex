@@ -293,7 +293,7 @@
             android:name=".common.WebViewActivity"
             android:label="@string/donate" />
         <activity
-            android:name=".assetallocation.AssetAllocationEditorActivity"
+            android:name=".assetallocation.editor.AssetAllocationEditorActivity"
             android:label="@string/asset_allocation" />
         <activity
             android:name=".assetallocation.AssetClassEditActivity"
@@ -315,7 +315,7 @@
         <activity android:name=".assetallocation.list.AssetClassListActivity" />
         <activity android:name=".currency.recycler.CurrencyRecyclerListActivity" />
         <activity android:name=".sync.CloudFilePickerActivity" />
-        <activity android:name=".assetallocation.full.AssetAllocationOverviewActivity">
+        <activity android:name=".assetallocation.overview.AssetAllocationOverviewActivity">
 
             <!-- android:parentActivityName=".home.MainActivity" -->
             <!-- Parent activity meta-data to support 4.0 and lower -->

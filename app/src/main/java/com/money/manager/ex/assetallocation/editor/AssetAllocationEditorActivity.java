@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.money.manager.ex.assetallocation;
+package com.money.manager.ex.assetallocation.editor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,9 +35,12 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.R;
+import com.money.manager.ex.assetallocation.AssetAllocationContentsFragment;
+import com.money.manager.ex.assetallocation.AssetAllocationLoader;
+import com.money.manager.ex.assetallocation.ItemType;
+import com.money.manager.ex.assetallocation.UIHelpers;
 import com.money.manager.ex.assetallocation.events.AssetAllocationReloadRequestedEvent;
 import com.money.manager.ex.assetallocation.events.AssetClassSelectedEvent;
-import com.money.manager.ex.assetallocation.full.AssetAllocationOverviewActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
@@ -46,7 +49,6 @@ import com.money.manager.ex.currency.list.CurrencyListActivity;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.AssetClass;
 import com.money.manager.ex.servicelayer.AssetAllocationService;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
@@ -54,7 +56,8 @@ import org.parceler.Parcels;
 import java.util.List;
 
 /**
- * Asset Allocation view.
+ * Asset Allocation editor. Displays one level of asset classes and allows adding and removing
+ * asset classes in the allocation.
  */
 public class AssetAllocationEditorActivity
     extends MmxBaseFragmentActivity {
@@ -110,27 +113,13 @@ public class AssetAllocationEditorActivity
 
         // customize icons
 
-        UIHelper uiHelper = new UIHelper(this);
+        UIHelper ui = new UIHelper(this);
 
         // Currencies
         MenuItem currenciesMenu = menu.findItem(R.id.menu_currencies);
         if (currenciesMenu != null) {
-            IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
+            IconicsDrawable icon = ui.getIcon(GoogleMaterial.Icon.gmd_euro_symbol);
             currenciesMenu.setIcon(icon);
-        }
-
-//        // Overview
-//        MenuItem overview = menu.findItem(R.id.menu_asset_allocation_overview);
-//        FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_report_page);
-//        icon.setTextColor(UIHelper.getColor(this, R.attr.toolbarItemColor));
-//        overview.setIcon(icon);
-
-        // New Asset Allocation view
-        MenuItem newForm = menu.findItem(R.id.menu_new_asset_allocation);
-        if (newForm != null) {
-            FontIconDrawable icon = FontIconDrawable.inflate(this, R.xml.ic_pie_chart);
-            icon.setTextColor(uiHelper.getSecondaryTextColor());
-            newForm.setIcon(icon);
         }
 
         return true;
@@ -149,18 +138,6 @@ public class AssetAllocationEditorActivity
                 // open the Currencies activity.
                 intent = new Intent(this, CurrencyListActivity.class);
                 intent.setAction(Intent.ACTION_EDIT);
-                startActivity(intent);
-                break;
-
-//            case R.id.menu_asset_allocation_overview:
-//                // show the overview
-//                intent = new Intent(this, AssetAllocationReportActivity.class);
-//                startActivity(intent);
-//                break;
-
-            case R.id.menu_new_asset_allocation:
-                intent = new Intent(this, AssetAllocationOverviewActivity.class);
-                //intent.putExtra(KEY_ASSET_ALLOCATION, Parcels.wrap(this.assetAllocation));
                 startActivity(intent);
                 break;
 
@@ -202,7 +179,7 @@ public class AssetAllocationEditorActivity
     }
 
     private void refreshCurrentFragment() {
-        AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(this);
+        AssetAllocationContentsFragment fragment = (AssetAllocationContentsFragment) UIHelpers.getVisibleFragment(this);
         if (fragment == null) return;
 
         fragment.showData();
@@ -214,7 +191,7 @@ public class AssetAllocationEditorActivity
         if (allFragments == null) return;
 
         for (Fragment fragment : allFragments) {
-            AssetAllocationFragment f = (AssetAllocationFragment)fragment;
+            AssetAllocationContentsFragment f = (AssetAllocationContentsFragment)fragment;
             if (f == null) continue;
 
             Bundle args = f.getArguments();
@@ -246,7 +223,7 @@ public class AssetAllocationEditorActivity
                 };
 
                 // show the data
-                AssetAllocationFragment fragment = (AssetAllocationFragment) UIHelpers.getVisibleFragment(AssetAllocationEditorActivity.this);
+                AssetAllocationContentsFragment fragment = (AssetAllocationContentsFragment) UIHelpers.getVisibleFragment(AssetAllocationEditorActivity.this);
                 // If there are no other fragments, create the initial view.
                 if (fragment == null) {
                     h.post(runnable);
@@ -274,7 +251,7 @@ public class AssetAllocationEditorActivity
 
         // show the fragment
         FragmentManager fm = getSupportFragmentManager();
-        AssetAllocationFragment fragment = AssetAllocationFragment.create(assetClass.getId(), decimals, this.assetAllocation);
+        AssetAllocationContentsFragment fragment = AssetAllocationContentsFragment.create(assetClass.getId(), decimals, this.assetAllocation);
 
         String tag = assetClass.getId() != null
             ? assetClass.getId().toString()
@@ -283,7 +260,7 @@ public class AssetAllocationEditorActivity
         FragmentTransaction transaction = fm.beginTransaction();
 
         if (fm.findFragmentById(R.id.content) == null) {
-            tag = AssetAllocationFragment.class.getSimpleName();
+            tag = AssetAllocationContentsFragment.class.getSimpleName();
 
 //            transaction.add(R.id.content, fragment, tag)
             transaction.replace(R.id.content, fragment, tag)

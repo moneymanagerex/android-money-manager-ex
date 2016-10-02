@@ -27,7 +27,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.RequestCode;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferencesActivity;
@@ -72,7 +72,7 @@ public class SelectDatabaseActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case RequestCode.SELECT_FILE:
+            case RequestCodes.SELECT_FILE:
                 if (resultCode != RESULT_OK) return;
                 String selectedPath = UIHelper.getSelectedFile(data);
                 if(TextUtils.isEmpty(selectedPath)) {
@@ -110,7 +110,7 @@ public class SelectDatabaseActivity
 
         // show the file picker
         try {
-            UIHelper.pickFileDialog(this, dbDirectory, RequestCode.SELECT_FILE);
+            UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
         } catch (Exception e) {
             Timber.e(e, "opening file picker");
         }

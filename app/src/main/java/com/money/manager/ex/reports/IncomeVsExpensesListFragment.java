@@ -364,7 +364,7 @@ public class IncomeVsExpensesListFragment
                 calendar.setLastDayOfMonth();
                 params.dateTo = new DateTime(calendar.getTime());
 
-                Intent intent = IntentFactory.getIntentForSearch(getActivity(), params);
+                Intent intent = IntentFactory.getSearchIntent(getActivity(), params);
                 startActivity(intent);
             }
         });

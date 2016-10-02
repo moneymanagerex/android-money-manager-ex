@@ -18,17 +18,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.money.manager.ex.assetallocation.AssetAllocationEditorActivity">
+      tools:context="com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity">
 
     <item
         android:id="@+id/menu_currencies"
         android:icon="?attr/ic_action_reload"
         android:title="@string/currencies"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/menu_new_asset_allocation"
-        android:icon="@null"
-        android:title="@string/asset_allocation"
         app:showAsAction="ifRoom" />
 </menu>

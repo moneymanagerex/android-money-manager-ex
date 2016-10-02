@@ -133,7 +133,7 @@ public class CalculatorActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        new MenuHelper(this).addSaveToolbarIcon(getMenuInflater(), menu);
+        new MenuHelper(this, menu).addSaveToolbarIcon();
 
         return true;
     }
@@ -143,7 +143,7 @@ public class CalculatorActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.saveMenuItem:
+            case MenuHelper.save:
                 returnResult();
                 return true;
         }

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.money.manager.ex.assetallocation.full;
+package com.money.manager.ex.assetallocation.overview;
 
 import com.money.manager.ex.domainmodel.AssetClass;
 

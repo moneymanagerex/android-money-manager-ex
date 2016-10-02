@@ -71,8 +71,8 @@ public class AssetAllocationReportActivity
 
         menu.setHeaderTitle(R.string.asset_allocation);
 
-        MenuHelper menuHelper = new MenuHelper(this);
-        menuHelper.addToContextMenu(ContextMenuIds.Print, menu);
+        MenuHelper menuHelper = new MenuHelper(this, menu);
+        menuHelper.addToContextMenu(ContextMenuIds.Print);
 //        menuHelper.addToContextMenu(ContextMenuIds.SaveAsHtml, menu);
     }
 

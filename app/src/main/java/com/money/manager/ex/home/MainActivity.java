@@ -59,15 +59,13 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
 import com.money.manager.ex.account.AccountTransactionListFragment;
 import com.money.manager.ex.assetallocation.AssetAllocationReportActivity;
-import com.money.manager.ex.assetallocation.full.AssetAllocationOverviewActivity;
+import com.money.manager.ex.assetallocation.overview.AssetAllocationOverviewActivity;
 import com.money.manager.ex.budget.BudgetsActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.RequestCode;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.database.PasswordActivity;
-import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -102,9 +100,7 @@ import com.money.manager.ex.sync.events.SyncStartingEvent;
 import com.money.manager.ex.sync.events.SyncStoppingEvent;
 import com.money.manager.ex.tutorial.TutorialActivity;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
-import com.money.manager.ex.utils.MmxFileUtils;
 
-import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -255,7 +251,7 @@ public class MainActivity
                 intent.setAction(PasscodeActivity.INTENT_REQUEST_PASSWORD);
                 intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
                 // start activity
-                startActivityForResult(intent, RequestCode.PASSCODE);
+                startActivityForResult(intent, RequestCodes.PASSCODE);
                 // set in authentication
                 isInAuthentication = true;
             }
@@ -297,7 +293,7 @@ public class MainActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case RequestCode.SELECT_FILE:
+            case RequestCodes.SELECT_FILE:
                 // Opening from intent.
                 if (resultCode != RESULT_OK) return;
 
@@ -311,7 +307,7 @@ public class MainActivity
                 changeDatabase(db);
                 break;
 
-            case RequestCode.PASSCODE:
+            case RequestCodes.PASSCODE:
                 isAuthenticated = false;
                 isInAuthentication = false;
                 if (resultCode == RESULT_OK && data != null) {
@@ -809,7 +805,7 @@ public class MainActivity
 
         // Environment.getDefaultDatabaseDirectory().getPath()
         try {
-            UIHelper.pickFileDialog(this, dbDirectory, RequestCode.SELECT_FILE);
+            UIHelper.pickFileDialog(this, dbDirectory, RequestCodes.SELECT_FILE);
         } catch (Exception e) {
             Timber.e(e, "displaying the open-database picker");
         }

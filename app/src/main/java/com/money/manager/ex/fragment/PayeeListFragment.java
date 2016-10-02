@@ -41,9 +41,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.Iconics;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.MoneySimpleCursorAdapter;
@@ -244,7 +242,7 @@ public class PayeeListFragment
                 parameters.payeeId = payee.getId();
                 parameters.payeeName = payee.getName();
 
-                Intent intent = IntentFactory.getIntentForSearch(getActivity(), parameters);
+                Intent intent = IntentFactory.getSearchIntent(getActivity(), parameters);
                 startActivity(intent);
         }
         return false;

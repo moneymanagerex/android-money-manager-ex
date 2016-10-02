@@ -28,7 +28,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.CategoryListActivity;
-import com.money.manager.ex.core.RequestCode;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.search.SearchParametersFragment;
@@ -117,7 +117,7 @@ public class SearchActivityTests {
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCode.CATEGORY, Activity.RESULT_OK,
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
                 categoryData);
         assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 
@@ -177,7 +177,7 @@ public class SearchActivityTests {
 
         // We "selected" Food:Dining out.
         Intent categoryData = UnitTestHelper.getSelectCategoryResult(2, "Food", 9, "Dining out");
-        searchFragment.onActivityResult(RequestCode.CATEGORY, Activity.RESULT_OK,
+        searchFragment.onActivityResult(RequestCodes.CATEGORY, Activity.RESULT_OK,
             categoryData);
         assertThat(selectCategory.getText()).containsSequence("Food : Dining out");
 

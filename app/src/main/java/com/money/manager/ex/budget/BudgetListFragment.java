@@ -183,9 +183,9 @@ public class BudgetListFragment
 
         menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(Budget.BUDGETYEARNAME)));
 
-        MenuHelper menuHelper = new MenuHelper(getActivity());
-        menuHelper.addEditToContextMenu(menu);
-        menuHelper.addDeleteToContextMenu(menu);
+        MenuHelper menuHelper = new MenuHelper(getActivity(), menu);
+        menuHelper.addEditToContextMenu();
+        menuHelper.addDeleteToContextMenu();
         //todo menu.add(Menu.NONE, ContextMenuIds.COPY, Menu.NONE, getString(R.string.copy));
     }
 

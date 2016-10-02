@@ -37,6 +37,7 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -159,16 +160,8 @@ public class RecurringTransactionEditActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.menu_save, menu);
-
-        UIHelper uiHelper = new UIHelper(this);
-
-        MenuItem saveMenu = menu.findItem(R.id.saveMenuItem);
-        if (saveMenu != null) {
-            IconicsDrawable check = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-                    .color(uiHelper.getPrimaryTextColor());
-            saveMenu.setIcon(check);
-        }
+        MenuHelper helper = new MenuHelper(this, menu);
+        helper.addSaveToolbarIcon();
 
         return true;
     }
@@ -178,7 +171,7 @@ public class RecurringTransactionEditActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 return onActionCancelClick();
-            case R.id.saveMenuItem:
+            case MenuHelper.save:
                 return onActionDoneClick();
             default:
                 return super.onOptionsItemSelected(item);

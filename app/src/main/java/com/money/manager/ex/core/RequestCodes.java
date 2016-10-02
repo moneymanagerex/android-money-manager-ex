@@ -21,13 +21,18 @@ package com.money.manager.ex.core;
  * Common request codes for activity results.
  */
 
-public class RequestCode {
-    public static final int SELECT_FILE = 1;
+public class RequestCodes {
+    public static final int ACCOUNT = 12;
+    public static final int ALLOCATION = 1;
     public static final int AMOUNT = 2;
-    public static final int PASSCODE = 3;
-    public static final int PAYEE = 4;
-    public static final int AMOUNT_FROM = 5;
-    public static final int AMOUNT_TO = 6;
-    public static final int CATEGORY = 7;
-    public static final int CURRENCY = 8;
+    public static final int AMOUNT_FROM = 3;
+    public static final int AMOUNT_TO = 4;
+    public static final int ASSET_CLASS = 5;
+    public static final int SELECT_FILE = 6;
+    public static final int PASSCODE = 7;
+    public static final int PAYEE = 8;
+    public static final int CATEGORY = 9;
+    public static final int CURRENCY = 10;
+    public static final int SORT_ORDER = 11;
+    public static final int SPLIT_TX = 13;
 }

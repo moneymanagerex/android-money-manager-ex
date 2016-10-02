@@ -37,9 +37,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.IntentFactory;
-import com.money.manager.ex.core.RequestCode;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.servicelayer.AccountService;
@@ -151,7 +152,7 @@ public class SearchParametersFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCode.PAYEE);
+                startActivityForResult(intent, RequestCodes.PAYEE);
             }
         });
 
@@ -161,7 +162,7 @@ public class SearchParametersFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CategoryListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCode.CATEGORY);
+                startActivityForResult(intent, RequestCodes.CATEGORY);
             }
         });
 
@@ -200,11 +201,11 @@ public class SearchParametersFragment
         String stringExtra;
 
         switch (requestCode) {
-            case RequestCode.PAYEE:
+            case RequestCodes.PAYEE:
                 viewHolder.txtSelectPayee.setTag(data.getIntExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
                 viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
                 break;
-            case RequestCode.CATEGORY:
+            case RequestCodes.CATEGORY:
                 //create class for store data
                 CategorySub categorySub = new CategorySub();
                 categorySub.categId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
@@ -215,7 +216,7 @@ public class SearchParametersFragment
                 displayCategory(categorySub);
                 break;
 
-            case RequestCode.AMOUNT_FROM:
+            case RequestCodes.AMOUNT_FROM:
                 stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 searchParameters = getSearchParameters();
                 searchParameters.amountFrom = MoneyFactory.fromString(stringExtra);
@@ -223,7 +224,7 @@ public class SearchParametersFragment
                 displayAmountFrom();
                 break;
 
-            case RequestCode.AMOUNT_TO:
+            case RequestCodes.AMOUNT_TO:
                 stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
                 searchParameters = getSearchParameters();
                 searchParameters.amountTo = MoneyFactory.fromString(stringExtra);
@@ -333,8 +334,11 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
-        startActivityForResult(intent, RequestCode.AMOUNT_FROM);
+//        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
+//        startActivityForResult(intent, RequestCodes.AMOUNT_FROM);
+        Calculator.forActivity(getActivity())
+                .withAmount(amount)
+                .show(RequestCodes.AMOUNT_FROM);
     }
 
     @OnClick(R.id.textViewToAmount)
@@ -344,8 +348,9 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
-        startActivityForResult(intent, RequestCode.AMOUNT_TO);
+//        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
+//        startActivityForResult(intent, RequestCodes.AMOUNT_TO);
+        Calculator.forActivity(getActivity()).withAmount(amount).show(RequestCodes.AMOUNT_TO);
     }
 
     // Private

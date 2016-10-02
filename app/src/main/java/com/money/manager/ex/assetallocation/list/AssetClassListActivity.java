@@ -40,6 +40,9 @@ import com.money.manager.ex.view.recycler.DividerItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
 
+/**
+ * Activity for selecting an Asset Class (as a parent, etc.)
+ */
 public class AssetClassListActivity
     extends MmxBaseFragmentActivity {
 
