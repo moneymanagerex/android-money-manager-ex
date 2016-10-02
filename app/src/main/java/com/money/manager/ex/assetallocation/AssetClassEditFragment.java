@@ -156,7 +156,7 @@ public class AssetClassEditFragment
             @Override
             public void onClick(View v) {
                 Calculator.forFragment(AssetClassEditFragment.this)
-                        .withAmount(assetClass.getAllocation())
+                        .amount(assetClass.getAllocation())
                         .show(RequestCodes.ALLOCATION);
             }
         });
@@ -197,7 +197,7 @@ public class AssetClassEditFragment
                 Money number = MoneyFactory.fromString(Integer.toString(assetClass.getSortOrder()));
 
                 Calculator.forFragment(AssetClassEditFragment.this)
-                        .withAmount(number)
+                        .amount(number)
                         .roundToCurrency(false)
                         .show(RequestCodes.SORT_ORDER);
             }

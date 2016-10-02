@@ -55,6 +55,7 @@ import java.util.Calendar;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
 /**
@@ -67,10 +68,10 @@ public class InvestmentTransactionEditActivity
     public static final String ARG_STOCK_ID = "InvestmentTransactionEditActivity:StockId";
     public static final String DATEPICKER_TAG = "datepicker";
 
-//    public static final int ID_NUM_SHARES = 1;
-    public static final int ID_PURCHASE_PRICE = 2;
-    public static final int ID_COMMISSION = 3;
-    public static final int ID_CURRENT_PRICE = 4;
+    public static final int REQUEST_NUM_SHARES = 1;
+    public static final int REQUEST_PURCHASE_PRICE = 2;
+    public static final int REQUEST_COMMISSION = 3;
+    public static final int REQUEST_CURRENT_PRICE = 4;
 
     private boolean mDirty = false;
     private Account mAccount;
@@ -118,9 +119,38 @@ public class InvestmentTransactionEditActivity
 
         if (resultCode == Activity.RESULT_CANCELED || data == null) return;
 
-        mStock.setNumberOfShares(event.amount.toDouble());
-        showNumberOfShares();
-        showValue();
+        Money amount = Calculator.getAmountFromResult(data);
+
+        switch (requestCode) {
+            case REQUEST_NUM_SHARES:
+                mStock.setNumberOfShares(amount.toDouble());
+                showNumberOfShares();
+                showValue();
+                break;
+
+            case REQUEST_PURCHASE_PRICE:
+                mStock.setPurchasePrice(amount);
+                showPurchasePrice();
+
+                if (mStock.getCurrentPrice().isZero()) {
+                    mStock.setCurrentPrice(amount);
+                    showCurrentPrice();
+                    // recalculate value
+                    showValue();
+                }
+                break;
+
+            case REQUEST_COMMISSION:
+                mStock.setCommission(amount);
+                showCommission();
+                break;
+
+            case REQUEST_CURRENT_PRICE:
+                mStock.setCurrentPrice(amount);
+                showCurrentPrice();
+                showValue();
+                break;
+        }
 
     }
 
@@ -181,40 +211,43 @@ public class InvestmentTransactionEditActivity
      */
     @Subscribe
     public void onEvent(AmountEnteredEvent event) {
-        int id = Integer.parseInt(event.requestId);
-
-        switch (id) {
-            case ID_PURCHASE_PRICE:
-                mStock.setPurchasePrice(event.amount);
-                showPurchasePrice();
-
-                if (mStock.getCurrentPrice().isZero()) {
-                    mStock.setCurrentPrice(event.amount);
-                    showCurrentPrice();
-                    // recalculate value
-                    showValue();
-                }
-                break;
-            case ID_COMMISSION:
-                mStock.setCommission(event.amount);
-                showCommission();
-                break;
-            case ID_CURRENT_PRICE:
-                mStock.setCurrentPrice(event.amount);
-                showCurrentPrice();
-                showValue();
-                break;
-        }
     }
 
     @OnClick(R.id.numSharesView)
     public void onNumSharesClick() {
-//        AmountInputDialog dialog = AmountInputDialog.getInstance(ID_NUM_SHARES,
-//                MoneyFactory.fromDouble(mStock.getNumberOfShares()), null, false);
-//        dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
+        Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
+
         Calculator.forActivity(this)
-                .withAmount(mStock.getNumberOfShares())
-                .show();
+                .amount(amount)
+                .roundToCurrency(false)
+                .show(REQUEST_NUM_SHARES);
+    }
+
+    @OnClick(R.id.purchasePriceView)
+    public void onPurchasePriceClick() {
+        if (mAccount == null) return;
+
+        Calculator.forActivity(this)
+                .roundToCurrency(false)
+                .amount(mStock.getPurchasePrice())
+                .currency(mAccount.getCurrencyId())
+                .show(REQUEST_PURCHASE_PRICE);
+    }
+
+    @OnClick(R.id.commissionView)
+    public void onCommissionClick() {
+        Calculator.forActivity(this)
+                .amount(mStock.getCommission())
+                .currency(mAccount.getCurrencyId())
+                .show(REQUEST_COMMISSION);
+    }
+
+    @OnClick(R.id.currentPriceView)
+    public void onCurrentPriceClick() {
+        Calculator.forActivity(this)
+                .currency(mAccount.getCurrencyId())
+                .amount(mStock.getCurrentPrice())
+                .show(REQUEST_CURRENT_PRICE);
     }
 
     /*
@@ -263,10 +296,6 @@ public class InvestmentTransactionEditActivity
 
         initDateControl(mViewHolder);
         initAccountSelectors(mViewHolder);
-        initNumberOfShares(mViewHolder);
-        initPurchasePrice();
-        initCommission();
-        initCurrentPrice();
 
         displayStock(mStock, mViewHolder);
     }
@@ -306,33 +335,6 @@ public class InvestmentTransactionEditActivity
             }
         };
         viewHolder.accountSpinner.setOnItemSelectedListener(listener);
-    }
-
-    private void initCommission() {
-        View.OnClickListener onAmountClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_COMMISSION,
-                        mStock.getCommission(),
-                        mAccount.getCurrencyId());
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-        RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.commissionView);
-        purchasePriceView.setOnClickListener(onAmountClick);
-    }
-
-    private void initCurrentPrice() {
-        View.OnClickListener onAmountClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_CURRENT_PRICE,
-                    mStock.getCurrentPrice(), mAccount.getCurrencyId(), false);
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-        RobotoTextView purchasePriceView = (RobotoTextView) this.findViewById(R.id.currentPriceView);
-        purchasePriceView.setOnClickListener(onAmountClick);
     }
 
     private void initDateControl(final InvestmentTransactionViewHolder viewHolder) {
@@ -379,28 +381,6 @@ public class InvestmentTransactionEditActivity
                 setDate(dateTime);
             }
         });
-    }
-
-    private void initNumberOfShares(InvestmentTransactionViewHolder viewHolder) {
-        if (viewHolder.numSharesView == null) return;
-
-        viewHolder.numSharesView.setOnClickListener(onAmountClick);
-    }
-
-    private void initPurchasePrice() {
-        View.OnClickListener onAmountClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // validation
-                if (mAccount == null) return;
-
-                AmountInputDialog dialog = AmountInputDialog.getInstance(ID_PURCHASE_PRICE,
-                        mStock.getPurchasePrice(), mAccount.getCurrencyId(), false);
-                dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-            }
-        };
-        RobotoTextView view = (RobotoTextView) this.findViewById(R.id.purchasePriceView);
-        view.setOnClickListener(onAmountClick);
     }
 
     private void showCommission() {

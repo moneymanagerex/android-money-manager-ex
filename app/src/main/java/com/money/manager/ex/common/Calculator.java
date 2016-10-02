@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -37,7 +38,11 @@ public final class Calculator {
      * @return Amount entered
      */
     public static Money getAmountFromResult(Intent data) {
+        if (data == null) return null;
+
         String stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
+        if (TextUtils.isEmpty(stringExtra)) return null;
+
         return MoneyFactory.fromString(stringExtra);
     }
 
@@ -62,12 +67,12 @@ public final class Calculator {
         }
     }
 
-    public Calculator withCurrency(int currencyId) {
+    public Calculator currency(int currencyId) {
         intent.putExtra(CalculatorActivity.EXTRA_CURRENCY_ID, currencyId);
         return this;
     }
 
-    public Calculator withAmount(Money amount) {
+    public Calculator amount(Money amount) {
         intent.putExtra(CalculatorActivity.EXTRA_AMOUNT, amount.toString());
         return this;
     }

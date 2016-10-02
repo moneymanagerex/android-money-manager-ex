@@ -36,7 +36,6 @@ import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.currency.list.CurrencyListActivity;
@@ -291,8 +290,8 @@ public class AccountEditActivity
             @Override
             public void onClick(View v) {
                 Calculator.forActivity(AccountEditActivity.this)
-                        .withCurrency(mAccount.getCurrencyId())
-                        .withAmount(mAccount.getInitialBalance())
+                        .currency(mAccount.getCurrencyId())
+                        .amount(mAccount.getInitialBalance())
                         .show(RequestCodes.AMOUNT);
             }
         });

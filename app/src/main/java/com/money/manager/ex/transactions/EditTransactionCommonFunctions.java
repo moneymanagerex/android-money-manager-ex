@@ -17,7 +17,6 @@
 package com.money.manager.ex.transactions;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -45,7 +44,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
-import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -418,8 +416,8 @@ public class EditTransactionCommonFunctions {
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
 //                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
                 Calculator.forActivity(getActivity())
-                        .withCurrency(currencyId)
-                        .withAmount(amount)
+                        .currency(currencyId)
+                        .amount(amount)
                         .show(RequestCodes.AMOUNT);
             }
         });
@@ -435,7 +433,7 @@ public class EditTransactionCommonFunctions {
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
 //                getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
                 Calculator.forActivity(getActivity())
-                        .withAmount(amount).withCurrency(currencyId)
+                        .amount(amount).currency(currencyId)
                         .show(RequestCodes.AMOUNT_TO);
             }
         });

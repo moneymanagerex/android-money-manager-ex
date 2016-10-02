@@ -39,7 +39,6 @@ import android.widget.TextView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
-import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.domainmodel.SplitCategory;
@@ -337,7 +336,7 @@ public class SearchParametersFragment
 //        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
 //        startActivityForResult(intent, RequestCodes.AMOUNT_FROM);
         Calculator.forActivity(getActivity())
-                .withAmount(amount)
+                .amount(amount)
                 .show(RequestCodes.AMOUNT_FROM);
     }
 
@@ -350,7 +349,7 @@ public class SearchParametersFragment
 
 //        Intent intent = IntentFactory.getNumericInputIntent(getActivity(), amount);
 //        startActivityForResult(intent, RequestCodes.AMOUNT_TO);
-        Calculator.forActivity(getActivity()).withAmount(amount).show(RequestCodes.AMOUNT_TO);
+        Calculator.forActivity(getActivity()).amount(amount).show(RequestCodes.AMOUNT_TO);
     }
 
     // Private
