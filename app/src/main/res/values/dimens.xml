@@ -34,6 +34,7 @@ https://developer.android.com/guide/practices/screens_support.html#qualifiers
     <dimen name="mmx_button_height">36dp</dimen>
 
     <dimen name="mmx_elevation">8dp</dimen>
+    <dimen name="mmx_toolbar_elevation">4dp</dimen>
 
     <!-- Preference activity side margins -->
     <dimen name="mmx_activity_side_margin">0dp</dimen>

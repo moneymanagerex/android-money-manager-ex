@@ -18,6 +18,7 @@ package com.money.manager.ex.common;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -78,16 +79,18 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // This is used to handle the <- Home arrow button in the toolbar (i.e. preferences screens).
-        
         switch (item.getItemId()) {
             // home click can be handled in the manifest by setting up the parent activity.
             case android.R.id.home:
+                // This is used to handle the <- Home arrow button in the toolbar.
+//                NavUtils.navigateUpFromSameTask(this);
+//                return true;
                 if (mDisplayHomeAsUpEnabled) {
                     setResult(Activity.RESULT_CANCELED);
                     finish();
                     return true;
                 }
+
 //            case R.id.menu_cancel:
 //                if (isDialogMode()) {
 //                    onActionCancelClick();

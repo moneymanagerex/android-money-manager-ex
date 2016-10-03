@@ -35,9 +35,9 @@ public class PortfolioActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_portfolio);
-//        setContentView(R.layout.base_toolbar_activity);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setDisplayHomeAsUpEnabled(true);
 
         // todo: pass the correct account id.
 //        Intent intent = getIntent();

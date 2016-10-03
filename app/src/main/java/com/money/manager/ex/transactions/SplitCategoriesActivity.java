@@ -19,14 +19,15 @@ package com.money.manager.ex.transactions;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ObservableScrollView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
@@ -34,6 +35,7 @@ import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -96,12 +98,32 @@ public class SplitCategoriesActivity
         // set view
         setContentView(R.layout.activity_split_categories);
 
-        showStandardToolbarActions();
+//        showStandardToolbarActions();
+        setDisplayHomeAsUpEnabled(true);
 
         // show the floating "Add" button
         setUpFloatingButton();
 
         initRecyclerView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        new MenuHelper(this, menu).addSaveToolbarIcon();
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MenuHelper.save:
+                return onActionDoneClick();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -292,12 +314,12 @@ public class SplitCategoriesActivity
             }
         });
 
-        ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
-        if (scrollView != null) {
-            fab.attachToScrollView(scrollView);
-        }
-
-        fab.setVisibility(View.VISIBLE);
+//        ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
+//        if (scrollView != null) {
+//            fab.attachToScrollView(scrollView);
+//        }
+//
+//        fab.setVisibility(View.VISIBLE);
     }
 
     private void showCategorySelector(int requestId) {
