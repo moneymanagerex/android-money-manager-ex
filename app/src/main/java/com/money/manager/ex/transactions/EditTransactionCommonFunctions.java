@@ -950,9 +950,11 @@ public class EditTransactionCommonFunctions {
 
         if (isTransfer) {
             onTransferSelected();
+            viewHolder.splitButton.setEnabled(false);
         } else {
             // Change sign for the split records. Transfers should delete split records.
             CommonSplitCategoryLogic.changeSign(getSplitTransactions());
+            viewHolder.splitButton.setEnabled(true);
         }
     }
 
