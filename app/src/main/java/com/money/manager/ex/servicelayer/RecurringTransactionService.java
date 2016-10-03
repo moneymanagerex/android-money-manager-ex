@@ -174,7 +174,12 @@ public class RecurringTransactionService
      * If not, the recurring transaction is deleted.
      */
     public void moveNextOccurrence() {
-        Integer recurrenceType = getRecurringTransaction().getRecurrenceInt();
+        RecurringTransaction tx = getRecurringTransaction();
+        if (tx == null) {
+            throw new IllegalArgumentException("Recurring Transaction is not set!");
+        }
+
+        Integer recurrenceType = tx.getRecurrenceInt();
         if (recurrenceType == null) {
             String message = getContext().getString(R.string.recurrence_type_not_set);
             throw new IllegalArgumentException(message);

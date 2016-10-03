@@ -31,11 +31,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.AmountInputDialog;
+import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CategoryListActivity;
 import com.money.manager.ex.common.CommonSplitCategoryLogic;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.database.ISplitTransaction;
@@ -49,6 +51,9 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -73,7 +78,8 @@ public class SplitCategoriesActivity
     private String entityTypeName = null;
     private ArrayList<ISplitTransaction> mSplitDeleted = null;
     private SplitCategoriesAdapter mAdapter;
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.splitsRecyclerView) RecyclerView mRecyclerView;
+    private int amountRequestOffset = 1000; // used to offset the request number for Amounts.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,6 @@ public class SplitCategoriesActivity
 
         mAdapter = new SplitCategoriesAdapter();
 
-        // load intent
         handleIntent();
 
         // restore collections
@@ -95,14 +100,10 @@ public class SplitCategoriesActivity
             addSplitTransaction();
         }
 
-        // set view
         setContentView(R.layout.activity_split_categories);
+        ButterKnife.bind(this);
 
-//        showStandardToolbarActions();
         setDisplayHomeAsUpEnabled(true);
-
-        // show the floating "Add" button
-        setUpFloatingButton();
 
         initRecyclerView();
     }
@@ -130,31 +131,29 @@ public class SplitCategoriesActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
+
         switch (requestCode) {
             case REQUEST_PICK_CATEGORY:
-                if ((resultCode == Activity.RESULT_OK) && (data != null)) {
-                    int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
-                    int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
-                    int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
+                int categoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
+                int subcategoryId = data.getIntExtra(CategoryListActivity.INTENT_RESULT_SUBCATEGID, Constants.NOT_SET);
+                int location = data.getIntExtra(CategoryListActivity.KEY_REQUEST_ID, Constants.NOT_SET);
 
-                    ISplitTransaction split = mAdapter.splitTransactions.get(location);
-                    split.setCategoryId(categoryId);
-                    split.setSubcategoryId(subcategoryId);
+                ISplitTransaction split = mAdapter.splitTransactions.get(location);
+                split.setCategoryId(categoryId);
+                split.setSubcategoryId(subcategoryId);
 
-                    mAdapter.notifyItemChanged(location);
-                }
+                mAdapter.notifyItemChanged(location);
+                break;
+        }
+
+        if (requestCode >= amountRequestOffset) {
+            int id = requestCode - amountRequestOffset;
+            Money amount = Calculator.getAmountFromResult(data);
+            onAmountEntered(id, amount);
         }
     }
 
-    @Override
-    public boolean onActionCancelClick() {
-        setResult(RESULT_CANCELED);
-        finish();
-
-        return true;
-    }
-
-    @Override
     public boolean onActionDoneClick() {
         List<ISplitTransaction> allSplitTransactions = mAdapter.splitTransactions;
         Core core = new Core(this);
@@ -197,7 +196,14 @@ public class SplitCategoriesActivity
         }
     }
 
-    // Events
+    @OnClick(R.id.fab)
+    protected void onFabClick() {
+        addSplitTransaction();
+    }
+
+    /*
+        Events
+     */
 
     @Subscribe
     public void onEvent(SplitItemRemovedEvent event) {
@@ -206,26 +212,10 @@ public class SplitCategoriesActivity
 
     @Subscribe
     public void onEvent(AmountEntryRequestedEvent event) {
-        AmountInputDialog dialog = AmountInputDialog.getInstance(
-                event.requestId, event.amount, mAdapter.currencyId);
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getSimpleName());
-    }
-
-    @Subscribe
-    public void onEvent(AmountEnteredEvent event) {
-        if (event.amount.toDouble() <= 0) {
-            showInvalidAmountDialog();
-            return;
-        }
-        // The amount is always positive, ensured by the validation above.
-
-        int position = Integer.parseInt(event.requestId);
-        ISplitTransaction split = mAdapter.splitTransactions.get(position);
-
-        Money adjustedAmount = CommonSplitCategoryLogic.getStorageAmount(mAdapter.transactionType, event.amount, split);
-        split.setAmount(adjustedAmount);
-
-        mAdapter.notifyItemChanged(position);
+        Calculator.forActivity(this)
+                .currency(mAdapter.currencyId)
+                .amount(event.amount)
+                .show(event.requestId + amountRequestOffset);
     }
 
     @Subscribe
@@ -268,7 +258,7 @@ public class SplitCategoriesActivity
     }
 
     private void initRecyclerView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.splitsRecyclerView);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.splitsRecyclerView);
         if (mRecyclerView == null) return;
 
         // adapter
@@ -289,6 +279,23 @@ public class SplitCategoriesActivity
         touchHelper.attachToRecyclerView(mRecyclerView);
     }
 
+    private void onAmountEntered(int requestId, Money amount) {
+        if (amount.toDouble() <= 0) {
+            showInvalidAmountDialog();
+            return;
+        }
+        // The amount is always positive, ensured by the validation above.
+
+//        int position = Integer.parseInt(requestId);
+        int position = requestId;
+        ISplitTransaction split = mAdapter.splitTransactions.get(position);
+
+        Money adjustedAmount = CommonSplitCategoryLogic.getStorageAmount(mAdapter.transactionType, amount, split);
+        split.setAmount(adjustedAmount);
+
+        mAdapter.notifyItemChanged(position);
+    }
+
     private void onRemoveItem(ISplitTransaction splitTransaction) {
         if (splitTransaction == null) return;
 
@@ -301,25 +308,6 @@ public class SplitCategoriesActivity
             // not new split transaction
             mSplitDeleted.add(splitTransaction);
         }
-    }
-
-    private void setUpFloatingButton() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab == null) return;
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addSplitTransaction();
-            }
-        });
-
-//        ObservableScrollView scrollView = (ObservableScrollView) findViewById(R.id.scrollView);
-//        if (scrollView != null) {
-//            fab.attachToScrollView(scrollView);
-//        }
-//
-//        fab.setVisibility(View.VISIBLE);
     }
 
     private void showCategorySelector(int requestId) {

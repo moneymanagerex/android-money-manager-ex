@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.money.manager.ex.R;
 import com.shamanland.fonticon.FontIconView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * View Holder pattern for Split Category.
  * Adapter position is provided automatically by .getAdapterPosition().
@@ -16,15 +19,17 @@ import com.shamanland.fonticon.FontIconView;
 public class SplitItemViewHolder
     extends RecyclerView.ViewHolder {
 
-    public TextView txtSelectCategory;
-    public TextView txtAmount;
-    public FontIconView transactionTypeButton;
+    @BindView(R.id.textViewCategory) public TextView txtSelectCategory;
+    @BindView(R.id.editTextTotAmount) public TextView txtAmount;
+    @BindView(R.id.transactionTypeButton) public FontIconView transactionTypeButton;
 
     public SplitItemViewHolder(View itemView) {
         super(itemView);
 
-        transactionTypeButton = (FontIconView) itemView.findViewById(R.id.transactionTypeButton);
-        txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
-        txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
+//        transactionTypeButton = (FontIconView) itemView.findViewById(R.id.transactionTypeButton);
+//        txtSelectCategory = (TextView) itemView.findViewById(R.id.textViewCategory);
+//        txtAmount = (TextView) itemView.findViewById(R.id.editTextTotAmount);
+
+        ButterKnife.bind(this, itemView);
     }
 }
