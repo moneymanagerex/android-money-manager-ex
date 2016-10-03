@@ -152,6 +152,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true;
     }
+
+    // speed up gradle build
+    // https://medium.com/@101/speed-up-gradle-build-in-android-studio-80a5f74ac9ed#.gz2afrtdk
+    dexOptions {
+        incremental true
+    }
 }
 
 dependencies {
