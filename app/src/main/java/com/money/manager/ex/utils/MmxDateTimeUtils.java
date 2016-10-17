@@ -38,6 +38,8 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 /**
  * Utilities for DateTime.
  * Most methods specify UTC as the time zone, since time zones play no role in MMEX as we work
@@ -59,9 +61,22 @@ public class MmxDateTimeUtils {
 //                .withSecondOfMinute(0)
 //                .withMillisOfSecond(0)
                 // handle daylight savings transitions
-        return new LocalDate()
-                .toDateTimeAtStartOfDay()
-                .toDateTime();
+        DateTime today;
+        try {
+            today = new LocalDate()
+                    .toDateTimeAtStartOfDay()
+                    .toDateTime();
+        } catch (RuntimeException e) {
+            Timber.e(e);
+
+            // try adding 1 hour to avoid daylight savings transitions
+            today = new LocalDate()
+                    .toDateTimeAtStartOfDay()
+                    .plusHours(1)
+                    .toDateTime();
+        }
+        
+        return today;
     }
 
     public static DateTime from(String isoString) {
