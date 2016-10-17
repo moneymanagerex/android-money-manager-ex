@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.DatePicker;
@@ -54,13 +53,6 @@ public class MmxDateTimeUtils {
     }
 
     public static DateTime today() {
-        // removing DateTimeZone.UTC
-//        return new DateTime()
-//                .withHourOfDay(0)
-//                .withMinuteOfHour(0)
-//                .withSecondOfMinute(0)
-//                .withMillisOfSecond(0)
-                // handle daylight savings transitions
         DateTime today;
         try {
             today = new LocalDate()
@@ -75,7 +67,7 @@ public class MmxDateTimeUtils {
                     .plusHours(1)
                     .toDateTime();
         }
-        
+
         return today;
     }
 
