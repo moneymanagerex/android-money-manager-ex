@@ -1082,6 +1082,8 @@ public class MainActivity
     }
 
     private ArrayList<DrawerMenuItem> getRecentDatabasesDrawerMenuItems() {
+        UIHelper ui = new UIHelper(this);
+        int iconColor = ui.getSecondaryTextColor();
         ArrayList<DrawerMenuItem> childDatabases = new ArrayList<>();
         RecentDatabasesProvider databases = getDatabases();
 
@@ -1093,9 +1095,11 @@ public class MainActivity
                 item.setTag(entry.localPath);
 
                 if (entry.isSynchronised()) {
-                    item.withIconDrawable(new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cloud));
+                    item.withIconDrawable(ui.getIcon(GoogleMaterial.Icon.gmd_cloud)
+                        .color(iconColor));
                 } else {
-                    item.withIconDrawable(new UIHelper(this).getIcon(MMXIconFont.Icon.mmx_floppy_disk));
+                    item.withIconDrawable(ui.getIcon(MMXIconFont.Icon.mmx_floppy_disk)
+                        .color(iconColor));
                 }
                 childDatabases.add(item);
             }
@@ -1104,7 +1108,8 @@ public class MainActivity
         // Menu item 'Other'. Simply open the file picker, as before.
         DrawerMenuItem item = new DrawerMenuItem()
                 .withId(R.id.menu_open_database)
-                .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_folder_shared))
+                .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_folder_shared)
+                    .color(iconColor))
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
