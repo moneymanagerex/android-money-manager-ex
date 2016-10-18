@@ -88,7 +88,8 @@ public class MenuHelper {
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         IconicsDrawable icon = uiHelper.getIcon(GoogleMaterial.Icon.gmd_check)
-                .color(uiHelper.getPrimaryTextColor());
+            //.color(uiHelper.getPrimaryTextColor());
+            .color(uiHelper.getToolbarItemColor());
         item.setIcon(icon);
     }
 
