@@ -20,25 +20,12 @@ These are the new styles.
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- numeric input activity buttons -->
-    <!--<style name="Money.Button.Input.Dialog.Full.Theme" parent="Widget.AppCompat.Button.Colored">-->
-        <!--<item name="android:background">?attr/calculator_button_background</item>-->
-        <!--<item name="android:background">?attr/selectableItemBackground</item>-->
-        <!--<item name="colorButtonNormal">?attr/colorPrimaryLight</item>-->
-        <!--<item name="colorButtonNormal">@color/black20transparent</item>-->
-        <!--<item name="colorControlHighlight">@color/material_deep_orange_500</item>-->
-    <!--</style>-->
-
     <!-- full-screen numeric input styles -->
     <style name="Money.Button.Input.Dialog.Full" parent="Widget.AppCompat.Button">
         <!--Widget.AppCompat.Button.Colored-->
         <!--Base.Widget.AppCompat.Button-->
-        <!--android:Widget.Button-->
         <item name="android:textSize">@dimen/input_dialog_text_size</item>
         <item name="android:layout_height">@dimen/input_dialog_button_height</item>
-        <!--<item name="android:textColor">?android:attr/textColorPrimary</item>-->
-        <!--<item name="android:gravity">center</item>-->
-        <!--<item name="android:layout_gravity">center</item>-->
         <item name="android:padding">2dp</item>
     </style>
     <style name="Money.Button.Input.Dialog.Full.Operator" parent="Money.Button.Input.Dialog.Full">
