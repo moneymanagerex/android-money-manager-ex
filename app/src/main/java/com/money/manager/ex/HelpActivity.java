@@ -28,9 +28,8 @@ import com.money.manager.ex.utils.MmxFileUtils;
 import timber.log.Timber;
 
 public class HelpActivity
-        extends MmxBaseFragmentActivity {
+    extends MmxBaseFragmentActivity {
 
-    private static final String LOGCAT = HelpActivity.class.getSimpleName();
     private WebView mWebView;
 
     @Override
