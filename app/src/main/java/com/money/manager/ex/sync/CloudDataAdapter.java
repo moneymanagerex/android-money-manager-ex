@@ -66,8 +66,12 @@ public class CloudDataAdapter
         holder.nameTextView.setText(item.getName());
         // Icon: folder or file
         Drawable icon = null;
+        UIHelper ui = new UIHelper(getContext());
+
         if (item.getFolder()) {
-            icon = new UIHelper(getContext()).getIcon(GoogleMaterial.Icon.gmd_folder_open).sizeDp(30);
+            icon = ui.getIcon(GoogleMaterial.Icon.gmd_folder_open)
+                    .sizeDp(30)
+                    .color(ui.getSecondaryTextColor());
         } else {
             //icon = FontIconDrawable.inflate(getContext(), R.xml.ic_);
         }
