@@ -161,7 +161,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.7.2'
+            , 'com.cloudrail:cloudrail-si-android:2.8.0'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
@@ -182,7 +182,7 @@ dependencies {
             , 'com.github.pedrovgs:lynx:1.6'
             , 'com.astuetz:pagerslidingtabstrip:1.0.1'
             , 'de.hdodenhof:circleimageview:2.1.0'
-            , 'me.relex:circleindicator:1.2.1'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
+            , 'me.relex:circleindicator:1.2.2'  // Page indicator on tutorial. https://android-arsenal.com/details/1/1268
             , 'com.code-troopers.betterpickers:library:3.0.1'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
@@ -201,9 +201,9 @@ dependencies {
             , 'org.jsoup:jsoup:1.9.2'               // HTML parsing.
             , 'com.google.guava:guava:19.0'         // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
-            , 'com.nononsenseapps:filepicker:3.0.1' // file picker
+            , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-            , 'io.reactivex:rxjava:1.2.0'
+            , 'io.reactivex:rxjava:1.2.1'
 //            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
             , 'com.squareup.sqlbrite:sqlbrite:0.7.0'
             , 'com.jakewharton.timber:timber:4.3.1'
@@ -221,7 +221,7 @@ dependencies {
             , 'com.squareup.picasso:picasso:2.5.2'
 //            , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.4@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
     compile('com.mikepenz:aboutlibraries:5.8.1@aar') {
