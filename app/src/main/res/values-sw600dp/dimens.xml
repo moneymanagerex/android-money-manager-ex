@@ -19,4 +19,8 @@
 <resources>
     <dimen name="money_text_view_size">18sp</dimen>
     <dimen name="mmx_activity_side_padding">24dp</dimen>
+
+    <!-- button size in Calculator -->
+    <dimen name="input_dialog_button_height">72dp</dimen>
+
 </resources>
