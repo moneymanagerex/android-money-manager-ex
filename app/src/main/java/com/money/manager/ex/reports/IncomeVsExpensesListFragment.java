@@ -49,7 +49,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
-import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
@@ -346,7 +346,7 @@ public class IncomeVsExpensesListFragment
                 SearchParameters params = new SearchParameters();
 
                 // show the details for the selected month/year.
-                CalendarUtils calendar = new CalendarUtils();
+                MmxDate calendar = new MmxDate();
                 calendar.setYear(entity.getYear());
                 int month = entity.getMonth();
                 if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {

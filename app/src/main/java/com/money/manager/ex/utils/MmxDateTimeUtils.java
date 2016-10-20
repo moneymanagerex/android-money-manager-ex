@@ -17,24 +17,76 @@
 
 package com.money.manager.ex.utils;
 
+import android.text.TextUtils;
+
 import com.money.manager.ex.Constants;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
+import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Date/time utilities using Java standard Date classes.
+ * Format patterns:
+ * https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
  */
 
 public class MmxDateTimeUtils {
-    private CalendarUtils _utils;
+//    private MmxDate _utils;
+    private Locale _locale = Locale.ENGLISH;
 
-    public static String getIsoStringFrom(Date date) {
+    @Inject
+    public MmxDateTimeUtils() {
+
+    }
+
+    public MmxDateTimeUtils(Locale locale) {
+        _locale = locale;
+    }
+
+    public String getIsoStringFrom(Date date) {
         if (date == null) return null;
 
         SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
         return format.format(date);
+    }
 
-//        return dateTime.toString(Constants.ISO_DATE_FORMAT);
+    public Date from(String isoString) {
+        if (TextUtils.isEmpty(isoString)) return null;
+
+        String pattern = Constants.ISO_DATE_FORMAT;
+        return from(isoString, pattern);
+    }
+
+    public Date from(String dateString, String pattern) {
+        if (TextUtils.isEmpty(dateString)) return null;
+
+        try {
+            return getFormatterFor(pattern).parse(dateString);
+        } catch (ParseException e) {
+            Timber.e(e, "parsing date string");
+            return null;
+        }
+    }
+
+    public Date from(int year, int monthOfYear, int dayOfMonth) {
+        return new MmxDate(year, monthOfYear, dayOfMonth).toDate();
+    }
+
+    public String format(Date date, String format) {
+        return getFormatterFor(format).format(date);
+    }
+
+    public Date now() {
+        return new MmxDate().toDate();
+    }
+
+    private SimpleDateFormat getFormatterFor(String format) {
+        return new SimpleDateFormat(format, _locale);
     }
 }

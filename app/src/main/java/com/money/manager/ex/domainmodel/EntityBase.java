@@ -29,6 +29,8 @@ import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -82,13 +84,23 @@ public class EntityBase
         contentValues.put(fieldName, value.toString());
     }
 
-    protected DateTime getDateTime(String fieldName) {
-        String dateString = getString(fieldName);
-        return MmxJodaDateTimeUtils.from(dateString);
+//    protected DateTime getDateTime(String fieldName) {
+//        String dateString = getString(fieldName);
+//        return MmxJodaDateTimeUtils.from(dateString);
+//    }
+
+    protected Date getDate(String field) {
+        String dateString = getString(field);
+        return new MmxDateTimeUtils().from(dateString);
     }
 
-    protected void setDateTime(String fieldName, DateTime value) {
-        String dateString = MmxDateTimeUtils.getIsoStringFrom(value.toDate());
+    protected void setDate(String fieldName, DateTime value) {
+        String dateString = new MmxDateTimeUtils().getIsoStringFrom(value.toDate());
+        contentValues.put(fieldName, dateString);
+    }
+
+    protected void setDate(String fieldName, Date value) {
+        String dateString = new MmxDateTimeUtils().getIsoStringFrom(value);
         contentValues.put(fieldName, dateString);
     }
 

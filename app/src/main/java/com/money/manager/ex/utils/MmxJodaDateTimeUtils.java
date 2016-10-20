@@ -48,9 +48,9 @@ import timber.log.Timber;
  */
 public class MmxJodaDateTimeUtils {
 
-    public static DateTime now() {
-        return DateTime.now();
-    }
+//    public static DateTime now() {
+//        return DateTime.now();
+//    }
 
     public static DateTime today() {
         DateTime today;
@@ -71,23 +71,23 @@ public class MmxJodaDateTimeUtils {
         return today;
     }
 
-    public static DateTime from(String isoString) {
-        if (TextUtils.isEmpty(isoString)) return null;
+//    public static DateTime from(String isoString) {
+//        if (TextUtils.isEmpty(isoString)) return null;
+//
+//        String pattern = Constants.ISO_DATE_FORMAT;
+//        return from(isoString, pattern);
+//    }
 
-        String pattern = Constants.ISO_DATE_FORMAT;
-        return from(isoString, pattern);
-    }
-
-    public static DateTime from(String dateString, String pattern) {
-        if (TextUtils.isEmpty(dateString)) return null;
-
-//        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
-//        DateTime dateTime = format.parseDateTime(dateString); // .withZoneUTC()
-//        return dateTime;
-        return DateTimeFormat.forPattern(pattern)
-                .parseLocalDateTime(dateString)
-                .toDateTime();
-    }
+//    public static DateTime from(String dateString, String pattern) {
+//        if (TextUtils.isEmpty(dateString)) return null;
+//
+////        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+////        DateTime dateTime = format.parseDateTime(dateString); // .withZoneUTC()
+////        return dateTime;
+//        return DateTimeFormat.forPattern(pattern)
+//                .parseLocalDateTime(dateString)
+//                .toDateTime();
+//    }
 
     /**
      * Conversion factory.
@@ -101,17 +101,17 @@ public class MmxJodaDateTimeUtils {
         return result;
     }
 
-    public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
-        //DateTimeZone.setDefault(DateTimeZone.UTC); <-- sets the default for JodaTime.
-        // DateTimeZone.UTC
-        return new DateTime()
-                .withYear(year)
-                .withMonthOfYear(monthOfYear)
-                .withDayOfMonth(dayOfMonth)
-                .withHourOfDay(0)
-                .withMinuteOfHour(0)
-                .withSecondOfMinute(0);
-    }
+//    public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
+//        //DateTimeZone.setDefault(DateTimeZone.UTC); <-- sets the default for JodaTime.
+//        // DateTimeZone.UTC
+//        return new DateTime()
+//                .withYear(year)
+//                .withMonthOfYear(monthOfYear)
+//                .withDayOfMonth(dayOfMonth)
+//                .withHourOfDay(0)
+//                .withMinuteOfHour(0)
+//                .withSecondOfMinute(0);
+//    }
 
     public static DateTime from(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();

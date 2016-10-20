@@ -38,12 +38,14 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -148,17 +150,18 @@ public class AllDataAdapter
 
         String dateString = cursor.getString(cursor.getColumnIndex(DATE));
         if (!TextUtils.isEmpty(dateString)) {
-            DateTime dateTime = MmxJodaDateTimeUtils.from(dateString);
-
             Locale locale = MoneyManagerApplication.getApp().getAppLocale();
+            MmxDateTimeUtils dateUtils = new MmxDateTimeUtils(locale);
 
-            String month = DateTimeFormat.forPattern("MMM").withLocale(locale).print(dateTime);
+            Date dateTime = dateUtils.from(dateString);
+
+            String month = dateUtils.format(dateTime, "MMM");
             holder.txtMonth.setText(month);
 
-            String year = DateTimeFormat.forPattern("yyyy").withLocale(locale).print(dateTime);
+            String year = dateUtils.format(dateTime, "yyyy");
             holder.txtYear.setText(year);
 
-            String day = DateTimeFormat.forPattern("dd").withLocale(locale).print(dateTime);
+            String day = dateUtils.format(dateTime, "dd");
             holder.txtDay.setText(day);
         }
 

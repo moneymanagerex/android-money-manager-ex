@@ -21,6 +21,8 @@ import com.money.manager.ex.core.TransactionTypes;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 import info.javaperformance.money.Money;
 
 /**
@@ -73,9 +75,9 @@ public interface ITransactionEntity {
     Money getAmountTo();
     void setAmountTo(Money value);
 
-    DateTime getDate();
+    Date getDate();
     String getDateString();
-    void setDate(DateTime value);
+    void setDate(Date value);
 
     String getNotes();
     void setNotes(String value);

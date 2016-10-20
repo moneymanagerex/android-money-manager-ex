@@ -50,6 +50,8 @@ import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
@@ -57,6 +59,8 @@ import com.squareup.sqlbrite.BriteDatabase;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -88,6 +92,7 @@ public class RecurringTransactionEditActivity
     public static final String TAG_DATEPICKER = "DatePicker";
 
     @Inject BriteDatabase database;
+    @Inject MmxDateTimeUtils dateUtils;
 
     @State String mIntentAction;
 
@@ -350,15 +355,17 @@ public class RecurringTransactionEditActivity
     private void initializePaymentDateSelector() {
         if (mViewHolder.paymentDateTextView == null) return;
 
-        DateTime paymentDate = getRecurringTransaction().getPaymentDate();
-        mViewHolder.paymentDateTextView.setText(paymentDate.toString(Constants.LONG_DATE_PATTERN));
+        final MmxDateTimeUtils dateUtils = new MmxDateTimeUtils();
+
+        Date paymentDate = getRecurringTransaction().getPaymentDate();
+        mViewHolder.paymentDateTextView.setText(dateUtils.format(paymentDate, Constants.LONG_DATE_PATTERN));
 //        mViewHolder.paymentDateTextView.setTag(paymentDate.toString(Constants.ISO_DATE_FORMAT));
 
         mViewHolder.paymentDateTextView.setOnClickListener(new View.OnClickListener() {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    DateTime dateTime = MmxJodaDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    Date dateTime = dateUtils.from(year, monthOfYear + 1, dayOfMonth);
 
                     setPaymentDate(dateTime);
                 }
@@ -368,12 +375,13 @@ public class RecurringTransactionEditActivity
             public void onClick(View v) {
                 // Show calendar with the current date selected.
 
-                DateTime dateTime = getPaymentDate();
+                //Date dateTime = getPaymentDate();
+                MmxDate dateTime = new MmxDate(getPaymentDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
-                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+                        .setPreselectedDate(dateTime.getYear(), dateTime.getMonth() - 1, dateTime.getDayOfMonth());
                 if (new UIHelper(RecurringTransactionEditActivity.this).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
@@ -384,7 +392,7 @@ public class RecurringTransactionEditActivity
         mViewHolder.paymentPreviousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = getPaymentDate().minusDays(1);
+                Date dateTime = new MmxDate(getPaymentDate()).minusDays(1).toDate();
                 setPaymentDate(dateTime);
             }
         });
@@ -392,7 +400,7 @@ public class RecurringTransactionEditActivity
         mViewHolder.paymentNextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = getPaymentDate().plusDays(1);
+                Date dateTime = new MmxDate(getPaymentDate()).plusDays(1).toDate();
                 setPaymentDate(dateTime);
             }
         });
@@ -401,8 +409,9 @@ public class RecurringTransactionEditActivity
     private RecurringTransaction initializeModel() {
         RecurringTransaction tx = RecurringTransaction.createInstance();
 
-        tx.setDueDate(MmxJodaDateTimeUtils.today());
-        tx.setPaymentDate(MmxJodaDateTimeUtils.today());
+        Date today = new MmxDate().toDate();
+        tx.setDueDate(today);
+        tx.setPaymentDate(today);
 
         return tx;
     }
@@ -622,20 +631,22 @@ public class RecurringTransactionEditActivity
         return true;
     }
 
-    private DateTime getPaymentDate() {
-        DateTime dateTime = getRecurringTransaction().getPaymentDate();
+    private Date getPaymentDate() {
+        Date dateTime = getRecurringTransaction().getPaymentDate();
         if (dateTime == null) {
-            dateTime = DateTime.now();
+            dateTime = dateUtils.now();
             getRecurringTransaction().setPaymentDate(dateTime);
         }
 
         return dateTime;
     }
 
-    private void setPaymentDate(DateTime dateTime) {
+    private void setPaymentDate(Date dateTime) {
         mCommon.setDirty(true);
 
         getRecurringTransaction().setPaymentDate(dateTime);
-        mViewHolder.paymentDateTextView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
+
+        String display = dateUtils.format(dateTime, Constants.LONG_DATE_PATTERN);
+        mViewHolder.paymentDateTextView.setText(display);
     }
 }

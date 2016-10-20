@@ -137,7 +137,7 @@ public class Stock
     }
 
     public void setPurchaseDate(DateTime value) {
-        setDateTime(StockFields.PURCHASEDATE, value);
+        setDate(StockFields.PURCHASEDATE, value);
     }
 
     public Money getPurchasePrice() {

@@ -20,7 +20,7 @@ package org.moneymanagerex.android.tests;
 import android.util.Log;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.utils.CalendarUtils;
+import com.money.manager.ex.utils.MmxDate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,11 +37,11 @@ import org.robolectric.annotation.Config;
 
 public class MmxDateTimeTests {
 
-    private CalendarUtils _util;
+    private MmxDate _util;
 
     @Before
     public void setup() {
-        _util = new CalendarUtils();
+        _util = new MmxDate();
     }
 
     @Test

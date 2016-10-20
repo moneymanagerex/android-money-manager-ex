@@ -25,10 +25,11 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.recurring.transactions.Recurrence;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcel;
+
+import java.util.Date;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -158,24 +159,24 @@ public class RecurringTransaction
         return getString(TRANSDATE);
     }
 
-    public DateTime getDueDate() {
+    public Date getDueDate() {
         String dateString = getDueDateString();
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
 
-        return MmxJodaDateTimeUtils.from(dateString);
+        return new MmxDateTimeUtils().from(dateString);
     }
 
-    public void setDueDate(DateTime value) {
-        setDateTime(TRANSDATE, value);
+    public void setDueDate(Date value) {
+        setDate(TRANSDATE, value);
     }
 
     /**
      * For recurring transaction, the date is Due Date.
      * @return Due date of the transaction.
      */
-    public DateTime getDate() {
+    public Date getDate() {
         return getDueDate();
     }
 
@@ -187,17 +188,26 @@ public class RecurringTransaction
      * Due Date
      * @param value Date to set
      */
-    public void setDate(DateTime value) {
+    public void setDate(Date value) {
         setDueDate(value);
     }
 
-    public DateTime getPaymentDate() {
+//    public DateTime getPaymentDate() {
+//        String dateString = getString(NEXTOCCURRENCEDATE);
+//        if (TextUtils.isEmpty(dateString)) {
+//            return null;
+//        }
+//
+//        return MmxJodaDateTimeUtils.from(dateString);
+//    }
+
+    public Date getPaymentDate() {
         String dateString = getString(NEXTOCCURRENCEDATE);
         if (TextUtils.isEmpty(dateString)) {
             return null;
         }
 
-        return MmxJodaDateTimeUtils.from(dateString);
+        return new MmxDateTimeUtils().from(dateString);
     }
 
     public String getPaymentDateString() {
@@ -208,8 +218,8 @@ public class RecurringTransaction
         setString(NEXTOCCURRENCEDATE, value);
     }
 
-    public void setPaymentDate(DateTime value){
-        setDateTime(NEXTOCCURRENCEDATE, value);
+    public void setPaymentDate(Date value){
+        setDate(NEXTOCCURRENCEDATE, value);
     }
 
     public String getNotes() {
