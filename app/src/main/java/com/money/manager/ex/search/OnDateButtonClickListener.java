@@ -25,9 +25,7 @@ import android.widget.TextView;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.log.ExceptionHandler;
-import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -55,17 +53,17 @@ public class OnDateButtonClickListener
 
     @Override
     public void onClick(View v) {
-        DateTime dateTime = MmxDateTimeUtils.today();
+        DateTime dateTime = MmxJodaDateTimeUtils.today();
         String calendarValue = mTextView.getText().toString();
 
         if (!TextUtils.isEmpty(calendarValue)) {
-            String userDatePattern = new MmxDateTimeUtils(mParent.getApplicationContext()).getUserDatePattern();
+            String userDatePattern = new MmxJodaDateTimeUtils(mParent.getApplicationContext()).getUserDatePattern();
             DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
             dateTime = formatter.parseDateTime(calendarValue);
         }
 
         CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-            .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
+            .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
             .setOnDateSetListener(mDateSetListener)
             .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
         if (new UIHelper(mParent).isUsingDarkTheme()) {
@@ -84,7 +82,7 @@ public class OnDateButtonClickListener
                 String dateString = date.toString(Constants.ISO_DATE_FORMAT);
                 mTextView.setTag(dateString);
 
-                String displayText = new MmxDateTimeUtils(mParent.getApplicationContext()).getUserStringFromDateTime(date);
+                String displayText = new MmxJodaDateTimeUtils(mParent.getApplicationContext()).getUserStringFromDateTime(date);
                 mTextView.setText(displayText);
             } catch (Exception e) {
                 Timber.e(e, "date selected in search");

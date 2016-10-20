@@ -38,7 +38,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -148,7 +148,7 @@ public class AllDataAdapter
 
         String dateString = cursor.getString(cursor.getColumnIndex(DATE));
         if (!TextUtils.isEmpty(dateString)) {
-            DateTime dateTime = MmxDateTimeUtils.from(dateString);
+            DateTime dateTime = MmxJodaDateTimeUtils.from(dateString);
 
             Locale locale = MoneyManagerApplication.getApp().getAppLocale();
 

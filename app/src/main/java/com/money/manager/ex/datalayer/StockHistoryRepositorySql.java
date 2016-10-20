@@ -24,6 +24,7 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.joda.time.DateTime;
@@ -89,7 +90,7 @@ public class StockHistoryRepositorySql
     public boolean recordExists(String symbol, DateTime date) {
         boolean result;
 
-        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date);
+        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date.toDate());
 
         String sql = new Select()
             .from(TABLE_NAME)

@@ -26,11 +26,11 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 
@@ -106,7 +106,7 @@ public class StockHistoryRepository
     public boolean recordExists(String symbol, DateTime date) {
         boolean result;
 
-        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date);
+        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date.toDate());
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(getUri(),

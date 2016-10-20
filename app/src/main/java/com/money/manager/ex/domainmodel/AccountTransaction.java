@@ -23,7 +23,7 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
@@ -167,7 +167,7 @@ public class AccountTransaction
     public DateTime getDate() {
         String dateString = getDateString();
         return dateString != null
-            ? MmxDateTimeUtils.from(dateString)
+            ? MmxJodaDateTimeUtils.from(dateString)
             : null;
     }
 

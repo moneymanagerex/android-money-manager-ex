@@ -30,7 +30,7 @@ import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.recurring.transactions.Recurrence;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -126,7 +126,7 @@ public class RecurringTransactionService
             case MONTHLY_LAST_DAY: //month (last day)
                 // if the date is not the last day of this month, set it to the end of the month.
                 // else set it to the end of the next month.
-                DateTime lastDayOfMonth = MmxDateTimeUtils.getLastDayOfMonth(result);
+                DateTime lastDayOfMonth = MmxJodaDateTimeUtils.getLastDayOfMonth(result);
                 if (!result.equals(lastDayOfMonth)) {
                     // set to last day of the month
                     result = lastDayOfMonth;
@@ -138,7 +138,7 @@ public class RecurringTransactionService
             case MONTHLY_LAST_BUSINESS_DAY: //month (last business day)
                 // if the date is not the last day of this month, set it to the end of the month.
                 // else set it to the end of the next month.
-                DateTime lastDayOfMonth2 = MmxDateTimeUtils.getLastDayOfMonth(result);
+                DateTime lastDayOfMonth2 = MmxJodaDateTimeUtils.getLastDayOfMonth(result);
                 if (!result.equals(lastDayOfMonth2)) {
                     // set to last day of the month
                     result = lastDayOfMonth2;

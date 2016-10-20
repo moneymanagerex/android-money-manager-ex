@@ -65,7 +65,7 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -107,7 +107,7 @@ public class EditTransactionCommonFunctions {
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+    @Inject Lazy<MmxJodaDateTimeUtils> dateTimeUtilsLazy;
 
     // Model
     public ITransactionEntity transactionEntity;
@@ -480,7 +480,7 @@ public class EditTransactionCommonFunctions {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    DateTime dateTime = MmxDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    DateTime dateTime = MmxJodaDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
                     setDate(dateTime);
                 }
             };
@@ -491,7 +491,7 @@ public class EditTransactionCommonFunctions {
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
-                    .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
+                    .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
                     .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
                 if (new UIHelper(getContext()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();

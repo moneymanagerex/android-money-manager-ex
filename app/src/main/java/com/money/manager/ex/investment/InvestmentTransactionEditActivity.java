@@ -32,10 +32,8 @@ import android.widget.SpinnerAdapter;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-import com.money.manager.ex.common.AmountInputDialog;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -43,12 +41,11 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
-import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.util.Calendar;
@@ -339,7 +336,7 @@ public class InvestmentTransactionEditActivity
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
-                    DateTime dateTime = MmxDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    DateTime dateTime = MmxJodaDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
                     viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 }
             };
@@ -350,7 +347,7 @@ public class InvestmentTransactionEditActivity
                 calendar.setTime(mStock.getPurchaseDate().toDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
+                        .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 if (new UIHelper(InvestmentTransactionEditActivity.this).isUsingDarkTheme()) {

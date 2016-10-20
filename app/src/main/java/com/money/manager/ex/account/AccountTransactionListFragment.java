@@ -71,6 +71,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -428,7 +429,7 @@ public class AccountTransactionListFragment
         settings.setShowTransactions(range.key);
 
         // Save the selected period.
-        mFilter.dateRange = new MmxDateTimeUtils(getActivity()).getDateRangeForPeriod(stringId);
+        mFilter.dateRange = new MmxJodaDateTimeUtils(getActivity()).getDateRangeForPeriod(stringId);
 
         item.setChecked(true);
 
@@ -671,8 +672,8 @@ public class AccountTransactionListFragment
                 where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
             ));
 
-        where.addStatement(QueryAllData.Date, ">=", MmxDateTimeUtils.getIsoStringFrom(mFilter.dateRange.dateFrom));
-        where.addStatement(QueryAllData.Date, "<=", MmxDateTimeUtils.getIsoStringFrom(mFilter.dateRange.dateTo));
+        where.addStatement(QueryAllData.Date, ">=", MmxDateTimeUtils.getIsoStringFrom(mFilter.dateRange.dateFrom.toDate()));
+        where.addStatement(QueryAllData.Date, "<=", MmxDateTimeUtils.getIsoStringFrom(mFilter.dateRange.dateTo.toDate()));
 
         // Status
         where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());
@@ -892,7 +893,7 @@ public class AccountTransactionListFragment
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = ranges.get(rangeName);
 
-        mFilter.dateRange = new MmxDateTimeUtils(getActivity()).getDateRangeForPeriod(range.nameResourceId);
+        mFilter.dateRange = new MmxJodaDateTimeUtils(getActivity()).getDateRangeForPeriod(range.nameResourceId);
     }
 
     private void updateAllDataListFragmentShowBalance() {

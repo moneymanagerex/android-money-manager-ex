@@ -37,6 +37,7 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 
@@ -70,11 +71,11 @@ public abstract class BaseReportFragment
                 mItemSelected = savedInstanceState.getInt(KEY_ITEM_SELECTED);
             if (savedInstanceState.containsKey(KEY_FROM_DATE)) {
                 String dateFromString = savedInstanceState.getString(KEY_FROM_DATE);
-                mDateFrom = MmxDateTimeUtils.from(dateFromString);
+                mDateFrom = MmxJodaDateTimeUtils.from(dateFromString);
             }
             if (savedInstanceState.containsKey(KEY_TO_DATE)) {
                 String dateToString = savedInstanceState.getString(KEY_TO_DATE);
-                mDateTo = MmxDateTimeUtils.from(dateToString);
+                mDateTo = MmxJodaDateTimeUtils.from(dateToString);
             }
         }
         //start loader
@@ -145,28 +146,28 @@ public abstract class BaseReportFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_current_month:
-                mDateFrom = MmxDateTimeUtils.today().dayOfMonth().withMinimumValue();
+                mDateFrom = MmxJodaDateTimeUtils.today().dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom.dayOfMonth().withMaximumValue();
                 break;
 
             case R.id.menu_last_month:
-                mDateFrom = MmxDateTimeUtils.today()
+                mDateFrom = MmxJodaDateTimeUtils.today()
                         .minusMonths(1).dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom.dayOfMonth().withMaximumValue();
                 break;
             case R.id.menu_last_30_days:
-                mDateFrom = MmxDateTimeUtils.today().minusDays(30);
-                mDateTo = MmxDateTimeUtils.today();
+                mDateFrom = MmxJodaDateTimeUtils.today().minusDays(30);
+                mDateTo = MmxJodaDateTimeUtils.today();
                 break;
             case R.id.menu_current_year:
-                mDateFrom = MmxDateTimeUtils.today()
+                mDateFrom = MmxJodaDateTimeUtils.today()
                         .monthOfYear().withMinimumValue()
                         .dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom.monthOfYear().withMaximumValue()
                         .dayOfMonth().withMaximumValue();
                 break;
             case R.id.menu_last_year:
-                mDateFrom = MmxDateTimeUtils.today().minusYears(1)
+                mDateFrom = MmxJodaDateTimeUtils.today().minusYears(1)
                         .monthOfYear().withMinimumValue()
                         .dayOfMonth().withMinimumValue();
                 mDateTo = mDateFrom
@@ -191,8 +192,8 @@ public abstract class BaseReportFragment
 
         String whereClause = null;
         if (mDateFrom != null && mDateTo != null) {
-            whereClause = ViewMobileData.Date + " >= '" + MmxDateTimeUtils.getIsoStringFrom(mDateFrom) +
-                "' AND " + ViewMobileData.Date + " <= '" + MmxDateTimeUtils.getIsoStringFrom(mDateTo) + "'";
+            whereClause = ViewMobileData.Date + " >= '" + MmxDateTimeUtils.getIsoStringFrom(mDateFrom.toDate()) +
+                "' AND " + ViewMobileData.Date + " <= '" + MmxDateTimeUtils.getIsoStringFrom(mDateTo.toDate()) + "'";
         }
 
         //check item
@@ -215,11 +216,11 @@ public abstract class BaseReportFragment
         outState.putInt(KEY_ITEM_SELECTED, mItemSelected);
         outState.putString(KEY_WHERE_CLAUSE, getWhereClause());
         if (mDateFrom != null) {
-//            outState.putSerializable(KEY_FROM_DATE, mDateFrom);
             outState.putString(KEY_FROM_DATE, mDateFrom.toString(Constants.ISO_DATE_FORMAT));
         }
-        if (mDateTo != null)
+        if (mDateTo != null) {
             outState.putString(KEY_TO_DATE, mDateTo.toString(Constants.ISO_DATE_FORMAT));
+        }
     }
 
     protected View addListViewHeaderFooter(int layout) {
@@ -262,12 +263,12 @@ public abstract class BaseReportFragment
                     DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
                     DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-                    mDateFrom = MmxDateTimeUtils.from(fromDatePicker);
-                    mDateTo = MmxDateTimeUtils.from(toDatePicker);
+                    mDateFrom = MmxJodaDateTimeUtils.from(fromDatePicker);
+                    mDateTo = MmxJodaDateTimeUtils.from(toDatePicker);
 
                     String whereClause =
-                        ViewMobileData.Date + ">='" + MmxDateTimeUtils.getIsoStringFrom(mDateFrom) + "' AND " +
-                        ViewMobileData.Date + "<='" + MmxDateTimeUtils.getIsoStringFrom(mDateTo) + "'";
+                        ViewMobileData.Date + ">='" + MmxDateTimeUtils.getIsoStringFrom(mDateFrom.toDate()) + "' AND " +
+                        ViewMobileData.Date + "<='" + MmxDateTimeUtils.getIsoStringFrom(mDateTo.toDate()) + "'";
 
                     Bundle args = new Bundle();
                     args.putString(KEY_WHERE_CLAUSE, whereClause);
@@ -279,14 +280,14 @@ public abstract class BaseReportFragment
             })
             .show();
         // set date if is null
-        if (mDateFrom == null) mDateFrom = MmxDateTimeUtils.today();
-        if (mDateTo == null) mDateTo = MmxDateTimeUtils.today();
+        if (mDateFrom == null) mDateFrom = MmxJodaDateTimeUtils.today();
+        if (mDateTo == null) mDateTo = MmxJodaDateTimeUtils.today();
 
         View view = dialog.getCustomView();
         DatePicker fromDatePicker = (DatePicker) view.findViewById(R.id.datePickerFromDate);
         DatePicker toDatePicker = (DatePicker) view.findViewById(R.id.datePickerToDate);
 
-        MmxDateTimeUtils.setDatePicker(mDateFrom, fromDatePicker);
-        MmxDateTimeUtils.setDatePicker(mDateTo, toDatePicker);
+        MmxJodaDateTimeUtils.setDatePicker(mDateFrom, fromDatePicker);
+        MmxJodaDateTimeUtils.setDatePicker(mDateTo, toDatePicker);
     }
 }

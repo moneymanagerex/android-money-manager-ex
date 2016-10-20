@@ -21,7 +21,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 
 import com.money.manager.ex.datalayer.StockFields;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
@@ -133,7 +133,7 @@ public class Stock
 
     public DateTime getPurchaseDate() {
         String dateString = getString(StockFields.PURCHASEDATE);
-        return MmxDateTimeUtils.from(dateString);
+        return MmxJodaDateTimeUtils.from(dateString);
     }
 
     public void setPurchaseDate(DateTime value) {

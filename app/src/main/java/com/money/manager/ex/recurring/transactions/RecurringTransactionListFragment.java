@@ -54,7 +54,7 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -356,7 +356,7 @@ public class RecurringTransactionListFragment
         Calendar cal = Calendar.getInstance(appLocale);
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxDateTimeUtils.getFirstDayOfWeek());
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxJodaDateTimeUtils.getFirstDayOfWeek());
         if (new UIHelper(getActivity()).isUsingDarkTheme()) {
             args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
         }

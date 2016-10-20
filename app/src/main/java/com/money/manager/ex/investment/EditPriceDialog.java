@@ -43,7 +43,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
@@ -74,7 +74,7 @@ public class EditPriceDialog
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
 
-    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+    @Inject Lazy<MmxJodaDateTimeUtils> dateTimeUtilsLazy;
 
     @State int mAccountId;
     @State String mUserDateFormat;
@@ -202,7 +202,7 @@ public class EditPriceDialog
             @Override
             public void onClick(View v) {
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(MmxDateTimeUtils.getFirstDayOfWeek())
+                        .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(mPrice.date.getYear(), mPrice.date.getMonthOfYear() - 1, mPrice.date.getDayOfMonth());
                 if (new UIHelper(getActivity()).isUsingDarkTheme()) {

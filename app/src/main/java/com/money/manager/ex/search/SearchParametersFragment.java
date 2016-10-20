@@ -54,6 +54,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcels;
@@ -388,11 +389,11 @@ public class SearchParametersFragment
 
         // from date
         if (searchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, " >= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
+            where.addStatement(QueryAllData.Date, " >= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom.toDate()));
         }
         // to date
         if (searchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, " <= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
+            where.addStatement(QueryAllData.Date, " <= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo.toDate()));
         }
         // payee
         if (searchParameters.payeeId != null) {
@@ -519,7 +520,7 @@ public class SearchParametersFragment
         // Date to
         if (viewHolder.txtDateTo.getTag() != null) {
             String dateString = viewHolder.txtDateTo.getTag().toString();
-            searchParameters.dateTo = MmxDateTimeUtils.from(dateString);
+            searchParameters.dateTo = MmxJodaDateTimeUtils.from(dateString);
         }
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {
@@ -614,12 +615,12 @@ public class SearchParametersFragment
             viewHolder.txtDateFrom.setTag(null);
         }
         else {
-            viewHolder.txtDateFrom.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom));
+            viewHolder.txtDateFrom.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom.toDate()));
         }
-        viewHolder.txtDateFrom.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateFrom));
+        viewHolder.txtDateFrom.setText(new MmxJodaDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateFrom));
         // Date to
-        viewHolder.txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo));
-        viewHolder.txtDateTo.setText(new MmxDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateTo));
+        viewHolder.txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo.toDate()));
+        viewHolder.txtDateTo.setText(new MmxJodaDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateTo));
 
         // Payee
         viewHolder.txtSelectPayee.setTag(searchParameters.payeeId);
