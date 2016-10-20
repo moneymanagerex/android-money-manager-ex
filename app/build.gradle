@@ -201,7 +201,7 @@ dependencies {
             , 'org.jsoup:jsoup:1.9.2'               // HTML parsing.
             , 'com.google.guava:guava:19.0'         // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
-            , 'com.nononsenseapps:filepicker:3.1.0' // file picker
+            , 'com.nononsenseapps:filepicker:1.2.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             , 'io.reactivex:rxjava:1.2.1'
 //            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
