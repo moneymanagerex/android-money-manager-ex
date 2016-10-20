@@ -65,6 +65,8 @@ import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
@@ -74,6 +76,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -88,12 +91,6 @@ import timber.log.Timber;
  */
 public class EditTransactionCommonFunctions {
 
-//    private static final int REQUEST_PICK_PAYEE = 1;
-//    private static final int REQUEST_PICK_CATEGORY = 3;
-//    private static final int REQUEST_PICK_SPLIT_TRANSACTION = 4;
-//    private static final int REQUEST_AMOUNT = 5;
-//    private static final int REQUEST_AMOUNT_TO = 6;
-
     private static final String DATEPICKER_TAG = "datepicker";
 
     public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
@@ -107,7 +104,8 @@ public class EditTransactionCommonFunctions {
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-    @Inject Lazy<MmxJodaDateTimeUtils> dateTimeUtilsLazy;
+//    @Inject Lazy<MmxJodaDateTimeUtils> dateTimeUtilsLazy;
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     // Model
     public ITransactionEntity transactionEntity;
@@ -469,9 +467,9 @@ public class EditTransactionCommonFunctions {
      * Due Date picker
      */
     public void initDateSelector() {
-        DateTime date = this.transactionEntity.getDate();
+        Date date = this.transactionEntity.getDate();
         if (date == null) {
-            date = DateTime.now();
+            date = new MmxDate().toDate();
             transactionEntity.setDate(date);
         }
         showDate(date);
@@ -480,14 +478,15 @@ public class EditTransactionCommonFunctions {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    DateTime dateTime = MmxJodaDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear + 1, dayOfMonth);
                     setDate(dateTime);
                 }
             };
 
             @Override
             public void onClick(View v) {
-                DateTime dateTime = transactionEntity.getDate();
+//                Date dateTime = transactionEntity.getDate();
+                MmxDate dateTime = new MmxDate(transactionEntity.getDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
@@ -503,7 +502,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = transactionEntity.getDate().minusDays(1);
+                Date dateTime = new MmxDate(transactionEntity.getDate()).minusDays(1).toDate();
                 setDate(dateTime);
             }
         });
@@ -511,7 +510,7 @@ public class EditTransactionCommonFunctions {
         viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = transactionEntity.getDate().plusDays(1);
+                Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
                 setDate(dateTime);
             }
         });
@@ -1355,7 +1354,7 @@ public class EditTransactionCommonFunctions {
 
     private String getUserDateFormat() {
         if (TextUtils.isEmpty(mUserDateFormat)) {
-            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern();
+            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern(getContext());
         }
         return mUserDateFormat;
     }
@@ -1448,10 +1447,12 @@ public class EditTransactionCommonFunctions {
         transactionEntity.setSubcategoryId(Constants.NOT_SET);
     }
 
-    private void showDate(DateTime dateTime) {
+    private void showDate(Date dateTime) {
         // Constants.LONG_DATE_MEDIUM_DAY_PATTERN
         String format = "EEE, " + getUserDateFormat();
-        viewHolder.dateTextView.setText(dateTime.toString(format));
+        //String display = dateTime.toString(format);
+        String display = dateTimeUtilsLazy.get().format(dateTime, format);
+        viewHolder.dateTextView.setText(display);
     }
 
     private void showSplitCategoriesForm(String datasetName) {
@@ -1486,7 +1487,7 @@ public class EditTransactionCommonFunctions {
                 .show();
     }
 
-    private void setDate(DateTime dateTime) {
+    private void setDate(Date dateTime) {
         setDirty(true);
 
         transactionEntity.setDate(dateTime);

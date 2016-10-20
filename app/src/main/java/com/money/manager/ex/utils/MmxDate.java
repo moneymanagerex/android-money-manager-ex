@@ -98,6 +98,10 @@ public class MmxDate {
         return mCalendar.get(Calendar.MONTH);
     }
 
+    public int getMonthOfYear() {
+        return getMonth();
+    }
+
     public MmxDate setCalendar(Calendar calendar) {
         mCalendar = calendar;
         return this;
@@ -193,6 +197,13 @@ public class MmxDate {
 
     public String toString(String format) {
         return getFormatterFor(format).format(toDate());
+    }
+
+    public String toIsoString() {
+//        if (date == null) return null;
+
+        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT, Locale.ENGLISH);
+        return format.format(toDate());
     }
 
     private SimpleDateFormat getFormatterFor(String format) {

@@ -70,6 +70,7 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
@@ -672,9 +673,8 @@ public class AccountTransactionListFragment
                 where.getStatement(ITransactionEntity.ACCOUNTID, "=", mAccountId)
             ));
 
-        MmxDateTimeUtils dateUtil = new MmxDateTimeUtils();
-        where.addStatement(QueryAllData.Date, ">=", dateUtil.getIsoStringFrom(mFilter.dateRange.dateFrom.toDate()));
-        where.addStatement(QueryAllData.Date, "<=", dateUtil.getIsoStringFrom(mFilter.dateRange.dateTo.toDate()));
+        where.addStatement(QueryAllData.Date, ">=", new MmxDate(mFilter.dateRange.dateFrom).toIsoString());
+        where.addStatement(QueryAllData.Date, "<=", new MmxDate(mFilter.dateRange.dateTo).toIsoString());
 
         // Status
         where.addStatement(QueryAllData.Status, "IN", mFilter.transactionStatus.getSqlParameters());

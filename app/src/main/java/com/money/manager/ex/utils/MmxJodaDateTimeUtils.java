@@ -239,41 +239,14 @@ public class MmxJodaDateTimeUtils {
             dateTo = null;
         }
 
-        DateRange result = new DateRange(dateFrom, dateTo);
+        DateRange result = new DateRange(dateFrom.toDate(), dateTo.toDate());
         return result;
-    }
-
-    /**
-     * Get pattern defined by the user.
-     * @return pattern user define
-     */
-    public String getUserDatePattern() {
-        InfoService service = new InfoService(getContext());
-        String pattern = service.getInfoValue(InfoKeys.DATEFORMAT);
-
-        if (!TextUtils.isEmpty(pattern)) {
-            //replace part of pattern
-            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
-                    .replace("%y", "yy").replace("%Y", "yyyy")
-                    .replace("'", "''");
-        }
-
-        // && getContext().getResources().getStringArray(R.array.date_format_mask) != null
-        String[] dateFormats = getContext().getResources().getStringArray(R.array.date_format_mask);
-        if (TextUtils.isEmpty(pattern) && dateFormats.length > 0){
-            pattern = dateFormats[0];
-            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
-                    .replace("%y", "yy").replace("%Y", "yyyy")
-                    .replace("'", "''");
-        }
-
-        return pattern;
     }
 
     public String getUserStringFromDateTime(DateTime dateTime) {
         if (dateTime == null) return "";
 
-        String userDatePattern = getUserDatePattern();
+        String userDatePattern = new MmxDateTimeUtils().getUserDatePattern(getContext());
 
         return dateTime.toString(userDatePattern);
     }

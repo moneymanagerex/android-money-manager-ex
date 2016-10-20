@@ -20,11 +20,18 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.datalayer.StockFields;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
+
+import java.util.Date;
+
+import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -45,7 +52,7 @@ public class Stock
     public static Stock create() {
         Stock stock = new Stock();
         // Set to today.
-        stock.setPurchaseDate(DateTime.now());
+        stock.setPurchaseDate(new MmxDate().toDate());
 
         stock.setName("");
         stock.setHeldAt(0);
@@ -131,12 +138,12 @@ public class Stock
         setDouble(StockFields.NUMSHARES, value);
     }
 
-    public DateTime getPurchaseDate() {
+    public Date getPurchaseDate() {
         String dateString = getString(StockFields.PURCHASEDATE);
-        return MmxJodaDateTimeUtils.from(dateString);
+        return new MmxDateTimeUtils().from(dateString);
     }
 
-    public void setPurchaseDate(DateTime value) {
+    public void setPurchaseDate(Date value) {
         setDate(StockFields.PURCHASEDATE, value);
     }
 

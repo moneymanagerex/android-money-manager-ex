@@ -17,7 +17,6 @@
 package com.money.manager.ex;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
@@ -61,8 +60,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import info.javaperformance.money.Money;
 import timber.log.Timber;
-
-import static com.money.manager.ex.Constants.DEFAULT_DB_FILENAME;
 
 /**
  * Here we define the parcel converter for Money type.

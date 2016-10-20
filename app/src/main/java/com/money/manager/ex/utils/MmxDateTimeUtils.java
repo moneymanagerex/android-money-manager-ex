@@ -17,9 +17,13 @@
 
 package com.money.manager.ex.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.R;
+import com.money.manager.ex.core.InfoKeys;
+import com.money.manager.ex.servicelayer.InfoService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +41,6 @@ import timber.log.Timber;
  */
 
 public class MmxDateTimeUtils {
-//    private MmxDate _utils;
     private Locale _locale = Locale.ENGLISH;
 
     @Inject
@@ -47,13 +50,6 @@ public class MmxDateTimeUtils {
 
     public MmxDateTimeUtils(Locale locale) {
         _locale = locale;
-    }
-
-    public String getIsoStringFrom(Date date) {
-        if (date == null) return null;
-
-        SimpleDateFormat format = new SimpleDateFormat(Constants.ISO_DATE_FORMAT);
-        return format.format(date);
     }
 
     public Date from(String isoString) {
@@ -80,6 +76,33 @@ public class MmxDateTimeUtils {
 
     public String format(Date date, String format) {
         return getFormatterFor(format).format(date);
+    }
+
+    /**
+     * Get pattern defined by the user.
+     * @return pattern user define
+     */
+    public String getUserDatePattern(Context context) {
+        InfoService service = new InfoService(context);
+        String pattern = service.getInfoValue(InfoKeys.DATEFORMAT);
+
+        if (!TextUtils.isEmpty(pattern)) {
+            //replace part of pattern
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
+                    .replace("%y", "yy").replace("%Y", "yyyy")
+                    .replace("'", "''");
+        }
+
+        // && getContext().getResources().getStringArray(R.array.date_format_mask) != null
+        String[] dateFormats = context.getResources().getStringArray(R.array.date_format_mask);
+        if (TextUtils.isEmpty(pattern) && dateFormats.length > 0){
+            pattern = dateFormats[0];
+            pattern = pattern.replace("%d", "dd").replace("%m", "MM")
+                    .replace("%y", "yy").replace("%Y", "yyyy")
+                    .replace("'", "''");
+        }
+
+        return pattern;
     }
 
     public Date now() {

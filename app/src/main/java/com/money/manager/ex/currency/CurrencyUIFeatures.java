@@ -39,6 +39,7 @@ import com.shamanland.fonticon.FontIconDrawable;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import info.javaperformance.money.Money;
@@ -90,7 +91,7 @@ public class CurrencyUIFeatures {
      *
      * @return Indicator whether the rate was successfully updated.
      */
-    public boolean onPriceDownloaded(String symbol, Money price, DateTime date) {
+    public boolean onPriceDownloaded(String symbol, Money price, Date date) {
         // extract destination currency
         String baseCurrencyCode = getService().getBaseCurrencyCode();
         String destinationCurrency = symbol.replace(baseCurrencyCode, "");

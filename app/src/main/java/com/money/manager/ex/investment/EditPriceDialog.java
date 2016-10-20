@@ -43,12 +43,16 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -74,7 +78,7 @@ public class EditPriceDialog
     public static final String ARG_PRICE = "EditPriceDialog:Price";
     public static final String ARG_DATE = "EditPriceDialog:Date";
 
-    @Inject Lazy<MmxJodaDateTimeUtils> dateTimeUtilsLazy;
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     @State int mAccountId;
     @State String mUserDateFormat;
@@ -184,13 +188,13 @@ public class EditPriceDialog
         String symbol = getArguments().getString(ARG_SYMBOL);
         Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
         String dateString = getArguments().getString(ARG_DATE);
-        DateTime date = DateTime.parse(dateString);
+        Date date = new MmxDateTimeUtils().from(dateString);
         mPrice = new PriceDownloadedEvent(symbol, price, date);
     }
 
     private String getUserDateFormat() {
         if (TextUtils.isEmpty(mUserDateFormat)) {
-            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern();
+            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern(getContext());
         }
         return mUserDateFormat;
     }
@@ -201,10 +205,12 @@ public class EditPriceDialog
         View.OnClickListener dateClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MmxDate priceDate = new MmxDate(mPrice.date);
+
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
-                        .setPreselectedDate(mPrice.date.getYear(), mPrice.date.getMonthOfYear() - 1, mPrice.date.getDayOfMonth());
+                        .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear() - 1, priceDate.getDayOfMonth());
                 if (new UIHelper(getActivity()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
@@ -214,7 +220,7 @@ public class EditPriceDialog
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    mPrice.date = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0);
+                    mPrice.date = new MmxDate(year, monthOfYear + 1, dayOfMonth).toDate();
                     showDate();
                 }
             };
@@ -227,14 +233,14 @@ public class EditPriceDialog
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPrice.date = mPrice.date.minusDays(1);
+                mPrice.date = new MmxDate(mPrice.date).minusDays(1).toDate();
                 showDate();
             }
         });
         viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPrice.date = mPrice.date.plusDays(1);
+                mPrice.date = new MmxDate(mPrice.date).plusDays(1).toDate();
                 showDate();
             }
         });
@@ -269,6 +275,6 @@ public class EditPriceDialog
     }
 
     private void showDate() {
-        viewHolder.dateTextView.setText(mPrice.date.toString(getUserDateFormat()));
+        viewHolder.dateTextView.setText(new MmxDateTimeUtils().format(mPrice.date, getUserDateFormat()));
     }
 }

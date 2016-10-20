@@ -28,6 +28,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.currency.list.CurrencyListFragment;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.home.HomeFragment;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.SelectDatabaseActivity;

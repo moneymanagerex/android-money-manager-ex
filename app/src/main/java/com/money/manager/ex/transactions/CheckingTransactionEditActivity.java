@@ -56,6 +56,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
+import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -256,7 +257,7 @@ public class CheckingTransactionEditActivity
         mCommon.transactionEntity.setId(null);
 
         // Use today's date.
-        mCommon.transactionEntity.setDate(DateTime.now());
+        mCommon.transactionEntity.setDate(new MmxDate().toDate());
 
         // Remove transaction id in split categories.
         if (mCommon.mSplitTransactions != null) {

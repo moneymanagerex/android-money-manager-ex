@@ -23,6 +23,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
@@ -94,13 +95,13 @@ public class EntityBase
         return new MmxDateTimeUtils().from(dateString);
     }
 
-    protected void setDate(String fieldName, DateTime value) {
-        String dateString = new MmxDateTimeUtils().getIsoStringFrom(value.toDate());
-        contentValues.put(fieldName, dateString);
-    }
+//    protected void setDate(String fieldName, DateTime value) {
+//        String dateString = new MmxDate().getIsoStringFrom(value.toDate());
+//        contentValues.put(fieldName, dateString);
+//    }
 
     protected void setDate(String fieldName, Date value) {
-        String dateString = new MmxDateTimeUtils().getIsoStringFrom(value);
+        String dateString = new MmxDate(value).toIsoString();
         contentValues.put(fieldName, dateString);
     }
 

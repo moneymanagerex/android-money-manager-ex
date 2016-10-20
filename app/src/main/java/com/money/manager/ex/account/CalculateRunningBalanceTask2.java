@@ -28,12 +28,14 @@ import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.datalayer.QueryAllDataRepository;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 
 import info.javaperformance.money.Money;
@@ -56,7 +58,7 @@ public class CalculateRunningBalanceTask2
      * @param accountId Id of the account for which to load the balances.
      * @param startingDate The date, inclusive, from which to calculate the running balance.
      */
-    public CalculateRunningBalanceTask2(Context context, int accountId, DateTime startingDate,
+    public CalculateRunningBalanceTask2(Context context, int accountId, Date startingDate,
                                         Bundle selection) {
         this.context = context.getApplicationContext();
         this.accountId = accountId;
@@ -67,7 +69,7 @@ public class CalculateRunningBalanceTask2
     private Context context;
     private HashMap<Integer, Money> balances;
     private int accountId;
-    private DateTime startingDate;
+    private Date startingDate;
     private Bundle selectionBundle;
 
     /**
@@ -129,8 +131,8 @@ public class CalculateRunningBalanceTask2
                 // Get starting balance on the given day.
                 startingBalance = accountService.loadInitialBalance(this.accountId);
 
-                String date = this.startingDate.minusDays(1)
-                    .toString(Constants.ISO_DATE_FORMAT);
+                String date = new MmxDate(this.startingDate).minusDays(1)
+                        .toIsoString();
                 Money balanceOnDate = accountService.calculateBalanceOn(this.accountId, date);
                 startingBalance = startingBalance.add(balanceOnDate);
 

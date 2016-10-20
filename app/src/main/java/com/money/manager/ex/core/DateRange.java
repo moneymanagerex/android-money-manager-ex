@@ -19,6 +19,8 @@ package com.money.manager.ex.core;
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 /**
  * Represents a date range.
  */
@@ -27,11 +29,11 @@ public class DateRange {
 
     public DateRange() {}
 
-    public DateRange(DateTime dateFrom, DateTime dateTo) {
+    public DateRange(Date dateFrom, Date dateTo) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
     }
 
-    public DateTime dateFrom;
-    public DateTime dateTo;
+    public Date dateFrom;
+    public Date dateTo;
 }

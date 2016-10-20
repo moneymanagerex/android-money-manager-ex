@@ -28,6 +28,7 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -39,6 +40,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -255,10 +257,12 @@ public class MorningstarPriceUpdater
         DateTime date = formatter.withZone(DateTimeZone.forID("America/New_York"))
                 .parseDateTime(dateString)
                 .withZone(DateTimeZone.forID("Europe/Vienna"));
+        // todo: convert time zone
+//        Date date = new MmxDateTimeUtils().from(dateString);
 
         // todo: should this be converted to the exchange time?
 
-        return new PriceDownloadedEvent(yahooSymbol, price, date);
+        return new PriceDownloadedEvent(yahooSymbol, price, date.toDate());
     }
 
     private synchronized void finishIfAllDone() {

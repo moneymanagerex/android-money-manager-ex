@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+import java.util.Date;
+
 import info.javaperformance.money.Money;
 
 /**
@@ -13,7 +15,7 @@ import info.javaperformance.money.Money;
 public class PriceDownloadedEvent {
 
     @ParcelConstructor
-    public PriceDownloadedEvent(String symbol, Money price, DateTime date) {
+    public PriceDownloadedEvent(String symbol, Money price, Date date) {
         this.symbol = symbol;
         this.price = price;
         this.date = date;
@@ -21,5 +23,5 @@ public class PriceDownloadedEvent {
 
     public String symbol;
     public Money price;
-    public DateTime date;
+    public Date date;
 }

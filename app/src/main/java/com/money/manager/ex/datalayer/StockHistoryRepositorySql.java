@@ -23,11 +23,14 @@ import android.database.DatabaseUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.domainmodel.StockHistory;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.joda.time.DateTime;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -49,7 +52,7 @@ public class StockHistoryRepositorySql
 //        application.iocComponent.inject(this);
     }
 
-    public boolean addStockHistoryRecord(String symbol, Money price, DateTime date) {
+    public boolean addStockHistoryRecord(String symbol, Money price, Date date) {
         boolean success = false;
 
         boolean recordExists = recordExists(symbol, date);
@@ -75,8 +78,8 @@ public class StockHistoryRepositorySql
         return success;
     }
 
-    public ContentValues getContentValues(String symbol, Money price, DateTime date) {
-        String isoDate = date.toString(Constants.ISO_DATE_FORMAT);
+    public ContentValues getContentValues(String symbol, Money price, Date date) {
+        String isoDate = new MmxDate(date).toIsoString();
 
         ContentValues values = new ContentValues();
         values.put(StockHistory.SYMBOL, symbol);
@@ -87,10 +90,10 @@ public class StockHistoryRepositorySql
         return values;
     }
 
-    public boolean recordExists(String symbol, DateTime date) {
+    public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date.toDate());
+        String isoDate = new MmxDate(date).toIsoString();
 
         String sql = new Select()
             .from(TABLE_NAME)
@@ -108,7 +111,7 @@ public class StockHistoryRepositorySql
         return result;
     }
 
-    public boolean updateHistory(String symbol, Money price, DateTime date) {
+    public boolean updateHistory(String symbol, Money price, Date date) {
         boolean result;
 
         ContentValues values = getContentValues(symbol, price, date);
