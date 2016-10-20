@@ -147,7 +147,7 @@ public abstract class BaseExpandableListFragment
                 formatter.setSearchIconResource(R.drawable.ic_action_search_dark, true, true);
                 formatter.setSearchCloseIconResource(R.drawable.ic_action_content_clear_dark);
                 formatter.setSearchTextColorResource(R.color.abc_primary_text_material_dark);
-                formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
+                //formatter.setSearchHintColorResource(R.color.hint_foreground_material_dark);
 
                 formatter.format(searchView);
             }

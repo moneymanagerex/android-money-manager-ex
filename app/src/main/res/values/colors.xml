@@ -98,4 +98,7 @@
     <color name="button_background_inactive_light">@color/material_white</color>
     <color name="button_background_inactive_dark">@color/black20transparent</color>
     <color name="black20transparent">#70000000</color>
+
+    <!-- deprecated colors used from old versions of the support library -->
+    <!--<color name="mmx_hint_foreground_material_dark">0x7f100089</color>-->
 </resources>

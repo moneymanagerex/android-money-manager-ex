@@ -37,7 +37,7 @@ ext {
     buildToolsVersion = '24.0.3'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
-    supportLibrary = '24.2.1'
+    supportLibrary = '25.0.0'
     supportDependencies = [
             support          :       "com.android.support:support-v4:${supportLibrary}",
             appCompat        :       "com.android.support:appcompat-v7:${supportLibrary}",
@@ -46,7 +46,7 @@ ext {
             preference       :       "com.android.support:preference-v14:${supportLibrary}",
             recyclerView     :       "com.android.support:recyclerview-v7:${supportLibrary}",
             supportAnnotation:       "com.android.support:support-annotations:${supportLibrary}",
-            gridLayout          :   "com.android.support:gridlayout-v7:${supportLibrary}"
+            gridLayout       :       "com.android.support:gridlayout-v7:${supportLibrary}"
     ]
 }
 
