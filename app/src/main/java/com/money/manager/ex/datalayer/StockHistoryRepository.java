@@ -34,6 +34,8 @@ import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 import info.javaperformance.money.Money;
 import timber.log.Timber;
 
@@ -78,7 +80,7 @@ public class StockHistoryRepository
         return addStockHistoryRecord(price.symbol, price.price, price.date);
     }
 
-    public boolean addStockHistoryRecord(String symbol, Money price, DateTime date) {
+    public boolean addStockHistoryRecord(String symbol, Money price, Date date) {
         boolean success = false;
 
         boolean recordExists = recordExists(symbol, date);

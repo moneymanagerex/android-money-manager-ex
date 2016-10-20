@@ -23,9 +23,12 @@ import com.money.manager.ex.core.TransactionStatuses;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.domainmodel.EntityBase;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
+
+import java.util.Date;
 
 import info.javaperformance.money.Money;
 
@@ -71,10 +74,10 @@ public class AccountTransactionDisplay
         return getString(QueryAllData.Date);
     }
 
-    public DateTime getDate() {
+    public Date getDate() {
         String dateString = getDateString();
 
-        DateTime dateTime = MmxJodaDateTimeUtils.from(dateString);
+        Date dateTime = new MmxDateTimeUtils().from(dateString);
 
         return dateTime;
     }

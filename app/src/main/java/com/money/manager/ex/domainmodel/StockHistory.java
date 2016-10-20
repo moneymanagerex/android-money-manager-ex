@@ -57,7 +57,7 @@ public class StockHistory
         return getInt(HISTID);
     }
 
-    public DateTime getDate() {
-        return getDateTime(DATE);
+    public Date getDate() {
+        return getDate(DATE);
     }
 }

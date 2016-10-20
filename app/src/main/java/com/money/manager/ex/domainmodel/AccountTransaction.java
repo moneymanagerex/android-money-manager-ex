@@ -23,10 +23,14 @@ import android.database.DatabaseUtils;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
+
+import java.util.Date;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -164,15 +168,15 @@ public class AccountTransaction
         return getString(ITransactionEntity.TRANSDATE);
     }
 
-    public DateTime getDate() {
+    public Date getDate() {
         String dateString = getDateString();
         return dateString != null
-            ? MmxJodaDateTimeUtils.from(dateString)
+            ? new MmxDateTimeUtils().from(dateString)
             : null;
     }
 
-    public void setDate(DateTime value) {
-        String dateString = value.toString(Constants.ISO_DATE_FORMAT);
+    public void setDate(Date value) {
+        String dateString = new MmxDate(value).toIsoString();
         setString(ITransactionEntity.TRANSDATE, dateString);
     }
 
