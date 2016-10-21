@@ -249,7 +249,7 @@ public class MorningstarPriceUpdater
 
         // date
         String dateString = doc.body().getElementById("asOfDate").text();
-        String dateFormat = "MM/dd/YYYY HH:mm:ss";
+        String dateFormat = "MM/dd/yyyy HH:mm:ss";
 //        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateFormat);
         // the time zone is EST
 //        DateTime date = formatter.withZone(DateTimeZone.forID("America/New_York"))

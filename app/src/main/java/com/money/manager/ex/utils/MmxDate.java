@@ -32,7 +32,7 @@ import java.util.TimeZone;
 import timber.log.Timber;
 
 /**
- * Various calendar utilities.
+ * Expanded Date type, matching JodaTime and other APIs.
  */
 public class MmxDate {
 
