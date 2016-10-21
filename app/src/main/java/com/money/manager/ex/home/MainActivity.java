@@ -965,7 +965,9 @@ public class MainActivity
                 MenuInflater inflater = getMenuInflater();
                 inflater.inflate(R.menu.menu_item_sync_progress, menu);
                 mSyncMenuItem = menu.findItem(id);
-                Drawable syncIcon = new UIHelper(this).getIcon(GoogleMaterial.Icon.gmd_cached);
+                UIHelper ui = new UIHelper(this);
+                Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached)
+                        .color(ui.getToolbarItemColor());
                 mSyncMenuItem.setIcon(syncIcon);
 
                 if (hasAnimation) {
