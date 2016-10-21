@@ -47,8 +47,6 @@ import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
 
-import org.joda.time.DateTime;
-
 import java.util.Calendar;
 import java.util.Date;
 

@@ -42,7 +42,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
-import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -57,13 +56,12 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.EditPriceDialog;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
-import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.StocksCursorAdapter;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
+import com.money.manager.ex.utils.MmxDate;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -238,7 +236,7 @@ public class WatchlistItemsFragment
                 args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
                 args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
 
-                String dateString = DateTime.now().toString();
+                String dateString = new MmxDate().toIsoString();
                 args.putString(EditPriceDialog.ARG_DATE, dateString);
 
                 dialog.setArguments(args);

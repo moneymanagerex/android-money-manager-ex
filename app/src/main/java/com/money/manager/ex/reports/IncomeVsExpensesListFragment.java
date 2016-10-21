@@ -50,11 +50,9 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

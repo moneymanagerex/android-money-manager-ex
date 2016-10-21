@@ -29,10 +29,6 @@ import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import timber.log.Timber;
 
 /**
@@ -55,13 +51,14 @@ public class OnDateButtonClickListener
 
     @Override
     public void onClick(View v) {
-        DateTime dateTime = MmxJodaDateTimeUtils.today();
+        MmxDate dateTime = new MmxDate().today();
         String calendarValue = mTextView.getText().toString();
 
         if (!TextUtils.isEmpty(calendarValue)) {
             String userDatePattern = new MmxDateTimeUtils().getUserDatePattern(mParent.getApplicationContext());
-            DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
-            dateTime = formatter.parseDateTime(calendarValue);
+//            DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
+//            dateTime = formatter.parseDateTime(calendarValue);
+            dateTime = new MmxDate(calendarValue, userDatePattern);
         }
 
         CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()

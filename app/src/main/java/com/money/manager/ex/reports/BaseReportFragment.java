@@ -29,7 +29,6 @@ import android.widget.DatePicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxCursorLoader;
@@ -39,9 +38,6 @@ import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
-
-import org.joda.time.DateTime;
 
 import java.util.Date;
 

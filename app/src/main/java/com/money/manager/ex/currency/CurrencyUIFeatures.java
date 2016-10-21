@@ -27,8 +27,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.events.CurrencyDeletionConfirmedEvent;
@@ -37,7 +35,6 @@ import com.money.manager.ex.utils.DialogUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
 
 import java.util.Date;
 import java.util.concurrent.Callable;

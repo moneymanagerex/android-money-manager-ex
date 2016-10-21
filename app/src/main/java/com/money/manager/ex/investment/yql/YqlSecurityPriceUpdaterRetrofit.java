@@ -32,12 +32,8 @@ import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -205,7 +201,7 @@ public class YqlSecurityPriceUpdaterRetrofit
         JsonElement dateElement = quote.get("LastTradeDate");
         if (dateElement != JsonNull.INSTANCE) {
             // Sometimes the date is not available. For now we will use today's date.
-            date = new MmxDateTimeUtils().from(dateElement.getAsString(), "MM/dd/yyyy");
+            date = new MmxDate(dateElement.getAsString(), "MM/dd/yyyy").toDate();
         }
         priceModel.date = date;
 

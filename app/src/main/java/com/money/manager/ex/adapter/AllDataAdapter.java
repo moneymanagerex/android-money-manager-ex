@@ -39,10 +39,6 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;

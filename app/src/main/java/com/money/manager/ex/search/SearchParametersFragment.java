@@ -56,9 +56,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;

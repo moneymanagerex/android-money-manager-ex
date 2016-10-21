@@ -27,9 +27,6 @@ import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.file.TextFileExport;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
-
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

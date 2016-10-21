@@ -20,16 +20,10 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.opencsv.CSVParser;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.util.Date;

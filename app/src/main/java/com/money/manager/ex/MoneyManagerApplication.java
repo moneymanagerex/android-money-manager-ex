@@ -48,7 +48,6 @@ import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
 
 import io.fabric.sdk.android.Fabric;
-import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.parceler.Parcel;
 import org.parceler.ParcelClass;

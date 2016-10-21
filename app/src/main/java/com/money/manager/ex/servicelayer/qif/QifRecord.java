@@ -20,17 +20,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.servicelayer.CategoryService;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.util.ArrayList;

@@ -39,10 +39,11 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.NetworkUtils;
 
 import org.apache.commons.io.IOUtils;
-import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -65,6 +67,8 @@ import timber.log.Timber;
  * Class used to manage the database file synchronization process.
  */
 public class SyncManager {
+
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     @Inject
     public SyncManager(Context context) {
@@ -124,11 +128,11 @@ public class SyncManager {
             throw new RuntimeException(getContext().getString(R.string.no_remote_change_date));
         }
 
-        DateTime cachedLastModified = DateTime.parse(dateString);
+        Date cachedLastModified = new MmxDate(dateString).toDate();
 
-        DateTime remoteLastModified = getModificationDateFrom(remoteFile);
+        Date remoteLastModified = getModificationDateFrom(remoteFile);
 
-        return !remoteLastModified.isEqual(cachedLastModified);
+        return !remoteLastModified.equals(cachedLastModified);
     }
 
     public void disableAutoUpload() {
@@ -222,15 +226,15 @@ public class SyncManager {
      * @return date of last modification
      */
     @Deprecated
-    public DateTime getRemoteLastModifiedDatePreferenceFor(String remotePath) {
+    public Date getRemoteLastModifiedDatePreferenceFor(String remotePath) {
         String dateString = getPreferences().get(remotePath, null);
         if (TextUtils.isEmpty(dateString)) return null;
 
-        return new DateTime(dateString);
+        return new MmxDate(dateString).toDate();
     }
 
-    public DateTime getModificationDateFrom(CloudMetaData remoteFile) {
-        return new DateTime(remoteFile.getModifiedAt());
+    public Date getModificationDateFrom(CloudMetaData remoteFile) {
+        return new MmxDate(remoteFile.getModifiedAt()).toDate();
     }
 
     public String getRemotePath() {
@@ -524,12 +528,14 @@ public class SyncManager {
      * @param file file name
      */
     void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
-        DateTime date = new DateTime(file.getModifiedAt());
+        Date date = new MmxDate(file.getModifiedAt()).toDate();
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
         DatabaseMetadata currentDb = getDatabases().get(localPath);
-        if (currentDb.remoteLastChangedDate == date.toString()) return;
+        if (currentDb.remoteLastChangedDate.equals(date.toString())) {
+            return;
+        }
 
         currentDb.setRemoteLastChangedDate(date);
         getDatabases().save();
@@ -601,7 +607,7 @@ public class SyncManager {
         Timber.d("Setting delayed upload alarm.");
 
         // start the sync service after 30 seconds.
-        alarm.set(AlarmManager.RTC_WAKEUP, DateTime.now().getMillis() + 30*1000, pendingIntent);
+        alarm.set(AlarmManager.RTC_WAKEUP, new MmxDate().getMillis() + 30*1000, pendingIntent);
     }
 
     private PendingIntent getPendingIntentForDelayedUpload() {
@@ -614,11 +620,9 @@ public class SyncManager {
         intent.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, db.localPath);
         intent.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, db.remotePath);
 
-        PendingIntent pintent = PendingIntent.getService(getContext(),
+        return PendingIntent.getService(getContext(),
                 SyncConstants.REQUEST_DELAYED_SYNC,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        return pintent;
     }
 
     private AlarmManager getAlarmManager() {

@@ -71,7 +71,6 @@ import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;

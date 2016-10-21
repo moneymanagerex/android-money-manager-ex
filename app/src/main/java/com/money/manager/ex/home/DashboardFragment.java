@@ -55,14 +55,10 @@ import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 
-import org.joda.time.DateTime;
-
 import java.util.Calendar;
-import java.util.Date;
 
 import info.javaperformance.money.MoneyFactory;
 

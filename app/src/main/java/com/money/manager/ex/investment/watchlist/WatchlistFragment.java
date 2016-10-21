@@ -71,7 +71,6 @@ import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.io.IOException;

@@ -21,8 +21,7 @@ import android.content.Context;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
 import com.money.manager.ex.core.file.TextFileExport;
-
-import org.joda.time.DateTime;
+import com.money.manager.ex.utils.MmxDate;
 
 import timber.log.Timber;
 
@@ -103,7 +102,7 @@ public class QifExport
     private String generateFileName() {
         // use just the date for now?
         String format = "yyyy-MM-dd_HHmmss";
-        String result = DateTime.now().toString(format);
+        String result = new MmxDate().toString(format);
 
         // append file extension.
         result += ".qif";

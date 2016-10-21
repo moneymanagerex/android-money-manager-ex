@@ -20,18 +20,13 @@ package com.money.manager.ex.domainmodel;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.datalayer.StockFields;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
 import java.util.Date;
-
-import javax.inject.Inject;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;

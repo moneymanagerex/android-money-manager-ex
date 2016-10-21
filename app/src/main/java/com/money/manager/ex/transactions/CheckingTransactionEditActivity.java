@@ -60,7 +60,6 @@ import com.money.manager.ex.utils.MmxDate;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;

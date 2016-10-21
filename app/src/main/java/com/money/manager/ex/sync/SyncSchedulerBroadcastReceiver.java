@@ -33,9 +33,9 @@ import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncBroadcastReceiver;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.utils.MmxDate;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -94,14 +94,14 @@ public class SyncSchedulerBroadcastReceiver
         // If the period is 0, do not schedule the alarm.
         if (minutes <= 0) return;
 
-        DateTime now = DateTime.now();
+        MmxDate now = new MmxDate();
         int secondsInMinute = 60;
 
         Timber.d("Scheduling synchronisation at: %s, repeat every %s minutes", now.toString(), minutes);
 
         // Schedule the alarm for synchronization. Run immediately and then in the given interval.
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                now.toDateTime().getMillis(),
+                now.getMillis(),
                 minutes * secondsInMinute * 1000,
                 pendingIntent);
     }

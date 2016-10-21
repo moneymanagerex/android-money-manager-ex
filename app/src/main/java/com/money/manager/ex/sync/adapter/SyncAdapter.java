@@ -31,8 +31,6 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.SyncManager;
 
-import org.joda.time.DateTime;
-
 import java.io.File;
 
 import timber.log.Timber;

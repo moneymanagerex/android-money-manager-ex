@@ -25,9 +25,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
 import java.util.Date;

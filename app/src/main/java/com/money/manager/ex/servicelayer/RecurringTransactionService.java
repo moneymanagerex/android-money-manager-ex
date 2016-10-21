@@ -31,12 +31,9 @@ import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.recurring.transactions.Recurrence;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -150,8 +147,8 @@ public class RecurringTransactionService
                 }
                 // get the last day of the next month,
                 // then iterate backwards until we are on a weekday.
-                while(result.getDayOfWeek() == DateTimeConstants.SATURDAY ||
-                        result.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+                while(result.getDayOfWeek() == Calendar.SATURDAY ||
+                        result.getDayOfWeek() == Calendar.SUNDAY) {
                     result = result.minusDays(1);
                 }
                 break;

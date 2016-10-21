@@ -57,7 +57,6 @@ import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
 
 import java.util.Date;

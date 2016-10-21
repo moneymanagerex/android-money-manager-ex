@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.core;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
 import java.util.Date;

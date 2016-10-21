@@ -25,15 +25,10 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
-
-import org.joda.time.DateTime;
 
 import java.util.Date;
 

@@ -27,10 +27,10 @@ import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.servicelayer.InfoService;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+//import org.joda.time.DateTime;
+//import org.joda.time.LocalDate;
+//import org.joda.time.format.DateTimeFormat;
+//import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -52,24 +52,24 @@ public class MmxJodaDateTimeUtils {
 //        return DateTime.now();
 //    }
 
-    public static DateTime today() {
-        DateTime today;
-        try {
-            today = new LocalDate()
-                    .toDateTimeAtStartOfDay()
-                    .toDateTime();
-        } catch (RuntimeException e) {
-            Timber.e(e);
-
-            // try adding 1 hour to avoid daylight savings transitions
-            today = new LocalDate()
-                    .toDateTimeAtStartOfDay()
-                    .plusHours(1)
-                    .toDateTime();
-        }
-
-        return today;
-    }
+//    public static DateTime today() {
+//        DateTime today;
+//        try {
+//            today = new LocalDate()
+//                    .toDateTimeAtStartOfDay()
+//                    .toDateTime();
+//        } catch (RuntimeException e) {
+//            Timber.e(e);
+//
+//            // try adding 1 hour to avoid daylight savings transitions
+//            today = new LocalDate()
+//                    .toDateTimeAtStartOfDay()
+//                    .plusHours(1)
+//                    .toDateTime();
+//        }
+//
+//        return today;
+//    }
 
 //    public static DateTime from(String isoString) {
 //        if (TextUtils.isEmpty(isoString)) return null;
@@ -89,17 +89,17 @@ public class MmxJodaDateTimeUtils {
 //                .toDateTime();
 //    }
 
-    /**
-     * Conversion factory.
-     * @param calendar The date to use as the base.
-     * @return The DateTime instance of the date.
-     */
-    public static DateTime from(Calendar calendar) {
-        if (calendar == null) return null;
-
-        DateTime result = new DateTime(calendar.getTime());
-        return result;
-    }
+//    /**
+//     * Conversion factory.
+//     * @param calendar The date to use as the base.
+//     * @return The DateTime instance of the date.
+//     */
+//    public static DateTime from(Calendar calendar) {
+//        if (calendar == null) return null;
+//
+//        DateTime result = new DateTime(calendar.getTime());
+//        return result;
+//    }
 
 //    public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
 //        //DateTimeZone.setDefault(DateTimeZone.UTC); <-- sets the default for JodaTime.
@@ -173,81 +173,81 @@ public class MmxJodaDateTimeUtils {
         return context;
     }
 
-    /**
-     *
-     * @param resourceId String Id for name of the period.
-     * @return Date range that matches the period selected.
-     */
-    public DateRange getDateRangeForPeriod(int resourceId) {
-        String value = getContext().getString(resourceId);
-        return getDateRangeForPeriod(value);
-    }
+//    /**
+//     *
+//     * @param resourceId String Id for name of the period.
+//     * @return Date range that matches the period selected.
+//     */
+//    public DateRange getDateRangeForPeriod(int resourceId) {
+//        String value = getContext().getString(resourceId);
+//        return getDateRangeForPeriod(value);
+//    }
+//
+//    /**
+//     * Creates a date range from the period name. Used when selecting a date range from the
+//     * localized menus.
+//     * @param period Period name in local language.
+//     * @return Date Range object.
+//     */
+//    public DateRange getDateRangeForPeriod(String period) {
+//        if (TextUtils.isEmpty(period)) return null;
+//
+//        DateTime dateFrom;
+//        DateTime dateTo;
+//
+//        // we ignore the minutes at the moment, since the field in the db only stores the date value.
+//
+//        if (period.equalsIgnoreCase(getContext().getString(R.string.all_transaction)) ||
+//                period.equalsIgnoreCase(context.getString(R.string.all_time))) {
+//            // All transactions.
+//            dateFrom = MmxJodaDateTimeUtils.today().minusYears(1000);
+//            dateTo = MmxJodaDateTimeUtils.today().plusYears(1000);
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.today))) {
+//            dateFrom = MmxJodaDateTimeUtils.today();
+//            dateTo = MmxJodaDateTimeUtils.today();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.last7days))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().minusDays(7);
+//            dateTo = MmxJodaDateTimeUtils.today();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.last15days))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().minusDays(14);
+//            dateTo = MmxJodaDateTimeUtils.today();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.current_month))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().dayOfMonth().withMinimumValue();
+//            dateTo = MmxJodaDateTimeUtils.today().dayOfMonth().withMaximumValue();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.last30days))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().minusDays(30);
+//            dateTo = MmxJodaDateTimeUtils.today();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.last3months))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().minusMonths(3)
+//                    .dayOfMonth().withMinimumValue();
+//            dateTo = MmxJodaDateTimeUtils.today();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.last6months))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().minusMonths(6)
+//                    .dayOfMonth().withMinimumValue();
+//            dateTo = MmxJodaDateTimeUtils.today();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.current_year))) {
+//            dateFrom = MmxJodaDateTimeUtils.today().monthOfYear().withMinimumValue()
+//                    .dayOfMonth().withMinimumValue();
+//            dateTo = MmxJodaDateTimeUtils.today().monthOfYear().withMaximumValue()
+//                    .dayOfMonth().withMaximumValue();
+//        } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
+//            // Future transactions
+//            dateFrom = MmxJodaDateTimeUtils.today().plusDays(1);
+//            dateTo = MmxJodaDateTimeUtils.today().plusYears(1000);
+//        } else {
+//            dateFrom = null;
+//            dateTo = null;
+//        }
+//
+//        DateRange result = new DateRange(dateFrom.toDate(), dateTo.toDate());
+//        return result;
+//    }
 
-    /**
-     * Creates a date range from the period name. Used when selecting a date range from the
-     * localized menus.
-     * @param period Period name in local language.
-     * @return Date Range object.
-     */
-    public DateRange getDateRangeForPeriod(String period) {
-        if (TextUtils.isEmpty(period)) return null;
-
-        DateTime dateFrom;
-        DateTime dateTo;
-
-        // we ignore the minutes at the moment, since the field in the db only stores the date value.
-
-        if (period.equalsIgnoreCase(getContext().getString(R.string.all_transaction)) ||
-                period.equalsIgnoreCase(context.getString(R.string.all_time))) {
-            // All transactions.
-            dateFrom = MmxJodaDateTimeUtils.today().minusYears(1000);
-            dateTo = MmxJodaDateTimeUtils.today().plusYears(1000);
-        } else if (period.equalsIgnoreCase(context.getString(R.string.today))) {
-            dateFrom = MmxJodaDateTimeUtils.today();
-            dateTo = MmxJodaDateTimeUtils.today();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.last7days))) {
-            dateFrom = MmxJodaDateTimeUtils.today().minusDays(7);
-            dateTo = MmxJodaDateTimeUtils.today();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.last15days))) {
-            dateFrom = MmxJodaDateTimeUtils.today().minusDays(14);
-            dateTo = MmxJodaDateTimeUtils.today();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.current_month))) {
-            dateFrom = MmxJodaDateTimeUtils.today().dayOfMonth().withMinimumValue();
-            dateTo = MmxJodaDateTimeUtils.today().dayOfMonth().withMaximumValue();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.last30days))) {
-            dateFrom = MmxJodaDateTimeUtils.today().minusDays(30);
-            dateTo = MmxJodaDateTimeUtils.today();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.last3months))) {
-            dateFrom = MmxJodaDateTimeUtils.today().minusMonths(3)
-                    .dayOfMonth().withMinimumValue();
-            dateTo = MmxJodaDateTimeUtils.today();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.last6months))) {
-            dateFrom = MmxJodaDateTimeUtils.today().minusMonths(6)
-                    .dayOfMonth().withMinimumValue();
-            dateTo = MmxJodaDateTimeUtils.today();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.current_year))) {
-            dateFrom = MmxJodaDateTimeUtils.today().monthOfYear().withMinimumValue()
-                    .dayOfMonth().withMinimumValue();
-            dateTo = MmxJodaDateTimeUtils.today().monthOfYear().withMaximumValue()
-                    .dayOfMonth().withMaximumValue();
-        } else if (period.equalsIgnoreCase(context.getString(R.string.future_transactions))) {
-            // Future transactions
-            dateFrom = MmxJodaDateTimeUtils.today().plusDays(1);
-            dateTo = MmxJodaDateTimeUtils.today().plusYears(1000);
-        } else {
-            dateFrom = null;
-            dateTo = null;
-        }
-
-        DateRange result = new DateRange(dateFrom.toDate(), dateTo.toDate());
-        return result;
-    }
-
-    public String getUserStringFromDateTime(DateTime dateTime) {
-        if (dateTime == null) return "";
-
-        String userDatePattern = new MmxDateTimeUtils().getUserDatePattern(getContext());
-
-        return dateTime.toString(userDatePattern);
-    }
+//    public String getUserStringFromDateTime(DateTime dateTime) {
+//        if (dateTime == null) return "";
+//
+//        String userDatePattern = new MmxDateTimeUtils().getUserDatePattern(getContext());
+//
+//        return dateTime.toString(userDatePattern);
+//    }
 }

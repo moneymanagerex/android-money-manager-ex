@@ -17,17 +17,13 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import com.money.manager.ex.utils.MmxDate;
 
 /**
  * Look & feel preferences.
@@ -96,8 +92,9 @@ public class BehaviourSettingsFragment
 
         // get time to display (current setting)
         String timeString = settings.getNotificationTime();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.TIME_FORMAT);
-        DateTime currentValue = formatter.parseDateTime(timeString);
+//        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.TIME_FORMAT);
+//        DateTime currentValue = formatter.parseDateTime(timeString);
+        MmxDate currentValue = new MmxDate(timeString, Constants.TIME_FORMAT);
 
         int hour = currentValue != null ? currentValue.getHourOfDay() : 8;
         int minute = currentValue != null ? currentValue.getMinuteOfHour() : 0;

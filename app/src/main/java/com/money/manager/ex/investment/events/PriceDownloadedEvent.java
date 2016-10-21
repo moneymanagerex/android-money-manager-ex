@@ -1,6 +1,5 @@
 package com.money.manager.ex.investment.events;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 

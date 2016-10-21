@@ -25,9 +25,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.datalayer.IEntity;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
 import java.util.Date;
@@ -92,7 +90,7 @@ public class EntityBase
 
     protected Date getDate(String field) {
         String dateString = getString(field);
-        return new MmxDateTimeUtils().from(dateString);
+        return new MmxDate(dateString).toDate();
     }
 
 //    protected void setDate(String fieldName, DateTime value) {

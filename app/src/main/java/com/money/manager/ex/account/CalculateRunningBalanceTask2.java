@@ -21,7 +21,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.money.manager.ex.Constants;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.common.AllDataListFragment;
@@ -32,7 +31,6 @@ import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.Date;

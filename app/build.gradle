@@ -196,7 +196,7 @@ dependencies {
             , 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
-            , 'net.danlew:android.joda:2.9.4.2'
+//            , 'net.danlew:android.joda:2.9.4.2'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.9.2'               // HTML parsing.
             , 'com.google.guava:guava:19.0'         // collection libraries

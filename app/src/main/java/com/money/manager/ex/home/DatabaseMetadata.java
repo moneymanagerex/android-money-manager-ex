@@ -18,9 +18,8 @@ package com.money.manager.ex.home;
 
 import android.text.TextUtils;
 
-import org.joda.time.DateTime;
-
 import java.io.File;
+import java.util.Date;
 
 /**
  * An entry in the recent databases list.
@@ -45,7 +44,7 @@ public class DatabaseMetadata {
         return !TextUtils.isEmpty(remotePath);
     }
 
-    public void setRemoteLastChangedDate(DateTime value) {
+    public void setRemoteLastChangedDate(Date value) {
         if (value == null) {
             this.remoteLastChangedDate = null;
         } else {

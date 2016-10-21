@@ -137,6 +137,10 @@ public class MmxDate {
     }
 
     public int getHour() {
+        return getHourOfDay();
+    }
+
+    public int getHourOfDay() {
         return mCalendar.get(Calendar.HOUR_OF_DAY);
     }
 
@@ -145,6 +149,10 @@ public class MmxDate {
     }
 
     public int getMinute() {
+        return getMinuteOfHour();
+    }
+
+    public int getMinuteOfHour() {
         return mCalendar.get(Calendar.MINUTE);
     }
 
