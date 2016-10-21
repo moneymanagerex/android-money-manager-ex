@@ -29,6 +29,7 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
@@ -105,10 +106,10 @@ public class StockHistoryRepository
         return success;
     }
 
-    public boolean recordExists(String symbol, DateTime date) {
+    public boolean recordExists(String symbol, Date date) {
         boolean result;
 
-        String isoDate = MmxDateTimeUtils.getIsoStringFrom(date.toDate());
+        String isoDate = new MmxDate(date).toIsoString();
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
         Cursor cursor = getContext().getContentResolver().query(getUri(),
@@ -129,7 +130,7 @@ public class StockHistoryRepository
     /**
      * Update history record.
      */
-    public boolean updateHistory(String symbol, Money price, DateTime date) {
+    public boolean updateHistory(String symbol, Money price, Date date) {
         boolean result;
 
         ContentValues values = getContentValues(symbol, price, date);
@@ -146,8 +147,8 @@ public class StockHistoryRepository
         return result;
     }
 
-    public ContentValues getContentValues(String symbol, Money price, DateTime date) {
-        String isoDate = date.toString(Constants.ISO_DATE_FORMAT);
+    public ContentValues getContentValues(String symbol, Money price, Date date) {
+        String isoDate = new MmxDate(date).toIsoString();
 
         ContentValues values = new ContentValues();
         values.put(StockHistory.SYMBOL, symbol);

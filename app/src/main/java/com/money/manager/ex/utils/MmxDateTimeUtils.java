@@ -19,6 +19,7 @@ package com.money.manager.ex.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -74,8 +75,24 @@ public class MmxDateTimeUtils {
         return new MmxDate(year, monthOfYear, dayOfMonth).toDate();
     }
 
+    public Date from(DatePicker datePicker) {
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth() + 1;
+        int year = datePicker.getYear();
+
+        return new MmxDate(year, month, day).toDate();
+    }
+
     public String format(Date date, String format) {
         return getFormatterFor(format).format(date);
+    }
+
+    public String getDateStringFrom(Date dateTime, String pattern) {
+        SimpleDateFormat format = getFormatterFor(pattern);
+//        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+//        String result = format.print(dateTime);
+        return format.format(dateTime);
+//        return result;
     }
 
     /**
@@ -108,6 +125,15 @@ public class MmxDateTimeUtils {
     public Date now() {
         return new MmxDate().toDate();
     }
+
+    public void setDatePicker(Date date, DatePicker datePicker) {
+        MmxDate dateTime = new MmxDate(date);
+        datePicker.updateDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+    }
+
+    /*
+        Private
+     */
 
     private SimpleDateFormat getFormatterFor(String format) {
         return new SimpleDateFormat(format, _locale);

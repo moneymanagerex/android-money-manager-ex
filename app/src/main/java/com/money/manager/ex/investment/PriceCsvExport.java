@@ -25,6 +25,8 @@ import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
 import com.money.manager.ex.core.file.TextFileExport;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -92,9 +94,9 @@ public class PriceCsvExport
             StockHistory latestPrice = historyRepository.getLatestPriceFor(stock.getSymbol());
             if (latestPrice == null) continue;
 
-            DateTime date = latestPrice.getDate();
+            Date date = latestPrice.getDate();
             if (date == null) {
-                date = new DateTime();
+                date = new MmxDate().toDate();
             }
             // format date
             String csvDate = getDateInCsvFormat(date);
@@ -114,13 +116,13 @@ public class PriceCsvExport
         return builder.toString();
     }
 
-    public String getDateInCsvFormat(DateTime date) {
+    public String getDateInCsvFormat(Date date) {
         // todo: make this configurable.
         String csvFormat = "dd/MM/yyyy";
 //        SimpleDateFormat sdf = new SimpleDateFormat(csvFormat, Locale.US);
 //        String result = sdf.format(date);
 
-        String result = MmxJodaDateTimeUtils.getDateStringFrom(date, csvFormat);
+        String result = new MmxDateTimeUtils().getDateStringFrom(date, csvFormat);
 
         // append quotes
         result = "\"" + result + "\"";

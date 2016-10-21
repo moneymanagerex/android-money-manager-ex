@@ -77,6 +77,7 @@ import org.parceler.Parcels;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -335,7 +336,7 @@ public class WatchlistFragment
      * @param price Stock price
      * @param date Date of the price
      */
-    private void onPriceDownloaded(String symbol, Money price, DateTime date) {
+    private void onPriceDownloaded(String symbol, Money price, Date date) {
         // prices updated.
 
         if (TextUtils.isEmpty(symbol)) return;

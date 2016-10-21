@@ -20,8 +20,11 @@ package com.money.manager.ex.investment;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.opencsv.CSVParser;
 
 import org.joda.time.DateTime;
@@ -29,6 +32,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
+import java.util.Date;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
@@ -43,6 +47,8 @@ public class PriceCsvParser {
 
     public PriceCsvParser(Context context) {
         mContext = context;
+
+        //MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
     public Context getContext() {
@@ -88,8 +94,9 @@ public class PriceCsvParser {
         }
 
         // date
-        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
-        DateTime date = format.parseDateTime(values[2]);
+//        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
+//        DateTime date = format.parseDateTime(values[2]);
+        Date date = new MmxDateTimeUtils().from(values[2], "MM/dd/yyyy");
 
         // Note: For currencies, the symbol is i.e. AUDEUR=X
 

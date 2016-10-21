@@ -61,6 +61,14 @@ public class MmxDate {
         return addDays(-value);
     }
 
+    public MmxDate minusMonths(int value) {
+        return addMonth(-value);
+    }
+
+    public MmxDate minusYears(int value) {
+        return addYear(-value);
+    }
+
     public MmxDate plusDays(int value) {
         return addDays(value);
     }
@@ -107,8 +115,8 @@ public class MmxDate {
         return this;
     }
 
-    public MmxDate setMinute(int minute) {
-        mCalendar.set(Calendar.MINUTE, minute);
+    public MmxDate setDate(int dayOfMonth) {
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         return this;
     }
 
@@ -117,8 +125,13 @@ public class MmxDate {
         return this;
     }
 
-    public MmxDate setDate(int dayOfMonth) {
-        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    public MmxDate setMinute(int minute) {
+        mCalendar.set(Calendar.MINUTE, minute);
+        return this;
+    }
+
+    public MmxDate setMilisecond(int milisecond) {
+        mCalendar.set(Calendar.MILLISECOND, milisecond);
         return this;
     }
 
@@ -142,35 +155,43 @@ public class MmxDate {
         return this;
     }
 
-    public MmxDate setNow() {
-        mCalendar = Calendar.getInstance();
-        return this;
-    }
+//    public MmxDate setNow() {
+//        mCalendar = Calendar.getInstance();
+//        return this;
+//    }
 
     /**
      * Sets the calendar to the first day of the month to which the calendar points to.
      * I.e. if the calendar is 2015-08-20, this will return 2015-08-01 00:00:00.000
      * @return The first day of the month in which the Calendar is set.
      */
-    public MmxDate setFirstDayOfMonth() {
+    public MmxDate firstDayOfMonth() {
         mCalendar.set(Calendar.DAY_OF_MONTH, mCalendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         return this;
     }
 
-    public MmxDate setLastDayOfMonth() {
+    public MmxDate firstMonthOfYear() {
+        mCalendar.set(Calendar.MONTH, mCalendar.getActualMinimum(Calendar.MONTH));
+        return this;
+    }
+
+    public MmxDate lastDayOfMonth() {
         mCalendar.set(Calendar.DAY_OF_MONTH,
             mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         return this;
     }
 
-    public MmxDate setTimeToBeginningOfDay() {
-        Calendar calendar = mCalendar;
+    public MmxDate lastMonthOfYear() {
+        mCalendar.set(Calendar.MONTH, mCalendar.getActualMaximum(Calendar.MONTH));
+        return this;
+    }
 
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+    public MmxDate setTimeToBeginningOfDay() {
+        setHour(0);
+        setMinute(0);
+        setSecond(0);
+        setMilisecond(0);
 
         return this;
     }
@@ -195,6 +216,10 @@ public class MmxDate {
         return mCalendar.getTime();
     }
 
+    public MmxDate today() {
+        return setTimeToBeginningOfDay();
+    }
+
     public String toString(String format) {
         return getFormatterFor(format).format(toDate());
     }
@@ -206,8 +231,11 @@ public class MmxDate {
         return format.format(toDate());
     }
 
+    /*
+        Private
+     */
+
     private SimpleDateFormat getFormatterFor(String format) {
         return new SimpleDateFormat(format, Locale.ENGLISH);
     }
-
 }

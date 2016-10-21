@@ -355,13 +355,13 @@ public class IncomeVsExpensesListFragment
                     // full year
                     calendar.setMonth(Calendar.JANUARY);
                 }
-                calendar.setFirstDayOfMonth();
+                calendar.firstDayOfMonth();
                 params.dateFrom = MmxJodaDateTimeUtils.from(calendar.getCalendar());
 
                 if (month == IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
                     calendar.setMonth(Calendar.DECEMBER);
                 }
-                calendar.setLastDayOfMonth();
+                calendar.lastDayOfMonth();
                 params.dateTo = new DateTime(calendar.getTime());
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), params);

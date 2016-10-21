@@ -54,6 +54,7 @@ import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.reports.IncomeVsExpensesChartFragment;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
@@ -61,6 +62,7 @@ import com.money.manager.ex.viewmodels.IncomeVsExpenseReportEntity;
 import org.joda.time.DateTime;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import info.javaperformance.money.MoneyFactory;
 
@@ -291,7 +293,7 @@ public class DashboardFragment
         // format month
 //        Calendar calendar = Calendar.getInstance();
 //        calendar.set(year, month - 1, 1);
-        DateTime dateTime = MmxJodaDateTimeUtils.from(year, month - 1, 1);
+        MmxDate dateTime = new MmxDate(year, month - 1, 1);
         // titles
 //        titles[1] = Integer.toString(year) + "-" + new SimpleDateFormat("MMM").format(calendar.getTime());
         titles[1] = Integer.toString(year) + "-" + dateTime.toString("MMM");

@@ -113,19 +113,19 @@ public class MmxJodaDateTimeUtils {
 //                .withSecondOfMinute(0);
 //    }
 
-    public static DateTime from(DatePicker datePicker) {
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth() + 1;
-        int year = datePicker.getYear();
+//    public static DateTime from(DatePicker datePicker) {
+//        int day = datePicker.getDayOfMonth();
+//        int month = datePicker.getMonth() + 1;
+//        int year = datePicker.getYear();
+//
+//        return new DateTime(year, month, day, 0, 0, 0, 0);
+//    }
 
-        return new DateTime(year, month, day, 0, 0, 0, 0);
-    }
-
-    public static String getDateStringFrom(DateTime dateTime, String pattern) {
-        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
-        String result = format.print(dateTime);
-        return result;
-    }
+//    public static String getDateStringFrom(DateTime dateTime, String pattern) {
+//        DateTimeFormatter format = DateTimeFormat.forPattern(pattern);
+//        String result = format.print(dateTime);
+//        return result;
+//    }
 
     public static int getFirstDayOfWeek() {
         Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
@@ -139,20 +139,20 @@ public class MmxJodaDateTimeUtils {
 //        return dateTime.toString(Constants.ISO_DATE_FORMAT);
 //    }
 
-    /**
-     * Gets the last day of the month in which the given date occurs.
-     * @param dateTime The date/time for which to find the last day of the month.
-     * @return Last calendar day of the month. Date only - the lesser units are reset to 0.
-     */
-    public static DateTime getLastDayOfMonth(DateTime dateTime) {
-        return dateTime
-            .withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0)
-            .dayOfMonth().withMaximumValue();
-    }
+//    /**
+//     * Gets the last day of the month in which the given date occurs.
+//     * @param dateTime The date/time for which to find the last day of the month.
+//     * @return Last calendar day of the month. Date only - the lesser units are reset to 0.
+//     */
+//    public static DateTime getLastDayOfMonth(DateTime dateTime) {
+//        return dateTime
+//            .withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0)
+//            .dayOfMonth().withMaximumValue();
+//    }
 
-    public static void setDatePicker(DateTime date, DatePicker datePicker) {
-        datePicker.updateDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
-    }
+//    public static void setDatePicker(DateTime date, DatePicker datePicker) {
+//        datePicker.updateDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
+//    }
 
     /*
         Non-static methods

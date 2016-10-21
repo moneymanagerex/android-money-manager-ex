@@ -41,6 +41,7 @@ import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
@@ -49,6 +50,7 @@ import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import org.joda.time.DateTime;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -260,7 +262,8 @@ public class InvestmentTransactionEditActivity
         if (mAccount == null) return;
 
         // Date
-        viewHolder.dateView.setText(stock.getPurchaseDate().toString(Constants.LONG_DATE_PATTERN));
+        String dateDisplay = new MmxDate(stock.getPurchaseDate()).toString(Constants.LONG_DATE_PATTERN);
+        viewHolder.dateView.setText(dateDisplay);
 
         // Account.
         Cursor cursor = ((CursorAdapter) viewHolder.accountSpinner.getAdapter()).getCursor();
@@ -336,7 +339,7 @@ public class InvestmentTransactionEditActivity
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
-                    DateTime dateTime = MmxJodaDateTimeUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    MmxDate dateTime = new MmxDate(year, monthOfYear + 1, dayOfMonth);
                     viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 }
             };
@@ -344,7 +347,7 @@ public class InvestmentTransactionEditActivity
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(mStock.getPurchaseDate().toDate());
+                calendar.setTime(mStock.getPurchaseDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                         .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
@@ -360,15 +363,15 @@ public class InvestmentTransactionEditActivity
         viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = mStock.getPurchaseDate().minusDays(1);
-                setDate(dateTime);
+                MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).minusDays(1);
+                setDate(dateTime.toDate());
             }
         });
         viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateTime dateTime = mStock.getPurchaseDate().plusDays(1);
-                setDate(dateTime);
+                MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).plusDays(1);
+                setDate(dateTime.toDate());
             }
         });
     }
@@ -424,7 +427,7 @@ public class InvestmentTransactionEditActivity
         return true;
     }
 
-    private void setDate(DateTime dateTime) {
+    private void setDate(Date dateTime) {
         setDirty(true);
 
         mStock.setPurchaseDate(dateTime);
@@ -432,8 +435,9 @@ public class InvestmentTransactionEditActivity
         showDate(dateTime);
     }
 
-    private void showDate(DateTime date) {
-        mViewHolder.dateView.setText(date.toString(Constants.LONG_DATE_PATTERN));
+    private void showDate(Date date) {
+        String display = new MmxDate(date).toString(Constants.LONG_DATE_PATTERN);
+        mViewHolder.dateView.setText(display);
     }
 
     private boolean validate() {

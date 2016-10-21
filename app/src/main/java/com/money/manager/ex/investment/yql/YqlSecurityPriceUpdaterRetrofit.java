@@ -30,6 +30,8 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +40,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import info.javaperformance.money.Money;
@@ -198,12 +201,11 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // Date
 
-        DateTime date = MmxJodaDateTimeUtils.today();
+        Date date = new MmxDate().toDate();
         JsonElement dateElement = quote.get("LastTradeDate");
         if (dateElement != JsonNull.INSTANCE) {
             // Sometimes the date is not available. For now we will use today's date.
-            DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
-            date = format.parseDateTime(dateElement.getAsString());
+            date = new MmxDateTimeUtils().from(dateElement.getAsString(), "MM/dd/yyyy");
         }
         priceModel.date = date;
 
@@ -221,8 +223,7 @@ public class YqlSecurityPriceUpdaterRetrofit
     }
 
     private Money readPrice(String priceString, JsonObject quote) {
-        ExceptionHandler handler = new ExceptionHandler(getContext());
-
+        UIHelper ui = new UIHelper(getContext());
         Money price = MoneyFactory.fromString(priceString);
 
         /**
@@ -233,7 +234,7 @@ public class YqlSecurityPriceUpdaterRetrofit
 
         // validation
         if (currencyElement == null || currencyElement.isJsonNull()) {
-            handler.showMessage(R.string.error_downloading_symbol);
+            ui.showToast(R.string.error_downloading_symbol);
             return MoneyFactory.fromDouble(0);
         }
 

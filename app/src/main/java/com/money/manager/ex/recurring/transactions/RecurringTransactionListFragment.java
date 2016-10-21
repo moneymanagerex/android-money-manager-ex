@@ -412,7 +412,7 @@ public class RecurringTransactionListFragment
             Cursor cursor = (Cursor) adapter.getItem(i);
             tx.loadFromCursor(cursor);
 
-            caldroid.setBackgroundDrawableForDate(orange, tx.getPaymentDate().toDate());
+            caldroid.setBackgroundDrawableForDate(orange, tx.getPaymentDate());
         }
     }
 
