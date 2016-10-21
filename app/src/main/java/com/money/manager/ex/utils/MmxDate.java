@@ -62,14 +62,14 @@ public class MmxDate {
         String pattern = Constants.ISO_DATE_FORMAT;
         Date date = from(isoString, pattern);
 
-        mCalendar = Calendar.getInstance();
+        mCalendar = new GregorianCalendar();
         mCalendar.setTime(date);
     }
 
     public MmxDate(String dateString, String pattern) {
         Date date = from(dateString, pattern);
 
-        mCalendar = Calendar.getInstance();
+        mCalendar = new GregorianCalendar();
         mCalendar.setTime(date);
     }
 
@@ -78,6 +78,7 @@ public class MmxDate {
     }
 
     public MmxDate(long ticks) {
+        mCalendar = new GregorianCalendar();
         mCalendar.setTimeInMillis(ticks);
     }
 

@@ -18,6 +18,9 @@ package com.money.manager.ex.home;
 
 import android.text.TextUtils;
 
+import com.money.manager.ex.Constants;
+import com.money.manager.ex.utils.MmxDate;
+
 import java.io.File;
 import java.util.Date;
 
@@ -44,11 +47,11 @@ public class DatabaseMetadata {
         return !TextUtils.isEmpty(remotePath);
     }
 
-    public void setRemoteLastChangedDate(Date value) {
+    public void setRemoteLastChangedDate(MmxDate value) {
         if (value == null) {
             this.remoteLastChangedDate = null;
         } else {
-            this.remoteLastChangedDate = value.toString();
+            this.remoteLastChangedDate = value.toString(Constants.ISO_8601_FORMAT);
         }
     }
 }

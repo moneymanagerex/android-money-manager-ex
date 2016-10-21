@@ -24,6 +24,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.utils.MmxDate;
 
 import java.util.Date;
 
@@ -76,7 +77,7 @@ public class DatabaseMetadataFactory {
         SyncManager syncManager = new SyncManager(getContext());
         // todo remove the remote file preference after upgrade
         entry.remotePath = new SyncPreferences(getContext()).loadPreference(R.string.pref_remote_file, "");
-        Date cachedRemoteChangeDate = syncManager.getRemoteLastModifiedDatePreferenceFor(entry.remotePath);
+        MmxDate cachedRemoteChangeDate = syncManager.getRemoteLastModifiedDatePreferenceFor(entry.remotePath);
         entry.setRemoteLastChangedDate(cachedRemoteChangeDate);
 
         return entry;

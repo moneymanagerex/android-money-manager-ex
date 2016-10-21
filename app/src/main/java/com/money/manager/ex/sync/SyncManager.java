@@ -227,11 +227,11 @@ public class SyncManager {
      * @return date of last modification
      */
     @Deprecated
-    public Date getRemoteLastModifiedDatePreferenceFor(String remotePath) {
+    public MmxDate getRemoteLastModifiedDatePreferenceFor(String remotePath) {
         String dateString = getPreferences().get(remotePath, null);
         if (TextUtils.isEmpty(dateString)) return null;
 
-        return new MmxDate(dateString, Constants.ISO_8601_FORMAT).toDate();
+        return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
     }
 
     public Date getModificationDateFrom(CloudMetaData remoteFile) {
@@ -529,12 +529,12 @@ public class SyncManager {
      * @param file file name
      */
     void saveRemoteLastModifiedDate(String localPath, CloudMetaData file) {
-        Date date = new MmxDate(file.getModifiedAt()).toDate();
+        MmxDate date = new MmxDate(file.getModifiedAt());
 
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
         DatabaseMetadata currentDb = getDatabases().get(localPath);
-        if (currentDb.remoteLastChangedDate.equals(date.toString())) {
+        if (currentDb.remoteLastChangedDate.equals(date.toString(Constants.ISO_8601_FORMAT))) {
             return;
         }
 
