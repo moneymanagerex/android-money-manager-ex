@@ -28,15 +28,12 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -252,17 +249,20 @@ public class MorningstarPriceUpdater
 
         // date
         String dateString = doc.body().getElementById("asOfDate").text();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/YYYY HH:mm:ss");
+        String dateFormat = "MM/dd/YYYY HH:mm:ss";
+//        DateTimeFormatter formatter = DateTimeFormat.forPattern(dateFormat);
         // the time zone is EST
-        DateTime date = formatter.withZone(DateTimeZone.forID("America/New_York"))
-                .parseDateTime(dateString)
-                .withZone(DateTimeZone.forID("Europe/Vienna"));
-        // todo: convert time zone
-//        Date date = new MmxDateTimeUtils().from(dateString);
+//        DateTime date = formatter.withZone(DateTimeZone.forID("America/New_York"))
+//                .parseDateTime(dateString)
+//                .withZone(DateTimeZone.forID("Europe/Vienna"));
+        // convert time zone
+        MmxDate dateTime = new MmxDate(dateString, dateFormat)
+                .setTimeZone("America/New_York")
+                .inTimeZone("Europe/Vienna");
 
         // todo: should this be converted to the exchange time?
 
-        return new PriceDownloadedEvent(yahooSymbol, price, date.toDate());
+        return new PriceDownloadedEvent(yahooSymbol, price, dateTime.toDate());
     }
 
     private synchronized void finishIfAllDone() {

@@ -28,6 +28,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -51,24 +52,6 @@ public class MmxDateTimeUtils {
 
     public MmxDateTimeUtils(Locale locale) {
         _locale = locale;
-    }
-
-    public Date from(String isoString) {
-        if (TextUtils.isEmpty(isoString)) return null;
-
-        String pattern = Constants.ISO_DATE_FORMAT;
-        return from(isoString, pattern);
-    }
-
-    public Date from(String dateString, String pattern) {
-        if (TextUtils.isEmpty(dateString)) return null;
-
-        try {
-            return getFormatterFor(pattern).parse(dateString);
-        } catch (ParseException e) {
-            Timber.e(e, "parsing date string");
-            return null;
-        }
     }
 
     public Date from(int year, int monthOfYear, int dayOfMonth) {

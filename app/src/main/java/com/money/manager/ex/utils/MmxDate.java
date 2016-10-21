@@ -16,13 +16,20 @@
  */
 package com.money.manager.ex.utils;
 
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
 import com.money.manager.ex.Constants;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
+
+import timber.log.Timber;
 
 /**
  * Various calendar utilities.
@@ -44,8 +51,33 @@ public class MmxDate {
         mCalendar.setTime(date);
     }
 
+    /**
+     * Creates a date/time object from an ISO date string.
+     * @param isoString ISO date string
+     */
+    public MmxDate(@NonNull String isoString) {
+//        if (TextUtils.isEmpty(isoString)) return null;
+
+        String pattern = Constants.ISO_DATE_FORMAT;
+        Date date = from(isoString, pattern);
+
+        mCalendar = Calendar.getInstance();
+        mCalendar.setTime(date);
+    }
+
+    public MmxDate(String dateString, String pattern) {
+        Date date = from(dateString, pattern);
+
+        mCalendar = Calendar.getInstance();
+        mCalendar.setTime(date);
+    }
+
     public MmxDate(int year, int month, int day) {
         mCalendar = new GregorianCalendar(year, month, day);
+    }
+
+    public MmxDate(long ticks) {
+        mCalendar.setTimeInMillis(ticks);
     }
 
     private Calendar mCalendar;
@@ -81,6 +113,17 @@ public class MmxDate {
         return this;
     }
 
+    public Date from(String dateString, String pattern) {
+        if (TextUtils.isEmpty(dateString)) return null;
+
+        try {
+            return getFormatterFor(pattern).parse(dateString);
+        } catch (ParseException e) {
+            Timber.e(e, "parsing date string");
+            return null;
+        }
+    }
+
     public Calendar getCalendar() {
         return mCalendar;
     }
@@ -97,6 +140,10 @@ public class MmxDate {
         return mCalendar.get(Calendar.HOUR_OF_DAY);
     }
 
+    public long getMillis() {
+        return mCalendar.getTimeInMillis();
+    }
+
     public int getMinute() {
         return mCalendar.get(Calendar.MINUTE);
     }
@@ -109,6 +156,23 @@ public class MmxDate {
 
     public int getMonthOfYear() {
         return getMonth();
+    }
+
+    /**
+     * Converts the date/time value to the destination time zone.
+     * @param timeZone The name of the time zone. I.e. "Europe/Berlin".
+     * @return Date/Time value in the destination time zone.
+     */
+    public MmxDate inTimeZone(String timeZone) {
+        // Keep the original value for conversion.
+        long currentValue = mCalendar.getTimeInMillis();
+
+        // now create the calendar in the destination time zone and convert the value.
+        mCalendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
+
+        mCalendar.setTimeInMillis(currentValue);
+
+        return this;
     }
 
     public MmxDate lastDayOfMonth() {
@@ -224,6 +288,11 @@ public class MmxDate {
 
     public MmxDate setTime(Date date) {
         mCalendar.setTime(date);
+        return this;
+    }
+
+    public MmxDate setTimeZone(String timeZone) {
+        mCalendar.setTimeZone(TimeZone.getTimeZone(timeZone));
         return this;
     }
 
