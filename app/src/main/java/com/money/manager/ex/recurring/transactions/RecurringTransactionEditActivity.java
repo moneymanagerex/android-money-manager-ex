@@ -52,7 +52,6 @@ import com.money.manager.ex.transactions.events.DialogNegativeClickedEvent;
 import com.money.manager.ex.transactions.events.DialogPositiveClickedEvent;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -72,8 +71,6 @@ import timber.log.Timber;
 public class RecurringTransactionEditActivity
     extends MmxBaseFragmentActivity {
 
-//    private static final String LOGCAT = RecurringTransactionEditActivity.class.getSimpleName();
-
     public static final String KEY_MODEL = "RecurringTransactionEditActivity:Model";
     public static final String KEY_BILL_DEPOSITS_ID = "RepeatingTransaction:BillDepositsId";
     public static final String KEY_ACCOUNT_ID = "RepeatingTransaction:AccountId";
@@ -87,7 +84,6 @@ public class RecurringTransactionEditActivity
     public static final String KEY_TRANS_NUMBER = "RepeatingTransaction:TransNumber";
     public static final String KEY_SPLIT_TRANSACTION = "RepeatingTransaction:SplitCategory";
     public static final String KEY_SPLIT_TRANSACTION_DELETED = "RepeatingTransaction:SplitTransactionDeleted";
-//    public static final String KEY_ACTION = "RepeatingTransaction:Action";
     public static final String TAG_DATEPICKER = "DatePicker";
 
     @Inject BriteDatabase database;
@@ -95,7 +91,6 @@ public class RecurringTransactionEditActivity
 
     @State String mIntentAction;
 
-    // Form controls
     private RecurringTransactionViewHolder mViewHolder;
     private EditTransactionCommonFunctions mCommon;
 
@@ -109,7 +104,6 @@ public class RecurringTransactionEditActivity
         RecurringTransaction tx = initializeModel();
         mCommon = new EditTransactionCommonFunctions(this, tx, database);
 
-//        showStandardToolbarActions();
         mCommon.initializeToolbar();
 
         // manage update instance
@@ -364,7 +358,7 @@ public class RecurringTransactionEditActivity
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateUtils.from(year, monthOfYear + 1, dayOfMonth);
+                    Date dateTime = dateUtils.from(year, monthOfYear, dayOfMonth);
 
                     setPaymentDate(dateTime);
                 }
@@ -378,7 +372,7 @@ public class RecurringTransactionEditActivity
                 MmxDate dateTime = new MmxDate(getPaymentDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
+                        .setFirstDayOfWeek(dateUtils.getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(dateTime.getYear(), dateTime.getMonth() - 1, dateTime.getDayOfMonth());
                 if (new UIHelper(RecurringTransactionEditActivity.this).isUsingDarkTheme()) {

@@ -31,6 +31,7 @@ import android.widget.SpinnerAdapter;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -42,7 +43,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.SpinnerHelper;
 import com.money.manager.ex.view.RobotoTextView;
 import com.money.manager.ex.view.RobotoTextViewFontIcon;
@@ -50,8 +51,11 @@ import com.money.manager.ex.view.RobotoTextViewFontIcon;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -70,6 +74,8 @@ public class InvestmentTransactionEditActivity
     public static final int REQUEST_COMMISSION = 3;
     public static final int REQUEST_CURRENT_PRICE = 4;
 
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+
     private boolean mDirty = false;
     private Account mAccount;
     private Stock mStock;
@@ -80,10 +86,9 @@ public class InvestmentTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
 
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
         ButterKnife.bind(this);
 
-        // this handles OK/Cancel button clicks in the toolbar.
-//        showStandardToolbarActions();
         setDisplayHomeAsUpEnabled(true);
 
         // load account & currency
@@ -337,7 +342,7 @@ public class InvestmentTransactionEditActivity
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
                     setDirty(true);
 
-                    MmxDate dateTime = new MmxDate(year, monthOfYear + 1, dayOfMonth);
+                    MmxDate dateTime = new MmxDate(year, monthOfYear, dayOfMonth);
                     viewHolder.dateView.setText(dateTime.toString(Constants.LONG_DATE_PATTERN));
                 }
             };
@@ -348,7 +353,7 @@ public class InvestmentTransactionEditActivity
                 calendar.setTime(mStock.getPurchaseDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
+                        .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
                         .setPreselectedDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 if (new UIHelper(InvestmentTransactionEditActivity.this).isUsingDarkTheme()) {

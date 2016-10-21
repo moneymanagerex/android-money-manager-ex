@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
@@ -128,7 +129,7 @@ public class SyncManager {
             throw new RuntimeException(getContext().getString(R.string.no_remote_change_date));
         }
 
-        Date cachedLastModified = new MmxDate(dateString).toDate();
+        Date cachedLastModified = new MmxDate(dateString, Constants.ISO_8601_FORMAT).toDate();
 
         Date remoteLastModified = getModificationDateFrom(remoteFile);
 
@@ -230,7 +231,7 @@ public class SyncManager {
         String dateString = getPreferences().get(remotePath, null);
         if (TextUtils.isEmpty(dateString)) return null;
 
-        return new MmxDate(dateString).toDate();
+        return new MmxDate(dateString, Constants.ISO_8601_FORMAT).toDate();
     }
 
     public Date getModificationDateFrom(CloudMetaData remoteFile) {

@@ -67,7 +67,6 @@ import com.money.manager.ex.domainmodel.Payee;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -477,20 +476,19 @@ public class EditTransactionCommonFunctions {
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear + 1, dayOfMonth);
+                    Date dateTime = dateTimeUtilsLazy.get().from(year, monthOfYear, dayOfMonth);
                     setDate(dateTime);
                 }
             };
 
             @Override
             public void onClick(View v) {
-//                Date dateTime = transactionEntity.getDate();
                 MmxDate dateTime = new MmxDate(transactionEntity.getDate());
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(listener)
-                    .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
-                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+                    .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
+                    .setPreselectedDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
                 if (new UIHelper(getContext()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }

@@ -34,8 +34,10 @@ import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.home.SelectDatabaseActivity;
 import com.money.manager.ex.investment.EditPriceDialog;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
+import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
+import com.money.manager.ex.recurring.transactions.RecurringTransactionListFragment;
 import com.money.manager.ex.reports.BaseReportFragment;
 import com.money.manager.ex.search.SearchParametersFragment;
 import com.money.manager.ex.servicelayer.InfoService;
@@ -65,20 +67,22 @@ public interface MmxComponent {
 //    MmxOpenHelper getHelper();
 
     // Activities
+    void inject(CalculatorActivity activity);
+    void inject(CheckingTransactionEditActivity activity);
+    void inject(InvestmentTransactionEditActivity activity);
     void inject(MainActivity activity);
     void inject(RecurringTransactionEditActivity activity);
-    void inject(CheckingTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
     void inject(SettingsActivity activity);
-    void inject(CalculatorActivity activity);
 
     // Fragments
-    void inject(DatabaseSettingsFragment fragment);
-    void inject(CurrencyListFragment fragment);
-    void inject(SyncPreferenceFragment fragment);
-    void inject(HomeFragment fragment);
     void inject(BaseReportFragment fragment);
+    void inject(CurrencyListFragment fragment);
+    void inject(DatabaseSettingsFragment fragment);
+    void inject(HomeFragment fragment);
+    void inject(RecurringTransactionListFragment fragment);
     void inject(SearchParametersFragment fragment);
+    void inject(SyncPreferenceFragment fragment);
 
     // Dialogs
     void inject(EditPriceDialog dialog);

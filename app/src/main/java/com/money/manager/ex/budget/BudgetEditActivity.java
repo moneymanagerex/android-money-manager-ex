@@ -34,7 +34,6 @@ import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

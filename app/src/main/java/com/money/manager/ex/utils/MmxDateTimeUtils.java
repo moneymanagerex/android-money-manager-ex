@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
@@ -61,7 +62,7 @@ public class MmxDateTimeUtils {
 
     public Date from(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth() + 1;
+        int month = datePicker.getMonth();
         int year = datePicker.getYear();
 
         return new MmxDate(year, month, day).toDate();
@@ -149,6 +150,12 @@ public class MmxDateTimeUtils {
 //        return result;
     }
 
+    public int getFirstDayOfWeek() {
+        Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
+        Calendar cal = Calendar.getInstance(appLocale);
+        return cal.getFirstDayOfWeek();
+    }
+
     /**
      * Get pattern defined by the user.
      * @return pattern user define
@@ -192,7 +199,7 @@ public class MmxDateTimeUtils {
 
     public void setDatePicker(Date date, DatePicker datePicker) {
         MmxDate dateTime = new MmxDate(date);
-        datePicker.updateDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
+        datePicker.updateDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
     }
 
     /*

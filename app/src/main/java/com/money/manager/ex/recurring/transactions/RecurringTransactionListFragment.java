@@ -54,7 +54,7 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.common.BaseListFragment;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 import com.shamanland.fonticon.FontIconDrawable;
@@ -62,6 +62,10 @@ import com.shamanland.fonticon.FontIconDrawable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 
 /**
  * The recurring transactions list fragment.
@@ -78,6 +82,9 @@ public class RecurringTransactionListFragment
     private static final int ID_LOADER_REPEATING = 0;
 
     private static QueryBillDeposits mBillDeposits;
+
+    @Inject
+    Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     // filter
     private String mCurFilter;
@@ -108,6 +115,8 @@ public class RecurringTransactionListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         setHasOptionsMenu(true);
     }
@@ -356,7 +365,7 @@ public class RecurringTransactionListFragment
         Calendar cal = Calendar.getInstance(appLocale);
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, MmxJodaDateTimeUtils.getFirstDayOfWeek());
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, dateTimeUtilsLazy.get().getFirstDayOfWeek());
         if (new UIHelper(getActivity()).isUsingDarkTheme()) {
             args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
         }

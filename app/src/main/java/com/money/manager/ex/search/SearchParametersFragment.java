@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.common.Calculator;
@@ -70,6 +71,7 @@ import butterknife.OnClick;
 import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * The form with search parameter input fields.
@@ -78,6 +80,7 @@ public class SearchParametersFragment
     extends Fragment {
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
+    public static final String DATEPICKER_TAG = "datepicker";
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
@@ -188,9 +191,9 @@ public class SearchParametersFragment
         spinStatus.setAdapter(adapterStatus);
 
         // Date from
-        viewHolder.txtDateFrom.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateFrom));
+//        viewHolder.txtDateFrom.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateFrom));
         // Date to
-        viewHolder.txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateTo));
+//        viewHolder.txtDateTo.setOnClickListener(new OnDateButtonClickListener(getActivity(), viewHolder.txtDateTo));
 
         // Store search criteria values into the controls.
         displaySearchCriteria(view);
@@ -281,30 +284,9 @@ public class SearchParametersFragment
         }
     }
 
-    // Events
-
-//    @Subscribe
-//    public void onEvent(AmountEnteredEvent event) {
-//        View rootView = getView();
-//        if (rootView == null) return;
-//
-//        int id = Integer.parseInt(event.requestId);
-//        View view = rootView.findViewById(id);
-//        if (view != null && view instanceof TextView) {
-//            TextView textView = (TextView) view;
-//
-//            // update the value in tag?
-//            String value = event.amount.toString();
-//            textView.setTag(value);
-//
-//            // display amount
-//            FormatUtilities format = new FormatUtilities(getActivity());
-//            String displayAmount = format.formatWithLocale(event.amount);
-//            textView.setText(displayAmount);
-//        }
-//    }
-
-    // Public
+    /*
+        Public
+     */
 
     public SearchParameters getSearchParameters() {
         Bundle arguments = getArguments();
@@ -332,6 +314,60 @@ public class SearchParametersFragment
 
         getArguments().putParcelable(KEY_SEARCH_CRITERIA, Parcels.wrap(parameters));
         displaySearchCriteria();
+    }
+
+    @OnClick(R.id.textViewFromDate)
+    void onDateFromClicked() {
+        MmxDate currentValue = new MmxDate(getSearchParameters().dateFrom);
+
+        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
+                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                        MmxDate date = new MmxDate(year, monthOfYear, dayOfMonth);
+
+                        SearchParameters parameters = getSearchParameters();
+                        parameters.dateFrom = date.toDate();
+                        setSearchParameters(parameters);
+
+                        String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
+                        viewHolder.txtDateFrom.setText(displayText);
+                    }
+                })
+                .setPreselectedDate(currentValue.getYear(), currentValue.getMonthOfYear(), currentValue.getDayOfMonth());
+
+        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
+            datePicker.setThemeDark();
+        }
+        datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+    }
+
+    @OnClick(R.id.textViewToDate)
+    void onDateToClicked() {
+        MmxDate currentValue = new MmxDate(getSearchParameters().dateTo);
+
+        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
+                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                        MmxDate date = new MmxDate(year, monthOfYear, dayOfMonth);
+
+                        SearchParameters parameters = getSearchParameters();
+                        parameters.dateTo = date.toDate();
+                        setSearchParameters(parameters);
+
+                        String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
+                        viewHolder.txtDateTo.setText(displayText);
+                    }
+                })
+                .setPreselectedDate(currentValue.getYear(), currentValue.getMonthOfYear(), currentValue.getDayOfMonth());
+
+        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
+            datePicker.setThemeDark();
+        }
+        datePicker.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
     }
 
     @OnClick(R.id.textViewFromAmount)
@@ -520,15 +556,15 @@ public class SearchParametersFragment
             searchParameters.amountTo = MoneyFactory.fromString((String) tag);
         }
 
-        // Date from
-        if (viewHolder.txtDateFrom.getTag() != null) {
-            searchParameters.dateFrom = new MmxDate(viewHolder.txtDateFrom.getTag().toString()).toDate();
-        }
-        // Date to
-        if (viewHolder.txtDateTo.getTag() != null) {
-            String dateString = viewHolder.txtDateTo.getTag().toString();
-            searchParameters.dateTo = new MmxDate(dateString).toDate();
-        }
+//        // Date from
+//        if (viewHolder.txtDateFrom.getTag() != null) {
+//            searchParameters.dateFrom = new MmxDate(viewHolder.txtDateFrom.getTag().toString()).toDate();
+//        }
+//        // Date to
+//        if (viewHolder.txtDateTo.getTag() != null) {
+//            String dateString = viewHolder.txtDateTo.getTag().toString();
+//            searchParameters.dateTo = new MmxDate(dateString).toDate();
+//        }
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {
             searchParameters.payeeId = Integer.parseInt(viewHolder.txtSelectPayee.getTag().toString());
@@ -618,15 +654,20 @@ public class SearchParametersFragment
         }
 
         // Date from
-        if (searchParameters.dateFrom == null) {
-            viewHolder.txtDateFrom.setTag(null);
-        }
-        else {
-            viewHolder.txtDateFrom.setTag(new MmxDate(searchParameters.dateFrom).toIsoString());
-        }
+//        if (searchParameters.dateFrom == null) {
+//            viewHolder.txtDateFrom.setTag(null);
+//        }
+//        else {
+//            viewHolder.txtDateFrom.setTag(new MmxDate(searchParameters.dateFrom).toIsoString());
+//        }
         viewHolder.txtDateFrom.setText(dateTimeUtilsLazy.get().getUserFormattedDate(getContext(), searchParameters.dateFrom));
         // Date to
-        viewHolder.txtDateTo.setTag(new MmxDate(searchParameters.dateTo).toIsoString());
+//        if (searchParameters.dateTo == null) {
+//            viewHolder.txtDateTo.setTag(null);
+//        }
+//        else {
+//            viewHolder.txtDateTo.setTag(new MmxDate(searchParameters.dateTo).toIsoString());
+//        }
         viewHolder.txtDateTo.setText(dateTimeUtilsLazy.get().getUserFormattedDate(getContext(), searchParameters.dateTo));
 
         // Payee

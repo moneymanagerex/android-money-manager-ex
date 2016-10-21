@@ -59,8 +59,6 @@ public class MmxDate {
      * @param isoString ISO date string
      */
     public MmxDate(@NonNull String isoString) {
-//        if (TextUtils.isEmpty(isoString)) return null;
-
         String pattern = Constants.ISO_DATE_FORMAT;
         Date date = from(isoString, pattern);
 

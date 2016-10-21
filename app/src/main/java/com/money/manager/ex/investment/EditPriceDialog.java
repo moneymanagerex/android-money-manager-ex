@@ -45,7 +45,6 @@ import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.AlertDialogWrapper;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 import com.shamanland.fonticon.FontIconDrawable;
 
 import org.greenrobot.eventbus.EventBus;
@@ -207,9 +206,9 @@ public class EditPriceDialog
                 MmxDate priceDate = new MmxDate(mPrice.date);
 
                 CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
-                        .setFirstDayOfWeek(MmxJodaDateTimeUtils.getFirstDayOfWeek())
+                        .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
                         .setOnDateSetListener(listener)
-                        .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear() - 1, priceDate.getDayOfMonth());
+                        .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear(), priceDate.getDayOfMonth());
                 if (new UIHelper(getActivity()).isUsingDarkTheme()) {
                     datePicker.setThemeDark();
                 }
@@ -219,7 +218,7 @@ public class EditPriceDialog
             CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
                 @Override
                 public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                    mPrice.date = new MmxDate(year, monthOfYear + 1, dayOfMonth).toDate();
+                    mPrice.date = new MmxDate(year, monthOfYear, dayOfMonth).toDate();
                     showDate();
                 }
             };
