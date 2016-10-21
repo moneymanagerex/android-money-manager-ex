@@ -37,6 +37,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.core.RequestCodes;
@@ -53,6 +54,7 @@ import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
@@ -63,8 +65,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.Lazy;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
@@ -75,6 +80,8 @@ public class SearchParametersFragment
     extends Fragment {
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
+
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     private SearchParametersViewHolder viewHolder;
 
@@ -102,6 +109,8 @@ public class SearchParametersFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         setHasOptionsMenu(true);
 
@@ -389,11 +398,11 @@ public class SearchParametersFragment
 
         // from date
         if (searchParameters.dateFrom != null) {
-            where.addStatement(QueryAllData.Date, " >= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom.toDate()));
+            where.addStatement(QueryAllData.Date, " >= ", new MmxDate(searchParameters.dateFrom).toIsoString());
         }
         // to date
         if (searchParameters.dateTo != null) {
-            where.addStatement(QueryAllData.Date, " <= ", MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo.toDate()));
+            where.addStatement(QueryAllData.Date, " <= ", new MmxDate(searchParameters.dateTo).toIsoString());
         }
         // payee
         if (searchParameters.payeeId != null) {
@@ -515,12 +524,12 @@ public class SearchParametersFragment
 
         // Date from
         if (viewHolder.txtDateFrom.getTag() != null) {
-            searchParameters.dateFrom = new DateTime(viewHolder.txtDateFrom.getTag().toString());
+            searchParameters.dateFrom = dateTimeUtilsLazy.get().from(viewHolder.txtDateFrom.getTag().toString());
         }
         // Date to
         if (viewHolder.txtDateTo.getTag() != null) {
             String dateString = viewHolder.txtDateTo.getTag().toString();
-            searchParameters.dateTo = MmxJodaDateTimeUtils.from(dateString);
+            searchParameters.dateTo = dateTimeUtilsLazy.get().from(dateString);
         }
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {
@@ -615,12 +624,12 @@ public class SearchParametersFragment
             viewHolder.txtDateFrom.setTag(null);
         }
         else {
-            viewHolder.txtDateFrom.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateFrom.toDate()));
+            viewHolder.txtDateFrom.setTag(new MmxDate(searchParameters.dateFrom).toIsoString());
         }
-        viewHolder.txtDateFrom.setText(new MmxJodaDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateFrom));
+        viewHolder.txtDateFrom.setText(dateTimeUtilsLazy.get().getUserFormattedDate(getContext(), searchParameters.dateFrom));
         // Date to
-        viewHolder.txtDateTo.setTag(MmxDateTimeUtils.getIsoStringFrom(searchParameters.dateTo.toDate()));
-        viewHolder.txtDateTo.setText(new MmxJodaDateTimeUtils(getContext()).getUserStringFromDateTime(searchParameters.dateTo));
+        viewHolder.txtDateTo.setTag(new MmxDate(searchParameters.dateTo).toIsoString());
+        viewHolder.txtDateTo.setText(dateTimeUtilsLazy.get().getUserFormattedDate(getContext(), searchParameters.dateTo));
 
         // Payee
         viewHolder.txtSelectPayee.setTag(searchParameters.payeeId);

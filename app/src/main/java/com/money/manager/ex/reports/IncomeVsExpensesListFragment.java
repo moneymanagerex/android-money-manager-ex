@@ -346,23 +346,23 @@ public class IncomeVsExpensesListFragment
                 SearchParameters params = new SearchParameters();
 
                 // show the details for the selected month/year.
-                MmxDate calendar = new MmxDate();
-                calendar.setYear(entity.getYear());
+                MmxDate dateTime = new MmxDate();
+                dateTime.setYear(entity.getYear());
                 int month = entity.getMonth();
                 if (month != IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
-                    calendar.setMonth(entity.getMonth() - 1);
+                    dateTime.setMonth(entity.getMonth() - 1);
                 } else {
                     // full year
-                    calendar.setMonth(Calendar.JANUARY);
+                    dateTime.setMonth(Calendar.JANUARY);
                 }
-                calendar.firstDayOfMonth();
-                params.dateFrom = MmxJodaDateTimeUtils.from(calendar.getCalendar());
+                dateTime.firstDayOfMonth();
+                params.dateFrom = dateTime.toDate();
 
                 if (month == IncomeVsExpensesActivity.SUBTOTAL_MONTH) {
-                    calendar.setMonth(Calendar.DECEMBER);
+                    dateTime.setMonth(Calendar.DECEMBER);
                 }
-                calendar.lastDayOfMonth();
-                params.dateTo = new DateTime(calendar.getTime());
+                dateTime.lastDayOfMonth();
+                params.dateTo = dateTime.toDate();
 
                 Intent intent = IntentFactory.getSearchIntent(getActivity(), params);
                 startActivity(intent);

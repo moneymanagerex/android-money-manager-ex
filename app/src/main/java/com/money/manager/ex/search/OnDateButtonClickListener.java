@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
@@ -57,7 +59,7 @@ public class OnDateButtonClickListener
         String calendarValue = mTextView.getText().toString();
 
         if (!TextUtils.isEmpty(calendarValue)) {
-            String userDatePattern = new MmxJodaDateTimeUtils(mParent.getApplicationContext()).getUserDatePattern();
+            String userDatePattern = new MmxDateTimeUtils().getUserDatePattern(mParent.getApplicationContext());
             DateTimeFormatter formatter = DateTimeFormat.forPattern(userDatePattern);
             dateTime = formatter.parseDateTime(calendarValue);
         }
@@ -76,13 +78,13 @@ public class OnDateButtonClickListener
         @Override
         public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
             try {
-                DateTime date = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0);
+                MmxDate date = new MmxDate(year, monthOfYear + 1, dayOfMonth);
 
                 // Save the string value as tag.
                 String dateString = date.toString(Constants.ISO_DATE_FORMAT);
                 mTextView.setTag(dateString);
 
-                String displayText = new MmxJodaDateTimeUtils(mParent.getApplicationContext()).getUserStringFromDateTime(date);
+                String displayText = new MmxDateTimeUtils().getUserFormattedDate(mParent.getApplicationContext(), date.toDate());
                 mTextView.setText(displayText);
             } catch (Exception e) {
                 Timber.e(e, "date selected in search");

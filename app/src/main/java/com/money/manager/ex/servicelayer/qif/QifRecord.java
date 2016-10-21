@@ -25,6 +25,7 @@ import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.database.ISplitTransaction;
 import com.money.manager.ex.datalayer.SplitCategoriesRepository;
 import com.money.manager.ex.servicelayer.CategoryService;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.viewmodels.AccountTransactionDisplay;
 
 import org.joda.time.DateTime;
@@ -33,6 +34,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import info.javaperformance.money.Money;
 
@@ -196,12 +198,15 @@ public class QifRecord {
     }
 
     private String parseDate(AccountTransactionDisplay transaction) throws ParseException {
-        DateTime date = transaction.getDate();
+        Date date = transaction.getDate();
 
         // todo: get Quicken date format from preferences.
-        DateTimeFormatter qifFormat = DateTimeFormat.forPattern("MM/dd''yy");
+        String qifDatePattern = "MM/dd''yy";
+//        DateTimeFormatter qifFormat = DateTimeFormat.forPattern();
+//        return qifFormat.print(date);
 
-        return qifFormat.print(date);
+        MmxDate dateTime = new MmxDate(date);
+        return dateTime.toString(qifDatePattern);
     }
 
     private String parseAmount(AccountTransactionDisplay transaction) {

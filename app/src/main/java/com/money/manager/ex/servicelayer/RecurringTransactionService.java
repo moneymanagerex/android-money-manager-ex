@@ -30,12 +30,14 @@ import com.money.manager.ex.datalayer.SplitRecurringCategoriesRepository;
 import com.money.manager.ex.domainmodel.RecurringTransaction;
 import com.money.manager.ex.domainmodel.SplitRecurringCategory;
 import com.money.manager.ex.recurring.transactions.Recurrence;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Represent a first Recurring Transaction object and provides related operations.
@@ -68,7 +70,7 @@ public class RecurringTransactionService
      *                  example to indicate x.
      * @return next Date
      */
-    public DateTime getNextScheduledDate(DateTime date, Recurrence repeatType, Integer numberOfPeriods) {
+    public Date getNextScheduledDate(Date date, Recurrence repeatType, Integer numberOfPeriods) {
         if (numberOfPeriods == null || numberOfPeriods == Constants.NOT_SET) {
             numberOfPeriods = 0;
         }
@@ -80,7 +82,7 @@ public class RecurringTransactionService
             repeatType = Recurrence.valueOf(repeatType.getValue() - 100);
         } // set auto execute on the next occurrence
 
-        DateTime result = new DateTime(date);
+        MmxDate result = new MmxDate(date);
 
         switch (repeatType) {
             case ONCE: //none
@@ -123,10 +125,11 @@ public class RecurringTransactionService
             case EVERY_X_MONTHS: //every_x_months
                 result = result.plusMonths(numberOfPeriods);
                 break;
+
             case MONTHLY_LAST_DAY: //month (last day)
                 // if the date is not the last day of this month, set it to the end of the month.
                 // else set it to the end of the next month.
-                DateTime lastDayOfMonth = MmxJodaDateTimeUtils.getLastDayOfMonth(result);
+                MmxDate lastDayOfMonth = result.lastDayOfMonth();
                 if (!result.equals(lastDayOfMonth)) {
                     // set to last day of the month
                     result = lastDayOfMonth;
@@ -138,7 +141,7 @@ public class RecurringTransactionService
             case MONTHLY_LAST_BUSINESS_DAY: //month (last business day)
                 // if the date is not the last day of this month, set it to the end of the month.
                 // else set it to the end of the next month.
-                DateTime lastDayOfMonth2 = MmxJodaDateTimeUtils.getLastDayOfMonth(result);
+                MmxDate lastDayOfMonth2 = result.lastDayOfMonth();
                 if (!result.equals(lastDayOfMonth2)) {
                     // set to last day of the month
                     result = lastDayOfMonth2;
@@ -153,7 +156,7 @@ public class RecurringTransactionService
                 }
                 break;
         }
-        return result;
+        return result.toDate();
     }
 
     public RecurringTransactionRepository getRepository(){
@@ -416,7 +419,7 @@ public class RecurringTransactionService
 
         RecurringTransaction tx = getRecurringTransaction();
         Recurrence repeatType = Recurrence.valueOf(tx.getRecurrenceInt());
-        DateTime newPaymentDate = tx.getPaymentDate();
+        Date newPaymentDate = tx.getPaymentDate();
         Integer paymentsLeft = tx.getPaymentsLeft();
 
         // calculate the next payment date
@@ -431,10 +434,10 @@ public class RecurringTransactionService
         RecurringTransaction tx = getRecurringTransaction();
 
         Recurrence repeats = Recurrence.valueOf(tx.getRecurrenceInt());
-        DateTime dueDate = tx.getDueDate();
+        Date dueDate = tx.getDueDate();
         Integer paymentsLeft = tx.getPaymentsLeft();
 
-        DateTime newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
+        Date newDueDate = getNextScheduledDate(dueDate, repeats, paymentsLeft);
 
         if (newDueDate != null) {
             tx.setDueDate(newDueDate);

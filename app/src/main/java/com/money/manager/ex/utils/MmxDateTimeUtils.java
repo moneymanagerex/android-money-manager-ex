@@ -122,6 +122,16 @@ public class MmxDateTimeUtils {
         return pattern;
     }
 
+    public String getUserFormattedDate(Context context, Date date) {
+        if (date == null) return "";
+
+        MmxDate dateTime = new MmxDate(date);
+
+        String userDatePattern = new MmxDateTimeUtils().getUserDatePattern(context);
+
+        return dateTime.toString(userDatePattern);
+    }
+
     public Date now() {
         return new MmxDate().toDate();
     }

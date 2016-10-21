@@ -37,6 +37,7 @@ import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
 import com.money.manager.ex.reports.BaseReportFragment;
+import com.money.manager.ex.search.SearchParametersFragment;
 import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
@@ -77,6 +78,7 @@ public interface MmxComponent {
     void inject(SyncPreferenceFragment fragment);
     void inject(HomeFragment fragment);
     void inject(BaseReportFragment fragment);
+    void inject(SearchParametersFragment fragment);
 
     // Dialogs
     void inject(EditPriceDialog dialog);

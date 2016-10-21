@@ -20,6 +20,8 @@ package com.money.manager.ex.search;
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
+import java.util.Date;
+
 import info.javaperformance.money.Money;
 
 /**
@@ -52,8 +54,8 @@ public class SearchParameters {
     public Money amountTo;
 
     // Date
-    public DateTime dateFrom;
-    public DateTime dateTo;
+    public Date dateFrom;
+    public Date dateTo;
 
     public Integer payeeId = null;
     public String payeeName;
