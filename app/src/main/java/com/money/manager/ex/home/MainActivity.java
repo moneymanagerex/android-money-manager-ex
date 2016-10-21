@@ -966,8 +966,7 @@ public class MainActivity
                 inflater.inflate(R.menu.menu_item_sync_progress, menu);
                 mSyncMenuItem = menu.findItem(id);
                 UIHelper ui = new UIHelper(this);
-                Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached)
-                        .color(ui.getToolbarItemColor());
+                Drawable syncIcon = ui.getIcon(GoogleMaterial.Icon.gmd_cached);
                 mSyncMenuItem.setIcon(syncIcon);
 
                 if (hasAnimation) {
@@ -1320,7 +1319,7 @@ public class MainActivity
         ImageView imageView = new ImageView(this);
         UIHelper uiHelper = new UIHelper(this);
         imageView.setImageDrawable(uiHelper.getIcon(GoogleMaterial.Icon.gmd_cached)
-            .color(uiHelper.getPrimaryTextColor()));
+            .color(uiHelper.getToolbarItemColor()));
         imageView.setPadding(8, 8, 8, 8);
 //        imageView.setLayoutParams(new Toolbar.LayoutParams());
 
