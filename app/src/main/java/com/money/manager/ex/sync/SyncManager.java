@@ -129,8 +129,7 @@ public class SyncManager {
             throw new RuntimeException(getContext().getString(R.string.no_remote_change_date));
         }
 
-        Date cachedLastModified = new MmxDate(dateString, Constants.ISO_8601_FORMAT).toDate();
-
+        Date cachedLastModified = MmxDate.fromIso8601(dateString).toDate();
         Date remoteLastModified = getModificationDateFrom(remoteFile);
 
         return !remoteLastModified.equals(cachedLastModified);

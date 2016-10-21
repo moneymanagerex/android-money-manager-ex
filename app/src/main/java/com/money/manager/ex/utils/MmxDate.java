@@ -35,6 +35,26 @@ import timber.log.Timber;
  * Various calendar utilities.
  */
 public class MmxDate {
+
+    public static MmxDate fromIso8601(String dateString) {
+        return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
+    }
+
+    public static Date from(String dateString, String pattern) {
+        if (TextUtils.isEmpty(dateString)) return null;
+
+        try {
+            return getFormatterFor(pattern).parse(dateString);
+        } catch (ParseException e) {
+            Timber.e(e, "parsing date string");
+            return null;
+        }
+    }
+
+    /*
+        Instance
+     */
+
     /**
      * The default constructor uses the current time instance by default.
      */
@@ -113,17 +133,6 @@ public class MmxDate {
     public MmxDate firstMonthOfYear() {
         mCalendar.set(Calendar.MONTH, mCalendar.getActualMinimum(Calendar.MONTH));
         return this;
-    }
-
-    public Date from(String dateString, String pattern) {
-        if (TextUtils.isEmpty(dateString)) return null;
-
-        try {
-            return getFormatterFor(pattern).parse(dateString);
-        } catch (ParseException e) {
-            Timber.e(e, "parsing date string");
-            return null;
-        }
     }
 
     public Calendar getCalendar() {
@@ -329,7 +338,7 @@ public class MmxDate {
         Private
      */
 
-    private SimpleDateFormat getFormatterFor(String format) {
+    private static SimpleDateFormat getFormatterFor(String format) {
         return new SimpleDateFormat(format, Locale.ENGLISH);
     }
 }
