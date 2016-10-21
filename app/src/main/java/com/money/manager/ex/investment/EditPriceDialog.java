@@ -187,7 +187,7 @@ public class EditPriceDialog
         String symbol = getArguments().getString(ARG_SYMBOL);
         Money price = MoneyFactory.fromString(getArguments().getString(ARG_PRICE));
         String dateString = getArguments().getString(ARG_DATE);
-        Date date = new MmxDateTimeUtils().from(dateString);
+        Date date = new MmxDate(dateString).toDate();
         mPrice = new PriceDownloadedEvent(symbol, price, date);
     }
 

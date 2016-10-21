@@ -161,7 +161,7 @@ public class MoneyManagerApplication
         registerCustomFonts();
 
         // Initialize Joda Time
-        JodaTimeAndroid.init(this);
+//        JodaTimeAndroid.init(this);
 
         // Exception reporting. Disabled for debug builds.
         Crashlytics crashlyticsKit = new Crashlytics.Builder()

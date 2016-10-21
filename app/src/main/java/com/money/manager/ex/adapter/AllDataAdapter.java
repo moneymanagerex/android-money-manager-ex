@@ -38,6 +38,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.QueryBillDeposits;
 import com.money.manager.ex.database.TransactionStatus;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
 import java.util.ArrayList;
@@ -149,7 +150,7 @@ public class AllDataAdapter
             Locale locale = MoneyManagerApplication.getApp().getAppLocale();
             MmxDateTimeUtils dateUtils = new MmxDateTimeUtils(locale);
 
-            Date dateTime = dateUtils.from(dateString);
+            Date dateTime = new MmxDate(dateString).toDate();
 
             String month = dateUtils.format(dateTime, "MMM");
             holder.txtMonth.setText(month);

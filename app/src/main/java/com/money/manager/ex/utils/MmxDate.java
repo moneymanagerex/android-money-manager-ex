@@ -48,7 +48,10 @@ public class MmxDate {
 
     public MmxDate(Date date) {
         mCalendar = new GregorianCalendar();
-        mCalendar.setTime(date);
+
+        if (date != null) {
+            mCalendar.setTime(date);
+        }
     }
 
     /**

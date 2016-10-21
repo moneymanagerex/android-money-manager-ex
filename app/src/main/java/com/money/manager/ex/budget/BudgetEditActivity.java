@@ -33,6 +33,7 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxJodaDateTimeUtils;
 
 import java.math.BigDecimal;
@@ -99,7 +100,7 @@ public class BudgetEditActivity
 
     @OnClick(R.id.budgetYearTextView)
     public void onSelectYear(View v) {
-        int currentYear = MmxJodaDateTimeUtils.today().getYear();
+        int currentYear = new MmxDate().getYear();
         int year;
         if (mModel.year != 0) {
             year = mModel.year;
@@ -133,7 +134,7 @@ public class BudgetEditActivity
         if (mModel.month != 0) {
             month = mModel.month;
         } else {
-            month = MmxJodaDateTimeUtils.today().getMonthOfYear();
+            month = new MmxDate().getMonthOfYear();
         }
 
         new NumberPickerBuilder()

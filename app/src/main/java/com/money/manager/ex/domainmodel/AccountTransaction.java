@@ -169,7 +169,7 @@ public class AccountTransaction
     public Date getDate() {
         String dateString = getDateString();
         return dateString != null
-            ? new MmxDateTimeUtils().from(dateString)
+            ? new MmxDate(dateString).toDate()
             : null;
     }
 

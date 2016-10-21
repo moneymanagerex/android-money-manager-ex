@@ -522,12 +522,12 @@ public class SearchParametersFragment
 
         // Date from
         if (viewHolder.txtDateFrom.getTag() != null) {
-            searchParameters.dateFrom = dateTimeUtilsLazy.get().from(viewHolder.txtDateFrom.getTag().toString());
+            searchParameters.dateFrom = new MmxDate(viewHolder.txtDateFrom.getTag().toString()).toDate();
         }
         // Date to
         if (viewHolder.txtDateTo.getTag() != null) {
             String dateString = viewHolder.txtDateTo.getTag().toString();
-            searchParameters.dateTo = dateTimeUtilsLazy.get().from(dateString);
+            searchParameters.dateTo = new MmxDate(dateString).toDate();
         }
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {

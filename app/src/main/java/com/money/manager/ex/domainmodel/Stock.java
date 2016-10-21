@@ -135,7 +135,7 @@ public class Stock
 
     public Date getPurchaseDate() {
         String dateString = getString(StockFields.PURCHASEDATE);
-        return new MmxDateTimeUtils().from(dateString);
+        return new MmxDate(dateString).toDate();
     }
 
     public void setPurchaseDate(Date value) {

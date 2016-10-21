@@ -84,11 +84,11 @@ public abstract class BaseReportFragment
                 mItemSelected = savedInstanceState.getInt(KEY_ITEM_SELECTED);
             if (savedInstanceState.containsKey(KEY_FROM_DATE)) {
                 String dateFromString = savedInstanceState.getString(KEY_FROM_DATE);
-                mDateFrom = dateTimeUtilsLazy.get().from(dateFromString);
+                mDateFrom = new MmxDate(dateFromString).toDate();
             }
             if (savedInstanceState.containsKey(KEY_TO_DATE)) {
                 String dateToString = savedInstanceState.getString(KEY_TO_DATE);
-                mDateTo = dateTimeUtilsLazy.get().from(dateToString);
+                mDateTo = new MmxDate(dateToString).toDate();
             }
         }
         //start loader

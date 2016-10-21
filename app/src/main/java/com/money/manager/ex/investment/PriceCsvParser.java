@@ -22,7 +22,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.core.NumericHelper;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
+import com.money.manager.ex.utils.MmxDate;
 import com.opencsv.CSVParser;
 
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class PriceCsvParser {
         // date
 //        DateTimeFormatter format = DateTimeFormat.forPattern("MM/dd/yyyy");
 //        DateTime date = format.parseDateTime(values[2]);
-        Date date = new MmxDateTimeUtils().from(values[2], "MM/dd/yyyy");
+        Date date = new MmxDate(values[2], "MM/dd/yyyy").toDate();
 
         // Note: For currencies, the symbol is i.e. AUDEUR=X
 
