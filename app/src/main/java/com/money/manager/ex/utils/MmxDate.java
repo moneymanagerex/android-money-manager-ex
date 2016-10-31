@@ -37,6 +37,14 @@ import timber.log.Timber;
 public class MmxDate {
 
     public static MmxDate fromIso8601(String dateString) {
+        if (dateString.length() < 28) {
+            // manually handle short time-zone offset, i.e. 2016-10-22T02:36:46.000+02
+            if (dateString.charAt(23) == '+' || dateString.charAt(23) == '-') {
+                // append two zeroes
+                dateString = dateString.concat("00");
+            }
+        }
+
         return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
     }
 
