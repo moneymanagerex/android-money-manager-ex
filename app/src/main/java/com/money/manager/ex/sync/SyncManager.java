@@ -533,10 +533,14 @@ public class SyncManager {
         Timber.d("Saving last modification date %s for remote file %s", date.toString(), file);
 
         DatabaseMetadata currentDb = getDatabases().get(localPath);
-        if (currentDb.remoteLastChangedDate.equals(date.toString(Constants.ISO_8601_FORMAT))) {
+        String newChangedDate = date.toString(Constants.ISO_8601_FORMAT);
+
+        // Do not save if the date has not changed.
+        if (!TextUtils.isEmpty(currentDb.remoteLastChangedDate) && currentDb.remoteLastChangedDate.equals(newChangedDate)) {
             return;
         }
 
+        // Save.
         currentDb.setRemoteLastChangedDate(date);
         getDatabases().save();
     }

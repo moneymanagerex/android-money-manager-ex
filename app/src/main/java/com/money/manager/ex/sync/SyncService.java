@@ -217,8 +217,6 @@ public class SyncService
 
         notificationManager.cancel(SyncConstants.NOTIFICATION_SYNC_IN_PROGRESS);
 
-//        if (!result) return;
-
         // copy file
         try {
             MmxFileUtils.copy(tempFile, localFile);
