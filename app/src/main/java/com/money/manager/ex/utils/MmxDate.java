@@ -36,6 +36,11 @@ import timber.log.Timber;
  */
 public class MmxDate {
 
+    /**
+     * The expected format is 2016-10-22T02:36:46.000+0200
+     * @param dateString
+     * @return
+     */
     public static MmxDate fromIso8601(String dateString) {
         if (dateString.length() < 28) {
             // manually handle short time-zone offset, i.e. 2016-10-22T02:36:46.000+02
@@ -43,6 +48,8 @@ public class MmxDate {
                 // append two zeroes
                 dateString = dateString.concat("00");
             }
+            // handle invalid format 2016-10-21T18:42:18.000Z
+            // if (dateString.charAt(23) == 'Z') {}
         }
 
         return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
