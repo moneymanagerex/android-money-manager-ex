@@ -161,7 +161,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.8.1'
+            , 'com.cloudrail:cloudrail-si-android:2.8.2'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
@@ -203,7 +203,7 @@ dependencies {
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-            , 'io.reactivex:rxjava:1.2.1'
+            , 'io.reactivex:rxjava:1.2.2'
 //            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
             , 'com.squareup.sqlbrite:sqlbrite:0.8.0'
             , 'com.jakewharton.timber:timber:4.3.1'
@@ -213,7 +213,7 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
-            , 'com.trello:rxlifecycle:0.8.0'         // RxLifecycle
+            , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
             , 'com.mikepenz:iconics-core:2.8.1@aar' // also update in the icon module.
             , 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar' // MD icons
@@ -243,10 +243,10 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.1.3',
-            'org.robolectric:shadows-support-v4:3.1.3',
-            'org.robolectric:shadows-multidex:3.1.3',
-            'org.robolectric:shadows-httpclient:3.1.3',
+            'org.robolectric:robolectric:3.1.4',
+            'org.robolectric:shadows-support-v4:3.1.4',
+            'org.robolectric:shadows-multidex:3.1.4',
+            'org.robolectric:shadows-httpclient:3.1.4',
             'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
