@@ -21,6 +21,7 @@ import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,9 +38,9 @@ import timber.log.Timber;
 public class MmxDate {
 
     /**
-     * The expected format is 2016-10-22T02:36:46.000+0200
-     * @param dateString
-     * @return
+     * The expected format is full ISO format: 2016-10-22T02:36:46.000+0200
+     * @param dateString The date string in ISO format.
+     * @return MmxDate instance.
      */
     public static MmxDate fromIso8601(String dateString) {
         if (dateString.length() < 28) {
@@ -48,8 +49,15 @@ public class MmxDate {
                 // append two zeroes
                 dateString = dateString.concat("00");
             }
+
             // handle invalid format 2016-10-21T18:42:18.000Z
-            // if (dateString.charAt(23) == 'Z') {}
+            if (dateString.charAt(23) == 'Z') {
+                dateString = dateString.substring(0, 23);
+                // append the current time zone time
+                DateFormat offsetFormat = new SimpleDateFormat("Z");
+                String offsetString = offsetFormat.format(new MmxDate().toDate());
+                dateString += offsetString;
+            }
         }
 
         return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
