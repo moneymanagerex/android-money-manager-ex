@@ -21,7 +21,7 @@
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Um aplicativo fácil de usar para gerenciar suas finanças pessoais, contas bancárias, orçamentos familiares e muito mais.</string>
-  <string name="application_credits">O projecto MoneyManagerEx para Android usa a biblioteca ActionBarSherlock</string>
+  <string name="application_credits">O projeto MoneyManagerEx para Android usa a biblioteca ActionBarSherlock</string>
   <string name="application_license">Licenças de código aberto</string>
   <!-- database -->
   <string name="db_insert_failed">A inserção dos dados falhou</string>
@@ -170,7 +170,7 @@
   <string name="upload">Carregar</string>
   <string name="username">Nome de usuário</string>
   <string name="to">Para</string>
-  <string name="website">Sítio web</string>
+  <string name="website">Site web</string>
   <string name="contact">Contato</string>
   <string name="access_info">Informação de acesso</string>
   <string name="initial_balance">Saldo inicial</string>
