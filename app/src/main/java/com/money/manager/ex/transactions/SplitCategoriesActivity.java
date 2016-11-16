@@ -223,7 +223,9 @@ public class SplitCategoriesActivity
         showCategorySelector(event.requestId);
     }
 
-    // Private
+    /*
+        Private
+     */
 
     private void addSplitTransaction() {
         ISplitTransaction entity = SplitItemFactory.create(this.entityTypeName, mAdapter.transactionType);

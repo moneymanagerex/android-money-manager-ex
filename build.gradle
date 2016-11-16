@@ -37,7 +37,7 @@ ext {
     buildToolsVersion = '25.0.0'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
-    supportLibrary = '25.0.0'
+    supportLibrary = '25.0.1'
     supportDependencies = [
             support          :       "com.android.support:support-v4:${supportLibrary}",
             appCompat        :       "com.android.support:appcompat-v7:${supportLibrary}",
