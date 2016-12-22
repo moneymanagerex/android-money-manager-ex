@@ -19,6 +19,7 @@ package com.money.manager.ex.budget;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
@@ -117,15 +119,14 @@ public class BudgetAdapter
         // Amount
 
         TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
+        double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
         if (amountTextView != null) {
-            double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
         }
 
         // Estimated
         // Actual
-        // todo: colour the amount depending on whether it is above/below the budgeted amount.
         TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
         if (actualTextView != null) {
             double actual;
@@ -139,6 +140,14 @@ public class BudgetAdapter
 
             String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
             actualTextView.setText(actualString);
+
+            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+            UIHelper uiHelper = new UIHelper(context);
+            if ((int) actual * 100 < (int) amount * 100) {
+                actualTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+            } else {
+                actualTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+            }
         }
     }
 
