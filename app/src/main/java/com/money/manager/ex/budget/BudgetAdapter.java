@@ -22,7 +22,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +37,7 @@ import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
@@ -70,8 +70,10 @@ public class BudgetAdapter
     public BudgetAdapter(Context context, Cursor cursor, String[] from, int[] to, int flags) {
         super(context, R.layout.item_budget, cursor, from, to, flags);
 
+        // switch to simple layout if the showSimpleView is set
+        AppSettings settings = new AppSettings(getContext());
+        mLayout = (settings.getBudgetSettings().getShowSimpleView()) ? R.layout.item_budget_simple : R.layout.item_budget;
         mContext = context;
-        mLayout = R.layout.item_budget;
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
@@ -136,17 +138,19 @@ public class BudgetAdapter
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            if ((int) actual * 100 < (int) amount * 100) {
-                actualTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+            if ((int) (actual * 100) < (int) (amount * 100)) {
+                actualTextView.setTextColor(
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                );
             } else {
-                actualTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+                actualTextView.setTextColor(
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                );
             }
         }
 
         // Amount Available
-        // @todo: calculating income is weird... when the number have different signs (+ and -)
-        // @todo:  - the planned income amount is negative, but the actual amount is positive..
-        //           error in the query?
+
         TextView amountAvailableTextView = (TextView) view.findViewById(R.id.amountAvailableTextView);
         if (amountAvailableTextView != null) {
             double amountAvailable = -(amount - actual);
@@ -155,13 +159,15 @@ public class BudgetAdapter
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-
             int amountAvailableInt = (int) (amountAvailable * 100);
-            Log.w("amounts", "" + amountAvailableInt);
             if (amountAvailableInt < 0) {
-                amountAvailableTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+                amountAvailableTextView.setTextColor(
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                );
             } else if (amountAvailableInt > 0) {
-                amountAvailableTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+                amountAvailableTextView.setTextColor(
+                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                );
             }
         }
     }

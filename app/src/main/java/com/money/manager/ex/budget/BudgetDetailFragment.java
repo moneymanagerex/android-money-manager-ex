@@ -33,6 +33,7 @@ import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.BudgetRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.settings.AppSettings;
 
 /**
  * Use the {@link BudgetDetailFragment#newInstance} factory method to
@@ -94,7 +95,11 @@ public class BudgetDetailFragment
         ListView list = (ListView) view.findViewById(android.R.id.list);
 
         // Add the column header.
-        mHeader = View.inflate(getActivity(), R.layout.item_budget_header, null);
+        // switch to simple layout if the showSimpleView is set
+        AppSettings settings = new AppSettings(getContext());
+        int layout = (settings.getBudgetSettings().getShowSimpleView()) ? R.layout.item_budget_simple_header : R.layout.item_budget_header;
+
+        mHeader = View.inflate(getActivity(), layout, null);
         list.addHeaderView(mHeader);
         // Header has to be added before the adapter is set on the list.
 
