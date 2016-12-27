@@ -24,6 +24,7 @@ import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.R;
@@ -105,10 +106,9 @@ public class SettingsFragment
             });
         }
 
-        //uiHelper.getIcon(MMXIconFont.Icon.mmx_law) ?
         final Preference budgetPreference = findPreference(getString(R.string.pref_budget));
         if (budgetPreference != null) {
-            budgetPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_local_atm)
+            budgetPreference.setIcon(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)
                     .color(uiHelper.getSecondaryTextColor()));
             budgetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
