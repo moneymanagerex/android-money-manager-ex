@@ -783,9 +783,7 @@
 
     <string name="save">Save</string>
 
-
-    <string name="title_budget_show_Simple_view">Show simple budget view</string>
-    <string name="summary_budget_show_simple_view">If checked Budgets use the simplified view</string>
-
+    <string name="title_budget_show_simple_view">Show simple budget view</string>
+    <string name="summary_budget_show_simple_view">If checked budgets use the simplified view</string>
 
 </resources>

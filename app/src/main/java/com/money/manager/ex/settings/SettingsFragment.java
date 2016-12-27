@@ -22,7 +22,6 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
@@ -109,7 +108,7 @@ public class SettingsFragment
         //uiHelper.getIcon(MMXIconFont.Icon.mmx_law) ?
         final Preference budgetPreference = findPreference(getString(R.string.pref_budget));
         if (budgetPreference != null) {
-            budgetPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_toll)
+            budgetPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_local_atm)
                     .color(uiHelper.getSecondaryTextColor()));
             budgetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override

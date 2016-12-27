@@ -22,13 +22,6 @@
         android:defaultValue="false"
         android:key="@string/pref_budget_show_simple_view"
         android:summary="@string/summary_budget_show_simple_view"
-        android:title="@string/title_budget_show_Simple_view" />
-
-    <SwitchPreferenceCompat
-        android:icon="@null"
-        android:defaultValue="true"
-        android:key="@string/pref_show_tutorial"
-        android:title="@string/title_show_tutorial"
-        android:summary="@string/summary_show_tutorial" />
+        android:title="@string/title_budget_show_simple_view" />
 
 </PreferenceScreen>

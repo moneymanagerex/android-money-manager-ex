@@ -18,7 +18,6 @@
 package com.money.manager.ex.settings;
 
 import android.os.Bundle;
-import android.util.Log;
 
 public class BudgetSettingsActivity
     extends BaseSettingsFragmentActivity {
@@ -26,7 +25,6 @@ public class BudgetSettingsActivity
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        Log.w("budget", "BudgetSettingsActivity onCreate is called.");
         setSettingFragment(new BudgetSettingsFragment());
     }
 }

@@ -140,11 +140,11 @@ public class BudgetAdapter
             UIHelper uiHelper = new UIHelper(context);
             if ((int) (actual * 100) < (int) (amount * 100)) {
                 actualTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else {
                 actualTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -162,11 +162,11 @@ public class BudgetAdapter
             int amountAvailableInt = (int) (amountAvailable * 100);
             if (amountAvailableInt < 0) {
                 amountAvailableTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
             } else if (amountAvailableInt > 0) {
                 amountAvailableTextView.setTextColor(
-                        ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
                 );
             }
         }
@@ -175,7 +175,7 @@ public class BudgetAdapter
     private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
         double actual;
         if (!hasSubcategory) {
-            // @todo: get sum of subcategory
+            // @todo: get sum of subcategories?
             int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
             actual = getAmountForCategory(categoryId);
         } else {
