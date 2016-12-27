@@ -22,6 +22,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,16 +129,8 @@ public class BudgetAdapter
         // Estimated
         // Actual
         TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
+        double actual = getActualAmount(hasSubcategory, cursor);
         if (actualTextView != null) {
-            double actual;
-            if (!hasSubcategory) {
-                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
-                actual = getAmountForCategory(categoryId);
-            } else {
-                int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
-                actual = getAmountForSubCategory(subCategoryId);
-            }
-
             String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
             actualTextView.setText(actualString);
 
@@ -149,6 +142,41 @@ public class BudgetAdapter
                 actualTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
             }
         }
+
+        // Amount Available
+        // @todo: calculating income is weird... when the number have different signs (+ and -)
+        // @todo:  - the planned income amount is negative, but the actual amount is positive..
+        //           error in the query?
+        TextView amountAvailableTextView = (TextView) view.findViewById(R.id.amountAvailableTextView);
+        if (amountAvailableTextView != null) {
+            double amountAvailable = -(amount - actual);
+            String amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
+            amountAvailableTextView.setText(amountAvailableString);
+
+            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+            UIHelper uiHelper = new UIHelper(context);
+
+            int amountAvailableInt = (int) (amountAvailable * 100);
+            Log.w("amounts", "" + amountAvailableInt);
+            if (amountAvailableInt < 0) {
+                amountAvailableTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme)));
+            } else if (amountAvailableInt > 0) {
+                amountAvailableTextView.setTextColor(ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme)));
+            }
+        }
+    }
+
+    private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
+        double actual;
+        if (!hasSubcategory) {
+            // @todo: get sum of subcategory
+            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+            actual = getAmountForCategory(categoryId);
+        } else {
+            int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+            actual = getAmountForSubCategory(subCategoryId);
+        }
+        return actual;
     }
 
     public Context getContext() {

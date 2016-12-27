@@ -42,6 +42,10 @@
         android:title="@string/investment" />
     <Preference
         android:icon="@null"
+        android:key="@string/pref_budget"
+        android:title="@string/budget" />
+    <Preference
+        android:icon="@null"
         android:key="@string/pref_security"
         android:title="@string/preferences_security" />
     <Preference

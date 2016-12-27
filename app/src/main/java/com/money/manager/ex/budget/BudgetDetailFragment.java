@@ -47,6 +47,7 @@ public class BudgetDetailFragment
     private final int LOADER_BUDGET = 1;
     private long mBudgetYearId = Constants.NOT_SET;
     private String mBudgetName;
+    private View mHeader;
 
     /**
      * Use this factory method to create a new instance of
@@ -93,13 +94,23 @@ public class BudgetDetailFragment
         ListView list = (ListView) view.findViewById(android.R.id.list);
 
         // Add the column header.
-        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
-        list.addHeaderView(header);
+        mHeader = View.inflate(getActivity(), R.layout.item_budget_header, null);
+        list.addHeaderView(mHeader);
         // Header has to be added before the adapter is set on the list.
 
         setUpAdapter();
 
         return view;
+    }
+
+    // Got random IndexOutOfBoundsException during loading the new fragment
+    // reference: http://stackoverflow.com/a/28463811
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (getListView().getHeaderViewsCount() > 0) {
+            getListView().removeHeaderView(mHeader);
+        }
     }
 
     @Override
