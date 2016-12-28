@@ -171,8 +171,10 @@ public class BudgetsActivity
             // todo: enable going back only if showing the list.
 //            boolean showingList = tagFragment.equals(BudgetListFragment.class.getName());
 //            setDisplayHomeAsUpEnabled(showingList);
+
+            transaction.addToBackStack(null);
         }
-        transaction.addToBackStack(null);
+
         // Commit the transaction
         transaction.commit();
     }
