@@ -1060,7 +1060,7 @@ public class SVGAndroidRenderer
       }
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
       
       boolean  compositing = pushLayer();
@@ -1110,7 +1110,7 @@ public class SVGAndroidRenderer
       Path  path = makePathAndBoundingBox(obj);
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
 
       boolean  compositing = pushLayer();
@@ -1149,7 +1149,7 @@ public class SVGAndroidRenderer
       Path  path = makePathAndBoundingBox(obj);
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
 
       boolean  compositing = pushLayer();
@@ -1187,7 +1187,7 @@ public class SVGAndroidRenderer
       Path  path = makePathAndBoundingBox(obj);
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
 
       boolean  compositing = pushLayer();
@@ -1224,7 +1224,7 @@ public class SVGAndroidRenderer
       Path  path = makePathAndBoundingBox(obj);
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
 
       boolean  compositing = pushLayer();
@@ -1279,7 +1279,7 @@ public class SVGAndroidRenderer
       Path  path = makePathAndBoundingBox(obj);
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
       
       boolean  compositing = pushLayer();
@@ -1363,7 +1363,7 @@ public class SVGAndroidRenderer
       Path  path = makePathAndBoundingBox(obj);
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
       
       boolean  compositing = pushLayer();
@@ -1419,7 +1419,7 @@ public class SVGAndroidRenderer
       }
       updateParentBoundingBox(obj);
 
-      checkForGradiantsAndPatterns(obj);      
+      checkForGradientsAndPatterns(obj);
       checkForClipPath(obj);
       
       boolean  compositing = pushLayer();
@@ -1550,7 +1550,7 @@ public class SVGAndroidRenderer
                dy = (tspan.dy == null || tspan.dy.size() == 0) ? 0f : tspan.dy.get(0).floatValueY(this);
             }
 
-            checkForGradiantsAndPatterns((SvgElement) tspan.getTextRoot());
+            checkForGradientsAndPatterns((SvgElement) tspan.getTextRoot());
 
             if (textprocessor instanceof PlainTextDrawer) {
                ((PlainTextDrawer) textprocessor).x = x + dx;
@@ -1579,7 +1579,7 @@ public class SVGAndroidRenderer
 
          if (display())
          {
-            checkForGradiantsAndPatterns((SvgElement) tref.getTextRoot());      
+            checkForGradientsAndPatterns((SvgElement) tref.getTextRoot());
 
             // Locate the referenced object
             SVG.SvgObject  ref = obj.document.resolveIRI(tref.href);
@@ -1645,7 +1645,7 @@ public class SVGAndroidRenderer
          }
       }
 
-      checkForGradiantsAndPatterns((SvgElement) obj.getTextRoot());      
+      checkForGradientsAndPatterns((SvgElement) obj.getTextRoot());
       
       boolean  compositing = pushLayer();
 
@@ -2544,6 +2544,9 @@ public class SVGAndroidRenderer
     * in section "F.6 Elliptical arc implementation notes".
     * 
     * Some of this code has been borrowed from the Batik library (Apache-2 license).
+    *
+    * Note: the original version of this code used doubles. This version uses floats because of some
+    * sort Android JIT(?) bug. See Issue #62.
     */
 
    private static void arcTo(float lastX, float lastY, float rx, float ry, float angle, boolean largeArcFlag, boolean sweepFlag, float x, float y, PathInterface pather)
@@ -2566,31 +2569,31 @@ public class SVGAndroidRenderer
       ry = Math.abs(ry);
 
       // Convert angle from degrees to radians
-      float  angleRad = (float) Math.toRadians(angle % 360.0);
-      double cosAngle = Math.cos(angleRad);
-      double sinAngle = Math.sin(angleRad);
+      float angleRad = (float) Math.toRadians(angle % 360.0);
+      float cosAngle = (float) Math.cos(angleRad);
+      float sinAngle = (float) Math.sin(angleRad);
       
       // We simplify the calculations by transforming the arc so that the origin is at the
       // midpoint calculated above followed by a rotation to line up the coordinate axes
       // with the axes of the ellipse.
 
       // Compute the midpoint of the line between the current and the end point
-      double dx2 = (lastX - x) / 2.0;
-      double dy2 = (lastY - y) / 2.0;
+      float dx2 = (lastX - x) / 2.0f;
+      float dy2 = (lastY - y) / 2.0f;
 
       // Step 1 : Compute (x1', y1') - the transformed start point
-      double x1 = (cosAngle * dx2 + sinAngle * dy2);
-      double y1 = (-sinAngle * dx2 + cosAngle * dy2);
+      float x1 = (cosAngle * dx2 + sinAngle * dy2);
+      float y1 = (-sinAngle * dx2 + cosAngle * dy2);
 
-      double rx_sq = rx * rx;
-      double ry_sq = ry * ry;
-      double x1_sq = x1 * x1;
-      double y1_sq = y1 * y1;
+      float rx_sq = rx * rx;
+      float ry_sq = ry * ry;
+      float x1_sq = x1 * x1;
+      float y1_sq = y1 * y1;
 
       // Check that radii are large enough.
       // If they are not, the spec says to scale them up so they are.
       // This is to compensate for potential rounding errors/differences between SVG implementations.
-      double radiiCheck = x1_sq / rx_sq + y1_sq / ry_sq;
+      float radiiCheck = x1_sq / rx_sq + y1_sq / ry_sq;
       if (radiiCheck > 1) {
          rx = (float) Math.sqrt(radiiCheck) * rx;
          ry = (float) Math.sqrt(radiiCheck) * ry;
@@ -2599,36 +2602,36 @@ public class SVGAndroidRenderer
       }
 
       // Step 2 : Compute (cx1, cy1) - the transformed centre point
-      double sign = (largeArcFlag == sweepFlag) ? -1 : 1;
-      double sq = ((rx_sq * ry_sq) - (rx_sq * y1_sq) - (ry_sq * x1_sq)) / ((rx_sq * y1_sq) + (ry_sq * x1_sq));
+      float sign = (largeArcFlag == sweepFlag) ? -1 : 1;
+      float sq = ((rx_sq * ry_sq) - (rx_sq * y1_sq) - (ry_sq * x1_sq)) / ((rx_sq * y1_sq) + (ry_sq * x1_sq));
       sq = (sq < 0) ? 0 : sq;
-      double coef = (sign * Math.sqrt(sq));
-      double cx1 = coef * ((rx * y1) / ry);
-      double cy1 = coef * -((ry * x1) / rx);
+      float coef = (float) (sign * Math.sqrt(sq));
+      float cx1 = coef * ((rx * y1) / ry);
+      float cy1 = coef * -((ry * x1) / rx);
 
       // Step 3 : Compute (cx, cy) from (cx1, cy1)
-      double sx2 = (lastX + x) / 2.0;
-      double sy2 = (lastY + y) / 2.0;
-      double cx = sx2 + (cosAngle * cx1 - sinAngle * cy1);
-      double cy = sy2 + (sinAngle * cx1 + cosAngle * cy1);
+      float sx2 = (lastX + x) / 2.0f;
+      float sy2 = (lastY + y) / 2.0f;
+      float cx = sx2 + (cosAngle * cx1 - sinAngle * cy1);
+      float cy = sy2 + (sinAngle * cx1 + cosAngle * cy1);
 
       // Step 4 : Compute the angleStart (angle1) and the angleExtent (dangle)
-      double ux = (x1 - cx1) / rx;
-      double uy = (y1 - cy1) / ry;
-      double vx = (-x1 - cx1) / rx;
-      double vy = (-y1 - cy1) / ry;
-      double p, n;
+      float ux = (x1 - cx1) / rx;
+      float uy = (y1 - cy1) / ry;
+      float vx = (-x1 - cx1) / rx;
+      float vy = (-y1 - cy1) / ry;
+      float p, n;
 
       // Compute the angle start
-      n = Math.sqrt((ux * ux) + (uy * uy));
+      n = (float) Math.sqrt((ux * ux) + (uy * uy));
       p = ux; // (1 * ux) + (0 * uy)
-      sign = (uy < 0) ? -1.0 : 1.0;
-      double angleStart = Math.toDegrees(sign * Math.acos(p / n));
+      sign = (uy < 0) ? -1.0f : 1.0f;
+      float angleStart = (float) Math.toDegrees(sign * Math.acos(p / n));
 
       // Compute the angle extent
-      n = Math.sqrt((ux * ux + uy * uy) * (vx * vx + vy * vy));
+      n = (float) Math.sqrt((ux * ux + uy * uy) * (vx * vx + vy * vy));
       p = ux * vx + uy * vy;
-      sign = (ux * vy - uy * vx < 0) ? -1.0 : 1.0;
+      sign = (ux * vy - uy * vx < 0) ? -1.0f : 1.0f;
       double angleExtent = Math.toDegrees(sign * Math.acos(p / n));
       if (!sweepFlag && angleExtent > 0) {
          angleExtent -= 360f;
@@ -2648,7 +2651,7 @@ public class SVGAndroidRenderer
       Matrix m = new Matrix();
       m.postScale(rx, ry);
       m.postRotate(angle);
-      m.postTranslate((float) cx, (float) cy);
+      m.postTranslate(cx, cy);
       m.mapPoints(bezierPoints);
 
       // The last point in the bezier set should match exactly the last coord pair in the arc (ie: x,y). But
@@ -3135,11 +3138,11 @@ public class SVGAndroidRenderer
 
 
    /*
-    * Check for gradiant fills or strokes on this object.  These are always relative
+    * Check for gradient fills or strokes on this object.  These are always relative
     * to the object, so can't be preconfigured. They have to be initialised at the
     * time each object is rendered.
     */
-   private void  checkForGradiantsAndPatterns(SvgElement obj)
+   private void  checkForGradientsAndPatterns(SvgElement obj)
    {
       if (state.style.fill instanceof PaintReference) {
          decodePaintReference(true, obj.boundingBox, (PaintReference) state.style.fill);
@@ -3170,16 +3173,16 @@ public class SVGAndroidRenderer
          return;
       }
       if (ref instanceof SvgLinearGradient)
-         makeLinearGradiant(isFill, boundingBox, (SvgLinearGradient) ref);
+         makeLinearGradient(isFill, boundingBox, (SvgLinearGradient) ref);
       if (ref instanceof SvgRadialGradient)
-         makeRadialGradiant(isFill, boundingBox, (SvgRadialGradient) ref);
+         makeRadialGradient(isFill, boundingBox, (SvgRadialGradient) ref);
       if (ref instanceof SolidColor)
          setSolidColor(isFill, (SolidColor) ref);
       //if (ref instanceof SVG.Pattern) {}  // May be needed later if/when we do direct rendering
    }
 
 
-   private void  makeLinearGradiant(boolean isFill, Box boundingBox, SvgLinearGradient gradient)
+   private void  makeLinearGradient(boolean isFill, Box boundingBox, SvgLinearGradient gradient)
    {
       if (gradient.href != null)
          fillInChainedGradientFields(gradient, gradient.href);
@@ -3288,7 +3291,7 @@ public class SVGAndroidRenderer
    }
 
 
-   private void makeRadialGradiant(boolean isFill, Box boundingBox, SvgRadialGradient gradient)
+   private void  makeRadialGradient(boolean isFill, Box boundingBox, SvgRadialGradient gradient)
    {
       if (gradient.href != null)
          fillInChainedGradientFields(gradient, gradient.href);
@@ -3829,7 +3832,7 @@ public class SVGAndroidRenderer
       float y2 = (obj.y2 == null) ? 0 : obj.y2.floatValueY(this);
 
       if (obj.boundingBox == null) {
-         obj.boundingBox = new Box(Math.min(x1, y1), Math.min(y1, y2), Math.abs(x2-x1), Math.abs(y2-y1));
+         obj.boundingBox = new Box(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2-x1), Math.abs(y2-y1));
       }
 
       Path  p = new Path();

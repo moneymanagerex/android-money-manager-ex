@@ -1,0 +1,10 @@
+{
+	"name": "DeploymentScripts",
+	"description": "Scripts that deploy the latest version to play store and/or elsewhere. Currently in test mode.",
+	"author": "MoneyManagerEx Project",
+	"license": "GPL-3.0",
+	"dependencies": {
+		"github": "*",
+		"commander": "*"
+	}
+}

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold" />
+    
+    <com.money.manager.ex.view.RobotoTextView
+        android:id="@+id/textViewNextDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold|italic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/mmx_margin_bottom_top"
+        android:layout_marginLeft="@dimen/mmx_margin"
+        android:layout_marginRight="@dimen/mmx_margin"
+        android:layout_marginTop="@dimen/mmx_margin_bottom_top"
+        android:background="?attr/shape_white_background_shadow"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding" >
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewAccountName"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textStyle="bold" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
+                android:textStyle="bold" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/mmx_margin_bottom_top"
+                android:gravity="right"
+                android:textColor="?attr/holo_red_color_theme"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutPayee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/imageViewFollowUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/light_bulb"
+                        android:visibility="gone" />
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/textViewPayee"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutToAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/transfer"
+                        android:src="@drawable/arrows_reload_icon" />
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/textViewToAccountName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="?attr/ic_action_warning" />
+        </LinearLayout>
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewCategorySub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding" />
+
+        <com.money.manager.ex.view.RobotoTextView
+            android:id="@+id/textViewNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/mmx_padding"
+            android:paddingRight="@dimen/mmx_padding"
+            android:singleLine="true"
+            android:textStyle="italic"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

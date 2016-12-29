@@ -4,6 +4,7 @@
 .settings/
 
 build/
+gradle/
 androidbillinglibrary/build/
 actionbarsherlock/build/
 
@@ -26,3 +27,13 @@ Thumbs.db
 # Android Studio
 .idea
 *.iml
+
+# NPM modules
+scripts/deployment/node_modules
+
+# Proxy settings
+/gradle.properties
+
+# Fabric settings
+/fabric.properties
+/app/fabric.properties

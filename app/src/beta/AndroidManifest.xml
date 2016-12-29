@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.money.manager.ex" >
+
+    <application
+        android:name=".MoneyManagerApplication"
+        android:allowBackup="true"
+        android:backupAgent=".core.MoneyManagerBackupAgentHelper"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/application_name"
+        android:theme="@style/Theme.Splash" >
+
+        <!--<activity-->
+            <!--android:name="com.dropbox.client2.android.AuthActivity"-->
+            <!--android:configChanges="orientation|keyboard|screenSize"-->
+            <!--android:launchMode="singleTask" >-->
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash; Change this to be db- followed by your app key &ndash;&gt;-->
+                <!--<data android:scheme="db-276plbbbd1y5c38" />-->
+
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+    </application>
+
+</manifest>

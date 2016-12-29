@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Search, should appear as action button -->
+    <item
+        android:id="@+id/menu_update_prices"
+        android:icon="?attr/ic_action_download"
+        android:title="@string/update_prices"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_export_prices"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/export_prices"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_purge_history"
+        android:icon="@null"
+        android:title="@string/purge_history"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_change_provider"
+        android:title="@string/change_provider" />
+</menu>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Money.Button.Colored.Theme" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/md_primary</item>
+    </style>
+
+    <style name="Money.Button" parent="Widget.AppCompat.Button">
+        <!--<item name="android:background">@color/md_primary</item>-->
+        <!--<item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>-->
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:padding">3dp</item>
+        <!--<item name="android:shadowColor">@android:color/black</item>-->
+        <!--<item name="android:shadowDx">1</item>-->
+        <!--<item name="android:shadowDy">1</item>-->
+        <!--<item name="android:shadowRadius">1</item>-->
+        <!--<item name="android:textColor">@color/button_foreground_active</item>-->
+    </style>
+    <style name="Money.Button.Transparent" parent="Money.Button">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Money.Button.Input.Dialog" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/input_dialog_button_height</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/input_dialog_text_size</item>
+        <item name="android:background">?attr/calculator_button_background</item>
+        <!--<item name="android:background">?android:attr/selectableItemBackground</item>-->
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="Money.Button.Input.Dialog.Operator" parent="Money.Button.Input.Dialog">
+        <item name="android:textColor">@color/md_primary_dark</item>
+        <!--<item name="android:background">@color/color_dialog_number_operator</item>-->
+        <item name="android:background">?attr/calculator_button_operator_background</item>
+    </style>
+
+    <style name="MoneyFloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <!--<item name="android:layout_marginEnd">16dp</item>-->
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:src">@drawable/ic_action_add_dark</item>
+    </style>
+
+    <style name="Money.TextView" parent="android:Widget.TextView">
+        <item name="android:tag">@string/view_user_size</item>
+    </style>
+
+    <style name="Money.TextView.ListSeparator" parent="Money.TextView">
+        <item name="android:drawableBottom">@drawable/list_separator_text_view_style_drawable</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/holo_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Money.TextView.Subhead" parent="TextAppearance.AppCompat.Subhead"/>
+
+    <style name="Money.TextView.Subhead.Inverse" parent="TextAppearance.AppCompat.Subhead.Inverse">
+        <!--<item name="android:textColor">@color/md_icons</item>-->
+    </style>
+
+    <style name="Money.TextView.Body2" parent="TextAppearance.AppCompat.Body2"/>
+
+    <style name="Money.TextView.Body2.Inverse" parent="Money.TextView.Body2">
+        <!--<item name="android:textColor">@color/md_icons</item>-->
+    </style>
+
+    <style name="Money.TextView.Header" parent="Money.TextView">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/md_secondary_text</item>
+    </style>
+
+    <style name="Money.TextView.Header.Caption" parent="Money.TextView.Header">
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_primary_dark</item>
+    </style>
+
+    <style name="Money.Base.TextView.Widget.EditText" parent="Widget.AppCompat.EditText"/>
+
+    <style name="Money.TextView.Widget.EditText" parent="Money.Base.TextView.Widget.EditText">
+        <item name="android:ellipsize">end</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Money.Spinner.Style" parent="android:Widget.Holo.Light.Spinner" />
+    <style name="Money.Spinner.Style.Dark" parent="android:Widget.Holo.Spinner" />
+
+    <style name="Money.EditText" parent="android:Widget.Holo.EditText"/>
+
+    <style name="EditEventCustomActionButton" parent="android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:focusable">true</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="EditEventCustomActionButtonImage">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="EditViewCustomActionButtonText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/actionMenuTextAppearance</item>
+        <item name="android:textColor">@color/md_primary_light</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <!-- this is just a sample that illustrates how to add shadow (a raised element) -->
+    <style name="RaisedButton">
+        <item name="android:background">@android:drawable/dialog_holo_light_frame</item>
+        <item name="android:padding">0dp</item>
+    </style>
+</resources>

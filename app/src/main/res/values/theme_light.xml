@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 3
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <!-- Light Theme -->
+
+    <!-- base for the base of the light theme. -->
+    <style name="_App_Light_DarkActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:icon">@color/md_icons</item>-->
+        <!--<item name="android:divider">@color/md_divider</item>-->
+        <item name="android:dropDownSpinnerStyle">@style/Money.Spinner.Style</item>
+        <item name="android:spinnerStyle">@style/Money.Spinner.Style</item>
+        <item name="android:editTextStyle">@style/Money.EditText</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="actionModeBackground">@color/md_primary_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="md_dark_theme">false</item>
+    </style>
+
+    <!-- The version for API 21 has additional settings. So we split here to add them. -->
+    <style name="App_Light_DarkActionBar" parent="@style/_App_Light_DarkActionBar"/>
+
+    <!-- Application Theme, Material Light -->
+    <style name="Theme.Money.Manager.Light" parent="@style/App_Light_DarkActionBar">
+        <!-- md palette colors -->
+        <item name="colorPrimaryDark">@color/md_primary_dark</item>
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorPrimaryLight">@color/md_primary_light</item>
+        <item name="colorAccent">@color/md_accent</item>
+        <!-- text -->
+        <!--<item name="textColor">@color/material_white</item>-->
+        <!--<item name="android:textColorPrimary">@color/material_grey_900</item>-->
+        <!--<item name="android:textColorSecondary">@color/material_grey_600</item>-->
+        <item name="dividerColor">@color/material_grey_400</item>
+
+        <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <!-- Toolbar -->
+        <item name="toolbarAppPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+
+        <!-- Colors -->
+        <item name="theme_background_color">@android:color/transparent</item>
+        <item name="theme_drawer_background_color">@color/holo_light_darkaction_money_background</item>
+        <item name="cardViewBackgroundColor">@android:color/white</item>
+        <item name="holo_blue_color_theme">@color/holo_blue_dark</item>
+        <item name="holo_green_color_theme">@color/holo_green_dark</item>
+        <item name="holo_red_color_theme">@color/holo_red_dark</item>
+        <item name="row_dark_theme">@android:color/transparent</item>
+        <item name="row_light_theme">@color/holo_light_row_light</item>
+
+        <!-- buttons -->
+        <item name="button_background_inactive">@color/button_background_inactive_light</item>
+        <!--<item name="android:buttonStyle">@style/Money.Button</item>-->
+
+        <!-- Charts -->
+        <item name="chartTextColor">@color/md_primary_text</item>
+        <!-- other -->
+        <item name="color_list_header">@color/material_green_100</item>
+        <!-- toolbar -->
+        <!--<item name="toolbar_spinner_item_text_color">@color/material_grey_900</item>-->
+
+        <!-- Drawables -->
+        <item name="ic_action_add">@drawable/ic_action_add_dark</item>
+        <item name="ic_action_bank">@drawable/ic_action_bank_dark</item>
+        <item name="ic_action_bargraph">@drawable/ic_action_bargraph_dark</item>
+        <item name="ic_action_bell">@drawable/ic_action_bell_dark</item>
+        <item name="ic_action_business">@drawable/ic_action_business_dark</item>
+        <item name="ic_action_calculator">@drawable/ic_action_calculator_dark</item>
+        <item name="ic_action_calendar_day">@drawable/ic_action_calendar_day_dark</item>
+        <item name="ic_action_cancel">@drawable/ic_action_cancel_dark</item>
+        <item name="ic_action_cancel_contrast">@drawable/ic_action_cancel_light</item>
+        <item name="ic_action_copy">@drawable/ic_action_copy_dark</item>
+        <!--<item name="ic_action_currency">@drawable/ic_action_currency_dark</item>-->
+        <item name="ic_action_delete">@drawable/ic_action_delete_dark</item>
+        <item name="ic_action_download">@drawable/ic_action_download_dark</item>
+        <item name="ic_action_dropbox">@drawable/ic_action_dropbox_dark</item>
+        <item name="ic_action_folder_open">@drawable/ic_action_folder_open_dark</item>
+        <item name="ic_action_foursquare">@drawable/ic_action_foursquare_dark</item>
+        <item name="ic_action_halt">@drawable/ic_action_halt_dark</item>
+        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
+        <item name="ic_action_label_outline">@drawable/ic_action_label_outline_dark</item>
+        <item name="ic_action_list">@drawable/ic_action_list_dark</item>
+        <item name="ic_action_paste">@drawable/ic_action_paste_dark</item>
+        <item name="ic_action_pie_chart">@drawable/ic_action_pie_chart_dark</item>
+        <item name="ic_action_playback_repeat">@drawable/ic_action_playback_repeat_dark</item>
+        <item name="ic_action_plusone">@drawable/ic_action_plusone_dark</item>
+        <item name="ic_action_refresh">@drawable/ic_action_refresh_dark</item>
+        <item name="ic_action_reload">@drawable/ic_action_reload_dark</item>
+        <item name="ic_action_report">@drawable/ic_action_reports_dark</item>
+        <item name="ic_action_search">@drawable/ic_action_search_dark</item>
+        <item name="ic_action_setting">@drawable/ic_action_settings_dark</item>
+        <item name="ic_action_sort">@drawable/ic_action_sort_dark</item>
+        <item name="ic_action_sort_1">@drawable/ic_action_sort_1_dark</item>
+        <item name="ic_action_warning">@drawable/ic_action_warning_light</item>
+        <item name="ic_action_upload">@drawable/ic_action_upload_dark</item>
+        <item name="ic_action_tag">@drawable/ic_action_tag_dark</item>
+        <item name="ic_action_tags">@drawable/ic_action_tags_dark</item>
+        <item name="ic_action_tick">@drawable/ic_action_tick_dark</item>
+        <item name="ic_action_trash">@drawable/ic_action_trash_dark</item>
+        <item name="sym_keyboard_delete">@drawable/sym_keyboard_feedback_delete</item>
+        <item name="ic_action_users">@drawable/ic_action_users_dark</item>
+        <!-- others drawable -->
+        <item name="ic_calendar_day">@drawable/ic_action_calendar_day_light</item>
+        <item name="ic_calculator">@drawable/ic_action_calculator_light</item>
+        <item name="ic_users">@drawable/ic_action_users_light</item>
+        <item name="ic_label_outline">@drawable/ic_action_label_outline_light</item>
+        <item name="ic_plusone">@drawable/ic_action_plusone_light</item>
+        <item name="ic_paste">@drawable/ic_action_paste_light</item>
+
+        <!-- Shape -->
+        <item name="shape_background_shadow">@drawable/shape_background_shadow</item>
+        <item name="shape_white_background_shadow">@drawable/shape_white_background_shadow</item>
+        <item name="shape_rectangle_background_dark">@drawable/shape_rectangle_background_dark</item>
+        <!-- TextView -->
+        <item name="listSeparatorTextViewStyle">@style/Money.TextView.ListSeparator</item>
+        <item name="headerTextViewStyle">@style/Money.TextView.Header</item>
+        <item name="headerCaptionTextViewStyle">@style/Money.TextView.Header.Caption</item>
+
+        <!-- calculator -->
+        <item name="calculator_button_background">@color/material_light_green_100</item>
+        <item name="calculator_button_operator_background">@color/material_light_green_300</item>
+
+        <!-- spinner -->
+        <!--<item name="android:spinnerStyle">@style/Money.Spinner.Style</item>-->
+        <!--<item name="android:spinnerItemStyle">@style/Money.Spinner.Style</item>-->
+        <!--<item name="android:spinnerDropDownItemStyle">@style/Money.Spinner.Style.Dark</item>-->
+        <item name="holoSpinnerStyle">@android:style/Widget.Holo.Light.Spinner</item>
+    </style>
+
+</resources>
