@@ -125,10 +125,10 @@ public class BudgetAdapter
         }
 
         // Estimated
-        BudgetPeriodEnum budgetPeriodIndex = BudgetPeriods.getEnum(frequencyText);
+        BudgetPeriodEnum periodEnum = BudgetPeriods.getEnum(frequencyText);
         double estimated = ((isMonthlyBudget(mBudgetName))
-                ? BudgetPeriods.getMonthlyEstimate(budgetPeriodIndex, amount)
-                : BudgetPeriods.getYearlyEstimate(budgetPeriodIndex, amount)
+                ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
+                : BudgetPeriods.getYearlyEstimate(periodEnum, amount)
         );
 
         // Actual
