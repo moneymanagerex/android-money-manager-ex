@@ -32,17 +32,13 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.log.ExceptionHandler;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.SQLDataSet;
 import com.money.manager.ex.database.ViewMobileData;
 import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -112,23 +108,29 @@ public class BudgetAdapter
         // Frequency
 
         TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
+        String frequencyText = cursor.getString(cursor.getColumnIndex(BudgetQuery.PERIOD));
         if (frequencyTextView != null) {
-            String text = cursor.getString(cursor.getColumnIndex(BudgetQuery.PERIOD));
-            frequencyTextView.setText(text);
+            frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, frequencyText));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
 
         // Amount
 
-        TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
         double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
+        TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
         if (amountTextView != null) {
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
         }
 
         // Estimated
+        BudgetPeriodEnum budgetPeriodIndex = BudgetPeriods.getEnum(frequencyText);
+        double estimated = ((isMonthlyBudget(mBudgetName))
+                ? BudgetPeriods.getMonthlyEstimate(budgetPeriodIndex, amount)
+                : BudgetPeriods.getYearlyEstimate(budgetPeriodIndex, amount)
+        );
+
         // Actual
         TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
         double actual = getActualAmount(hasSubcategory, cursor);
@@ -138,7 +140,7 @@ public class BudgetAdapter
 
             // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
             UIHelper uiHelper = new UIHelper(context);
-            if ((int) (actual * 100) < (int) (amount * 100)) {
+            if ((int) (actual * 100) < (int) (estimated * 100)) {
                 actualTextView.setTextColor(
                     ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
                 );
@@ -153,7 +155,7 @@ public class BudgetAdapter
 
         TextView amountAvailableTextView = (TextView) view.findViewById(R.id.amountAvailableTextView);
         if (amountAvailableTextView != null) {
-            double amountAvailable = -(amount - actual);
+            double amountAvailable = -(estimated - actual);
             String amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
             amountAvailableTextView.setText(amountAvailableString);
 
@@ -175,7 +177,6 @@ public class BudgetAdapter
     private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
         double actual;
         if (!hasSubcategory) {
-            // @todo: get sum of subcategories?
             int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
             actual = getAmountForCategory(categoryId);
         } else {
@@ -273,10 +274,14 @@ public class BudgetAdapter
         return year;
     }
 
+    private boolean isMonthlyBudget(String budgetName) {
+        return budgetName.contains("-");
+    }
+
     private int getMonthFromBudgetName(String budgetName) {
         int result = Constants.NOT_SET;
 
-        if (!budgetName.contains("-")) return result;
+        if (!isMonthlyBudget(budgetName)) return result;
 
         int separatorLocation = budgetName.indexOf("-");
         String monthString = budgetName.substring(separatorLocation + 1, separatorLocation + 3);
