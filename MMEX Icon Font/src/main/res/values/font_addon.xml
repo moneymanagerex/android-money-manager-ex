@@ -17,5 +17,5 @@
   -->
 
 <resources>
-    <string name="define_font_MMEXIconFont">com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont</string>
+    <string name="define_font_MMEXIconFont" translatable="false">com.mikepenz.mmex_icon_font_typeface_library.MMEXIconFont</string>
 </resources>
