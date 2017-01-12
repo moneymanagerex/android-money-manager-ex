@@ -389,7 +389,7 @@
   <string name="delete_others_selected_transaction">Weet je zeker dat je de %d geselecteerde transacties wilt verwijderen?</string>
   <string name="categories">Categorieën</string>
   <string name="payees">Ontvangers/betalers</string>
-  <string name="repeating_transactions">Periodieke transacties</string>
+  <string name="recurring_transactions">Periodieke transacties</string>
   <string name="theme_holo_light">Licht</string>
   <string name="new_account">Nieuwe rekening</string>
   <string name="create_new_account">Maak nieuwe rekening aan</string>

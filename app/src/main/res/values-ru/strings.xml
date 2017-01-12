@@ -379,7 +379,7 @@
   <string name="delete_others_selected_transaction">Вы уверены, что хотите удалить %d выбранных проводок ?</string>
   <string name="categories">Категории</string>
   <string name="payees">Контрагенты</string>
-  <string name="repeating_transactions">Повторяющиеся транзакции</string>
+  <string name="recurring_transactions">Повторяющиеся транзакции</string>
   <string name="theme_holo_light">Holo светлая</string>
   <string name="new_account">Новый счет</string>
   <string name="create_new_account">Создать новый счёт</string>

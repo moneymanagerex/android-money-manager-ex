@@ -389,7 +389,7 @@
   <string name="delete_others_selected_transaction">确定要删除所选的 %d 交易记录?</string>
   <string name="categories">类目</string>
   <string name="payees">收款人</string>
-  <string name="repeating_transactions">周期性交易</string>
+  <string name="recurring_transactions">周期性交易</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">新建账户</string>
   <string name="create_new_account">创建新账户</string>

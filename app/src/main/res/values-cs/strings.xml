@@ -363,7 +363,7 @@
   <string name="delete_others_selected_transaction">Jste si jisti, že chcete odstranit %d vybraných transakcí?</string>
   <string name="categories">Kategorie</string>
   <string name="payees">Příjemci</string>
-  <string name="repeating_transactions">Opakované transakce</string>
+  <string name="recurring_transactions">Opakované transakce</string>
   <string name="theme_holo_light">Holo světlé</string>
   <string name="new_account">Nový účet</string>
   <string name="amount_greater_or_equal">Částka větší nebo rovna</string>

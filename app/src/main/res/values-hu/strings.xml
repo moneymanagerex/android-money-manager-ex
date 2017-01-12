@@ -388,7 +388,7 @@
   <string name="delete_others_selected_transaction">Biztosan törölni szeretné a kiválasztott %d tranzakciót?</string>
   <string name="categories">Kategóriák</string>
   <string name="payees">Partnerek</string>
-  <string name="repeating_transactions">Ismétlődő Tranzakciók</string>
+  <string name="recurring_transactions">Ismétlődő Tranzakciók</string>
   <string name="theme_holo_light">Holo világos</string>
   <string name="new_account">Új számla</string>
   <string name="create_new_account">Új számla felvitele</string>

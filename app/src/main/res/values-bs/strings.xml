@@ -389,7 +389,7 @@
   <string name="delete_others_selected_transaction">Jeste li sigurni da želite obrisati %d odabranih transakcija?</string>
   <string name="categories">Kategorije</string>
   <string name="payees">Primatelji</string>
-  <string name="repeating_transactions">Ponavljajuće transakcije</string>
+  <string name="recurring_transactions">Ponavljajuće transakcije</string>
   <string name="theme_holo_light">Holo svijetli</string>
   <string name="new_account">Novi račun</string>
   <string name="create_new_account">Kreiraj novi račun</string>

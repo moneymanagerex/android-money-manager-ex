@@ -389,7 +389,7 @@
   <string name="delete_others_selected_transaction">¿Seguro que quieres borrar las %d transacciones seleccionadas?</string>
   <string name="categories">Categorías</string>
   <string name="payees">Beneficiarios</string>
-  <string name="repeating_transactions">Transacciones Recurrentes</string>
+  <string name="recurring_transactions">Transacciones Recurrentes</string>
   <string name="theme_holo_light">Holo Claro</string>
   <string name="new_account">Nueva cuenta</string>
   <string name="create_new_account">Crear nueva cuenta</string>

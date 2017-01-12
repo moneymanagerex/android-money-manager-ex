@@ -385,7 +385,7 @@
   <string name="delete_others_selected_transaction">Ste si istý, že chcete vymazať %d vybratých transakcií?</string>
   <string name="categories">Kategórie</string>
   <string name="payees">Príjemcovia</string>
-  <string name="repeating_transactions">Opakujúce sa transakcie</string>
+  <string name="recurring_transactions">Opakujúce sa transakcie</string>
   <string name="theme_holo_light">Holo svetlé</string>
   <string name="new_account">Nový účet</string>
   <string name="create_new_account">Vytvoriť nový účet</string>

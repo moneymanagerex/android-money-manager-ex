@@ -379,7 +379,7 @@
   <string name="delete_others_selected_transaction">Czy na pewno chcesz usunąć %d wybranych transakcji?</string>
   <string name="categories">Kategorie</string>
   <string name="payees">Podmioty</string>
-  <string name="repeating_transactions">Cykliczne transakcje</string>
+  <string name="recurring_transactions">Cykliczne transakcje</string>
   <string name="theme_holo_light">Holo Light</string>
   <string name="new_account">Tworzenie konta</string>
   <string name="create_new_account">Utwórz nowe konto</string>

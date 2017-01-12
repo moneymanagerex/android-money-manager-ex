@@ -288,7 +288,7 @@
   <string name="delete_others_selected_transaction">Apakah Anda yakin Anda ingin menghapus %d transaksi yang dipilih?</string>
   <string name="categories">Kategori</string>
   <string name="payees">Penerima Uang</string>
-  <string name="repeating_transactions">Transaksi berkala</string>
+  <string name="recurring_transactions">Transaksi berkala</string>
   <string name="theme_holo_light">Cahaya Holo</string>
   <string name="new_account">Akun baru</string>
   <string name="create_new_account">Buat akun baru</string>

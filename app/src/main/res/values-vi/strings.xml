@@ -380,7 +380,7 @@
   <string name="delete_others_selected_transaction">Bạn có chắc bạn muốn xóa %d giao dịch đã chọn?</string>
   <string name="categories">Danh mục</string>
   <string name="payees">Người nhận thanh toán</string>
-  <string name="repeating_transactions">Giao dịch định kỳ</string>
+  <string name="recurring_transactions">Giao dịch định kỳ</string>
   <string name="theme_holo_light">Holo Sáng</string>
   <string name="new_account">Tài khoản mới</string>
   <string name="create_new_account">Tạo tài khoản mới</string>
