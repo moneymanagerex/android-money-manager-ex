@@ -49,6 +49,7 @@ public class AppSettings
     private LookAndFeelSettings mLookAndFeel;
     private BehaviourSettings mBehaviour;
     private InvestmentSettings mInvestment;
+    private BudgetSettings mBudget;
     private DatabaseSettings mDatabase;
 
     @Override
@@ -88,6 +89,13 @@ public class AppSettings
             mInvestment = new InvestmentSettings(getContext());
         }
         return mInvestment;
+    }
+
+    public BudgetSettings getBudgetSettings() {
+        if (mBudget == null) {
+            mBudget = new BudgetSettings(getContext());
+        }
+        return mBudget;
     }
 
     // Individual preferences.

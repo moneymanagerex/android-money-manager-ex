@@ -224,6 +224,9 @@
             android:name=".settings.InvestmentSettingsActivity"
             android:label="@string/investment" />
         <activity
+            android:name=".settings.BudgetSettingsActivity"
+            android:label="@string/budget" />
+        <activity
             android:name=".settings.SecuritySettingsActivity"
             android:label="@string/preferences_security" />
         <activity

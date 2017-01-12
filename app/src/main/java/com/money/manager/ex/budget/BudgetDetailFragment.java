@@ -18,7 +18,6 @@ package com.money.manager.ex.budget;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -30,9 +29,9 @@ import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.BaseListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
-import com.money.manager.ex.datalayer.BudgetRepository;
+import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.domainmodel.Budget;
+import com.money.manager.ex.settings.AppSettings;
 
 /**
  * Use the {@link BudgetDetailFragment#newInstance} factory method to
@@ -47,6 +46,7 @@ public class BudgetDetailFragment
     private final int LOADER_BUDGET = 1;
     private long mBudgetYearId = Constants.NOT_SET;
     private String mBudgetName;
+    private View mHeader;
 
     /**
      * Use this factory method to create a new instance of
@@ -93,13 +93,27 @@ public class BudgetDetailFragment
         ListView list = (ListView) view.findViewById(android.R.id.list);
 
         // Add the column header.
-        View header = View.inflate(getActivity(), R.layout.item_budget_header, null);
-        list.addHeaderView(header);
+        // switch to simple layout if the showSimpleView is set
+        AppSettings settings = new AppSettings(getContext());
+        int layout = (settings.getBudgetSettings().getShowSimpleView()) ? R.layout.item_budget_simple_header : R.layout.item_budget_header;
+
+        mHeader = View.inflate(getActivity(), layout, null);
+        list.addHeaderView(mHeader);
         // Header has to be added before the adapter is set on the list.
 
         setUpAdapter();
 
         return view;
+    }
+
+    // Got random IndexOutOfBoundsException during loading the new fragment
+    // reference: http://stackoverflow.com/a/28463811
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (getListView().getHeaderViewsCount() > 0) {
+            getListView().removeHeaderView(mHeader);
+        }
     }
 
     @Override
@@ -125,6 +139,7 @@ public class BudgetDetailFragment
                 0);
 
         adapter.setBudgetName(mBudgetName);
+        adapter.setBudgetYearId(mBudgetYearId);
 
         setListAdapter(adapter);
     }
@@ -137,12 +152,11 @@ public class BudgetDetailFragment
 
                 switch (id) {
                     case LOADER_BUDGET:
-                        BudgetQuery budget = new BudgetQuery(getActivity());
-                        Select query = new Select(budget.getAllColumns())
-                            .where(BudgetQuery.BUDGETYEARID + "=?", mBudgetYearId)
-                            .orderBy(BudgetQuery.CATEGNAME + ", " + BudgetQuery.SUBCATEGNAME);
+                        QueryCategorySubCategory categories = new QueryCategorySubCategory(getActivity());
+                        Select query = new Select(categories.getAllColumns())
+                            .orderBy(QueryCategorySubCategory.CATEGSUBNAME);
 
-                        result = new MmxCursorLoader(getActivity(), budget.getUri(), query);
+                        result = new MmxCursorLoader(getActivity(), categories.getUri(), query);
                         break;
                 }
                 return result;

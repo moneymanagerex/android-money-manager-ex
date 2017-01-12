@@ -19,6 +19,7 @@ package com.money.manager.ex.budget;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,16 +31,19 @@ import android.widget.TextView;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
-import com.money.manager.ex.datalayer.Select;
-import com.money.manager.ex.log.ExceptionHandler;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
-import com.money.manager.ex.database.SQLDataSet;
+import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.datalayer.BudgetEntryRepository;
+import com.money.manager.ex.domainmodel.BudgetEntry;
+import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
+
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
@@ -67,8 +71,13 @@ public class BudgetAdapter
     public BudgetAdapter(Context context, Cursor cursor, String[] from, int[] to, int flags) {
         super(context, R.layout.item_budget, cursor, from, to, flags);
 
+        // switch to simple layout if the showSimpleView is set
+        AppSettings settings = new AppSettings(getContext());
+        mLayout = (settings.getBudgetSettings().getShowSimpleView())
+                ? R.layout.item_budget_simple
+                : R.layout.item_budget;
+
         mContext = context;
-        mLayout = R.layout.item_budget;
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
@@ -77,6 +86,8 @@ public class BudgetAdapter
 
     private int mLayout;
     private String mBudgetName;
+    private long mBudgetYearId;
+    private HashMap<String, BudgetEntry> mBudgetEntries;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -88,28 +99,24 @@ public class BudgetAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         // Category
 
-        boolean hasSubcategory = false;
+        boolean hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
+
         TextView categoryTextView = (TextView) view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
-            int categoryCol = cursor.getColumnIndex(BudgetQuery.CATEGNAME);
-            String category = cursor.getString(categoryCol);
-
-            // Subcategory
-            String subCategory = cursor.getString(cursor.getColumnIndex(BudgetQuery.SUBCATEGNAME));
-            if (!TextUtils.isEmpty(subCategory)) {
-                category += ":" + subCategory;
-                hasSubcategory = true;
-            }
-
-            categoryTextView.setText(category);
+            int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
+            categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
+
+        int categoryId    = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+        int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
 
         // Frequency
 
+        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
+
         TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
         if (frequencyTextView != null) {
-            String text = cursor.getString(cursor.getColumnIndex(BudgetQuery.PERIOD));
-            frequencyTextView.setText(text);
+            frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
@@ -117,28 +124,58 @@ public class BudgetAdapter
         // Amount
 
         TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
+        double amount = getBudgetAmountFor(categoryId, subCategoryId);
         if (amountTextView != null) {
-            double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
         }
 
         // Estimated
-        // Actual
-        // todo: colour the amount depending on whether it is above/below the budgeted amount.
-        TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
-        if (actualTextView != null) {
-            double actual;
-            if (!hasSubcategory) {
-                int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
-                actual = getAmountForCategory(categoryId);
-            } else {
-                int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
-                actual = getAmountForSubCategory(subCategoryId);
-            }
+        double estimated = isMonthlyBudget(mBudgetName)
+                ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
+                : BudgetPeriods.getYearlyEstimate(periodEnum, amount)
+        ;
 
+        // Actual
+        TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
+        double actual = getActualAmount(hasSubcategory, cursor);
+        if (actualTextView != null) {
             String actualString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(actual));
             actualTextView.setText(actualString);
+
+            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+            UIHelper uiHelper = new UIHelper(context);
+            if ((int) (actual * 100) < (int) (estimated * 100)) {
+                actualTextView.setTextColor(
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                );
+            } else {
+                actualTextView.setTextColor(
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                );
+            }
+        }
+
+        // Amount Available
+
+        TextView amountAvailableTextView = (TextView) view.findViewById(R.id.amountAvailableTextView);
+        if (amountAvailableTextView != null) {
+            double amountAvailable = -(estimated - actual);
+            String amountAvailableString = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amountAvailable));
+            amountAvailableTextView.setText(amountAvailableString);
+
+            // colour the amount depending on whether it is above/below the budgeted amount to 2 decimal places
+            UIHelper uiHelper = new UIHelper(context);
+            int amountAvailableInt = (int) (amountAvailable * 100);
+            if (amountAvailableInt < 0) {
+                amountAvailableTextView.setTextColor(
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_red_color_theme))
+                );
+            } else if (amountAvailableInt > 0) {
+                amountAvailableTextView.setTextColor(
+                    ContextCompat.getColor(context, uiHelper.resolveAttribute(R.attr.holo_green_color_theme))
+                );
+            }
         }
     }
 
@@ -148,6 +185,68 @@ public class BudgetAdapter
 
     public void setBudgetName(String budgetName) {
         mBudgetName = budgetName;
+    }
+
+    /**
+     * As a side effect of the setter the budget entry thread cache is populated.
+     * @param budgetYearId
+     */
+    public void setBudgetYearId(long budgetYearId) {
+        this.mBudgetYearId = budgetYearId;
+
+        if (mBudgetEntries != null) {
+            mBudgetEntries.clear();
+        }
+        // populate thread cache HashMap
+        mBudgetEntries = populateThreadCache();
+    }
+
+    private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
+        double actual;
+        if (!hasSubcategory) {
+            int categoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+            actual = getAmountForCategory(categoryId);
+        } else {
+            int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
+            actual = getAmountForSubCategory(subCategoryId);
+        }
+        return actual;
+    }
+
+    /**
+     * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
+     * @param categoryId
+     * @param subCategoryId
+     * @return
+     */
+    private double getBudgetAmountFor(int categoryId, int subCategoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+        return mBudgetEntries.containsKey(key)
+                ? mBudgetEntries.get(key).getContentValues().getAsDouble(BudgetQuery.AMOUNT)
+                : 0;
+    }
+
+    /**
+     * Returns the period of the budgeted amount or NONE if there isn't any.
+     * @param categoryId
+     * @param subCategoryId
+     * @return
+     */
+    private BudgetPeriodEnum getBudgetPeriodFor(int categoryId, int subCategoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+        return mBudgetEntries.containsKey(key)
+                ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getContentValues().getAsString(BudgetQuery.PERIOD))
+                : BudgetPeriodEnum.NONE;
+    }
+
+    /**
+     * Builds a thread cache from the database for every category and subcategory present in
+     * this budget.
+     * @return
+     */
+    private HashMap<String, BudgetEntry> populateThreadCache() {
+        BudgetEntryRepository repo = new BudgetEntryRepository(mContext);
+        return repo.loadForYear(mBudgetYearId);
     }
 
     private double getAmountForCategory(int categoryId) {
@@ -230,10 +329,14 @@ public class BudgetAdapter
         return year;
     }
 
+    private boolean isMonthlyBudget(String budgetName) {
+        return budgetName.contains("-");
+    }
+
     private int getMonthFromBudgetName(String budgetName) {
         int result = Constants.NOT_SET;
 
-        if (!budgetName.contains("-")) return result;
+        if (!isMonthlyBudget(budgetName)) return result;
 
         int separatorLocation = budgetName.indexOf("-");
         String monthString = budgetName.substring(separatorLocation + 1, separatorLocation + 3);
@@ -241,4 +344,5 @@ public class BudgetAdapter
         result = Integer.parseInt(monthString);
         return result;
     }
+
 }

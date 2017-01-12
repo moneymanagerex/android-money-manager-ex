@@ -23,7 +23,6 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
@@ -102,6 +101,19 @@ public class SettingsFragment
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), InvestmentSettingsActivity.class));
+                    return true;
+                }
+            });
+        }
+
+        final Preference budgetPreference = findPreference(getString(R.string.pref_budget));
+        if (budgetPreference != null) {
+            budgetPreference.setIcon(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)
+                    .color(uiHelper.getSecondaryTextColor()));
+            budgetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(), BudgetSettingsActivity.class));
                     return true;
                 }
             });

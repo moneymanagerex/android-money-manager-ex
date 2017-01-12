@@ -87,6 +87,10 @@
     <string name="pref_investment">pref_investment</string>
     <string name="pref_quote_provider">pref_quote_provider</string>
     <string name="pref_exchange_rate_provider">pref_exchange_rate_provider</string>
+    <!-- budget -->
+    <string name="pref_budget">pref_budgets</string>
+    <string name="pref_budget_show_simple_view">pref_budget_show_simple_view</string>
+    <string name="pref_budget_load_current">pref_budget_load_current</string>
 
     <!-- dropbox / deprecated -->
     <string name="pref_dropbox_download">dropbox2download</string>
