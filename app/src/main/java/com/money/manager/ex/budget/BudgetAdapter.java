@@ -115,9 +115,8 @@ public class BudgetAdapter
         BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
 
         TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
-        String frequencyText = BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum);
         if (frequencyTextView != null) {
-            frequencyTextView.setText(frequencyText);
+            frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum));
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
