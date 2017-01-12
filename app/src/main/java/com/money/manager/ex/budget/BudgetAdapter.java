@@ -33,9 +33,14 @@ import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
+import com.money.manager.ex.database.QueryCategorySubCategory;
 import com.money.manager.ex.database.ViewMobileData;
+import com.money.manager.ex.datalayer.BudgetEntryRepository;
+import com.money.manager.ex.domainmodel.BudgetEntry;
 import com.money.manager.ex.settings.AppSettings;
 import com.squareup.sqlbrite.BriteDatabase;
+
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -68,7 +73,10 @@ public class BudgetAdapter
 
         // switch to simple layout if the showSimpleView is set
         AppSettings settings = new AppSettings(getContext());
-        mLayout = (settings.getBudgetSettings().getShowSimpleView()) ? R.layout.item_budget_simple : R.layout.item_budget;
+        mLayout = (settings.getBudgetSettings().getShowSimpleView())
+                ? R.layout.item_budget_simple
+                : R.layout.item_budget;
+
         mContext = context;
 
         MoneyManagerApplication.getApp().iocComponent.inject(this);
@@ -78,6 +86,8 @@ public class BudgetAdapter
 
     private int mLayout;
     private String mBudgetName;
+    private long mBudgetYearId;
+    private HashMap<String, BudgetEntry> mBudgetEntries;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -89,47 +99,43 @@ public class BudgetAdapter
     public void bindView(View view, Context context, Cursor cursor) {
         // Category
 
-        boolean hasSubcategory = false;
+        boolean hasSubcategory = cursor.getInt(cursor.getColumnIndex(QueryCategorySubCategory.SUBCATEGID)) != Constants.NOT_SET;
+
         TextView categoryTextView = (TextView) view.findViewById(R.id.categoryTextView);
         if (categoryTextView != null) {
-            int categoryCol = cursor.getColumnIndex(BudgetQuery.CATEGNAME);
-            String category = cursor.getString(categoryCol);
-
-            // Subcategory
-            String subCategory = cursor.getString(cursor.getColumnIndex(BudgetQuery.SUBCATEGNAME));
-            if (!TextUtils.isEmpty(subCategory)) {
-                category += ":" + subCategory;
-                hasSubcategory = true;
-            }
-
-            categoryTextView.setText(category);
+            int categoryColumnIndex = cursor.getColumnIndex(QueryCategorySubCategory.CATEGSUBNAME);
+            categoryTextView.setText(cursor.getString(categoryColumnIndex));
         }
+
+        int categoryId    = cursor.getInt(cursor.getColumnIndex(BudgetQuery.CATEGID));
+        int subCategoryId = cursor.getInt(cursor.getColumnIndex(BudgetQuery.SUBCATEGID));
 
         // Frequency
 
+        BudgetPeriodEnum periodEnum = getBudgetFrequencyFor(categoryId, subCategoryId);
+
         TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
-        String frequencyText = cursor.getString(cursor.getColumnIndex(BudgetQuery.PERIOD));
+        String frequencyText = BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum);
         if (frequencyTextView != null) {
-            frequencyTextView.setText(BudgetPeriods.getPeriodTranslationForEnum(mContext, frequencyText));
+            frequencyTextView.setText(frequencyText);
         }
 
         CurrencyService currencyService = new CurrencyService(mContext);
 
         // Amount
 
-        double amount = cursor.getDouble(cursor.getColumnIndex(BudgetQuery.AMOUNT));
         TextView amountTextView = (TextView) view.findViewById(R.id.amountTextView);
+        double amount = getBudgetAmountFor(categoryId, subCategoryId);
         if (amountTextView != null) {
             String text = currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(amount));
             amountTextView.setText(text);
         }
 
         // Estimated
-        BudgetPeriodEnum periodEnum = BudgetPeriods.getEnum(frequencyText);
-        double estimated = ((isMonthlyBudget(mBudgetName))
+        double estimated = isMonthlyBudget(mBudgetName)
                 ? BudgetPeriods.getMonthlyEstimate(periodEnum, amount)
                 : BudgetPeriods.getYearlyEstimate(periodEnum, amount)
-        );
+        ;
 
         // Actual
         TextView actualTextView = (TextView) view.findViewById(R.id.actualTextView);
@@ -174,6 +180,28 @@ public class BudgetAdapter
         }
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void setBudgetName(String budgetName) {
+        mBudgetName = budgetName;
+    }
+
+    /**
+     * As a side effect of the setter the budget entry thread cache is populated.
+     * @param budgetYearId
+     */
+    public void setBudgetYearId(long budgetYearId) {
+        this.mBudgetYearId = budgetYearId;
+
+        if (mBudgetEntries != null) {
+            mBudgetEntries.clear();
+        }
+        // populate thread cache HashMap
+        mBudgetEntries = populateThreadCache();
+    }
+
     private double getActualAmount(boolean hasSubcategory, Cursor cursor) {
         double actual;
         if (!hasSubcategory) {
@@ -186,12 +214,40 @@ public class BudgetAdapter
         return actual;
     }
 
-    public Context getContext() {
-        return mContext;
+    /**
+     * Returns the budgeted amount for the category and subcategory, or zero, if there is none.
+     * @param categoryId
+     * @param subCategoryId
+     * @return
+     */
+    private double getBudgetAmountFor(int categoryId, int subCategoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+        return mBudgetEntries.containsKey(key)
+                ? mBudgetEntries.get(key).getContentValues().getAsDouble(BudgetQuery.AMOUNT)
+                : 0;
     }
 
-    public void setBudgetName(String budgetName) {
-        mBudgetName = budgetName;
+    /**
+     * Returns the frequency of the budgeted amount or NONE if there isn't any.
+     * @param categoryId
+     * @param subCategoryId
+     * @return
+     */
+    private BudgetPeriodEnum getBudgetFrequencyFor(int categoryId, int subCategoryId) {
+        String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
+        return mBudgetEntries.containsKey(key)
+                ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getContentValues().getAsString(BudgetQuery.PERIOD))
+                : BudgetPeriodEnum.NONE;
+    }
+
+    /**
+     * Builds a thread cache from the database for every category and subcategory present in
+     * this budget.
+     * @return
+     */
+    private HashMap<String, BudgetEntry> populateThreadCache() {
+        BudgetEntryRepository repo = new BudgetEntryRepository(mContext);
+        return repo.loadForYear(mBudgetYearId);
     }
 
     private double getAmountForCategory(int categoryId) {
@@ -289,4 +345,5 @@ public class BudgetAdapter
         result = Integer.parseInt(monthString);
         return result;
     }
+
 }
