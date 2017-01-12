@@ -148,7 +148,7 @@ public class BudgetPeriods {
         else if (periodEnum == BudgetPeriodEnum.HALF_YEARLY) {
             estimated = amount * 2;
         }
-        else if (periodEnum== BudgetPeriodEnum.DAILY) {
+        else if (periodEnum == BudgetPeriodEnum.DAILY) {
             estimated = amount * 365;
         }
 

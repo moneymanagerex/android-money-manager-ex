@@ -112,7 +112,7 @@ public class BudgetAdapter
 
         // Frequency
 
-        BudgetPeriodEnum periodEnum = getBudgetFrequencyFor(categoryId, subCategoryId);
+        BudgetPeriodEnum periodEnum = getBudgetPeriodFor(categoryId, subCategoryId);
 
         TextView frequencyTextView = (TextView) view.findViewById(R.id.frequencyTextView);
         String frequencyText = BudgetPeriods.getPeriodTranslationForEnum(mContext, periodEnum);
@@ -228,12 +228,12 @@ public class BudgetAdapter
     }
 
     /**
-     * Returns the frequency of the budgeted amount or NONE if there isn't any.
+     * Returns the period of the budgeted amount or NONE if there isn't any.
      * @param categoryId
      * @param subCategoryId
      * @return
      */
-    private BudgetPeriodEnum getBudgetFrequencyFor(int categoryId, int subCategoryId) {
+    private BudgetPeriodEnum getBudgetPeriodFor(int categoryId, int subCategoryId) {
         String key = BudgetEntryRepository.getKeyForCategories(categoryId, subCategoryId);
         return mBudgetEntries.containsKey(key)
                 ? BudgetPeriods.getEnum(mBudgetEntries.get(key).getContentValues().getAsString(BudgetQuery.PERIOD))
