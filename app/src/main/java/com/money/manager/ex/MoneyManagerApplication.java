@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2017 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,7 +35,6 @@ import com.money.manager.ex.core.ioc.MmxComponent;
 import com.money.manager.ex.core.ioc.MmxModule;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.log.CrashReportingTree;
-import com.money.manager.ex.core.ioc.DaggerMmxComponent;
 import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.log.DebugTree;
 import com.money.manager.ex.servicelayer.InfoService;
