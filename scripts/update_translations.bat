@@ -5,6 +5,12 @@
 set src_root=d:\temp
 set dest_root=d:\src\android-money-manager-ex\app\src\main\res
 
+:: Arabic
+set src_lang=ar
+set src_locale=%src_lang%-rSA
+set dest_lang=%src_lang%
+call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+
 :: Bosnian
 set src_lang=bs
 set src_locale=%src_lang%-rBA
