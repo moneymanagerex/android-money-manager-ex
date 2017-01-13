@@ -230,26 +230,24 @@ public class WatchlistItemsFragment
                 int accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
 
-                Intent intent = IntentFactory.getPriceEditIntent(getActivity());
-                intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
-                intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
-                intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
-                // todo intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, cu)
-                String dateString = new MmxDate().toIsoString();
-                intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
-                startActivity(intent);
-
-//                EditPriceDialog dialog = new EditPriceDialog();
-//                Bundle args = new Bundle();
-//                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
-//                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
-//                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
-//
+//                Intent intent = IntentFactory.getPriceEditIntent(getActivity());
+//                intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
+//                intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
+//                intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+//                // todo intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, cu)
 //                String dateString = new MmxDate().toIsoString();
-//                args.putString(EditPriceDialog.ARG_DATE, dateString);
-//
-//                dialog.setArguments(args);
-//                dialog.show(getChildFragmentManager(), "input-amount");
+//                intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
+//                startActivity(intent);
+
+                EditPriceDialog dialog = new EditPriceDialog();
+                Bundle args = new Bundle();
+                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
+                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
+                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+                String dateString = new MmxDate().toIsoString();
+                args.putString(EditPriceDialog.ARG_DATE, dateString);
+                dialog.setArguments(args);
+                dialog.show(getChildFragmentManager(), "input-amount");
                 break;
 
             case DELETE:
