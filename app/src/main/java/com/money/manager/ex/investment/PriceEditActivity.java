@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -28,6 +30,7 @@ import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -35,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.State;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 public class PriceEditActivity
     extends MmxBaseFragmentActivity {
@@ -77,6 +81,29 @@ public class PriceEditActivity
                 model.display(this, viewHolder);
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuHelper menuHelper = new MenuHelper(this, menu);
+        menuHelper.addSaveToolbarIcon();
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // cancel clicked. Prompt to confirm?
+                Timber.d("going back");
+                break;
+            case MenuHelper.save:
+                return onActionDoneClick();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @OnClick(R.id.amountTextView)
