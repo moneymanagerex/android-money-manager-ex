@@ -27,6 +27,7 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.utils.MmxDate;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.State;
 import info.javaperformance.money.MoneyFactory;
 
@@ -35,6 +36,7 @@ public class PriceEditActivity
 
     //@State
     protected PriceEditModel model;
+    private EditPriceViewHolder viewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,15 @@ public class PriceEditActivity
 
         initializeModel();
 
-        model.bind(this);
+        viewHolder = new EditPriceViewHolder();
+        viewHolder.bind(this);
+
+        model.display(this, viewHolder);
+    }
+
+    @OnClick(R.id.priceTextView)
+    protected void onPriceClick() {
+
     }
 
     private void initializeModel() {
@@ -60,7 +70,7 @@ public class PriceEditActivity
     private void initializeToolbar() {
         // Title
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle(getString(R.string.budget));
+        collapsingToolbarLayout.setTitle(getString(R.string.edit_price));
 
         // Back arrow / cancel.
         setDisplayHomeAsUpEnabled(true);

@@ -17,17 +17,17 @@
 
 package com.money.manager.ex.investment;
 
-import android.app.Activity;
-import android.view.View;
+import android.content.Context;
+import android.os.StrictMode;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.R;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
 
-import java.util.Date;
+import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import dagger.Lazy;
 import info.javaperformance.money.Money;
 
 /**
@@ -35,7 +35,10 @@ import info.javaperformance.money.Money;
  */
 
 public class PriceEditModel {
-    //@BindView(R.id.accountId)
+    public PriceEditModel() {
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
+    }
+
     public int accountId;
 
     public String symbol;
@@ -44,7 +47,16 @@ public class PriceEditModel {
 
     public int currencyId = Constants.NOT_SET;
 
-    public void bind(Activity activity) {
-        ButterKnife.bind(this, activity);
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
+
+//    private String mUserDateFormat;
+
+    public void display(Context context, EditPriceViewHolder viewHolder) {
+//        if (mUserDateFormat == null) {
+//            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern(context);
+//        }
+        String dateDisplay = dateTimeUtilsLazy.get().getUserFormattedDate(context, this.date.toDate());
+
+        viewHolder.dateTextView.setText(dateDisplay);
     }
 }

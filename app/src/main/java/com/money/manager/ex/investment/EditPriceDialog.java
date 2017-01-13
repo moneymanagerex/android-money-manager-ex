@@ -116,7 +116,8 @@ public class EditPriceDialog
         View viewDialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_stock_price, null);
         builder.setView(viewDialog);
 
-        viewHolder = new EditPriceViewHolder(viewDialog);
+        viewHolder = new EditPriceViewHolder();
+        viewHolder.bind(viewDialog);
         initializeControls(viewHolder);
 
         // actions

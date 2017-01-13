@@ -102,7 +102,6 @@ public class EditTransactionCommonFunctions {
         MoneyManagerApplication.getApp().iocComponent.inject(this);
     }
 
-//    @Inject Lazy<MmxJodaDateTimeUtils> dateTimeUtilsLazy;
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     // Model

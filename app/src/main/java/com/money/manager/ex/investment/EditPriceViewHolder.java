@@ -17,26 +17,39 @@
 
 package com.money.manager.ex.investment;
 
+import android.app.Activity;
 import android.view.View;
 
 import com.money.manager.ex.R;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * View Holder pattern for edit price binaryDialog.
  */
 public class EditPriceViewHolder {
 
-    public EditPriceViewHolder(View view) {
-        dateTextView = (RobotoTextView) view.findViewById(R.id.dateTextView);
-        previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
-        nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
-        amountTextView = (RobotoTextView) view.findViewById(R.id.amountTextView);
+    public EditPriceViewHolder() {
+        // View view
+        //dateTextView = (RobotoTextView) view.findViewById(R.id.dateTextView);
+        //previousDayButton = (FontIconView) view.findViewById(R.id.previousDayButton);
+        //nextDayButton = (FontIconView) view.findViewById(R.id.nextDayButton);
+//        amountTextView = (RobotoTextView) view.findViewById(R.id.amountTextView);
     }
 
-    public RobotoTextView amountTextView;
-    public RobotoTextView dateTextView;
-    public FontIconView previousDayButton;
-    public FontIconView nextDayButton;
+    @BindView(R.id.amountTextView) public RobotoTextView amountTextView;
+    @BindView(R.id.dateTextView) public RobotoTextView dateTextView;
+    @BindView(R.id.previousDayButton) public FontIconView previousDayButton;
+    @BindView(R.id.nextDayButton) public FontIconView nextDayButton;
+
+    public void bind(View view) {
+        ButterKnife.bind(this, view);
+    }
+
+    public void bind(Activity activity) {
+        ButterKnife.bind(this, activity);
+    }
 }
