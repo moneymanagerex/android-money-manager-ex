@@ -17,13 +17,18 @@
 
 package com.money.manager.ex.investment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.common.Calculator;
+import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.core.IntentFactory;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.utils.MmxDate;
 
 import butterknife.ButterKnife;
@@ -34,6 +39,8 @@ import info.javaperformance.money.MoneyFactory;
 public class PriceEditActivity
     extends MmxBaseFragmentActivity {
 
+    public static final String ARG_CURRENCY_ID = "PriceEditActivity:CurrencyId";
+
     //@State
     protected PriceEditModel model;
     private EditPriceViewHolder viewHolder;
@@ -43,7 +50,7 @@ public class PriceEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
 
-        //ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
         initializeToolbar();
 
@@ -55,9 +62,33 @@ public class PriceEditActivity
         model.display(this, viewHolder);
     }
 
-    @OnClick(R.id.priceTextView)
-    protected void onPriceClick() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if ((resultCode == Activity.RESULT_CANCELED) || data == null) return;
+
+        String stringExtra;
+
+        switch (requestCode) {
+            case RequestCodes.AMOUNT:
+                stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
+                model.price = MoneyFactory.fromString(stringExtra);
+                model.display(this, viewHolder);
+                break;
+        }
+    }
+
+    @OnClick(R.id.amountTextView)
+    protected void onPriceClick() {
+        Calculator.forActivity(this)
+            .amount(model.price)
+            .show(RequestCodes.AMOUNT);
+    }
+
+    @OnClick(R.id.dateTextView)
+    protected void onDateClick() {
+        // todo: show date picker.
     }
 
     private void initializeModel() {
@@ -88,5 +119,8 @@ public class PriceEditActivity
 
         String dateString = intent.getStringExtra(EditPriceDialog.ARG_DATE);
         model.date = new MmxDate(dateString);
+
+        // todo: currency!
+        //intent.getStringExtra(ARG_CURRENCY_ID)
     }
 }

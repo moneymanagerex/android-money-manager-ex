@@ -56,6 +56,7 @@ import timber.log.Timber;
 /**
  * Activity for the full-screen numeric input.
  * Additional functionality includes currency conversion.
+ * The result is returned in onActivityResult in the calling activity.
  */
 
 public class CalculatorActivity

@@ -57,6 +57,7 @@ import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.EditPriceDialog;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
+import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.StocksCursorAdapter;
 import com.money.manager.ex.investment.events.PriceUpdateRequestEvent;
 import com.money.manager.ex.utils.MmxDate;
@@ -233,6 +234,7 @@ public class WatchlistItemsFragment
                 intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
                 intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
                 intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+                // todo intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, cu)
                 String dateString = new MmxDate().toIsoString();
                 intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
                 startActivity(intent);

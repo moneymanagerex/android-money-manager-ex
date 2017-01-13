@@ -22,6 +22,7 @@ import android.os.StrictMode;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
@@ -49,14 +50,18 @@ public class PriceEditModel {
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
-//    private String mUserDateFormat;
-
     public void display(Context context, EditPriceViewHolder viewHolder) {
-//        if (mUserDateFormat == null) {
-//            mUserDateFormat = dateTimeUtilsLazy.get().getUserDatePattern(context);
-//        }
         String dateDisplay = dateTimeUtilsLazy.get().getUserFormattedDate(context, this.date.toDate());
-
         viewHolder.dateTextView.setText(dateDisplay);
+
+        String amount;
+        FormatUtilities format = new FormatUtilities(context);
+        if (currencyId == Constants.NOT_SET) {
+            // use base currency.
+            amount = format.getValueFormattedInBaseCurrency(price);
+        } else {
+            amount = format.format(price, currencyId);
+        }
+        viewHolder.amountTextView.setText(amount);
     }
 }
