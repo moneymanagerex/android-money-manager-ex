@@ -42,6 +42,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
+import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -228,7 +229,14 @@ public class WatchlistItemsFragment
                 int accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
 
-                //todo Intent intent = IntentFactory.getPriceEditIntent(getActivity());
+                // todo use a full editor activity.
+//                Intent intent = IntentFactory.getPriceEditIntent(getActivity());
+//                intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
+//                intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
+//                intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+//                String dateString = new MmxDate().toIsoString();
+//                intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
+//                startActivity(intent);
 
                 EditPriceDialog dialog = new EditPriceDialog();
                 Bundle args = new Bundle();
