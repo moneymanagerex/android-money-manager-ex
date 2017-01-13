@@ -107,6 +107,16 @@
                     android:layout_marginEnd="@dimen/mmx_side_icon_margin"
                     android:layout_gravity="center_vertical"/>
 
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/previousDayButton"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:iiv_icon="gmd-keyboard-arrow-left"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -131,6 +141,16 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/nextDayButton"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:iiv_icon="gmd-keyboard-arrow-right"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:background="?attr/selectableItemBackground" />
             </LinearLayout>
 
             <!-- amount -->
