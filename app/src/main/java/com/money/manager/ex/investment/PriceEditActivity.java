@@ -17,31 +17,44 @@
 
 package com.money.manager.ex.investment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
+import com.money.manager.ex.utils.MmxDate;
 
 import butterknife.ButterKnife;
+import icepick.State;
+import info.javaperformance.money.MoneyFactory;
 
 public class PriceEditActivity
     extends MmxBaseFragmentActivity {
+
+    //@State
+    protected PriceEditModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
 
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
 
         initializeToolbar();
 
         initializeModel();
+
+        model.bind(this);
     }
 
     private void initializeModel() {
+        model = new PriceEditModel();
 
+        // get parameters
+        readParameters();
     }
 
     private void initializeToolbar() {
@@ -53,4 +66,17 @@ public class PriceEditActivity
         setDisplayHomeAsUpEnabled(true);
     }
 
+    private void readParameters() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        model.accountId = intent.getIntExtra(EditPriceDialog.ARG_ACCOUNT, Constants.NOT_SET);
+        model.symbol = intent.getStringExtra(EditPriceDialog.ARG_SYMBOL);
+
+        String priceString = intent.getStringExtra(EditPriceDialog.ARG_PRICE);
+        model.price = MoneyFactory.fromString(priceString);
+
+        String dateString = intent.getStringExtra(EditPriceDialog.ARG_DATE);
+        model.date = new MmxDate(dateString);
+    }
 }

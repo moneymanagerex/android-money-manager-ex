@@ -47,7 +47,7 @@
 
             <com.mikepenz.iconics.view.IconicsImageView
                 android:layout_marginTop="8dp"
-                app:iiv_icon="mmx-law"
+                app:iiv_icon="gmd-trending-up"
                 app:iiv_color="?android:textColorSecondary"
                 app:iiv_size="120dp"
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/budgetEditorScrollView"
+        android:id="@+id/priceEditorScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -95,19 +95,16 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingLeft="@dimen/mmx_activity_side_padding"
-            android:paddingRight="@dimen/mmx_activity_side_padding"
-            tools:context="com.money.manager.ex.budget.BudgetEditActivity">
-            <!--android:layout_marginLeft="@dimen/mmx_activity_side_margin"-->
-            <!--android:layout_marginRight="@dimen/mmx_activity_side_margin"-->
+            android:paddingRight="@dimen/mmx_activity_side_padding">
 
-            <!-- Budget Name -->
+            <!-- Name -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/mmx_list_two_line_item_height"
                 android:orientation="horizontal">
                 <!-- icon -->
                 <com.mikepenz.iconics.view.IconicsImageView
-                    app:iiv_icon="mmx-law"
+                    app:iiv_icon="gmd-trending-up"
                     app:iiv_color="?android:textColorSecondary"
                     app:iiv_size="@dimen/mmx_icon_size"
                     android:layout_width="@dimen/mmx_side_icon_size"
@@ -122,14 +119,14 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <!-- budget name title -->
+                    <!-- title -->
                     <com.money.manager.ex.view.RobotoTextView
                         style="?attr/headerTextViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/price_date" />
 
-                    <!-- budget name editor -->
+                    <!-- name editor -->
                     <com.money.manager.ex.view.RobotoTextView
                         android:id="@+id/priceDateTextView"
                         style="@style/Money.TextView.Widget.EditText"
@@ -170,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:gravity="end"
-                        android:hint="@string/budget_year" />
+                        android:hint="@string/amount" />
 
                 </LinearLayout>
             </LinearLayout>
