@@ -113,7 +113,7 @@ public class PriceEditActivity
             .show(RequestCodes.AMOUNT);
     }
 
-    @OnClick(R.id.dateTextView)
+    @OnClick(R.id.dateControl)
     protected void onDateClick() {
         // todo: show date picker.
     }
@@ -147,7 +147,7 @@ public class PriceEditActivity
         String dateString = intent.getStringExtra(EditPriceDialog.ARG_DATE);
         model.date = new MmxDate(dateString);
 
-        // todo: currency!
-        //intent.getStringExtra(ARG_CURRENCY_ID)
+        // currency!
+        model.currencyId = intent.getIntExtra(ARG_CURRENCY_ID, Constants.NOT_SET);
     }
 }

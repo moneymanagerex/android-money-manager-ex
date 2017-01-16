@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.view.DateDisplay;
 import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
@@ -34,7 +35,8 @@ import butterknife.ButterKnife;
 public class EditPriceViewHolder {
 
     @BindView(R.id.amountTextView) public RobotoTextView amountTextView;
-    @BindView(R.id.dateTextView) public RobotoTextView dateTextView;
+//    @BindView(R.id.dateTextView) public RobotoTextView dateTextView;
+    @BindView(R.id.dateControl) public DateDisplay dateDisplay;
     @BindView(R.id.previousDayButton) @Nullable public FontIconView previousDayButton;
     @BindView(R.id.nextDayButton) @Nullable public FontIconView nextDayButton;
 

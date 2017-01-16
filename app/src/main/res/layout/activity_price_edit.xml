@@ -108,6 +108,7 @@
                     android:layout_gravity="center_vertical"/>
 
                 <com.money.manager.ex.view.DateDisplay
+                    android:id="@+id/dateControl"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="@dimen/mmx_list_two_line_item_height">

@@ -94,6 +94,7 @@ public class WatchlistItemsFragment
 
     public Integer accountId;
 
+    private Account mAccount;
     private boolean mAutoStarLoader = true;
     private View mListHeader = null;
     private StockRepository mStockRepository;
@@ -230,24 +231,25 @@ public class WatchlistItemsFragment
                 int accountId = stock.getHeldAt();
                 Money currentPrice = stock.getCurrentPrice();
 
-//                Intent intent = IntentFactory.getPriceEditIntent(getActivity());
-//                intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
-//                intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
-//                intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
-//                // todo intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, cu)
-//                String dateString = new MmxDate().toIsoString();
-//                intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
-//                startActivity(intent);
-
-                EditPriceDialog dialog = new EditPriceDialog();
-                Bundle args = new Bundle();
-                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
-                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
-                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+                Intent intent = IntentFactory.getPriceEditIntent(getActivity());
+                intent.putExtra(EditPriceDialog.ARG_ACCOUNT, accountId);
+                intent.putExtra(EditPriceDialog.ARG_SYMBOL, symbol);
+                intent.putExtra(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+                getAccount();
+                intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
                 String dateString = new MmxDate().toIsoString();
-                args.putString(EditPriceDialog.ARG_DATE, dateString);
-                dialog.setArguments(args);
-                dialog.show(getChildFragmentManager(), "input-amount");
+                intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
+                startActivity(intent);
+
+//                EditPriceDialog dialog = new EditPriceDialog();
+//                Bundle args = new Bundle();
+//                args.putInt(EditPriceDialog.ARG_ACCOUNT, accountId);
+//                args.putString(EditPriceDialog.ARG_SYMBOL, symbol);
+//                args.putString(EditPriceDialog.ARG_PRICE, currentPrice.toString());
+//                String dateString = new MmxDate().toIsoString();
+//                args.putString(EditPriceDialog.ARG_DATE, dateString);
+//                dialog.setArguments(args);
+//                dialog.show(getChildFragmentManager(), "input-amount");
                 break;
 
             case DELETE:
@@ -419,6 +421,16 @@ public class WatchlistItemsFragment
 
     // Private
 
+    private Account getAccount() {
+        if (this.accountId == Constants.NOT_SET) return null;
+        if (this.mAccount != null) return mAccount;
+
+        AccountRepository repo = new AccountRepository(getActivity());
+        mAccount = repo.load(this.accountId);
+
+        return mAccount;
+    }
+
     private void displayHeaderData() {
         TextView label = (TextView) getView().findViewById(R.id.cashBalanceLabel);
         TextView textView = (TextView) getView().findViewById(R.id.cashBalanceTextView);
@@ -431,16 +443,14 @@ public class WatchlistItemsFragment
             return;
         }
 
-        AccountRepository repo = new AccountRepository(getActivity());
-        Account account = repo.load(this.accountId);
-
         label.setText(getString(R.string.cash));
 
-        if (account == null) return;
+        getAccount();
+        if (mAccount == null) return;
 
         FormatUtilities formatter = new FormatUtilities(getActivity());
         textView.setText(formatter.format(
-            account.getInitialBalance(), account.getCurrencyId()));
+            mAccount.getInitialBalance(), mAccount.getCurrencyId()));
     }
 
     private boolean hasHeaderRow() {
