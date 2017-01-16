@@ -113,7 +113,7 @@ public class PriceEditActivity
             .show(RequestCodes.AMOUNT);
     }
 
-    @OnClick(R.id.dateControl)
+    @OnClick(R.id.dateTextView)
     protected void onDateClick() {
         // todo: show date picker.
     }
