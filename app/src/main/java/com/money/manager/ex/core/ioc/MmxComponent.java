@@ -35,6 +35,7 @@ import com.money.manager.ex.home.SelectDatabaseActivity;
 import com.money.manager.ex.investment.EditPriceDialog;
 import com.money.manager.ex.investment.ISecurityPriceUpdater;
 import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
+import com.money.manager.ex.investment.PriceEditActivity;
 import com.money.manager.ex.investment.PriceEditModel;
 import com.money.manager.ex.investment.morningstar.MorningstarPriceUpdater;
 import com.money.manager.ex.recurring.transactions.RecurringTransactionEditActivity;
@@ -72,6 +73,7 @@ public interface MmxComponent {
     void inject(CheckingTransactionEditActivity activity);
     void inject(InvestmentTransactionEditActivity activity);
     void inject(MainActivity activity);
+    void inject(PriceEditActivity activity);
     void inject(RecurringTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
     void inject(SettingsActivity activity);

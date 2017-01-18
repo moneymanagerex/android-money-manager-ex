@@ -24,19 +24,24 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
+import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
 import com.money.manager.ex.core.RequestCodes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.utils.MmxDate;
+import com.money.manager.ex.utils.MmxDateTimeUtils;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.State;
+import dagger.Lazy;
 import info.javaperformance.money.MoneyFactory;
 import timber.log.Timber;
 
@@ -44,6 +49,8 @@ public class PriceEditActivity
     extends MmxBaseFragmentActivity {
 
     public static final String ARG_CURRENCY_ID = "PriceEditActivity:CurrencyId";
+
+    @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     //@State
     protected PriceEditModel model;
@@ -53,6 +60,8 @@ public class PriceEditActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
+
+        MoneyManagerApplication.getApp().iocComponent.inject(this);
 
         ButterKnife.bind(this);
 
@@ -115,7 +124,39 @@ public class PriceEditActivity
 
     @OnClick(R.id.dateTextView)
     protected void onDateClick() {
-        // todo: show date picker.
+        MmxDate priceDate = model.date;
+
+        CalendarDatePickerDialogFragment.OnDateSetListener listener = new CalendarDatePickerDialogFragment.OnDateSetListener() {
+            @Override
+            public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                model.date = new MmxDate(year, monthOfYear, dayOfMonth);
+
+                model.display(PriceEditActivity.this, viewHolder);
+            }
+        };
+
+        CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment()
+                .setFirstDayOfWeek(dateTimeUtilsLazy.get().getFirstDayOfWeek())
+                .setOnDateSetListener(listener)
+                .setPreselectedDate(priceDate.getYear(), priceDate.getMonthOfYear(), priceDate.getDayOfMonth());
+        if (new UIHelper(this).isUsingDarkTheme()) {
+            datePicker.setThemeDark();
+        }
+        datePicker.show(getSupportFragmentManager(), datePicker.getClass().getSimpleName());
+    }
+
+    @OnClick(R.id.previousDayButton)
+    protected void onPreviousDayClick() {
+        model.date = model.date.minusDays(1);
+
+        model.display(this, viewHolder);
+    }
+
+    @OnClick(R.id.nextDayButton)
+    protected void onNextDayClick() {
+        model.date = model.date.plusDays(1);
+
+        model.display(this, viewHolder);
     }
 
     private void initializeModel() {
