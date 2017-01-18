@@ -56,12 +56,15 @@ public class PriceEditModel {
 
         String amount;
         FormatUtilities format = new FormatUtilities(context);
-        if (currencyId == Constants.NOT_SET) {
-            // use base currency.
-            amount = format.getValueFormattedInBaseCurrency(price);
-        } else {
-            amount = format.format(price, currencyId);
-        }
+//        if (currencyId == Constants.NOT_SET) {
+//            // use base currency?
+//            amount = format.getValueFormattedInBaseCurrency(price);
+//        } else {
+//            amount = format.format(price, currencyId);
+//        }
+
+        amount = format.format(price, "0.00##");
+
         viewHolder.amountTextView.setText(amount);
     }
 }
