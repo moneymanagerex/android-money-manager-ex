@@ -102,7 +102,7 @@ public class EditPriceDialog
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
+            Icepick.restoreInstanceState(this, savedInstanceState);
         } else {
             createNewEntity();
         }
@@ -262,10 +262,6 @@ public class EditPriceDialog
             }
         };
         viewHolder.amountTextView.setOnClickListener(onClickAmount);
-    }
-
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
     private void showCurrentPrice() {

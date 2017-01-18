@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.investment.watchlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -44,6 +45,7 @@ import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.MenuHelper;
+import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Select;
@@ -173,6 +175,19 @@ public class WatchlistItemsFragment
         attachFloatingActionButtonToListView();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case RequestCodes.PRICE:
+                if (resultCode != Activity.RESULT_OK) return;
+
+                reloadData();
+                break;
+        }
+    }
+
     // context menu
 
     @Override
@@ -239,7 +254,7 @@ public class WatchlistItemsFragment
                 intent.putExtra(PriceEditActivity.ARG_CURRENCY_ID, mAccount.getCurrencyId());
                 String dateString = new MmxDate().toIsoString();
                 intent.putExtra(EditPriceDialog.ARG_DATE, dateString);
-                startActivity(intent);
+                startActivityForResult(intent, RequestCodes.PRICE);
 
 //                EditPriceDialog dialog = new EditPriceDialog();
 //                Bundle args = new Bundle();

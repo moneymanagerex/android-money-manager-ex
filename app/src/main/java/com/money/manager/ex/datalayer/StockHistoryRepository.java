@@ -27,6 +27,7 @@ import android.net.Uri;
 
 import com.money.manager.ex.database.DatasetType;
 import com.money.manager.ex.domainmodel.StockHistory;
+import com.money.manager.ex.investment.PriceEditModel;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -74,6 +75,10 @@ public class StockHistoryRepository
 
     public boolean addStockHistoryRecord(PriceDownloadedEvent price) {
         return addStockHistoryRecord(price.symbol, price.price, price.date);
+    }
+
+    public boolean addStockHistoryRecord(PriceEditModel price) {
+        return addStockHistoryRecord(price.symbol, price.price, price.date.toDate());
     }
 
     public boolean addStockHistoryRecord(String symbol, Money price, Date date) {
