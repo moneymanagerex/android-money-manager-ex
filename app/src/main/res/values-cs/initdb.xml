@@ -23,7 +23,7 @@
   <string name="category_3">Volný čas</string>
   <string name="category_4">Automobil</string>
   <string name="category_5">Vzdělání</string>
-  <string name="category_6">Potřeby</string>
+  <string name="category_6">Domácí potřeby</string>
   <string name="category_7">Zdravotní péče</string>
   <string name="category_8">Pojištění</string>
   <string name="category_9">Dovolená</string>
@@ -37,7 +37,7 @@
   <!-- default subcategory -->
   <string name="subcategory_1">Telefon</string>
   <string name="subcategory_2">Elektřina</string>
-  <string name="subcategory_3">Plyn</string>
+  <string name="subcategory_3">Pohonné hmoty</string>
   <string name="subcategory_4">Internet</string>
   <string name="subcategory_5">Nájemné</string>
   <string name="subcategory_6">Kabelová TV</string>
@@ -48,7 +48,7 @@
   <string name="subcategory_11">Videopůjčovna</string>
   <string name="subcategory_12">Časopisy</string>
   <string name="subcategory_13">Údržba</string>
-  <string name="subcategory_14">Plyn</string>
+  <string name="subcategory_14">Pohonné hmoty</string>
   <string name="subcategory_15">Parkování</string>
   <string name="subcategory_16">Registrace</string>
   <string name="subcategory_17">Knihy</string>
