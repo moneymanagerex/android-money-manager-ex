@@ -74,6 +74,12 @@ public class MmxDate {
         }
     }
 
+    public static MmxDate newDate() {
+        MmxDate result = new MmxDate()
+                .setTimeToBeginningOfDay();
+        return result;
+    }
+
     /*
         Instance
      */

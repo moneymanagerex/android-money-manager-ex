@@ -158,7 +158,7 @@ public abstract class BaseReportFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 //        MmxDateTimeUtils dateUtils = dateTimeUtilsLazy.get();
-        MmxDate dateTime = new MmxDate();
+        MmxDate dateTime = MmxDate.newDate();
 
         switch (item.getItemId()) {
             case R.id.menu_current_month:
@@ -184,10 +184,12 @@ public abstract class BaseReportFragment
             case R.id.menu_last_year:
                 mDateFrom = dateTime.minusYears(1)
                         .firstMonthOfYear()
-                        .firstDayOfMonth().toDate();
-                mDateTo = dateTime.minusYears(1)
+                        .firstDayOfMonth()
+                        .toDate();
+                mDateTo = dateTime
                         .lastMonthOfYear()
-                        .lastDayOfMonth().toDate();
+                        .lastDayOfMonth()
+                        .toDate();
                 break;
 
             case R.id.menu_all_time:
