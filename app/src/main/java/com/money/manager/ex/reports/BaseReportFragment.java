@@ -162,18 +162,19 @@ public abstract class BaseReportFragment
 
         switch (item.getItemId()) {
             case R.id.menu_current_month:
-                mDateFrom = dateTime.firstDayOfMonth().setTimeToBeginningOfDay().toDate();
+                mDateFrom = dateTime.firstDayOfMonth().toDate();
                 mDateTo = dateTime.lastDayOfMonth().toDate();
                 break;
 
             case R.id.menu_last_month:
-                mDateFrom = dateTime.minusMonths(1).firstDayOfMonth().toDate();
-                mDateTo = dateTime.minusMonths(1).lastDayOfMonth().toDate();
+                mDateFrom = dateTime.minusMonths(1)
+                        .firstDayOfMonth().toDate();
+                mDateTo = dateTime.lastDayOfMonth().toDate();
                 break;
 
             case R.id.menu_last_30_days:
+                mDateTo = dateTime.toDate();
                 mDateFrom = dateTime.minusDays(30).toDate();
-                mDateTo = dateTime.setTimeToBeginningOfDay().toDate();
                 break;
 
             case R.id.menu_current_year:
