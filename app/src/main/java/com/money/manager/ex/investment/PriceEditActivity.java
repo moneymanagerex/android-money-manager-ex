@@ -139,6 +139,7 @@ public class PriceEditActivity
     protected void onPriceClick() {
         Calculator.forActivity(this)
             .amount(model.price)
+            .roundToCurrency(false)
             .show(RequestCodes.AMOUNT);
     }
 

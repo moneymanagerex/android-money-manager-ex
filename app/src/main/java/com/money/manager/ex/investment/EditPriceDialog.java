@@ -265,7 +265,7 @@ public class EditPriceDialog
     }
 
     private void showCurrentPrice() {
-        String priceFormatted = formatUtilitiesLazy.get().format(mPrice.price, "0.00##");
+        String priceFormatted = formatUtilitiesLazy.get().format(mPrice.price, Constants.PRICE_FORMAT);
         viewHolder.amountTextView.setText(priceFormatted);
     }
 

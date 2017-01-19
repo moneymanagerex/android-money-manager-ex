@@ -63,7 +63,7 @@ public class PriceEditModel {
 //            amount = format.format(price, currencyId);
 //        }
 
-        amount = format.format(price, "0.00##");
+        amount = format.format(price, Constants.PRICE_FORMAT);
 
         viewHolder.amountTextView.setText(amount);
     }

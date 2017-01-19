@@ -64,7 +64,7 @@ public class CalculatorActivity
 
     public static String EXTRA_CURRENCY_ID = "CurrencyId";
     public static String EXTRA_AMOUNT = "Amount";
-    public static String EXTRA_ROUND_TO_CURRENCY = "RountToCurrencyDecimals";
+    public static String EXTRA_ROUND_TO_CURRENCY = "RoundToCurrencyDecimals";
 
     public static String RESULT_AMOUNT = "AmountEntered";
 
@@ -82,6 +82,8 @@ public class CalculatorActivity
 
     // Views
     @BindView(R.id.deleteButton) ImageButton deleteButton;
+    @BindView(R.id.textViewMain) TextView txtMain;
+    @BindView(R.id.textViewTop) TextView txtTop;
 
     private int[] idButtonKeyNum = {
             R.id.buttonKeyNum0, R.id.buttonKeyNum1, R.id.buttonKeyNum2, R.id.buttonKeyNum3,
@@ -99,7 +101,7 @@ public class CalculatorActivity
     @Inject Lazy<FormatUtilities> formatUtilitiesLazy;
 
     private Integer mDefaultColor;
-    private TextView txtMain, txtTop;
+
     /**
      * Indicates that the user has already started typing. We should not replace the existing number
      * with the typed value but append the typed value to the existing number.
@@ -362,10 +364,8 @@ public class CalculatorActivity
                 .color(uiHelper.getColor(R.color.md_primary)));
 
         // Amounts
-        txtTop = (TextView) findViewById(R.id.textViewTop);
         mDefaultColor = txtTop.getCurrentTextColor();
 
-        txtMain = (TextView) findViewById(R.id.textViewMain);
         if (!TextUtils.isEmpty(mExpression)) {
             txtMain.setText(mExpression);
         } else {
@@ -387,23 +387,23 @@ public class CalculatorActivity
         decimalSeparatorButton.setText(separator);
     }
 
-    private boolean isCurrencySet() {
-        return this.mCurrencyId != null && this.mCurrencyId != Constants.NOT_SET;
-    }
+//    private boolean isCurrencySet() {
+//        return this.mCurrencyId != null && this.mCurrencyId != Constants.NOT_SET;
+//    }
 
-    private Money getAmount() {
-        Money result;
-
-        // to round or not? Handle case when no base currency set.
-        if (this.roundToCurrencyDecimals && isCurrencySet()) {
-            NumericHelper numericHelper = new NumericHelper(this);
-            Currency currency = mCurrencyService.getCurrency(mCurrencyId);
-            result = numericHelper.truncateToCurrency(mAmount, currency);
-        } else {
-            result = mAmount;
-        }
-        return result;
-    }
+//    private Money getAmount() {
+//        Money result;
+//
+//        // to round or not? Handle case when no base currency set.
+//        if (this.roundToCurrencyDecimals && isCurrencySet()) {
+//            NumericHelper numericHelper = new NumericHelper(this);
+//            Currency currency = mCurrencyService.getCurrency(mCurrencyId);
+//            result = numericHelper.truncateToCurrency(mAmount, currency);
+//        } else {
+//            result = mAmount;
+//        }
+//        return result;
+//    }
 
     private String getFormattedAmountForEditing(Money amount) {
         if (amount == null) return "0";
@@ -426,7 +426,8 @@ public class CalculatorActivity
                         null, null);
             }
         } else {
-            result = formatUtilitiesLazy.get().formatWithLocale(amount);
+            //result = formatUtilitiesLazy.get().formatWithLocale(amount);
+            result = formatUtilitiesLazy.get().format(amount, Constants.PRICE_FORMAT);
         }
 
         return result;

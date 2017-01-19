@@ -45,6 +45,9 @@ public class Constants {
     public static final String EMAIL = "android@moneymanagerex.org";
     public static final String TIME_FORMAT = "HH:mm";
 
+    // Amount formats
+    public static final String PRICE_FORMAT = "0.00##";
+
     // UI
     public static final int NotificationIconSize = 25;
     public static final int NotificationBigIconSize = 48;
