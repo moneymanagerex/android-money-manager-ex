@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
  */
 public class EditPriceViewHolder {
 
+    @BindView(R.id.symbolTextView) public RobotoTextView symbolTextView;
     @BindView(R.id.amountTextView) public RobotoTextView amountTextView;
     @BindView(R.id.dateTextView) public RobotoTextView dateTextView;
 //    @BindView(R.id.dateControl) public DateDisplay dateDisplay;
