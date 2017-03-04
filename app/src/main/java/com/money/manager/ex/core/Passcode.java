@@ -55,7 +55,7 @@ public class Passcode {
      * @return null if not set passcode else passcode
      */
     public String getPasscode() {
-        String ret = retrievePasscode();
+        String ret = loadPasscode();
         if (ret != null) {
             // decrypt passcode
             ret = decrypt(ret);
@@ -68,7 +68,7 @@ public class Passcode {
      * @return indicator whether there is a passcode or not.
      */
     public boolean hasPasscode() {
-        return !(TextUtils.isEmpty(retrievePasscode()));
+        return !(TextUtils.isEmpty(loadPasscode()));
     }
 
     /**
@@ -141,7 +141,7 @@ public class Passcode {
             return true;
     }
 
-    private String retrievePasscode() {
+    private String loadPasscode() {
         InfoService service = new InfoService(getContext());
         return service.getInfoValue(InfoKeys.PASSCODE);
     }
