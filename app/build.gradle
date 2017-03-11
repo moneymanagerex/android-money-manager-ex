@@ -209,12 +209,13 @@ dependencies {
             , 'com.google.guava:guava:20.0'         // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
-            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-            , 'io.reactivex:rxjava:1.2.5'
-//            , 'io.reactivex.rxjava2:rxjava:2.0.0-RC1'
+//            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
+            , 'io.reactivex.rxjava2:rxandroid:2.0.1'
+//            , 'io.reactivex:rxjava:1.2.5'
+            , 'io.reactivex.rxjava2:rxjava:2.0.7'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.1'
-            , 'com.jakewharton.timber:timber:4.5.0'
-            , 'com.jakewharton.rxbinding:rxbinding:1.0.0'    // RxBinding
+            , 'com.jakewharton.timber:timber:4.5.1'
+            , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
 //            ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
 //            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
