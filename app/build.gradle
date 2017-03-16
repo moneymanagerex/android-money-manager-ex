@@ -198,7 +198,7 @@ dependencies {
 //            , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.7'
-            , 'com.squareup.retrofit2:retrofit:2.1.0'            // Retrofit
+            , 'com.squareup.retrofit2:retrofit:2.2.0'            // Retrofit
             , 'com.squareup.retrofit2:converter-gson:2.1.0'
             , 'com.squareup.retrofit2:converter-scalars:2.1.0'
             , 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
@@ -251,10 +251,10 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.2.2',
-            'org.robolectric:shadows-support-v4:3.2.2',
-            'org.robolectric:shadows-multidex:3.2.2',
-            'org.robolectric:shadows-httpclient:3.2.2',
+            'org.robolectric:robolectric:3.3.1',
+            'org.robolectric:shadows-support-v4:3.3.1',
+            'org.robolectric:shadows-multidex:3.3.1',
+            'org.robolectric:shadows-httpclient:3.3.1',
             'com.squareup.assertj:assertj-android:1.1.1',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',

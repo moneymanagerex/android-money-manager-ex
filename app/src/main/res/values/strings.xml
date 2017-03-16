@@ -470,6 +470,7 @@
     <string name="locale_ar">Arabic</string>
     <string name="locale_bs" translatable="false">Bosanski</string>
     <string name="locale_cs" translatable="false">Čeština</string>
+    <string name="locale_da" translatable="false">Dansk</string>
     <string name="locale_de" translatable="false">Deutsch</string>
     <string name="locale_el" translatable="false">Ελληνικά</string>
     <string name="locale_en" translatable="false">English</string>
