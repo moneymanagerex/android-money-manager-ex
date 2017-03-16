@@ -21,6 +21,7 @@
   <string name="category_1">Tagihan</string>
   <string name="category_2">Makanan</string>
   <string name="category_3">Rekreasi</string>
+  <string name="category_13">Pemasukan</string>
   <string name="category_16">Transfer</string>
   <!-- default subcategory -->
   <string name="subcategory_3">Pertalite</string>
