@@ -35,6 +35,12 @@ set src_locale=%src_lang%-rCZ
 set dest_lang=%src_lang%
 call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
 
+:: Danish
+set src_lang=da
+set src_locale=%src_lang%-rDK
+set dest_lang=%src_lang%
+call copy_translation.cmd %src_root% %src_lang% %src_locale% %dest_root% %dest_lang% 
+
 :: Dutch
 set src_lang=nl
 set src_locale=%src_lang%-rNL
