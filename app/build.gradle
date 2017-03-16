@@ -41,10 +41,12 @@ android {
 //        }
     }
 
-//    compileOptions {
+    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
+//        sourceCompatibility JavaVersion.VERSION_1_7
 //        targetCompatibility JavaVersion.VERSION_1_8
-//    }
+//        targetCompatibility JavaVersion.VERSION_1_7
+    }
 
     sourceSets {
 //        main {
@@ -206,7 +208,7 @@ dependencies {
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.10.2'              // HTML parsing.
-            , 'com.google.guava:guava:21.0'         // collection libraries
+            , 'com.google.guava:guava:20.0'         // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
 //            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
@@ -230,7 +232,7 @@ dependencies {
 //            , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
-        transitive = true;
+        transitive = true
     }
     compile('com.mikepenz:aboutlibraries:5.9.4@aar') {
         transitive = true
@@ -242,8 +244,8 @@ dependencies {
     compile 'com.google.dagger:dagger:2.8'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
