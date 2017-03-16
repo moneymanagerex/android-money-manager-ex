@@ -28,7 +28,7 @@ buildscript {
 
 plugins {
     // dependencyUpdates
-    id 'com.github.ben-manes.versions' version '0.13.0'
+    id 'com.github.ben-manes.versions' version '0.14.0'
 }
 
 ext {
@@ -36,7 +36,7 @@ ext {
     buildToolsVersion = '25.0.2'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
-    supportLibrary = '25.2.0'
+    supportLibrary = '25.3.0'
     supportDependencies = [
             support          :       "com.android.support:support-v4:${supportLibrary}",
             appCompat        :       "com.android.support:appcompat-v7:${supportLibrary}",
@@ -77,9 +77,10 @@ allprojects {
             force supportDependencies.appCompat
             force supportDependencies.design
             force 'com.google.code.gson:gson:2.7'
-//            force 'com.google.guava:guava:19.0'
+            force 'com.google.guava:guava:21.0'
             force 'com.google.code.findbugs:jsr305:3.0.1'
             force 'org.apache.commons:commons-lang3:3.4'
+            force 'commons-collections:commons-collections:3.2.2'
         }
         // removes warnings about commons-logging on build.
         exclude group: 'commons-logging', module: 'commons-logging'

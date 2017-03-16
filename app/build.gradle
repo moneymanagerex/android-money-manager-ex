@@ -169,7 +169,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.16.0'
+            , 'com.cloudrail:cloudrail-si-android:2.16.1'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
@@ -179,8 +179,8 @@ dependencies {
             , supportDependencies.preference
             , supportDependencies.supportAnnotation
             , supportDependencies.gridLayout
-            , 'com.opencsv:opencsv:3.8'
-            , 'net.objecthunter:exp4j:0.4.7'
+            , 'com.opencsv:opencsv:3.9'
+            , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
             , 'commons-io:commons-io:2.5'
             , 'com.afollestad.material-dialogs:core:0.8.6.1'
@@ -199,14 +199,14 @@ dependencies {
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.7'
             , 'com.squareup.retrofit2:retrofit:2.2.0'            // Retrofit
-            , 'com.squareup.retrofit2:converter-gson:2.1.0'
-            , 'com.squareup.retrofit2:converter-scalars:2.1.0'
-            , 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+            , 'com.squareup.retrofit2:converter-gson:2.2.0'
+            , 'com.squareup.retrofit2:converter-scalars:2.2.0'
+            , 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.10.2'              // HTML parsing.
-            , 'com.google.guava:guava:20.0'         // collection libraries
+            , 'com.google.guava:guava:21.0'         // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
 //            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
@@ -224,15 +224,15 @@ dependencies {
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
             , 'com.mikepenz:iconics-core:2.8.2@aar' // also update in the icon module.
-            , 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar' // MD icons
+            , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
 //            , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile('com.mikepenz:aboutlibraries:5.9.1@aar') {
+    compile('com.mikepenz:aboutlibraries:5.9.4@aar') {
         transitive = true
     }
     // Parceler
@@ -242,8 +242,8 @@ dependencies {
     compile 'com.google.dagger:dagger:2.8'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
