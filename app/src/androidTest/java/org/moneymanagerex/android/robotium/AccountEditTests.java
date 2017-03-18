@@ -56,10 +56,10 @@ public class AccountEditTests
         UiTestHelpersRobotium.tearDown(solo);
     }
 
-    @Test
-    public void formOpens() {
-        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
-    }
+//    @Test
+//    public void formOpens() {
+//        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
+//    }
 
 
 }

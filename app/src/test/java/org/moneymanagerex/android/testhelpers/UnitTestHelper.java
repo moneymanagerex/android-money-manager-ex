@@ -41,8 +41,6 @@ import java.lang.reflect.Field;
 /**
  * Additionally simplify and standardize certain calls to assist when setting up and running
  * the unit tests.
- *
- * Created by Alen Siljak on 25/09/2015.
  */
 public class UnitTestHelper {
     public static <T extends Activity> ActivityController<T> getController(Class<T> activityClass) {
@@ -96,7 +94,7 @@ public class UnitTestHelper {
         ContentProvider contentProvider = new MmxContentProvider();
 //        shadowOf(contentProvider).getContext();
         contentProvider.onCreate();
-        ShadowContentResolver.registerProvider(MmxContentProvider.getAuthority(), contentProvider);
+//        ShadowContentResolver.registerProvider(MmxContentProvider.getAuthority(), contentProvider);
 
         return contentProvider;
     }

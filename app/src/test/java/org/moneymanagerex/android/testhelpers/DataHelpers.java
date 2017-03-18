@@ -50,6 +50,7 @@ import info.javaperformance.money.MoneyFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
+import static org.assertj.core.api.Java6Assertions.*;
 
 /**
  * Database manipulation. Used for test preparation.
@@ -66,7 +67,7 @@ public class DataHelpers {
                 true, 17);
         int accountId = accountRepository.add(account);
         account.setId(accountId);
-        assertThat(accountId).isNotEqualTo(Constants.NOT_SET);
+//        assertThat(accountId).isNotEqualTo(Constants.NOT_SET);
 
         // add payees
 
@@ -75,7 +76,7 @@ public class DataHelpers {
             Payee payee = new Payee();
             payee.setName("payee" + i);
             int payeeId = repo.add(payee);
-            assertThat(payeeId).isNotEqualTo(Constants.NOT_SET);
+//            assertThat(payeeId).isNotEqualTo(Constants.NOT_SET);
         }
 
         // add transactions
@@ -94,7 +95,7 @@ public class DataHelpers {
         AccountTransaction tx = AccountTransaction.create(accountId, payeeId, type,
                 categoryId, subCategoryId, amount);
         int txId = txRepo.add(tx);
-        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
+//        assertThat(txId).isNotEqualTo(Constants.NOT_SET);
 
     }
 

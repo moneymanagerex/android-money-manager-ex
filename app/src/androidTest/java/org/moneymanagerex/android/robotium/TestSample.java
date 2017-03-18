@@ -36,30 +36,30 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Test sample class. Use as a template for other tests.
  */
 @RunWith(AndroidJUnit4.class)
-public class TestSample
-    extends ActivityInstrumentationTestCase2<MainActivity> {
+public class TestSample {
+    // extends ActivityInstrumentationTestCase2<MainActivity>
 
     private Solo solo;
 
-    public TestSample() {
-        super(MainActivity.class);
-    }
+//    public TestSample() {
+//        super(MainActivity.class);
+//    }
 
-    @Before
-    public void setUp() {
-        solo = UiTestHelpersRobotium.setUp(this);
-    }
+//    @Before
+//    public void setUp() {
+//        solo = UiTestHelpersRobotium.setUp(this);
+//    }
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();
+//        super.tearDown();
 
         UiTestHelpersRobotium.tearDown(solo);
     }
 
-    @Test
-    public void formOpens() {
-        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
-    }
+//    @Test
+//    public void formOpens() {
+//        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
+//    }
 
 }

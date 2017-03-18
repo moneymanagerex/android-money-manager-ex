@@ -35,31 +35,31 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Test sample class. Use as a template for other tests.
  */
 @RunWith(AndroidJUnit4.class)
-public class SettingsTests
-        extends ActivityInstrumentationTestCase2<SettingsActivity> {
+public class SettingsTests {
+    // extends ActivityInstrumentationTestCase2<SettingsActivity>
 
     private Solo solo;
 
-    public SettingsTests() {
-        super(SettingsActivity.class);
-    }
+//    public SettingsTests() {
+//        super(SettingsActivity.class);
+//    }
 
-    @Before
-    public void setUp() {
-        solo = UiTestHelpersRobotium.setUp(this);
-    }
+//    @Before
+//    public void setUp() {
+//        solo = UiTestHelpersRobotium.setUp(this);
+//    }
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();
+//        super.tearDown();
 
         UiTestHelpersRobotium.tearDown(solo);
     }
 
-    @Test
-    public void formOpens() {
-        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
-    }
+//    @Test
+//    public void formOpens() {
+//        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
+//    }
 
 //    @Test
 //    public void canReturnHomeViaToolbar() {
