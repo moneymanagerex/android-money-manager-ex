@@ -35,19 +35,13 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-//        jackOptions {
-//            enabled true
-//        }
     }
 
     compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
 //        sourceCompatibility JavaVersion.VERSION_1_7
-//        targetCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_7
-        sourceCompatibility '1.7'
-        targetCompatibility '1.7'
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets {
@@ -201,7 +195,7 @@ dependencies {
 //            , 'javax.money:money-api-bp:1.0.1'
 //            , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
-            , 'com.google.code.gson:gson:2.7'
+            , 'com.google.code.gson:gson:2.8'
             , 'com.squareup.retrofit2:retrofit:2.2.0'            // Retrofit
             , 'com.squareup.retrofit2:converter-gson:2.2.0'
             , 'com.squareup.retrofit2:converter-scalars:2.2.0'
@@ -213,10 +207,10 @@ dependencies {
             , 'com.google.guava:guava:20.0'         // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
-//            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-            , 'io.reactivex.rxjava2:rxandroid:2.0.1'
-//            , 'io.reactivex:rxjava:1.2.5'
-            , 'io.reactivex.rxjava2:rxjava:2.0.7'
+            , 'io.reactivex:rxandroid:1.2.1'        // RxJava
+//            , 'io.reactivex.rxjava2:rxandroid:2.0.1'
+            , 'io.reactivex:rxjava:1.2.5'
+//            , 'io.reactivex.rxjava2:rxjava:2.0.1'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.1'
             , 'com.jakewharton.timber:timber:4.5.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
@@ -246,8 +240,8 @@ dependencies {
     compile 'com.google.dagger:dagger:2.8'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
