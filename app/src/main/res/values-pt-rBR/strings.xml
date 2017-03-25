@@ -244,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d transação recorrente em atraso</string>
   <string name="skip">Pular</string>
   <string name="enter">Entrar</string>
+  <string name="enter_amount">Digite a quantidade</string>
   <!-- 20121121 -->
   <string name="send_feedback">Envie comentários</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -389,6 +390,7 @@
   <string name="delete_others_selected_transaction">Tem certeza que deseja excluir a %d transação selecionada?</string>
   <string name="categories">Categorias</string>
   <string name="payees">Favorecidos</string>
+  <string name="recurring_transactions">Transações recorrentes</string>
   <string name="theme_holo_light">Holo claro</string>
   <string name="new_account">Nova conta</string>
   <string name="create_new_account">Criar nova conta</string>
@@ -442,6 +444,7 @@
   <string name="montly_last_bussines_day">Mensal (último dia útil)</string>
   <!-- languages -->
   <string name="locale_application">Idioma do aplicativo</string>
+  <string name="locale_ar">Árabe</string>
   <string name="transaction_cancel_confirm">Você tem certeza que deseja descartar estas alterações?</string>
   <string name="keep_editing">Manter edição</string>
   <string name="discard">Descartar</string>
@@ -693,12 +696,14 @@
   <string name="filenames_differ">Os nomes dos arquivos remotos e locais diferem. Abortando a sincronização.</string>
   <string name="both_files_modified">Ambos os arquivos de banco de dados local e remoto foram modificados!</string>
   <string name="sync_conflict">Conflito de sincronização</string>
+  <string name="no_remote_file">Por favor, selecione o arquivo remoto usado para sincronização.</string>
   <!-- Warnings -->
   <string name="no_accounts_available_for_selection">Não há contas disponíveis para seleção. Ajuste suas preferências para a filtragem de contas ou marque algumas contas como favoritas.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Erro ao analisar o valor inserido</string>
   <string name="remote_file_not_found">Arquivo remoto não encontrado</string>
   <string name="error_checking_remote">Erro ao verificar por alterações remotas.</string>
+  <string name="no_remote_change_date">O controle remoto alterar Dados não encontrada no arquivo.</string>
   <!-- Select database screen -->
   <string name="intro_text">Para começar a utilizar o Money Manager Ex, você precisa ter um arquivo de banco de dados para armazenar seus dados. Por favor, selecione uma das opções disponíveis abaixo.</string>
   <string name="intro_create_db">Você pode criar um novo arquivo e configurar as preferências iniciais.</string>
@@ -711,4 +716,6 @@
   <!-- Settings -->
   <string name="per_database_settings">Por banco de dados</string>
   <string name="save">Salvar</string>
+  <string name="title_budget_show_simple_view">Mostrar orçamento simples vista</string>
+  <string name="summary_budget_show_simple_view">Se verificado orçamentos usam a exibição simplificada</string>
 </resources>

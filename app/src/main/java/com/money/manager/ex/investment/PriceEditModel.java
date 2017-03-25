@@ -51,6 +51,8 @@ public class PriceEditModel {
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     public void display(Context context, EditPriceViewHolder viewHolder) {
+        viewHolder.symbolTextView.setText(symbol);
+
         String dateDisplay = dateTimeUtilsLazy.get().getUserFormattedDate(context, this.date.toDate());
         viewHolder.dateTextView.setText(dateDisplay);
 

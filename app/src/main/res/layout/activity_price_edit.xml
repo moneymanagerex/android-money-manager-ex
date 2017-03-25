@@ -91,6 +91,38 @@
             android:paddingLeft="@dimen/mmx_activity_side_padding"
             android:paddingRight="@dimen/mmx_activity_side_padding">
 
+            <!-- symbol -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:orientation="horizontal">
+                <!-- icon -->
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd-work"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/symbolTextView"
+                        style="@style/Money.TextView.Widget.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:hint="@string/amount" />
+
+                </LinearLayout>
+            </LinearLayout>
+
             <!-- price date -->
             <LinearLayout
                 android:layout_width="match_parent"

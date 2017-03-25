@@ -58,10 +58,10 @@ public class BaseTests {
 //        this.controller.destroy();
     }
 
-    @Test
-    public void testTemplate() {
-        assertThat(true).isTrue();
-    }
+//    @Test
+//    public void testTemplate() {
+//        assertThat(true).isTrue();
+//    }
 
     /**
      * Exception test example.

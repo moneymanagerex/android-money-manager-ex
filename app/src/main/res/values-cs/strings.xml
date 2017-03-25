@@ -233,6 +233,7 @@
   <string name="repeats">Periodicita</string>
   <string name="occurs">Opakování</string>
   <string name="payments_left">Zbývající platby</string>
+  <string name="payments_left_required">Hodnota zbývající částky je vyžadována</string>
   <string name="due_date_required">Datum splatnosti je vyžadováno</string>
   <string name="error_next_occurrence_not_populate">Je vyžadován další výskyt</string>
   <string name="enter_next_occurrence">Zadejte další výskyt</string>
@@ -294,6 +295,7 @@
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Rozdělit</string>
   <string name="error_split_transaction_empty">Je vyžadováno alespoň jedno rozdělení transakce</string>
+  <string name="swipe_to_dismiss">Odsuňte položky k jejich odstranění.</string>
   <string name="export_data_to_csv">Exportovat data do souboru CSV</string>
   <string name="export_data_in_progress">Exportuji data. Čekejte prosím&#8230;</string>
   <string name="export_file_complete">Data byla úspěšně uložena do souboru %1$s</string>
@@ -441,9 +443,9 @@
   <string name="montly_last_bussines_day">Měsíčně (poslední pracovní den)</string>
   <!-- languages -->
   <string name="locale_application">Jazyk aplikace</string>
-  <string name="transaction_cancel_confirm">Opravdu chcete zrušit změny?</string>
+  <string name="transaction_cancel_confirm">Opravdu chcete zahodit změny?</string>
   <string name="keep_editing">Pokračovat v editaci</string>
-  <string name="discard">Zrušit</string>
+  <string name="discard">Zahodit</string>
   <string name="invalid_expression">Neplatný výraz</string>
   <string name="send_me_logcat">Logcat</string>
   <string name="due_today">Splatnost dnes</string>
@@ -470,8 +472,10 @@
   <string name="custom_dates">Vlastní data</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Skrýt ověřené částky z přehledu účtů.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Skrýt ověřené částky</string>
+  <string name="pref_transaction_sort_by_type_summary">Seřadit denní transakce podle typu (uložení, převod, výběr)</string>
   <string name="pref_transaction_sort_by_type_title">Řadit transakce podle typu</string>
   <string name="warning">Varování</string>
+  <string name="no_transfer_splits">Rozhodli jste se změnit typ na \"převod\", ale transakce již byla rozdělena do více kategorií. Přejete si pokračovat a rozdělení kategorií odstranit?</string>
   <string name="qif_export">Qif export</string>
   <string name="update_prices">Aktualizovat ceny</string>
   <string name="update_price">Aktualizovat cenu</string>
@@ -530,12 +534,14 @@
   <string name="title_activity_currency_rates_report">Kurzy měn</string>
   <string name="frequency">Frekvence</string>
   <string name="update_available">Je k dispozici aktualizace</string>
+  <string name="update_available_online">Online je dostupná novější verze databázového souboru. Přejete si aktualizovat?</string>
   <string name="currency_not_found">Měna nebyla nalezena</string>
   <string name="homepage">Náš web je http://android.moneymanagerex.org/</string>
   <string name="current_database">Aktuální databáze</string>
   <string name="about_logcat_header">Klepnutím na tlačítko níže nám můžete zaslat protokol aplikace.</string>
   <string name="transaction_type_filter">Filtrovat podle typu transakce</string>
   <string name="status_filter">Filtrovat podle stavu</string>
+  <string name="filter_options_info">Nastavení filtru a informace</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Zadejte heslo do databáze</string>
   <string name="income_expense_period">Období pro příjmy a výdaje</string>
@@ -552,6 +558,7 @@
   <string name="number_of_shares">Počet sdílení</string>
   <string name="purchase_price">Pořizovací cena</string>
   <string name="current_price">Aktuální cena</string>
+  <string name="price_date">Datum ceny</string>
   <string name="commission">Poplatek</string>
   <string name="value">Hodnota</string>
   <string name="view_transactions">Zobrazit transakce</string>
@@ -562,6 +569,13 @@
   <string name="cleared">Vyčištěno</string>
   <string name="delete_success">Položka odstraněna</string>
   <!-- asset allocation -->
+  <string name="asset_allocation">Alokace aktiv</string>
+  <string name="asset_classes_empty">Žádné třídy aktiv nebyly stanoveny. Pro vytvoření nějaké stiskněte zelené tlačítko +.</string>
+  <string name="title_activity_asset_class_edit">Upravit třídu aktiv</string>
+  <string name="asset_class_name">Název třídy aktiv</string>
+  <string name="asset_class">Třída aktiv</string>
+  <string name="allocation">Alokace</string>
+  <string name="current_allocation">Současná alokace</string>
   <string name="move_up">Posunout nahoru</string>
   <string name="move_down">Posunout dolů</string>
   <string name="securities">Cenné papíry</string>
@@ -576,6 +590,7 @@
   <string name="enter_password">Zadejte heslo</string>
   <string name="success">Operace byla úspěšná</string>
   <string name="overview">Přehled</string>
+  <string name="title_activity_asset_allocation_overview">Přehled alokace aktiv</string>
   <string name="error_saving_record">Chyba při ukládání záznamu</string>
   <string name="error_loading_currency">Chyba při načítání měny</string>
   <string name="symbol_required">Symbol je vyžadován</string>
@@ -615,6 +630,7 @@
   <!-- Investment -->
   <string name="portfolio">Portfolio</string>
   <string name="change_provider">Změnit poskytovatele</string>
+  <string name="quote_provider">Poskytovatel ceny</string>
   <string name="exchange_rate_provider">Poskytovatel směnného kurzu</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
@@ -676,7 +692,9 @@
   <string name="no_remote_file">Vyberte prosím vzdálený soubor pro synchronizaci.</string>
   <!-- Warnings -->
   <!-- Errors -->
+  <string name="error_parsing_value">Chyba analýzy vložené hodnoty</string>
   <string name="remote_file_not_found">Vzdálený soubor nenalezen</string>
+  <string name="error_checking_remote">Chyba při zjišťování online změn.</string>
   <!-- Select database screen -->
   <string name="intro_text">Abyste mohli začít Money Manager Ex používat, potřebujete databázový soubor pro záznam svých dat. Prosím zvolte jednu z následujících možností.</string>
   <string name="intro_create_db">Můžete vytvořit nový soubor a nastavit prvotní předvolby.</string>

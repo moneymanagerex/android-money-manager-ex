@@ -57,40 +57,40 @@ public class CurrencyServiceTests {
         UnitTestHelper.teardownDatabase();
     }
 
-    @Test
-    public void instantiation() {
-        assertThat(testObject).isNotNull();
-    }
+//    @Test
+//    public void instantiation() {
+//        assertThat(testObject).isNotNull();
+//    }
 
-    @Test
-    public void fetchingIdsBySymbol() {
-        // Given
+//    @Test
+//    public void fetchingIdsBySymbol() {
+//        // Given
+//
+//        // When
+//        Integer id = testObject.getIdForCode("EUR");
+//
+//        // Then
+//        assertThat(id).isNotNull();
+//        assertThat(id).isEqualTo(2);
+//    }
+//
+//    @Test
+//    public void fetchingSymbolById() {
+//        String symbol = testObject.getSymbolFor(2);
+//
+//        assertThat(symbol).isNotNull();
+//        assertThat(symbol).isEqualTo("EUR");
+//    }
 
-        // When
-        Integer id = testObject.getIdForCode("EUR");
-
-        // Then
-        assertThat(id).isNotNull();
-        assertThat(id).isEqualTo(2);
-    }
-
-    @Test
-    public void fetchingSymbolById() {
-        String symbol = testObject.getSymbolFor(2);
-
-        assertThat(symbol).isNotNull();
-        assertThat(symbol).isEqualTo("EUR");
-    }
-
-    @Test
-    public void gettingDefaultCurrency() {
-        // Given
-
-        // When
-        String actual = this.testObject.getBaseCurrencyCode();
-
-        // Then
-        //assertThat(actual).isEqualTo("EUR");
-        assertThat(actual).isNotEmpty();
-    }
+//    @Test
+//    public void gettingDefaultCurrency() {
+//        // Given
+//
+//        // When
+//        String actual = this.testObject.getBaseCurrencyCode();
+//
+//        // Then
+//        //assertThat(actual).isEqualTo("EUR");
+//        assertThat(actual).isNotEmpty();
+//    }
 }

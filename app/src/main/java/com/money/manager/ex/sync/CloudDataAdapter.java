@@ -26,10 +26,8 @@ import android.view.ViewGroup;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
-import com.shamanland.fonticon.FontIconDrawable;
 
 import java.util.List;
 

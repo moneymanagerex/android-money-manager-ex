@@ -411,6 +411,9 @@ public class WatchlistItemsFragment
      * Start loader into fragment
      */
     public void reloadData() {
+        // reset the account so that it gets loaded when referenced the next time.
+        mAccount = null;
+
         Bundle arguments = prepareArgsForChildFragment();
         // mLoaderArgs
         getLoaderManager().restartLoader(ID_LOADER, arguments, this);

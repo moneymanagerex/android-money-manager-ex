@@ -55,10 +55,10 @@ public class CurrenciesTests
         UiTestHelpersRobotium.tearDown(solo);
     }
 
-    @Test
-    public void formOpens() {
-        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
-    }
+//    @Test
+//    public void formOpens() {
+//        assertThat(solo.waitForActivity(getActivity().getClass().getSimpleName())).isTrue();
+//    }
 
 //    @Test
 //    public void canCreateAndDeleteCurrency() {
@@ -100,7 +100,7 @@ public class CurrenciesTests
 
         solo.waitForDialogToOpen();
 
-        assertThat(solo.searchText("can not be deleted")).isTrue();
+//        assertThat(solo.searchText("can not be deleted")).isTrue();
 
         solo.clickOnText("OK");
     }

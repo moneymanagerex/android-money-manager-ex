@@ -244,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d transacción recurrente vencida</string>
   <string name="skip">Ignorar</string>
   <string name="enter">Introducir</string>
+  <string name="enter_amount">Ingrese el monto</string>
   <!-- 20121121 -->
   <string name="send_feedback">Enviar comentarios</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -389,6 +390,7 @@
   <string name="delete_others_selected_transaction">¿Seguro que quieres borrar las %d transacciones seleccionadas?</string>
   <string name="categories">Categorías</string>
   <string name="payees">Beneficiarios</string>
+  <string name="recurring_transactions">Transacciones Recurrentes</string>
   <string name="theme_holo_light">Holo Claro</string>
   <string name="new_account">Nueva cuenta</string>
   <string name="create_new_account">Crear nueva cuenta</string>
@@ -693,12 +695,14 @@
   <string name="filenames_differ">Los nombres de los archivos local y remoto son distintos. Se anula la sincronización.</string>
   <string name="both_files_modified">El archivo local y remoto han sido modificados!</string>
   <string name="sync_conflict">Conflicto en sincronización</string>
+  <string name="no_remote_file">Por favor seleccione el archivo remoto a utilizar para la sincronización.</string>
   <!-- Warnings -->
   <string name="no_accounts_available_for_selection">No existen cuentas disponibles para selección. Por favor ajuste sus preferencias para filtrar cuentas o marque alguna como favorita.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Error de escritura en el valor introducido</string>
   <string name="remote_file_not_found">No se encontró el archivo remoto</string>
   <string name="error_checking_remote">Error al comprobar cambios en archivo remoto.</string>
+  <string name="no_remote_change_date">La fecha del cambio remoto no fue encontrada en la metadata.</string>
   <!-- Select database screen -->
   <string name="intro_text">Para comenzar a usar Money Manager Ex, necesita tener un archivo base de datos para almacenar sus datos. Por favor seleccione una de las opciones disponibles.</string>
   <string name="intro_create_db">Usted puede crear un nuevo archivo y configurar sus preferencias iniciales.</string>
@@ -711,4 +715,6 @@
   <!-- Settings -->
   <string name="per_database_settings">Por base de datos</string>
   <string name="save">Guardar</string>
+  <string name="title_budget_show_simple_view">Mostrar vista simple del presupuesto</string>
+  <string name="summary_budget_show_simple_view">Si se marca los presupuestos utilizan la vista simplificada</string>
 </resources>

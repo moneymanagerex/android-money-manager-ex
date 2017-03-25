@@ -51,11 +51,11 @@ public class DatabaseMetadataFactoryTests {
         _testObject = null;
     }
 
-    @Test
-    public void createDefaultItem() {
-        DatabaseMetadata empty = _testObject.createDefaultEntry();
-
-        assertThat(empty).isNotNull();
-    }
+//    @Test
+//    public void createDefaultItem() {
+//        DatabaseMetadata empty = _testObject.createDefaultEntry();
+//
+//        assertThat(empty).isNotNull();
+//    }
 
 }

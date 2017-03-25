@@ -184,6 +184,7 @@
   <!-- 20120906 -->
   <string name="close_application">Uygulamayı kapat</string>
   <string name="question_close_application">Uygulamayı kapatmak istiyor musunuz?</string>
+  <string name="error_intent_pick_file">Intent Pick File ile başa çıkabilecek bir aktivite bulunmadı</string>
   <string name="attention">Dikkat</string>
   <string name="payee_can_not_deleted">Seçilen alacaklı silinemedi çünkü alacaklı ile ilişkilendirilmiş işlemler bulunuyor</string>
   <string name="account_can_not_deleted">Seçilen hesap silinemedi çünkü hesap ile ilişkilendirilmiş işlemler bulunuyor</string>
@@ -243,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d tekrar eden işlem süresi geçti</string>
   <string name="skip">Atla</string>
   <string name="enter">Giriş</string>
+  <string name="enter_amount">Tutar girin</string>
   <!-- 20121121 -->
   <string name="send_feedback">Geri bildirim yolla</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -259,6 +261,7 @@
   <!--<string name="passcode_update">passcode is updated</string>-->
   <string name="passcode_not_update">parola güncellenemedi</string>
   <!-- 20121217 -->
+  <string name="lookups_wildcard">Aramalar için % joker karakteri kullanabilirisiniz</string>
   <string name="income_vs_expenses_current_month">Gelirler ve Giderler: Bu ay</string>
   <string name="income">Gelir</string>
   <string name="expenses">Gider</string>
@@ -387,6 +390,7 @@
   <string name="delete_others_selected_transaction">%d seçilen işlemleri silmek istediğinizden emin misiniz?</string>
   <string name="categories">Kategoriler</string>
   <string name="payees">Alacaklılar</string>
+  <string name="recurring_transactions">Yinelenen İşlemler</string>
   <string name="theme_holo_light">Holo Açık</string>
   <string name="new_account">Yeni Hesap</string>
   <string name="create_new_account">Yeni Hesap Oluştur</string>
@@ -404,9 +408,12 @@
   <string name="show_chart">Grafiği Göster</string>
   <string name="add_transaction">İşlem Ekle</string>
   <string name="welcome_header">MoneyManagerEx\'e hoş geldiniz!</string>
+  <string name="welcome_body">MoneyManagerEx\'teki tüm işlemler hesap sahibine aittir.\n\n Görünürde hesabınız yok. Ya ayarlardan görünür hesaplar için filtre ayarlayın, ya da aşağıdaki seçeneklerden birini seçin.</string>
   <string name="welcome_body_dropbox">Eğer halihazırda Windows, Linux veya Mac cihazınızda MoneyManagerEx kullanıyorsanız, veritabanınızı eşitlemek için bir bulut depolama sağlayıcısına bağlayabilirsiniz</string>
   <string name="configure_sync">Eşitleme Yapılandır</string>
   <!-- 20140115 -->
+  <string name="search_text_contain_title">Metnin başlangıcıyla değil de içeriğiyle arama yapmak</string>
+  <string name="search_text_contain_summary">Alacaklı, kategori, para birimleri vb... başlangıç karakteri ile değil de içerikle aramak</string>
   <string name="rate_application">Uygulamayı Puanla</string>
   <string name="withdrawal_from">Para çekilen hesap %1$s</string>
   <string name="deposit_to">Para yatırılan hesap %1$s</string>
@@ -437,6 +444,7 @@
   <string name="montly_last_bussines_day">Aylık (son iş günü)</string>
   <!-- languages -->
   <string name="locale_application">Uygulama Dili</string>
+  <string name="locale_ar">Arapça</string>
   <string name="transaction_cancel_confirm">Değişiklikleri iptal etmek istediğinizden emin misiniz?</string>
   <string name="keep_editing">Düzenleme devam et</string>
   <string name="discard">İptal et</string>
@@ -466,6 +474,7 @@
   <string name="custom_dates">Özel Tarihler</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Denetim masasında hesaplarda onaylanmış işlemleri gösterme.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Onaylanmış İşlemleri Gizle</string>
+  <string name="pref_transaction_sort_by_type_summary">İşlem türlerine göre günlük işlemleri düzenleyin (mevduat, transfer, para çekme)</string>
   <string name="pref_transaction_sort_by_type_title">İşlemleri türüne göre sırala</string>
   <string name="warning">Dikkat</string>
   <string name="no_transfer_splits">Hesaplar arası havale yapmayı seçtiniz ancak işlem bölünmüş kategoriye ait. Havale işlemini gerçekleştirmek ve bölünmüş kategoriyi kaldırmak istiyor musunuz?</string>
@@ -477,6 +486,7 @@
   <string name="price_updated">Fiyat güncellendi</string>
   <string name="all_prices_updated">Bütün fiyatlar güncellendi.</string>
   <string name="download_complete">İndirme tamamlandı.</string>
+  <string name="confirm_price_download">Güvenlik fiyatlarını online olarak güncellemek istiyor musunuz?</string>
   <string name="starting_price_update">Fiyatlar indiriliyor, lütfen bekleyin&#8230;</string>
   <string name="database_migrate_14_to_20">Veritabanını v1.4 sürümüne güncelle</string>
   <string name="database_migrate_14_to_20_explanation">Eski veriler bulundu. Eski veritabanını kullanmak için buraya dokunun.</string>
@@ -547,6 +557,7 @@ http://android.moneymanagerex.org/</string>
   <string name="watchlist">İzleme Listesi</string>
   <!-- edit investment transaction -->
   <string name="purchase_date">Satın Alma Tarihi</string>
+  <string name="stock_name">Stok Adı</string>
   <string name="symbol">Sembol</string>
   <string name="number_of_shares">Paylaşım Sayısı</string>
   <string name="purchase_price">Satın Alma Fiyatı</string>
@@ -557,15 +568,22 @@ http://android.moneymanagerex.org/</string>
   <string name="view_transactions">İşlemleri görüntüle</string>
   <string name="error_downloading_symbol">Fiyat sembolü indirilirken hata oluştu</string>
   <string name="error_updating_rates">Oranları güncelleştirilirken hata oluştu</string>
+  <string name="error_no_price_found_for_symbol">Sembol için fiyat bulunmadı</string>
   <string name="other">Diğer</string>
   <string name="cleared">Temizlendi</string>
   <string name="delete_success">Öğe silindi</string>
   <!-- asset allocation -->
   <string name="asset_allocation">Varlık Tahsisi</string>
+  <string name="asset_classes_empty">Hiçbir para birimi bulunamadı. Oluşturmak için yeşil artı butonuna dokunun.</string>
+  <string name="title_activity_asset_class_edit">Varlık Sınıfını Düzenle</string>
+  <string name="asset_class_name">Varlık Sınıf Adı</string>
   <string name="asset_class">Varlık Sınıfı</string>
   <string name="allocation">Tahsis</string>
+  <string name="current_allocation">Mevcut tahsisat</string>
   <string name="move_up">Yukarı git</string>
   <string name="move_down">Aşağıya git</string>
+  <string name="securities">Menkul değerler</string>
+  <string name="no_records_found_create">Kayıt bulunmadı. Oluşturmak için, yeşil artı butonuna dokunun.</string>
   <string name="current_value">Geçerli Değer</string>
   <string name="current">Güncel</string>
   <string name="parent">Üst</string>
@@ -578,18 +596,25 @@ http://android.moneymanagerex.org/</string>
   <string name="success">İşlem başarılı</string>
   <string name="overview">Genel Görünüm</string>
   <string name="title_activity_asset_allocation_overview">Varlık Tahsisi Genel Görünüm</string>
+  <string name="asset_allocation_diff_threshold">Varlık Tahsis Fark Eşiği</string>
+  <string name="asset_allocation_diff_threshold_summary">Farklı değerlerin renklenmesini tetikleyecek eşik.</string>
+  <string name="error_saving_record">Kayıt kaydedilirken hata oluştu</string>
+  <string name="error_loading_currency">Döviz yüklenirken hata oluştu</string>
   <string name="symbol_required">Sembol gereklidir</string>
   <string name="recurrence_type_not_set">Yinelenme türü ayarlı değil</string>
   <string name="invalid_recurrence_type">Geçersiz yineleme türü</string>
   <string name="account_not_found">Hesap bulunamadı</string>
   <string name="favourite">Favori</string>
+  <string name="split_reset_notice">Bu işlemde birden çok bölünmüş kategorinin bulunduğunu lütfen unutmayın. Bunları elle kaldırmanız gerekir.</string>
   <!-- budgets -->
   <string name="add_budget">Bütçe Ekle</string>
   <string name="budget_name">Bütçe Adı</string>
   <string name="budget_year">Bütçe Yılı</string>
   <string name="budget_month">Bütçe Ay</string>
   <string name="copy">Kopyala</string>
+  <string name="app_restart">Değişiklikleri uygulamak için uygulama kapanacak. Lütfen yeniden başlatın.</string>
   <string name="print">Yazdır</string>
+  <string name="min_19">Belgeyi yazdırmak için en az Android 4.4 sürümüne ihtiyacınız var.</string>
   <string name="save_as_html">HTML olarak kaydet</string>
   <string name="no_network">Kullanılabilir bir ağ bulunamadı.</string>
   <!-- Currencies -->
@@ -599,6 +624,9 @@ http://android.moneymanagerex.org/</string>
   <string name="import_all_currencies">Para Birimleri İçe Aktar</string>
   <string name="import_currencies_in_progress">Para birimleri alınıyor. Lütfen bekleyin&#8230;</string>
   <string name="question_import_currencies">Para birimini içe aktarmak istiyor musunuz?</string>
+  <string name="start_currency_exchange_rates">Para birimlerinin döviz kurları güncelleniyor. Lütfen bekleyin&#8230;</string>
+  <string name="update_currency_exchange_rates">Döviz kuru güncelleniyor:\n%1$s</string>
+  <string name="success_currency_exchange_rates">Para birimlerinin döviz kurları başarıyla güncellendi</string>
   <string name="update_menu_currency_exchange_rates">Döviz Kuru Güncelleştirme</string>
   <string name="question_update_currency_exchange_rates">Döviz kurunu güncelleştirmek istiyor musunuz?</string>
   <string name="error_update_currency_exchange_rate">Oranlar güncelleştirilirken bir hata oluştu</string>
@@ -608,27 +636,40 @@ http://android.moneymanagerex.org/</string>
   <string name="all_currencies">Bütün Para Birimleri</string>
   <string name="show_only_used">Sadece kullanılanları göster</string>
   <!-- Investment -->
+  <string name="portfolio">Portföy</string>
   <string name="change_provider">Sağlayıcı değiştir</string>
+  <string name="quote_provider">Teklif Sağlayıcı</string>
+  <string name="exchange_rate_provider">Döviz Kuru Sağlayıcı</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Dropbox üzerindeki veritabanı için güncelleştirme mevcut</string>
   <string name="dropbox_file_ready_for_use">Veritabanınız indirildi</string>
   <string name="dropbox_open_database_downloaded">İndirilen veritabanını kullanmak için Veritabanı Aç\'a dokunun</string>
+  <string name="click_to_select_file_dropbox">Dropbox üzerinden dosya seçmek için dokunun</string>
   <string name="download_from_drobpox">Dropbox\'dan indir</string>
+  <string name="summary_download_from_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak indirmek için dokunun</string>
   <string name="upload_to_drobpox">Dropbox\'a yükle</string>
   <string name="summary_upload_to_drobpox">Dropbox klasörüne bağlı dosyayı manuel olarak yüklemek için dokunun</string>
+  <string name="dropbox_how_it_works">Money Manager Ex için Dropbox nasıl çalışır?</string>
   <string name="dropbox_link">Dropbox\'a Bağla</string>
   <string name="dropbox_unlink">Dropbox bağlantısını kaldır</string>
   <string name="dropbox_downloadProgress">Dosya Dropbox\'tan indiriliyor. Lütfen bekleyin&#8230;</string>
   <string name="dropbox_uploadProgress">Dosya Dropbox\'a yükleniyor. Lütfen bekleyin&#8230;</string>
   <string name="dropbox_linkedFile">Dropbox Dosyası</string>
+  <string name="dropbox_file_summary_all">Dropbox\'ın herhangi bir yerinde dosya</string>
+  <string name="db_not_dropbox">Geçerli veritabanınız eşitlenmemiş. Lütfen Dropbox sekronizasyonu ayarlayın.</string>
   <!-- Synchronization -->
   <string name="synchronization">Eşitleme</string>
   <string name="sync_enabled">Senkronizasyon etkinleştirildi</string>
   <string name="sync_provider">Sağlayıcı</string>
   <string name="remote_file">Uzak dosya</string>
   <string name="please_wait">Lütfen bekleyin</string>
+  <string name="invalid_database">Bu eklenti geçerli bir veritabanı olarak kabul edilmedi.</string>
   <string name="reset_preferences">Tercihleri sıfırla</string>
+  <string name="preferences_reset">Senkronizasyon tercihleri sıfırlandı.</string>
+  <string name="cloud_download">Bulut deposundan veritabanı dosyasını indirin.</string>
+  <string name="cloud_upload">Bulut deposuna veritabanı dosyası yükleyin.</string>
+  <string name="sync_notification_title">Money Manager Ex - Sync</string>
   <string name="sync_downloading">Veritabanı indiriyor. Lütfen bekleyin&#8230;</string>
   <string name="sync_uploading">Veritabanı yükleniyor. Lütfen bekleyin&#8230;</string>
   <string name="syncProgress">Dosya eşitleniyor. Lütfen bekleyin&#8230;</string>
@@ -646,16 +687,29 @@ http://android.moneymanagerex.org/</string>
   <string name="never">Hiç bir zaman</string>
   <string name="checking_remote_for_changes">Uzaktaki depolama birimini veritabanı değişiklikleri için kontrol et.</string>
   <string name="title_sync_upload_immediate">Veritabanında her değişiklik yapıldığında hemen yükle</string>
+  <string name="summary_sync_upload_immediate">Bu seçenek veritabanını değiştirdiğiniz gibi otomatik olarak yüklemenizi sağlar</string>
+  <string name="dropbox_empty_folder">Dropbox/Apps/Money Manager Ex Android klasörü boş. Zaten MoneyManagerEx kullanıyorsanız, veritabanızı bilgisayardaki bu klasöre kopyalayın, ve sonra da sayfayı yenileyin.</string>
+  <string name="select_remote_file">Bulut deposundan bir dosya seçin</string>
+  <string name="confirm_download">Dosyayı indirmek istiyor musunuz?</string>
   <string name="file_exists">Dosya mevcut</string>
   <string name="file_exists_long">Yerel depolama biriminde aynı ada sahip bir dosya zaten var. Bu dosyanın üzerine yazmak istiyor musunuz?</string>
   <string name="synchronization_disabled">Eşitleme devre dışı.</string>
   <string name="filenames_differ">Uzak ve yerel dosya adları farklı. Eşitleme durduruluyor.</string>
   <string name="both_files_modified">Hem yerel hem de uzak veritabanı dosyasında değişiklik yapılmış!</string>
   <string name="sync_conflict">Senkronizasyon çakışması</string>
+  <string name="no_remote_file">Lütfen senkronizasyon için bir dosya seçin.</string>
   <!-- Warnings -->
+  <string name="no_accounts_available_for_selection">Seçilebilir bir hesap yok. Lütfen hesap filtreleme tercihlerinizi ayarlayın ya da bazı hesapları favori olarak işaretleyin.</string>
   <!-- Errors -->
+  <string name="error_parsing_value">Girilen değer ayrıştırılırken hata oluştu</string>
   <string name="remote_file_not_found">Uzak dosya bulunamadı</string>
+  <string name="error_checking_remote">Uzaktan değişiklikler denetlenirken hata oluştu.</string>
+  <string name="no_remote_change_date">Meta verilerde uzaktan değiştirme tarihi bulunamadı.</string>
   <!-- Select database screen -->
+  <string name="intro_text">Money Manager Ex kullanmaya başlamak için, verilerinizi depolamak üzere bir veritabanına ihtiyacınız var. Lütfen aşağıdaki uygun seçeneklerden birini seçin.</string>
+  <string name="intro_create_db">Yeni bir dosya oluşturup ilk tercihlerinizi ayarlayabilirsiniz.</string>
+  <string name="intro_open_db">Veya cihazınızdan var olan bir dosyayı seçebilirsiniz.</string>
+  <string name="intro_sync">Alternatif olarak, bir bulut servisi ile senkronizasyon ayarlayıp çevrimiçi deponuzdan veritabanı dosyanızı indirebilirsiniz.</string>
   <!-- Create Database screen -->
   <string name="select_language">Dil seç</string>
   <string name="run">Money Manager Ex\'i çalıştır</string>
@@ -663,4 +717,6 @@ http://android.moneymanagerex.org/</string>
   <!-- Settings -->
   <string name="per_database_settings">Veritabanı Genel</string>
   <string name="save">Kaydet</string>
+  <string name="title_budget_show_simple_view">Basit bütçe görünümünü göster</string>
+  <string name="summary_budget_show_simple_view">Kontrol edilen bütçeler basitleştirilmiş görünümü kullanıyorsa</string>
 </resources>

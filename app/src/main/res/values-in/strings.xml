@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Sederhana dan mudah-ke-menggunakan aplikasi untuk mengelola keuangan pribadi, rekening bank, anggaran keluarga, dan seterusnya.</string>
@@ -46,6 +47,7 @@
   <!--<string name="import_export_failed">Import / Export failed</string>-->
   <!-- preferences -->
   <string name="preferences_general">Umum</string>
+  <string name="preferences_perdatabase">Pe-Basis Data</string>
   <string name="preferences_dispaly">Tampilan &amp; Nuansa</string>
   <string name="preferences_behaviour">Perilaku</string>
   <string name="base_currency">Mata uang dasar</string>
@@ -62,6 +64,10 @@
   <string name="summary_show_tutorial">Menampilkan pengajaran saat menjalankan berikutnya?</string>
   <string name="preferences_behaviour_focus_filter_title">Filter di penyeleksi</string>
   <string name="preferences_behaviour_focus_filter_summary">Fokus pada filter penyeleksi. Sebaliknya jelajahi.</string>
+  <string name="auto_sync_via_wifi">Sinkronkan otomatis hanya pada WiFi</string>
+  <string name="auto_sync_via_wifi_summary">Auto-sinkronisasi hanya ketika pada koneksi WiFi.</string>
+  <string name="sync_on_app_start">Sinkronisasi pada saat memulai aplikasi.</string>
+  <string name="sync_on_start">Menyinkronisasi pada saat memulai</string>
   <!-- account -->
   <string name="account">Akun</string>
   <string name="account_list">Daftar account</string>
@@ -132,6 +138,7 @@
   <string name="status_duplicate">Duplikat</string>
   <string name="status_none">Tidak ada</string>
   <string name="transfer">Transfer</string>
+  <string name="transfer_amount">Jumlah transfer</string>
   <string name="transaction_type">Jenis Transaksi</string>
   <string name="transaction_status">Status</string>
   <string name="withdrawal">Penarikan</string>
@@ -205,11 +212,64 @@
   <string name="monthly">Bulanan</string>
   <string name="bi_monthly">Dwi-bulanan</string>
   <string name="quaterly">Kuartal</string>
+  <string name="half_year">Setengah-Tahunan</string>
+  <string name="yearly">Tahunan</string>
+  <string name="four_months">Empat-Bulan</string>
+  <string name="four_weeks">Empat-Minggu</string>
+  <string name="daily">Harian</string>
+  <string name="in_x_days">Dalam (x) hari</string>
+  <string name="in_x_months">Dalam (x) bulan</string>
+  <string name="every_x_days">Setiap hari (x)</string>
+  <string name="every_x_months">Setiap (x) bulan</string>
+  <string name="repeating_empty_transaction">Tidak ditemuka transaksi berulang. Untuk membuat satu, ketuk tombol tambah berwarna hijau.</string>
+  <string name="inactive">Tidak aktif</string>
+  <string name="activates">Mengaktifkan</string>
+  <string name="days_overdue">hari terlambat!</string>
+  <string name="days_remaining">sisa hari</string>
+  <string name="new_edit_repeating_transaction">Transaksi Berkala Baru/Sunting</string>
+  <string name="due_date">Tanggal Jatuh Tempo</string>
+  <string name="next_occurrence">Kejadian Berikutnya</string>
+  <string name="payment_date">Tanggal Pembayaran</string>
+  <string name="repeats">Ulangi</string>
+  <string name="occurs">Terjadi</string>
+  <string name="payments_left">Sisa Pembayaran</string>
+  <string name="payments_left_required">Nilai Sisa Pembayaram diperlukan</string>
+  <string name="due_date_required">Tanggal Jatuh Tempo diperlukan</string>
+  <string name="error_next_occurrence_not_populate">Kejadian berikutnya diperlukan</string>
+  <string name="enter_next_occurrence">Masukkan Kejadian Berikutnya</string>
+  <string name="skip_next_occurrence">Lewati Kejadian Berikutnya</string>
+  <string name="skip_next_occurrence_confirmation">Apakah Anda ingin melewatkan kejadian berikutnya?</string>
+  <string name="notification_repeating_transaction_expired">Ada transaksi berkala yang kedaluwarsa</string>
+  <string name="notification_click_to_check_repeating_transaction">Sentuh untuk memeriksa transaksi yang terlambat</string>
+  <string name="num_repeating_transaction_expired">%1$d transaksi berkala terlambat</string>
+  <string name="skip">Lewati</string>
+  <string name="enter">Masuk</string>
+  <string name="enter_amount">Masukkan jumlah</string>
   <!-- 20121121 -->
+  <string name="send_feedback">Kirim Umpan balik</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
   <!-- 20121122 -->
+  <string name="preferences_info_application">Informasi</string>
+  <string name="preferences_security">Keamanan</string>
+  <string name="preferences_active_passcode">Aktifkan kode akses</string>
+  <string name="enter_your_passcode">Masukkan kode akses</string>
+  <string name="reinsert_your_passcode">Masukkan ulang kode akses baru anda</string>
+  <string name="passocde_no_macth">Kode akses tidak cocok</string>
+  <string name="preferences_edit_passcode">Sunting Kode Akses</string>
+  <string name="preferences_disable_passcode">Menonaktifkan Kode Akses</string>
+  <string name="enter_your_previous_passcode">Masukkan kode akses anda yang sebelumnya</string>
   <!--<string name="passcode_update">passcode is updated</string>-->
+  <string name="passcode_not_update">passcode tidak diperbarui</string>
   <!-- 20121217 -->
+  <string name="lookups_wildcard">Untuk pencarian, Anda dapat menggunakan karakter wildcard %</string>
+  <string name="income_vs_expenses_current_month">Pendapatan vs Biaya: Bulan Ini</string>
+  <string name="income">Pemasukan</string>
+  <string name="expenses">Pengeluaran</string>
+  <string name="difference">Selisih</string>
+  <string name="no_data">Tidak ada catatan ditemukan. Coba sesuaikan periode yang terlihat atau ketuk tombol tambah berwarna hijau untuk membuat satu. </string>
+  <string name="no_stock_data">Tidak ada data stok tersedia untuk rekening ini.</string>
+  <string name="month">Bulan</string>
+  <string name="year">Tahun</string>
   <string name="menu_reports">Laporan</string>
   <string name="menu_report_income_vs_expenses">Pendapatan Vs Biaya</string>
   <string name="total">Seluruh</string>
@@ -266,13 +326,40 @@
   <!-- 20130305 -->
   <string name="last_modified">Modifikasi terakhir</string>
   <!--<string name="select_dropbox_file">Select Dropbox Remote File</string>-->
+  <string name="dont_show_again">Jangan tampilkan lagi</string>
+  <string name="open_database">Buka Basis Data</string>
+  <string name="synchronization_interval">Jangka waktu sinkronisasi</string>
+  <string name="summary_synchronization_interval">Seberapa sering harus menyinkronkan?</string>
   <!--<string name="tips_title_new_version_dropbox">New version of Dropbox</string>-->
+  <string name="tips_new_version_dropbox">Pada versi 1.2.0, Money Manager Ex telah mengubah mesin sinkronisasi Dropbox. Pengguna yang sudah menggunakan Dropbox sync harus memperbarui konfigurasi. \nOtentikasi dan pemilihan Basis terletak di pengaturan. \nPada versi 1.2.0, Money Manager Ex untuk Android secara otomatis dapat mensinkronkan basis data.</string>
   <!-- 20130426 -->
+  <string name="title_transaction_shown_balance">Menunjukkan saldo untuk setiap transaksi</string>
+  <string name="summary_transaction_shown_balance">Menunjukkan saldo untuk setiap transaksi. Tampilan saldo bisa membuat aplikasi lebih lambat</string>
+  <string name="menu_open_database">Buka Basis Data</string>
+  <string name="database">Basis Data</string>
+  <string name="tips">Tips</string>
+  <string name="title_application_font">Huruf aplikasi</string>
+  <string name="summary_application_font">Pilih huruf yang Anda ingin berikan pada aplikasi</string>
+  <string name="title_application_font_size">Ukuran Huruf aplikasi</string>
+  <string name="summary_application_font_size">Pilih ukuran huruf yang anda ingin berikan pada aplikasi</string>
+  <string name="micro">Mikro</string>
+  <string name="small">Kecil</string>
+  <string name="Default">Bawaan</string>
+  <string name="medium">Sedang</string>
+  <string name="large">Besar</string>
   <!-- 20130606 -->
+  <string name="menu_report_where_money_goes">Kemana uang mengarah</string>
+  <string name="menu_report_where_money_comes_from">Darimana uang datang</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Waktu Pemberitahuan</string>
+  <string name="summary_check_repeating_transaction">Pada waktu apa anda akan memeriksa jika ada transaksi berkala yang terlambat? (bawaan 08:00)</string>
   <!-- 20130730 -->
+  <string name="credits">Kredit</string>
+  <string name="libraries">Perpustakaan</string>
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
+  <string name="top_withdrawals_last_30_days">Penarikan teratas: 30 hari terakhir</string>
+  <string name="top_payees_last_30_days">Penerima Teratas: 30 hari terakhir</string>
   <!--<string name="transaction_statistics">Transaction Statistics</string>-->
   <!-- 20130808 -->
   <!--<string name="dropbox_application_restart_between_seconds">You download a newer version of the database from Dropbox. Between %1$d seconds, the application reload new data</string>-->
@@ -283,11 +370,14 @@
   <!--<string name="bank_accounts_total">Bank Accounts Total</string>-->
   <!--<string name="term_accounts_total">Term Accounts Total</string>-->
   <!-- 20131104 -->
+  <string name="default_status">Status Bawaan</string>
+  <string name="default_payee">Penerima pembayaran bawaan</string>
   <string name="edit_transaction">Mengubah transaksi</string>
   <string name="delete_one_selected_transaction">Apakah Anda yakin Anda ingin menghapus transaksi yang ipilih?</string>
   <string name="delete_others_selected_transaction">Apakah Anda yakin Anda ingin menghapus %d transaksi yang dipilih?</string>
   <string name="categories">Kategori</string>
   <string name="payees">Penerima Uang</string>
+  <string name="recurring_transactions">Transaksi Berkala</string>
   <string name="theme_holo_light">Cahaya Holo</string>
   <string name="new_account">Akun baru</string>
   <string name="create_new_account">Buat akun baru</string>
@@ -306,6 +396,8 @@
   <string name="add_transaction">Tambahkan transaksi</string>
   <string name="welcome_header">Selamat datang di MoneyManagerEx!</string>
   <string name="welcome_body">Semua transaksi di MoneyManagerEx milik accounts.\n\nAnda saat ini tidak punya account yang terlihat. Sesuaikan filter untuk akun terlihat dalam pengaturan atau pilih salah satu opsi di bawah.</string>
+  <string name="welcome_body_dropbox">Jika Anda sudah menggunakan MoneyManagerEx pada Windows, Linux atau Mac, Anda dapat menyambungkan ke penyedia penyimpanan awan untuk mensinkronkan basis data anda</string>
+  <string name="configure_sync">Mengkonfigurasi Sinkronisasi</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Pencarian oleh isi teks dan bukan oleh teks yang diawali dengan</string>
   <string name="search_text_contain_summary">Cari penerima uang, kategori, mata uang, dll... oleh isi dan bukan oleh huruf-huruf awal</string>
@@ -323,8 +415,53 @@
   <string name="entities">Entitas</string>
   <string name="loading">Memuat&#8230;</string>
   <string name="grand_total">Total keseluruhan</string>
+  <string name="change_status">Mengubah status</string>
+  <string name="duplicate_selected_transactions">Duplikasikan transaksi yang dipilih</string>
+  <string name="sort">Urutkan</string>
+  <string name="sort_order">Urut Berdasarkan</string>
+  <string name="sort_by_name">Urutkan berdasarkan nama</string>
+  <string name="sort_by_usage">Urutkan berdasarkan penggunaan</string>
+  <string name="choose_sorting">Memilih pengurutan</string>
+  <string name="credit_card">Kartu Kredit</string>
+  <string name="cash_accounts">Rekening Kas</string>
+  <string name="bank_accounts">Rekening Bank</string>
+  <string name="term_accounts">Rekening Berjangka</string>
+  <string name="credit_card_accounts">Rekening Kartu Kredit</string>
+  <string name="montly_last_days">Bulanan (hari terakhir)</string>
+  <string name="montly_last_bussines_day">Bulanan (hari bisnis terakhir)</string>
   <!-- languages -->
+  <string name="locale_application">Bahasa Aplikasi</string>
+  <string name="locale_ar">Bahasa Arab</string>
+  <string name="transaction_cancel_confirm">Apakah anda yakin ingin membuang perubahan?</string>
+  <string name="keep_editing">Tetap menyunting</string>
+  <string name="discard">Buang</string>
+  <string name="invalid_expression">Ekspresi tidak sah</string>
+  <string name="send_me_logcat">Logcat</string>
+  <string name="due_today">Tenggat Hari Ini</string>
+  <string name="issues_tracker">Pelacak isu di GitHub</string>
   <string name="action_settings">Pengaturan</string>
+  <string name="close">Tutup</string>
+  <string name="tutorial_accounts_1">Beberapa jenis rekening: giro, tabungan, kredit, aset dan investasi.</string>
+  <string name="tutorial_accounts_2">Geser ke kiri untuk lanjut&#8230;</string>
+  <string name="financial_overview">Ikhtisar Finansial</string>
+  <string name="tutorial_overview_1">Gambaran singkat papan instrumen, anggaran, laporan dengan penyesuaian.</string>
+  <string name="global">Global</string>
+  <string name="tutorial_global_1">Beberapa mata uang dan bahasa. Open Source. Bergabung dengan tim terjemahan kami.</string>
+  <string name="tutorial_sync_1">Dukungan untuk beberapa platform, Sinkronisasi melalui beberapa layanan cloud. Impor dan ekspor data ke aplikasi lain.</string>
+  <string name="transactions">Transaksi</string>
+  <string name="tutorial_transactions_1">Deposit, penarikan, transfer. Transaksi berkala dengan pengingat.</string>
+  <string name="split_category">-Kategori Terpisah-</string>
+  <string name="title_activity_currency_chart">Bagan Nilai Tukar Mata Uang</string>
+  <string name="sort_by_ascending">Urutkan tahun dan bulan secara menaik</string>
+  <string name="sort_by_desceding">Urutkan tahun dan bulan secara menurun</string>
+  <string name="years">Tahunan</string>
+  <string name="select_the_years_to_be_displayed">Pilih tahun-tahun yang akan ditampilkan</string>
+  <string name="to_date">Sampai Tanggal</string>
+  <string name="from_date">Dari tanggal</string>
+  <string name="custom_dates">Tanggal Khusus</string>
+  <string name="pref_transaction_hide_reconciled_amounts_summary">Sembunyikan jumlah yang disesuaikan dari rekening pada dashboard.</string>
+  <string name="pref_transaction_hide_reconciled_amounts_title">Sembunyikan Jumlah Yang Disesuaikan</string>
+  <string name="pref_transaction_sort_by_type_summary">Mengatur transaksi harian oleh jenis transaksi (setoran, transfer, penarikan)</string>
   <string name="download_price">Mengunduh harga</string>
   <string name="edit_price">Mengubah harga</string>
   <string name="price_updated">Harga Diperbarui</string>
@@ -401,4 +538,5 @@
   <!-- Select database screen -->
   <!-- Create Database screen -->
   <!-- Settings -->
+  <string name="per_database_settings">Pe-Basis Data</string>
 </resources>

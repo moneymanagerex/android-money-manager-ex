@@ -250,6 +250,7 @@
         <item>@string/locale_ar</item>
         <item>@string/locale_bs</item>
         <item>@string/locale_cs</item>
+        <item>@string/locale_da</item>
         <item>@string/locale_de</item>
         <item>@string/locale_el</item>
         <item>@string/locale_en</item>
@@ -278,6 +279,7 @@
         <item>ar</item>
         <item>bs</item>
         <item>cs</item>
+        <item>da</item>
         <item>de</item>
         <item>el</item>
         <item>en</item>
