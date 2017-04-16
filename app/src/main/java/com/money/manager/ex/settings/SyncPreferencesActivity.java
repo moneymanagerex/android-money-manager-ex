@@ -16,19 +16,38 @@
  */
 package com.money.manager.ex.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 
+import com.cloudrail.si.CloudRail;
 import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
 public class SyncPreferencesActivity
     extends BaseSettingsFragmentActivity {
 
+    private static final String BROWSABLE = "android.intent.category.BROWSABLE";
+
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
         setSettingFragment(new SyncPreferenceFragment());
+    }
+
+    /**
+     * Handle authentication redirect from an external browser. Handles Google authentication.
+     * Ref: https://documentation.cloudrail.com/android/android/Usage#external-authentication
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if(intent.getCategories().contains(BROWSABLE)) {
+            // Here we pass the response to the SDK which will automatically
+            // complete the authentication process
+            CloudRail.setAuthenticationResponse(intent);
+        }
+        super.onNewIntent(intent);
     }
 }

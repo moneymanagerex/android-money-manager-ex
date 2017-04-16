@@ -224,10 +224,14 @@ class CloudStorageClient {
 
     protected void createProviders() {
         try {
-            dropbox.set(new Dropbox(getContext(), "6328lyguu3wwii6", "oa7k0ju20qss11l"));
-            onedrive.set(new OneDrive(getContext(), "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
-            googledrive.set(new GoogleDrive(getContext(), "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
-            box.set(new Box(getContext(), "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
+            Context context = getContext();
+
+            dropbox.set(new Dropbox(context, "6328lyguu3wwii6", "oa7k0ju20qss11l"));
+            onedrive.set(new OneDrive(context, "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
+            box.set(new Box(context, "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
+
+            googledrive.set(new GoogleDrive(context, "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
+            ((GoogleDrive) googledrive.get()).useAdvancedAuthentication();
         } catch (Exception e) {
             Timber.e(e, "creating cloud providers");
         }

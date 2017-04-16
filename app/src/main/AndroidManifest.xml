@@ -234,7 +234,16 @@
             android:label="@string/database" />
         <activity
             android:name=".settings.SyncPreferencesActivity"
-            android:label="@string/synchronization" />
+            android:label="@string/synchronization">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="com.money.manager.ex" />
+            </intent-filter>
+        </activity>
         <activity android:name=".PasscodeActivity">
             <intent-filter>
                 <action android:name="${applicationId}.custom.intent.action.REQUEST_PASSWORD" />
