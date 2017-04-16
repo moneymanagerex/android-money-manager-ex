@@ -24,6 +24,8 @@ import com.cloudrail.si.CloudRail;
 import com.money.manager.ex.R;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 
+import timber.log.Timber;
+
 public class SyncPreferencesActivity
     extends BaseSettingsFragmentActivity {
 
@@ -46,6 +48,7 @@ public class SyncPreferencesActivity
         if(intent.getCategories().contains(BROWSABLE)) {
             // Here we pass the response to the SDK which will automatically
             // complete the authentication process
+            Timber.d("setting OAuth authentication response from Google");
             CloudRail.setAuthenticationResponse(intent);
         }
         super.onNewIntent(intent);

@@ -32,9 +32,6 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
-    <!-- trying to force ui automator to run on sdk 16 -->
-    <!-- <uses-sdk android:minSdkVersion="16" tools:overrideLibrary="android.support.test.uiautomator.v18" /> -->
-
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" />
@@ -234,7 +231,8 @@
             android:label="@string/database" />
         <activity
             android:name=".settings.SyncPreferencesActivity"
-            android:label="@string/synchronization">
+            android:label="@string/synchronization"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

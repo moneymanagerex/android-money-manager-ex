@@ -230,7 +230,9 @@ class CloudStorageClient {
             onedrive.set(new OneDrive(context, "b76e0230-4f4e-4bff-9976-fd660cdebc4a", "fmAOPrAuq6a5hXzY1v7qcDn"));
             box.set(new Box(context, "95f7air3i2ed19r28hi31vwtta4wgz1p", "i6j0NLd3G6Ui9FpZyuQfiLK8jLs4YZRM"));
 
-            googledrive.set(new GoogleDrive(context, "843259487958-p65svijbdvj1knh5ove1ksp0hlnufli8.apps.googleusercontent.com", "cpU0rnBiMW9lQaYfaoW1dwLU"));
+            // Config as per https://documentation.cloudrail.com/android/android/Services#google-drive
+            googledrive.set(new GoogleDrive(context, "576599958315-eplsbf760onv3hljsp5h6mmrk34btg5s.apps.googleusercontent.com",
+                    "", "com.money.manager.ex:/oauth2redirect", ""));
             ((GoogleDrive) googledrive.get()).useAdvancedAuthentication();
         } catch (Exception e) {
             Timber.e(e, "creating cloud providers");
