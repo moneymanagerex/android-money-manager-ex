@@ -167,7 +167,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.16.2'
+            , 'com.cloudrail:cloudrail-si-android:2.16.5'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
@@ -230,7 +230,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true
     }
-    compile('com.mikepenz:aboutlibraries:5.9.4@aar') {
+    compile('com.mikepenz:aboutlibraries:5.9.5@aar') {
         transitive = true
     }
     // Parceler

@@ -26,17 +26,12 @@ buildscript {
     }
 }
 
-plugins {
-    // dependencyUpdates
-//    id 'com.github.ben-manes.versions' version '0.14.0'
-}
-
 ext {
     compileSdkVersion = 24
     buildToolsVersion = '25.0.2'
 
     // https://developer.android.com/topic/libraries/support-library/revisions.html
-    supportLibrary = '25.3.0'
+    supportLibrary = '25.3.1'
     supportDependencies = [
             support          :       "com.android.support:support-v4:${supportLibrary}",
             appCompat        :       "com.android.support:appcompat-v7:${supportLibrary}",
@@ -86,7 +81,3 @@ allprojects {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
 }
-
-// References:
-// http://stackoverflow.com/questions/23241681/why-are-there-two-build-gradle-files-in-an-android-studio-project
-// http://stackoverflow.com/questions/22356181/how-to-resolve-the-android-studio-error-where-it-cannot-find-the-projects-manif
