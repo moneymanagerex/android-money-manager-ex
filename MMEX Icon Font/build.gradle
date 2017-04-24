@@ -24,7 +24,7 @@ android {
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 14
-        targetSdkVersion 24
+        targetSdkVersion 25
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
         versionCode 1000
