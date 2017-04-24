@@ -89,7 +89,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Disable fabric build id for debug builds
-            ext.enableCrashlytics = false;
+            ext.enableCrashlytics = false
         }
         beta {
             applicationIdSuffix ".beta"
@@ -148,7 +148,7 @@ android {
     signingConfigs {
         debug {
 //            storeFile file("debug.keystore")
-            v2SigningEnabled false;
+            v2SigningEnabled false
         }
         release {
             keyAlias 'ammex'
@@ -156,7 +156,7 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true;
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -300,7 +300,7 @@ configurations {
     androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
 }
 
-def getVersionAsDate() {
+static def getVersionAsDate() {
     def date = new Date()
     def formattedDate = date.format('yyyy.MM.dd')
     return formattedDate
