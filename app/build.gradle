@@ -167,7 +167,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.16.5'
+            , 'com.cloudrail:cloudrail-si-android:2.17.1'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.support
             , supportDependencies.appCompat
@@ -196,20 +196,20 @@ dependencies {
 //            , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.8'
-            , 'com.squareup.retrofit2:retrofit:2.2.0'            // Retrofit
-            , 'com.squareup.retrofit2:converter-gson:2.2.0'
-            , 'com.squareup.retrofit2:converter-scalars:2.2.0'
-            , 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
+            , 'com.squareup.retrofit2:retrofit:2.3.0'            // Retrofit
+            , 'com.squareup.retrofit2:converter-gson:2.3.0'
+            , 'com.squareup.retrofit2:converter-scalars:2.3.0'
+            , 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
 //            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.10.2'              // HTML parsing.
-            , 'com.google.guava:guava:20.0'         // collection libraries
+            , 'com.google.guava:guava:22.0-android' // collection libraries
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
 //            , 'io.reactivex.rxjava2:rxandroid:2.0.1'
-            , 'io.reactivex:rxjava:1.2.9'
+            , 'io.reactivex:rxjava:1.3.0'
 //            , 'io.reactivex.rxjava2:rxjava:2.0.1'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.1'
             , 'com.jakewharton.timber:timber:4.5.1'
@@ -221,7 +221,7 @@ dependencies {
 //            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:2.8.2@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-core:2.8.5' // also update in the icon module.
             , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
@@ -234,14 +234,14 @@ dependencies {
         transitive = true
     }
     // Parceler
-    compile 'org.parceler:parceler-api:1.1.6'
-    annotationProcessor 'org.parceler:parceler:1.1.6'
+    compile 'org.parceler:parceler-api:1.1.8'
+    annotationProcessor 'org.parceler:parceler:1.1.8'
     // Dagger 2
-    compile 'com.google.dagger:dagger:2.10'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
@@ -254,7 +254,7 @@ dependencies {
             'org.robolectric:shadows-multidex:3.3.1',
             'org.robolectric:shadows-httpclient:3.3.1',
             'com.squareup.assertj:assertj-android:1.1.1',
-            'org.assertj:assertj-core:3.6.2',
+            'org.assertj:assertj-core:3.8.0',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
             'org.hamcrest:hamcrest-library:1.3',
@@ -286,7 +286,7 @@ dependencies {
             'org.hamcrest:hamcrest-core:1.3',
             'org.hamcrest:hamcrest-library:1.3',
             'com.squareup.assertj:assertj-android:1.1.1',
-            'org.assertj:assertj-core:3.6.2',
+            'org.assertj:assertj-core:3.8.0',
             // Robotium, UI testing
             'com.jayway.android.robotium:robotium-solo:5.6.3'
             // JBehave

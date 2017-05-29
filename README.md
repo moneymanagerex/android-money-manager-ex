@@ -1,6 +1,6 @@
 # MoneyManagerEx for Android
 
-See our homepage at [http://android.moneymanagerex.org/](http://android.moneymanagerex.org/) for more user-oriented information.
+See our homepage at [android.moneymanagerex.org](http://android.moneymanagerex.org/) for more user-oriented information.
 
 #### Basic information
 
@@ -17,6 +17,14 @@ If you want to join our translation team: [MoneyManagerEx for Android on Crowdin
 #### Beta Testing
 
 You can install the Beta version from [Google Play](https://play.google.com/store/apps/details?id=com.money.manager.ex.beta) in parallel to the stable version, and help us out testing the app before it reaches the Stable channel.
+
+# Build
+
+To build the project, the following settings are recommended:
+
+- current stable version of Android Studio,
+- use embedded JDK,
+- Gradle 3.5
 
 # License
 
