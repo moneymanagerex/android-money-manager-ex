@@ -185,3 +185,6 @@
 
 # fix for build errors
 -keepattributes EnclosingMethod
+
+# Xiaomi issue
+-keepnames class org.apache.commons.lang3.** { *; }

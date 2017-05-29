@@ -22,9 +22,9 @@ You can install the Beta version from [Google Play](https://play.google.com/stor
 
 To build the project, the following settings are recommended:
 
-- current stable version of Android Studio,
-- use embedded JDK,
-- Gradle 3.5
+- current stable version of Android Studio, 2.3.2;
+- use JDK 1.8.0.112, (embedded JDK runs out of memory on compilation);
+- Gradle 3.5;
 
 # License
 

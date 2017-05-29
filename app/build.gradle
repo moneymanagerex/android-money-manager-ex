@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 954
+        versionCode 955
         versionName getVersionAsDate() + "." + versionCode
 
 //        minSdkVersion rootProject.ext.minSdkVersion
@@ -95,8 +95,8 @@ android {
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
 
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
