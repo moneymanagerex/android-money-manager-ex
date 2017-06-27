@@ -59,15 +59,7 @@ public abstract class BaseListFragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-        if (mFloatingActionButton != null) {
-            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onFloatingActionButtonClicked();
-                }
-            });
-        }
+        setupFloatingActionButton(view);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -243,4 +235,16 @@ public abstract class BaseListFragment
      * metodo per l'implementazione del ritorno dei dati
      */
     protected void setResult() { }
+
+    public void setupFloatingActionButton(View view) {
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        if (mFloatingActionButton != null) {
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onFloatingActionButtonClicked();
+                }
+            });
+        }
+    }
 }

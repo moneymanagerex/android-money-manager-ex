@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -144,8 +143,10 @@ public class CurrencyListFragment
         setListShown(false);
         loadData();
 
-        setFloatingActionButtonVisible(true);
+        // for some reason, the onViewCreated does not fire when expected.
+        setupFloatingActionButton(getView());
         attachFloatingActionButtonToListView();
+        setFloatingActionButtonVisible(true);
     }
 
     @Override
