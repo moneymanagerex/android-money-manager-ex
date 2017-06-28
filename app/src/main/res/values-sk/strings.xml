@@ -137,6 +137,7 @@
   <string name="status_duplicate">Duplikovať</string>
   <string name="status_none">Žiadny</string>
   <string name="transfer">Prevod</string>
+  <string name="transfer_amount">Suma prevodu</string>
   <string name="transaction_type">Typ transakcie</string>
   <string name="transaction_status">Stav</string>
   <string name="withdrawal">Výber</string>
@@ -232,6 +233,7 @@
   <string name="occurs">Vyskytuje sa</string>
   <string name="payments_left">Zostávajúce platby</string>
   <string name="payments_left_required">Hodnota zostávajúcich platieb je potrebná</string>
+  <string name="due_date_required">Dátum splatnosti je povinný</string>
   <string name="error_next_occurrence_not_populate">Je vyžadovaný ďalší výskyt</string>
   <string name="enter_next_occurrence">Zadať ďalší výskyt</string>
   <string name="skip_next_occurrence">Preskočiť ďalší výskyt</string>
@@ -241,6 +243,7 @@
   <string name="num_repeating_transaction_expired">Počet opakujúcich sa transakcií po splatnosti: %1$d</string>
   <string name="skip">Preskočiť</string>
   <string name="enter">Zadajte</string>
+  <string name="enter_amount">Zadajte sumu</string>
   <!-- 20121121 -->
   <string name="send_feedback">Pošlite svoj názor</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -347,6 +350,7 @@
   <string name="menu_report_where_money_goes">Odchádzajúce peniaze</string>
   <string name="menu_report_where_money_comes_from">Prichádzajúce peniaze</string>
   <!-- 20130728 -->
+  <string name="title_check_repeating_transaction">Čas notifikácie</string>
   <string name="summary_check_repeating_transaction">Kedy skontrolovať, či sú opakované transakcie po splatnosti? (predvolené 8:00)</string>
   <!-- 20130730 -->
   <string name="credits">Poďakovania</string>
@@ -385,6 +389,7 @@
   <string name="delete_others_selected_transaction">Ste si istý, že chcete vymazať %d vybratých transakcií?</string>
   <string name="categories">Kategórie</string>
   <string name="payees">Príjemcovia</string>
+  <string name="recurring_transactions">Opakujúce sa transakcie</string>
   <string name="theme_holo_light">Holo svetlé</string>
   <string name="new_account">Nový účet</string>
   <string name="create_new_account">Vytvoriť nový účet</string>
@@ -438,6 +443,7 @@
   <string name="montly_last_bussines_day">Mesačne (posledný pracovný deň)</string>
   <!-- languages -->
   <string name="locale_application">Jazyk aplikácie</string>
+  <string name="locale_ar">Arabský</string>
   <string name="transaction_cancel_confirm">Ste si istý, že chcete zrušiť zmeny?</string>
   <string name="keep_editing">Pokračovať v upravovaní</string>
   <string name="discard">Zrušiť</string>
@@ -453,6 +459,7 @@
   <string name="tutorial_overview_1">Rýchly prehľad, rozpočty, zostavy s vlastným nastavením.</string>
   <string name="global">Globálne</string>
   <string name="tutorial_global_1">Niekoľko mien a jazykov. Open Source. Pripojte sa k nášmu týmu prekladateľov.</string>
+  <string name="tutorial_sync_1">Podpora viacerých platforiem, synchronizácia prostredníctvom viacerých cloud služieb. Import a export vašichdát do iných aplikácií.</string>
   <string name="transactions">Transakcie</string>
   <string name="tutorial_transactions_1">Vklady, výbery, prevody. Opakujúce sa transakcie s pripomienkami.</string>
   <string name="split_category">-Rozdeliť kategóriu-</string>
@@ -466,6 +473,7 @@
   <string name="custom_dates">Vlastné dátumy</string>
   <string name="pref_transaction_hide_reconciled_amounts_summary">Skryť overené čiastky z prehľadu účtov.</string>
   <string name="pref_transaction_hide_reconciled_amounts_title">Skryť overené čiastky</string>
+  <string name="pref_transaction_sort_by_type_title">Zoradiť transakcie podľa typu</string>
   <string name="warning">Varovanie</string>
   <string name="no_transfer_splits">Požadujete zmeniť typ transakcie na Prevod, ale v transakcií je rozdelená kategória. Prajete si vykonať zmenu a odstrániť rozdelenie kategórie?</string>
   <string name="qif_export">Export do Qif</string>
@@ -533,6 +541,7 @@
   <string name="about_logcat_header">Klepnutím na nižšie uvedené tlačítko nám môžete zaslať protokol aplikácie.</string>
   <string name="transaction_type_filter">Filtrovať podľa typu transakcie</string>
   <string name="status_filter">Filtrovať podľa stavu</string>
+  <string name="filter_options_info">Možnosti filtra a Info</string>
   <!-- Password entry activity -->
   <string name="title_activity_password">Zadajte heslo do databázy</string>
   <string name="income_expense_period">Obdobie pre príjmy/výdaje</string>
@@ -554,6 +563,8 @@
   <string name="value">Hodnota</string>
   <string name="view_transactions">Zobraziť transakcie</string>
   <string name="error_downloading_symbol">Chyba pri sťahovaní ceny za symbol</string>
+  <string name="error_updating_rates">Chyba aktualizácie kurzov</string>
+  <string name="error_no_price_found_for_symbol">Žiadna cena pre symbol</string>
   <string name="other">Ďalší</string>
   <string name="cleared">Zrušené</string>
   <string name="delete_success">Položka vymazaná</string>
@@ -597,6 +608,7 @@
   <string name="print">Vytlačiť</string>
   <string name="min_19">Budete potrebovať aspoň Android 4.4, aby ste mohli vytlačiť dokument.</string>
   <string name="save_as_html">Uložiť ako HTML</string>
+  <string name="no_network">Nie sú k dispozícii žiadne siete.</string>
   <!-- Currencies -->
   <string name="currencies">Meny</string>
   <string name="currencies_used">Meny, použité</string>
@@ -614,13 +626,18 @@
   <string name="active_currencies">Aktívne meny</string>
   <string name="inactive_currencies">Neaktívne meny</string>
   <string name="all_currencies">Všetky meny</string>
+  <string name="show_only_used">Zobraziť iba použité</string>
   <!-- Investment -->
   <string name="portfolio">Portfólio</string>
+  <string name="change_provider">Zmeniť poskytovateľa</string>
+  <string name="exchange_rate_provider">Poskytovateľ výmenného kurzu</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Na Dropboxe je aktualizácia databázy</string>
   <string name="dropbox_file_ready_for_use">Vaša databáza bola stiahnutá</string>
   <string name="dropbox_open_database_downloaded">Ak chcete použiť stiahnutú databázu, klepnite na Otvoriť databázu</string>
+  <string name="download_from_drobpox">Stiahnuť z Dropboxu</string>
+  <string name="upload_to_drobpox">Nahrať na Dropbox</string>
   <string name="dropbox_link">Pripojiť k Dropboxu</string>
   <string name="dropbox_unlink">Odpojiť od Dropboxu</string>
   <string name="dropbox_downloadProgress">Sťahujem súbor z Dropboxu. Počkajte prosím&#8230;</string>
@@ -630,6 +647,15 @@
   <string name="synchronization">Synchronizácia</string>
   <string name="sync_enabled">Synchronizácia je povolená</string>
   <string name="sync_provider">Poskytovateľ</string>
+  <string name="remote_file">Vzdialený súbor</string>
+  <string name="please_wait">Prosím čakajte</string>
+  <string name="invalid_database">Toto rozšírenie nie je uznané ako platná databáza.</string>
+  <string name="reset_preferences">Obnoviť predvoľby</string>
+  <string name="sync_notification_title">Money Manager Ex - Synchronizácia</string>
+  <string name="sync_uploading">Nahrávam databázu. Čakajte prosím&#8230;</string>
+  <string name="syncProgress">Synchronizujem súbor. Počkajte prosím&#8230;</string>
+  <string name="database_is_synchronized">Databáza je aktuálna</string>
+  <string name="upload_file_complete">Vaša databáze bola úspešne nahratá</string>
   <string name="every_5_minutes">Každých 5 minút</string>
   <string name="every_10_minutes">Každých 10 minút</string>
   <string name="every_15_minutes">Každých 15 minút</string>
@@ -640,9 +666,16 @@
   <string name="every_6_hours">Každých 6 hodín</string>
   <string name="every_12_hours">Každých 12 hodín</string>
   <string name="never">Nikdy</string>
+  <string name="summary_sync_upload_immediate">Táto možnosť umožňuje ihneď po zmene automaticky nahrať databázu</string>
   <string name="dropbox_empty_folder">Adresár Dropbox/Apps/Money Manager Ex Mobile je prázdny. Ak už používate MoneyManagerEx, tak skopírujte databázu do tohto adresára na vašom počítači a potom vykonajte aktualizáciu.</string>
+  <string name="select_remote_file">Vyberte vzdialený súbor z cloudového ukladacieho priestoru</string>
+  <string name="confirm_download">Chcete teraz prevziať vzdialený súbor?</string>
+  <string name="file_exists">Súbor už existuje</string>
+  <string name="sync_conflict">Konflikt synchronizácie</string>
+  <string name="no_remote_file">Vyberte vzdialený súbor na synchronizáciu.</string>
   <!-- Warnings -->
   <!-- Errors -->
+  <string name="remote_file_not_found">Vzdialený súbor nebol nájdený</string>
   <!-- Select database screen -->
   <!-- Create Database screen -->
   <string name="select_language">Vybrať jazyk</string>
@@ -650,4 +683,5 @@
   <string name="create_db_info_1">Predvolené umiestnenie databázy je:</string>
   <!-- Settings -->
   <string name="save">Uložiť</string>
+  <string name="title_budget_show_simple_view">Zobrazenie jednoduchého rozpočtu</string>
 </resources>

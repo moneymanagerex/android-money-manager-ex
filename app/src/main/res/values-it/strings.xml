@@ -48,14 +48,14 @@
   <!-- preferences -->
   <string name="preferences_general">Generale</string>
   <string name="preferences_perdatabase">Per Database</string>
-  <string name="preferences_dispaly">Look &amp; Feel</string>
+  <string name="preferences_dispaly">Aspetto</string>
   <string name="preferences_behaviour">Comportamento</string>
   <string name="base_currency">Valuta base</string>
   <string name="base_currency_changed">Valuta base cambiata</string>
   <string name="base_currency_change_notification">La valuta base è stata cambiata. Aggiornare i tassi di cambio per ottenere gli importi corretti nella nuova valuta base.</string>
   <string name="view_accounts_opened">Visualizza conti aperti</string>
   <string name="if_not_selected_willShowAllAccounts">Se non selezionato visualizza tutti i conti</string>
-  <string name="view_accounts_favorites">Visualizza conti preferiti</string>
+  <string name="view_accounts_favorites">Visualizza i conti preferiti</string>
   <string name="version">Versione</string>
   <string name="build">Build</string>
   <string name="path">Percorso del database</string>
@@ -73,7 +73,7 @@
   <string name="account_list">Elenco dei Conti</string>
   <string name="account_empty_list">Nessun conto è stato trovato. Per crearne uno, toccare il pulsante più verde.</string>
   <string name="account_balance">Saldo</string>
-  <string name="account_reconciled_balance">Saldo Riconciliato</string>
+  <string name="account_reconciled_balance">Saldo Contabilizzato</string>
   <string name="delete_account">Elimina Conto</string>
   <string name="account_name">Nome del conto</string>
   <string name="account_type">Tipo di conto</string>
@@ -132,7 +132,7 @@
   <string name="total_amount">Importo totale</string>
   <string name="deposit">Deposito</string>
   <string name="status">Stato</string>
-  <string name="status_reconciled">Riconciliata</string>
+  <string name="status_reconciled">Contabilizzata</string>
   <string name="status_void">Nulla</string>
   <string name="status_follow_up">Da Monitorare</string>
   <string name="status_duplicate">Duplicata</string>
@@ -171,7 +171,7 @@
   <string name="user">Utente</string>
   <string name="upload">Carica</string>
   <string name="username">Nome Utente</string>
-  <string name="to">Da</string>
+  <string name="to">A</string>
   <string name="website">Sito Web</string>
   <string name="contact">Contatto</string>
   <string name="access_info">Informazioni di accesso</string>
@@ -197,10 +197,10 @@
   <string name="last15days">Ultime 2 settimane</string>
   <string name="current_month">Mese corrente</string>
   <string name="current_year">Anno corrente</string>
-  <string name="future_transactions">Transazioni future</string>
-  <string name="show_transaction">Visualizzazione Transazioni</string>
+  <string name="future_transactions">Operazioni future</string>
+  <string name="show_transaction">Visualizzazione Operazioni</string>
   <string name="changelog">Modifiche di Versione</string>
-  <string name="transaction_number">Numero transazione</string>
+  <string name="transaction_number">Numero di operazione</string>
   <string name="widget_summary">Riepilogo</string>
   <string name="widget_all_accounts">Tutti i conti</string>
   <string name="widget_add_transaction">Aggiungi Transazione</string>
@@ -220,7 +220,7 @@
   <string name="in_x_days">In (x) Giorni</string>
   <string name="in_x_months">In (x) Mesi</string>
   <string name="every_x_days">Ogni (x) Giorni</string>
-  <string name="every_x_months">Ogni (x) Mese</string>
+  <string name="every_x_months">Ogni (x) Mesi</string>
   <string name="repeating_empty_transaction">Non sono state trovate operazioni ricorrenti. Per crearne una, tocca il pulsante più verde.</string>
   <string name="inactive">Inattivo</string>
   <string name="activates">Attiva</string>
@@ -237,12 +237,12 @@
   <string name="due_date_required">La data di scadenza è obbligatoria</string>
   <string name="error_next_occurrence_not_populate">E\' richiesta la prossima scadenza</string>
   <string name="enter_next_occurrence">Inserire la prossima scadenza</string>
-  <string name="skip_next_occurrence">Ignora Successiva Scadenza</string>
+  <string name="skip_next_occurrence">Salta prossima scadenza</string>
   <string name="skip_next_occurrence_confirmation">Si desidera saltare la prossima scadenza?</string>
   <string name="notification_repeating_transaction_expired">Ci sono operazioni ricorrenti scadute</string>
   <string name="notification_click_to_check_repeating_transaction">Toccare per controllare le operazioni scadute</string>
   <string name="num_repeating_transaction_expired">%1$d operazioni ricorrenti scadute</string>
-  <string name="skip">Ignora</string>
+  <string name="skip">Salta</string>
   <string name="enter">Inserisci</string>
   <string name="enter_amount">Inserire importo</string>
   <!-- 20121121 -->
@@ -251,7 +251,7 @@
   <!-- 20121122 -->
   <string name="preferences_info_application">Info</string>
   <string name="preferences_security">Sicurezza</string>
-  <string name="preferences_active_passcode">Attivare il passcode</string>
+  <string name="preferences_active_passcode">Attivare il codice di accesso</string>
   <string name="enter_your_passcode">Inserire codice di accesso</string>
   <string name="reinsert_your_passcode">Reinserire codice di accesso</string>
   <string name="passocde_no_macth">I codici non corrispondono</string>
@@ -288,11 +288,11 @@
   <!--<string name="release_date">Release Date</string>-->
   <!-- 20130121 -->
   <string name="menu_move_database_to_external_storage">Esportazione del database</string>
-  <string name="database_has_been_moved">Il database è stato spostati: %1$s</string>
+  <string name="database_has_been_moved">Il database è stato spostato: %1$s</string>
   <string name="copy_database_on_external_storage_failed">Copia del database su archiviazione esterna fallita</string>
   <string name="path_database_using">Stai utilizzando il database salvato in: %1$s</string>
   <!-- Split Categories -->
-  <string name="split_transaction">Transazioni Suddivise</string>
+  <string name="split_transaction">Operazione Suddivisa</string>
   <!--<string name="split_category">Split Category</string>-->
   <string name="split">Suddividi</string>
   <string name="error_split_transaction_empty">E\' richiesta almeno una operazione suddivisa</string>
@@ -397,14 +397,14 @@
   <string name="amount_greater_or_equal">Importo maggiore o uguale</string>
   <string name="amount_from">Importo da</string>
   <string name="amount_less_or_equal">Importo minore o uguale</string>
-  <string name="amount_to">Importo a</string>
+  <string name="amount_to">A importo</string>
   <string name="reset">Ripristina</string>
   <string name="result_search">Esito della ricerca</string>
   <string name="new_repeating_transaction">Nuova operazione ricorrente</string>
   <string name="edit_repeating_transaction">Modifica operazione ricorrente</string>
   <string name="path_database_not_exists">Percorso del database non esiste</string>
   <string name="database_can_not_open_write">Il database non può essere aperto in scrittura</string>
-  <string name="time_frame">Intervallo di tempo</string>
+  <string name="time_frame">Periodo</string>
   <string name="show_chart">Visualizza Grafico</string>
   <string name="add_transaction">Aggiungi Transazione</string>
   <string name="welcome_header">Benevenuti in MoneyManagerEx!</string>
@@ -429,14 +429,14 @@
   <string name="loading">Caricamento in corso&#8230;</string>
   <string name="grand_total">Totale complessivo</string>
   <string name="change_status">Modifica lo stato</string>
-  <string name="duplicate_selected_transactions">Duplica le transazioni selezionate</string>
+  <string name="duplicate_selected_transactions">Duplica le operazioni selezionate</string>
   <string name="sort">Ordinamento</string>
   <string name="sort_order">Ordina per</string>
   <string name="sort_by_name">Ordina per nome</string>
   <string name="sort_by_usage">Ordina per utilizzo</string>
   <string name="choose_sorting">Scegli l\'ordinamento</string>
   <string name="credit_card">Carta di credito</string>
-  <string name="cash_accounts">Liquidità</string>
+  <string name="cash_accounts">Contanti</string>
   <string name="bank_accounts">Conti bancari</string>
   <string name="term_accounts">Conti a termine</string>
   <string name="credit_card_accounts">Carte di credito</string>
@@ -444,6 +444,7 @@
   <string name="montly_last_bussines_day">Mensile (ultimo giorno lavorativo)</string>
   <!-- languages -->
   <string name="locale_application">Lingua dell\'applicazione</string>
+  <string name="locale_ar">Arabo</string>
   <string name="transaction_cancel_confirm">Sicuro di voler annullare le modifiche?</string>
   <string name="keep_editing">Mantenere la modifica</string>
   <string name="discard">Abbandona</string>
@@ -488,8 +489,8 @@
   <string name="confirm_price_download">Si desidera aggiornare i prezzi di sicurezza online?</string>
   <string name="starting_price_update">Download prezzi, attendere prego&#8230;</string>
   <string name="database_migrate_14_to_20">Migra il database dalla versione 1.4</string>
-  <string name="database_migrate_14_to_20_explanation">Vecchi dati sono stati trovati. Tocca qui per utilizzare il database precedente.</string>
-  <string name="database_migrate_14_to_20_failure">Migrazione di database non riuscita. Contattare l\'assistenza.</string>
+  <string name="database_migrate_14_to_20_explanation">Sono stati trovati vecchi dati. Tocca qui per utilizzare il database precedente.</string>
+  <string name="database_migrate_14_to_20_failure">Migrazione del database non riuscita. Contattare l\'assistenza.</string>
   <string name="database_migrate_14_to_20_success">Migrazione del database riuscita.</string>
   <string name="database_migrate_14_to_20_complete">Migrazione completata. Si prega di chiudere le impostazioni per iniziare a utilizzare questo database.</string>
   <string name="database_migrate_14_to_20_intro">Un database è stato rilevato nella vecchia posizione. Toccare il pulsante qui sotto per migrare su scheda SD e utilizzare.</string>
@@ -505,11 +506,11 @@
   <string name="create_db_dialog_content">Il database verrà creato nella directory del database predefinito. Si può omettere l\'estensione del file (.mmb).</string>
   <string name="create_db_success">Database creato con successo</string>
   <string name="create_db_error">Impossibile creare nuovo database</string>
-  <string name="create_db_exists">Il database con questo nome esiste già!</string>
+  <string name="create_db_exists">Esiste già un database con questo nome!</string>
   <string name="db_check_integrity">Verificare l\'integrità del db</string>
   <string name="db_check_integrity_summary">Esegue il controllo di integrità del file database</string>
   <string name="db_check_integrity_success">Il database ha superato con successo il controllo di integrità.</string>
-  <string name="db_check_integrity_error">Errore: file di database è corrotto!</string>
+  <string name="db_check_integrity_error">Errore: il file del database è corrotto!</string>
   <string name="db_check_schema">Verifica dello schema db</string>
   <string name="db_check_schema_summary">Controlla se tutte le tabelle sono presenti nel database.</string>
   <string name="db_check_schema_success">Tutte le tabelle necessarie sono presenti nel database.</string>
@@ -527,7 +528,7 @@
   <string name="select_account">Seleziona conto</string>
   <string name="invalid_transaction_number">Numero di operazione non valido</string>
   <string name="budgets">Budgets</string>
-  <string name="budget">Bilancio</string>
+  <string name="budget">Budget</string>
   <string name="budget_list">Lista Budget</string>
   <string name="actual">Effettivo</string>
   <string name="base_currency_not_set">La valuta di base non è stata impostata</string>
@@ -549,7 +550,7 @@
   <string name="income_expense_period">Entrate/Uscite periodo</string>
   <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
   <string name="appwidget_text">ESEMPIO</string>
-  <string name="configure">Opzioni</string>
+  <string name="configure">Configura</string>
   <string name="add_widget">Aggiungi widget</string>
   <string name="single_account">Conto singolo</string>
   <string name="watchlist">Da vedere</string>
@@ -559,7 +560,7 @@
   <string name="symbol">Simbolo</string>
   <string name="number_of_shares">Numero di azioni</string>
   <string name="purchase_price">Prezzo d\'acquisto</string>
-  <string name="current_price">Prezzo corrente</string>
+  <string name="current_price">Prezzo attuale</string>
   <string name="price_date">Data del prezzo</string>
   <string name="commission">Commissione</string>
   <string name="value">Valore</string>
@@ -613,7 +614,7 @@
   <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
   <string name="print">Stampa</string>
   <string name="min_19">Per poter stampare il documento è necessario almeno Android 4.4.</string>
-  <string name="save_as_html">Salva come HTML</string>
+  <string name="save_as_html">Salva in formato HTML</string>
   <string name="no_network">Nessuna rete disponibile.</string>
   <!-- Currencies -->
   <string name="currencies">Valute</string>
@@ -689,15 +690,15 @@
   <string name="dropbox_empty_folder">La cartella in Dropbox/Apps/Money Manager Ex Android è vuota. Se usi già MoneyManagerEx copia il tuo database in questa cartella nel tuo computer, dopodiche aggiorna.</string>
   <string name="select_remote_file">Selezionare un file remoto dal Cloud</string>
   <string name="confirm_download">Vuoi scaricare questo file adesso?</string>
-  <string name="file_exists">Il file esiste</string>
+  <string name="file_exists">Il file esiste già</string>
   <string name="file_exists_long">Un file con lo stesso nome esiste già nell\'archivio locale. Vuoi sovrascrivere questo file?</string>
   <string name="synchronization_disabled">La sincronizzazione è disabilitata.</string>
   <string name="filenames_differ">Il nome del file remoto e locale non è uguale. Sincronizzazione interrotta.</string>
-  <string name="both_files_modified">E\' stato modificato sia il databases locale che remoto!</string>
+  <string name="both_files_modified">E\' stato modificato sia il database locale che remoto!</string>
   <string name="sync_conflict">Conflitto di sincronizzazione</string>
   <string name="no_remote_file">Selezionare il file remoto da usare per la sincronizzazione.</string>
   <!-- Warnings -->
-  <string name="no_accounts_available_for_selection">Non ci sono conti disponibili per la scelta. Si prega di modificare le preferenze di filtraggio o contrassegnare alcuni conti come preferito.</string>
+  <string name="no_accounts_available_for_selection">Non ci sono conti disponibili per la scelta. Si prega di modificare le preferenze dei filtri o contrassegnare alcuni conti come preferito.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Errore di analisi del valore inserito</string>
   <string name="remote_file_not_found">File remoto non trovato</string>
