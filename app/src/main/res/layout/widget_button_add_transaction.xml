@@ -23,6 +23,6 @@
     
     android:text="@string/new_transaction"
     android:textSize="14sp"
-    android:singleLine="false"
     android:layout_marginRight="5dp"
+    android:layout_marginEnd="5dp"
     android:id="@+id/buttonNewOperation" />

@@ -26,7 +26,8 @@
         android:layout_width="@dimen/md_icon_max_size"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_logo_money_manager_ex"/>
+        android:src="@drawable/ic_logo_money_manager_ex"
+        android:contentDescription="@string/logo" />
     <!--<ImageButton-->
         <!--android:id="@+id/openAppButton"-->
         <!--android:layout_width="12dp"-->
@@ -62,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="@color/material_grey_200"
+            android:text="@string/account"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -71,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
-            android:textColor="?android:textColorSecondary"
+            android:textColor="@color/material_grey_300"
+            android:text="@string/amount"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -94,7 +97,8 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
         android:padding="4dp"
-        android:src="@drawable/ic_action_add_dark" />
+        android:src="@drawable/ic_action_add_dark"
+        android:contentDescription="@string/new_transaction" />
     <!-- android:background="@android:color/transparent" -->
     <!-- ic_action_editor_mode_edit_dark -->
 

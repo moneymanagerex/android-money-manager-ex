@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:gravity="center"
-                android:textColor="?android:textColorPrimary"
+                android:textColor="@color/material_grey_200"
                 android:textSize="14sp"
                 android:text="@string/account" />
             <!--textColorSecondary-->
@@ -62,7 +62,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:textColor="?android:textColorPrimary"
+                android:textColor="@color/material_grey_300"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="@string/amount"
@@ -89,7 +89,8 @@
                 android:layout_gravity="center"
                 android:padding="4dp"
                 android:background="@null"
-                android:src="@drawable/ic_action_add_dark" />
+                android:src="@drawable/ic_action_add_dark"
+                android:contentDescription="@string/new_transaction" />
         </LinearLayout>
 
     </LinearLayout>
