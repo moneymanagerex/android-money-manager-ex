@@ -24,13 +24,13 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 956
+        versionCode 957
         versionName getVersionAsDate() + "." + versionCode
 
 //        minSdkVersion rootProject.ext.minSdkVersion
 //        targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 15 // 4.0.3
-        targetSdkVersion 25
+        targetSdkVersion 26
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
