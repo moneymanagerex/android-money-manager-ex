@@ -294,7 +294,7 @@ See https://www.materialui.co/colors
     <color name="material_grey_50" tools:override="true">#FAFAFA</color>
     <color name="material_grey_100" tools:override="true">#F5F5F5</color>
     <color name="material_grey_200">#EEEEEE</color>
-    <color name="material_grey_300" tools:override="true">#E0E0E0</color>
+    <color name="material_grey_300">#E0E0E0</color>
     <color name="material_grey_400">#BDBDBD</color>
     <color name="material_grey_500">#9E9E9E</color>
     <color name="material_grey_600" tools:override="true">#757575</color>

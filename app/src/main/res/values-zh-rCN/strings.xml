@@ -57,7 +57,7 @@
   <string name="if_not_selected_willShowAllAccounts">不勾选此项则显示所有账户</string>
   <string name="view_accounts_favorites">只显示常用账户</string>
   <string name="version">版本</string>
-  <string name="build">Build</string>
+  <string name="build">创建</string>
   <string name="path">数据库路径</string>
   <string name="database_version">数据库版本</string>
   <string name="title_show_tutorial">显示教程</string>
@@ -694,7 +694,7 @@
   <string name="file_exists_long">目标文件夹中已存在相同名称的文件。您要替换它吗？</string>
   <string name="synchronization_disabled">已禁用同步</string>
   <string name="filenames_differ">远程文件和本地文件名不同。同步已停止。</string>
-  <string name="both_files_modified">本地和远程数据库文件均已被修改！</string>
+  <string name="both_files_modified">冲突：本地和云端数据库自上次同步以来均有修改。</string>
   <string name="sync_conflict">同步冲突</string>
   <string name="no_remote_file">请选择要用于同步的远程文件。</string>
   <!-- Warnings -->

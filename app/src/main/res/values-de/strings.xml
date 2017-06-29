@@ -244,6 +244,7 @@
   <string name="num_repeating_transaction_expired">%1$d Wiederholte Transaktion überfällig</string>
   <string name="skip">Überspringen</string>
   <string name="enter">Eintragen</string>
+  <string name="enter_amount">Betrag eingeben</string>
   <!-- 20121121 -->
   <string name="send_feedback">Rückmeldung senden</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -389,6 +390,7 @@
   <string name="delete_others_selected_transaction">Sind Sie sicher %d die ausgwählten Transaktionen zu löschen zu wollen?</string>
   <string name="categories">Kategorien</string>
   <string name="payees">Zahlungsempfänger/Zahler</string>
+  <string name="recurring_transactions">Wiederkehrende Transaktionen</string>
   <string name="theme_holo_light">Holo hell</string>
   <string name="new_account">Neues Konto</string>
   <string name="create_new_account">Einen neuen Account erstellen</string>
@@ -442,6 +444,7 @@
   <string name="montly_last_bussines_day">Monatlich (letzter Geschäftstag)</string>
   <!-- languages -->
   <string name="locale_application">Sprache der Anwendung</string>
+  <string name="locale_ar">Arabisch</string>
   <string name="transaction_cancel_confirm">Sind sie sicher, dass Sie alle Änderungen entfernen möchten?</string>
   <string name="keep_editing">Weiter editieren</string>
   <string name="discard">Verwerfen</string>
@@ -693,12 +696,14 @@
   <string name="filenames_differ">Die Dateinamen der lokalen und der Datei im Onlinespeicher unterscheiden sich. Breche die Synchronisierung ab.</string>
   <string name="both_files_modified">Sowohl die lokale als auch die Datenbank im Onlinespeicher wurden modifiziert!</string>
   <string name="sync_conflict">Synchronisierung fehlgeschlagen</string>
+  <string name="no_remote_file">Bitte wählen Sie die externe Datei, die Sie für die Synchronisation verwenden wollen.</string>
   <!-- Warnings -->
   <string name="no_accounts_available_for_selection">Es stehen keine Konten zur Auswahl. Bitte passen Sie Ihre Einstellungen zur Konten-Filterung an oder markieren Sie Konten als Favorit.</string>
   <!-- Errors -->
   <string name="error_parsing_value">Fehler beim Analysieren des eingetragenen Wertes</string>
   <string name="remote_file_not_found">Datei im Onlinespeicher nicht gefunden</string>
   <string name="error_checking_remote">Fehler beim Überprüfen der Datenbank im Onlinespeicher auf Änderungen.</string>
+  <string name="no_remote_change_date">Das Datum der externen Änderung wurde in den Metadaten nicht gefunden.</string>
   <!-- Select database screen -->
   <string name="intro_text">Um Money Manager Ex verwenden zu können, müssen Sie eine Datenbank haben, um Ihre Daten zu speichern. Bitte wählen Sie eine der verfügbaren Optionen.</string>
   <string name="intro_create_db">Sie können eine neue Datei erstellen und die ersten Einstellungen vornehmen.</string>
@@ -711,4 +716,6 @@
   <!-- Settings -->
   <string name="per_database_settings">Per-Datenbank</string>
   <string name="save">Speichern</string>
+  <string name="title_budget_show_simple_view">Zeige die einfache Budget-Ansicht</string>
+  <string name="summary_budget_show_simple_view">Falls Budgets ausgewählt, einfache Ansicht benutzen</string>
 </resources>

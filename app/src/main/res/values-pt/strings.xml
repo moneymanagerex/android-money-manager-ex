@@ -17,6 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="app_name">MoneyManagerEx</string>
   <!-- application -->
   <string name="application_name">Money Manager Ex</string>
   <string name="application_definition">Uma aplicação simples e fácil de usar para gerir as finanças pessoais, contas bancárias, orçamento familiar, entre outros.</string>
@@ -62,6 +63,10 @@
   <string name="summary_show_tutorial">Mostrar tutorial na próxima execução?</string>
   <string name="preferences_behaviour_focus_filter_title">Filtrar em seletores</string>
   <string name="preferences_behaviour_focus_filter_summary">Concentre-se no filtro em seletores. Caso contrário, navegue.</string>
+  <string name="auto_sync_via_wifi">Sincronização Automática apenas em Wi-Fi</string>
+  <string name="auto_sync_via_wifi_summary">Sincronizar automaticamente apenas com ligação Wi-Fi.</string>
+  <string name="sync_on_app_start">Sincronize no início da app.</string>
+  <string name="sync_on_start">Sincronizar ao iniciar</string>
   <!-- account -->
   <string name="account">Conta</string>
   <string name="account_list">Lista de Contas</string>
@@ -132,6 +137,7 @@
   <string name="status_duplicate">Duplicado</string>
   <string name="status_none">Nenhum</string>
   <string name="transfer">Transferência</string>
+  <string name="transfer_amount">Transferir valor</string>
   <string name="transaction_type">Tipo de movimento</string>
   <string name="transaction_status">Estado</string>
   <string name="withdrawal">Levantamento</string>
@@ -235,6 +241,9 @@
   <string name="notification_repeating_transaction_expired">Há transações recorrentes expiradas</string>
   <string name="notification_click_to_check_repeating_transaction">Toque para marcar a transação como atrasada</string>
   <string name="num_repeating_transaction_expired">%1$d transação recorrente em atraso</string>
+  <string name="skip">Saltar</string>
+  <string name="enter">Entrar</string>
+  <string name="enter_amount">Inserir valor</string>
   <!-- 20121121 -->
   <string name="send_feedback">Enviar Opinião</string>
   <!--<string name="send_us_your_feedback">Send us your feedback</string>-->
@@ -344,6 +353,7 @@
   <string name="summary_check_repeating_transaction">A que horas vai verificar se há transacções recorrentes em atraso? (padrão 08:00)</string>
   <!-- 20130730 -->
   <string name="credits">Créditos</string>
+  <string name="libraries">Livraria</string>
   <!--<string name="about_thirdsparty_credits_title">Special Thanks and 3rd party libraries used</string>-->
   <!-- 20130801 -->
   <string name="top_withdrawals_last_30_days">Principais Levantamentos: Últimos 30 dias</string>
@@ -378,6 +388,7 @@
   <string name="delete_others_selected_transaction">Tem certeza que deseja excluir as %d transações seleccionadas?</string>
   <string name="categories">Categorias</string>
   <string name="payees">Beneficiários</string>
+  <string name="recurring_transactions">Transações recorrentes</string>
   <string name="theme_holo_light">Holo claro</string>
   <string name="new_account">Nova conta</string>
   <string name="create_new_account">Criar uma nova conta</string>
@@ -396,6 +407,7 @@
   <string name="add_transaction">Adicionar Transacção</string>
   <string name="welcome_header">Bem vindo ao MoneyManagerEx</string>
   <string name="welcome_body">Todas as transações no MoneyManagerEX pertencem a contas.\n\n No momento tem contas não visíveis. Por favor ajuste o filtro para contas visíveis nas configurações, ou\n\nCarregue para começar a criar as suas contas.</string>
+  <string name="configure_sync">Configurar a sincronização</string>
   <!-- 20140115 -->
   <string name="search_text_contain_title">Pesquisar no conteúdo do texto e não por texto a começar por</string>
   <string name="search_text_contain_summary">Pesquisar beneficiários, categorias, moedas, etc... pelo conteúdo e não pelos caracteres iniciais</string>
@@ -429,6 +441,7 @@
   <string name="montly_last_bussines_day">Mensal (último dia útil)</string>
   <!-- languages -->
   <string name="locale_application">Idioma da aplicação</string>
+  <string name="locale_ar">Árabe</string>
   <string name="transaction_cancel_confirm">Tem certeza que deseja ignorar as alterações?</string>
   <string name="keep_editing">Manter edição</string>
   <string name="discard">Sair</string>
@@ -509,6 +522,7 @@
   <string name="select_account">Seleccionar conta</string>
   <string name="invalid_transaction_number">Número de transacção inválido</string>
   <string name="budgets">Orçamento</string>
+  <string name="budget">Orçamento</string>
   <string name="budget_list">Lista de orçamento</string>
   <string name="actual">Atual</string>
   <string name="base_currency_not_set">A moeda-base não foi definida</string>
@@ -605,13 +619,19 @@
   <string name="active_currencies">Moedas Ativas</string>
   <string name="inactive_currencies">Moedas Inativas</string>
   <string name="all_currencies">Todas as Moedas</string>
+  <string name="show_only_used">Mostrar apenas usado</string>
   <!-- Investment -->
   <string name="portfolio">Portfólio</string>
+  <string name="change_provider">Alterar serviço</string>
   <!-- deprecated / Dropbox -->
   <!--<string name="dropbox">Dropbox</string>-->
   <string name="dropbox_database_can_be_updted">Há uma atualização da base de dados no Dropbox</string>
   <string name="dropbox_file_ready_for_use">A sua base de dados foi descarregada</string>
   <string name="dropbox_open_database_downloaded">Para usar a base de dados descarregada, toque em Abrir base de dados</string>
+  <string name="dropbox_link">Associar à Dropbox</string>
+  <string name="dropbox_unlink">Desassociar da Dropbox</string>
+  <string name="dropbox_linkedFile">Arquivo da Dropbox</string>
+  <string name="db_not_dropbox">A base de dados actual não está sincronizada. Por favor configure a sincronização Dropbox.</string>
   <!-- Synchronization -->
   <string name="synchronization">Sincronização</string>
   <string name="sync_enabled">Sincronização ativada</string>
@@ -621,6 +641,10 @@
   <string name="invalid_database">Esta extensão não é reconhecida como uma base de dados válida.</string>
   <string name="reset_preferences">Redefinir preferências</string>
   <string name="preferences_reset">As preferências de sincronização foram redefinidas.</string>
+  <string name="cloud_download">Faça download do arquivo da base de dados da nuvem.</string>
+  <string name="sync_notification_title">Sicronizar Money Manager Ex</string>
+  <string name="sync_downloading">A fazer download da base de dados. Aguarde&#8230;</string>
+  <string name="sync_uploading">Upload de dados. Aguarde...</string>
   <string name="every_5_minutes">Cada 5 minutos</string>
   <string name="every_15_minutes">A cada 15 minutos</string>
   <string name="every_30_minutes">Cada 30 minutos</string>
@@ -632,6 +656,15 @@
   <!-- Warnings -->
   <!-- Errors -->
   <!-- Select database screen -->
+  <string name="intro_create_db">Pode criar um novo arquivo e configurar as preferências iniciais.</string>
+  <string name="intro_open_db">Ou pode seleccionar um arquivo existente no seu dispositivo.</string>
+  <string name="intro_sync">Como alternativa, pode configurar a sincronização com a nuvem e fazer download da base de dados para iniciar.</string>
   <!-- Create Database screen -->
+  <string name="select_language">Selecionar Idioma</string>
+  <string name="run">Executar o Money Manager Ex</string>
+  <string name="create_db_info_1">O local da base de dados padrão é:</string>
   <!-- Settings -->
+  <string name="save">Guardar</string>
+  <string name="title_budget_show_simple_view">Mostrar vista simples do orçamento</string>
+  <string name="summary_budget_show_simple_view">Se os orçamentos estão verificados usar a exibição simplificada</string>
 </resources>
