@@ -81,7 +81,3 @@ allprojects {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
 }
-
-dexOptions {
-    javaMaxHeapSize = "4g"
-}
