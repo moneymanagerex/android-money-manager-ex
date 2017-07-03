@@ -13,7 +13,9 @@ android:
 
     # The SDK version used to compile your project
     # - android-22
-    - android-26
+    #- android-24
+    - android-25
+    #- android-26
 
     # Additional components
     #- extra-google-google_play_services
