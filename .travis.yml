@@ -9,16 +9,19 @@ android:
 
     # The BuildTools version used by your project
     # - build-tools-19.1.0
+    - build-tools-25.0.0
 
     # The SDK version used to compile your project
     # - android-22
-    # - android-24
+    - android-25
 
     # Additional components
     #- extra-google-google_play_services
     #- extra-google-m2repository
     #- extra-android-m2repository
     #- addon-google_apis-google-19
+    - add-on
+    - extra
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
