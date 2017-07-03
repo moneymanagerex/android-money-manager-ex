@@ -17,8 +17,8 @@ android:
 
     # Additional components
     #- extra-google-google_play_services
-    #- extra-google-m2repository
-    #- extra-android-m2repository
+    - extra-google-m2repository
+    - extra-android-m2repository
     #- addon-google_apis-google-19
     #- add-on
     #- extra
@@ -28,3 +28,8 @@ android:
     #- sys-img-armeabi-v7a-android-22
     #- sys-img-armeabi-v7a-android-17
     - sys-img-armeabi-v7a-android-25
+  
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'intel-android-extra-license.+'
