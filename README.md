@@ -26,6 +26,12 @@ To build the project, the following settings are recommended:
 - use JDK 1.8.0.112, (embedded JDK runs out of memory on compilation);
 - Gradle 3.5;
 
+## Travis CI
+
+Travis CI build is active for the project.
+Useful content is available at the Fabric/Travis [demo](https://github.com/plastiv/CrashlyticsDemo). It explains how to generate fabric.properties file during the build, using environment variables.
+The environment variables start with org_gradle_project, i.e. ORG_GRADLE_PROJECT_crashlyticsdemoApikey.
+
 # License
 
     Copyright 2012-2015 The Android Money Manager Ex Project Team
