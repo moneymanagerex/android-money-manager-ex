@@ -42,3 +42,11 @@ android:
     - emulator -avd test -no-skin -no-audio -no-window &
     - android-wait-for-emulator
     - adb shell input keyevent 82 &
+
+  # This fixes the required permissions for gradle build.
+  before_install:
+    - chmod +x gradlew
+  branches:
+    only:
+      - master
+      - dev
