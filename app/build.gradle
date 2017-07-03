@@ -299,13 +299,6 @@ dependencies {
     )
     // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-
-    // dex memory options for the build. 
-    // Ref: https://stackoverflow.com/questions/25013638/android-studio-google-jar-file-causing-gc-overhead-limit-exceeded-error
-    dexOptions {
-        incremental true
-        javaMaxHeapSize "2g"
-    }
 }
 
 configurations {
