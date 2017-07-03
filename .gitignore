@@ -4,7 +4,8 @@
 .settings/
 
 build/
-gradle/
+# Gradle is required for Travis build.
+#gradle/
 androidbillinglibrary/build/
 actionbarsherlock/build/
 
