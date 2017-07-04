@@ -32,8 +32,8 @@ import com.money.manager.ex.domainmodel.Currency;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowLog;
-import org.robolectric.util.ActivityController;
 
 import java.lang.reflect.Field;
 
