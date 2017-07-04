@@ -35,8 +35,6 @@ import org.robolectric.annotation.Config;
 
 import java.util.LinkedHashMap;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Tests for Recent Database Provider.
  */

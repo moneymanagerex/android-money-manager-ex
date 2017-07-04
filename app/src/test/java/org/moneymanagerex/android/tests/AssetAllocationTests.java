@@ -38,8 +38,6 @@ import org.robolectric.annotation.Config;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Unit tests for asset allocation service.
  */

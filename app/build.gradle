@@ -254,10 +254,10 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.4-rc3',
-            'org.robolectric:shadows-support-v4:3.3.1',
-            'org.robolectric:shadows-multidex:3.3.1',
-            'org.robolectric:shadows-httpclient:3.3.1',
+            'org.robolectric:robolectric:3.2.2',
+            'org.robolectric:shadows-support-v4:3.2.2',
+            'org.robolectric:shadows-multidex:3.2.2',
+            'org.robolectric:shadows-httpclient:3.2.2',
             //'com.squareup.assertj:assertj-android:1.1.1',
             //'org.assertj:assertj-core:3.8.0',
             // Matchers
