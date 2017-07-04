@@ -16,7 +16,6 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -38,13 +37,11 @@ import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.util.ActivityController;
 
 import static junit.framework.Assert.assertNotNull;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Test the MainActivity.

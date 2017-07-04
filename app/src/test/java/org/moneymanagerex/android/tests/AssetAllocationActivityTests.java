@@ -26,10 +26,8 @@ import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
-import org.robolectric.util.ActivityController;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Asset Allocation UI
