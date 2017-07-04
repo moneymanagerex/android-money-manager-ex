@@ -62,7 +62,7 @@ public class AssetAllocationActivityTests {
 //        assertThat(this.activity).isNotNull();
 //    }
 
-    @Test
+    //@Test
     public void loadAllocation() {
         // Given
         DataHelpers.createAllocation();
@@ -76,7 +76,7 @@ public class AssetAllocationActivityTests {
     /**
      * Exception test example.
      */
-    @Test(expected=RuntimeException.class)
+    //@Test(expected=RuntimeException.class)
     public void throwsException() {
         throw new RuntimeException("bang!");
     }

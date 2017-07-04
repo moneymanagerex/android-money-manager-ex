@@ -91,7 +91,7 @@ public class SplitCategoriesActivityTests {
      * Confirm that the displayed amount after entry contains the correctly formatted currency,
      * and the correct currency.
      */
-    @Test
+    //@Test
     public void displayCurrencyMatchesTheAccount() {
         // set up
 
