@@ -75,7 +75,7 @@ public class MainActivityTests {
      * Then opens the Add New Account activity.
      * See http://robolectric.org/activity-lifecycle/
      */
-    @Test
+    //@Test
     public void runMainActivity() {
         Fragment homeFragment;
         Intent expectedIntent;
@@ -113,7 +113,7 @@ public class MainActivityTests {
 //        assertThat(shadowOf(activity).getNextStartedActivity()).isEqualTo(expectedIntent);
     }
 
-    @Test
+    //@Test
     public void pauseAndResume() {
         Fragment homeFragment = UnitTestHelper.getFragment(activity, HomeFragment.class.getSimpleName());
 

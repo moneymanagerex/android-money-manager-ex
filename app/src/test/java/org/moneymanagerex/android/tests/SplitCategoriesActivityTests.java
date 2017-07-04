@@ -34,20 +34,17 @@ import com.money.manager.ex.view.RobotoTextView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.parceler.Parcels;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
-import org.robolectric.util.ActivityController;
 
 import java.util.ArrayList;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests for Split Categories activity.
@@ -59,12 +56,12 @@ public class SplitCategoriesActivityTests {
     private ActivityController<SplitCategoriesActivity> controller;
 //    private SplitCategoriesActivity activity;
 
-    @BeforeClass
+    //@BeforeClass
     public static void suiteSetup() {
         // can't initialize content provider here as the static context does not have an application.
     }
 
-    @Before
+    //@Before
     public void setUp() {
         // set up the content provider
         UnitTestHelper.setupContentProvider();

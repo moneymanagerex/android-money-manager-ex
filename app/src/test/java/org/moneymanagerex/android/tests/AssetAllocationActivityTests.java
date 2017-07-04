@@ -21,7 +21,6 @@ import com.money.manager.ex.assetallocation.editor.AssetAllocationEditorActivity
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moneymanagerex.android.testhelpers.DataHelpers;
 import org.moneymanagerex.android.testhelpers.UnitTestHelper;

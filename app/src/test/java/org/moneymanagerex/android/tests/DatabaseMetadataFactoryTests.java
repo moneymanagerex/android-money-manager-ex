@@ -41,12 +41,12 @@ public class DatabaseMetadataFactoryTests {
 
     private DatabaseMetadataFactory _testObject;
 
-    @Before
+    //@Before
     public void setUp() throws Exception {
         _testObject = new DatabaseMetadataFactory(RuntimeEnvironment.application);
     }
 
-    @After
+    //@After
     public void tearDown() throws Exception {
         _testObject = null;
     }
