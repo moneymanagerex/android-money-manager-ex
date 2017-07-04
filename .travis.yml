@@ -36,12 +36,12 @@ android:
     - 'android-sdk-license-.+'
     - 'intel-android-extra-license.+'
 
-  before_script:
+  #before_script:
     # Create and start emulator
-    - echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
-    - emulator -avd test -no-skin -no-audio -no-window &
-    - android-wait-for-emulator
-    - adb shell input keyevent 82 &
+    #- echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
+    #- emulator -avd test -no-skin -no-audio -no-window &
+    #- android-wait-for-emulator
+    #- adb shell input keyevent 82 &
 
   # This fixes the required permissions for gradle build.
   before_install:
