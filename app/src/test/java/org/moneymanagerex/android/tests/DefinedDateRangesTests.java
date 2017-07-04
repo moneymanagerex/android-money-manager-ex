@@ -62,14 +62,14 @@ public class DefinedDateRangesTests {
         return this.context;
     }
 
-    @Test
+    //@Test
     public void testInstantiation() {
         DefinedDateRanges ranges = create();
 
         assertNotNull(ranges);
     }
 
-    @Test
+    //@Test
     public void testMembersCreated() {
         DefinedDateRanges ranges = create();
 
@@ -80,7 +80,7 @@ public class DefinedDateRangesTests {
         }
     }
 
-    @Test
+    //@Test
     public void testGetByMenuId() {
         int menuId = R.id.menu_today;
         String expectedName = DefinedDateRangeName.TODAY.toString();
@@ -92,7 +92,7 @@ public class DefinedDateRangesTests {
         assertEquals(DefinedDateRangeName.TODAY, actual.key);
     }
 
-    @Test
+    //@Test
     public void testGetByNameId() {
         int nameId = R.string.last3months;
         String expectedName = DefinedDateRangeName.LAST_3_MONTHS.toString();
@@ -104,7 +104,7 @@ public class DefinedDateRangesTests {
         assertEquals(DefinedDateRangeName.LAST_3_MONTHS, actual.key);
     }
 
-    @Test
+    //@Test
     @Config(qualifiers="fr-land")
     public void testLocalizedName() {
         String expected = this.context.getString(R.string.future_transactions);

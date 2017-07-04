@@ -62,7 +62,7 @@ public class MoneyTests {
 //        this.controller.destroy();
     }
 
-    @Test
+    //@Test
     public void instantiation() {
         Money testObject = MoneyFactory.fromString("156");
 
