@@ -87,7 +87,7 @@ public class RecentDatabaseProviderTests {
         }
     }
 
-    @Test
+    //@Test
     public void testInsert() {
         DatabaseMetadata entry = getEntry(false);
         String expected = "{\"filename.mmb\":{\"localPath\":\"filename.mmb\",\"remotePath\":\"\",\"linkedToCloud\":false}}";
@@ -107,7 +107,8 @@ public class RecentDatabaseProviderTests {
 //        assertThat(current).isNotNull();
 //    }
 
-    @Test public void add_does_not_create_duplicate() {
+    //@Test
+    public void add_does_not_create_duplicate() {
         DatabaseMetadata entry1 = DatabaseMetadataFactory.getInstance("path1");
         _testObject.add(entry1);
 

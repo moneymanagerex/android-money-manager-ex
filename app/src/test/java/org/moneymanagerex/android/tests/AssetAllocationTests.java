@@ -66,7 +66,7 @@ public class AssetAllocationTests {
 //        assertThat(testObject).isNotNull();
 //    }
 
-    @Test
+    //@Test
     public void testDataLayer() {
         // Given
 
@@ -96,7 +96,7 @@ public class AssetAllocationTests {
 //        assertThat(actualClass.getStockLinks().size()).isGreaterThan(0);
     }
 
-    @Test
+    //@Test
     public void testLoadingOfAllocation() {
         // Given
 
@@ -187,14 +187,14 @@ public class AssetAllocationTests {
 //        assertThat(actual).isEqualTo(expected);
 //    }
 
-    @Test
+    //@Test
     public void stockTotalInDifferentCurrencies() {
         // todo check the value calculation for stocks in different currencies
         // Stock.HeldAt provides an account, which has a currency.
     }
 
     // todo: test just one record with 0 allocation.
-    @Test
+    //@Test
     public void firstRecordWith0Allocation() {
         // Given
 

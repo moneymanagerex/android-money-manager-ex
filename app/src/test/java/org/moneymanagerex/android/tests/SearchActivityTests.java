@@ -79,7 +79,7 @@ public class SearchActivityTests {
      * Add two transaction for Dining Out. Search for this sub/category and confirm that the
      * results are shown and the total & currency match.
      */
-    @Test
+    //@Test
     public void searchForSubCategoryWorksWithData() {
         // arrange
 
@@ -144,7 +144,7 @@ public class SearchActivityTests {
 //        assertThat(totalNumberTextView.getText()).isEqualTo("KM 40.05");
     }
 
-    @Test
+    //@Test
     public void searchForSubCategoryWorksWithNoData() {
         //*******************************************
         // arrange
