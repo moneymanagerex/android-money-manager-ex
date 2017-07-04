@@ -331,10 +331,3 @@ def initFabricPropertiesIfNeeded() {
         }
     }
 }
-
-// Ignore failed unit tests during Travis CI build.
-project.gradle.taskGraph.whenReady {
-    connectedAndroidTest {
-        ignoreFailures = true
-    }
-}
