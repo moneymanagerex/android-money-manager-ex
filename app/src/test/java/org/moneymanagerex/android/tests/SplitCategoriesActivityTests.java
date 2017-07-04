@@ -70,7 +70,7 @@ public class SplitCategoriesActivityTests {
         this.controller = UnitTestHelper.getController(SplitCategoriesActivity.class);
     }
 
-    @After
+    //@After
     public void tearDown() {
         this.controller.destroy();
 

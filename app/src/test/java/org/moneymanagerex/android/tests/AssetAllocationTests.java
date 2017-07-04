@@ -47,13 +47,13 @@ public class AssetAllocationTests {
 
     private AssetAllocationService testObject;
 
-    @Before
+    //@Before
     public void setup() {
         this.testObject = new AssetAllocationService(UnitTestHelper.getContext());
         UnitTestHelper.setupContentProvider();
     }
 
-    @After
+    //@After
     public void tearDown() {
         this.testObject = null;
         UnitTestHelper.teardownDatabase();

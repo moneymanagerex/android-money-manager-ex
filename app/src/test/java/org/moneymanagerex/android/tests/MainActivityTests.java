@@ -53,7 +53,7 @@ public class MainActivityTests {
     private ActivityController<MainActivity> controller;
     private MainActivity activity;
 
-    @Before
+    //@Before
     public void setUp() {
         UnitTestHelper.setupContentProvider();
 
@@ -61,7 +61,7 @@ public class MainActivityTests {
         this.activity = UnitTestHelper.getActivity(this.controller);
     }
 
-    @After
+    //@After
     public void tearDown() {
         this.controller.destroy();
 

@@ -55,7 +55,7 @@ public class SearchActivityTests {
     private ActivityController<SearchActivity> controller;
     private SearchActivity activity;
 
-    @Before
+    //@Before
     public void setUp() {
         this.controller = UnitTestHelper.getController(SearchActivity.class);
         this.activity = UnitTestHelper.getActivity(this.controller);
@@ -64,7 +64,7 @@ public class SearchActivityTests {
         UnitTestHelper.setupLog();
     }
 
-    @After
+    //@After
     public void tearDown() {
         this.controller.destroy();
         UnitTestHelper.teardownDatabase();

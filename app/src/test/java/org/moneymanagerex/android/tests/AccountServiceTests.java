@@ -44,7 +44,7 @@ public class AccountServiceTests {
 
     private AccountService testObject;
 
-    @Before
+    //@Before
     public void setup() {
         // initialize support for activities (UI)
 //        this.controller = UnitTestHelper.getController(MainActivity.class);
@@ -57,7 +57,7 @@ public class AccountServiceTests {
         testObject = new AccountService(context);
     }
 
-    @After
+    //@After
     public void tearDown() {
         // Reset database instance between tests.
         UnitTestHelper.teardownDatabase();
