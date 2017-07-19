@@ -29,8 +29,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Test the factory
  */
@@ -41,12 +39,12 @@ public class DatabaseMetadataFactoryTests {
 
     private DatabaseMetadataFactory _testObject;
 
-    @Before
+    //@Before
     public void setUp() throws Exception {
         _testObject = new DatabaseMetadataFactory(RuntimeEnvironment.application);
     }
 
-    @After
+    //@After
     public void tearDown() throws Exception {
         _testObject = null;
     }

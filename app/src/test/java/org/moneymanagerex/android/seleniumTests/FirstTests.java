@@ -69,7 +69,7 @@ public class FirstTests {
         }
     }
 
-    @Test
+    //@Test
     public void firstTest() {
         // close tutorial
         driver.findElement(By.id("skipTextView")).click();

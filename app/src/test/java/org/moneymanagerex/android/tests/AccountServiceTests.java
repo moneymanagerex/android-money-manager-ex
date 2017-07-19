@@ -35,8 +35,6 @@ import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Account Service tests.
  */
@@ -46,7 +44,7 @@ public class AccountServiceTests {
 
     private AccountService testObject;
 
-    @Before
+    //@Before
     public void setup() {
         // initialize support for activities (UI)
 //        this.controller = UnitTestHelper.getController(MainActivity.class);
@@ -59,7 +57,7 @@ public class AccountServiceTests {
         testObject = new AccountService(context);
     }
 
-    @After
+    //@After
     public void tearDown() {
         // Reset database instance between tests.
         UnitTestHelper.teardownDatabase();
@@ -75,7 +73,7 @@ public class AccountServiceTests {
 //        assertThat(testObject).isNotNull();
 //    }
 
-    @Test
+    //@Test
     public void getAccountCurrency() {
         // Given
         UnitTestHelper.setupContentProvider();

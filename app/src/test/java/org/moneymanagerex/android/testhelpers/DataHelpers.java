@@ -48,9 +48,7 @@ import org.robolectric.shadows.ShadowContentResolver;
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Shadows.shadowOf;
-import static org.assertj.core.api.Java6Assertions.*;
 
 /**
  * Database manipulation. Used for test preparation.

@@ -27,8 +27,8 @@ android {
         versionCode 957
         versionName getVersionAsDate() + "." + versionCode
 
-//        minSdkVersion rootProject.ext.minSdkVersion
-//        targetSdkVersion rootProject.ext.targetSdkVersion
+        // minSdkVersion rootProject.ext.minSdkVersion
+        // targetSdkVersion rootProject.ext.targetSdkVersion
         minSdkVersion 15 // 4.0.3
         targetSdkVersion 26
 
@@ -38,34 +38,34 @@ android {
     }
 
     compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_7
-//        targetCompatibility JavaVersion.VERSION_1_7
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
+        // sourceCompatibility JavaVersion.VERSION_1_7
+        // targetCompatibility JavaVersion.VERSION_1_7
+        // sourceCompatibility JavaVersion.VERSION_1_8
+        // targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets {
-//        main {
-//            manifest.srcFile 'src/main/AndroidManifest.xml'
-//            //java.srcDirs = ['src']
-//            java.srcDirs = ['src/main/java']
-//            resources.srcDirs = ['src/main/java']
-//            aidl.srcDirs = ['src/main/java']
-//            renderscript.srcDirs = ['src/main/java']
-//            //res.srcDirs = ['res']
-//            res.srcDirs = ['src/main/res']
-//            assets.srcDirs = ['assets']
-//            //jniLibs.srcDirs = ['libs']
-//        }
-//        // Unit tests
-//        robolectric {
-//            java.srcDir file('src/test/java/')
-//            resources.srcDir file('src/test/resources')
-//        }
-//        // UI Tests
-//        androidTest {
-//            java.srcDirs = ['src/androidTest/java']
-//        }
+        // main {
+        //     manifest.srcFile 'src/main/AndroidManifest.xml'
+        //     //java.srcDirs = ['src']
+        //     java.srcDirs = ['src/main/java']
+        //     resources.srcDirs = ['src/main/java']
+        //     aidl.srcDirs = ['src/main/java']
+        //     renderscript.srcDirs = ['src/main/java']
+        //     //res.srcDirs = ['res']
+        //     res.srcDirs = ['src/main/res']
+        //     assets.srcDirs = ['assets']
+        //     //jniLibs.srcDirs = ['libs']
+        // }
+        // // Unit tests
+        // robolectric {
+        //     java.srcDir file('src/test/java/')
+        //     resources.srcDir file('src/test/resources')
+        // }
+        // // UI Tests
+        // androidTest {
+        //     java.srcDirs = ['src/androidTest/java']
+        // }
 
         // Move the tests to tests/java, tests/res, etc...
         //instrumentTest.setRoot('tests')
@@ -89,6 +89,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Disable fabric build id for debug builds
+            buildConfigField "boolean", "USE_CRASHLYTICS", "false"
             ext.enableCrashlytics = false
         }
         beta {
@@ -115,6 +116,10 @@ android {
                     output.outputFile = new File(output.outputFile.parent, fileName)
                 }
             }
+
+            // enable crashlytics/fabric
+            buildConfigField "boolean", "USE_CRASHLYTICS", "true"
+            ext.enableCrashlytics = true
         }
     }
 
@@ -123,18 +128,18 @@ android {
     }
 
     productFlavors {
-//        beta {
-//            applicationId "com.money.manager.ex.beta"
-//            versionName "latestBeta"
-//        }
-//        stable {
-//            applicationId "com.money.manager.ex"
-//        }
+        // beta {
+        //     applicationId "com.money.manager.ex.beta"
+        //     versionName "latestBeta"
+        // }
+        // stable {
+        //     applicationId "com.money.manager.ex"
+        // }
     }
 
     lintOptions {
         // stop the gradle build if errors are found - affects XML resources (strings, etc.).
-        abortOnError true
+        abortOnError false
     }
 
     packagingOptions {
@@ -147,7 +152,7 @@ android {
 
     signingConfigs {
         debug {
-//            storeFile file("debug.keystore")
+            // storeFile file("debug.keystore")
             v2SigningEnabled false
         }
         release {
@@ -157,6 +162,9 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            systemProperty 'robolectric.offline', 'true'
+        }
     }
 }
 
@@ -177,13 +185,13 @@ dependencies {
             , supportDependencies.preference
             , supportDependencies.supportAnnotation
             , supportDependencies.gridLayout
-            , 'com.opencsv:opencsv:3.9'
+            , 'com.opencsv:opencsv:3.10'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
             , 'commons-io:commons-io:2.5'
             , 'com.afollestad.material-dialogs:core:0.8.6.1'
-//            , 'com.afollestad.material-dialogs:core:0.9.0.2'
-//            , 'com.afollestad.material-dialogs:commons:0.9.0.2'
+            // , 'com.afollestad.material-dialogs:core:0.9.0.2'
+            // , 'com.afollestad.material-dialogs:commons:0.9.0.2'
             , 'com.melnykov:floatingactionbutton:1.3.0'
             , 'com.github.pedrovgs:lynx:1.6'
             , 'com.astuetz:pagerslidingtabstrip:1.0.1'
@@ -192,15 +200,15 @@ dependencies {
             , 'com.code-troopers.betterpickers:library:3.1.0'
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
-//            , 'javax.money:money-api-bp:1.0.1'
-//            , 'org.javamoney:moneta-bp:1.1'
+            // , 'javax.money:money-api-bp:1.0.1'
+            // , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.8.1'
             , 'com.squareup.retrofit2:retrofit:2.3.0'            // Retrofit
             , 'com.squareup.retrofit2:converter-gson:2.3.0'
             , 'com.squareup.retrofit2:converter-scalars:2.3.0'
             , 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-//            ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
+            // ,'net.zetetic:android-database-sqlcipher:3.4.0'   // database encryption
             , 'org.greenrobot:eventbus:3.0.0'
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.10.3'              // HTML parsing.
@@ -208,24 +216,24 @@ dependencies {
             , 'com.android.support:multidex:1.0.1'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
-//            , 'io.reactivex.rxjava2:rxandroid:2.0.1'
+            // , 'io.reactivex.rxjava2:rxandroid:2.0.1'
             , 'io.reactivex:rxjava:1.3.0'
-//            , 'io.reactivex.rxjava2:rxjava:2.0.1'
-            , 'com.squareup.sqlbrite:sqlbrite:1.1.1'
+            // , 'io.reactivex.rxjava2:rxjava:2.0.1'
+            , 'com.squareup.sqlbrite:sqlbrite:1.1.2'
             , 'com.jakewharton.timber:timber:4.5.1'
             , 'com.jakewharton.rxbinding:rxbinding:1.0.1'    // RxBinding
-//            ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
-//            ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
-//            ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
-//            ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
-//            ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
+            // ,'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
+            // ,'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+            // ,'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
+            // ,'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
+            // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:2.8.5' // also update in the icon module.
+            , 'com.mikepenz:iconics-core:2.8.8' // also update in the icon module.
             , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
-//            , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
+            // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true
@@ -234,8 +242,8 @@ dependencies {
         transitive = true
     }
     // Parceler
-    compile 'org.parceler:parceler-api:1.1.8'
-    annotationProcessor 'org.parceler:parceler:1.1.8'
+    compile 'org.parceler:parceler-api:1.1.9'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
     // Dagger 2
     compile 'com.google.dagger:dagger:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
@@ -249,20 +257,20 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.3.1',
-            'org.robolectric:shadows-support-v4:3.3.1',
-            'org.robolectric:shadows-multidex:3.3.1',
-            'org.robolectric:shadows-httpclient:3.3.1',
-            'com.squareup.assertj:assertj-android:1.1.1',
-            'org.assertj:assertj-core:3.8.0',
+            'org.robolectric:robolectric:3.3.2',
+            'org.robolectric:shadows-support-v4:3.3.2',
+            'org.robolectric:shadows-multidex:3.3.2',
+            'org.robolectric:shadows-httpclient:3.3.2',
+            //'com.squareup.assertj:assertj-android:1.1.1',
+            //'org.assertj:assertj-core:3.8.0',
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
             'org.hamcrest:hamcrest-library:1.3',
             'org.hamcrest:hamcrest-integration:1.3'
             // async handling
-//        'com.jayway.awaitility:awaitility:1.6.4',
+            // 'com.jayway.awaitility:awaitility:1.6.4',
             // mock/stub
-//        "org.mockito:mockito-core:1.+"
+            // "org.mockito:mockito-core:1.+"
             , 'io.selendroid:selendroid-client:0.17.0'
     )
     testCompile('io.selendroid:selendroid-standalone:0.17.0') {
@@ -290,9 +298,9 @@ dependencies {
             // Robotium, UI testing
             'com.jayway.android.robotium:robotium-solo:5.6.3'
             // JBehave
-//        'org.jbehave:jbehave-core:4.0.4'
+            // 'org.jbehave:jbehave-core:4.0.4'
     )
-    //    // Set this dependency to build and run UI Automator tests
+    // Set this dependency to build and run UI Automator tests
     //    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
 
@@ -304,4 +312,22 @@ static def getVersionAsDate() {
     def date = new Date()
     def formattedDate = date.format('yyyy.MM.dd')
     return formattedDate
+}
+
+/*
+    Dynamically generate fabric.properties from environment variables.
+ */
+afterEvaluate {
+    initFabricPropertiesIfNeeded()
+}
+
+def initFabricPropertiesIfNeeded() {
+    def propertiesFile = file('fabric.properties')
+    if (!propertiesFile.exists()) {
+        def commentMessage = "This is autogenerated fabric property from system environment to prevent key to be committed to source control."
+        ant.propertyfile(file: "fabric.properties", comment: commentMessage) {
+            entry(key: "apiSecret", value: crashlyticsApisecret)
+            entry(key: "apiKey", value: crashlyticsApikey)
+        }
+    }
 }

@@ -44,7 +44,7 @@ public class DataGenerationTests {
         UnitTestHelper.teardownDatabase();
     }
 
-    @Test
+    //@Test
     public void testGeneration() {
         // test generation and insertion of main records.
 

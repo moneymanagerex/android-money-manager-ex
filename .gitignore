@@ -4,7 +4,8 @@
 .settings/
 
 build/
-gradle/
+# Gradle is required for Travis build.
+#gradle/
 androidbillinglibrary/build/
 actionbarsherlock/build/
 
@@ -31,8 +32,8 @@ Thumbs.db
 # NPM modules
 scripts/deployment/node_modules
 
-# Proxy settings
-/gradle.properties
+# Proxy settings & JVM memory allocation.
+#/gradle.properties
 
 # Fabric settings
 /fabric.properties

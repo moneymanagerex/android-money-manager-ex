@@ -29,8 +29,6 @@ import org.moneymanagerex.android.testhelpers.UnitTestHelper;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Test Currency Service
  */
@@ -40,7 +38,7 @@ public class CurrencyServiceTests {
 
     private CurrencyService testObject;
 
-    @Before
+    //@Before
     public void setup() {
         // initialize database
         UnitTestHelper.setupContentProvider();
@@ -49,7 +47,7 @@ public class CurrencyServiceTests {
         testObject = new CurrencyService(context);
     }
 
-    @After
+    //@After
     public void tearDown() {
         testObject = null;
 

@@ -37,7 +37,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Espresso tests for the Main Activity.
- * Created by Alen Siljak on 24/09/2015.
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTests {

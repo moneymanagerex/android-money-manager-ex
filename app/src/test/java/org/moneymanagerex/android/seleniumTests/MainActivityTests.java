@@ -57,7 +57,7 @@ public class MainActivityTests {
         }
     }
 
-    @Test
+    //@Test
     public void runActivity() {
         driver.findElement(By.id("skipTextView")).click();
         new Actions(driver).sendKeys(SelendroidKeys.MENU).perform();
