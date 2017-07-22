@@ -18,6 +18,35 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
+// region: Fix shortcuts.xml by manually replacing @string/application_id
+// See https://stackoverflow.com/a/44840413/6008532
+// Bug report https://issuetracker.google.com/issues/37124066
+
+final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
+
+android.applicationVariants.all { variant ->
+
+    // Add the application id to the strings resources
+    // We do this so that in the future if google fixes the
+    // processing of the shortcuts.xml we can leave this
+    // and remove the `mergeResources.doLast` block below
+    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
+
+    // Manually replace @string/application_id with `variant.applicationId`
+    variant.mergeResources.doLast {
+        println("variant = ${variant.applicationId}")
+
+        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
+        final String content = valuesFile.getText('UTF-8')
+        final String updatedContent = content
+                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
+
+        valuesFile.write(updatedContent, 'UTF-8')
+    }
+}
+
+//endregion
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
