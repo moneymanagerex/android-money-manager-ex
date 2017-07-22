@@ -38,3 +38,6 @@ scripts/deployment/node_modules
 # Fabric settings
 /fabric.properties
 /app/fabric.properties
+
+# Build results
+ammx-*.apk
