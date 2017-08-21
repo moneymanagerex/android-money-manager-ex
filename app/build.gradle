@@ -206,6 +206,7 @@ dependencies {
             , project(path: ':money')
             , 'com.cloudrail:cloudrail-si-android:2.18.0'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+            , supportDependencies.core
             , supportDependencies.support
             , supportDependencies.appCompat
             , supportDependencies.recyclerView
