@@ -76,7 +76,7 @@ allprojects {
             force supportDependencies.appCompat
             force supportDependencies.design
             force 'com.google.code.gson:gson:2.8.0'
-            force 'com.google.guava:guava:20.0'
+            force 'com.google.guava:guava:23.0-android'
             force 'com.google.code.findbugs:jsr305:3.0.1'
             force 'org.apache.commons:commons-lang3:3.5'
             force 'commons-collections:commons-collections:3.2.2'
