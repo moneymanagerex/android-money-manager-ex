@@ -259,7 +259,8 @@ dependencies {
             // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:2.8.8' // also update in the icon module.
+            , 'com.mikepenz:iconics-core:2.9.0@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:2.9.0@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
