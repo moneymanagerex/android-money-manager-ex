@@ -204,7 +204,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.18.0'
+            , 'com.cloudrail:cloudrail-si-android:2.20.0'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -215,7 +215,7 @@ dependencies {
             , supportDependencies.preference
             , supportDependencies.supportAnnotation
             , supportDependencies.gridLayout
-            , 'com.opencsv:opencsv:3.10'
+            , 'com.opencsv:opencsv:4.0'
             , 'net.objecthunter:exp4j:0.4.8'
             , 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
             , 'commons-io:commons-io:2.5'
@@ -247,7 +247,7 @@ dependencies {
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             // , 'io.reactivex.rxjava2:rxandroid:2.0.1'
-            , 'io.reactivex:rxjava:1.3.0'
+            , 'io.reactivex:rxjava:1.3.2'
             // , 'io.reactivex.rxjava2:rxjava:2.0.1'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.2'
             , 'com.jakewharton.timber:timber:4.5.1'
@@ -259,8 +259,8 @@ dependencies {
             // ,'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
             , 'com.trello:rxlifecycle:1.0'         // RxLifecycle
             , 'com.shamanland:fonticon:0.1.9'
-            , 'com.mikepenz:iconics-core:2.9.0@aar' // also update in the icon module.
-            , 'com.mikepenz:iconics-views:2.9.0@aar'
+            , 'com.mikepenz:iconics-core:2.9.3@aar' // also update in the icon module.
+            , 'com.mikepenz:iconics-views:2.9.3@aar'
             , 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar' // MD icons
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
@@ -324,7 +324,7 @@ dependencies {
             // Matchers
             'org.hamcrest:hamcrest-core:1.3',
             'org.hamcrest:hamcrest-library:1.3',
-            'com.squareup.assertj:assertj-android:1.1.1',
+            'com.squareup.assertj:assertj-android:1.2.0',
             'org.assertj:assertj-core:3.8.0',
             // Robotium, UI testing
             'com.jayway.android.robotium:robotium-solo:5.6.3'
