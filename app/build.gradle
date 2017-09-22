@@ -204,7 +204,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.20.0'
+            , 'com.cloudrail:cloudrail-si-android:2.20.1'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -233,7 +233,7 @@ dependencies {
             // , 'javax.money:money-api-bp:1.0.1'
             // , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
-            , 'com.google.code.gson:gson:2.8.1'
+            , 'com.google.code.gson:gson:2.8.2'
             , 'com.squareup.retrofit2:retrofit:2.3.0'            // Retrofit
             , 'com.squareup.retrofit2:converter-gson:2.3.0'
             , 'com.squareup.retrofit2:converter-scalars:2.3.0'
@@ -269,7 +269,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true
     }
-    compile('com.mikepenz:aboutlibraries:5.9.6@aar') {
+    compile('com.mikepenz:aboutlibraries:5.9.7@aar') {
         transitive = true
     }
     // Parceler
