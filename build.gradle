@@ -84,4 +84,9 @@ allprojects {
         // removes warnings about commons-logging on build.
         exclude group: 'commons-logging', module: 'commons-logging'
     }
+
+    //
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    }
 }

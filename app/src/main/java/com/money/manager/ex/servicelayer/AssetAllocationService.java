@@ -42,6 +42,7 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /*
                           Group      Asset Class
@@ -251,6 +252,7 @@ public class AssetAllocationService
         if (!success) {
             ExceptionHandler handler = new ExceptionHandler(getContext(), this);
             handler.showMessage(getContext().getString(R.string.error));
+            //Timber.e(getContext().getString(R.string.error));
         }
         return success;
     }

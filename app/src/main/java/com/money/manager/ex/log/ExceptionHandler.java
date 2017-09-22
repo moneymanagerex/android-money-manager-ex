@@ -42,12 +42,6 @@ import java.io.StringWriter;
 public class ExceptionHandler
     implements Thread.UncaughtExceptionHandler
 {
-
-//    public static void log(String message) {
-//        Log.i("manual", message);
-//        Crashlytics.log(message);
-//    }
-
     public static void warn(String message) {
         Log.w("manual", message);
         Crashlytics.log(message);
