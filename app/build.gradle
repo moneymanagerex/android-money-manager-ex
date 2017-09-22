@@ -288,7 +288,7 @@ dependencies {
     testCompile(
             'commons-io:commons-io:2.5',
             'junit:junit:4.12',
-            'org.robolectric:robolectric:3.3.2',
+            'org.robolectric:robolectric:3.4.2',
             'org.robolectric:shadows-support-v4:3.3.2',
             'org.robolectric:shadows-multidex:3.3.2',
             'org.robolectric:shadows-httpclient:3.3.2',
