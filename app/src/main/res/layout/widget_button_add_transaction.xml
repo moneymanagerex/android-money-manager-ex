@@ -15,14 +15,15 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Money.Button"
-    android:layout_width="140dp"
-    android:layout_height="wrap_content"
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/buttonNewOperation"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
     android:layout_gravity="center"
-    
-    android:text="@string/new_transaction"
-    android:textSize="14sp"
-    android:layout_marginRight="5dp"
-    android:layout_marginEnd="5dp"
-    android:id="@+id/buttonNewOperation" />
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+
+    android:src="@drawable/drawable_widget_add_transaction_flat"
+    android:background="#00000000"
+    android:scaleType="centerInside"
+    android:cropToPadding="false" />
