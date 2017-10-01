@@ -21,7 +21,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
@@ -40,7 +40,7 @@ public class Passcode {
     public Passcode(Context context) {
         this.mContext = context.getApplicationContext();
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     private Context mContext;

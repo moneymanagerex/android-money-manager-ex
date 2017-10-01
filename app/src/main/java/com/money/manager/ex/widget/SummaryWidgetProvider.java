@@ -27,7 +27,7 @@ import android.widget.RemoteViews;
 
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import info.javaperformance.money.MoneyFactory;
@@ -40,7 +40,7 @@ public class SummaryWidgetProvider
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        MoneyManagerApplication app = new MoneyManagerApplication();
+        MmexApplication app = new MmexApplication();
         CurrencyService currencyService = new CurrencyService(context);
 
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, SummaryWidgetProvider.class));

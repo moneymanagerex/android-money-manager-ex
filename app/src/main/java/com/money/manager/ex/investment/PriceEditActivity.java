@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.CalculatorActivity;
@@ -66,7 +66,7 @@ public class PriceEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         ButterKnife.bind(this);
 

@@ -30,7 +30,7 @@ import android.text.TextUtils;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.InfoKeys;
@@ -103,12 +103,12 @@ public class PerDatabaseFragment
 
         final Preference pUserName = findPreference(getString(R.string.pref_user_name));
         if (pUserName != null) {
-            pUserName.setSummary(MoneyManagerApplication.getApp().getUserName());
+            pUserName.setSummary(MmexApplication.getApp().getUserName());
             pUserName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    MoneyManagerApplication.getApp().setUserName((String) newValue, true);
-                    pUserName.setSummary(MoneyManagerApplication.getApp().getUserName());
+                    MmexApplication.getApp().setUserName((String) newValue, true);
+                    pUserName.setSummary(MmexApplication.getApp().getUserName());
                     return false;
                 }
             });

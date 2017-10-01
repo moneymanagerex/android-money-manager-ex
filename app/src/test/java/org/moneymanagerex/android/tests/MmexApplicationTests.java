@@ -19,12 +19,11 @@ package org.moneymanagerex.android.tests;
 import android.content.Context;
 
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -65,7 +64,7 @@ public class MmexApplicationTests {
     public void defaultDatabaseNameContainsFileName() throws Exception {
         String expected = "data.mmb";
 
-        String actual = MoneyManagerApplication.getDatabasePath(context);
+        String actual = MmexApplication.getDatabasePath(context);
 
 //        assertEquals(expected, actual);
         assertTrue(actual.contains("/" + expected));

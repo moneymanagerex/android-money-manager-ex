@@ -26,7 +26,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.InfoKeys;
@@ -67,7 +67,7 @@ public class CurrencyService
         mCurrencyCodes = new HashMap<>();
         mCurrencies = new SparseArray<>();
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject CurrencyRepositorySql mRepository;
@@ -407,7 +407,7 @@ public class CurrencyService
     public java.util.Currency getSystemDefaultCurrency() {
         java.util.Currency currency = null;
 
-        Locale defaultLocale = MoneyManagerApplication.getApp().getAppLocale();
+        Locale defaultLocale = MmexApplication.getApp().getAppLocale();
 
         try {
             if (defaultLocale == null) {

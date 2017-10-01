@@ -20,7 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.settings.SyncPreferences;
 
 import timber.log.Timber;
@@ -47,7 +47,7 @@ public class SyncBroadcastReceiver
 		Intent service = new Intent(context, SyncService.class);
 		service.setAction(SyncConstants.INTENT_ACTION_SYNC);
 
-		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MoneyManagerApplication.getDatabasePath(context));
+		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MmexApplication.getDatabasePath(context));
 		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 
 		context.startService(service);

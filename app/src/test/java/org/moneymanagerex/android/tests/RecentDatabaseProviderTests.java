@@ -18,7 +18,7 @@ package org.moneymanagerex.android.tests;
 
 import com.google.gson.Gson;
 import com.money.manager.ex.BuildConfig;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
 import com.money.manager.ex.home.RecentDatabasesProvider;
@@ -46,7 +46,7 @@ public class RecentDatabaseProviderTests {
 
     @Before
     public void setUp() throws Exception {
-        MoneyManagerApplication app = (MoneyManagerApplication) RuntimeEnvironment.application;
+        MmexApplication app = (MmexApplication) RuntimeEnvironment.application;
         _testObject = new RecentDatabasesProvider(app);
     }
 

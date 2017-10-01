@@ -38,7 +38,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountListActivity;
@@ -99,7 +99,7 @@ public class EditTransactionCommonFunctions {
         this.transactionEntity = transactionEntity;
         this.mDatabase = database;
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;

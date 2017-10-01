@@ -23,11 +23,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
 import com.money.manager.ex.utils.DialogUtils;
@@ -49,7 +47,7 @@ public class SyncServiceMessageHandler
     extends Handler {
 
     public SyncServiceMessageHandler(Context context, ProgressDialog progressDialog, String remoteFile) {
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         this.context = context;
         this.progressDialog = progressDialog;

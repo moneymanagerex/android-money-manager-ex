@@ -18,10 +18,9 @@
 package com.money.manager.ex.investment;
 
 import android.content.Context;
-import android.os.StrictMode;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -37,7 +36,7 @@ import info.javaperformance.money.Money;
 
 public class PriceEditModel {
     public PriceEditModel() {
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     public int accountId;

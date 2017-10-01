@@ -27,7 +27,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.sync.SyncManager;
 

@@ -27,7 +27,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.money.manager.ex.MmxContentProvider;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.UIHelper;
@@ -95,7 +95,7 @@ public class MmxDatabaseUtils {
         mContext = context;
 
         // dependency injection
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
@@ -250,7 +250,7 @@ public class MmxDatabaseUtils {
         }
 
         // Switch database in the active data layer.
-        MoneyManagerApplication.getApp().initDb(database.localPath);
+        MmexApplication.getApp().initDb(database.localPath);
 
         resetContentProvider();
 

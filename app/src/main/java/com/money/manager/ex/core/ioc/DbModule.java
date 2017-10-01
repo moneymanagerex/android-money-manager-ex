@@ -17,7 +17,7 @@
 
 package com.money.manager.ex.core.ioc;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -63,7 +63,7 @@ public final class DbModule {
      */
     @Provides
 //    @Named("instance")
-    MmxOpenHelper provideOpenHelper(MoneyManagerApplication app) {
+    MmxOpenHelper provideOpenHelper(MmexApplication app) {
 //        MoneyManagerApplication app = MoneyManagerApplication.getInstance();
         if (app.openHelperAtomicReference == null) {
             app.initDb(null);
@@ -77,11 +77,11 @@ public final class DbModule {
 //    }
 
     @Provides SqlBrite provideSqlBrite() {
-        return SqlBrite.create(new SqlBrite.Logger() {
+        return new SqlBrite.Builder().logger(new SqlBrite.Logger() {
             @Override public void log(String message) {
                 Timber.tag("Database").v(message);
             }
-        });
+        }).build();
     }
 
     @Provides BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {

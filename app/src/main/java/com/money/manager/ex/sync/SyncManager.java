@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.IntentFactory;
 import com.money.manager.ex.core.UIHelper;
@@ -76,7 +76,7 @@ public class SyncManager {
         mContext = context;
         mStorageClient = new CloudStorageClient(context);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
@@ -357,7 +357,7 @@ public class SyncManager {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
-        // SyncSchedulerBroadcastReceiver does not receive a brodcast when using LocalManager!
+        // SyncSchedulerBroadcastReceiver does not receive a broadcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
@@ -365,7 +365,7 @@ public class SyncManager {
         Intent intent = new Intent(mContext, SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_STOP);
         getContext().sendBroadcast(intent);
-        // SyncSchedulerBroadcastReceiver does not receive a brodcast when using LocalManager!
+        // SyncSchedulerBroadcastReceiver does not receive a broadcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
@@ -373,7 +373,7 @@ public class SyncManager {
         if (!isActive())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
-        String localPath = MoneyManagerApplication.getDatabasePath(getContext());
+        String localPath = MmexApplication.getDatabasePath(getContext());
         if (TextUtils.isEmpty(localPath)) {
             new UIHelper(getContext()).showToast(R.string.filenames_differ);
             return;
@@ -478,7 +478,7 @@ public class SyncManager {
         if (!(getContext() instanceof Activity)) return;
 
         MmxDatabaseUtils dbUtils = new MmxDatabaseUtils(getContext());
-        String localFile = MoneyManagerApplication.getDatabasePath(getContext());
+        String localFile = MmexApplication.getDatabasePath(getContext());
 
         DatabaseMetadata db = getDatabases().get(localFile);
         if (db == null) {

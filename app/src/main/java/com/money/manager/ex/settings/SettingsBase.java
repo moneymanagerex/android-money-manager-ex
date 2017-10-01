@@ -20,9 +20,6 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.money.manager.ex.MoneyManagerApplication;
-import com.money.manager.ex.log.ExceptionHandler;
-
 import timber.log.Timber;
 
 /**

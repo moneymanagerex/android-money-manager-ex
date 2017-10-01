@@ -29,7 +29,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyService;
@@ -79,7 +79,7 @@ public class BudgetAdapter
 
         mContext = context;
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<BriteDatabase> databaseLazy;

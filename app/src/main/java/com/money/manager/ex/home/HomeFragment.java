@@ -67,7 +67,7 @@ import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
 import com.money.manager.ex.datalayer.AccountRepository;
@@ -149,7 +149,7 @@ public class HomeFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         mCurrencyService = new CurrencyService(getActivity().getApplicationContext());
 
@@ -604,7 +604,7 @@ public class HomeFragment
         // Show current database
         TextView currentDatabaseTextView = (TextView) view.findViewById(R.id.currentDatabaseTextView);
         if (currentDatabaseTextView != null) {
-            String path = MoneyManagerApplication.getDatabasePath(getActivity());
+            String path = MmexApplication.getDatabasePath(getActivity());
             currentDatabaseTextView.setText(path);
         }
 
@@ -652,7 +652,7 @@ public class HomeFragment
             .subscribe(new SingleSubscriber<String>() {
                 @Override
                 public void onSuccess(String value) {
-                    MoneyManagerApplication.getApp().setUserName(value);
+                    MmexApplication.getApp().setUserName(value);
                     EventBus.getDefault().post(new UsernameLoadedEvent());
                 }
 

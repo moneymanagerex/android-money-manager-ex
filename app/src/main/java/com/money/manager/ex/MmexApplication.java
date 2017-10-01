@@ -68,14 +68,14 @@ import timber.log.Timber;
         value = Money.class,
         annotation = @Parcel(converter = MoneyParcelConverter.class))
 )
-public class MoneyManagerApplication
+public class MmexApplication
     extends MultiDexApplication {
 
-    private static MoneyManagerApplication appInstance;
+    private static MmexApplication appInstance;
     private static float mTextSize;
     private static String userName = "";
 
-    public static MoneyManagerApplication getApp() {
+    public static MmexApplication getApp() {
         return appInstance;
     }
 
@@ -119,11 +119,11 @@ public class MoneyManagerApplication
     }
 
     public static float getTextSize() {
-        return MoneyManagerApplication.mTextSize;
+        return MmexApplication.mTextSize;
     }
 
     public static void setTextSize(float textSize) {
-        MoneyManagerApplication.mTextSize = textSize;
+        MmexApplication.mTextSize = textSize;
     }
 
     /**
@@ -268,7 +268,7 @@ public class MoneyManagerApplication
      */
     @Deprecated
     public boolean setUserName(String userName, boolean save) {
-        MoneyManagerApplication.userName = userName;
+        MmexApplication.userName = userName;
 
         if (save) {
             InfoService service = new InfoService(this.getApplicationContext());

@@ -22,7 +22,7 @@ import android.text.TextUtils;
 import android.widget.DatePicker;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.InfoKeys;
@@ -151,7 +151,7 @@ public class MmxDateTimeUtils {
     }
 
     public int getFirstDayOfWeek() {
-        Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
+        Locale appLocale = MmexApplication.getApp().getAppLocale();
         Calendar cal = Calendar.getInstance(appLocale);
         return cal.getFirstDayOfWeek();
     }

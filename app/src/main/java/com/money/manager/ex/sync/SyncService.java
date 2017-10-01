@@ -29,7 +29,7 @@ import android.os.Messenger;
 import android.text.TextUtils;
 
 import com.cloudrail.si.types.CloudMetaData;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.home.DatabaseMetadata;
@@ -78,7 +78,7 @@ public class SyncService
         compositeSubscription = new CompositeSubscription();
         mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Override

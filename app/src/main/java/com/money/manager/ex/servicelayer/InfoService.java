@@ -23,7 +23,7 @@ import android.database.Cursor;
 //import net.sqlcipher.database.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.domainmodel.Info;
@@ -41,7 +41,7 @@ public class InfoService
     public InfoService(Context context) {
         super(context);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject

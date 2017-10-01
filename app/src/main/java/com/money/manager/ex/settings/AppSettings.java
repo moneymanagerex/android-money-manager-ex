@@ -19,7 +19,7 @@ package com.money.manager.ex.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import javax.inject.Inject;
@@ -38,7 +38,7 @@ public class AppSettings
         super(context);
 
         // DI
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject Lazy<SharedPreferences> sharedPreferences;

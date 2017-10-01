@@ -21,7 +21,7 @@ import android.app.backup.BackupAgentHelper;
 import android.app.backup.FileBackupHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 
 /**
  * Manage preferences backup.
@@ -42,7 +42,7 @@ public class MoneyManagerBackupAgentHelper
         SharedPreferencesBackupHelper appHelper = new SharedPreferencesBackupHelper(this, getPackageName() + "_preferences");
         SharedPreferencesBackupHelper dropboxHelper = new SharedPreferencesBackupHelper(this, getPackageName() + "_dropbox_preferences");
         // create helper files
-        FileBackupHelper databaseHelper = new FileBackupHelper(this, MoneyManagerApplication.getDatabasePath(getApplicationContext()));
+        FileBackupHelper databaseHelper = new FileBackupHelper(this, MmexApplication.getDatabasePath(getApplicationContext()));
 
         addHelper(KEY_BACKUP_APP_PREFERENCES, appHelper);
         addHelper(KEY_BACKUP_DROPBOX_PREFERENCES, dropboxHelper);

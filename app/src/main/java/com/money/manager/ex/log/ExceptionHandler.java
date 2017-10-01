@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import java.io.PrintWriter;

@@ -53,7 +53,7 @@ import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.DonateActivity;
 import com.money.manager.ex.HelpActivity;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.about.AboutActivity;
@@ -169,7 +169,7 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         if (showPrerequisite()) {
             finish();
@@ -447,7 +447,7 @@ public class MainActivity
 
     @Subscribe
     public void onEvent(UsernameLoadedEvent event) {
-        setDrawerUserName(MoneyManagerApplication.getApp().getUserName());
+        setDrawerUserName(MmexApplication.getApp().getUserName());
     }
 
     @Subscribe
@@ -1254,7 +1254,7 @@ public class MainActivity
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
         // do nothing if selecting the currently open database
-        String currentDb = MoneyManagerApplication.getDatabasePath(this);
+        String currentDb = MmexApplication.getDatabasePath(this);
         if (recentDb.localPath.equals(currentDb)) return;
 
         changeDatabase(recentDb);
@@ -1342,7 +1342,7 @@ public class MainActivity
      * @param context Executing context.
      */
     private void showCurrentDatabasePath(Context context) {
-        String currentPath = MoneyManagerApplication.getDatabasePath(context);
+        String currentPath = MmexApplication.getDatabasePath(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
 

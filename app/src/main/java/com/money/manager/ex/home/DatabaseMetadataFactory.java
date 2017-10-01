@@ -19,7 +19,7 @@ package com.money.manager.ex.home;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.SyncPreferences;
@@ -71,7 +71,7 @@ public class DatabaseMetadataFactory {
         DatabaseMetadata entry = new DatabaseMetadata();
 
         // todo remove the local change preference after upgrade.
-        entry.localPath = MoneyManagerApplication.getDatabasePath(getContext());
+        entry.localPath = MmexApplication.getDatabasePath(getContext());
         entry.isLocalFileChanged = new AppSettings(getContext()).get(R.string.pref_is_local_file_changed, false);
 
         SyncManager syncManager = new SyncManager(getContext());

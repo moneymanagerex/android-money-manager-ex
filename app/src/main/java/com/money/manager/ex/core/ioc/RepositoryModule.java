@@ -17,12 +17,9 @@
 
 package com.money.manager.ex.core.ioc;
 
-import com.money.manager.ex.MoneyManagerApplication;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
 import com.money.manager.ex.datalayer.StockRepositorySql;
 import com.squareup.sqlbrite.BriteDatabase;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

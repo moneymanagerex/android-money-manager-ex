@@ -366,7 +366,7 @@ public class MmxContentProvider
     private void initializeDependencies() {
         if (openHelper != null) return;
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     private void logTableInsert(Dataset dataset, ContentValues values) {

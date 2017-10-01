@@ -39,7 +39,7 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.common.MmxCursorLoader;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.log.ExceptionHandler;
@@ -116,7 +116,7 @@ public class RecurringTransactionListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         setHasOptionsMenu(true);
     }
@@ -356,7 +356,7 @@ public class RecurringTransactionListFragment
     }
 
     private void showCaldroidFragment() {
-        Locale appLocale = MoneyManagerApplication.getApp().getAppLocale();
+        Locale appLocale = MmexApplication.getApp().getAppLocale();
         CaldroidFragment caldroidFragment = new CaldroidFragment();
 
 

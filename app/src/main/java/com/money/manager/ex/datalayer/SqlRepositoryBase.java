@@ -20,7 +20,7 @@ package com.money.manager.ex.datalayer;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.sync.SyncManager;
 import com.squareup.sqlbrite.BriteDatabase;
@@ -126,6 +126,6 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
      * Notify sync engine about the database update.
      */
     private void notifySync() {
-        new SyncManager(MoneyManagerApplication.getApp()).dataChanged();
+        new SyncManager(MmexApplication.getApp()).dataChanged();
     }
 }

@@ -32,7 +32,7 @@ import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.DatabaseMetadataFactory;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.database.DatabaseMigrator14To20;
@@ -62,7 +62,7 @@ public class DatabaseSettingsFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         addPreferencesFromResource(R.xml.preferences_database);
 
@@ -253,7 +253,7 @@ public class DatabaseSettingsFragment
 
     private void refreshDbPath() {
         final Preference preference = findPreference(getActivity().getString(R.string.pref_database_path));
-        preference.setSummary(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext()));
+        preference.setSummary(MmexApplication.getDatabasePath(getActivity().getApplicationContext()));
     }
 
     private void initDbSchemaCheckOption() {
@@ -342,7 +342,7 @@ public class DatabaseSettingsFragment
                     return false;
                 }
             });
-            pMoveDatabase.setEnabled(MoneyManagerApplication.getDatabasePath(getActivity().getApplicationContext())
+            pMoveDatabase.setEnabled(MmexApplication.getDatabasePath(getActivity().getApplicationContext())
                     .startsWith("/data/"));
         }
     }

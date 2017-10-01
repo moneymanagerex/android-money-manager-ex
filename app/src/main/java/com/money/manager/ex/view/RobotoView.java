@@ -25,7 +25,7 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import timber.log.Timber;
@@ -88,13 +88,13 @@ public class RobotoView {
     	} else if (fontSize.equalsIgnoreCase("small")) {
     		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_small);
     	} else if (fontSize.equalsIgnoreCase("default")) {
-    		mUserFontSize = MoneyManagerApplication.getTextSize();
+    		mUserFontSize = MmexApplication.getTextSize();
     	} else if (fontSize.equalsIgnoreCase("medium")) {
     		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_medium);
     	} else if (fontSize.equalsIgnoreCase("large")) {
     		mUserFontSize = context.getResources().getDimension(R.dimen.mmx_text_view_size_large);
     	} else {
-    		mUserFontSize = MoneyManagerApplication.getTextSize();
+    		mUserFontSize = MmexApplication.getTextSize();
     	}
     }
     
@@ -307,7 +307,7 @@ public class RobotoView {
      */
     public static void setTextSizeView(Context context, TextView view, AttributeSet attrs) {
     	// set text size
-		if (view.getTextSize() == MoneyManagerApplication.getTextSize()) {
+		if (view.getTextSize() == MmexApplication.getTextSize()) {
 			if (view.getTextSize() != getUserFontSize()) {
 				view.setTextSize(TypedValue.COMPLEX_UNIT_PX, getUserFontSize());		
 			}

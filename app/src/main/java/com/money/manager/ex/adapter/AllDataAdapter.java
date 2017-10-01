@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionTypes;
 import com.money.manager.ex.currency.CurrencyService;
@@ -147,7 +147,7 @@ public class AllDataAdapter
 
         String dateString = cursor.getString(cursor.getColumnIndex(DATE));
         if (!TextUtils.isEmpty(dateString)) {
-            Locale locale = MoneyManagerApplication.getApp().getAppLocale();
+            Locale locale = MmexApplication.getApp().getAppLocale();
             MmxDateTimeUtils dateUtils = new MmxDateTimeUtils(locale);
 
             Date dateTime = new MmxDate(dateString).toDate();

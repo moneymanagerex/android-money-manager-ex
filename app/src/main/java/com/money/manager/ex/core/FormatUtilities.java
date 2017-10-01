@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Currency;
@@ -44,11 +44,11 @@ public class FormatUtilities {
 
     public FormatUtilities(Context context) {
         this.context = context;
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     @Inject
-    public FormatUtilities(MoneyManagerApplication app) {
+    public FormatUtilities(MmexApplication app) {
         this.context = app;
     }
 
@@ -119,7 +119,7 @@ public class FormatUtilities {
     }
 
     public String getDecimalSeparatorForAppLocale() {
-        Locale locale = MoneyManagerApplication.getApp().getAppLocale();
+        Locale locale = MmexApplication.getApp().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char decimalSeparator = currencyFormatter.getDecimalFormatSymbols().getDecimalSeparator();
@@ -130,7 +130,7 @@ public class FormatUtilities {
     }
 
     public String getGroupingSeparatorForAppLocale() {
-        Locale locale = MoneyManagerApplication.getApp().getAppLocale();
+        Locale locale = MmexApplication.getApp().getAppLocale();
 
         DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getInstance(locale);
         char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();

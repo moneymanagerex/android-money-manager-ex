@@ -22,7 +22,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 
@@ -43,7 +43,7 @@ public class RecentDatabasesProvider {
     private static final String PREF_KEY = "LIST";
 
     @Inject
-    public RecentDatabasesProvider(MoneyManagerApplication app) {
+    public RecentDatabasesProvider(MmexApplication app) {
         this.context = app;
         load();
     }

@@ -26,10 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.common.events.AmountEnteredEvent;
@@ -90,7 +88,7 @@ public class CheckingTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_checking_account_transaction);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         ITransactionEntity model = AccountTransaction.create();
         mCommon = new EditTransactionCommonFunctions(this, model, database);

@@ -20,7 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Core;
 
@@ -40,7 +40,7 @@ public class SettingsActivity
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
 
         showFragment();
     }

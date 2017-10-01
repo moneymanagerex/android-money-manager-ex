@@ -40,7 +40,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.domainmodel.Payee;
@@ -69,7 +69,7 @@ public class Core {
         this.mContext = context;
         // .getApplicationContext() == null ? context.getApplicationContext() : context;
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     private Context mContext;
@@ -108,7 +108,7 @@ public class Core {
      * @return new File database backup
      */
     public File backupDatabase() {
-        File database = new File(MoneyManagerApplication.getDatabasePath(getContext()));
+        File database = new File(MmexApplication.getDatabasePath(getContext()));
         if (!database.exists()) return null;
 
         //create folder to copy database

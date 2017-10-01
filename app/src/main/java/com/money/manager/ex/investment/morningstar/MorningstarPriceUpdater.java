@@ -19,7 +19,7 @@ package com.money.manager.ex.investment.morningstar;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.datalayer.StockHistoryRepositorySql;
@@ -29,7 +29,6 @@ import com.money.manager.ex.investment.PriceUpdaterBase;
 import com.money.manager.ex.investment.events.AllPricesDownloadedEvent;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
-import com.money.manager.ex.utils.MmxDateTimeUtils;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -68,7 +67,7 @@ public class MorningstarPriceUpdater
     public MorningstarPriceUpdater(Context context) {
         super(context);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
     }
 
     /**

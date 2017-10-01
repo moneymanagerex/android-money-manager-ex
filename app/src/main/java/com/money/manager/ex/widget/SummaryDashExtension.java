@@ -25,7 +25,7 @@ import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.home.MainActivity;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 
 import info.javaperformance.money.MoneyFactory;
@@ -37,7 +37,7 @@ public class SummaryDashExtension extends DashClockExtension {
     protected void onUpdateData(int arg0) {
         try {
             Context context = getApplicationContext();
-            MoneyManagerApplication app = new MoneyManagerApplication();
+            MmexApplication app = new MmexApplication();
             CurrencyService currencyService = new CurrencyService(context);
 
             // summary formatted

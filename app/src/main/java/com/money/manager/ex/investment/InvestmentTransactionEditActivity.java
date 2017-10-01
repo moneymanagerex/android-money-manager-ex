@@ -31,7 +31,7 @@ import android.widget.SpinnerAdapter;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.money.manager.ex.Constants;
-import com.money.manager.ex.MoneyManagerApplication;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
@@ -86,7 +86,7 @@ public class InvestmentTransactionEditActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_investment_transaction_edit);
 
-        MoneyManagerApplication.getApp().iocComponent.inject(this);
+        MmexApplication.getApp().iocComponent.inject(this);
         ButterKnife.bind(this);
 
         setDisplayHomeAsUpEnabled(true);
