@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.evernote.android.job.JobRequest;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -280,6 +281,9 @@ public class SyncManager {
         abortScheduledUpload();
 
         // The messages from the service are received via messenger.
+
+        // todo use JobManager
+        //int jobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
     }
 
     /**
@@ -357,8 +361,15 @@ public class SyncManager {
         Intent intent = new Intent(getContext(), SyncSchedulerBroadcastReceiver.class);
         intent.setAction(SyncSchedulerBroadcastReceiver.ACTION_START);
         getContext().sendBroadcast(intent);
+
         // SyncSchedulerBroadcastReceiver does not receive a broadcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+        // todo migrate to JobManager.
+//        new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
+//                .setPeriodic()
+//                .build()
+//                .schedule();
     }
 
     public void stopSyncServiceAlarm() {
@@ -367,6 +378,8 @@ public class SyncManager {
         getContext().sendBroadcast(intent);
         // SyncSchedulerBroadcastReceiver does not receive a broadcast when using LocalManager!
 //        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+
+        // todo use JobManager.
     }
 
     public void triggerSynchronization() {

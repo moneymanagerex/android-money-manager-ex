@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.evernote.android.job.JobManager;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -43,6 +44,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.sync.jobmanager.SyncJobCreator;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.view.RobotoView;
 import com.shamanland.fonticon.FontIconTypefaceHolder;
@@ -160,9 +162,6 @@ public class MmexApplication
 
         registerCustomFonts();
 
-        // Initialize Joda Time
-//        JodaTimeAndroid.init(this);
-
         // Exception reporting. Disabled for debug builds.
         Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
@@ -177,6 +176,10 @@ public class MmexApplication
         }
 
         initializeDependencyInjection();
+
+        // Job Manager initialization.
+        JobManager.create(this)
+            .addJobCreator(new SyncJobCreator());
     }
 
     /**
