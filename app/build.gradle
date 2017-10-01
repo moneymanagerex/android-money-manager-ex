@@ -204,7 +204,7 @@ dependencies {
             , project(':MMEX Icon Font')
             , project(':androidSVG_12')      // androidSVG
             , project(path: ':money')
-            , 'com.cloudrail:cloudrail-si-android:2.20.1'
+            , 'com.cloudrail:cloudrail-si-android:2.20.2'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -265,7 +265,7 @@ dependencies {
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
-            , 'com.evernote:android-job:1.1.11'
+            , 'com.evernote:android-job:1.2.0-RC4'
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true
