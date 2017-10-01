@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cloudrail.si.types.CloudMetaData;
+import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
@@ -70,6 +71,8 @@ import timber.log.Timber;
  */
 public class SyncManager {
 
+    public static int scheduledJobId = Constants.NOT_SET;
+
     @Inject Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
 
     @Inject
@@ -93,6 +96,10 @@ public class SyncManager {
 
         PendingIntent pendingIntent = getPendingIntentForDelayedUpload();
         getAlarmManager().cancel(pendingIntent);
+
+        if (scheduledJobId != Constants.NOT_SET) {
+            JobManager.instance().cancel(scheduledJobId);
+        }
     }
 
     public Context getContext() {
@@ -264,13 +271,13 @@ public class SyncManager {
             progressDialog.setIndeterminate(true);
 //            progressDialog.show();
         }
+
+        String localFile = getDatabases().getCurrent().localPath;
         Messenger messenger = null;
         if (getContext() instanceof Activity) {
             // Messenger handles received messages from the sync service. Can run only in a looper thread.
             messenger = new Messenger(new SyncServiceMessageHandler(getContext(), progressDialog, remoteFile));
         }
-
-        String localFile = getDatabases().getCurrent().localPath;
 
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
                 localFile, remoteFile, messenger);
@@ -283,7 +290,8 @@ public class SyncManager {
         // The messages from the service are received via messenger.
 
         // todo use JobManager
-        //int jobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
+//        scheduledJobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
+//                .setExecutionWindow()
     }
 
     /**
