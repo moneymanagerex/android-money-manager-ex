@@ -113,18 +113,30 @@ public class AboutFragment extends Fragment {
         txtIssues.setOnClickListener(clickListenerIssuesTracker);
 
         // MMEX for Android web page
-        TextView txtWebsite = (TextView) view.findViewById(R.id.textViewWebSite);
+        TextView txtWebsite = view.findViewById(R.id.textViewWebSite);
         text = "<u>" + txtWebsite.getText() + "</u>";
-        txtWebsite.setText(Html.fromHtml(text));
+        String htmlText;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            htmlText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString();
+        } else {
+            htmlText = Html.fromHtml(text).toString();
+        }
+        txtWebsite.setText(htmlText);
         txtWebsite.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerWebsite = new OnClickListenerUrl();
         clickListenerWebsite.setUrl("http://android.moneymanagerex.org/");
         txtWebsite.setOnClickListener(clickListenerWebsite);
 
         // report set link
-        TextView txtReport = (TextView) view.findViewById(R.id.textViewLinkWebSite);
+        TextView txtReport = view.findViewById(R.id.textViewLinkWebSite);
         text = "<u>" + txtReport.getText() + "</u>";
-        txtReport.setText(Html.fromHtml(text));
+        htmlText = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            htmlText = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString();
+        } else {
+            htmlText = Html.fromHtml(text).toString();
+        }
+        txtReport.setText(htmlText);
         txtReport.setMovementMethod(LinkMovementMethod.getInstance());
         OnClickListenerUrl clickListenerFeedback = new OnClickListenerUrl();
         clickListenerFeedback.setUrl("http://www.moneymanagerex.org/?utm_campaign=Application_Android&utm_medium=MMEX_" + version + "&utm_source=Website");
