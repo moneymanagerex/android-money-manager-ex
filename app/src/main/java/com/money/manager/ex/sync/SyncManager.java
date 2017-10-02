@@ -390,6 +390,45 @@ public class SyncManager {
         // todo use JobManager.
     }
 
+    /**
+     * Synchronization using job manager.
+     */
+    public void triggerSyncJob() {
+        // validations
+
+        if (!isActive())  return;
+
+        // Make sure that the current database is also the one linked in the cloud.
+        String localPath = MmexApplication.getDatabasePath(getContext());
+        if (TextUtils.isEmpty(localPath)) {
+            new UIHelper(getContext()).showToast(R.string.filenames_differ);
+            return;
+        }
+
+        String remotePath = getRemotePath();
+        if (TextUtils.isEmpty(remotePath)) {
+            Toast.makeText(getContext(), R.string.select_remote_file, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // easy comparison, just by the file name.
+        if (!areFileNamesSame(localPath, remotePath)) {
+            // The current file was probably opened through Open Database.
+            Toast.makeText(getContext(), R.string.db_not_dropbox, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // action
+
+        new JobRequest.Builder(SyncConstants.INTENT_ACTION_SYNC)
+            .setExecutionWindow(500, 1000)
+            .build()
+            .schedule();
+
+        // todo sync
+        // todo abort scheduled job, if any.
+    }
+
     public void triggerSynchronization() {
         if (!isActive())  return;
 
