@@ -26,6 +26,8 @@ To build the project, the following settings are recommended:
 - use JDK 1.8.0.112, (embedded JDK runs out of memory on compilation);
 - Gradle 3.5;
 
+You will need to generate a custom "fabric.properties" file in "app" directory.
+
 ## Travis CI
 
 Travis CI build is active for the project.
