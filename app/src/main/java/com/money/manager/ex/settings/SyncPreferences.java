@@ -62,7 +62,7 @@ public class SyncPreferences
     public int getSyncInterval() {
         int defaultSchedule = 30;   // time in minutes
         String setSchedule = get(R.string.pref_sync_interval, Integer.toString(defaultSchedule));
-        if (!NumberUtils.isNumber(setSchedule)) return defaultSchedule;
+        if (!NumberUtils.isCreatable(setSchedule)) return defaultSchedule;
 
         return Integer.parseInt(setSchedule);
     }

@@ -457,6 +457,12 @@ public class SyncManager {
 
     public void triggerDownload() {
         invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+
+        //todo migrate
+//        int jobId = new JobRequest.Builder(SyncConstants.INTENT_ACTION_DOWNLOAD)
+//                .setExecutionWindow(50, 5000)
+//                .build()
+//                .schedule();
     }
 
     public void triggerUpload() {
