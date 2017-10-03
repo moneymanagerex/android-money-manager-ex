@@ -267,7 +267,7 @@ dependencies {
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
             , 'com.evernote:android-job:1.2.0-RC4'
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
     }
     compile('com.mikepenz:aboutlibraries:5.9.7@aar') {
