@@ -42,10 +42,10 @@ import java.io.StringWriter;
 public class ExceptionHandler
     implements Thread.UncaughtExceptionHandler
 {
-    public static void warn(String message) {
-        Log.w("manual", message);
-        Crashlytics.log(message);
-    }
+//    public static void warn(String message) {
+//        Log.w("manual", message);
+//        Crashlytics.log(message);
+//    }
 
     public ExceptionHandler(Context context) {
         mContext = context;
@@ -96,9 +96,9 @@ public class ExceptionHandler
         }
     }
 
-    public void showMessage(int resourceId) {
-        showMessage(getContext().getString(resourceId));
-    }
+//    public void showMessage(int resourceId) {
+//        showMessage(getContext().getString(resourceId));
+//    }
 
     public void showMessage(final String message) {
         showMessage(message, Toast.LENGTH_SHORT);
