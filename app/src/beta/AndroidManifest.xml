@@ -19,7 +19,7 @@
     package="com.money.manager.ex" >
 
     <application
-        android:name=".MoneyManagerApplication"
+        android:name=".MmexApplication"
         android:allowBackup="true"
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
