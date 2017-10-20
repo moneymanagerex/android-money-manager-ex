@@ -41,7 +41,7 @@
     <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
     <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <application
-        android:name=".MoneyManagerApplication"
+        android:name=".MmexApplication"
         android:allowBackup="true"
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
