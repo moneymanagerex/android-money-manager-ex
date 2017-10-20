@@ -22,28 +22,28 @@ apply plugin: 'io.fabric'
 // See https://stackoverflow.com/a/44840413/6008532
 // Bug report https://issuetracker.google.com/issues/37124066
 
-final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
+//final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
 
-android.applicationVariants.all { variant ->
-
-    // Add the application id to the strings resources
-    // We do this so that in the future if google fixes the
-    // processing of the shortcuts.xml we can leave this
-    // and remove the `mergeResources.doLast` block below
-    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
-
-    // Manually replace @string/application_id with `variant.applicationId`
-    variant.mergeResources.doLast {
-        println("variant = ${variant.applicationId}")
-
-        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
-        final String content = valuesFile.getText('UTF-8')
-        final String updatedContent = content
-                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
-
-        valuesFile.write(updatedContent, 'UTF-8')
-    }
-}
+//android.applicationVariants.all { variant ->
+//
+//    // Add the application id to the strings resources
+//    // We do this so that in the future if google fixes the
+//    // processing of the shortcuts.xml we can leave this
+//    // and remove the `mergeResources.doLast` block below
+//    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
+//
+//    // Manually replace @string/application_id with `variant.applicationId`
+//    variant.mergeResources.doLast {
+//        println("variant = ${variant.applicationId}")
+//
+//        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
+//        final String content = valuesFile.getText('UTF-8')
+//        final String updatedContent = content
+//                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
+//
+//        valuesFile.write(updatedContent, 'UTF-8')
+//    }
+//}
 
 //endregion
 
@@ -200,11 +200,12 @@ android {
 
 dependencies {
 //    compile(name:'cloudrail-si-debug', ext:'aar')
+    implementation project(':MMEX Icon Font')
+    implementation project(':androidSVG_12')      // androidSVG
+    implementation project(path: ':money')
+
     compile(
             fileTree(dir: 'libs', include: ['*.jar'])
-            , project(':MMEX Icon Font')
-            , project(':androidSVG_12')      // androidSVG
-            , project(path: ':money')
             , 'com.cloudrail:cloudrail-si-android:2.20.2'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
