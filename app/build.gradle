@@ -135,14 +135,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
+                variant.outputs.all { output ->
                     // append the version to the file name.
                     //def version = "-" + defaultConfig.versionName.replace(".", "-")
                     def version = "-" + defaultConfig.versionName
                     // + "_r" + defaultConfig.versionCode
                     def fileName = output.outputFile.name.replace("app-", "ammx-")
                             .replace(".apk", version + ".apk")
-                    output.outputFile = new File(output.outputFile.parent, fileName)
+                    //output.outputFile = new File(output.outputFile.parent, fileName)
+                    outputFileName = fileName
                 }
             }
 
