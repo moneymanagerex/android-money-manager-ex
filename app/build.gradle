@@ -17,33 +17,34 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+//apply plugin: 'com.jakewharton.butterknife'
 
 // region: Fix shortcuts.xml by manually replacing @string/application_id
 // See https://stackoverflow.com/a/44840413/6008532
 // Bug report https://issuetracker.google.com/issues/37124066
 
-//final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
+final String APPLICATION_ID_STRING_RES_KEY    = "application_id"
 
-//android.applicationVariants.all { variant ->
-//
-//    // Add the application id to the strings resources
-//    // We do this so that in the future if google fixes the
-//    // processing of the shortcuts.xml we can leave this
-//    // and remove the `mergeResources.doLast` block below
-//    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
-//
-//    // Manually replace @string/application_id with `variant.applicationId`
-//    variant.mergeResources.doLast {
-//        println("variant = ${variant.applicationId}")
-//
-//        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
-//        final String content = valuesFile.getText('UTF-8')
-//        final String updatedContent = content
-//                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
-//
-//        valuesFile.write(updatedContent, 'UTF-8')
-//    }
-//}
+android.applicationVariants.all { variant ->
+
+    // Add the application id to the strings resources
+    // We do this so that in the future if google fixes the
+    // processing of the shortcuts.xml we can leave this
+    // and remove the `mergeResources.doLast` block below
+    resValue "string", APPLICATION_ID_STRING_RES_KEY, variant.applicationId
+
+    // Manually replace @string/application_id with `variant.applicationId`
+    variant.mergeResources.doLast {
+        println("variant = ${variant.applicationId}")
+
+        final File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/xml-v25/shortcuts.xml")
+        final String content = valuesFile.getText('UTF-8')
+        final String updatedContent = content
+                .replace("@string/${APPLICATION_ID_STRING_RES_KEY}", variant.applicationId)
+
+        valuesFile.write(updatedContent, 'UTF-8')
+    }
+}
 
 //endregion
 
@@ -206,7 +207,7 @@ dependencies {
 
     compile(
             fileTree(dir: 'libs', include: ['*.jar'])
-            , 'com.cloudrail:cloudrail-si-android:2.20.2'
+            , 'com.cloudrail:cloudrail-si-android:2.21.0'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
             , supportDependencies.support
@@ -245,11 +246,11 @@ dependencies {
             , 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
             , 'org.jsoup:jsoup:1.10.3'              // HTML parsing.
             , 'com.google.guava:guava:23.0-android' // collection libraries
-            , 'com.android.support:multidex:1.0.1'  // multidex support
+            , 'com.android.support:multidex:1.0.2'  // multidex support
             , 'com.nononsenseapps:filepicker:3.1.0' // file picker
             , 'io.reactivex:rxandroid:1.2.1'        // RxJava
             // , 'io.reactivex.rxjava2:rxandroid:2.0.1'
-            , 'io.reactivex:rxjava:1.3.2'
+            , 'io.reactivex:rxjava:1.3.3'
             // , 'io.reactivex.rxjava2:rxjava:2.0.1'
             , 'com.squareup.sqlbrite:sqlbrite:1.1.2'
             , 'com.jakewharton.timber:timber:4.5.1'
@@ -267,7 +268,7 @@ dependencies {
             , 'com.roomorama:caldroid:3.0.1'
             , 'com.squareup.picasso:picasso:2.5.2'
             // , 'org.apache.commons:commons-collections4:4.1' // to handle build errors
-            , 'com.evernote:android-job:1.2.0-RC4'
+            , 'com.evernote:android-job:1.2.0'
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true
