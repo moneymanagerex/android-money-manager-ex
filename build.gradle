@@ -22,7 +22,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // robolectric
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'io.fabric.tools:gradle:1.+'                  // Fabric
 //        classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
     }
@@ -62,6 +62,7 @@ allprojects {
 //            // use libs directory as a Maven repository.
 //            dirs 'libs'
 //        }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // butterknife
     }
 
     /**
@@ -81,6 +82,7 @@ allprojects {
             force 'com.google.code.findbugs:jsr305:3.0.1'
             force 'org.apache.commons:commons-lang3:3.5'
             force 'commons-collections:commons-collections:3.2.2'
+            force 'com.android.support:multidex:1.0.2'
         }
         // removes warnings about commons-logging on build.
         exclude group: 'commons-logging', module: 'commons-logging'

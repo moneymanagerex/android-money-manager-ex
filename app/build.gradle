@@ -136,15 +136,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             applicationVariants.all { variant ->
-                variant.outputs.all { output ->
+                variant.outputs.each { output ->
                     // append the version to the file name.
-                    //def version = "-" + defaultConfig.versionName.replace(".", "-")
                     def version = "-" + defaultConfig.versionName
                     // + "_r" + defaultConfig.versionCode
                     def fileName = output.outputFile.name.replace("app-", "ammx-")
                             .replace(".apk", version + ".apk")
-                    //output.outputFile = new File(output.outputFile.parent, fileName)
-                    outputFileName = fileName
+                    output.outputFile = new File(output.outputFile.parent, fileName)
+                    //outputFileName = fileName
                 }
             }
 
@@ -201,12 +200,11 @@ android {
 
 dependencies {
 //    compile(name:'cloudrail-si-debug', ext:'aar')
-    implementation project(':MMEX Icon Font')
-    implementation project(':androidSVG_12')      // androidSVG
-    implementation project(path: ':money')
-
     compile(
             fileTree(dir: 'libs', include: ['*.jar'])
+            , project(':MMEX Icon Font')
+            , project(':androidSVG_12')      // androidSVG
+            , project(path: ':money')
             , 'com.cloudrail:cloudrail-si-android:2.21.0'
             , 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
             , supportDependencies.core
@@ -283,8 +281,8 @@ dependencies {
     compile 'com.google.dagger:dagger:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     // ButterKnife
-    compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
