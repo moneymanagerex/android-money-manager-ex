@@ -20,6 +20,7 @@ package com.money.manager.ex.notifications;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.money.manager.ex.settings.PreferenceConstants;
@@ -35,7 +36,12 @@ public class RecurringTransactionReceiver
         if (!notify) return;
 
 		Intent service = new Intent(context, RecurringTransactionIntentService.class);
-		context.startService(service);
-	}
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            context.startService(service);
+        } else {
+            context.startForegroundService(service);
+        }
+
+    }
 
 }

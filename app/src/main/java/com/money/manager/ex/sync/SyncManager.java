@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -282,7 +283,11 @@ public class SyncManager {
         Intent syncServiceIntent = IntentFactory.getSyncServiceIntent(getContext(), action,
                 localFile, remoteFile, messenger);
         // start service
-        getContext().startService(syncServiceIntent);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            getContext().startService(syncServiceIntent);
+        } else {
+            getContext().startForegroundService(syncServiceIntent);
+        }
 
         // Reset any other scheduled uploads as the current operation will modify the files.
         abortScheduledUpload();
@@ -480,7 +485,12 @@ public class SyncManager {
         service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, remoteFile);
 
         // start service
-        getContext().startService(service);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            getContext().startService(service);
+        } else {
+            getContext().startForegroundService(service);
+        }
+
     }
 
     /**

@@ -16,9 +16,11 @@
  */
 package com.money.manager.ex.sync;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.settings.SyncPreferences;
@@ -50,6 +52,10 @@ public class SyncBroadcastReceiver
 		service.putExtra(SyncConstants.INTENT_EXTRA_LOCAL_FILE, MmexApplication.getDatabasePath(context));
 		service.putExtra(SyncConstants.INTENT_EXTRA_REMOTE_FILE, sync.getRemotePath());
 
-		context.startService(service);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            context.startService(service);
+        } else {
+            context.startForegroundService(service);
+        }
 	}
 }
