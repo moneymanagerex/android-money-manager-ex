@@ -61,6 +61,8 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * Testing the new JavaMoney library and types. JSR 354
+ * Some background:
+ * http://www.baeldung.com/java-money-and-currency
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
