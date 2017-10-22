@@ -105,7 +105,7 @@ public class UnitTestHelper {
             instance.setAccessible(true);
             instance.set(null, null);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 

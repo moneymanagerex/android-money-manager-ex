@@ -232,7 +232,7 @@ dependencies {
             , 'com.github.PhilJay:MPAndroidChart:v2.2.5'
             // JavaMoney
             // , 'javax.money:money-api-bp:1.0.1'
-            // , 'org.javamoney:moneta-bp:1.1'
+            , 'org.javamoney:moneta-bp:1.1'
             //    compile 'com.github.mikvor:money-conversion:1.0-SNAPSHOT'
             , 'com.google.code.gson:gson:2.8.2'
             , 'com.squareup.retrofit2:retrofit:2.3.0'            // Retrofit
