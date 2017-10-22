@@ -1,0 +1,3 @@
+alter table CURRENCYFORMATS_V1 add column CURRENCY_TYPE TEXT;
+update CURRENCYFORMATS_V1 set CURRENCY_TYPE = 'Traditional';
+update CURRENCYFORMATS_V1 set CURRENCY_TYPE = 'Crypto' where CURRENCY_SYMBOL = 'BTC';
