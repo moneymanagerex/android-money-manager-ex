@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         applicationId "com.money.manager.ex"
-        versionCode 959
+        versionCode 960
         versionName getVersionAsDate() + "." + versionCode
 
         // minSdkVersion rootProject.ext.minSdkVersion
