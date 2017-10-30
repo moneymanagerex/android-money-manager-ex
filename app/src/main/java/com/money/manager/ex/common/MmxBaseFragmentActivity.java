@@ -73,7 +73,7 @@ public abstract class MmxBaseFragmentActivity
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null) setSupportActionBar(mToolbar);
     }
 

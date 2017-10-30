@@ -87,6 +87,7 @@
         <attr name="dividerColor" format="color|reference" />
         <attr name="color_list_header" format="color|reference" />
         <!--<attr name="toolbar_spinner_item_text_color" format="color|reference" />-->
+        <attr name="textColorSecondary" format="color|reference" />
 
         <!-- number input binaryDialog / calculator -->
         <attr name="calculator_button_background" format="reference" />
